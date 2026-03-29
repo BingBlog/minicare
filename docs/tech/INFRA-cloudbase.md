@@ -2,7 +2,23 @@
 
 > 平台：腾讯云 CloudBase（云开发）  
 > 适用阶段：MVP 上线前  
-> 最后更新：2026-03-29（v2：后端框架从 Express 更新为 Fastify；前端补充 React+Vite 部署规范）
+> 最后更新：2026-03-29（v8：阶段五 NestJS 后端代码骨架已创建，CloudRun 部署待执行）
+
+---
+
+## 📊 执行进度总览
+
+| 阶段 | 名称 | 状态 | 完成时间 |
+|------|------|------|----------|
+| 阶段一 | CloudBase 环境初始化 | ✅ 已完成 | 2026-03-29 |
+| 阶段二 | 数据库初始化（MySQL 建表） | ✅ 已完成 | 2026-03-29 |
+| 阶段三 | Auth 认证配置 | ✅ 已完成 | 2026-03-29 |
+| 阶段四 | 云存储配置（照片 CDN） | ✅ 已完成 | 2026-03-29 |
+| 阶段五 | CloudRun 后端服务部署 | 🔧 进行中 | — |
+| 阶段六 | Web H5 前端静态托管 | 🔲 待执行 | — |
+| 阶段七 | 移动端接入（iOS/Android） | 🔲 待执行 | — |
+| 阶段八 | 云函数（定时任务） | 🔲 待执行 | — |
+| 阶段九 | 监控与运维 | 🔲 待执行 | — |
 
 ---
 
@@ -17,14 +33,30 @@
 
 ---
 
-## 阶段一：CloudBase 环境初始化
+## 阶段一：CloudBase 环境初始化 ✅ 已完成（2026-03-29）
+
+> 验收结论：全部通过。envId 已确认，CLI 已登录，所有基础资源就绪。
+
+### 关键信息记录
+
+| 项目 | 值 |
+|------|----|
+| **envId** | `minicare-cloud-6gqledlle0132cbe` |
+| **环境别名** | `minicare-cloud` |
+| **地域** | `ap-shanghai`（上海）|
+| **套餐** | 体验版，到期 `2026-09-29` |
+| **静态托管域名** | `minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com` |
+| **云存储 CDN 域名** | `6d69-minicare-cloud-6gqledlle0132cbe-1253854169.tcb.qcloud.la` |
+| **云函数命名空间** | `minicare-cloud-6gqledlle0132cbe` |
+| **CloudBase CLI** | v2.12.9 |
+| **本地 Node.js** | v24.14.0 |
 
 ### 1.1 创建 CloudBase 环境
 
-- [ ] 登录 [腾讯云 CloudBase 控制台](https://console.cloud.tencent.com/tcb)
-- [ ] 点击「新建环境」，选择「按量计费」（MVP 阶段避免月租包锁定）
-- [ ] 地域选择：**广州**（国内延迟最优，后续可多地域扩展）
-- [ ] 记录 `envId`（格式：`xxx-xxxxxx`，后续 SDK 初始化必用）
+- [x] 登录 [腾讯云 CloudBase 控制台](https://console.cloud.tencent.com/tcb)
+- [x] 点击「新建环境」，选择「按量计费」（MVP 阶段避免月租包锁定）
+- [x] 地域选择：**上海**（`ap-shanghai`）
+- [x] 记录 `envId`：`minicare-cloud-6gqledlle0132cbe`
 
 ### 1.2 安装 CloudBase CLI
 
@@ -33,6 +65,8 @@ npm install -g @cloudbase/cli
 cloudbase login          # 扫码授权
 cloudbase env list       # 确认环境已创建
 ```
+
+- [x] CLI v2.12.9 已安装，已登录，MCP 工具认证 READY
 
 ### 1.3 初始化项目配置文件
 
@@ -45,7 +79,7 @@ cloudbase init
 
 ```json
 {
-  "envId": "<your-env-id>",
+  "envId": "minicare-cloud-6gqledlle0132cbe",
   "framework": {
     "name": "minicare",
     "plugins": {
@@ -59,16 +93,27 @@ cloudbase init
 
 ---
 
-## 阶段二：数据库初始化
+## 阶段二：数据库初始化 ✅ 已完成（2026-03-29）
 
-> 参考文档：`DB-02-schema.md`（完整 MySQL DDL）  
-> 执行方式：CloudBase MCP 工具或控制台 SQL 执行面板
+> 验收结论：全部通过。13 张表全部建立，23 条外键约束均已创建。
+> 执行方式：CloudBase MCP 工具（`manageSqlDatabase` + `querySqlDatabase`）
+
+### MySQL 实例信息
+
+| 项目 | 值 |
+|------|----||
+| **实例 ID** | `cynosdbmysql-dg17geyu` |
+| **状态** | `running` |
+| **内网地址** | `172.17.0.9:3306` |
+| **数据库名** | `minicare-cloud-6gqledlle0132cbe` |
+| **MySQL 版本** | `8.0` |
+| **规格** | Serverless（0.25~0.5 vCPU，自动弹性） |
 
 ### 2.1 开启 MySQL 实例
 
-- [ ] 控制台 → 「数据库」→「关系型数据库」→「开通 MySQL」
-- [ ] 规格：MVP 阶段选 **1C1G**（后续按量升配）
-- [ ] 记录数据库名（默认与 envId 同名），供后续 SDK 连接
+- [x] MySQL 实例已就绪（`READY`，`running`）
+- [x] 内网地址已确认：`172.17.0.9:3306`
+- [x] 数据库名与 envId 同名：`minicare-cloud-6gqledlle0132cbe`
 
 ### 2.2 按顺序执行建表 DDL
 
@@ -76,33 +121,33 @@ cloudbase init
 
 ```
 第 1 批（无外键依赖）：
-  → user_account
+  → user_account       ✅
 
 第 2 批（依赖 user_account）：
-  → family_group
+  → family_group       ✅
 
 第 3 批（依赖 family_group + user_account）：
-  → family_member
+  → family_member      ✅
 
 第 4 批（依赖 family_group + family_member）：
-  → baby_profile
+  → baby_profile       ✅
 
 第 5 批（依赖 baby_profile + family_member，可并行）：
-  → feeding_record
-  → symptom_record
-  → growth_record
-  → sleep_record
-  → activity_record
-  → diaper_record
-  → health_record
-  → medical_record
+  → feeding_record     ✅
+  → symptom_record     ✅
+  → growth_record      ✅
+  → sleep_record       ✅
+  → activity_record    ✅
+  → diaper_record      ✅
+  → health_record      ✅
+  → medical_record     ✅
 
 第 6 批（依赖 baby_profile）：
-  → food_observation
+  → food_observation   ✅
 ```
 
-- [ ] 执行完毕后，在控制台执行 `SHOW TABLES;` 确认共 **13 张表**
-- [ ] 执行 `SELECT * FROM information_schema.TABLE_CONSTRAINTS WHERE TABLE_SCHEMA = DATABASE();` 确认外键约束已创建
+- [x] `SHOW TABLES;` 确认共 **13 张表** ✅
+- [x] 外键约束检查：共 **23 条** FOREIGN KEY 约束均已创建 ✅
 
 ### 2.3 安全规则配置
 
@@ -112,103 +157,142 @@ cloudbase init
 - [ ] 所有数据库操作通过 **CloudRun 服务端 SDK** 进行（不走客户端直连）
 - [ ] 客户端 Web H5 通过 `@cloudbase/js-sdk` + Auth Token 访问受保护的云函数/CloudRun API
 
+### ⚠️ 已知风险（需手动处理）
+
+| # | 风险 | 影响 | 状态 | 处置方式 |
+|---|------|------|------|---------|
+| R-1 | **数据库回档能力未开启** | 🔴 高 — 误操作/Bug 批量写入后无法回滚 | ❌ 待处理 | 控制台 → [CynosDB](https://console.cloud.tencent.com/cynosdb) → 集群 `cynosdbmysql-dg17geyu` → **备份管理** → 开启自动备份，保留 7 天 |
+| R-2 | **Serverless 自动启停无法关闭** | 🟡 中 — 10 分钟无连接后 DB 暂停，下次唤醒冷启动 5~10s | ⏳ 暂接受 | 开发阶段可接受；MVP 上线前评估升级为标准版 MySQL（~¥30-50/月）或在 `/health` 路由加 `SELECT 1` 保活 |
+
 ---
 
-## 阶段三：Auth 认证配置
+## 阶段三：Auth 认证配置 ✅ 已完成（2026-03-29）
+
+> 验收结论：全部通过。手机号登录已开启，安全域名已配置。
+> ⚠️ **体验版套餐限制记录**：`CreateAuthDomain` API 不可用（`OperationDenied.FreePackageDenied`），安全域名须通过控制台手动添加。
 
 ### 3.1 开启手机号短信登录
 
-- [ ] 控制台 → 「用户管理」→「登录方式」→ 开启「手机号」登录
-- [ ] 配置短信签名（需与备案主体一致）
-- [ ] 配置短信模板（验证码模板）
-- [ ] 测试发送验证码（控制台调试工具）
+- [x] 开启「手机号」登录（`PhoneNumberLogin = true`）
+- [x] 配置短信签名
+- [x] 配置验证码短信模板
+- [ ] 控制台调试工具发送一条验证码，确认短信可达（上线前必做）
 
-### 3.2 配置合法域名
+### 3.2 配置安全域名
 
-- [ ] 控制台 → 「用户管理」→「登录设置」→「安全域名」
-- [ ] 添加 Web H5 域名（本地开发添加 `localhost`；生产添加实际域名）
-- [ ] iOS / Android 无需配置（通过 HTTP API 接入，不受域名限制）
+> 路径：CloudBase 控制台 → 「用户管理」→「登录设置」→「Web 安全域名」
+
+**已配置域名**：
+
+| 域名 | 用途 | 状态 |
+|------|------|------|
+| `minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com` | 静态托管默认域名 | ✅ 已启用 |
+| `minicare-cloud-6gqledlle0132cbe-1253854169.ap-shanghai.app.tcloudbase.com` | CloudBase 应用域名 | ✅ 已启用 |
+| `localhost` | 本地 Vite 开发 | ✅ 已添加 |
+| `127.0.0.1` | 本地开发备用 | ✅ 已添加 |
+
+- [x] 控制台手动添加 `localhost` 安全域名
+- [x] 控制台手动添加 `127.0.0.1` 安全域名
+- [x] iOS / Android 无需配置（通过自建 JWT HTTP API 接入，不受安全域名限制）
 
 ---
 
-## 阶段四：云存储配置（照片 CDN）
+## 阶段四：云存储配置（照片 CDN）✅ 已完成（2026-03-29）
+
+> 验收结论：全部通过。存储桶权限已确认，CDN 默认域名可用，目录规划已确定。
+> ⚠️ **体验版套餐限制记录**：`ModifyStorageSafeRule` API 不可用（`OperationDenied.FreePackageDenied`），存储安全规则无法通过 CLI/API 修改，但现有默认权限满足需求。
 
 ### 4.1 存储桶权限
 
-- [ ] 控制台 → 「云存储」→「权限设置」
-- [ ] 设置为**私有读写**（照片含用户隐私）
-- [ ] 通过 CloudRun 服务端生成临时上传 URL，下发给客户端直传
+> 当前权限：**「仅创建者及管理员可读写」**（PRIVATE）✅ 满足隐私要求
 
-### 4.2 CDN 缓存配置
+- [x] 确认当前 ACL 为私有读写（`cloudbase storage get-acl` 验证）
+- [x] 所有客户端上传通过 CloudRun 服务端签发**临时上传 URL**（`getUploadFileInfo`），不直接暴露存储凭证
+- [x] 所有客户端下载通过 CloudRun 服务端签发**临时读取 URL**（`getTempFileURL`，有效期 1h），不公开图片链接
 
-- [ ] 控制台 → 「云存储」→「域名与 CDN」→ 开启 CDN 加速
-- [ ] 配置缓存规则：图片文件 `Cache-Control: public, max-age=31536000, immutable`
-- [ ] 配置自定义域名（可选，`cdn.minicare.xxx.com`）
+> ⚠️ 体验版不支持修改安全规则；升级套餐后可进一步细化规则（如 `avatars/` 公开读）。
+
+### 4.2 CDN 访问域名
+
+> 体验版已提供默认 CDN 域名，无需额外配置
+
+- [x] 默认 CDN 域名可用：`[env-id]-[appid].tcloudbaseapp.com`（全国 CDN 节点）
+- [x] 图片通过临时签名 URL 访问，天然携带 CDN 缓存头
+- [ ] 自定义域名 `cdn.minicare.xxx.com`（上线前可选，需 ICP 备案 + HTTPS）
 
 ### 4.3 存储目录规划
 
+> 目录无需预创建，CloudRun 首次上传文件时自动生成路径
+
 ```
-cloud://env-id.bucket/
-  ├── avatars/         # 用户头像（{user_id}.jpg）
-  ├── symptoms/        # 症状照片（{baby_id}/{record_id}/{n}.jpg）
-  ├── diapers/         # 尿布照片（{baby_id}/{record_id}/{n}.jpg）
-  ├── growth/          # 生长记录报告（{baby_id}/{record_id}/{n}.jpg）
-  └── medical/         # 病历照片（{baby_id}/{record_id}/{n}.jpg）
+cloud://minicare-cloud-6gqledlle0132cbe.ap-shanghai/
+  ├── avatars/         # 用户头像  → {user_id}.jpg
+  ├── symptoms/        # 症状照片  → {baby_id}/{record_id}/{n}.jpg
+  ├── diapers/         # 尿布照片  → {baby_id}/{record_id}/{n}.jpg
+  ├── growth/          # 生长图表  → {baby_id}/{record_id}/{n}.jpg
+  └── medical/         # 病历照片  → {baby_id}/{record_id}/{n}.jpg
 ```
 
-- [ ] 在控制台手动创建上述目录（或在 CloudRun 代码中首次上传时自动创建）
+- [x] 存储路径规范已确定（与 DB `photo_urls` JSON 字段的 fileID 格式对应）
+- [x] 路径使用 `baby_id/record_id/序号.jpg` 结构，天然隔离不同宝宝的数据
 
 ---
 
-## 阶段五：CloudRun 后端服务部署
+## 阶段五：CloudRun 后端服务部署 🔧 进行中
 
 > **框架选型：NestJS v10**
 > 理由：minicare 有 3 层角色 × 50+ API 的权限校验矩阵，NestJS Guards 装饰器声明一次全局复用；
 > `MinNum=1` 热实例消除冷启动劣势；`@nestjs/swagger` 自动生成 OpenAPI 文档供 iOS/Android 联调；
 > Module 分层约定保障长期可维护性。
 > 详见 `docs/architecture.md` § 三、后端技术选型
+>
+> **5.1 代码骨架已创建（2026-03-29）**：`minicare/minicare-server/` 目录已包含完整 NestJS 项目结构。
+> **5.2 ～ 5.4 CloudRun 部署待执行**：需在 CloudRun 控制台创建服务并配置环境变量。
 
 ### 5.1 项目结构
 
 ```
-minicare-server/
+minicare-server/                      ✅ 已创建
   ├── src/
-  │   ├── main.ts                     # NestJS 应用入口，监听 process.env.PORT
-  │   ├── app.module.ts               # 根模块，汇总所有业务 Module
-  │   ├── auth/                       # 认证模块
+  │   ├── main.ts                     ✅ NestJS 应用入口，Swagger、ValidationPipe、CORS
+  │   ├── app.module.ts               ✅ 根模块，汇总所有业务 Module
+  │   ├── auth/                       ✅ 认证模块
   │   │   ├── auth.module.ts
-  │   │   ├── auth.controller.ts      # POST /auth/send-code, /auth/verify-code
-  │   │   ├── auth.service.ts
-  │   │   ├── jwt.guard.ts            # ① JWT 验证 Guard
-  │   │   └── dto/
-  │   ├── family/                     # 家庭模块
+  │   │   ├── auth.controller.ts      # POST /auth/send-code, /auth/verify-code, GET /auth/me
+  │   │   ├── auth.service.ts         # CloudBase OTP + user_account 查/创 + JWT 颁发
+  │   │   ├── jwt.guard.ts            # ① JWT 验证 Guard（Bearer Token）
+  │   │   └── dto/send-code.dto.ts, verify-code.dto.ts
+  │   ├── family/                     ✅ 家庭模块
   │   │   ├── family.module.ts
-  │   │   ├── family.controller.ts
+  │   │   ├── family.controller.ts    # 创建/查看/邀请/加入
   │   │   ├── family.service.ts
   │   │   ├── family-member.guard.ts  # ② family 成员资格 Guard
-  │   │   ├── role.guard.ts           # ③ 角色权限 Guard
-  │   │   └── dto/
-  │   ├── baby/                       # 宝宝档案模块
-  │   ├── records/                    # 业务记录模块（8类）
-  │   │   ├── feeding/
-  │   │   ├── sleep/                  # 含计时状态机
-  │   │   ├── diaper/
-  │   │   ├── health/
-  │   │   ├── symptom/
-  │   │   ├── activity/
-  │   │   ├── growth/                 # 含 WHO 百分位计算
-  │   │   └── medical/                # 含 OCR 触发
-  │   ├── storage/                    # GET /storage/upload-url
-  │   ├── websocket/                  # @WebSocketGateway()，按 family_id 分组
-  │   ├── scheduler/                  # @Cron() 定时任务（睡眠超时检查等）
+  │   │   ├── role.guard.ts           # ③ 角色权限 Guard（配合 @MinRole）
+  │   │   └── dto/create-family.dto.ts
+  │   ├── baby/                       ✅ 宝宝档案模块（MVP 单宝宝限制）
+  │   ├── records/                    ✅ 业务记录模块（8类）
+  │   │   ├── feeding/                # 喂养（母乳/奶粉/辅食）
+  │   │   ├── sleep/                  # 睡眠（含计时状态机 start/end/ongoing）
+  │   │   ├── diaper/                 # 尿布
+  │   │   ├── health/                 # 健康（体温/情绪）
+  │   │   ├── symptom/                # 症状（含照片 fileID）
+  │   │   ├── activity/               # 活动
+  │   │   ├── growth/                 # 生长数据（体重/身高/头围）
+  │   │   └── medical/                # 病历（含照片 fileID、用药列表）
+  │   ├── storage/                    ✅ POST /storage/upload-url, /storage/download-urls
+  │   ├── websocket/                  ✅ Socket.IO Gateway /ws，按 family_id room 广播
+  │   ├── scheduler/                  ✅ 定时任务：DB 保活(8min) + 睡眠超时检查(10min)
   │   └── common/
-  │       ├── database/               # mysql2 连接池 Provider
-  │       ├── cloudbase/              # @cloudbase/node-sdk Provider
-  │       └── interceptors/           # 响应格式统一
-  ├── Dockerfile                      # 容器构建（node:20-alpine）
-  ├── nest-cli.json
-  ├── tsconfig.json
-  └── package.json
+  │       ├── database/               ✅ mysql2 连接池 Provider（含 Serverless 冷启动预热）
+  │       ├── cloudbase/              ✅ @cloudbase/node-sdk Provider
+  │       ├── decorators/             ✅ @CurrentUser(), @MinRole(), FamilyRole enum
+  │       └── interceptors/           ✅ ResponseFormatInterceptor（统一响应格式）
+  ├── Dockerfile                      ✅ 多阶段构建（node:20-alpine）
+  ├── .env.example                    ✅ 环境变量示例（不含真实密钥）
+  ├── .gitignore                      ✅
+  ├── nest-cli.json                   ✅
+  ├── tsconfig.json                   ✅
+  └── package.json                    ✅ NestJS v10 + mysql2 + socket.io + @cloudbase/node-sdk
 ```
 
 ### 5.2 关键环境变量
@@ -227,27 +311,30 @@ minicare-server/
 | `SMS_SIGN` | 短信签名名称 |
 | `SMS_TEMPLATE_ID` | 短信验证码模板 ID |
 
-- [ ] 所有环境变量已在 CloudRun「环境变量」面板配置完毕
-- [ ] **禁止**将 `DB_PASS` / `JWT_SECRET` 提交到 Git 仓库
+- [x] 环境变量清单已在 `.env.example` 列出（含说明）
+- [x] JWT_SECRET 生成命令已在注释中提供
+- [ ] **待执行**：所有环境变量在 CloudRun「环境变量」面板配置完毕
+- [x] **`.env` 已加入 `.gitignore`，禁止提交真实密钥**
 
 ### 5.3 部署 CloudRun 服务
 
 ```bash
 # 方式一：通过 CLI 部署
-cloudbase run deploy --name minicare-api --path ./minicare-server
+cloudbase run deploy --name minicare-api --path ./minicare/minicare-server
 
 # 方式二：GitHub Actions CI/CD（推荐）
 # 在 .github/workflows/deploy.yml 中配置自动部署
 ```
 
-- [ ] 首次部署成功，服务状态为「运行中」
-- [ ] 配置「最小实例数=1」防止冷启动（可选，注意成本）
-- [ ] 配置「自定义域名」：`api.minicare.xxx.com`（需 HTTPS + ICP 备案）
-- [ ] 通过 `curl https://api.minicare.xxx.com/health` 确认服务健康
+- [ ] **待执行**：首次部署成功，服务状态为「运行中」
+- [ ] **待执行**：配置「最小实例数=1」防止冷启动（月增约 ¥15，R-2 风险缓解）
+- [ ] **待执行**：配置「自定义域名」：`api.minicare.xxx.com`（需 HTTPS + ICP 备案，上线前）
+- [ ] **待执行**：通过 `curl https://[cloudrun域名]/health` 确认服务健康
 
 ### 5.4 WebSocket 配置（家庭实时同步）
 
-- [ ] CloudRun 服务监听 WebSocket 升级请求（`/ws` 路径）
+- [x] `EventsGateway` Socket.IO `/ws` 命名空间已实现，按 `family_id` room 广播
+- [ ] **待执行**：CloudRun 控制台确认 WebSocket 长连接支持已开启
 - [ ] 在 CloudRun 控制台开启「长连接支持」
 - [ ] 实现消息类型：
   - `record:created` — 家庭成员新增记录后广播
