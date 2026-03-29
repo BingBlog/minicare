@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>敏宝日记 · 我的</title>
+  <link rel="stylesheet" href="common.css"/>
+  <style>
+    /* Profile Hero */
+    .profile-hero {
+      padding: 16px 20px 20px; background: var(--bg);
+      display: flex; align-items: center; gap: 16px; cursor: pointer;
+    }
+    .profile-avatar {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-md), var(--primary));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px; box-shadow: 0 4px 14px rgba(248,112,152,.3); flex-shrink: 0;
+    }
+    .profile-info-name { font-size: 20px; font-weight: 800; color: var(--text); letter-spacing: -.3px; }
+    .profile-info-sub  { font-size: 13px; color: var(--sub-text); margin-top: 3px; }
+    .profile-allergy   { display: inline-flex; align-items: center; gap: 4px; background: var(--red-lt); color: var(--red); font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 8px; margin-top: 5px; }
+    .profile-edit-btn  {
+      margin-left: auto; padding: 8px 14px; border-radius: 20px;
+      background: var(--primary-lt); color: var(--primary); border: none;
+      font-size: 13px; font-weight: 600; cursor: pointer; font-family: var(--font);
+    }
+
+    /* Baby mini stats */
+    .baby-mini-stats {
+      margin: 0 16px; background: var(--card-bg); border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm); padding: 14px; display: grid; grid-template-columns: repeat(4,1fr); gap: 0;
+    }
+    .bms-item { text-align: center; }
+    .bms-item:not(:last-child) { border-right: .5px solid var(--gray-100); }
+    .bms-val  { font-size: 16px; font-weight: 800; color: var(--text); }
+    .bms-u    { font-size: 11px; color: var(--sub-text); }
+    .bms-name { font-size: 10px; color: var(--gray-400); margin-top: 2px; }
+
+    /* Section Groups */
+    .settings-group-title {
+      font-size: 12px; font-weight: 600; color: var(--sub-text);
+      padding: 14px 20px 4px; letter-spacing: .5px;
+    }
+
+    /* Storage bar */
+    .storage-bar {
+      margin: 4px 16px 0; height: 8px; border-radius: 4px; background: var(--gray-100); overflow: hidden;
+    }
+    .storage-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--primary), var(--primary-md)); }
+
+    /* Danger zone */
+    .danger-row .setting-row-label { color: var(--red); }
+
+    /* Edit Modal */
+    .edit-modal-overlay {
+      position: absolute; inset: 0; background: rgba(0,0,0,.45); z-index: 200;
+      display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity .25s;
+    }
+    .edit-modal-overlay.show { opacity: 1; pointer-events: all; }
+    .edit-sheet {
+      width: 100%; background: var(--card-bg);
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      padding: 0 0 24px; max-height: 90%;
+      transform: translateY(100%); transition: transform .3s cubic-bezier(.32,1,.56,1);
+      overflow-y: auto;
+    }
+    .edit-modal-overlay.show .edit-sheet { transform: translateY(0); }
+
+    /* Allergy slider */
+    .allergy-slider { display: flex; gap: 0; margin: 8px 16px 14px; background: var(--gray-100); border-radius: var(--radius-md); padding: 3px; }
+    .asev-btn { flex: 1; text-align: center; padding: 9px; border-radius: 10px; font-size: 13px; font-weight: 600; color: var(--sub-text); cursor: pointer; transition: all .2s; }
+    .asev-btn.active { background: var(--card-bg); color: var(--text); box-shadow: var(--shadow-sm); }
+    .asev-btn.mild.active    { color: var(--green-dk); }
+    .asev-btn.moderate.active { color: var(--orange-dk); }
+    .asev-btn.severe.active  { color: var(--red); }
+
+    /* Confirm Delete Modal */
+    .confirm-modal {
+      position: absolute; inset: 0; background: rgba(0,0,0,.55); z-index: 300;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity .2s; padding: 24px;
+    }
+    .confirm-modal.show { opacity: 1; pointer-events: all; }
+    .confirm-box {
+      background: var(--card-bg); border-radius: var(--radius-lg); padding: 24px 20px;
+      width: 100%; animation: slideUp .25s ease forwards; text-align: center;
+    }
+    .confirm-icon { font-size: 40px; margin-bottom: 12px; }
+    .confirm-title { font-size: 17px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+    .confirm-desc  { font-size: 13px; color: var(--sub-text); line-height: 1.6; margin-bottom: 20px; }
+    .confirm-btns  { display: flex; gap: 10px; }
+    .confirm-btn   { flex: 1; padding: 14px; border-radius: var(--radius-md); font-size: 15px; font-weight: 700; cursor: pointer; border: none; font-family: var(--font); }
+    .confirm-cancel { background: var(--gray-100); color: var(--text); }
+    .confirm-delete { background: var(--red); color: #fff; }
+
+    /* Tab Bar 图标颜色规范 */
+    .tab-item .tab-icon-svg .icon { color: #F0B8C8; }
+    .tab-item.active .tab-icon-svg .icon { color: #E8507A; }
+  </style>
+</head>
+<body>
+<div class="phone">
+  <div class="notch"><div class="notch-pill"></div></div>
+  <div class="status-bar">
+    <span class="status-time">9:41</span>
+    <div class="status-icons">
+      <svg viewBox="0 0 17 12"><rect x="0" y="6" width="3" height="6" rx="1"/><rect x="4.5" y="4" width="3" height="8" rx="1"/><rect x="9" y="2" width="3" height="10" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+      <svg viewBox="0 0 25 12"><rect x="0" y="1" width="22" height="10" rx="3" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="1.5" y="2.5" width="17" height="7" rx="2" fill="currentColor"/><path d="M23 4v4a2 2 0 0 0 0-4z"/></svg>
+    </div>
+  </div>
+
+  <!-- Title Bar -->
+  <div style="padding:12px 20px 0;background:var(--bg);flex-shrink:0">
+    <div style="font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.5px">我的</div>
+  </div>
+
+  <div class="scroll-area">
+
+    <!-- Profile Hero -->
+    <div class="profile-hero" onclick="openEditSheet()">
+      <div class="profile-avatar">🐥</div>
+      <div>
+        <div class="profile-info-name">小宝</div>
+        <div class="profile-info-sub">3个月 12天 · 男宝 · 2025年12月16日出生</div>
+        <div class="profile-allergy">⚠️ 牛奶蛋白过敏 · 中度</div>
+      </div>
+      <button class="profile-edit-btn" onclick="event.stopPropagation();openEditSheet()">编辑</button>
+    </div>
+
+    <!-- Baby Mini Stats -->
+    <div class="baby-mini-stats">
+      <div class="bms-item"><div class="bms-val">68<span class="bms-u">cm</span></div><div class="bms-name">身高</div></div>
+      <div class="bms-item"><div class="bms-val">7.5<span class="bms-u">kg</span></div><div class="bms-name">体重</div></div>
+      <div class="bms-item"><div class="bms-val">43<span class="bms-u">cm</span></div><div class="bms-name">头围</div></div>
+      <div class="bms-item"><div class="bms-val">42<span class="bms-u">天</span></div><div class="bms-name">稳定期</div></div>
+    </div>
+
+    <!-- Settings -->
+    <div class="settings-group-title">外观</div>
+    <div class="mx-16 card">
+      <div class="setting-row" onclick="toggleSetting('fontSize')">
+        <span class="row-icon" style="background:var(--primary-lt)">
+          <svg class="icon icon-md" style="color:#F0B8C8" viewBox="0 0 24 24"><use href="#icon-type"></use></svg>
+        </span>
+        <span class="setting-row-label">大字体模式</span>
+        <div class="toggle-switch" id="fontSize" onclick="event.stopPropagation();toggleSwitch(this)"></div>
+      </div>
+    </div>
+
+    <div class="settings-group-title">数据</div>
+    <div class="mx-16 card">
+      <div class="setting-row" onclick="showToast('导出备份文件')">
+        <span class="row-icon" style="background:var(--green-lt)">
+          <svg class="icon icon-md" style="color:#4CAF82" viewBox="0 0 24 24"><use href="#icon-download"></use></svg>
+        </span>
+        <span class="setting-row-label">导出数据备份</span>
+        <span class="setting-arrow">›</span>
+      </div>
+      <div class="setting-row" onclick="showToast('已清理 32MB 缓存')">
+        <span class="row-icon" style="background:var(--orange-lt)">
+          <svg class="icon icon-md" style="color:#DDB870" viewBox="0 0 24 24"><use href="#icon-trash-2"></use></svg>
+        </span>
+        <span class="setting-row-label">清理图片缓存</span>
+        <div>
+          <div class="storage-bar mt-4" style="width:100px"><div class="storage-fill" style="width:55%"></div></div>
+          <div style="font-size:10px;color:var(--sub-text);text-align:right;margin-top:2px">已用 120MB</div>
+        </div>
+        <span class="setting-arrow">›</span>
+      </div>
+    </div>
+
+    <div class="settings-group-title" style="color:var(--red)">危险操作</div>
+    <div class="mx-16 card danger-row">
+      <div class="setting-row" onclick="showDeleteConfirm()">
+        <span class="row-icon" style="background:var(--red-lt)">
+          <svg class="icon icon-md" style="color:#F0A0B0" viewBox="0 0 24 24"><use href="#icon-alert-triangle"></use></svg>
+        </span>
+        <span class="setting-row-label">清空本机数据</span>
+        <span class="setting-arrow" style="color:var(--red)">›</span>
+      </div>
+    </div>
+
+    <div class="settings-group-title">关于</div>
+    <div class="mx-16 card">
+      <div class="setting-row">
+        <span class="row-icon" style="background:var(--primary-lt)">
+          <svg class="icon icon-md" style="color:#F0B8C8" viewBox="0 0 24 24"><use href="#icon-smartphone"></use></svg>
+        </span>
+        <span class="setting-row-label">版本号</span>
+        <span class="setting-row-value">v1.0.0（MVP）</span>
+      </div>
+      <div class="setting-row" onclick="showToast('敏宝日记 · 专为敏感宝宝家庭打造')">
+        <span class="row-icon" style="background:#FFF1F4">
+          <svg class="icon icon-md" style="color:#F87098" viewBox="0 0 24 24"><use href="#icon-heart"></use></svg>
+        </span>
+        <span class="setting-row-label">关于敏宝日记</span>
+        <span class="setting-arrow">›</span>
+      </div>
+      <div class="setting-row" onclick="showToast('隐私政策与用户协议')">
+        <span class="row-icon" style="background:var(--gray-100)">
+          <svg class="icon icon-md" style="color:var(--gray-400)" viewBox="0 0 24 24"><use href="#icon-file-text"></use></svg>
+        </span>
+        <span class="setting-row-label">隐私政策</span>
+        <span class="setting-arrow">›</span>
+      </div>
+    </div>
+
+    <div class="h-60"></div>
+  </div>
+
+  <!-- Tab Bar -->
+  <div class="tab-bar">
+    <div class="tab-item" onclick="nav('home.html')">
+      <div class="tab-icon-svg"><svg class="icon" viewBox="0 0 24 24"><use href="#icon-house"></use></svg></div>
+      <span class="tab-label">首页</span>
+    </div>
+    <div class="tab-item" onclick="nav('records.html')">
+      <div class="tab-icon-svg"><svg class="icon" viewBox="0 0 24 24"><use href="#icon-clipboard-list"></use></svg></div>
+      <span class="tab-label">记录</span>
+    </div>
+    <div class="tab-fab" onclick="nav('home.html')">＋</div>
+    <div class="tab-item" onclick="nav('report.html')">
+      <div class="tab-icon-svg"><svg class="icon" viewBox="0 0 24 24"><use href="#icon-bar-chart-2"></use></svg></div>
+      <span class="tab-label">报告</span>
+    </div>
+    <div class="tab-item active">
+      <div class="tab-icon-svg"><svg class="icon" viewBox="0 0 24 24"><use href="#icon-user-round"></use></svg></div>
+      <span class="tab-label">我的</span>
+    </div>
+  </div>
+
+  <!-- Edit Sheet -->
+  <div class="edit-modal-overlay" id="editSheet" onclick="closeEditSheet(event)">
+    <div class="edit-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-title">编辑宝宝档案</div>
+      <div class="form-section">
+        <div class="form-row">
+          <span class="form-label">宝宝昵称</span>
+          <input class="form-input" value="小宝" placeholder="宝宝的名字"/>
+        </div>
+        <div class="form-row">
+          <span class="form-label">出生日期</span>
+          <input class="form-input" type="date" value="2025-12-16"/>
+        </div>
+        <div class="form-row">
+          <span class="form-label">性别</span>
+          <div style="display:flex;gap:8px;justify-content:flex-end">
+            <div class="chip selected" style="padding:5px 16px" onclick="selectGender(this)">男</div>
+            <div class="chip" style="padding:5px 16px" onclick="selectGender(this)">女</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section-title" style="padding:12px 20px 4px;font-size:12px;font-weight:600;color:var(--sub-text)">过敏信息</div>
+      <div class="form-section">
+        <div class="form-row">
+          <span class="form-label">过敏类型</span>
+          <span class="form-value" style="color:var(--text)">牛奶蛋白过敏</span>
+          <span class="form-arrow">›</span>
+        </div>
+      </div>
+      <div style="padding:4px 16px 0;font-size:12px;font-weight:600;color:var(--sub-text)">过敏程度</div>
+      <div class="allergy-slider">
+        <div class="asev-btn mild"     onclick="selectSev(this)">轻度</div>
+        <div class="asev-btn moderate active" onclick="selectSev(this)">中度</div>
+        <div class="asev-btn severe"   onclick="selectSev(this)">重度</div>
+      </div>
+
+      <div class="form-section-title" style="padding:4px 20px 4px;font-size:12px;font-weight:600;color:var(--sub-text)">最新生长数据</div>
+      <div class="form-section">
+        <div class="form-row">
+          <span class="form-label">身高</span>
+          <input class="form-input" type="number" value="68.0" step="0.1"/>
+          <span style="font-size:12px;color:var(--sub-text);margin-left:4px">cm</span>
+        </div>
+        <div class="form-row">
+          <span class="form-label">体重</span>
+          <input class="form-input" type="number" value="7.5" step="0.1"/>
+          <span style="font-size:12px;color:var(--sub-text);margin-left:4px">kg</span>
+        </div>
+        <div class="form-row">
+          <span class="form-label">头围</span>
+          <input class="form-input" type="number" value="43.0" step="0.1"/>
+          <span style="font-size:12px;color:var(--sub-text);margin-left:4px">cm</span>
+        </div>
+      </div>
+
+      <div style="height:16px"></div>
+      <button class="btn-primary" onclick="saveProfile()">保存档案</button>
+      <button class="btn-secondary" onclick="closeEditSheetDirect()">取消</button>
+      <div style="height:24px"></div>
+    </div>
+  </div>
+
+  <!-- Delete Confirm Modal -->
+  <div class="confirm-modal" id="deleteConfirm">
+    <div class="confirm-box">
+      <div class="confirm-icon">⚠️</div>
+      <div class="confirm-title">确认清空所有数据？</div>
+      <div class="confirm-desc">此操作将删除本机所有记录、档案、报告，<strong>无法恢复</strong>。建议先执行「导出数据备份」。</div>
+      <div class="confirm-btns">
+        <button class="confirm-btn confirm-cancel" onclick="closeDeleteConfirm()">取消</button>
+        <button class="confirm-btn confirm-delete" onclick="executeDelete()">确认清空</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+  function nav(p) { window.location.href = p; }
+
+  function toggleSwitch(el) { el.classList.toggle('on'); }
+  function toggleSetting(id) { document.getElementById(id).classList.toggle('on'); }
+
+  function openEditSheet()  { document.getElementById('editSheet').classList.add('show'); }
+  function closeEditSheetDirect() { document.getElementById('editSheet').classList.remove('show'); }
+  function closeEditSheet(e) { if(e.target===document.getElementById('editSheet')) document.getElementById('editSheet').classList.remove('show'); }
+
+  function selectGender(el) {
+    el.closest('[style*="gap"]').querySelectorAll('.chip').forEach(c=>c.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+  function selectSev(el) {
+    el.closest('.allergy-slider').querySelectorAll('.asev-btn').forEach(b=>b.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function saveProfile() {
+    document.getElementById('editSheet').classList.remove('show');
+    showToast('✓ 档案已保存，全局生效');
+  }
+
+  function showDeleteConfirm() { document.getElementById('deleteConfirm').classList.add('show'); }
+  function closeDeleteConfirm() { document.getElementById('deleteConfirm').classList.remove('show'); }
+  function executeDelete() {
+    document.getElementById('deleteConfirm').classList.remove('show');
+    showToast('✓ 本机数据已清空');
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  }
+</script>
+  <script src="icons-sprite.js"></script>
+</body>
+</html>

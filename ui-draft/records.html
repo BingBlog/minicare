@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>敏宝日记 · 记录</title>
+  <link rel="stylesheet" href="common.css"/>
+  <style>
+    .filter-bar {
+      display: flex; gap: 8px; padding: 10px 16px 4px; flex-shrink: 0;
+      overflow-x: auto; background: var(--bg);
+    }
+    .filter-bar::-webkit-scrollbar { display: none; }
+    .filter-chip {
+      padding: 6px 14px; border-radius: 20px; white-space: nowrap;
+      border: 1.5px solid var(--gray-200); background: var(--card-bg);
+      font-size: 12px; font-weight: 500; color: var(--sub-text); cursor: pointer;
+      transition: all .15s; flex-shrink: 0;
+    }
+    .filter-chip.active { border-color: var(--primary); background: var(--primary-lt); color: var(--primary); font-weight: 600; }
+    .filter-chip:active { transform: scale(.95); }
+
+    .date-group-label {
+      font-size: 13px; font-weight: 700; color: var(--sub-text);
+      padding: 14px 20px 6px; display: flex; align-items: center; gap: 6px;
+    }
+    .date-label-dot { width:6px; height:6px; border-radius:50%; background:var(--primary); }
+
+    .record-row {
+      display: flex; align-items: flex-start; padding: 13px 16px; gap: 12px;
+      cursor: pointer; transition: background .1s; position: relative;
+    }
+    .record-row:not(:last-child)::after {
+      content:''; position:absolute; bottom:0; left:52px; right:16px;
+      height:.5px; background:var(--gray-100);
+    }
+    .record-row:active { background: var(--gray-50); }
+    .rec-icon { width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; overflow:hidden; }
+    .rec-icon svg.icon { width:20px; height:20px; }
+    .rec-meta { flex:1; min-width:0; }
+    .rec-title { font-size:14px; font-weight:600; color:#7A5A60; }
+    .rec-desc { font-size:12px; color:var(--sub-text); margin-top:2px; }
+    .rec-time { font-size:12px; color:var(--gray-400); flex-shrink:0; padding-top:1px; }
+
+    /* Empty State */
+    .empty-state {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 40px 24px; text-align: center; gap: 8px;
+    }
+    .empty-icon { font-size: 44px; }
+    .empty-title { font-size: 16px; font-weight: 600; color: var(--text); }
+    .empty-sub { font-size: 13px; color: var(--sub-text); line-height: 1.6; }
+
+    /* Swipe Action Hint */
+    .swipe-hint { font-size:11px; color:var(--gray-400); text-align:center; padding:8px; }
+
+    /* Context menu sheet */
+    .ctx-item {
+      display:flex; align-items:center; gap:12px; padding:14px 20px; cursor:pointer;
+      transition:background .1s;
+    }
+    .ctx-item:active { background:var(--gray-50); }
+    .ctx-icon { font-size:18px; width:32px; text-align:center; }
+    .ctx-label { font-size:15px; color:var(--text); font-weight:500; }
+    .ctx-item.danger .ctx-label { color:var(--red); }
+
+    /* Tab Bar 图标颜色规范 */
+    .tab-item .tab-icon-svg .icon { color: #F0B8C8; }
+    .tab-item.active .tab-icon-svg .icon { color: #E8507A; }
+  </style>
+</head>
+<body>
+<div class="phone">
+  <div class="notch"><div class="notch-pill"></div></div>
+  <div class="status-bar">
+    <span class="status-time">9:41</span>
+    <div class="status-icons">
+      <svg viewBox="0 0 17 12"><rect x="0" y="6" width="3" height="6" rx="1"/><rect x="4.5" y="4" width="3" height="8" rx="1"/><rect x="9" y="2" width="3" height="10" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+      <svg viewBox="0 0 16 12"><path d="M8 10a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm0-3.5a4.5 4.5 0 0 1 3.18 1.32l1.06-1.06A6 6 0 0 0 8 5a6 6 0 0 0-4.24 1.76l1.06 1.06A4.5 4.5 0 0 1 8 6.5zm0-3.5a7.5 7.5 0 0 1 5.3 2.2l1.06-1.06A9 9 0 0 0 8 1a9 9 0 0 0-6.36 2.64l1.06 1.06A7.5 7.5 0 0 1 8 3z"/></svg>
+      <svg viewBox="0 0 25 12"><rect x="0" y="1" width="22" height="10" rx="3" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="1.5" y="2.5" width="17" height="7" rx="2" fill="currentColor"/><path d="M23 4v4a2 2 0 0 0 0-4z"/></svg>
+    </div>
+  </div>
+
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    <div class="filter-chip active" onclick="setFilter(this,'全部')">全部</div>
+    <div class="filter-chip" onclick="setFilter(this,'饮食')">饮食</div>
+    <div class="filter-chip" onclick="setFilter(this,'睡眠')">睡眠</div>
+    <div class="filter-chip" onclick="setFilter(this,'状态')">状态</div>
+    <div class="filter-chip" onclick="setFilter(this,'生长')">生长</div>
+    <div class="filter-chip" onclick="setFilter(this,'医疗')">医疗</div>
+    <div class="filter-chip" onclick="setFilter(this,'今天')">今天</div>
+  </div>
+
+  <div class="scroll-area">
+
+    <!-- Today -->
+    <div class="date-group-label"><div class="date-label-dot"></div>2026年3月28日 · 今天</div>
+    <div class="mx-16 card">
+      <div class="record-row" onclick="nav('form-feeding.html')">
+        <div class="rec-icon" style="background:#FFF0F4">
+          <svg class="icon" style="color:#F0B8C8" viewBox="0 0 24 24"><use href="#icon-milk"></use></svg>
+        </div>
+        <div class="rec-meta">
+          <div class="rec-title">喂奶 120ml</div>
+          <div class="rec-desc">氨基酸奶粉 · 辅食：南瓜泥 20g <span class="badge badge-yellow tag-new">⚠️新食物 D3</span></div>
+        </div>
+        <div class="rec-time">08:00</div>
+      </div>
+      <div class="record-row" onclick="showCtxMenu()">
+        <div class="rec-icon" style="background:#EDFCF7">
+          <svg class="icon" style="color:#4CAF82" viewBox="0 0 24 24"><use href="#icon-moon"></use></svg>
+        </div>
+        <div class="rec-meta">
+          <div class="rec-title">睡眠 <span style="color:var(--green);font-size:12px">进行中</span></div>
+          <div class="rec-desc">上午小睡 · 开始 08:45</div>
+        </div>
+        <div class="rec-time">08:45</div>
+      </div>
+      <div class="record-row" onclick="nav('form-activity.html')">
+        <div class="rec-icon" style="background:#FFF8E6">
+          <svg class="icon" style="color:#DDB870" viewBox="0 0 24 24"><use href="#icon-smile"></use></svg>
+        </div>
+        <div class="rec-meta">
+          <div class="rec-title">活动与状态</div>
+          <div class="rec-desc">大便 ×1（软便）· 精神：良好 · 情绪：😊</div>
+        </div>
+        <div class="rec-time">07:30</div>
+      </div>
+      <div class="record-row" onclick="nav('form-feeding.html')">
+        <div class="rec-icon" style="background:#FFF0F4">
+          <svg class="icon" style="color:#F0B8C8" viewBox="0 0 24 24"><use href="#icon-milk"></use></svg>
+        </div>
+        <div class="rec-meta">
+          <div class="rec-title">喂奶 120ml</div>
+          <div class="rec-desc">氨基酸奶粉 · 维生素D 400IU</div>
+        </div>
+        <div class="rec-time">07:00</div>
+      </div>
+    </div>
+
+    <div class="h-8"></div>
+
+    <!-- Yesterday -->
+    <div class="date-group-label" style="color:var(--gray-500)"><div class="date-label-dot" style="background:var(--gray-300)"></div>2026年3月27日 · 昨天</div>
+    <div class="mx-16 card">
+      <div class="record-row" onclick="showCtxMenu()">
+        <div class="rec-icon" style="background:#FFF0F4">
+          <svg class="icon" style="color:#F0B8C8" viewBox="0 0 24 24"><use href="#icon-stethoscope"></use></svg>
+        </div>
+        <div class="rec-meta">
+          <div class="rec-title">儿保检查</div>
+          <div class="rec-desc">北京儿童医院 · 身高68cm 体重7.5kg · 发育良好</div>
+        </div>
+        <div class="rec-time">10:00</div>
+      </div>
+      <div class="record-row" onclick="showCtxMenu()">
+        <div class="rec-icon" style="background:#FFF0F4">
+          <svg class="icon" style="color:#F0B8C8" viewBox="0 0 24 24"><use href="#icon-milk"></use></svg>
+        </div>
+        <div class="rec-meta">
+          <div class="rec-title">喂奶 150ml</div>
+          <div class="rec-desc">氨基酸奶粉</div>
+        </div>
+        <div class="rec-time">08:30</div>
+      </div>
+      <div class="record-row" onclick="showCtxMenu()">
+        <div class="rec-icon" style="background:#EDFCF7">
+          <svg class="icon" style="color:#4CAF82" viewBox="0 0 24 24"><use href="#icon-moon"></use></svg>
+        </div>
+        <div class="rec-meta">
+          <div class="rec-title">夜间睡眠 9h 30m</div>
+          <div class="rec-desc">22:00 — 07:30 · 睡眠质量：良好</div>
+        </div>
+        <div class="rec-time">22:00</div>
+      </div>
+      <div class="record-row" onclick="showCtxMenu()">
+        <div class="rec-icon" style="background:#F3F0FF">
+          <svg class="icon" style="color:#9B8ED8" viewBox="0 0 24 24"><use href="#icon-ruler"></use></svg>
+        </div>
+        <div class="rec-meta">
+          <div class="rec-title">生长记录</div>
+          <div class="rec-desc">身高 68cm (P50) · 体重 7.5kg (P50) · 头围 43cm</div>
+        </div>
+        <div class="rec-time">10:30</div>
+      </div>
+    </div>
+
+    <div class="swipe-hint">长按记录卡片可编辑或删除</div>
+    <div class="h-60"></div>
+  </div>
+
+  <!-- Tab Bar -->
+  <div class="tab-bar">
+    <div class="tab-item" onclick="nav('home.html')">
+      <div class="tab-icon-svg"><svg class="icon" viewBox="0 0 24 24"><use href="#icon-house"></use></svg></div>
+      <span class="tab-label">首页</span>
+    </div>
+    <div class="tab-item active">
+      <div class="tab-icon-svg"><svg class="icon" viewBox="0 0 24 24"><use href="#icon-clipboard-list"></use></svg></div>
+      <span class="tab-label">记录</span>
+    </div>
+    <div class="tab-fab" onclick="showFabSheet()">＋</div>
+    <div class="tab-item" onclick="nav('report.html')">
+      <div class="tab-icon-svg"><svg class="icon" viewBox="0 0 24 24"><use href="#icon-bar-chart-2"></use></svg></div>
+      <span class="tab-label">报告</span>
+    </div>
+    <div class="tab-item" onclick="nav('profile.html')">
+      <div class="tab-icon-svg"><svg class="icon" viewBox="0 0 24 24"><use href="#icon-user-round"></use></svg></div>
+      <span class="tab-label">我的</span>
+    </div>
+  </div>
+
+  <!-- FAB Sheet -->
+  <div class="modal-overlay" id="fabSheet" onclick="closeFabSheet(event)">
+    <div class="bottom-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-title">新增记录</div>
+      <div class="ctx-item" onclick="nav('form-feeding.html')">
+        <span class="ctx-icon" style="color:#F0B8C8;font-size:22px">
+          <svg class="icon icon-lg" viewBox="0 0 24 24"><use href="#icon-milk"></use></svg>
+        </span>
+        <span class="ctx-label">饮食记录</span>
+      </div>
+      <div class="ctx-item" onclick="nav('form-sleep.html')">
+        <span class="ctx-icon" style="color:#4CAF82;font-size:22px">
+          <svg class="icon icon-lg" viewBox="0 0 24 24"><use href="#icon-moon"></use></svg>
+        </span>
+        <span class="ctx-label">睡眠记录</span>
+      </div>
+      <div class="ctx-item" onclick="nav('form-activity.html')">
+        <span class="ctx-icon" style="color:#DDB870;font-size:22px">
+          <svg class="icon icon-lg" viewBox="0 0 24 24"><use href="#icon-smile"></use></svg>
+        </span>
+        <span class="ctx-label">活动与状态</span>
+      </div>
+      <div class="ctx-item" onclick="nav('form-growth.html')">
+        <span class="ctx-icon" style="color:#9B8ED8;font-size:22px">
+          <svg class="icon icon-lg" viewBox="0 0 24 24"><use href="#icon-ruler"></use></svg>
+        </span>
+        <span class="ctx-label">生长记录</span>
+      </div>
+      <div class="ctx-item" onclick="nav('form-medical.html')">
+        <span class="ctx-icon" style="color:#F0B8C8;font-size:22px">
+          <svg class="icon icon-lg" viewBox="0 0 24 24"><use href="#icon-stethoscope"></use></svg>
+        </span>
+        <span class="ctx-label">医疗记录</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Context Menu Sheet -->
+  <div class="modal-overlay" id="ctxSheet" onclick="closeCtxMenu(event)">
+    <div class="bottom-sheet">
+      <div class="sheet-handle"></div>
+      <div class="ctx-item" onclick="nav('form-feeding.html')"><span class="ctx-icon">✏️</span><span class="ctx-label">编辑记录</span></div>
+      <div class="ctx-item danger" onclick="confirmDelete()"><span class="ctx-icon">🗑️</span><span class="ctx-label">删除记录</span></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+  function nav(p) { window.location.href = p; }
+  function setFilter(el, name) {
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+  }
+  function showFabSheet() { document.getElementById('fabSheet').classList.add('show'); }
+  function closeFabSheet(e) { if(e.target===document.getElementById('fabSheet')) document.getElementById('fabSheet').classList.remove('show'); }
+  function showCtxMenu() { document.getElementById('ctxSheet').classList.add('show'); }
+  function closeCtxMenu(e) { if(e.target===document.getElementById('ctxSheet')) document.getElementById('ctxSheet').classList.remove('show'); }
+  function confirmDelete() {
+    document.getElementById('ctxSheet').classList.remove('show');
+    if(confirm('确定删除这条记录吗？')) {
+      const t = document.getElementById('toast');
+      t.textContent = '✓ 已删除';
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2000);
+    }
+  }
+</script>
+  <script src="icons-sprite.js"></script>
+</body>
+</html>

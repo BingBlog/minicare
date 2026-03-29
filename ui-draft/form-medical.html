@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>敏宝日记 · 医疗记录</title>
+  <link rel="stylesheet" href="common.css"/>
+  <style>
+    .type-grid {
+      display: grid; grid-template-columns: repeat(2,1fr); gap: 8px; padding: 8px 16px 14px;
+    }
+    .type-btn {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 14px; border-radius: var(--radius-sm);
+      border: 1.5px solid var(--gray-200); background: var(--card-bg);
+      cursor: pointer; transition: all .15s;
+    }
+    .type-btn.selected {
+      border-color: var(--primary-md);
+      background: var(--primary-lt);
+    }
+    .type-btn:active { transform: scale(.96); }
+    .type-btn .tb-icon { width:28px; height:28px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .type-btn .tb-icon svg.icon { width:20px; height:20px; }
+    .type-btn .tb-name { font-size: 13px; font-weight: 600; color: var(--text); }
+    .type-btn.selected .tb-name { color: var(--primary); }
+
+    /* OCR 上传区 */
+    .ocr-area {
+      margin: 0 16px 12px;
+      background: var(--primary-lt);
+      border: 1.5px dashed var(--primary-md);
+      border-radius: var(--radius-md); padding: 20px 16px;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      cursor: pointer;
+    }
+    .ocr-icon { width:48px; height:48px; display:flex; align-items:center; justify-content:center; }
+    .ocr-title { font-size: 14px; font-weight: 700; color: var(--primary); }
+    .ocr-sub   { font-size: 12px; color: var(--sub-text); text-align: center; line-height: 1.5; }
+    .ocr-btn   {
+      background: var(--primary); color: #fff; border: none;
+      border-radius: 8px; padding: 8px 20px;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      font-family: var(--font);
+      box-shadow: 0 3px 10px rgba(248,112,152,.3);
+    }
+
+    .ocr-result {
+      margin: 0 16px 12px;
+      background: var(--primary-lt); border: 1.5px solid var(--primary-md);
+      border-radius: var(--radius-md); padding: 14px 16px;
+      display: none;
+    }
+    .ocr-result-title {
+      font-size: 13px; font-weight: 700; color: var(--primary);
+      margin-bottom: 10px; display: flex; gap: 6px; align-items: center;
+    }
+
+    /* 复查提醒卡 */
+    .reminder-card {
+      margin: 0 16px 12px;
+      background: var(--yellow-lt); border: 1.5px solid #FCD34D;
+      border-radius: var(--radius-md); padding: 14px 16px;
+    }
+    .reminder-title {
+      font-size: 13px; font-weight: 700; color: var(--yellow-dk);
+      margin-bottom: 8px; display:flex; align-items:center; gap:6px;
+    }
+    .reminder-row { display: flex; align-items: center; gap: 8px; }
+    .reminder-label { font-size: 13px; color: var(--text); flex: 1; }
+    .reminder-date { font-size: 13px; color: var(--sub-text); }
+
+    /* 附件照片 */
+    .attachment-area { display: flex; gap: 10px; padding: 10px 16px 14px; flex-wrap: wrap; }
+    .attachment-thumb {
+      width: 70px; height: 70px; border-radius: var(--radius-sm);
+      overflow: hidden; position: relative; cursor: pointer;
+    }
+    .attachment-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .attachment-thumb.placeholder {
+      background: var(--primary-lt); border: 1.5px dashed var(--primary-md);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .attachment-add {
+      width: 70px; height: 70px; border-radius: var(--radius-sm);
+      background: var(--primary-lt); border: 1.5px dashed var(--primary-md);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; color: var(--primary-md);
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .attachment-add:active { background: #ffe0ea; }
+  </style>
+</head>
+<body>
+<div class="phone">
+  <div class="notch"><div class="notch-pill"></div></div>
+  <div class="status-bar">
+    <span class="status-time">9:41</span>
+    <div class="status-icons">
+      <svg viewBox="0 0 17 12"><rect x="0" y="6" width="3" height="6" rx="1"/><rect x="4.5" y="4" width="3" height="8" rx="1"/><rect x="9" y="2" width="3" height="10" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+      <svg viewBox="0 0 25 12"><rect x="0" y="1" width="22" height="10" rx="3" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="1.5" y="2.5" width="17" height="7" rx="2" fill="currentColor"/><path d="M23 4v4a2 2 0 0 0 0-4z"/></svg>
+    </div>
+  </div>
+
+  <div class="nav-bar">
+    <button class="nav-back" onclick="nav('home.html')">←</button>
+    <span class="nav-title">医疗记录</span>
+    <span class="nav-action"></span>
+  </div>
+
+  <div class="scroll-area">
+
+    <!-- Check Type -->
+    <div class="form-section-title" style="padding:14px 20px 4px;font-size:12px;font-weight:600;color:var(--sub-text)">检查类型</div>
+    <div class="mx-16" style="background:var(--card-bg);border-radius:var(--radius-md);box-shadow:var(--shadow-sm)">
+      <div class="type-grid">
+        <div class="type-btn selected" onclick="selectType(this)">
+          <span class="tb-icon">
+            <svg class="icon" style="color:#F0B8C8" viewBox="0 0 24 24"><use href="#icon-baby"></use></svg>
+          </span>
+          <span class="tb-name">儿保检查</span>
+        </div>
+        <div class="type-btn" onclick="selectType(this)">
+          <span class="tb-icon">
+            <svg class="icon" style="color:#F0A0B0" viewBox="0 0 24 24"><use href="#icon-microscope"></use></svg>
+          </span>
+          <span class="tb-name">过敏原检测</span>
+        </div>
+        <div class="type-btn" onclick="selectType(this)">
+          <span class="tb-icon">
+            <svg class="icon" style="color:#C8A8D8" viewBox="0 0 24 24"><use href="#icon-stethoscope"></use></svg>
+          </span>
+          <span class="tb-name">就诊记录</span>
+        </div>
+        <div class="type-btn" onclick="selectType(this)">
+          <span class="tb-icon">
+            <svg class="icon" style="color:#88C8A0" viewBox="0 0 24 24"><use href="#icon-syringe"></use></svg>
+          </span>
+          <span class="tb-name">疫苗接种</span>
+        </div>
+        <div class="type-btn" onclick="selectType(this)">
+          <span class="tb-icon">
+            <svg class="icon" style="color:#F87098" viewBox="0 0 24 24"><use href="#icon-droplets"></use></svg>
+          </span>
+          <span class="tb-name">血液检查</span>
+        </div>
+        <div class="type-btn" onclick="selectType(this)">
+          <span class="tb-icon">
+            <svg class="icon" style="color:#B09A9D" viewBox="0 0 24 24"><use href="#icon-clipboard-list"></use></svg>
+          </span>
+          <span class="tb-name">其他检查</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Basic Info -->
+    <div class="form-section-title" style="padding:14px 20px 6px;font-size:12px;font-weight:600;color:var(--sub-text)">基本信息</div>
+    <div class="form-section">
+      <div class="form-row">
+        <span class="form-label">检查日期</span>
+        <input class="form-input" type="date" value="2026-03-27"/>
+      </div>
+      <div class="form-row">
+        <span class="form-label">就诊机构</span>
+        <input class="form-input" placeholder="医院/科室名称" style="text-align:right" value="北京儿童医院"/>
+      </div>
+      <div class="form-row">
+        <span class="form-label">主诊医生</span>
+        <input class="form-input" placeholder="可选" style="text-align:right"/>
+      </div>
+    </div>
+
+    <!-- OCR Upload Area -->
+    <div class="form-section-title" style="padding:14px 20px 4px;font-size:12px;font-weight:600;color:var(--sub-text)">上传检查报告（OCR 自动识别）</div>
+    <div class="ocr-area" onclick="triggerOCR()">
+      <div class="ocr-icon">
+        <svg class="icon icon-2xl" style="color:var(--primary)" viewBox="0 0 24 24"><use href="#icon-camera"></use></svg>
+      </div>
+      <div class="ocr-title">拍照或上传病历/报告</div>
+      <div class="ocr-sub">支持 OCR 自动提取结构化结果<br>原图同时留档保存</div>
+      <button class="ocr-btn" onclick="event.stopPropagation();triggerOCR()">选择图片</button>
+    </div>
+
+    <!-- OCR Result (shown after upload) -->
+    <div class="ocr-result" id="ocrResult">
+      <div class="ocr-result-title">
+        <svg class="icon icon-sm" style="color:var(--primary)" viewBox="0 0 24 24"><use href="#icon-search"></use></svg>
+        OCR 识别结果，请确认：
+      </div>
+      <div class="parse-field"><span class="parse-field-label">检查项目</span><span class="parse-field-value">儿保 4 月龄</span><span class="parse-field-edit">修改</span></div>
+      <div class="parse-field"><span class="parse-field-label">身高</span><span class="parse-field-value">68.0 cm</span><span class="parse-field-edit">修改</span></div>
+      <div class="parse-field"><span class="parse-field-label">体重</span><span class="parse-field-value">7.5 kg</span><span class="parse-field-edit">修改</span></div>
+      <div class="parse-field"><span class="parse-field-label">结论</span><span class="parse-field-value">发育正常</span><span class="parse-field-edit">修改</span></div>
+      <div class="parse-btns" style="margin-top:12px">
+        <button class="parse-btn parse-btn-retry" onclick="document.getElementById('ocrResult').style.display='none'">重新上传</button>
+        <button class="parse-btn parse-btn-confirm" onclick="confirmOCR()">确认信息</button>
+      </div>
+    </div>
+
+    <!-- Result & Diagnosis -->
+    <div class="form-section-title" style="padding:14px 20px 6px;font-size:12px;font-weight:600;color:var(--sub-text)">结果与诊断</div>
+    <div class="form-section">
+      <div class="form-row">
+        <span class="form-label">结果摘要</span>
+        <input class="form-input" placeholder="检查结论" style="text-align:right" value="发育良好，各指标正常"/>
+      </div>
+      <div class="form-row" style="align-items:flex-start;padding-top:14px">
+        <span class="form-label" style="padding-top:2px">诊断结论</span>
+        <textarea class="form-input" rows="3" placeholder="医生建议、注意事项…" style="text-align:left;resize:none;line-height:1.5">定期复查，继续坚持氨基酸奶粉，6个月后可考虑尝试深度水解。</textarea>
+      </div>
+    </div>
+
+    <!-- Attached Photos -->
+    <div class="form-section-title" style="padding:14px 20px 4px;font-size:12px;font-weight:600;color:var(--sub-text)">附件照片</div>
+    <div class="mx-16" style="background:var(--card-bg);border-radius:var(--radius-md);box-shadow:var(--shadow-sm)">
+      <div class="attachment-area">
+        <div class="attachment-thumb placeholder">
+          <svg class="icon icon-lg" style="color:#F0B8C8" viewBox="0 0 24 24"><use href="#icon-file-text"></use></svg>
+        </div>
+        <div class="attachment-add" onclick="showToast('添加更多照片')">＋</div>
+      </div>
+    </div>
+
+    <!-- Next Visit Reminder -->
+    <div class="form-section-title" style="padding:14px 20px 4px;font-size:12px;font-weight:600;color:var(--sub-text)">下次复查提醒（可选）</div>
+    <div class="reminder-card">
+      <div class="reminder-title">
+        <svg class="icon icon-sm" style="color:var(--yellow-dk)" viewBox="0 0 24 24"><use href="#icon-bell"></use></svg>
+        设置复查日期提醒
+      </div>
+      <div class="reminder-row">
+        <span class="reminder-label">复查日期</span>
+        <input style="border:1px solid var(--gray-200);border-radius:6px;padding:5px 8px;font-size:13px;font-family:var(--font);outline:none" type="date" value="2026-06-27"/>
+        <div class="toggle-switch on ml-8" id="reminderToggle" onclick="toggleReminder(this)"></div>
+      </div>
+      <div style="font-size:11px;color:var(--sub-text);margin-top:8px">届时将发送本地通知（需开启通知权限）</div>
+    </div>
+
+    <div class="h-16"></div>
+    <button class="btn-primary" onclick="saveRecord()">保存记录</button>
+    <button class="btn-secondary" onclick="nav('home.html')">取消</button>
+    <div class="h-60"></div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+  function nav(p) { window.location.href = p; }
+
+  function selectType(el) {
+    document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function triggerOCR() {
+    showToast('正在识别中…');
+    setTimeout(() => {
+      document.getElementById('ocrResult').style.display = 'block';
+      document.getElementById('ocrResult').scrollIntoView({behavior:'smooth', block:'start'});
+    }, 1200);
+  }
+  function confirmOCR() {
+    document.getElementById('ocrResult').style.display = 'none';
+    showToast('✓ 识别内容已填入');
+  }
+
+  function toggleReminder(el) { el.classList.toggle('on'); }
+
+  function saveRecord() {
+    showToast('✓ 医疗记录已保存');
+    setTimeout(() => nav('home.html'), 1600);
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+  }
+</script>
+  <script src="icons-sprite.js"></script>
+</body>
+</html>

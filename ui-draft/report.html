@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>敏宝日记 · 报告</title>
+  <link rel="stylesheet" href="common.css"/>
+  <style>
+    /* Report type cards */
+    .report-type-scroll {
+      display: flex; gap: 10px; padding: 8px 16px 4px; overflow-x: auto;
+    }
+    .report-type-scroll::-webkit-scrollbar { display: none; }
+    .rtype-card {
+      flex-shrink: 0; width: 88px; background: var(--card-bg);
+      border-radius: var(--radius-md); padding: 14px 10px;
+      text-align: center; cursor: pointer; box-shadow: var(--shadow-sm);
+      border: 1.5px solid transparent; transition: all .15s;
+    }
+    .rtype-card.selected { border-color: var(--primary); background: var(--primary-lt); }
+    .rtype-card:active { transform: scale(.95); }
+    .rtype-icon { font-size: 26px; margin-bottom: 6px; }
+    .rtype-name { font-size: 12px; font-weight: 600; color: var(--text); }
+    .rtype-card.selected .rtype-name { color: var(--primary); }
+
+    /* Date Range */
+    .date-range-bar {
+      display: flex; gap: 0; margin: 10px 16px 0;
+      background: var(--gray-100); border-radius: var(--radius-md); padding: 3px;
+    }
+    .dr-btn {
+      flex: 1; text-align: center; padding: 9px; border-radius: 10px;
+      font-size: 13px; font-weight: 600; color: var(--sub-text); cursor: pointer; transition: all .2s;
+    }
+    .dr-btn.active { background: var(--card-bg); color: var(--text); box-shadow: var(--shadow-sm); }
+
+    /* Module Checkboxes */
+    .module-check-row {
+      display: flex; align-items: center; gap: 10px; padding: 12px 16px; cursor: pointer; position: relative;
+    }
+    .module-check-row:not(:last-child)::after {
+      content:''; position:absolute; bottom:0; left:16px; right:0; height:.5px; background:var(--gray-100);
+    }
+    .mc-box {
+      width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--gray-300);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all .15s;
+    }
+    .mc-box.checked { background: var(--primary); border-color: var(--primary); }
+    .mc-box.checked::after { content:'✓'; color:#fff; font-size:13px; font-weight:700; }
+    .mc-label { font-size: 15px; font-weight: 500; color: var(--text); flex: 1; }
+    .mc-desc  { font-size: 12px; color: var(--sub-text); }
+
+    /* Preview card */
+    .preview-card {
+      margin: 0 16px; background: var(--card-bg); border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md); overflow: hidden;
+    }
+    .preview-header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dk)); padding: 16px 18px; color: #fff;
+    }
+    .preview-header-title { font-size: 16px; font-weight: 700; }
+    .preview-header-sub   { font-size: 12px; opacity: .85; margin-top: 3px; }
+    .preview-section { padding: 12px 16px; border-bottom: .5px solid var(--gray-100); }
+    .preview-section-title { font-size: 12px; font-weight: 700; color: var(--sub-text); margin-bottom: 8px; letter-spacing: .5px; text-transform: uppercase; }
+    .preview-stat-row { display: flex; gap: 16px; }
+    .preview-stat { text-align: center; }
+    .ps-val  { font-size: 20px; font-weight: 800; color: var(--text); }
+    .ps-unit { font-size: 11px; color: var(--sub-text); }
+    .ps-name { font-size: 10px; color: var(--sub-text); margin-top: 2px; }
+
+    /* Mini chart */
+    .mini-chart { height: 50px; position: relative; overflow: hidden; }
+    .mini-chart svg { width: 100%; height: 100%; }
+
+    /* History list */
+    .history-item {
+      display: flex; align-items: center; gap: 12px; padding: 12px 16px; cursor: pointer; transition: background .1s;
+    }
+    .history-item:active { background: var(--gray-50); }
+    .history-item:not(:last-child) { border-bottom: .5px solid var(--gray-100); }
+    .hi-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: var(--primary-lt); flex-shrink: 0; }
+    .hi-icon svg.icon { width:20px; height:20px; color: var(--primary); }
+    .hi-meta { flex: 1; }
+    .hi-name { font-size: 14px; font-weight: 600; color: #7A5A60; }
+    .hi-date { font-size: 12px; color: var(--sub-text); margin-top: 1px; }
+    .hi-size { font-size: 12px; color: var(--sub-text); }
+    .hi-action { font-size: 20px; color: var(--gray-400); }
+
+    /* Generate btn area */
+    .gen-panel {
+      margin: 0 16px 12px;
+      background: var(--card-bg); border-radius: var(--radius-lg);
+      padding: 18px; box-shadow: var(--shadow-sm);
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .gen-info { display: flex; align-items: center; gap: 10px; }
+    .gen-info-icon { font-size: 28px; }
+    .gen-info-text { font-size: 13px; color: var(--sub-text); line-height: 1.6; flex: 1; }
+    .gen-btn {
+      width: 100%; padding: 14px; border-radius: var(--radius-md);
+      background: var(--primary); color: #fff; border: none;
+      font-size: 15px; font-weight: 700; cursor: pointer; font-family: var(--font);
+      box-shadow: 0 4px 14px rgba(248,112,152,.35); transition: all .15s;
+    }
+    .gen-btn:active { transform: scale(.97); }
+
+    /* Loading state */
+    .gen-loading {
+      display: flex; align-items: center; justify-content: center; gap: 10px; padding: 8px 0;
+    }
+    .loading-spinner {
+      width: 20px; height: 20px; border: 2px solid var(--gray-200); border-top-color: var(--primary);
+      border-radius: 50%; animation: spin 1s linear infinite;
+    }
+
+    /* Tab Bar 图标颜色规范 */
+    .tab-item .tab-icon-svg .icon { color: #F0B8C8; }
+    .tab-item.active .tab-icon-svg .icon { color: #E8507A; }
+  </style>
+</head>
+<body>
+<div class="phone">
+  <div class="notch"><div class="notch-pill"></div></div>
+  <div class="status-bar">
+    <span class="status-time">9:41</span>
+    <div class="status-icons">
+      <svg viewBox="0 0 17 12"><rect x="0" y="6" width="3" height="6" rx="1"/><rect x="4.5" y="4" width="3" height="8" rx="1"/><rect x="9" y="2" width="3" height="10" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+      <svg viewBox="0 0 25 12"><rect x="0" y="1" width="22" height="10" rx="3" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="1.5" y="2.5" width="17" height="7" rx="2" fill="currentColor"/><path d="M23 4v4a2 2 0 0 0 0-4z"/></svg>
+    </div>
+  </div>
+
+  <!-- Title -->
+  <div style="padding:12px 20px 4px;background:var(--bg);flex-shrink:0">
+    <div style="font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.5px">报告</div>
+    <div style="font-size:13px;color:var(--sub-text);margin-top:2px">生成 PDF 报告 · 一键分享给医生</div>
+  </div>
+
+  <div class="scroll-area">
+
+    <!-- Report Types -->
+    <div class="section-header" style="padding-top:14px"><span class="section-title">报告类型</span></div>
+    <div class="report-type-scroll">
+      <div class="rtype-card selected" onclick="selectType(this)">
+        <div class="rtype-icon">
+          <svg class="icon icon-xl" style="color:#F0B8C8" viewBox="0 0 24 24"><use href="#icon-milk"></use></svg>
+        </div>
+        <div class="rtype-name">日常护理</div>
+      </div>
+      <div class="rtype-card" onclick="selectType(this)">
+        <div class="rtype-icon">
+          <svg class="icon icon-xl" style="color:#9B8ED8" viewBox="0 0 24 24"><use href="#icon-ruler"></use></svg>
+        </div>
+        <div class="rtype-name">生长发育</div>
+      </div>
+      <div class="rtype-card" onclick="selectType(this)">
+        <div class="rtype-icon">
+          <svg class="icon icon-xl" style="color:#F0A0B0" viewBox="0 0 24 24"><use href="#icon-alert-triangle"></use></svg>
+        </div>
+        <div class="rtype-name">症状追踪</div>
+      </div>
+      <div class="rtype-card" onclick="selectType(this)">
+        <div class="rtype-icon">
+          <svg class="icon icon-xl" style="color:#DDB870" viewBox="0 0 24 24"><use href="#icon-refresh-cw"></use></svg>
+        </div>
+        <div class="rtype-name">转奶进度</div>
+      </div>
+      <div class="rtype-card" onclick="selectType(this)">
+        <div class="rtype-icon">
+          <svg class="icon icon-xl" style="color:#F0B8C8" viewBox="0 0 24 24"><use href="#icon-clipboard-list"></use></svg>
+        </div>
+        <div class="rtype-name">综合报告</div>
+      </div>
+    </div>
+
+    <!-- Date Range -->
+    <div class="section-header" style="padding-top:14px"><span class="section-title">时间范围</span></div>
+    <div class="date-range-bar">
+      <div class="dr-btn active" onclick="selectRange(this)">7天</div>
+      <div class="dr-btn" onclick="selectRange(this)">14天</div>
+      <div class="dr-btn" onclick="selectRange(this)">30天</div>
+      <div class="dr-btn" onclick="selectRange(this)">自定义</div>
+    </div>
+
+    <!-- Include Modules -->
+    <div class="section-header" style="padding-top:14px"><span class="section-title">包含模块</span></div>
+    <div class="mx-16 card">
+      <div class="module-check-row" onclick="toggleMC(this)">
+        <div class="mc-box checked"></div>
+        <div style="flex:1"><div class="mc-label">饮食记录</div><div class="mc-desc">奶量·辅食·营养素·转奶进度</div></div>
+      </div>
+      <div class="module-check-row" onclick="toggleMC(this)">
+        <div class="mc-box checked"></div>
+        <div style="flex:1"><div class="mc-label">睡眠数据</div><div class="mc-desc">时长·质量·小睡次数</div></div>
+      </div>
+      <div class="module-check-row" onclick="toggleMC(this)">
+        <div class="mc-box checked"></div>
+        <div style="flex:1"><div class="mc-label">症状记录</div><div class="mc-desc">过敏症状·严重程度·时间线</div></div>
+      </div>
+      <div class="module-check-row" onclick="toggleMC(this)">
+        <div class="mc-box"></div>
+        <div style="flex:1"><div class="mc-label">生长数据</div><div class="mc-desc">身高·体重·头围·百分位</div></div>
+      </div>
+      <div class="module-check-row" onclick="toggleMC(this)">
+        <div class="mc-box"></div>
+        <div style="flex:1"><div class="mc-label">医疗记录</div><div class="mc-desc">就诊记录·诊断·检查结果</div></div>
+      </div>
+    </div>
+
+    <!-- Generate Panel -->
+    <div class="section-header" style="padding-top:14px"><span class="section-title">生成报告</span></div>
+    <div class="gen-panel">
+      <div class="gen-info">
+        <div class="gen-info-icon">
+          <svg class="icon icon-xl" style="color:#F0B8C8" viewBox="0 0 24 24"><use href="#icon-file-text"></use></svg>
+        </div>
+        <div class="gen-info-text">
+          将生成 <strong>日常护理报告</strong>，覆盖 <strong>2026年3月21日—3月28日</strong>（7天），
+          包含饮食·睡眠·症状 3 个模块，约 2～4 页 PDF。
+        </div>
+      </div>
+      <div id="genLoading" style="display:none" class="gen-loading">
+        <div class="loading-spinner"></div>
+        <span style="font-size:13px;color:var(--sub-text)">正在本地生成 PDF…</span>
+      </div>
+      <button class="gen-btn" id="genBtn" onclick="generateReport()">生成报告</button>
+    </div>
+
+    <!-- Report Preview (shown after generate) -->
+    <div id="previewSection" style="display:none">
+      <div class="section-header"><span class="section-title">报告预览</span></div>
+      <div class="preview-card">
+        <div class="preview-header">
+          <div class="preview-header-title">小宝 · 日常护理报告</div>
+          <div class="preview-header-sub">2026年3月21日 — 3月28日 · 7天 · 牛奶蛋白过敏（中度）</div>
+        </div>
+        <div class="preview-section">
+          <div class="preview-section-title">饮食</div>
+          <div class="preview-stat-row">
+            <div class="preview-stat"><div class="ps-val">3,360</div><div class="ps-unit">ml</div><div class="ps-name">7天总奶量</div></div>
+            <div class="preview-stat"><div class="ps-val">480</div><div class="ps-unit">ml/天</div><div class="ps-name">平均每天</div></div>
+            <div class="preview-stat"><div class="ps-val">21</div><div class="ps-unit">次</div><div class="ps-name">喂养次数</div></div>
+            <div class="preview-stat"><div class="ps-val">3</div><div class="ps-unit">天</div><div class="ps-name">辅食观察中</div></div>
+          </div>
+          <div class="mini-chart mt-8">
+            <svg viewBox="0 0 320 50" preserveAspectRatio="none">
+              <rect x="5"   y="14" width="35" height="36" rx="4" fill="var(--primary-lt)" stroke="var(--primary)" stroke-width="1.5"/>
+              <rect x="50"  y="8"  width="35" height="42" rx="4" fill="var(--primary-lt)" stroke="var(--primary)" stroke-width="1.5"/>
+              <rect x="95"  y="18" width="35" height="32" rx="4" fill="var(--primary-lt)" stroke="var(--primary)" stroke-width="1.5"/>
+              <rect x="140" y="10" width="35" height="40" rx="4" fill="var(--primary-lt)" stroke="var(--primary)" stroke-width="1.5"/>
+              <rect x="185" y="6"  width="35" height="44" rx="4" fill="var(--primary-lt)" stroke="var(--primary)" stroke-width="1.5"/>
+              <rect x="230" y="12" width="35" height="38" rx="4" fill="var(--primary-lt)" stroke="var(--primary)" stroke-width="1.5"/>
+              <rect x="275" y="4"  width="35" height="46" rx="4" fill="var(--primary)" opacity=".8"/>
+            </svg>
+          </div>
+        </div>
+        <div class="preview-section">
+          <div class="preview-section-title">睡眠</div>
+          <div class="preview-stat-row">
+            <div class="preview-stat"><div class="ps-val">62.5</div><div class="ps-unit">h</div><div class="ps-name">7天总睡眠</div></div>
+            <div class="preview-stat"><div class="ps-val">8.9</div><div class="ps-unit">h/天</div><div class="ps-name">平均每天</div></div>
+            <div class="preview-stat"><div class="ps-val">89%</div><div class="ps-unit"></div><div class="ps-name">质量良好占比</div></div>
+          </div>
+        </div>
+        <div class="preview-section" style="border:none">
+          <div class="preview-section-title">症状</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="badge badge-green">本周无症状 ✓</span>
+            <span style="font-size:12px;color:var(--sub-text)">持续氨基酸奶粉稳定期</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Share Actions -->
+      <div style="display:flex;gap:10px;padding:14px 16px">
+        <button onclick="shareReport()" style="flex:1;padding:14px;border-radius:var(--radius-md);background:var(--primary);color:#fff;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font)">分享报告</button>
+        <button onclick="saveReport()" style="flex:1;padding:14px;border-radius:var(--radius-md);background:var(--gray-100);color:var(--text);border:none;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font)">保存到文件</button>
+      </div>
+    </div>
+
+    <!-- History -->
+    <div class="section-header" style="padding-top:14px"><span class="section-title">历史报告</span></div>
+    <div class="mx-16 card">
+      <div class="history-item" onclick="showToast('打开历史报告')">
+        <div class="hi-icon">
+          <svg class="icon" viewBox="0 0 24 24"><use href="#icon-bar-chart-2"></use></svg>
+        </div>
+        <div class="hi-meta"><div class="hi-name">日常护理报告</div><div class="hi-date">2026年3月21日 · 7天</div></div>
+        <div class="hi-size">1.2MB</div>
+        <div class="hi-action">›</div>
+      </div>
+      <div class="history-item" onclick="showToast('打开历史报告')">
+        <div class="hi-icon">
+          <svg class="icon" viewBox="0 0 24 24"><use href="#icon-trending-up"></use></svg>
+        </div>
+        <div class="hi-meta"><div class="hi-name">生长发育报告</div><div class="hi-date">2026年3月14日 · 30天</div></div>
+        <div class="hi-size">0.8MB</div>
+        <div class="hi-action">›</div>
+      </div>
+      <div class="history-item" onclick="showToast('打开历史报告')">
+        <div class="hi-icon" style="background:var(--red-lt)">
+          <svg class="icon" style="color:#F0A0B0" viewBox="0 0 24 24"><use href="#icon-alert-triangle"></use></svg>
+        </div>
+        <div class="hi-meta"><div class="hi-name">症状追踪报告</div><div class="hi-date">2026年3月7日 · 14天</div></div>
+        <div class="hi-size">2.1MB</div>
+        <div class="hi-action">›</div>
+      </div>
+    </div>
+
+    <div class="h-60"></div>
+  </div>
+
+  <!-- Tab Bar -->
+  <div class="tab-bar">
+    <div class="tab-item" onclick="nav('home.html')">
+      <div class="tab-icon-svg"><svg class="icon" viewBox="0 0 24 24"><use href="#icon-house"></use></svg></div>
+      <span class="tab-label">首页</span>
+    </div>
+    <div class="tab-item" onclick="nav('records.html')">
+      <div class="tab-icon-svg"><svg class="icon" viewBox="0 0 24 24"><use href="#icon-clipboard-list"></use></svg></div>
+      <span class="tab-label">记录</span>
+    </div>
+    <div class="tab-fab" onclick="nav('home.html')">＋</div>
+    <div class="tab-item active">
+      <div class="tab-icon-svg"><svg class="icon" viewBox="0 0 24 24"><use href="#icon-bar-chart-2"></use></svg></div>
+      <span class="tab-label">报告</span>
+    </div>
+    <div class="tab-item" onclick="nav('profile.html')">
+      <div class="tab-icon-svg"><svg class="icon" viewBox="0 0 24 24"><use href="#icon-user-round"></use></svg></div>
+      <span class="tab-label">我的</span>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+  function nav(p) { window.location.href = p; }
+
+  function selectType(el) {
+    document.querySelectorAll('.rtype-card').forEach(c=>c.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+  function selectRange(el) {
+    document.querySelectorAll('.dr-btn').forEach(b=>b.classList.remove('active'));
+    el.classList.add('active');
+    if(el.textContent==='自定义') showToast('自定义日期范围');
+  }
+  function toggleMC(el) {
+    el.querySelector('.mc-box').classList.toggle('checked');
+  }
+
+  function generateReport() {
+    const btn = document.getElementById('genBtn');
+    const loading = document.getElementById('genLoading');
+    btn.style.display = 'none';
+    loading.style.display = 'flex';
+    setTimeout(() => {
+      loading.style.display = 'none';
+      btn.style.display = 'block';
+      btn.textContent = '✓ 重新生成';
+      document.getElementById('previewSection').style.display = 'block';
+      document.getElementById('previewSection').scrollIntoView({behavior:'smooth'});
+      showToast('✓ 报告已生成');
+    }, 2000);
+  }
+
+  function shareReport() { showToast('调用系统分享面板'); }
+  function saveReport()  { showToast('报告已保存到文件'); }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+  }
+</script>
+  <script src="icons-sprite.js"></script>
+</body>
+</html>

@@ -1,0 +1,936 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <title>敏宝日记 · 首页</title>
+    <link rel="stylesheet" href="common.css" />
+    <style>
+      /* ════════════════════════════════════════
+         首页专属样式
+         ════════════════════════════════════════ */
+
+      /* ── L1 英雄区（Notch → StatusBar → Header → HeroSection 一体）── */
+      .phone > .notch {
+        background: #f87098;
+      }
+      .phone > .notch .notch-pill {
+        background: #1c1c1e;
+      }
+      .phone > .status-bar {
+        background: #f87098 !important;
+      }
+
+      .header {
+        padding: 8px 20px 0;
+        background: linear-gradient(180deg, #f87098 0%, #f9a8c0 100%);
+        position: relative;
+        overflow: hidden;
+      }
+      .header::before {
+        content: "";
+        position: absolute;
+        right: -40px;
+        top: -50px;
+        width: 160px;
+        height: 160px;
+        background: rgba(255, 255, 255, 0.12);
+        border-radius: 50%;
+        pointer-events: none;
+      }
+      .header::after {
+        content: "";
+        position: absolute;
+        right: 80px;
+        top: 30px;
+        width: 80px;
+        height: 80px;
+        background: rgba(255, 255, 255, 0.07);
+        border-radius: 50%;
+        pointer-events: none;
+      }
+      .header-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        z-index: 1;
+        padding-bottom: 16px;
+      }
+      .header-greeting {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.78);
+        letter-spacing: 0.2px;
+      }
+      .header-date {
+        font-size: 24px;
+        font-weight: 700;
+        color: #fff;
+        letter-spacing: -0.5px;
+        margin-top: 4px;
+        text-shadow: 0 1px 4px rgba(248, 80, 100, 0.25);
+      }
+      .header-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.28);
+        border: 1.5px solid rgba(255, 255, 255, 0.55);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        position: relative;
+        z-index: 1;
+        flex-shrink: 0;
+      }
+
+      /* ── Hero Section：衔接 Header，底部用大圆角"托住"内容卡片 ── */
+      .hero-section {
+        background: linear-gradient(
+          180deg,
+          #f9a8c0 0%,
+          #f87098 60%,
+          #f06090 100%
+        );
+        /* 底部内凹圆角，让白色内容区"嵌入"英雄区 */
+        padding-bottom: 0;
+        position: relative;
+      }
+      /* 英雄区底部的白色圆角过渡块 */
+      .hero-section::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 28px;
+        background: var(--bg);
+        border-radius: 24px 24px 0 0;
+        pointer-events: none;
+      }
+
+      /* Baby Card */
+      .baby-card {
+        margin: 0 16px;
+        background: linear-gradient(
+          145deg,
+          rgba(255, 255, 255, 0.18) 0%,
+          rgba(255, 255, 255, 0.06) 100%
+        );
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: var(--radius-lg);
+        padding: 16px 18px 18px;
+        color: #fff;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(2px);
+      }
+      .baby-card::after {
+        content: "";
+        position: absolute;
+        right: -20px;
+        top: -20px;
+        width: 100px;
+        height: 100px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        pointer-events: none;
+      }
+      .baby-card-top {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
+        position: relative;
+        z-index: 1;
+      }
+      .baby-avatar {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.25);
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        flex-shrink: 0;
+      }
+      .baby-info-name {
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: -0.3px;
+      }
+      .baby-info-sub {
+        font-size: 12px;
+        opacity: 0.82;
+        margin-top: 2px;
+      }
+      .baby-severity-tag {
+        margin-left: auto;
+        background: rgba(255, 255, 255, 0.22);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 20px;
+        padding: 4px 12px;
+        font-size: 11px;
+        font-weight: 600;
+        flex-shrink: 0;
+      }
+      .baby-stats {
+        display: flex;
+        position: relative;
+        z-index: 1;
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .baby-stat {
+        flex: 1;
+        text-align: center;
+        padding: 10px 4px;
+      }
+      .baby-stat:not(:last-child) {
+        border-right: 1px solid rgba(255, 255, 255, 0.18);
+      }
+      .baby-stat-val {
+        font-size: 20px;
+        font-weight: 800;
+        line-height: 1;
+        letter-spacing: -0.5px;
+      }
+      .baby-stat-u {
+        font-size: 11px;
+        font-weight: 600;
+        opacity: 0.8;
+      }
+      .baby-stat-label {
+        font-size: 10px;
+        opacity: 0.65;
+        margin-top: 4px;
+        letter-spacing: 0.1px;
+      }
+
+      /* Sleep Banner：紧贴卡片底，悬浮于英雄区圆角之上 */
+      .sleep-banner {
+        margin: 12px 16px 28px; /* bottom 28px = hero::after 高度，确保不被遮挡 */
+        background: #fff;
+        border-radius: var(--radius-md);
+        padding: 11px 14px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        box-shadow: 0 4px 16px rgba(248, 80, 100, 0.2);
+        border-left: 3px solid var(--primary);
+        position: relative;
+        z-index: 2;
+      }
+      .sleep-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--primary);
+        animation: pulse-pink 2s infinite;
+        flex-shrink: 0;
+      }
+      .sleep-info-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text);
+      }
+      .sleep-info-sub {
+        font-size: 11px;
+        color: var(--sub-text);
+        margin-top: 2px;
+      }
+      /* 结束睡眠改为描边按钮，减少视觉重量 */
+      .sleep-btn {
+        background: transparent;
+        color: var(--primary);
+        border: 1.5px solid var(--primary-md);
+        border-radius: 8px;
+        padding: 6px 12px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: var(--font);
+        white-space: nowrap;
+        flex-shrink: 0;
+        transition: all 0.15s;
+      }
+      .sleep-btn:active {
+        background: var(--primary-lt);
+      }
+
+      /* ── L2 内容区 ── */
+      .content-card {
+        margin: 12px 16px 0;
+        background: #fff;
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        box-shadow:
+          0 2px 12px rgba(200, 100, 120, 0.08),
+          0 1px 3px rgba(0, 0, 0, 0.04);
+      }
+      .card-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--gray-400);
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        padding: 14px 16px 6px;
+      }
+      .card-label-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 16px 6px;
+      }
+      .card-label-row .card-label {
+        padding: 0;
+      }
+      .card-label-link {
+        font-size: 12px;
+        color: var(--primary);
+        font-weight: 500;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 2px;
+      }
+
+      /* 快捷记录宫格 */
+      .quick-grid {
+        padding: 4px 12px 14px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 9px;
+      }
+      .quick-btn {
+        /* 白色卡片底，图标盒子本身有颜色，不需要宫格有额外背景 */
+        background: #fff;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--gray-100);
+        padding: 14px 8px 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition:
+          transform 0.15s,
+          box-shadow 0.15s;
+      }
+      .quick-btn:active {
+        transform: scale(0.95);
+      }
+      /* 图标盒子：轻柔浅色背景，参考主流母婴 App 视觉 */
+      .qb-icon-box {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff0f4; /* 极浅粉，轻盈不压迫 */
+      }
+      .qb-icon-box .icon {
+        width: 22px;
+        height: 22px;
+        color: #f0b8c8;
+        stroke-width: 1.5;
+      } /* 浅粉 */
+      /* .quick-btn.q-warm .qb-icon-box {
+        background: #fff8ec;
+      } */
+      .quick-btn.q-warm .qb-icon-box .icon {
+        color: #ddb870;
+      }
+      .quick-btn.q-alert .qb-icon-box {
+        background: #fff0f4;
+      }
+      .quick-btn.q-alert .qb-icon-box .icon {
+        color: #f0a0b0;
+      }
+      .qb-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #4a3035;
+      } /* 暖棕色标签 */
+      .qb-sub {
+        font-size: 10px;
+        color: #b09a9d;
+        margin-top: -2px;
+        text-align: center;
+      } /* 柔和暖灰 */
+      .qb-badge {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        background: var(--red);
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        border-radius: 6px;
+        padding: 1px 5px;
+        line-height: 1.4;
+      }
+
+      /* 时间线图标尺寸 */
+      .tl-icon .icon {
+        width: 16px;
+        height: 16px;
+        stroke-width: 1.5;
+      }
+
+      /* 转奶进度 */
+      .trans-body {
+        padding: 0 16px 16px;
+      }
+      .trans-stage-badge {
+        font-size: 11px;
+        font-weight: 600;
+        background: var(--primary-lt);
+        color: var(--primary);
+        padding: 3px 10px;
+        border-radius: 20px;
+      }
+      .trans-steps {
+        display: flex;
+        gap: 5px;
+        margin-bottom: 10px;
+      }
+      .ts {
+        flex: 1;
+        height: 4px;
+        border-radius: 3px;
+      }
+      .ts.done {
+        background: var(--primary);
+      }
+      .ts.active {
+        background: var(--primary-md);
+      }
+      .ts.pending {
+        background: var(--gray-200);
+      }
+      .trans-labels {
+        display: flex;
+        gap: 5px;
+      }
+      .tl-l {
+        flex: 1;
+        font-size: 10px;
+        color: var(--gray-400);
+        text-align: center;
+        line-height: 1.5;
+        font-weight: 500;
+      }
+      .tl-l.done {
+        color: var(--primary);
+        font-weight: 600;
+      }
+      .tl-l.active {
+        color: var(--primary);
+        font-weight: 700;
+      }
+      .trans-hint {
+        margin-top: 10px;
+        font-size: 11px;
+        color: var(--sub-text);
+        line-height: 1.6;
+      }
+      .trans-hint .warn {
+        color: var(--orange);
+        font-weight: 600;
+      }
+
+      /* FAB Sheet */
+      .fab-menu-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 20px;
+        cursor: pointer;
+        transition: background 0.1s;
+      }
+      .fab-menu-item:active {
+        background: var(--primary-lt);
+      }
+      .fab-menu-icon-box {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff0f4;
+        flex-shrink: 0;
+      }
+      .fab-menu-icon-box .icon {
+        width: 20px;
+        height: 20px;
+        stroke: #e8709a;
+        stroke-width: 1.5;
+      }
+      .fab-menu-label {
+        font-size: 16px;
+        font-weight: 600;
+        color: #4a3035;
+      }
+      .fab-menu-sub {
+        font-size: 12px;
+        color: var(--sub-text);
+        margin-top: 2px;
+      }
+
+      @keyframes pulse-pink {
+        0%,
+        100% {
+          box-shadow: 0 0 0 3px rgba(248, 112, 152, 0.2);
+        }
+        50% {
+          box-shadow: 0 0 0 6px rgba(248, 112, 152, 0.06);
+        }
+      }
+
+      /* ── Tab Bar 图标颜色（通过 color/currentColor 控制）── */
+      .tab-item .tab-icon-svg .icon {
+        color: #f0b8c8;
+      } /* 未激活图标：浅粉 */
+      .tab-item.active .tab-icon-svg .icon {
+        color: #e8507a;
+      } /* 激活图标：深粉 */
+    </style>
+  </head>
+  <body>
+    <div class="phone">
+      <div class="notch"><div class="notch-pill"></div></div>
+
+      <div class="status-bar" style="background: transparent">
+        <span class="status-time" style="color: #fff">9:41</span>
+        <div class="status-icons">
+          <svg
+            viewBox="0 0 17 12"
+            style="fill: #fff; width: 16px; height: 16px">
+            <rect x="0" y="6" width="3" height="6" rx="1" />
+            <rect x="4.5" y="4" width="3" height="8" rx="1" />
+            <rect x="9" y="2" width="3" height="10" rx="1" />
+            <rect x="13.5" y="0" width="3" height="12" rx="1" opacity=".45" />
+          </svg>
+          <svg
+            viewBox="0 0 16 12"
+            style="fill: #fff; width: 16px; height: 16px">
+            <path
+              d="M8 10a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm0-3.5a4.5 4.5 0 0 1 3.18 1.32l1.06-1.06A6 6 0 0 0 8 5a6 6 0 0 0-4.24 1.76l1.06 1.06A4.5 4.5 0 0 1 8 6.5zm0-3.5a7.5 7.5 0 0 1 5.3 2.2l1.06-1.06A9 9 0 0 0 8 1a9 9 0 0 0-6.36 2.64l1.06 1.06A7.5 7.5 0 0 1 8 3z" />
+          </svg>
+          <svg
+            viewBox="0 0 25 12"
+            style="
+              fill: none;
+              stroke: #fff;
+              stroke-width: 1.2;
+              width: 20px;
+              height: 14px;
+            ">
+            <rect x="0" y="1" width="22" height="10" rx="3" />
+            <rect
+              x="1.5"
+              y="2.5"
+              width="17"
+              height="7"
+              rx="2"
+              fill="#fff"
+              stroke="none" />
+            <path d="M23 4v4a2 2 0 0 0 0-4z" fill="#fff" stroke="none" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="scroll-area">
+        <!-- ══ L1 英雄区 ══ -->
+        <div class="header">
+          <div class="header-row">
+            <div>
+              <div class="header-greeting">3月28日 星期六 · 小宝 3月12天</div>
+              <div class="header-date">早上好 👋</div>
+            </div>
+            <!-- 头像：用 emoji 保持卡通亲切感 -->
+            <div
+              class="header-avatar"
+              onclick="nav('profile.html')"
+              title="我的">
+              🐣
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-section">
+          <div class="baby-card" onclick="nav('profile.html')">
+            <div class="baby-card-top">
+              <div class="baby-avatar">🐥</div>
+              <div>
+                <div class="baby-info-name">小宝</div>
+                <div class="baby-info-sub">牛奶蛋白过敏 · 3个月12天</div>
+              </div>
+              <div class="baby-severity-tag">中度</div>
+            </div>
+            <div class="baby-stats">
+              <div class="baby-stat">
+                <div class="baby-stat-val">
+                  480<span class="baby-stat-u">ml</span>
+                </div>
+                <div class="baby-stat-label">今日奶量</div>
+              </div>
+              <div class="baby-stat">
+                <div class="baby-stat-val">
+                  9<span class="baby-stat-u">h</span>
+                </div>
+                <div class="baby-stat-label">今日睡眠</div>
+              </div>
+              <div class="baby-stat">
+                <div class="baby-stat-val">
+                  3<span class="baby-stat-u">次</span>
+                </div>
+                <div class="baby-stat-label">换尿布</div>
+              </div>
+              <div class="baby-stat">
+                <div class="baby-stat-val">
+                  0<span class="baby-stat-u">项</span>
+                </div>
+                <div class="baby-stat-label">症状</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sleep Banner -->
+          <div class="sleep-banner" onclick="nav('form-sleep.html')">
+            <div class="sleep-dot"></div>
+            <div style="flex: 1; min-width: 0">
+              <div class="sleep-info-title">宝宝正在睡觉</div>
+              <div class="sleep-info-sub">开始于 08:45 · 已睡 1h 23m</div>
+            </div>
+            <button
+              class="sleep-btn"
+              onclick="
+                event.stopPropagation();
+                showToast('已结束计时，请补充质量评价');
+              ">
+              结束睡眠
+            </button>
+          </div>
+        </div>
+        <!-- hero-section 的 ::after 圆角过渡在这里生效 -->
+
+        <!-- ══ L2 内容区 ══ -->
+
+        <!-- 卡片 1：快捷记录 -->
+        <div class="content-card">
+          <div class="card-label">快捷记录</div>
+          <div class="quick-grid">
+            <div class="quick-btn" onclick="nav('form-feeding.html')">
+              <div class="qb-icon-box">
+                <svg class="icon" viewBox="0 0 24 24">
+                  <use href="#icon-milk"></use>
+                </svg>
+              </div>
+              <div class="qb-label">饮食</div>
+              <div class="qb-sub">喂奶 / 辅食</div>
+            </div>
+            <div class="quick-btn" onclick="nav('form-sleep.html')">
+              <div class="qb-icon-box">
+                <svg class="icon" viewBox="0 0 24 24">
+                  <use href="#icon-moon"></use>
+                </svg>
+              </div>
+              <div class="qb-label">睡眠</div>
+              <div class="qb-sub">计时 / 补录</div>
+            </div>
+            <div class="quick-btn q-warm" onclick="nav('form-activity.html')">
+              <div class="qb-icon-box">
+                <svg class="icon" viewBox="0 0 24 24">
+                  <use href="#icon-smile"></use>
+                </svg>
+              </div>
+              <div class="qb-label">状态</div>
+              <div class="qb-sub">便便 / 精神</div>
+            </div>
+            <div class="quick-btn" onclick="nav('form-growth.html')">
+              <div class="qb-icon-box">
+                <svg class="icon" viewBox="0 0 24 24">
+                  <use href="#icon-ruler"></use>
+                </svg>
+              </div>
+              <div class="qb-label">生长</div>
+              <div class="qb-sub">身高 / 体重</div>
+            </div>
+            <div class="quick-btn" onclick="nav('form-medical.html')">
+              <div class="qb-icon-box">
+                <svg class="icon" viewBox="0 0 24 24">
+                  <use href="#icon-stethoscope"></use>
+                </svg>
+              </div>
+              <div class="qb-label">医疗</div>
+              <div class="qb-sub">检查 / 病历</div>
+            </div>
+            <div class="quick-btn q-alert" onclick="nav('form-activity.html')">
+              <div class="qb-icon-box">
+                <svg class="icon" viewBox="0 0 24 24">
+                  <use href="#icon-triangle-alert"></use>
+                </svg>
+              </div>
+              <div class="qb-label">症状</div>
+              <div class="qb-sub">过敏 / 皮疹</div>
+              <div class="qb-badge">!</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 卡片 2：今日时间线 -->
+        <div class="content-card">
+          <div class="card-label-row">
+            <span class="card-label">今日时间线</span>
+            <span class="card-label-link" onclick="nav('records.html')"
+              >全部 ›</span
+            >
+          </div>
+          <div class="list-row" onclick="nav('form-sleep.html')">
+            <span class="tl-time">08:45</span>
+            <div class="tl-icon" style="background: #fff0f4">
+              <svg class="icon" style="color: #f0b8c8" viewBox="0 0 24 24">
+                <use href="#icon-moon"></use>
+              </svg>
+            </div>
+            <div class="tl-body">
+              <div class="tl-title" style="color: #7a5a60">
+                睡眠进行中
+                <span
+                  style="
+                    color: var(--primary);
+                    font-size: 11px;
+                    font-weight: 700;
+                    margin-left: 4px;
+                  "
+                  >1h 23m</span
+                >
+              </div>
+              <div class="tl-desc">上午小睡</div>
+            </div>
+            <span class="tl-arrow">›</span>
+          </div>
+          <div class="list-row" onclick="nav('form-feeding.html')">
+            <span class="tl-time">08:00</span>
+            <div class="tl-icon" style="background: #fff0f4">
+              <svg class="icon" style="color: #f0b8c8" viewBox="0 0 24 24">
+                <use href="#icon-milk"></use>
+              </svg>
+            </div>
+            <div class="tl-body">
+              <div class="tl-title" style="color: #7a5a60">喂奶 120ml</div>
+              <div class="tl-desc">氨基酸奶粉 · 转奶进度 Day 3</div>
+            </div>
+            <span class="tl-arrow">›</span>
+          </div>
+          <div class="list-row" onclick="nav('form-activity.html')">
+            <span class="tl-time">07:30</span>
+            <div class="tl-icon" style="background: #fff8ec">
+              <svg class="icon" style="color: #ddb870" viewBox="0 0 24 24">
+                <use href="#icon-smile"></use>
+              </svg>
+            </div>
+            <div class="tl-body">
+              <div class="tl-title" style="color: #7a5a60">活动与状态</div>
+              <div class="tl-desc">大便 ×1（软便）· 精神：良好</div>
+            </div>
+            <span class="tl-arrow">›</span>
+          </div>
+          <div class="list-row" onclick="nav('form-feeding.html')">
+            <span class="tl-time">07:00</span>
+            <div class="tl-icon" style="background: #fff0f4">
+              <svg class="icon" style="color: #f0b8c8" viewBox="0 0 24 24">
+                <use href="#icon-milk"></use>
+              </svg>
+            </div>
+            <div class="tl-body">
+              <div class="tl-title" style="color: #7a5a60">喂奶 120ml</div>
+              <div class="tl-desc">
+                辅食：南瓜泥 20g
+                <span class="badge tag-new">⚠️ 新食物 D3</span>
+              </div>
+            </div>
+            <span class="tl-arrow">›</span>
+          </div>
+        </div>
+
+        <!-- 卡片 3：转奶进度 -->
+        <div class="content-card">
+          <div class="card-label-row">
+            <span class="card-label">转奶进度</span>
+            <span class="trans-stage-badge">氨基酸奶粉阶段</span>
+          </div>
+          <div class="trans-body">
+            <div class="trans-steps">
+              <div class="ts done"></div>
+              <div class="ts active"></div>
+              <div class="ts pending"></div>
+              <div class="ts pending"></div>
+            </div>
+            <div class="trans-labels">
+              <div class="tl-l done">氨基酸<br />奶粉</div>
+              <div class="tl-l active">深度<br />水解</div>
+              <div class="tl-l pending">适度<br />水解</div>
+              <div class="tl-l pending">普通<br />奶粉</div>
+            </div>
+            <div class="trans-hint">
+              稳定期第 42 天 · 进度 12% ·
+              <span class="warn">今日无症状未确认</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="h-60"></div>
+      </div>
+
+      <!-- Tab Bar -->
+      <div class="tab-bar">
+        <div class="tab-item active">
+          <div class="tab-icon-svg">
+            <svg class="icon" viewBox="0 0 24 24">
+              <use href="#icon-house"></use>
+            </svg>
+          </div>
+          <span class="tab-label">首页</span>
+        </div>
+        <div class="tab-item" onclick="nav('records.html')">
+          <div class="tab-icon-svg">
+            <svg class="icon" viewBox="0 0 24 24">
+              <use href="#icon-clipboard-list"></use>
+            </svg>
+          </div>
+          <span class="tab-label">记录</span>
+        </div>
+        <div class="tab-fab" onclick="toggleFabSheet()">＋</div>
+        <div class="tab-item" onclick="nav('report.html')">
+          <div class="tab-icon-svg">
+            <svg class="icon" viewBox="0 0 24 24">
+              <use href="#icon-bar-chart-2"></use>
+            </svg>
+          </div>
+          <span class="tab-label">报告</span>
+        </div>
+        <div class="tab-item" onclick="nav('profile.html')">
+          <div class="tab-icon-svg">
+            <svg class="icon" viewBox="0 0 24 24">
+              <use href="#icon-user-round"></use>
+            </svg>
+          </div>
+          <span class="tab-label">我的</span>
+        </div>
+      </div>
+
+      <!-- FAB Bottom Sheet -->
+      <div class="modal-overlay" id="fabSheet" onclick="closeFabSheet(event)">
+        <div class="bottom-sheet">
+          <div class="sheet-handle"></div>
+          <div class="sheet-title">记录什么？</div>
+          <div class="fab-menu-item" onclick="nav('form-feeding.html')">
+            <div class="fab-menu-icon-box">
+              <svg class="icon" viewBox="0 0 24 24">
+                <use href="#icon-milk"></use>
+              </svg>
+            </div>
+            <div>
+              <div class="fab-menu-label">饮食记录</div>
+              <div class="fab-menu-sub">喂奶 · 辅食 · 营养素</div>
+            </div>
+          </div>
+          <div class="fab-menu-item" onclick="nav('form-sleep.html')">
+            <div class="fab-menu-icon-box">
+              <svg class="icon" viewBox="0 0 24 24">
+                <use href="#icon-moon"></use>
+              </svg>
+            </div>
+            <div>
+              <div class="fab-menu-label">睡眠记录</div>
+              <div class="fab-menu-sub">计时模式 · 补录模式</div>
+            </div>
+          </div>
+          <div class="fab-menu-item" onclick="nav('form-activity.html')">
+            <div class="fab-menu-icon-box">
+              <svg class="icon" viewBox="0 0 24 24">
+                <use href="#icon-smile"></use>
+              </svg>
+            </div>
+            <div>
+              <div class="fab-menu-label">活动与状态</div>
+              <div class="fab-menu-sub">便便 · 尿布 · 精神 · 过敏症状</div>
+            </div>
+          </div>
+          <div class="fab-menu-item" onclick="nav('form-growth.html')">
+            <div class="fab-menu-icon-box">
+              <svg class="icon" viewBox="0 0 24 24">
+                <use href="#icon-ruler"></use>
+              </svg>
+            </div>
+            <div>
+              <div class="fab-menu-label">生长记录</div>
+              <div class="fab-menu-sub">身高 · 体重 · 头围</div>
+            </div>
+          </div>
+          <div class="fab-menu-item" onclick="nav('form-medical.html')">
+            <div class="fab-menu-icon-box">
+              <svg class="icon" viewBox="0 0 24 24">
+                <use href="#icon-stethoscope"></use>
+              </svg>
+            </div>
+            <div>
+              <div class="fab-menu-label">医疗记录</div>
+              <div class="fab-menu-sub">儿保 · 过敏检查 · 就诊</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="toast" id="toast"></div>
+    </div>
+
+    <script src="icons-sprite.js"></script>
+    <script>
+      function nav(page) {
+        window.location.href = page;
+      }
+      function toggleFabSheet() {
+        document.getElementById("fabSheet").classList.toggle("show");
+      }
+      function closeFabSheet(e) {
+        if (e.target === document.getElementById("fabSheet"))
+          document.getElementById("fabSheet").classList.remove("show");
+      }
+      function showToast(msg) {
+        const t = document.getElementById("toast");
+        t.textContent = "✓ " + msg;
+        t.classList.add("show");
+        setTimeout(() => t.classList.remove("show"), 2200);
+      }
+      let mins = 83;
+      setInterval(() => {
+        mins++;
+        const h = Math.floor(mins / 60),
+          m = mins % 60;
+        document
+          .querySelectorAll(".sleep-timer")
+          .forEach(
+            (el) => (el.textContent = (h > 0 ? h + "h " : "") + m + "m"),
+          );
+      }, 60000);
+    </script>
+  </body>
+</html>

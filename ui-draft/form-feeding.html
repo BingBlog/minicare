@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>敏宝日记 · 饮食记录</title>
+  <link rel="stylesheet" href="common.css"/>
+  <style>
+    .milk-type-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 8px 16px 14px;
+    }
+    .milk-type-btn {
+      padding: 12px 10px; border-radius: var(--radius-sm);
+      border: 1.5px solid var(--gray-200); background: var(--card-bg);
+      text-align: center; cursor: pointer; transition: all .15s;
+    }
+    .milk-type-btn.selected { border-color: var(--primary); background: var(--primary-lt); }
+    .milk-type-btn:active { transform: scale(.95); }
+    .milk-type-name { font-size: 13px; font-weight: 600; color: var(--text); }
+    .milk-type-desc { font-size: 11px; color: var(--sub-text); margin-top: 2px; }
+    .milk-type-btn.selected .milk-type-name { color: var(--primary); }
+
+    .supplement-row {
+      display: flex; align-items: center; gap: 10px; padding: 12px 16px; position: relative;
+    }
+    .supplement-row:not(:last-child)::after {
+      content:''; position:absolute; bottom:0; left:16px; right:0; height:.5px; background:var(--gray-100);
+    }
+    .supp-check { width:20px; height:20px; border-radius:6px; border:2px solid var(--gray-300); display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; transition:all .15s; }
+    .supp-check.on { background:var(--primary); border-color:var(--primary); }
+    .supp-check.on::after { content:'✓'; color:#fff; font-size:12px; font-weight:700; }
+    .supp-name { font-size:14px; font-weight:500; color:var(--text); flex:1; }
+    .supp-input { width:60px; border:1px solid var(--gray-200); border-radius:6px; padding:5px 8px; font-size:13px; text-align:center; font-family:var(--font); outline:none; background:var(--bg); }
+    .supp-unit { font-size:12px; color:var(--sub-text); }
+
+    .food-new-tag { display:inline-flex; align-items:center; gap:4px; background:var(--yellow-lt); color:var(--yellow-dk); padding:3px 8px; border-radius:6px; font-size:11px; font-weight:600; }
+    .food-item { display:flex; align-items:center; gap:10px; padding:10px 16px; }
+    .food-item-remove { width:20px; height:20px; border-radius:50%; background:var(--red); color:#fff; display:flex; align-items:center; justify-content:center; font-size:14px; cursor:pointer; flex-shrink:0; }
+
+    .inline-amount { 
+      display: flex; align-items: center; padding: 0 16px 14px; gap: 12px; 
+    }
+    .amount-stepper {
+      display: flex; align-items: center; gap: 12px; flex: 1;
+    }
+    .step-btn {
+      width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid var(--gray-200);
+      background: var(--card-bg); font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: all .1s;
+    }
+    .step-btn:active { background: var(--primary-lt); border-color: var(--primary-md); }
+    .step-val { font-size: 22px; font-weight: 700; color: var(--text); flex: 1; text-align: center; }
+    .step-unit { font-size: 14px; color: var(--sub-text); }
+
+    /* 食物观察提示横幅 */
+    .obs-banner {
+      margin: 0 16px 12px;
+      background: var(--yellow-lt); border: 1px solid #FCD34D;
+      border-radius: var(--radius-sm); padding: 10px 14px;
+      font-size: 11px; color: var(--yellow-dk); line-height: 1.5;
+    }
+    .obs-banner strong { font-weight: 700; }
+  </style>
+</head>
+<body>
+<div class="phone">
+  <div class="notch"><div class="notch-pill"></div></div>
+  <div class="status-bar">
+    <span class="status-time">9:41</span>
+    <div class="status-icons">
+      <svg viewBox="0 0 17 12"><rect x="0" y="6" width="3" height="6" rx="1"/><rect x="4.5" y="4" width="3" height="8" rx="1"/><rect x="9" y="2" width="3" height="10" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+      <svg viewBox="0 0 25 12"><rect x="0" y="1" width="22" height="10" rx="3" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="1.5" y="2.5" width="17" height="7" rx="2" fill="currentColor"/><path d="M23 4v4a2 2 0 0 0 0-4z"/></svg>
+    </div>
+  </div>
+
+  <div class="nav-bar">
+    <button class="nav-back" onclick="nav('home.html')">←</button>
+    <span class="nav-title">饮食记录</span>
+    <span class="nav-action" onclick="showParseCard()">语音/自然语言</span>
+  </div>
+
+  <div class="scroll-area">
+
+    <!-- Input Mode -->
+    <div class="input-mode-bar">
+      <div class="input-mode-btn active" onclick="setMode(this)">手动</div>
+      <div class="input-mode-btn" onclick="showParseCard()">自然语言</div>
+      <div class="input-mode-btn" onclick="setMode(this)">语音</div>
+      <div class="input-mode-btn" onclick="setMode(this)">拍照留档</div>
+    </div>
+
+    <!-- Parse Confirm Card (hidden by default) -->
+    <div class="parse-card" id="parseCard" style="display:none">
+      <div class="parse-card-title">已为你识别出以下内容，请确认：</div>
+      <div class="parse-field">
+        <span class="parse-field-label">喂养时间</span>
+        <span class="parse-field-value">08:00</span>
+        <span class="parse-field-edit">修改</span>
+      </div>
+      <div class="parse-field">
+        <span class="parse-field-label">奶粉类型</span>
+        <span class="parse-field-value">深度水解奶粉</span>
+        <span class="parse-field-edit">修改</span>
+      </div>
+      <div class="parse-field">
+        <span class="parse-field-label">奶量</span>
+        <span class="parse-field-value">120 ml</span>
+        <span class="parse-field-edit">修改</span>
+      </div>
+      <div class="parse-btns">
+        <button class="parse-btn parse-btn-retry" onclick="hideParseCard()">重新识别</button>
+        <button class="parse-btn parse-btn-confirm" onclick="confirmParse()">确认并保存</button>
+      </div>
+    </div>
+
+    <!-- Time -->
+    <div class="form-section-title" style="padding:14px 20px 6px;font-size:12px;font-weight:600;color:var(--sub-text);">记录信息</div>
+    <div class="form-section">
+      <div class="form-row">
+        <span class="form-label">喂养时间</span>
+        <input class="form-input" type="time" value="08:00"/>
+        <span class="form-arrow">›</span>
+      </div>
+    </div>
+
+    <!-- Milk Type -->
+    <div class="form-section-title" style="padding:14px 20px 4px;font-size:12px;font-weight:600;color:var(--sub-text);">奶粉类型</div>
+    <div class="mx-16" style="background:var(--card-bg);border-radius:var(--radius-md);box-shadow:var(--shadow-sm)">
+      <div class="milk-type-grid">
+        <div class="milk-type-btn selected" onclick="selectMilk(this)">
+          <div class="milk-type-name">氨基酸奶粉</div>
+          <div class="milk-type-desc">深度过敏 适用</div>
+        </div>
+        <div class="milk-type-btn" onclick="selectMilk(this)">
+          <div class="milk-type-name">深度水解奶粉</div>
+          <div class="milk-type-desc">转奶第2阶段</div>
+        </div>
+        <div class="milk-type-btn" onclick="selectMilk(this)">
+          <div class="milk-type-name">适度水解奶粉</div>
+          <div class="milk-type-desc">转奶第3阶段</div>
+        </div>
+        <div class="milk-type-btn" onclick="selectMilk(this)">
+          <div class="milk-type-name">普通奶粉</div>
+          <div class="milk-type-desc">免疫耐受后</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Amount -->
+    <div class="form-section-title" style="padding:14px 20px 4px;font-size:12px;font-weight:600;color:var(--sub-text);">奶量</div>
+    <div class="mx-16" style="background:var(--card-bg);border-radius:var(--radius-md);box-shadow:var(--shadow-sm);padding-top:8px">
+      <div class="amount-chips">
+        <div class="amount-chip" onclick="setAmount(60,this)">60ml</div>
+        <div class="amount-chip" onclick="setAmount(90,this)">90ml</div>
+        <div class="amount-chip selected" onclick="setAmount(120,this)">120ml</div>
+        <div class="amount-chip" onclick="setAmount(150,this)">150ml</div>
+        <div class="amount-chip" onclick="setAmount(180,this)">180ml</div>
+      </div>
+      <div class="inline-amount">
+        <div class="amount-stepper">
+          <button class="step-btn" onclick="changeAmount(-10)">−</button>
+          <div class="step-val" id="amountVal">120</div>
+          <button class="step-btn" onclick="changeAmount(10)">＋</button>
+        </div>
+        <span class="step-unit">ml</span>
+      </div>
+    </div>
+
+    <!-- Nutrients -->
+    <div class="form-section-title" style="padding:14px 20px 4px;font-size:12px;font-weight:600;color:var(--sub-text);">营养素（可选）</div>
+    <div class="form-section">
+      <div class="supplement-row">
+        <div class="supp-check" onclick="toggleCheck(this)"></div>
+        <span class="supp-name">维生素 D</span>
+        <input class="supp-input" placeholder="剂量" type="number"/>
+        <span class="supp-unit">IU</span>
+      </div>
+      <div class="supplement-row">
+        <div class="supp-check" onclick="toggleCheck(this)"></div>
+        <span class="supp-name">铁</span>
+        <input class="supp-input" placeholder="剂量" type="number"/>
+        <span class="supp-unit">mg</span>
+      </div>
+      <div class="supplement-row">
+        <div class="supp-check" onclick="toggleCheck(this)"></div>
+        <span class="supp-name">益生菌</span>
+        <input class="supp-input" placeholder="剂量" type="number"/>
+        <span class="supp-unit">亿</span>
+      </div>
+    </div>
+
+    <!-- Complementary Food -->
+    <div class="form-section-title" style="padding:14px 20px 4px;font-size:12px;font-weight:600;color:var(--sub-text);">辅食（可选）</div>
+    <div class="form-section">
+      <div class="food-item">
+        <div class="supp-check on" onclick="toggleCheck(this)"></div>
+        <span style="flex:1;font-size:14px;font-weight:500;color:var(--text)">南瓜泥</span>
+        <span class="food-new-tag">⚠️ 新食物 D3</span>
+        <div class="food-item-remove" onclick="removeFood(this)">×</div>
+      </div>
+      <div class="form-row" style="padding-top:6px">
+        <input class="form-input" placeholder="添加辅食名称，自动识别新食物" style="text-align:left;font-size:13px;color:var(--text)"/>
+        <span style="font-size:20px;color:var(--primary);cursor:pointer;font-weight:300">＋</span>
+      </div>
+    </div>
+
+    <div class="obs-banner mt-8">
+      ⚠️ 南瓜泥正在观察期第 <strong>3</strong> 天（共 5 天），今日有异常症状请在「活动与状态」中记录。
+    </div>
+
+    <div class="h-16"></div>
+    <button class="btn-primary" onclick="saveRecord()">保存记录</button>
+    <button class="btn-secondary" onclick="nav('home.html')">取消</button>
+    <div class="h-60"></div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+  function nav(p) { window.location.href = p; }
+  let currentAmount = 120;
+
+  function setMode(el) {
+    document.querySelectorAll('.input-mode-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function showParseCard() {
+    document.getElementById('parseCard').style.display = 'block';
+    document.getElementById('parseCard').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+  function hideParseCard() { document.getElementById('parseCard').style.display='none'; }
+  function confirmParse() {
+    hideParseCard();
+    saveRecord();
+  }
+
+  function selectMilk(el) {
+    document.querySelectorAll('.milk-type-btn').forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function setAmount(val, el) {
+    currentAmount = val;
+    document.getElementById('amountVal').textContent = val;
+    document.querySelectorAll('.amount-chip').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function changeAmount(delta) {
+    currentAmount = Math.max(10, currentAmount + delta);
+    document.getElementById('amountVal').textContent = currentAmount;
+    document.querySelectorAll('.amount-chip').forEach(c => c.classList.remove('selected'));
+  }
+
+  function toggleCheck(el) { el.classList.toggle('on'); }
+  function removeFood(btn) { btn.closest('.food-item').remove(); }
+
+  function saveRecord() {
+    const t = document.getElementById('toast');
+    t.textContent = '✓ 饮食记录已保存';
+    t.classList.add('show');
+    setTimeout(() => { t.classList.remove('show'); setTimeout(() => nav('home.html'), 300); }, 1400);
+  }
+</script>
+  <script src="icons-sprite.js"></script>
+</body>
+</html>

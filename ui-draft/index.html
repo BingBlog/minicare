@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>敏宝日记 · UI 原型导航</title>
+  <link rel="stylesheet" href="common.css"/>
+  <style>
+    /* Override body layout for index page */
+    html, body {
+      display: block;
+      padding: 0;
+      background: #F5EBE8;
+      min-height: 100vh;
+    }
+
+    .index-layout {
+      max-width: 960px; margin: 0 auto; padding: 32px 24px 60px;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center; padding: 40px 0 32px; animation: slideUp .5s ease both;
+    }
+    .hero-logo { font-size: 56px; margin-bottom: 12px; }
+    .hero-title {
+      font-size: 28px; font-weight: 900; color: #3D2B2E;
+      letter-spacing: -1px;
+    }
+    .hero-sub { font-size: 15px; color: #9A7E82; margin-top: 8px; }
+    .hero-badge {
+      display: inline-block; margin-top: 12px; padding: 4px 14px; border-radius: 20px;
+      background: #FFF0F4; color: #F87098; font-size: 12px; font-weight: 700;
+      border: 1px solid #F8B8CC;
+    }
+
+    /* Page Grid */
+    .pages-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-top: 8px;
+    }
+
+    .page-card {
+      background: #fff; border-radius: 16px; padding: 20px 18px;
+      box-shadow: 0 1px 4px rgba(200,100,120,.06), 0 4px 16px rgba(200,100,120,.08);
+      cursor: pointer; transition: all .2s; text-decoration: none;
+      display: flex; flex-direction: column; gap: 10px;
+      border: 1.5px solid transparent; position: relative; overflow: hidden;
+    }
+    .page-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 24px rgba(200,100,120,.14);
+      border-color: #F8B8CC;
+    }
+    .page-card:active { transform: scale(.97); }
+    .page-card::before {
+      content: ''; position: absolute; inset: 0; border-radius: 16px;
+      background: linear-gradient(135deg, var(--card-color, #FFF0F4) 0%, transparent 60%);
+      opacity: .5;
+    }
+
+    .pc-icon { font-size: 36px; position: relative; }
+    .pc-title { font-size: 16px; font-weight: 800; color: #3D2B2E; position: relative; }
+    .pc-desc  { font-size: 12px; color: #9A7E82; line-height: 1.5; position: relative; }
+    .pc-tag {
+      position: absolute; top: 12px; right: 12px;
+      font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px;
+    }
+    .tag-main  { background: #FFF0F4; color: #F87098; border: 1px solid #F8B8CC; }
+    .tag-form  { background: #FFF8E6; color: #C0922A; border: 1px solid #F8C870; }
+    .tag-tab   { background: #FFF0F4; color: #E85580; border: 1px solid #F8B8CC; }
+
+    .pc-arrow {
+      position: absolute; bottom: 16px; right: 16px;
+      font-size: 18px; color: #F8B8CC; transition: color .2s;
+    }
+    .page-card:hover .pc-arrow { color: #F87098; }
+
+    /* Section Title */
+    .index-section-title {
+      font-size: 13px; font-weight: 800; color: #B09A9D; letter-spacing: 1px;
+      text-transform: uppercase; margin: 28px 0 12px; padding-left: 4px;
+    }
+
+    /* Nav flow diagram */
+    .flow-card {
+      background: #fff; border-radius: 16px; padding: 20px 22px;
+      box-shadow: 0 1px 4px rgba(200,100,120,.06); margin-top: 28px;
+      border: 1px solid #F5E8E5;
+    }
+    .flow-title {
+      font-size: 15px; font-weight: 800; color: #3D2B2E;
+      margin-bottom: 16px;
+    }
+    .flow-diagram {
+      display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+    }
+    .flow-node {
+      display: flex; align-items: center; gap: 6px; padding: 8px 14px;
+      border-radius: 24px; font-size: 13px; font-weight: 600; cursor: pointer;
+      transition: all .15s; text-decoration: none;
+    }
+    .flow-node:active { transform: scale(.95); }
+    .flow-node.home    { background: #FFF0F4; color: #E85580; border: 1px solid #F8B8CC; }
+    .flow-node.record  { background: #FFF8E6; color: #C0922A; border: 1px solid #F8C870; }
+    .flow-node.form    { background: #FDF7F5; color: #9A7E82; border: 1px solid #EDE5E3; }
+    .flow-node.report  { background: #FFF0F4; color: #F87098; border: 1px solid #F8B8CC; }
+    .flow-node.profile { background: #FFF8E6; color: #C0922A; border: 1px solid #F8C870; }
+    .flow-arrow { color: #F8B8CC; font-size: 18px; }
+
+    /* Footer */
+    .index-footer {
+      text-align: center; padding: 32px 0 0;
+      font-size: 12px; color: #B09A9D;
+    }
+    .index-footer a {
+      color: #F87098; text-decoration: none; font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+<div class="index-layout">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-logo">🐥</div>
+    <div class="hero-title">敏宝日记</div>
+    <div class="hero-sub">牛奶蛋白过敏宝宝专属记录 App · MVP 交互原型</div>
+    <div class="hero-badge">🎨 UI Prototype v1.0 · 9 个页面 · 完整可点击</div>
+  </div>
+
+  <!-- Main Pages -->
+  <div class="index-section-title">主导航页面</div>
+  <div class="pages-grid">
+    <a href="home.html" class="page-card" style="--card-color:#FFF0F4">
+      <div class="pc-tag tag-main">Tab 1</div>
+      <div class="pc-icon">🏠</div>
+      <div class="pc-title">首页</div>
+      <div class="pc-desc">宝宝摘要 · 睡眠横幅 · 快捷记录 3×2 宫格 · 今日时间线 · 转奶进度</div>
+      <div class="pc-arrow">→</div>
+    </a>
+    <a href="records.html" class="page-card" style="--card-color:#FFF8E6">
+      <div class="pc-tag tag-main">Tab 2</div>
+      <div class="pc-icon">📋</div>
+      <div class="pc-title">记录列表</div>
+      <div class="pc-desc">按日期分组 · 类型筛选 · 长按编辑/删除 · FAB 新增</div>
+      <div class="pc-arrow">→</div>
+    </a>
+    <a href="report.html" class="page-card" style="--card-color:#FFF0F4">
+      <div class="pc-tag tag-main">Tab 3</div>
+      <div class="pc-icon">📊</div>
+      <div class="pc-title">报告</div>
+      <div class="pc-desc">选类型·选时段·选模块 → 生成 PDF 预览 → 分享/保存</div>
+      <div class="pc-arrow">→</div>
+    </a>
+    <a href="profile.html" class="page-card" style="--card-color:#FFF8E6">
+      <div class="pc-tag tag-main">Tab 4</div>
+      <div class="pc-icon">👤</div>
+      <div class="pc-title">我的</div>
+      <div class="pc-desc">宝宝档案编辑 · 过敏程度 · 生长数据 · 数据备份 · 清空确认</div>
+      <div class="pc-arrow">→</div>
+    </a>
+  </div>
+
+  <!-- Record Forms -->
+  <div class="index-section-title">记录表单（可从快捷宫格 / FAB 进入）</div>
+  <div class="pages-grid">
+    <a href="form-feeding.html" class="page-card" style="--card-color:#FFF0F4">
+      <div class="pc-tag tag-form">表单</div>
+      <div class="pc-icon">🍼</div>
+      <div class="pc-title">饮食记录</div>
+      <div class="pc-desc">奶粉类型选择 · 奶量步进器 · 营养素 · 辅食新食物追踪 · OCR/语音解析</div>
+      <div class="pc-arrow">→</div>
+    </a>
+    <a href="form-sleep.html" class="page-card" style="--card-color:#FFF8E6">
+      <div class="pc-tag tag-form">表单</div>
+      <div class="pc-icon">💤</div>
+      <div class="pc-title">睡眠记录</div>
+      <div class="pc-desc">实时计时模式 + 补录模式 · 睡眠质量 · 异常超时检测</div>
+      <div class="pc-arrow">→</div>
+    </a>
+    <a href="form-activity.html" class="page-card" style="--card-color:#FFF0F4">
+      <div class="pc-tag tag-form">表单</div>
+      <div class="pc-icon">😊</div>
+      <div class="pc-title">活动与状态</div>
+      <div class="pc-desc">换尿布 · 大便性状 · 精神状态 · 过敏症状多选+程度+拍照</div>
+      <div class="pc-arrow">→</div>
+    </a>
+    <a href="form-growth.html" class="page-card" style="--card-color:#FFF8E6">
+      <div class="pc-tag tag-form">表单</div>
+      <div class="pc-icon">📏</div>
+      <div class="pc-title">生长记录</div>
+      <div class="pc-desc">身高/体重/头围 · WHO 百分位实时显示 · 生长曲线预览 · 报告照片上传</div>
+      <div class="pc-arrow">→</div>
+    </a>
+    <a href="form-medical.html" class="page-card" style="--card-color:#FFF0F4">
+      <div class="pc-tag tag-form">表单</div>
+      <div class="pc-icon">🏥</div>
+      <div class="pc-title">医疗记录</div>
+      <div class="pc-desc">检查类型 · 机构 · 结论 · 病历拍照 OCR 识别 · 复查提醒</div>
+      <div class="pc-arrow">→</div>
+    </a>
+  </div>
+
+  <!-- Navigation Flow -->
+  <div class="flow-card">
+    <div class="flow-title">🗺 主要导航路径</div>
+    <div class="flow-diagram">
+      <a href="home.html" class="flow-node home">🏠 首页</a>
+      <span class="flow-arrow">→</span>
+      <a href="form-feeding.html" class="flow-node form">🍼 饮食表单</a>
+      <a href="form-sleep.html" class="flow-node form">💤 睡眠表单</a>
+      <a href="form-activity.html" class="flow-node form">😊 状态表单</a>
+      <a href="form-growth.html" class="flow-node form">📏 生长表单</a>
+      <a href="form-medical.html" class="flow-node form">🏥 医疗表单</a>
+      <span class="flow-arrow">→</span>
+      <a href="home.html" class="flow-node home">🏠 返回首页</a>
+    </div>
+    <div class="flow-diagram" style="margin-top:12px">
+      <a href="home.html" class="flow-node home">🏠 首页</a>
+      <span class="flow-arrow">→</span>
+      <a href="records.html" class="flow-node record">📋 记录列表</a>
+      <span class="flow-arrow">→</span>
+      <a href="report.html" class="flow-node report">📊 报告</a>
+      <span class="flow-arrow">→</span>
+      <a href="profile.html" class="flow-node profile">👤 我的</a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="index-footer">
+    敏宝日记 UI 原型 · 基于 MVP-PRD.md 生成 · 仅供设计评审使用
+  </div>
+
+</div>
+    <script src="icons-sprite.js"></script>
+  </body>
+</html>

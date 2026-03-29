@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>敏宝日记 · 睡眠记录</title>
+  <link rel="stylesheet" href="common.css"/>
+  <style>
+    .mode-switcher {
+      display: flex; gap: 0; margin: 12px 16px 0;
+      background: var(--gray-100); border-radius: var(--radius-md); padding: 3px;
+    }
+    .mode-tab {
+      flex: 1; text-align: center; padding: 9px; border-radius: 10px;
+      font-size: 14px; font-weight: 600; color: var(--sub-text); cursor: pointer; transition: all .2s;
+    }
+    .mode-tab.active { background: var(--card-bg); color: var(--text); box-shadow: var(--shadow-sm); }
+
+    /* Timer Screen */
+    .timer-screen {
+      display: flex; flex-direction: column; align-items: center; padding: 32px 24px 24px; gap: 16px;
+    }
+    .timer-circle {
+      width: 180px; height: 180px; border-radius: 50%;
+      background: conic-gradient(var(--green) 30%, var(--gray-100) 30%);
+      display: flex; align-items: center; justify-content: center; position: relative;
+    }
+    .timer-circle-inner {
+      width: 148px; height: 148px; border-radius: 50%; background: var(--card-bg);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+    }
+    .timer-icon { display:flex; align-items:center; justify-content:center; width:36px; height:36px; }
+    .timer-val  { font-size: 32px; font-weight: 800; color: var(--text); letter-spacing: -1px; }
+    .timer-label { font-size: 12px; color: var(--sub-text); font-weight: 500; }
+    .timer-start-time { font-size: 13px; color: var(--sub-text); }
+
+    .timer-btn {
+      width: 180px; padding: 16px; border-radius: var(--radius-md);
+      border: none; font-size: 16px; font-weight: 700; cursor: pointer; font-family: var(--font);
+      transition: all .15s;
+    }
+    .timer-btn.start { background: var(--green); color: #fff; box-shadow: 0 4px 14px rgba(52,199,89,.4); }
+    .timer-btn.stop  { background: var(--primary); color: #fff; box-shadow: 0 4px 14px rgba(248,112,152,.35); }
+    .timer-btn:active { transform: scale(.96); }
+
+    /* Supplement Mode */
+    .suppl-mode { padding: 0 0 12px; }
+
+    /* Quality selector */
+    .quality-row { display: flex; gap: 10px; padding: 10px 16px 14px; }
+    .quality-btn {
+      flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px;
+      padding: 12px 4px; border-radius: var(--radius-sm); border: 1.5px solid var(--gray-200);
+      background: var(--card-bg); cursor: pointer; transition: all .15s;
+    }
+    .quality-btn.selected { border-color: var(--primary); background: var(--primary-lt); }
+    .quality-btn .q-emoji { font-size: 24px; }
+    .quality-btn .q-label { font-size: 12px; color: var(--sub-text); font-weight: 500; }
+    .quality-btn.selected .q-label { color: var(--primary); font-weight: 600; }
+    .quality-btn:active { transform: scale(.93); }
+
+    /* Period selector */
+    .period-row { display: flex; gap: 8px; padding: 10px 16px 14px; flex-wrap: wrap; }
+
+    /* Abnormal banner */
+    .abnormal-banner {
+      margin: 10px 16px;
+      background: var(--red-lt); border: 1.5px solid #FCA5A5;
+      border-radius: var(--radius-md); padding: 12px 14px;
+    }
+    .ab-title { font-size: 13px; font-weight: 700; color: var(--red); margin-bottom: 6px; }
+    .ab-desc  { font-size: 12px; color: var(--sub-text); line-height: 1.5; margin-bottom: 10px; }
+    .ab-btns  { display: flex; gap: 8px; }
+    .ab-btn   { flex:1; padding:8px; border-radius:var(--radius-sm); font-size:13px; font-weight:600; cursor:pointer; border:none; font-family:var(--font); }
+    .ab-btn-fix  { background:var(--primary); color:#fff; }
+    .ab-btn-mark { background:var(--gray-100); color:var(--text); }
+  </style>
+</head>
+<body>
+<div class="phone">
+  <div class="notch"><div class="notch-pill"></div></div>
+  <div class="status-bar">
+    <span class="status-time">9:41</span>
+    <div class="status-icons">
+      <svg viewBox="0 0 17 12"><rect x="0" y="6" width="3" height="6" rx="1"/><rect x="4.5" y="4" width="3" height="8" rx="1"/><rect x="9" y="2" width="3" height="10" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+      <svg viewBox="0 0 25 12"><rect x="0" y="1" width="22" height="10" rx="3" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="1.5" y="2.5" width="17" height="7" rx="2" fill="currentColor"/><path d="M23 4v4a2 2 0 0 0 0-4z"/></svg>
+    </div>
+  </div>
+
+  <div class="nav-bar">
+    <button class="nav-back" onclick="nav('home.html')">←</button>
+    <span class="nav-title">睡眠记录</span>
+    <span class="nav-action"></span>
+  </div>
+
+  <!-- Mode Switcher -->
+  <div class="mode-switcher">
+    <div class="mode-tab active" id="tab-timer" onclick="switchMode('timer')">计时模式</div>
+    <div class="mode-tab" id="tab-manual" onclick="switchMode('manual')">补录模式</div>
+  </div>
+
+  <div class="scroll-area">
+
+    <!-- TIMER MODE -->
+    <div id="timerMode">
+      <!-- Active state: sleeping in progress -->
+      <div class="timer-screen">
+        <div class="timer-circle">
+          <div class="timer-circle-inner">
+            <div class="timer-icon">
+              <svg class="icon icon-xl" style="color:#4CAF82" viewBox="0 0 24 24"><use href="#icon-moon"></use></svg>
+            </div>
+            <div class="timer-val" id="timerDisplay">1:23</div>
+            <div class="timer-label">睡眠进行中</div>
+          </div>
+        </div>
+        <div class="timer-start-time">开始于 08:45 今天</div>
+        <button class="timer-btn stop" onclick="stopTimer()">结束睡眠</button>
+      </div>
+
+      <!-- Abnormal banner (shown if >12h) -->
+      <div class="abnormal-banner" id="abnormalBanner" style="display:none">
+        <div class="ab-title">⚠️ 睡眠计时超过 12 小时</div>
+        <div class="ab-desc">该记录持续时间超过 12 小时，可能是忘记结束计时。请选择处理方式：</div>
+        <div class="ab-btns">
+          <button class="ab-btn ab-btn-fix" onclick="nav('form-sleep.html')">修改结束时间</button>
+          <button class="ab-btn ab-btn-mark" onclick="markAbnormal()">标记为异常</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MANUAL / SUPPLEMENT MODE -->
+    <div id="manualMode" style="display:none" class="suppl-mode">
+      <!-- Input Mode -->
+      <div class="input-mode-bar">
+        <div class="input-mode-btn active" onclick="setIMode(this)">手动</div>
+        <div class="input-mode-btn" onclick="setIMode(this)">自然语言</div>
+        <div class="input-mode-btn" onclick="setIMode(this)">语音</div>
+      </div>
+
+      <!-- Parse Card -->
+      <div class="parse-card" id="parseCard" style="display:none">
+        <div class="parse-card-title">已识别睡眠信息</div>
+        <div class="parse-field"><span class="parse-field-label">入睡时间</span><span class="parse-field-value">22:30 昨晚</span><span class="parse-field-edit">修改</span></div>
+        <div class="parse-field"><span class="parse-field-label">醒来时间</span><span class="parse-field-value">08:00 今天</span><span class="parse-field-edit">修改</span></div>
+        <div class="parse-field"><span class="parse-field-label">时长</span><span class="parse-field-value">9h 30m</span><span class="parse-field-edit">-</span></div>
+        <div class="parse-btns">
+          <button class="parse-btn parse-btn-retry" onclick="hideParseCard()">重新识别</button>
+          <button class="parse-btn parse-btn-confirm" onclick="saveRecord()">确认并保存</button>
+        </div>
+      </div>
+
+      <div class="form-section-title" style="padding:14px 20px 6px;font-size:12px;font-weight:600;color:var(--sub-text)">时间信息</div>
+      <div class="form-section">
+        <div class="form-row">
+          <span class="form-label">入睡时间</span>
+          <input class="form-input" type="time" value="22:30"/>
+        </div>
+        <div class="form-row">
+          <span class="form-label">醒来时间</span>
+          <input class="form-input" type="time" value="08:00"/>
+        </div>
+        <div class="form-row">
+          <span class="form-label">睡眠时长</span>
+          <span class="form-value" style="color:var(--text);font-weight:600">9h 30m（自动计算）</span>
+        </div>
+      </div>
+
+      <!-- Period -->
+      <div class="form-section-title" style="padding:14px 20px 4px;font-size:12px;font-weight:600;color:var(--sub-text)">睡眠时段</div>
+      <div class="mx-16" style="background:var(--card-bg);border-radius:var(--radius-md);box-shadow:var(--shadow-sm)">
+        <div class="period-row">
+          <div class="chip selected" onclick="selectChip(this)">🌙 夜间</div>
+          <div class="chip" onclick="selectChip(this)">🌤 上午小睡</div>
+          <div class="chip" onclick="selectChip(this)">☀️ 下午小睡</div>
+          <div class="chip" onclick="selectChip(this)">其他</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quality (shown after stop or always in manual) -->
+    <div id="qualitySection">
+      <div class="form-section-title" style="padding:14px 20px 4px;font-size:12px;font-weight:600;color:var(--sub-text)">睡眠质量</div>
+      <div class="mx-16" style="background:var(--card-bg);border-radius:var(--radius-md);box-shadow:var(--shadow-sm)">
+        <div class="quality-row">
+          <div class="quality-btn selected" onclick="selectQuality(this)">
+            <div class="q-emoji">😴</div><div class="q-label">良好</div>
+          </div>
+          <div class="quality-btn" onclick="selectQuality(this)">
+            <div class="q-emoji">😐</div><div class="q-label">一般</div>
+          </div>
+          <div class="quality-btn" onclick="selectQuality(this)">
+            <div class="q-emoji">😿</div><div class="q-label">较差</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section-title" style="padding:14px 20px 4px;font-size:12px;font-weight:600;color:var(--sub-text)">备注（可选）</div>
+      <div class="form-section">
+        <div class="form-row">
+          <input class="form-input" placeholder="如：夜哭了2次" style="text-align:left"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="h-16"></div>
+    <button class="btn-primary" id="mainBtn" onclick="saveRecord()">保存记录</button>
+    <button class="btn-secondary" onclick="nav('home.html')">取消</button>
+    <div class="h-60"></div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+  function nav(p) { window.location.href = p; }
+
+  // Timer
+  let timerRunning = true, seconds = 83 * 60;
+  const timerEl = document.getElementById('timerDisplay');
+  function tick() {
+    if (!timerRunning) return;
+    seconds++;
+    const h = Math.floor(seconds/3600), m = Math.floor((seconds%3600)/60);
+    timerEl.textContent = h > 0 ? `${h}:${String(m).padStart(2,'0')}` : `${m}m`;
+  }
+  setInterval(tick, 1000);
+
+  function stopTimer() {
+    timerRunning = false;
+    document.getElementById('timerDisplay').textContent = '1:24';
+    const btn = document.querySelector('.timer-btn.stop');
+    btn.textContent = '✓ 已结束';
+    btn.classList.remove('stop'); btn.classList.add('start');
+    btn.style.background = 'var(--gray-200)'; btn.style.color = 'var(--text)'; btn.style.boxShadow = 'none';
+    document.getElementById('qualitySection').scrollIntoView({behavior:'smooth'});
+    setTimeout(saveRecord, 800);
+  }
+
+  function markAbnormal() {
+    document.getElementById('abnormalBanner').style.display = 'none';
+    showToast('已标记为异常记录');
+  }
+
+  function switchMode(mode) {
+    document.getElementById('timerMode').style.display   = mode==='timer'  ? 'block' : 'none';
+    document.getElementById('manualMode').style.display  = mode==='manual' ? 'block' : 'none';
+    document.getElementById('tab-timer').classList.toggle('active',  mode==='timer');
+    document.getElementById('tab-manual').classList.toggle('active', mode==='manual');
+  }
+
+  function setIMode(el) {
+    document.querySelectorAll('.input-mode-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    if(el.textContent.includes('自然语言')) document.getElementById('parseCard').style.display='block';
+  }
+  function hideParseCard() { document.getElementById('parseCard').style.display='none'; }
+
+  function selectChip(el) {
+    el.closest('.period-row').querySelectorAll('.chip').forEach(c=>c.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+  function selectQuality(el) {
+    el.closest('.quality-row').querySelectorAll('.quality-btn').forEach(b=>b.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function saveRecord() {
+    showToast('✓ 睡眠记录已保存');
+    setTimeout(() => nav('home.html'), 1600);
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+  }
+</script>
+  <script src="icons-sprite.js"></script>
+</body>
+</html>

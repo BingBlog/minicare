@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>敏宝日记 · 生长记录</title>
+  <link rel="stylesheet" href="common.css"/>
+  <style>
+    /* 测量值大字卡 */
+    .measure-cards {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; padding: 0 16px 4px;
+    }
+    .measure-card {
+      background: var(--card-bg); border-radius: var(--radius-md); padding: 14px 10px;
+      box-shadow: var(--shadow-sm); text-align: center; cursor: pointer;
+      transition: all .15s; border: 1.5px solid transparent;
+    }
+    .measure-card.active { border-color: var(--primary); background: var(--primary-lt); }
+    .mc-icon { display:flex; align-items:center; justify-content:center; margin-bottom: 6px; height:28px; }
+    .mc-val  { font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -0.5px; }
+    .mc-unit { font-size: 12px; font-weight: 500; color: var(--sub-text); }
+    .mc-name { font-size: 11px; color: var(--sub-text); margin-top: 3px; }
+    .measure-card.active .mc-name { color: var(--primary); font-weight: 600; }
+
+    /* 百分位徽章 */
+    .pct-badge {
+      display: inline-block; padding: 2px 8px; border-radius: 12px;
+      font-size: 11px; font-weight: 700; margin-top: 4px;
+    }
+    .pct-low  { background: var(--orange-lt); color: var(--orange-dk); }
+    .pct-mid  { background: var(--green-lt);  color: var(--green-dk); }
+    .pct-high { background: var(--primary-lt); color: var(--primary); }
+
+    /* 生长曲线简版 */
+    .growth-chart {
+      margin: 0 16px; background: var(--card-bg); border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm); padding: 14px 16px; overflow: hidden;
+    }
+    .chart-title { font-size: 13px; font-weight: 700; color: #7A5A60; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+    .chart-body { position: relative; height: 100px; }
+    .chart-grid { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; }
+    .chart-grid-line { width: 100%; height: .5px; background: var(--gray-100); }
+    .chart-svg { position: absolute; inset: 0; }
+    .chart-labels { display: flex; justify-content: space-between; margin-top: 4px; }
+    .chart-label { font-size: 10px; color: var(--gray-400); }
+
+    /* 机构 */
+    .org-chip-row { display: flex; gap: 8px; padding: 8px 16px 14px; flex-wrap: wrap; }
+
+    /* 参考提示 */
+    .ref-banner {
+      margin: 0 16px; background: var(--primary-lt); border: 1px solid var(--primary-md);
+      border-radius: var(--radius-sm); padding: 10px 14px; font-size: 11px; color: #7A5A60; line-height: 1.6;
+    }
+    .ref-banner strong { font-weight: 700; color: var(--primary-dk); }
+
+    /* 上传区 */
+    .upload-area {
+      display: flex; gap: 12px; align-items: center; cursor: pointer;
+    }
+    .upload-thumb {
+      width: 56px; height: 56px; border-radius: var(--radius-sm);
+      background: var(--primary-lt); border: 1.5px dashed var(--primary-md);
+      display: flex; align-items: center; justify-content: center;
+    }
+  </style>
+</head>
+<body>
+<div class="phone">
+  <div class="notch"><div class="notch-pill"></div></div>
+  <div class="status-bar">
+    <span class="status-time">9:41</span>
+    <div class="status-icons">
+      <svg viewBox="0 0 17 12"><rect x="0" y="6" width="3" height="6" rx="1"/><rect x="4.5" y="4" width="3" height="8" rx="1"/><rect x="9" y="2" width="3" height="10" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+      <svg viewBox="0 0 25 12"><rect x="0" y="1" width="22" height="10" rx="3" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="1.5" y="2.5" width="17" height="7" rx="2" fill="currentColor"/><path d="M23 4v4a2 2 0 0 0 0-4z"/></svg>
+    </div>
+  </div>
+
+  <div class="nav-bar">
+    <button class="nav-back" onclick="nav('home.html')">←</button>
+    <span class="nav-title">生长记录</span>
+    <span class="nav-action"></span>
+  </div>
+
+  <div class="scroll-area">
+
+    <!-- Measure Cards -->
+    <div class="form-section-title" style="padding:14px 20px 6px;font-size:12px;font-weight:600;color:var(--sub-text)">本次测量数据</div>
+    <div class="measure-cards">
+      <div class="measure-card active" onclick="setActive(this)">
+        <div class="mc-icon">
+          <svg class="icon icon-md" style="color:#9B8ED8" viewBox="0 0 24 24"><use href="#icon-ruler"></use></svg>
+        </div>
+        <div class="mc-val" id="heightVal">68.0</div>
+        <div class="mc-unit">cm</div>
+        <div class="mc-name">身高/身长</div>
+        <div class="pct-badge pct-mid">P50</div>
+      </div>
+      <div class="measure-card" onclick="setActive(this)">
+        <div class="mc-icon">
+          <svg class="icon icon-md" style="color:#F0B8C8" viewBox="0 0 24 24"><use href="#icon-scale"></use></svg>
+        </div>
+        <div class="mc-val" id="weightVal">7.5</div>
+        <div class="mc-unit">kg</div>
+        <div class="mc-name">体重</div>
+        <div class="pct-badge pct-mid">P50</div>
+      </div>
+      <div class="measure-card" onclick="setActive(this)">
+        <div class="mc-icon">
+          <svg class="icon icon-md" style="color:#B8D8C8" viewBox="0 0 24 24"><use href="#icon-circle"></use></svg>
+        </div>
+        <div class="mc-val" id="hcVal">43.0</div>
+        <div class="mc-unit">cm</div>
+        <div class="mc-name">头围</div>
+        <div class="pct-badge pct-high">P75</div>
+      </div>
+    </div>
+
+    <!-- Input Fields -->
+    <div class="form-section-title" style="padding:14px 20px 6px;font-size:12px;font-weight:600;color:var(--sub-text)">填写数值</div>
+    <div class="form-section">
+      <div class="form-row">
+        <span class="form-label">身高</span>
+        <input class="form-input" id="heightInput" type="number" step="0.1" value="68.0" oninput="syncCard('heightVal',this.value)"/>
+        <span class="form-arrow" style="color:var(--sub-text)">cm</span>
+      </div>
+      <div class="form-row">
+        <span class="form-label">体重</span>
+        <input class="form-input" id="weightInput" type="number" step="0.1" value="7.5" oninput="syncCard('weightVal',this.value)"/>
+        <span class="form-arrow" style="color:var(--sub-text)">kg</span>
+      </div>
+      <div class="form-row">
+        <span class="form-label">头围</span>
+        <input class="form-input" id="hcInput" type="number" step="0.1" value="43.0" oninput="syncCard('hcVal',this.value)"/>
+        <span class="form-arrow" style="color:var(--sub-text)">cm</span>
+      </div>
+      <div class="form-row">
+        <span class="form-label">测量日期</span>
+        <input class="form-input" type="date" value="2026-03-28"/>
+      </div>
+    </div>
+
+    <!-- Institution -->
+    <div class="form-section-title" style="padding:14px 20px 4px;font-size:12px;font-weight:600;color:var(--sub-text)">测量机构（可选）</div>
+    <div class="mx-16" style="background:var(--card-bg);border-radius:var(--radius-md);box-shadow:var(--shadow-sm)">
+      <div class="org-chip-row">
+        <div class="chip selected" onclick="selectChip(this)">儿保门诊</div>
+        <div class="chip" onclick="selectChip(this)">家中自测</div>
+        <div class="chip" onclick="selectChip(this)">社区卫生</div>
+        <div class="chip" onclick="selectChip(this)">其他</div>
+      </div>
+    </div>
+
+    <!-- Upload Report -->
+    <div class="form-section-title" style="padding:14px 20px 4px;font-size:12px;font-weight:600;color:var(--sub-text)">上传测量单（可选）</div>
+    <div class="mx-16" style="background:var(--card-bg);border-radius:var(--radius-md);box-shadow:var(--shadow-sm);padding:14px 16px">
+      <div class="upload-area" onclick="showToast('拍照上传（MVP 原型演示）')">
+        <div class="upload-thumb">
+          <svg class="icon icon-lg" style="color:#F0B8C8" viewBox="0 0 24 24"><use href="#icon-file-text"></use></svg>
+        </div>
+        <div>
+          <div style="font-size:14px;font-weight:600;color:#7A5A60">拍照或上传测量报告</div>
+          <div style="font-size:12px;color:var(--sub-text);margin-top:2px">JPG / PNG，与结构化数据一并保存</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Growth Curve Preview -->
+    <div class="form-section-title" style="padding:14px 20px 4px;font-size:12px;font-weight:600;color:var(--sub-text)">生长曲线预览</div>
+    <div class="growth-chart">
+      <div class="chart-title">
+        <svg class="icon icon-sm" style="color:#9B8ED8" viewBox="0 0 24 24"><use href="#icon-trending-up"></use></svg>
+        体重曲线（过去6次）<span style="font-size:11px;color:var(--sub-text);font-weight:500">WHO 参考</span>
+      </div>
+      <div class="chart-body">
+        <div class="chart-grid">
+          <div class="chart-grid-line"></div>
+          <div class="chart-grid-line"></div>
+          <div class="chart-grid-line"></div>
+          <div class="chart-grid-line"></div>
+        </div>
+        <svg class="chart-svg" viewBox="0 0 320 100" preserveAspectRatio="none">
+          <!-- P25 reference -->
+          <polyline points="0,80 64,74 128,68 192,62 256,56 320,50" stroke="var(--gray-200)" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+          <!-- P50 reference -->
+          <polyline points="0,70 64,63 128,56 192,49 256,42 320,36" stroke="var(--primary-md)" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+          <!-- P75 reference -->
+          <polyline points="0,60 64,52 128,44 192,36 256,28 320,22" stroke="var(--gray-200)" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+          <!-- Baby actual -->
+          <polyline points="0,75 64,67 128,60 192,53 256,47 320,42" stroke="var(--primary)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="0"   cy="75" r="4" fill="var(--primary)" opacity=".7"/>
+          <circle cx="64"  cy="67" r="4" fill="var(--primary)" opacity=".7"/>
+          <circle cx="128" cy="60" r="4" fill="var(--primary)" opacity=".7"/>
+          <circle cx="192" cy="53" r="4" fill="var(--primary)" opacity=".7"/>
+          <circle cx="256" cy="47" r="4" fill="var(--primary)" opacity=".7"/>
+          <circle cx="320" cy="42" r="5" fill="var(--primary)"/>
+          <!-- Labels -->
+          <text x="315" y="32" font-size="9" fill="var(--primary-dk)" text-anchor="end" font-family="sans-serif">7.5kg</text>
+        </svg>
+      </div>
+      <div class="chart-labels">
+        <span class="chart-label">0m</span><span class="chart-label">1m</span>
+        <span class="chart-label">2m</span><span class="chart-label">3m</span>
+        <span class="chart-label">4m</span><span class="chart-label">今天</span>
+      </div>
+    </div>
+
+    <!-- WHO Ref Banner -->
+    <div class="ref-banner mt-12">
+      WHO 参考标准：3月龄男宝 体重 P50 = 6.4kg，小宝目前位于 <strong>P50-P75</strong>，发育良好！<br>
+      <span style="opacity:.75">以上数据仅供参考，请以儿保医生建议为准。</span>
+    </div>
+
+    <div class="h-16"></div>
+    <button class="btn-primary" onclick="saveRecord()">保存记录</button>
+    <button class="btn-secondary" onclick="nav('home.html')">取消</button>
+    <div class="h-60"></div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+  function nav(p) { window.location.href = p; }
+  function setActive(el) {
+    document.querySelectorAll('.measure-card').forEach(c=>c.classList.remove('active'));
+    el.classList.add('active');
+  }
+  function syncCard(id, val) { document.getElementById(id).textContent = val || '-'; }
+  function selectChip(el) {
+    el.closest('.org-chip-row').querySelectorAll('.chip').forEach(c=>c.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+  function saveRecord() {
+    showToast('✓ 生长记录已保存');
+    setTimeout(() => nav('home.html'), 1600);
+  }
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+  }
+</script>
+  <script src="icons-sprite.js"></script>
+</body>
+</html>

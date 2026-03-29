@@ -1,0 +1,52 @@
+/* ════════════════════════════════════════
+   SVG 图标系统
+   用法：<svg class="icon icon-home"><use href="icons/sprite.svg#icon-home"></use></svg>
+   或内联：<svg class="icon"><use href="icons/sprite.svg#icon-{name}"></use></svg>
+   ════════════════════════════════════════ */
+
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+/* 尺寸工具类 */
+.icon-xs  { width: 14px; height: 14px; }
+.icon-sm  { width: 16px; height: 16px; }
+.icon-md  { width: 20px; height: 20px; }
+.icon-lg  { width: 24px; height: 24px; }
+.icon-xl  { width: 28px; height: 28px; }
+.icon-2xl { width: 32px; height: 32px; }
+
+/* 颜色工具类 */
+.icon-primary  { stroke: var(--primary); }
+.icon-sub      { stroke: var(--sub-text); }
+.icon-white    { stroke: #fff; }
+.icon-warning  { stroke: var(--orange); }
+.icon-danger   { stroke: var(--red); }
+.icon-muted    { stroke: var(--gray-400); }
+
+/* 图标按钮容器（含背景色方块） */
+.icon-box {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--primary-lt);
+  flex-shrink: 0;
+}
+.icon-box .icon { width: 22px; height: 22px; stroke: var(--primary); }
+.icon-box.warm  { background: var(--yellow-lt); }
+.icon-box.warm .icon { stroke: var(--yellow-dk); }
+.icon-box.alert { background: var(--red-lt); }
+.icon-box.alert .icon { stroke: var(--red); }
+
+/* 导航 Tab 图标 */
+.tab-icon .icon { width: 22px; height: 22px; stroke: var(--gray-400); }
+.tab-item.active .tab-icon .icon { stroke: var(--primary); }
