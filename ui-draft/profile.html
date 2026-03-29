@@ -97,6 +97,205 @@
     /* Tab Bar 图标颜色规范 */
     .tab-item .tab-icon-svg .icon { color: #F0B8C8; }
     .tab-item.active .tab-icon-svg .icon { color: #E8507A; }
+
+    /* ══ 家庭成员管理弹层 ══ */
+    .family-sheet {
+      width: 100%; background: var(--card-bg);
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      padding: 0 0 32px; max-height: 92%;
+      transform: translateY(100%); transition: transform .3s cubic-bezier(.32,1,.56,1);
+      overflow-y: auto;
+    }
+    .family-overlay.show { opacity: 1; pointer-events: all; }
+    .family-overlay.show .family-sheet { transform: translateY(0); }
+
+    /* 成员卡片 */
+    .member-card {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 20px; transition: background .1s; cursor: pointer;
+      position: relative;
+    }
+    .member-card:not(:last-child)::after {
+      content: ''; position: absolute; bottom: 0; left: 66px; right: 20px;
+      height: .5px; background: var(--gray-100);
+    }
+    .member-card:active { background: var(--gray-50); }
+    .member-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; flex-shrink: 0;
+    }
+    .member-avatar.role-owner { background: linear-gradient(135deg, #F9A8C0, #F87098); box-shadow: 0 2px 8px rgba(248,112,152,.3); }
+    .member-avatar.role-viewer { background: var(--gray-100); }
+    .member-avatar.role-editor { background: #EEF6FF; }
+    .member-name { font-size: 15px; font-weight: 700; color: var(--text); }
+    .member-sub  { font-size: 12px; color: var(--sub-text); margin-top: 2px; }
+    .member-role-badge {
+      margin-left: auto; flex-shrink: 0;
+      font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 10px;
+    }
+    .role-owner-badge  { background: #FFF0F4; color: var(--primary); }
+    .role-editor-badge { background: #EEF6FF; color: #4A90D9; }
+    .role-viewer-badge { background: var(--gray-100); color: var(--sub-text); }
+
+    /* 成员操作底部弹层（二级） */
+    .member-action-sheet {
+      width: 100%; background: var(--card-bg);
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      padding: 0 0 32px;
+      transform: translateY(100%); transition: transform .3s cubic-bezier(.32,1,.56,1);
+    }
+    .member-action-overlay.show { opacity: 1; pointer-events: all; }
+    .member-action-overlay.show .member-action-sheet { transform: translateY(0); }
+    .action-item {
+      display: flex; align-items: center; gap: 16px;
+      padding: 15px 20px; cursor: pointer; transition: background .1s;
+      position: relative;
+    }
+    .action-item:not(:last-child)::after {
+      content: ''; position: absolute; bottom: 0; left: 56px; right: 20px;
+      height: .5px; background: var(--gray-100);
+    }
+    .action-item:active { background: var(--primary-lt); }
+    .action-item-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .action-item-label { font-size: 15px; font-weight: 600; color: var(--text); }
+    .action-item-sub   { font-size: 12px; color: var(--sub-text); margin-top: 2px; }
+    .action-item.danger .action-item-label { color: var(--red); }
+
+    /* 角色选择弹层（三级） */
+    .role-select-overlay {
+      position: absolute; inset: 0; background: rgba(0,0,0,.55); z-index: 500;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity .2s; padding: 24px;
+    }
+    .role-select-overlay.show { opacity: 1; pointer-events: all; }
+    .role-select-box {
+      background: var(--card-bg); border-radius: var(--radius-lg); padding: 24px 20px 20px;
+      width: 100%;
+    }
+    .role-select-title { font-size: 17px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+    .role-select-sub   { font-size: 13px; color: var(--sub-text); margin-bottom: 16px; }
+    .role-option {
+      display: flex; align-items: center; gap: 12px; padding: 12px 14px;
+      border-radius: var(--radius-sm); border: 1.5px solid var(--gray-200);
+      margin-bottom: 8px; cursor: pointer; transition: all .15s;
+    }
+    .role-option.selected { border-color: var(--primary); background: var(--primary-lt); }
+    .role-option-icon { font-size: 22px; flex-shrink: 0; }
+    .role-option-name { font-size: 14px; font-weight: 700; color: var(--text); }
+    .role-option-desc { font-size: 12px; color: var(--sub-text); margin-top: 2px; }
+    .role-radio {
+      width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--gray-300);
+      margin-left: auto; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+      transition: all .15s;
+    }
+    .role-option.selected .role-radio { background: var(--primary); border-color: var(--primary); }
+    .role-option.selected .role-radio::after {
+      content: ''; width: 7px; height: 7px; border-radius: 50%; background: #fff;
+    }
+
+    /* ══ 邀请手机号弹层 ══ */
+    .invite-sheet {
+      width: 100%; background: var(--card-bg);
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      padding: 0 0 32px;
+      transform: translateY(100%); transition: transform .3s cubic-bezier(.32,1,.56,1);
+    }
+    .invite-overlay.show { opacity: 1; pointer-events: all; }
+    .invite-overlay.show .invite-sheet { transform: translateY(0); }
+
+    /* 步骤指示 */
+    .invite-steps {
+      display: flex; align-items: center; justify-content: center;
+      gap: 0; padding: 4px 24px 20px;
+    }
+    .istep {
+      display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1;
+    }
+    .istep-dot {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; transition: all .2s;
+    }
+    .istep-dot.done   { background: var(--primary); color: #fff; }
+    .istep-dot.active { background: var(--primary); color: #fff; box-shadow: 0 0 0 4px var(--primary-lt); }
+    .istep-dot.pending { background: var(--gray-100); color: var(--sub-text); }
+    .istep-label { font-size: 11px; color: var(--sub-text); font-weight: 600; }
+    .istep-label.active { color: var(--primary); }
+    .istep-line { flex: 1; height: 2px; background: var(--gray-100); margin-top: -16px; }
+    .istep-line.done { background: var(--primary); }
+
+    /* 邀请表单内容 */
+    .invite-phone-field {
+      margin: 0 16px; display: flex; align-items: center;
+      background: var(--bg); border-radius: var(--radius-md); padding: 12px 16px;
+      border: 1.5px solid var(--gray-200); gap: 10px; transition: border-color .15s;
+    }
+    .invite-phone-field:focus-within { border-color: var(--primary); }
+    .invite-phone-field input {
+      flex: 1; border: none; outline: none; background: transparent;
+      font-size: 18px; font-weight: 600; color: var(--text); font-family: var(--font);
+      letter-spacing: 1px;
+    }
+    .invite-phone-field input::placeholder { font-size: 15px; font-weight: 400; color: var(--gray-300); letter-spacing: 0; }
+    .invite-phone-prefix {
+      font-size: 18px; font-weight: 600; color: var(--sub-text); flex-shrink: 0;
+    }
+
+    .invite-hint {
+      margin: 10px 16px 0; font-size: 12px; color: var(--sub-text); line-height: 1.6;
+    }
+
+    /* 联系人快速选择 */
+    .invite-contact-row {
+      display: flex; align-items: center; gap: 12px; padding: 11px 20px;
+      cursor: pointer; transition: background .1s; position: relative;
+    }
+    .invite-contact-row:active { background: var(--primary-lt); }
+    .invite-contact-row:not(:last-child)::after {
+      content: ''; position: absolute; bottom: 0; left: 54px; right: 20px;
+      height: .5px; background: var(--gray-100);
+    }
+    .contact-avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 19px; flex-shrink: 0;
+    }
+    .contact-name { font-size: 14px; font-weight: 600; color: var(--text); flex: 1; }
+    .contact-phone { font-size: 12px; color: var(--sub-text); }
+
+    /* 邀请成功状态 */
+    .invite-success {
+      padding: 24px 20px; text-align: center;
+    }
+    .invite-success-icon {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px; margin: 0 auto 16px;
+    }
+    .invite-success-title { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+    .invite-success-desc  { font-size: 14px; color: var(--sub-text); line-height: 1.6; }
+    .invite-success-phone { font-size: 20px; font-weight: 700; color: var(--primary); margin: 12px 0; }
+
+    /* 等待状态横幅 */
+    .pending-banner {
+      margin: 0 16px; padding: 12px 16px;
+      background: #FFF8E6; border-radius: var(--radius-sm); border: 1px solid #F8C870;
+      display: flex; align-items: center; gap: 10px; font-size: 12px; color: #8A6500;
+    }
+    .pending-dot { width: 8px; height: 8px; border-radius: 50%; background: #F8C870; flex-shrink: 0; animation: pulse-pink 2s infinite; }
+
+    /* 权限说明卡片 */
+    .perm-card {
+      margin: 12px 16px 0; padding: 14px 16px;
+      background: var(--primary-lt); border-radius: var(--radius-sm);
+      font-size: 12px; color: var(--sub-text); line-height: 1.7;
+    }
+    .perm-card strong { color: var(--primary); }
   </style>
 </head>
 <body>
@@ -119,11 +318,16 @@
 
     <!-- Profile Hero -->
     <div class="profile-hero" onclick="openEditSheet()">
-      <div class="profile-avatar">🐥</div>
+      <div class="profile-avatar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:42px;height:42px"><path d="M12 2a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/><path d="M5 20a7 7 0 0 1 14 0"/><circle cx="9" cy="10.5" r="1" fill="#fff"/><circle cx="15" cy="10.5" r="1" fill="#fff"/></svg>
+      </div>
       <div>
         <div class="profile-info-name">小宝</div>
         <div class="profile-info-sub">3个月 12天 · 男宝 · 2025年12月16日出生</div>
-        <div class="profile-allergy">⚠️ 牛奶蛋白过敏 · 中度</div>
+        <div class="profile-allergy">
+          <svg class="icon" style="width:11px;height:11px;color:var(--red);fill:none;stroke:currentColor;stroke-width:2.5" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          牛奶蛋白过敏 · 中度
+        </div>
       </div>
       <button class="profile-edit-btn" onclick="event.stopPropagation();openEditSheet()">编辑</button>
     </div>
@@ -141,43 +345,29 @@
     <div class="mx-16 card">
       <div class="setting-row" onclick="toggleSetting('fontSize')">
         <span class="row-icon" style="background:var(--primary-lt)">
-          <svg class="icon icon-md" style="color:#F0B8C8" viewBox="0 0 24 24"><use href="#icon-type"></use></svg>
+          <svg class="icon icon-md" style="color:#F0B8C8;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
         </span>
         <span class="setting-row-label">大字体模式</span>
         <div class="toggle-switch" id="fontSize" onclick="event.stopPropagation();toggleSwitch(this)"></div>
       </div>
     </div>
 
-    <div class="settings-group-title">数据</div>
+    <div class="settings-group-title">家庭</div>
     <div class="mx-16 card">
-      <div class="setting-row" onclick="showToast('导出备份文件')">
+      <div class="setting-row" onclick="openFamilySheet()">
+        <span class="row-icon" style="background:var(--primary-lt)">
+          <svg class="icon icon-md" style="color:#F0B8C8;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </span>
+        <span class="setting-row-label">家庭成员管理</span>
+        <span class="setting-row-value">3人</span>
+        <span class="setting-arrow">›</span>
+      </div>
+      <div class="setting-row" onclick="openInviteSheet()">
         <span class="row-icon" style="background:var(--green-lt)">
-          <svg class="icon icon-md" style="color:#4CAF82" viewBox="0 0 24 24"><use href="#icon-download"></use></svg>
+          <svg class="icon icon-md" style="color:#4CAF82;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
         </span>
-        <span class="setting-row-label">导出数据备份</span>
+        <span class="setting-row-label">邀请家庭成员</span>
         <span class="setting-arrow">›</span>
-      </div>
-      <div class="setting-row" onclick="showToast('已清理 32MB 缓存')">
-        <span class="row-icon" style="background:var(--orange-lt)">
-          <svg class="icon icon-md" style="color:#DDB870" viewBox="0 0 24 24"><use href="#icon-trash-2"></use></svg>
-        </span>
-        <span class="setting-row-label">清理图片缓存</span>
-        <div>
-          <div class="storage-bar mt-4" style="width:100px"><div class="storage-fill" style="width:55%"></div></div>
-          <div style="font-size:10px;color:var(--sub-text);text-align:right;margin-top:2px">已用 120MB</div>
-        </div>
-        <span class="setting-arrow">›</span>
-      </div>
-    </div>
-
-    <div class="settings-group-title" style="color:var(--red)">危险操作</div>
-    <div class="mx-16 card danger-row">
-      <div class="setting-row" onclick="showDeleteConfirm()">
-        <span class="row-icon" style="background:var(--red-lt)">
-          <svg class="icon icon-md" style="color:#F0A0B0" viewBox="0 0 24 24"><use href="#icon-alert-triangle"></use></svg>
-        </span>
-        <span class="setting-row-label">清空本机数据</span>
-        <span class="setting-arrow" style="color:var(--red)">›</span>
       </div>
     </div>
 
@@ -185,21 +375,21 @@
     <div class="mx-16 card">
       <div class="setting-row">
         <span class="row-icon" style="background:var(--primary-lt)">
-          <svg class="icon icon-md" style="color:#F0B8C8" viewBox="0 0 24 24"><use href="#icon-smartphone"></use></svg>
+          <svg class="icon icon-md" style="color:#F0B8C8;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
         </span>
         <span class="setting-row-label">版本号</span>
         <span class="setting-row-value">v1.0.0（MVP）</span>
       </div>
       <div class="setting-row" onclick="showToast('敏宝日记 · 专为敏感宝宝家庭打造')">
         <span class="row-icon" style="background:#FFF1F4">
-          <svg class="icon icon-md" style="color:#F87098" viewBox="0 0 24 24"><use href="#icon-heart"></use></svg>
+          <svg class="icon icon-md" style="color:#F87098;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
         </span>
         <span class="setting-row-label">关于敏宝日记</span>
         <span class="setting-arrow">›</span>
       </div>
       <div class="setting-row" onclick="showToast('隐私政策与用户协议')">
         <span class="row-icon" style="background:var(--gray-100)">
-          <svg class="icon icon-md" style="color:var(--gray-400)" viewBox="0 0 24 24"><use href="#icon-file-text"></use></svg>
+          <svg class="icon icon-md" style="color:var(--gray-400);fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
         </span>
         <span class="setting-row-label">隐私政策</span>
         <span class="setting-arrow">›</span>
@@ -230,7 +420,7 @@
     </div>
   </div>
 
-  <!-- Edit Sheet -->
+  <!-- ══ Edit Sheet（宝宝档案编辑）══ -->
   <div class="edit-modal-overlay" id="editSheet" onclick="closeEditSheet(event)">
     <div class="edit-sheet">
       <div class="sheet-handle"></div>
@@ -266,6 +456,11 @@
         <div class="asev-btn mild"     onclick="selectSev(this)">轻度</div>
         <div class="asev-btn moderate active" onclick="selectSev(this)">中度</div>
         <div class="asev-btn severe"   onclick="selectSev(this)">重度</div>
+        <div class="asev-btn" onclick="selectSev(this)">未知</div>
+      </div>
+      <div style="margin:0 16px 12px;padding:10px 12px;background:var(--primary-lt);border-radius:var(--radius-sm);font-size:12px;color:var(--sub-text);line-height:1.6">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;vertical-align:-2px;color:var(--primary)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> 不确定过敏程度？
+        <span style="color:var(--primary);font-weight:600;cursor:pointer" onclick="showToast('跳转 CDC 评分标准页面')">[查看 CDC 评分标准]</span>
       </div>
 
       <div class="form-section-title" style="padding:4px 20px 4px;font-size:12px;font-weight:600;color:var(--sub-text)">最新生长数据</div>
@@ -294,10 +489,244 @@
     </div>
   </div>
 
+  <!-- ══ 家庭成员管理弹层 ══ -->
+  <div class="edit-modal-overlay family-overlay" id="familySheet" onclick="closeFamilySheet(event)">
+    <div class="family-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-title" style="display:flex;align-items:center;justify-content:space-between;padding-right:20px">
+        <span>家庭成员管理</span>
+        <span style="font-size:13px;color:var(--primary);font-weight:600;cursor:pointer" onclick="openInviteFromFamily()">
+          <svg style="width:14px;height:14px;vertical-align:-2px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;color:var(--primary)" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          邀请成员
+        </span>
+      </div>
+
+      <!-- 成员列表 -->
+      <div class="form-section-title" style="padding:4px 20px 4px;font-size:12px;font-weight:600;color:var(--sub-text)">当前成员（3人）</div>
+      <div class="mx-16" style="background:var(--card-bg);border-radius:var(--radius-md);box-shadow:var(--shadow-sm);overflow:hidden;margin-bottom:12px">
+        <!-- 管理员（创建者） -->
+        <div class="member-card" onclick="openMemberAction('self')">
+          <div class="member-avatar role-owner">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <div style="flex:1;min-width:0">
+            <div class="member-name">妈妈</div>
+            <div class="member-sub">138****5678 · 本账号</div>
+          </div>
+          <div class="member-role-badge role-owner-badge">创建者</div>
+        </div>
+        <!-- 编辑者 -->
+        <div class="member-card" onclick="openMemberAction('dad')">
+          <div class="member-avatar role-editor">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <div style="flex:1;min-width:0">
+            <div class="member-name">爸爸</div>
+            <div class="member-sub">139****9012 · 已加入 2天前</div>
+          </div>
+          <div class="member-role-badge role-editor-badge">编辑者</div>
+        </div>
+        <!-- 查看者 -->
+        <div class="member-card" onclick="openMemberAction('grandma')">
+          <div class="member-avatar role-viewer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <div style="flex:1;min-width:0">
+            <div class="member-name">外婆</div>
+            <div class="member-sub">150****3456 · 已加入 5天前</div>
+          </div>
+          <div class="member-role-badge role-viewer-badge">查看者</div>
+        </div>
+      </div>
+
+      <!-- 等待接受邀请 -->
+      <div class="form-section-title" style="padding:4px 20px 4px;font-size:12px;font-weight:600;color:var(--sub-text)">待接受邀请（1人）</div>
+      <div class="mx-16" style="background:var(--card-bg);border-radius:var(--radius-md);box-shadow:var(--shadow-sm);overflow:hidden;margin-bottom:12px">
+        <div class="member-card">
+          <div class="member-avatar role-viewer" style="background:#FFF8E6"><svg viewBox="0 0 24 24" fill="currentColor" style="width:100%;height:100%;color:#C0922A"><circle cx="12" cy="8" r="3"/><path d="M10 14H4c-1.1 0-2 .9-2 2v4h2v-4h6v4h2v-4c0-1.1-.9-2-2-2Z"/><path d="M14 10h3l2-3h-4c-.6 0-1 .4-1 1v2Z"/></svg></div>
+          <div style="flex:1;min-width:0">
+            <div class="member-name">爷爷</div>
+            <div class="member-sub">186****7890 · 邀请于 1天前</div>
+          </div>
+          <div style="font-size:11px;font-weight:700;color:#C0922A;background:#FFF8E6;border:1px solid #F8C870;padding:3px 9px;border-radius:10px">待接受</div>
+          <svg onclick="showToast('已撤销邀请')" style="width:18px;height:18px;fill:none;stroke:var(--gray-300);stroke-width:2;cursor:pointer;flex-shrink:0;margin-left:6px" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </div>
+      </div>
+
+      <!-- 权限说明 -->
+      <div class="perm-card">
+        <strong>角色说明：</strong>创建者可管理所有成员权限；<strong>编辑者</strong>可查看和新增记录；<strong>查看者</strong>只能浏览记录，无法编辑。
+      </div>
+
+      <div style="height:16px"></div>
+      <button class="btn-secondary mx-16" style="width:calc(100% - 32px)" onclick="closeFamilySheet(null)">关闭</button>
+      <div style="height:16px"></div>
+    </div>
+  </div>
+
+  <!-- ══ 成员操作底部弹层（二级）══ -->
+  <div class="edit-modal-overlay member-action-overlay" id="memberActionSheet" onclick="closeMemberActionSheet(event)">
+    <div class="member-action-sheet">
+      <div class="sheet-handle"></div>
+      <div id="memberActionHeader" style="padding:0 20px 16px">
+        <div style="font-size:16px;font-weight:800;color:var(--text)" id="memberActionName">爸爸</div>
+        <div style="font-size:12px;color:var(--sub-text);margin-top:2px" id="memberActionSub">139****9012 · 编辑者</div>
+      </div>
+      <div id="memberActionItems">
+        <!-- 动态渲染 -->
+      </div>
+      <div style="height:8px"></div>
+      <button class="btn-secondary mx-16" style="width:calc(100% - 32px)" onclick="closeMemberActionSheet(null)">取消</button>
+      <div style="height:8px"></div>
+    </div>
+  </div>
+
+  <!-- ══ 角色修改弹层（三级）══ -->
+  <div class="role-select-overlay" id="roleSelectModal">
+    <div class="role-select-box">
+      <div class="role-select-title">修改权限角色</div>
+      <div class="role-select-sub" id="roleSelectFor">为 爸爸 设置权限</div>
+      <div class="role-option" id="role-editor" onclick="selectRole('editor')">
+        <div class="role-option-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+        <div style="flex:1">
+          <div class="role-option-name">编辑者</div>
+          <div class="role-option-desc">可查看和新增所有记录</div>
+        </div>
+        <div class="role-radio"></div>
+      </div>
+      <div class="role-option" id="role-viewer" onclick="selectRole('viewer')">
+        <div class="role-option-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <div style="flex:1">
+          <div class="role-option-name">查看者</div>
+          <div class="role-option-desc">只能浏览记录，无法新增或修改</div>
+        </div>
+        <div class="role-radio"></div>
+      </div>
+      <div style="height:12px"></div>
+      <div style="display:flex;gap:10px">
+        <button class="confirm-btn confirm-cancel" onclick="closeRoleSelect()">取消</button>
+        <button class="confirm-btn" style="background:var(--primary);color:#fff" onclick="confirmRoleChange()">确认修改</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 邀请家庭成员弹层 ══ -->
+  <div class="edit-modal-overlay invite-overlay" id="inviteSheet" onclick="closeInviteSheet(event)">
+    <div class="invite-sheet" id="inviteSheetContent">
+      <div class="sheet-handle"></div>
+      <div class="sheet-title">邀请家庭成员</div>
+
+      <!-- 步骤指示器 -->
+      <div class="invite-steps" id="inviteSteps">
+        <div class="istep">
+          <div class="istep-dot active" id="step1-dot">1</div>
+          <div class="istep-label active" id="step1-label">输入手机号</div>
+        </div>
+        <div class="istep-line" id="step-line-12"></div>
+        <div class="istep">
+          <div class="istep-dot pending" id="step2-dot">2</div>
+          <div class="istep-label" id="step2-label">设置权限</div>
+        </div>
+        <div class="istep-line" id="step-line-23"></div>
+        <div class="istep">
+          <div class="istep-dot pending" id="step3-dot">3</div>
+          <div class="istep-label" id="step3-label">发送邀请</div>
+        </div>
+      </div>
+
+      <!-- Step 1: 输入手机号 -->
+      <div id="invite-step1">
+        <div class="invite-phone-field">
+          <span class="invite-phone-prefix">+86</span>
+          <input type="tel" id="invitePhone" placeholder="请输入手机号" maxlength="11" oninput="onInvitePhoneInput(this)"/>
+        </div>
+        <div class="invite-hint">输入对方手机号，对方会收到短信邀请链接。加入后可共同记录小宝的成长。</div>
+
+        <!-- 快速联系人 -->
+        <div class="form-section-title" style="padding:16px 20px 4px;font-size:12px;font-weight:600;color:var(--sub-text)">快速选择</div>
+        <div class="mx-16" style="background:var(--card-bg);border-radius:var(--radius-md);box-shadow:var(--shadow-sm);overflow:hidden">
+          <div class="invite-contact-row" onclick="fillPhone('13900001234','爸爸')">
+            <div class="contact-avatar" style="background:#EEF6FF"><svg viewBox="0 0 24 24" fill="none" stroke="#5B8DD9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <div class="contact-name">爸爸</div>
+            <div class="contact-phone">139****1234</div>
+          </div>
+          <div class="invite-contact-row" onclick="fillPhone('15000005678','奶奶')">
+            <div class="contact-avatar" style="background:#FFF8E6"><svg viewBox="0 0 24 24" fill="none" stroke="#DDB870" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <div class="contact-name">奶奶</div>
+            <div class="contact-phone">150****5678</div>
+          </div>
+          <div class="invite-contact-row" onclick="fillPhone('18600009012','姥姥')">
+            <div class="contact-avatar" style="background:#E8F5E9"><svg viewBox="0 0 24 24" fill="none" stroke="#4CAF82" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <div class="contact-name">姥姥</div>
+            <div class="contact-phone">186****9012</div>
+          </div>
+        </div>
+        <div style="height:16px"></div>
+        <button class="btn-primary" id="inviteNextBtn" style="opacity:.4;pointer-events:none" onclick="goInviteStep2()">下一步</button>
+      </div>
+
+      <!-- Step 2: 设置权限 -->
+      <div id="invite-step2" style="display:none">
+        <div style="padding:0 16px 16px">
+          <div style="font-size:13px;color:var(--sub-text);margin-bottom:12px">
+            邀请 <strong style="color:var(--text)" id="inviteTargetName">对方</strong>
+            <span style="color:var(--primary);font-weight:600" id="inviteTargetPhone">138****0000</span>
+            加入家庭，请选择其权限角色：
+          </div>
+          <div class="role-option selected" id="invite-role-editor" onclick="selectInviteRole('editor')">
+            <div class="role-option-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+            <div style="flex:1">
+              <div class="role-option-name">编辑者</div>
+              <div class="role-option-desc">可查看和新增所有记录，适合主要照护者（爸爸、奶奶等）</div>
+            </div>
+            <div class="role-radio"></div>
+          </div>
+          <div class="role-option" id="invite-role-viewer" onclick="selectInviteRole('viewer')">
+            <div class="role-option-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+            <div style="flex:1">
+              <div class="role-option-name">查看者</div>
+              <div class="role-option-desc">只能浏览记录，适合远程关注的长辈</div>
+            </div>
+            <div class="role-radio"></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;padding:0 16px">
+          <button class="btn-secondary" style="flex:1" onclick="backInviteStep1()">上一步</button>
+          <button class="btn-primary" style="flex:1.6" onclick="goInviteStep3()">发送邀请</button>
+        </div>
+      </div>
+
+      <!-- Step 3: 发送成功 -->
+      <div id="invite-step3" style="display:none">
+        <div class="invite-success">
+          <div class="invite-success-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:60px;height:60px;color:#4CAF50"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="invite-success-title">邀请已发送！</div>
+          <div class="invite-success-phone" id="inviteSuccessPhone">138****0000</div>
+          <div class="invite-success-desc">
+            短信邀请已发送至上方手机号。<br/>
+            对方点击链接并登录后，即可以 <strong id="inviteSuccessRole">编辑者</strong> 身份加入家庭。
+          </div>
+        </div>
+        <div class="pending-banner mx-16">
+          <div class="pending-dot"></div>
+          <div>等待对方接受邀请，邀请链接 24小时内有效</div>
+        </div>
+        <div style="height:16px"></div>
+        <button class="btn-primary" onclick="closeInviteSheet(null);openFamilySheet()">查看家庭成员</button>
+        <button class="btn-secondary" onclick="resetInvite()">再邀请一位</button>
+        <div style="height:8px"></div>
+      </div>
+
+      <div style="height:8px"></div>
+    </div>
+  </div>
+
   <!-- Delete Confirm Modal -->
   <div class="confirm-modal" id="deleteConfirm">
     <div class="confirm-box">
-      <div class="confirm-icon">⚠️</div>
+      <div class="confirm-icon">
+        <svg style="width:40px;height:40px;fill:none;stroke:var(--red);stroke-width:2;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
       <div class="confirm-title">确认清空所有数据？</div>
       <div class="confirm-desc">此操作将删除本机所有记录、档案、报告，<strong>无法恢复</strong>。建议先执行「导出数据备份」。</div>
       <div class="confirm-btns">
@@ -310,16 +739,17 @@
   <div class="toast" id="toast"></div>
 </div>
 
+<script src="icons-sprite.js"></script>
 <script>
   function nav(p) { window.location.href = p; }
 
   function toggleSwitch(el) { el.classList.toggle('on'); }
   function toggleSetting(id) { document.getElementById(id).classList.toggle('on'); }
 
+  /* ── 宝宝档案编辑 ── */
   function openEditSheet()  { document.getElementById('editSheet').classList.add('show'); }
   function closeEditSheetDirect() { document.getElementById('editSheet').classList.remove('show'); }
-  function closeEditSheet(e) { if(e.target===document.getElementById('editSheet')) document.getElementById('editSheet').classList.remove('show'); }
-
+  function closeEditSheet(e) { if(e && e.target===document.getElementById('editSheet')) document.getElementById('editSheet').classList.remove('show'); }
   function selectGender(el) {
     el.closest('[style*="gap"]').querySelectorAll('.chip').forEach(c=>c.classList.remove('selected'));
     el.classList.add('selected');
@@ -328,12 +758,210 @@
     el.closest('.allergy-slider').querySelectorAll('.asev-btn').forEach(b=>b.classList.remove('active'));
     el.classList.add('active');
   }
-
   function saveProfile() {
     document.getElementById('editSheet').classList.remove('show');
     showToast('✓ 档案已保存，全局生效');
   }
 
+  /* ── 家庭成员管理弹层 ── */
+  function openFamilySheet() {
+    document.getElementById('familySheet').classList.add('show');
+  }
+  function closeFamilySheet(e) {
+    if (!e || e.target === document.getElementById('familySheet')) {
+      document.getElementById('familySheet').classList.remove('show');
+    }
+  }
+
+  /* ── 成员操作弹层（二级）── */
+  const memberData = {
+    self: { name: '妈妈', sub: '138****5678 · 创建者', isSelf: true },
+    dad:  { name: '爸爸', sub: '139****9012 · 编辑者', isSelf: false },
+    grandma: { name: '外婆', sub: '150****3456 · 查看者', isSelf: false },
+  };
+  function openMemberAction(key) {
+    const m = memberData[key];
+    document.getElementById('memberActionName').textContent = m.name;
+    document.getElementById('memberActionSub').textContent = m.sub;
+    const items = document.getElementById('memberActionItems');
+    if (m.isSelf) {
+      items.innerHTML = `
+        <div class="action-item" onclick="showToast('可在个人资料中修改昵称')">
+          <div class="action-item-icon" style="background:var(--primary-lt)">
+            <svg style="width:18px;height:18px;fill:none;stroke:#F87098;stroke-width:2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </div>
+          <div><div class="action-item-label">编辑昵称</div><div class="action-item-sub">修改在家庭中显示的名称</div></div>
+        </div>`;
+    } else {
+      items.innerHTML = `
+        <div class="action-item" onclick="openRoleSelect('${key}')">
+          <div class="action-item-icon" style="background:#EEF6FF">
+            <svg style="width:18px;height:18px;fill:none;stroke:#4A90D9;stroke-width:2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div><div class="action-item-label">修改权限</div><div class="action-item-sub">当前：${m.sub.split(' · ')[1]}</div></div>
+        </div>
+        <div class="action-item danger" onclick="confirmRemoveMember('${m.name}')">
+          <div class="action-item-icon" style="background:var(--red-lt)">
+            <svg style="width:18px;height:18px;fill:none;stroke:var(--red);stroke-width:2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="18" y1="8" x2="23" y2="13"/><line x1="23" y1="8" x2="18" y2="13"/></svg>
+          </div>
+          <div><div class="action-item-label">移除成员</div><div class="action-item-sub">移除后对方将失去访问权限</div></div>
+        </div>`;
+    }
+    document.getElementById('memberActionSheet').classList.add('show');
+  }
+  function closeMemberActionSheet(e) {
+    if (!e || e.target === document.getElementById('memberActionSheet')) {
+      document.getElementById('memberActionSheet').classList.remove('show');
+    }
+  }
+  function confirmRemoveMember(name) {
+    if (confirm(`确认移除「${name}」？移除后对方将失去对小宝记录的访问权限。`)) {
+      document.getElementById('memberActionSheet').classList.remove('show');
+      showToast('✓ 已移除 ' + name);
+    }
+  }
+
+  /* ── 角色修改（三级）── */
+  let currentEditKey = '';
+  let selectedRoleForEdit = 'editor';
+  function openRoleSelect(key) {
+    currentEditKey = key;
+    const m = memberData[key];
+    const curRole = m.sub.includes('编辑者') ? 'editor' : 'viewer';
+    selectedRoleForEdit = curRole;
+    document.getElementById('roleSelectFor').textContent = '为 ' + m.name + ' 设置权限';
+    document.getElementById('role-editor').classList.toggle('selected', curRole === 'editor');
+    document.getElementById('role-viewer').classList.toggle('selected', curRole === 'viewer');
+    document.getElementById('roleSelectModal').classList.add('show');
+  }
+  function selectRole(r) {
+    selectedRoleForEdit = r;
+    document.getElementById('role-editor').classList.toggle('selected', r === 'editor');
+    document.getElementById('role-viewer').classList.toggle('selected', r === 'viewer');
+  }
+  function closeRoleSelect() { document.getElementById('roleSelectModal').classList.remove('show'); }
+  function confirmRoleChange() {
+    const roleName = selectedRoleForEdit === 'editor' ? '编辑者' : '查看者';
+    const m = memberData[currentEditKey];
+    // 更新显示数据
+    const oldSub = m.sub.split(' · ')[0];
+    memberData[currentEditKey].sub = oldSub + ' · ' + roleName;
+    document.getElementById('roleSelectModal').classList.remove('show');
+    document.getElementById('memberActionSheet').classList.remove('show');
+    showToast('✓ 已将 ' + m.name + ' 设为' + roleName);
+  }
+
+  /* ── 邀请成员弹层 ── */
+  let inviteRole = 'editor';
+  let invitePhoneVal = '';
+  let inviteNameVal = '';
+
+  function openInviteSheet() {
+    resetInvite();
+    document.getElementById('inviteSheet').classList.add('show');
+  }
+  function openInviteFromFamily() {
+    document.getElementById('familySheet').classList.remove('show');
+    openInviteSheet();
+  }
+  function closeInviteSheet(e) {
+    if (!e || e.target === document.getElementById('inviteSheet')) {
+      document.getElementById('inviteSheet').classList.remove('show');
+    }
+  }
+  function onInvitePhoneInput(input) {
+    const val = input.value.replace(/\D/g, '');
+    input.value = val;
+    const btn = document.getElementById('inviteNextBtn');
+    if (val.length === 11) {
+      btn.style.opacity = '1';
+      btn.style.pointerEvents = '';
+    } else {
+      btn.style.opacity = '.4';
+      btn.style.pointerEvents = 'none';
+    }
+  }
+  function fillPhone(phone, name) {
+    inviteNameVal = name;
+    document.getElementById('invitePhone').value = phone;
+    onInvitePhoneInput(document.getElementById('invitePhone'));
+  }
+
+  function setInviteStep(step) {
+    // 更新步骤点
+    const steps = [
+      { dot: 'step1-dot', label: 'step1-label', num: 1 },
+      { dot: 'step2-dot', label: 'step2-label', num: 2 },
+      { dot: 'step3-dot', label: 'step3-label', num: 3 },
+    ];
+    steps.forEach((s, i) => {
+      const dotEl = document.getElementById(s.dot);
+      const lblEl = document.getElementById(s.label);
+      if (i + 1 < step) {
+        dotEl.className = 'istep-dot done'; dotEl.textContent = '✓';
+        lblEl.className = 'istep-label';
+      } else if (i + 1 === step) {
+        dotEl.className = 'istep-dot active'; dotEl.textContent = s.num;
+        lblEl.className = 'istep-label active';
+      } else {
+        dotEl.className = 'istep-dot pending'; dotEl.textContent = s.num;
+        lblEl.className = 'istep-label';
+      }
+    });
+    if (document.getElementById('step-line-12'))
+      document.getElementById('step-line-12').className = 'istep-line' + (step > 1 ? ' done' : '');
+    if (document.getElementById('step-line-23'))
+      document.getElementById('step-line-23').className = 'istep-line' + (step > 2 ? ' done' : '');
+    // 显示对应面板
+    document.getElementById('invite-step1').style.display = step === 1 ? '' : 'none';
+    document.getElementById('invite-step2').style.display = step === 2 ? '' : 'none';
+    document.getElementById('invite-step3').style.display = step === 3 ? '' : 'none';
+  }
+
+  function goInviteStep2() {
+    const phone = document.getElementById('invitePhone').value;
+    invitePhoneVal = phone;
+    if (!inviteNameVal) inviteNameVal = '对方';
+    // 更新 step2 显示
+    const masked = phone.substring(0,3) + '****' + phone.substring(7);
+    document.getElementById('inviteTargetName').textContent = inviteNameVal + ' ';
+    document.getElementById('inviteTargetPhone').textContent = masked;
+    // 重置角色选择为编辑者
+    inviteRole = 'editor';
+    document.getElementById('invite-role-editor').classList.add('selected');
+    document.getElementById('invite-role-viewer').classList.remove('selected');
+    setInviteStep(2);
+  }
+  function backInviteStep1() { setInviteStep(1); }
+
+  function selectInviteRole(r) {
+    inviteRole = r;
+    document.getElementById('invite-role-editor').classList.toggle('selected', r === 'editor');
+    document.getElementById('invite-role-viewer').classList.toggle('selected', r === 'viewer');
+  }
+
+  function goInviteStep3() {
+    const phone = invitePhoneVal;
+    const masked = phone.substring(0,3) + '****' + phone.substring(7);
+    document.getElementById('inviteSuccessPhone').textContent = masked;
+    document.getElementById('inviteSuccessRole').textContent = inviteRole === 'editor' ? '编辑者' : '查看者';
+    setInviteStep(3);
+  }
+
+  function resetInvite() {
+    invitePhoneVal = '';
+    inviteNameVal = '';
+    inviteRole = 'editor';
+    document.getElementById('invitePhone').value = '';
+    const btn = document.getElementById('inviteNextBtn');
+    btn.style.opacity = '.4';
+    btn.style.pointerEvents = 'none';
+    setInviteStep(1);
+    document.getElementById('inviteSheet').classList.remove('show');
+    setTimeout(() => document.getElementById('inviteSheet').classList.add('show'), 50);
+  }
+
+  /* ── 删除确认 ── */
   function showDeleteConfirm() { document.getElementById('deleteConfirm').classList.add('show'); }
   function closeDeleteConfirm() { document.getElementById('deleteConfirm').classList.remove('show'); }
   function executeDelete() {
@@ -347,6 +975,5 @@
     setTimeout(() => t.classList.remove('show'), 2200);
   }
 </script>
-  <script src="icons-sprite.js"></script>
 </body>
 </html>

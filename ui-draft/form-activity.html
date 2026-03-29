@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-  <title>敏宝日记 · 活动与状态</title>
+  <title>敏宝日记 · 活动记录</title>
   <link rel="stylesheet" href="common.css"/>
   <style>
     .section-card {
@@ -17,23 +17,7 @@
     }
     .sc-sub-title svg.icon { width:16px; height:16px; }
 
-    /* Diaper */
-    .diaper-row { display: flex; gap: 8px; padding: 12px 16px 14px; flex-wrap: wrap; }
-
-    /* Poop */
-    .poop-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; padding: 8px 16px 14px; }
-    .poop-item {
-      display: flex; flex-direction: column; align-items: center; gap: 4px;
-      padding: 10px 4px; border-radius: var(--radius-sm);
-      border: 1.5px solid var(--gray-200); cursor: pointer; transition: all .15s;
-    }
-    .poop-item.selected { border-color: var(--orange); background: var(--orange-lt); }
-    .poop-item .pi-emoji { font-size: 22px; }
-    .poop-item .pi-label { font-size: 11px; color: var(--sub-text); font-weight: 500; }
-    .poop-item.selected .pi-label { color: var(--orange-dk); font-weight: 600; }
-    .poop-item:active { transform: scale(.93); }
-
-    /* Spirit / Mood */
+    /* Activity Type */
     .mood-row { display: flex; gap: 8px; padding: 10px 16px 14px; }
     .mood-btn {
       flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
@@ -41,50 +25,10 @@
       border: 1.5px solid var(--gray-200); cursor: pointer; transition: all .15s;
     }
     .mood-btn.selected { border-color: var(--primary); background: var(--primary-lt); }
-    .mood-btn .mb-emoji { font-size: 22px; }
+    .mood-btn .mb-icon { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
     .mood-btn .mb-label { font-size: 11px; color: var(--sub-text); font-weight: 500; }
     .mood-btn.selected .mb-label { color: var(--primary); font-weight: 600; }
     .mood-btn:active { transform: scale(.93); }
-
-    /* Allergy */
-    .allergy-severity {
-      display: flex; gap: 8px; padding: 10px 16px 14px; flex-wrap: wrap;
-    }
-    .sev-btn {
-      flex: 1; padding: 10px 8px; border-radius: var(--radius-sm); text-align: center;
-      border: 1.5px solid var(--gray-200); cursor: pointer; transition: all .15s;
-    }
-    .sev-btn .sev-label { font-size: 13px; font-weight: 600; }
-    .sev-btn.mild { border-color: var(--green); background: var(--green-lt); }
-    .sev-btn.moderate { border-color: var(--orange); background: var(--orange-lt); }
-    .sev-btn.severe { border-color: var(--red); background: var(--red-lt); }
-    .sev-btn.mild .sev-label { color: var(--green-dk); }
-    .sev-btn.moderate .sev-label { color: var(--orange-dk); }
-    .sev-btn.severe .sev-label { color: var(--red); }
-    .sev-btn:active { transform: scale(.95); }
-
-    .allergy-grid {
-      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; padding: 8px 16px 14px;
-    }
-    .allergy-item {
-      padding: 10px 8px; border-radius: var(--radius-sm); text-align: center;
-      border: 1.5px solid var(--gray-200); cursor: pointer; transition: all .15s;
-      font-size: 13px; font-weight: 500; color: var(--sub-text);
-    }
-    .allergy-item.selected { border-color: var(--red); background: var(--red-lt); color: var(--red); font-weight: 600; }
-    .allergy-item:active { transform: scale(.95); }
-
-    /* Photo upload */
-    .photo-area {
-      display: flex; gap: 10px; padding: 10px 16px 14px; flex-wrap: wrap;
-    }
-    .photo-thumb {
-      width: 64px; height: 64px; border-radius: var(--radius-sm);
-      background: var(--primary-lt); border: 1.5px dashed var(--primary-md);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 24px; cursor: pointer;
-    }
-    .photo-add { background: var(--gray-100); border-color: var(--gray-300); color: var(--gray-400); font-size: 28px; }
 
     /* Count badge */
     .count-badge {
@@ -93,6 +37,18 @@
     .count-btn { width:24px;height:24px;border-radius:50%;border:1.5px solid var(--gray-200);background:var(--card-bg);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .1s; }
     .count-btn:active { background:var(--primary-lt); border-color:var(--primary-md); }
     .count-num { font-size:14px;font-weight:700;color:var(--text);min-width:16px;text-align:center; }
+
+    /* Duration slider */
+    .duration-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; }
+    .duration-btn {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1.5px solid var(--gray-200); background: var(--card-bg);
+      font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+    .duration-btn:active { background: var(--primary-lt); border-color: var(--primary); }
+    .duration-display { flex: 1; text-align: center; }
+    .duration-val { font-size: 28px; font-weight: 800; color: var(--text); }
+    .duration-unit { font-size: 12px; color: var(--sub-text); }
   </style>
 </head>
 <body>
@@ -108,7 +64,7 @@
 
   <div class="nav-bar">
     <button class="nav-back" onclick="nav('home.html')">←</button>
-    <span class="nav-title">活动与状态</span>
+    <span class="nav-title">活动记录</span>
     <span class="nav-action"></span>
   </div>
 
@@ -123,100 +79,46 @@
       </div>
     </div>
 
-    <!-- Diaper / 换尿布 -->
+    <!-- Activity Type -->
     <div class="section-card">
       <div class="sc-sub-title">
-        <svg class="icon" style="color:#F0B8C8" viewBox="0 0 24 24"><use href="#icon-droplets"></use></svg>
-        换尿布
+        <svg class="icon" style="color:#DDB870" viewBox="0 0 24 24"><use href="#icon-activity"></use></svg>
+        活动类型
       </div>
-      <div class="diaper-row">
-        <div class="chip selected" onclick="toggleChip(this)">湿尿布</div>
-        <div class="chip" onclick="toggleChip(this)">大便</div>
-        <div class="chip" onclick="toggleChip(this)">都有</div>
-        <div class="chip" onclick="toggleChip(this)">未换</div>
-      </div>
-      <div class="form-row" style="padding-top:4px">
-        <span class="form-label">今日次数</span>
-        <div class="count-badge">
-          <div class="count-btn" onclick="countChange(-1,'diaperCount')">−</div>
-          <span class="count-num" id="diaperCount">3</span>
-          <div class="count-btn" onclick="countChange(1,'diaperCount')">＋</div>
-        </div>
-        <span class="form-value" style="flex:1;text-align:right"></span>
+      <div class="mood-row">
+        <div class="mood-btn selected" onclick="selectMood(this)"><div class="mb-icon" style="background:#FFF0F4"><svg style="width:18px;height:18px;fill:none;stroke:#F87098;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><use href="#icon-activity"/></svg></div><div class="mb-label">爬走练习</div></div>
+        <div class="mood-btn" onclick="selectMood(this)"><div class="mb-icon" style="background:#EEF6FF"><svg style="width:18px;height:18px;fill:none;stroke:#4A90D9;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><use href="#icon-eye"/></svg></div><div class="mb-label">视力活动</div></div>
+        <div class="mood-btn" onclick="selectMood(this)"><div class="mb-icon" style="background:#E8F5E9"><svg style="width:18px;height:18px;fill:none;stroke:#4CAF82;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><use href="#icon-droplets"/></svg></div><div class="mb-label">运动活动</div></div>
+        <div class="mood-btn" onclick="selectMood(this)"><div class="mb-icon" style="background:#FFFDE7"><svg style="width:18px;height:18px;fill:none;stroke:#C0922A;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><use href="#icon-sun"/></svg></div><div class="mb-label">户外活动</div></div>
       </div>
     </div>
 
-    <!-- Poop -->
+    <!-- Duration -->
     <div class="section-card">
       <div class="sc-sub-title">
-        <svg class="icon" style="color:#DDB870" viewBox="0 0 24 24"><use href="#icon-info"></use></svg>
-        大便性状
+        <svg class="icon" style="color:#F0B8C8" viewBox="0 0 24 24"><use href="#icon-timer"></use></svg>
+        活动时长
       </div>
-      <div class="poop-grid">
-        <div class="poop-item selected" onclick="selectPoop(this)"><div class="pi-emoji">💛</div><div class="pi-label">正常软便</div></div>
-        <div class="poop-item" onclick="selectPoop(this)"><div class="pi-emoji">🟢</div><div class="pi-label">稀便</div></div>
-        <div class="poop-item" onclick="selectPoop(this)"><div class="pi-emoji">💧</div><div class="pi-label">水样便</div></div>
-        <div class="poop-item" onclick="selectPoop(this)"><div class="pi-emoji">⚪</div><div class="pi-label">干硬粒</div></div>
-        <div class="poop-item" onclick="selectPoop(this)"><div class="pi-emoji">🔴</div><div class="pi-label">血丝便</div></div>
-        <div class="poop-item" onclick="selectPoop(this)"><div class="pi-emoji">🟤</div><div class="pi-label">正常成形</div></div>
-      </div>
-      <div class="form-row" style="padding-top:0">
-        <span class="form-label" style="font-size:12px;color:var(--sub-text)">颜色</span>
-        <div class="chip-row" style="padding:0;gap:6px;flex:1;justify-content:flex-end">
-          <div class="chip" style="padding:4px 10px;font-size:11px" onclick="toggleChip(this)">黄色</div>
-          <div class="chip selected" style="padding:4px 10px;font-size:11px" onclick="toggleChip(this)">棕黄</div>
-          <div class="chip" style="padding:4px 10px;font-size:11px" onclick="toggleChip(this)">绿色</div>
+      <div class="duration-row">
+        <button class="duration-btn" onclick="changeDuration(-5)">−</button>
+        <div class="duration-display">
+          <div class="duration-val" id="durationVal">15</div>
+          <div class="duration-unit">分钟</div>
         </div>
+        <button class="duration-btn" onclick="changeDuration(5)">＋</button>
       </div>
     </div>
 
-    <!-- Spirit -->
+    <!-- Intensity -->
     <div class="section-card">
       <div class="sc-sub-title">
         <svg class="icon" style="color:#DDB870" viewBox="0 0 24 24"><use href="#icon-star"></use></svg>
-        精神状态
+        活动强度
       </div>
       <div class="mood-row">
-        <div class="mood-btn selected" onclick="selectMood(this)"><div class="mb-emoji">😄</div><div class="mb-label">活跃良好</div></div>
-        <div class="mood-btn" onclick="selectMood(this)"><div class="mb-emoji">😐</div><div class="mb-label">一般</div></div>
-        <div class="mood-btn" onclick="selectMood(this)"><div class="mb-emoji">😢</div><div class="mb-label">哭闹</div></div>
-        <div class="mood-btn" onclick="selectMood(this)"><div class="mb-emoji">😴</div><div class="mb-label">嗜睡</div></div>
-      </div>
-    </div>
-
-    <!-- Allergy Symptoms -->
-    <div class="section-card">
-      <div class="sc-sub-title">
-        <svg class="icon" style="color:#F0A0B0" viewBox="0 0 24 24"><use href="#icon-alert-triangle"></use></svg>
-        过敏症状（多选，无则跳过）
-      </div>
-      <div class="allergy-grid">
-        <div class="allergy-item selected" onclick="toggleAllergy(this)">皮疹/湿疹</div>
-        <div class="allergy-item" onclick="toggleAllergy(this)">荨麻疹</div>
-        <div class="allergy-item" onclick="toggleAllergy(this)">腹泻</div>
-        <div class="allergy-item" onclick="toggleAllergy(this)">呕吐</div>
-        <div class="allergy-item" onclick="toggleAllergy(this)">鼻塞/流鼻涕</div>
-        <div class="allergy-item" onclick="toggleAllergy(this)">打喷嚏</div>
-        <div class="allergy-item" onclick="toggleAllergy(this)">眼睛红肿</div>
-        <div class="allergy-item" onclick="toggleAllergy(this)">血便</div>
-        <div class="allergy-item" onclick="toggleAllergy(this)">呼吸急促</div>
-      </div>
-      <!-- Severity (shown when symptom selected) -->
-      <div id="severitySection">
-        <div class="form-section-title" style="padding:4px 16px;font-size:12px;color:var(--sub-text)">症状程度</div>
-        <div class="allergy-severity">
-          <div class="sev-btn mild" onclick="selectSev(this)"><div class="sev-label">轻度</div></div>
-          <div class="sev-btn moderate active-sev" onclick="selectSev(this)" style="border-width:2px"><div class="sev-label">中度 ✓</div></div>
-          <div class="sev-btn severe" onclick="selectSev(this)"><div class="sev-label">重度</div></div>
-        </div>
-        <!-- Photo -->
-        <div class="form-section-title" style="padding:4px 16px;font-size:12px;color:var(--sub-text)">症状拍照（可选）</div>
-        <div class="photo-area">
-          <div class="photo-thumb" title="症状照片1">
-            <svg class="icon icon-lg" style="color:#F0B8C8" viewBox="0 0 24 24"><use href="#icon-camera"></use></svg>
-          </div>
-          <div class="photo-add photo-thumb" onclick="addPhoto()">＋</div>
-        </div>
+        <div class="mood-btn" onclick="selectMood(this)"><div class="mb-icon" style="background:#E8F5E9"><svg style="width:18px;height:18px;fill:none;stroke:#4CAF82;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><use href="#icon-pause"/></svg></div><div class="mb-label">轻松</div></div>
+        <div class="mood-btn selected" onclick="selectMood(this)"><div class="mb-icon" style="background:#FFF8E6"><svg style="width:18px;height:18px;fill:none;stroke:#DDB870;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><use href="#icon-play"/></svg></div><div class="mb-label">适中</div></div>
+        <div class="mood-btn" onclick="selectMood(this)"><div class="mb-icon" style="background:#FFF0F4"><svg style="width:18px;height:18px;fill:none;stroke:#F87098;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><use href="#icon-trending-up"/></svg></div><div class="mb-label">活跃</div></div>
       </div>
     </div>
 
@@ -240,29 +142,19 @@
 <script>
   function nav(p) { window.location.href = p; }
 
-  function toggleChip(el) { el.classList.toggle('selected'); }
-  function selectPoop(el) {
-    el.closest('.poop-grid').querySelectorAll('.poop-item').forEach(i=>i.classList.remove('selected'));
-    el.classList.add('selected');
-  }
   function selectMood(el) {
     el.closest('.mood-row').querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('selected'));
     el.classList.add('selected');
   }
-  function toggleAllergy(el) { el.classList.toggle('selected'); }
-  function selectSev(el) {
-    el.closest('.allergy-severity').querySelectorAll('.sev-btn').forEach(b => b.style.borderWidth='1.5px');
-    el.style.borderWidth = '2.5px';
-  }
-  function addPhoto() { showToast('拍照功能（MVP 原型演示）'); }
 
-  function countChange(delta, id) {
-    const el = document.getElementById(id);
-    el.textContent = Math.max(0, parseInt(el.textContent) + delta);
+  let duration = 15;
+  function changeDuration(delta) {
+    duration = Math.max(5, Math.min(120, duration + delta));
+    document.getElementById('durationVal').textContent = duration;
   }
 
   function saveRecord() {
-    showToast('✓ 状态记录已保存');
+    showToast('✓ 活动记录已保存');
     setTimeout(() => nav('home.html'), 1600);
   }
 

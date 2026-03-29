@@ -6,23 +6,6 @@
   <title>敏宝日记 · 报告</title>
   <link rel="stylesheet" href="common.css"/>
   <style>
-    /* Report type cards */
-    .report-type-scroll {
-      display: flex; gap: 10px; padding: 8px 16px 4px; overflow-x: auto;
-    }
-    .report-type-scroll::-webkit-scrollbar { display: none; }
-    .rtype-card {
-      flex-shrink: 0; width: 88px; background: var(--card-bg);
-      border-radius: var(--radius-md); padding: 14px 10px;
-      text-align: center; cursor: pointer; box-shadow: var(--shadow-sm);
-      border: 1.5px solid transparent; transition: all .15s;
-    }
-    .rtype-card.selected { border-color: var(--primary); background: var(--primary-lt); }
-    .rtype-card:active { transform: scale(.95); }
-    .rtype-icon { font-size: 26px; margin-bottom: 6px; }
-    .rtype-name { font-size: 12px; font-weight: 600; color: var(--text); }
-    .rtype-card.selected .rtype-name { color: var(--primary); }
-
     /* Date Range */
     .date-range-bar {
       display: flex; gap: 0; margin: 10px 16px 0;
@@ -33,22 +16,6 @@
       font-size: 13px; font-weight: 600; color: var(--sub-text); cursor: pointer; transition: all .2s;
     }
     .dr-btn.active { background: var(--card-bg); color: var(--text); box-shadow: var(--shadow-sm); }
-
-    /* Module Checkboxes */
-    .module-check-row {
-      display: flex; align-items: center; gap: 10px; padding: 12px 16px; cursor: pointer; position: relative;
-    }
-    .module-check-row:not(:last-child)::after {
-      content:''; position:absolute; bottom:0; left:16px; right:0; height:.5px; background:var(--gray-100);
-    }
-    .mc-box {
-      width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--gray-300);
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all .15s;
-    }
-    .mc-box.checked { background: var(--primary); border-color: var(--primary); }
-    .mc-box.checked::after { content:'✓'; color:#fff; font-size:13px; font-weight:700; }
-    .mc-label { font-size: 15px; font-weight: 500; color: var(--text); flex: 1; }
-    .mc-desc  { font-size: 12px; color: var(--sub-text); }
 
     /* Preview card */
     .preview-card {
@@ -61,7 +28,7 @@
     .preview-header-title { font-size: 16px; font-weight: 700; }
     .preview-header-sub   { font-size: 12px; opacity: .85; margin-top: 3px; }
     .preview-section { padding: 12px 16px; border-bottom: .5px solid var(--gray-100); }
-    .preview-section-title { font-size: 12px; font-weight: 700; color: var(--sub-text); margin-bottom: 8px; letter-spacing: .5px; text-transform: uppercase; }
+    .preview-section-title { font-size: 12px; font-weight: 700; color: var(--sub-text); margin-bottom: 8px; letter-spacing: .5px; }
     .preview-stat-row { display: flex; gap: 16px; }
     .preview-stat { text-align: center; }
     .ps-val  { font-size: 20px; font-weight: 800; color: var(--text); }
@@ -113,6 +80,44 @@
       border-radius: 50%; animation: spin 1s linear infinite;
     }
 
+    /* Full Report Modal */
+    .report-modal-overlay {
+      position: absolute; inset: 0; background: rgba(0,0,0,.5); z-index: 200;
+      opacity: 0; pointer-events: none; transition: opacity .25s;
+      display: flex; flex-direction: column;
+    }
+    .report-modal-overlay.show { opacity: 1; pointer-events: all; }
+    .report-modal {
+      background: var(--card-bg); flex: 1; margin-top: 48px;
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      transform: translateY(100%); transition: transform .3s cubic-bezier(.32,1,.56,1);
+      overflow-y: auto; display: flex; flex-direction: column;
+    }
+    .report-modal-overlay.show .report-modal { transform: translateY(0); }
+    .report-modal-header {
+      padding: 16px 18px; background: linear-gradient(135deg, var(--primary), var(--primary-dk));
+      color: #fff; flex-shrink: 0; position: sticky; top: 0; z-index: 2;
+      display: flex; align-items: flex-start; gap: 12px;
+    }
+    .report-modal-close {
+      width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,.25);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; cursor: pointer; flex-shrink: 0; color: #fff; font-weight: 300;
+    }
+    .report-modal-body { padding: 0 0 80px; }
+    .report-section { padding: 14px 16px; border-bottom: .5px solid var(--gray-100); }
+    .rs-title { font-size: 13px; font-weight: 700; color: var(--sub-text); margin-bottom: 10px; letter-spacing: .5px; display: flex; align-items: center; gap: 6px; }
+    .rs-stat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 8px; }
+    .rs-stat { background: var(--bg); border-radius: var(--radius-sm); padding: 10px; text-align: center; }
+    .rs-stat-val { font-size: 18px; font-weight: 800; color: var(--text); }
+    .rs-stat-u { font-size: 10px; color: var(--sub-text); }
+    .rs-stat-name { font-size: 10px; color: var(--sub-text); margin-top: 2px; }
+    .rs-note { font-size: 12px; color: var(--sub-text); line-height: 1.6; margin-top: 8px; }
+    .rs-badge { display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700; }
+    .rs-badge-green { background: #DCFCE7; color: #166534; }
+    .rs-badge-red   { background: var(--red-lt); color: var(--red); }
+    .rs-badge-yellow{ background: var(--yellow-lt); color: var(--yellow-dk); }
+
     /* Tab Bar 图标颜色规范 */
     .tab-item .tab-icon-svg .icon { color: #F0B8C8; }
     .tab-item.active .tab-icon-svg .icon { color: #E8507A; }
@@ -132,45 +137,10 @@
   <!-- Title -->
   <div style="padding:12px 20px 4px;background:var(--bg);flex-shrink:0">
     <div style="font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.5px">报告</div>
-    <div style="font-size:13px;color:var(--sub-text);margin-top:2px">生成 PDF 报告 · 一键分享给医生</div>
+    <div style="font-size:13px;color:var(--sub-text);margin-top:2px">生成综合报告 · 一键分享给医生</div>
   </div>
 
   <div class="scroll-area">
-
-    <!-- Report Types -->
-    <div class="section-header" style="padding-top:14px"><span class="section-title">报告类型</span></div>
-    <div class="report-type-scroll">
-      <div class="rtype-card selected" onclick="selectType(this)">
-        <div class="rtype-icon">
-          <svg class="icon icon-xl" style="color:#F0B8C8" viewBox="0 0 24 24"><use href="#icon-milk"></use></svg>
-        </div>
-        <div class="rtype-name">日常护理</div>
-      </div>
-      <div class="rtype-card" onclick="selectType(this)">
-        <div class="rtype-icon">
-          <svg class="icon icon-xl" style="color:#9B8ED8" viewBox="0 0 24 24"><use href="#icon-ruler"></use></svg>
-        </div>
-        <div class="rtype-name">生长发育</div>
-      </div>
-      <div class="rtype-card" onclick="selectType(this)">
-        <div class="rtype-icon">
-          <svg class="icon icon-xl" style="color:#F0A0B0" viewBox="0 0 24 24"><use href="#icon-alert-triangle"></use></svg>
-        </div>
-        <div class="rtype-name">症状追踪</div>
-      </div>
-      <div class="rtype-card" onclick="selectType(this)">
-        <div class="rtype-icon">
-          <svg class="icon icon-xl" style="color:#DDB870" viewBox="0 0 24 24"><use href="#icon-refresh-cw"></use></svg>
-        </div>
-        <div class="rtype-name">转奶进度</div>
-      </div>
-      <div class="rtype-card" onclick="selectType(this)">
-        <div class="rtype-icon">
-          <svg class="icon icon-xl" style="color:#F0B8C8" viewBox="0 0 24 24"><use href="#icon-clipboard-list"></use></svg>
-        </div>
-        <div class="rtype-name">综合报告</div>
-      </div>
-    </div>
 
     <!-- Date Range -->
     <div class="section-header" style="padding-top:14px"><span class="section-title">时间范围</span></div>
@@ -181,41 +151,16 @@
       <div class="dr-btn" onclick="selectRange(this)">自定义</div>
     </div>
 
-    <!-- Include Modules -->
-    <div class="section-header" style="padding-top:14px"><span class="section-title">包含模块</span></div>
-    <div class="mx-16 card">
-      <div class="module-check-row" onclick="toggleMC(this)">
-        <div class="mc-box checked"></div>
-        <div style="flex:1"><div class="mc-label">饮食记录</div><div class="mc-desc">奶量·辅食·营养素·转奶进度</div></div>
-      </div>
-      <div class="module-check-row" onclick="toggleMC(this)">
-        <div class="mc-box checked"></div>
-        <div style="flex:1"><div class="mc-label">睡眠数据</div><div class="mc-desc">时长·质量·小睡次数</div></div>
-      </div>
-      <div class="module-check-row" onclick="toggleMC(this)">
-        <div class="mc-box checked"></div>
-        <div style="flex:1"><div class="mc-label">症状记录</div><div class="mc-desc">过敏症状·严重程度·时间线</div></div>
-      </div>
-      <div class="module-check-row" onclick="toggleMC(this)">
-        <div class="mc-box"></div>
-        <div style="flex:1"><div class="mc-label">生长数据</div><div class="mc-desc">身高·体重·头围·百分位</div></div>
-      </div>
-      <div class="module-check-row" onclick="toggleMC(this)">
-        <div class="mc-box"></div>
-        <div style="flex:1"><div class="mc-label">医疗记录</div><div class="mc-desc">就诊记录·诊断·检查结果</div></div>
-      </div>
-    </div>
-
     <!-- Generate Panel -->
-    <div class="section-header" style="padding-top:14px"><span class="section-title">生成报告</span></div>
+    <div class="section-header" style="padding-top:14px"><span class="section-title">生成综合报告</span></div>
     <div class="gen-panel">
       <div class="gen-info">
         <div class="gen-info-icon">
           <svg class="icon icon-xl" style="color:#F0B8C8" viewBox="0 0 24 24"><use href="#icon-file-text"></use></svg>
         </div>
         <div class="gen-info-text">
-          将生成 <strong>日常护理报告</strong>，覆盖 <strong>2026年3月21日—3月28日</strong>（7天），
-          包含饮食·睡眠·症状 3 个模块，约 2～4 页 PDF。
+          将生成 <strong>综合报告</strong>，覆盖 <strong id="rangeText">2026年3月21日—3月28日（7天）</strong>，
+          包含饮食·睡眠·活动·尿布·生长·健康·医疗·表现全部模块，约 4～6 页 PDF。
         </div>
       </div>
       <div id="genLoading" style="display:none" class="gen-loading">
@@ -230,7 +175,7 @@
       <div class="section-header"><span class="section-title">报告预览</span></div>
       <div class="preview-card">
         <div class="preview-header">
-          <div class="preview-header-title">小宝 · 日常护理报告</div>
+          <div class="preview-header-title">小宝 · 综合报告</div>
           <div class="preview-header-sub">2026年3月21日 — 3月28日 · 7天 · 牛奶蛋白过敏（中度）</div>
         </div>
         <div class="preview-section">
@@ -262,15 +207,13 @@
           </div>
         </div>
         <div class="preview-section" style="border:none">
-          <div class="preview-section-title">症状</div>
+          <div class="preview-section-title">表现 & 健康</div>
           <div style="display:flex;align-items:center;gap:8px">
-            <span class="badge badge-green">本周无症状 ✓</span>
+            <span class="badge badge-green">本周无异常表现 ✓</span>
             <span style="font-size:12px;color:var(--sub-text)">持续氨基酸奶粉稳定期</span>
           </div>
         </div>
       </div>
-
-      <!-- Share Actions -->
       <div style="display:flex;gap:10px;padding:14px 16px">
         <button onclick="shareReport()" style="flex:1;padding:14px;border-radius:var(--radius-md);background:var(--primary);color:#fff;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font)">分享报告</button>
         <button onclick="saveReport()" style="flex:1;padding:14px;border-radius:var(--radius-md);background:var(--gray-100);color:var(--text);border:none;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font)">保存到文件</button>
@@ -280,28 +223,28 @@
     <!-- History -->
     <div class="section-header" style="padding-top:14px"><span class="section-title">历史报告</span></div>
     <div class="mx-16 card">
-      <div class="history-item" onclick="showToast('打开历史报告')">
+      <div class="history-item" onclick="openHistoryReport('综合报告','2026年3月21日','7天')">
         <div class="hi-icon">
           <svg class="icon" viewBox="0 0 24 24"><use href="#icon-bar-chart-2"></use></svg>
         </div>
-        <div class="hi-meta"><div class="hi-name">日常护理报告</div><div class="hi-date">2026年3月21日 · 7天</div></div>
+        <div class="hi-meta"><div class="hi-name">综合报告</div><div class="hi-date">2026年3月21日 · 7天</div></div>
         <div class="hi-size">1.2MB</div>
         <div class="hi-action">›</div>
       </div>
-      <div class="history-item" onclick="showToast('打开历史报告')">
+      <div class="history-item" onclick="openHistoryReport('综合报告','2026年3月14日','14天')">
         <div class="hi-icon">
           <svg class="icon" viewBox="0 0 24 24"><use href="#icon-trending-up"></use></svg>
         </div>
-        <div class="hi-meta"><div class="hi-name">生长发育报告</div><div class="hi-date">2026年3月14日 · 30天</div></div>
-        <div class="hi-size">0.8MB</div>
+        <div class="hi-meta"><div class="hi-name">综合报告</div><div class="hi-date">2026年3月14日 · 14天</div></div>
+        <div class="hi-size">2.3MB</div>
         <div class="hi-action">›</div>
       </div>
-      <div class="history-item" onclick="showToast('打开历史报告')">
-        <div class="hi-icon" style="background:var(--red-lt)">
-          <svg class="icon" style="color:#F0A0B0" viewBox="0 0 24 24"><use href="#icon-alert-triangle"></use></svg>
+      <div class="history-item" onclick="openHistoryReport('综合报告','2026年3月7日','30天')">
+        <div class="hi-icon">
+          <svg class="icon" viewBox="0 0 24 24"><use href="#icon-file-text"></use></svg>
         </div>
-        <div class="hi-meta"><div class="hi-name">症状追踪报告</div><div class="hi-date">2026年3月7日 · 14天</div></div>
-        <div class="hi-size">2.1MB</div>
+        <div class="hi-meta"><div class="hi-name">综合报告</div><div class="hi-date">2026年3月7日 · 30天</div></div>
+        <div class="hi-size">3.8MB</div>
         <div class="hi-action">›</div>
       </div>
     </div>
@@ -330,23 +273,116 @@
     </div>
   </div>
 
+  <!-- Full History Report Modal -->
+  <div class="report-modal-overlay" id="reportModal" onclick="closeReportModal(event)">
+    <div class="report-modal" id="reportModalInner">
+      <div class="report-modal-header">
+        <div style="flex:1">
+          <div style="font-size:16px;font-weight:700" id="modalTitle">小宝 · 综合报告</div>
+          <div style="font-size:12px;opacity:.85;margin-top:3px" id="modalSub">2026年3月21日 · 7天 · 牛奶蛋白过敏（中度）</div>
+        </div>
+        <div class="report-modal-close" onclick="document.getElementById('reportModal').classList.remove('show')">✕</div>
+      </div>
+      <div class="report-modal-body">
+        <!-- 饮食 -->
+        <div class="report-section">
+          <div class="rs-title" style="display:flex;align-items:center;gap:6px"><svg style="width:16px;height:16px;flex-shrink:0;fill:none;stroke:#F87098;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><use href="#icon-milk"/></svg> 饮食</div>
+          <div class="rs-stat-grid">
+            <div class="rs-stat"><div class="rs-stat-val">3,360<span class="rs-stat-u">ml</span></div><div class="rs-stat-name">总奶量</div></div>
+            <div class="rs-stat"><div class="rs-stat-val">480<span class="rs-stat-u">ml</span></div><div class="rs-stat-name">日均奶量</div></div>
+            <div class="rs-stat"><div class="rs-stat-val">21<span class="rs-stat-u">次</span></div><div class="rs-stat-name">喂养次数</div></div>
+          </div>
+          <div class="rs-note">当前阶段：氨基酸奶粉。辅食：南瓜泥观察期 D3（共5天），暂无异常反应。</div>
+        </div>
+        <!-- 睡眠 -->
+        <div class="report-section">
+          <div class="rs-title" style="display:flex;align-items:center;gap:6px"><svg style="width:16px;height:16px;flex-shrink:0;fill:none;stroke:#7B68EE;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><use href="#icon-moon"/></svg> 睡眠</div>
+          <div class="rs-stat-grid">
+            <div class="rs-stat"><div class="rs-stat-val">62.5<span class="rs-stat-u">h</span></div><div class="rs-stat-name">总睡眠</div></div>
+            <div class="rs-stat"><div class="rs-stat-val">8.9<span class="rs-stat-u">h</span></div><div class="rs-stat-name">日均</div></div>
+            <div class="rs-stat"><div class="rs-stat-val">89%</div><div class="rs-stat-name">质量良好</div></div>
+          </div>
+          <div class="rs-note">夜间睡眠平均连续 5.2h，小睡 2～3 次/天，整体趋势稳定。</div>
+        </div>
+        <!-- 活动 -->
+        <div class="report-section">
+          <div class="rs-title" style="display:flex;align-items:center;gap:6px"><svg style="width:16px;height:16px;flex-shrink:0;fill:none;stroke:#DDB870;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><use href="#icon-activity"/></svg> 活动</div>
+          <div class="rs-stat-grid">
+            <div class="rs-stat"><div class="rs-stat-val">12<span class="rs-stat-u">次</span></div><div class="rs-stat-name">活动记录</div></div>
+            <div class="rs-stat"><div class="rs-stat-val">5<span class="rs-stat-u">次</span></div><div class="rs-stat-name">户外活动</div></div>
+            <div class="rs-stat"><div class="rs-stat-val">3<span class="rs-stat-u">次</span></div><div class="rs-stat-name">爬行练习</div></div>
+          </div>
+          <div class="rs-note">本周抬头训练表现良好，户外活动无异常皮肤反应。</div>
+        </div>
+        <!-- 尿布 -->
+        <div class="report-section">
+          <div class="rs-title" style="display:flex;align-items:center;gap:6px"><svg style="width:16px;height:16px;flex-shrink:0;fill:none;stroke:#4CAF82;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><use href="#icon-droplets"/></svg> 尿布</div>
+          <div class="rs-stat-grid">
+            <div class="rs-stat"><div class="rs-stat-val">21<span class="rs-stat-u">次</span></div><div class="rs-stat-name">换尿布</div></div>
+            <div class="rs-stat"><div class="rs-stat-val">14<span class="rs-stat-u">次</span></div><div class="rs-stat-name">大便</div></div>
+            <div class="rs-stat"><div class="rs-stat-val">Bristol 3-4</div></div>
+          </div>
+          <div class="rs-note">大便性状以软便为主（Bristol 3-4级），颜色正常。本周未见血丝或黏液。</div>
+        </div>
+        <!-- 生长 -->
+        <div class="report-section">
+          <div class="rs-title" style="display:flex;align-items:center;gap:6px"><svg style="width:16px;height:16px;flex-shrink:0;fill:none;stroke:#4CAF82;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><use href="#icon-ruler"/></svg> 生长</div>
+          <div class="rs-stat-grid">
+            <div class="rs-stat"><div class="rs-stat-val">68<span class="rs-stat-u">cm</span></div><div class="rs-stat-name">身高</div></div>
+            <div class="rs-stat"><div class="rs-stat-val">7.5<span class="rs-stat-u">kg</span></div><div class="rs-stat-name">体重</div></div>
+            <div class="rs-stat"><div class="rs-stat-val">43<span class="rs-stat-u">cm</span></div><div class="rs-stat-name">头围</div></div>
+          </div>
+          <div class="rs-note">WHO 百分位：身高 P50、体重 P45、头围 P48，生长曲线趋势正常。</div>
+        </div>
+        <!-- 健康 -->
+        <div class="report-section">
+          <div class="rs-title" style="display:flex;align-items:center;gap:6px"><svg style="width:16px;height:16px;flex-shrink:0;fill:none;stroke:#F87098;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><use href="#icon-heart"/></svg> 健康</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+            <span class="rs-badge rs-badge-green">✓ 本周无皮疹</span>
+            <span class="rs-badge rs-badge-green">✓ 无呕吐腹泻</span>
+            <span class="rs-badge rs-badge-yellow" style="display:inline-flex;align-items:center;gap:4px"><svg style="width:11px;height:11px;fill:none;stroke:currentColor;stroke-width:2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg> 用药 2 次</span>
+          </div>
+          <div class="rs-note">用药：益生菌（2次），维生素D（每日）。保湿护理坚持每日2次，皮肤状态稳定。</div>
+        </div>
+        <!-- 医疗 -->
+        <div class="report-section">
+          <div class="rs-title" style="display:flex;align-items:center;gap:6px"><svg style="width:16px;height:16px;flex-shrink:0;fill:none;stroke:#F87098;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><use href="#icon-stethoscope"/></svg> 医疗</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+            <span class="rs-badge rs-badge-green">✓ 本周无就诊</span>
+          </div>
+          <div class="rs-note">距上次儿保检查 18 天。建议 3 个月龄时进行儿保随访。</div>
+        </div>
+        <!-- 表现 -->
+        <div class="report-section" style="border:none">
+          <div class="rs-title" style="display:flex;align-items:center;gap:6px"><svg style="width:16px;height:16px;flex-shrink:0;fill:none;stroke:#DDB870;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><use href="#icon-smile"/></svg> 表现</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+            <span class="rs-badge rs-badge-green">✓ 心情良好率 86%</span>
+            <span class="rs-badge rs-badge-green">✓ 精神状态佳</span>
+          </div>
+          <div class="rs-note">本周记录心情 7 次，6 次评为"开心"，精神状态无异常波动。</div>
+        </div>
+        <!-- 操作按钮 -->
+        <div style="display:flex;gap:10px;padding:16px 16px 8px">
+          <button onclick="shareReport()" style="flex:1;padding:14px;border-radius:var(--radius-md);background:var(--primary);color:#fff;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font)">分享给医生</button>
+          <button onclick="saveReport()" style="flex:1;padding:14px;border-radius:var(--radius-md);background:var(--gray-100);color:var(--text);border:none;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font)">保存 PDF</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="toast" id="toast"></div>
 </div>
 
+<script src="icons-sprite.js"></script>
 <script>
   function nav(p) { window.location.href = p; }
 
-  function selectType(el) {
-    document.querySelectorAll('.rtype-card').forEach(c=>c.classList.remove('selected'));
-    el.classList.add('selected');
-  }
   function selectRange(el) {
-    document.querySelectorAll('.dr-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.dr-btn').forEach(b => b.classList.remove('active'));
     el.classList.add('active');
-    if(el.textContent==='自定义') showToast('自定义日期范围');
-  }
-  function toggleMC(el) {
-    el.querySelector('.mc-box').classList.toggle('checked');
+    const rangeMap = { '7天':'2026年3月21日—3月28日（7天）', '14天':'2026年3月14日—3月28日（14天）', '30天':'2026年2月27日—3月28日（30天）', '自定义':'自定义时间范围' };
+    document.getElementById('rangeText').textContent = rangeMap[el.textContent] || el.textContent;
+    if (el.textContent === '自定义') showToast('自定义日期范围');
   }
 
   function generateReport() {
@@ -360,8 +396,20 @@
       btn.textContent = '✓ 重新生成';
       document.getElementById('previewSection').style.display = 'block';
       document.getElementById('previewSection').scrollIntoView({behavior:'smooth'});
-      showToast('✓ 报告已生成');
+      showToast('✓ 综合报告已生成');
     }, 2000);
+  }
+
+  function openHistoryReport(name, date, range) {
+    document.getElementById('modalTitle').textContent = '小宝 · ' + name;
+    document.getElementById('modalSub').textContent = date + ' · ' + range + ' · 牛奶蛋白过敏（中度）';
+    document.getElementById('reportModal').classList.add('show');
+  }
+
+  function closeReportModal(e) {
+    if (e.target === document.getElementById('reportModal')) {
+      document.getElementById('reportModal').classList.remove('show');
+    }
   }
 
   function shareReport() { showToast('调用系统分享面板'); }
@@ -373,6 +421,5 @@
     setTimeout(() => t.classList.remove('show'), 2000);
   }
 </script>
-  <script src="icons-sprite.js"></script>
 </body>
 </html>

@@ -309,19 +309,19 @@
       .quick-grid {
         padding: 4px 12px 14px;
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 9px;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
       }
       .quick-btn {
         /* 白色卡片底，图标盒子本身有颜色，不需要宫格有额外背景 */
         background: #fff;
         border-radius: var(--radius-md);
         border: 1px solid var(--gray-100);
-        padding: 14px 8px 12px;
+        padding: 12px 4px 10px;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 6px;
+        gap: 5px;
         cursor: pointer;
         position: relative;
         overflow: hidden;
@@ -334,17 +334,17 @@
       }
       /* 图标盒子：轻柔浅色背景，参考主流母婴 App 视觉 */
       .qb-icon-box {
-        width: 44px;
-        height: 44px;
-        border-radius: 12px;
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
         background: #fff0f4; /* 极浅粉，轻盈不压迫 */
       }
       .qb-icon-box .icon {
-        width: 22px;
-        height: 22px;
+        width: 19px;
+        height: 19px;
         color: #f0b8c8;
         stroke-width: 1.5;
       } /* 浅粉 */
@@ -361,15 +361,12 @@
         color: #f0a0b0;
       }
       .qb-label {
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 600;
         color: #4a3035;
       } /* 暖棕色标签 */
       .qb-sub {
-        font-size: 10px;
-        color: #b09a9d;
-        margin-top: -2px;
-        text-align: center;
+        display: none; /* 4列布局下隐藏副标题，保持紧凑 */
       } /* 柔和暖灰 */
       .qb-badge {
         position: absolute;
@@ -561,14 +558,16 @@
           <div class="header-row">
             <div>
               <div class="header-greeting">3月28日 星期六 · 小宝 3月12天</div>
-              <div class="header-date">早上好 👋</div>
+              <div class="header-date">早上好
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;vertical-align:-3px;color:var(--primary)"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>
+              </div>
             </div>
-            <!-- 头像：用 emoji 保持卡通亲切感 -->
+            <!-- 头像：SVG icon -->
             <div
               class="header-avatar"
               onclick="nav('profile.html')"
               title="我的">
-              🐣
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:26px;height:26px"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             </div>
           </div>
         </div>
@@ -576,7 +575,9 @@
         <div class="hero-section">
           <div class="baby-card" onclick="nav('profile.html')">
             <div class="baby-card-top">
-              <div class="baby-avatar">🐥</div>
+              <div class="baby-avatar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:34px;height:34px;color:#fff"><path d="M12 2a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/><path d="M5 20a7 7 0 0 1 14 0"/><circle cx="8.5" cy="10" r="1" fill="currentColor"/><circle cx="15.5" cy="10" r="1" fill="currentColor"/></svg>
+            </div>
               <div>
                 <div class="baby-info-name">小宝</div>
                 <div class="baby-info-sub">牛奶蛋白过敏 · 3个月12天</div>
@@ -606,7 +607,7 @@
                 <div class="baby-stat-val">
                   0<span class="baby-stat-u">项</span>
                 </div>
-                <div class="baby-stat-label">症状</div>
+                <div class="baby-stat-label">表现</div>
               </div>
             </div>
           </div>
@@ -632,10 +633,14 @@
 
         <!-- ══ L2 内容区 ══ -->
 
-        <!-- 卡片 1：快捷记录 -->
+        <!-- 卡片 1：快捷记录（八大模块） -->
         <div class="content-card">
-          <div class="card-label">快捷记录</div>
+          <div class="card-label-row">
+            <span class="card-label">快捷记录</span>
+            <span class="card-label-link" onclick="toggleFabSheet()">更多 ›</span>
+          </div>
           <div class="quick-grid">
+            <!-- 第一行：饮食、尿布、睡眠、活动 -->
             <div class="quick-btn" onclick="nav('form-feeding.html')">
               <div class="qb-icon-box">
                 <svg class="icon" viewBox="0 0 24 24">
@@ -643,7 +648,14 @@
                 </svg>
               </div>
               <div class="qb-label">饮食</div>
-              <div class="qb-sub">喂奶 / 辅食</div>
+            </div>
+            <div class="quick-btn" onclick="nav('form-diaper.html')">
+              <div class="qb-icon-box">
+                <svg class="icon" viewBox="0 0 24 24">
+                  <use href="#icon-droplets"></use>
+                </svg>
+              </div>
+              <div class="qb-label">尿布</div>
             </div>
             <div class="quick-btn" onclick="nav('form-sleep.html')">
               <div class="qb-icon-box">
@@ -652,17 +664,16 @@
                 </svg>
               </div>
               <div class="qb-label">睡眠</div>
-              <div class="qb-sub">计时 / 补录</div>
             </div>
-            <div class="quick-btn q-warm" onclick="nav('form-activity.html')">
+            <div class="quick-btn" onclick="nav('form-activity.html')">
               <div class="qb-icon-box">
                 <svg class="icon" viewBox="0 0 24 24">
-                  <use href="#icon-smile"></use>
+                  <use href="#icon-activity"></use>
                 </svg>
               </div>
-              <div class="qb-label">状态</div>
-              <div class="qb-sub">便便 / 精神</div>
+              <div class="qb-label">活动</div>
             </div>
+            <!-- 第二行：生长、健康、医疗、表现 -->
             <div class="quick-btn" onclick="nav('form-growth.html')">
               <div class="qb-icon-box">
                 <svg class="icon" viewBox="0 0 24 24">
@@ -670,7 +681,14 @@
                 </svg>
               </div>
               <div class="qb-label">生长</div>
-              <div class="qb-sub">身高 / 体重</div>
+            </div>
+            <div class="quick-btn" onclick="nav('form-health.html')">
+              <div class="qb-icon-box">
+                <svg class="icon" viewBox="0 0 24 24">
+                  <use href="#icon-heart"></use>
+                </svg>
+              </div>
+              <div class="qb-label">健康</div>
             </div>
             <div class="quick-btn" onclick="nav('form-medical.html')">
               <div class="qb-icon-box">
@@ -679,17 +697,14 @@
                 </svg>
               </div>
               <div class="qb-label">医疗</div>
-              <div class="qb-sub">检查 / 病历</div>
             </div>
-            <div class="quick-btn q-alert" onclick="nav('form-activity.html')">
+            <div class="quick-btn q-alert" onclick="nav('form-symptom.html')">
               <div class="qb-icon-box">
                 <svg class="icon" viewBox="0 0 24 24">
-                  <use href="#icon-triangle-alert"></use>
+                  <use href="#icon-smile"></use>
                 </svg>
               </div>
-              <div class="qb-label">症状</div>
-              <div class="qb-sub">过敏 / 皮疹</div>
-              <div class="qb-badge">!</div>
+              <div class="qb-label">表现</div>
             </div>
           </div>
         </div>
@@ -739,16 +754,16 @@
             </div>
             <span class="tl-arrow">›</span>
           </div>
-          <div class="list-row" onclick="nav('form-activity.html')">
+          <div class="list-row" onclick="nav('form-diaper.html')">
             <span class="tl-time">07:30</span>
-            <div class="tl-icon" style="background: #fff8ec">
-              <svg class="icon" style="color: #ddb870" viewBox="0 0 24 24">
-                <use href="#icon-smile"></use>
+            <div class="tl-icon" style="background: #e8f5e9">
+              <svg class="icon" style="color: #4CAF82" viewBox="0 0 24 24">
+                <use href="#icon-droplets"></use>
               </svg>
             </div>
             <div class="tl-body">
-              <div class="tl-title" style="color: #7a5a60">活动与状态</div>
-              <div class="tl-desc">大便 ×1（软便）· 精神：良好</div>
+              <div class="tl-title" style="color: #7a5a60">尿布</div>
+              <div class="tl-desc">大便 ×1（软便）· 小便 ×2</div>
             </div>
             <span class="tl-arrow">›</span>
           </div>
@@ -763,7 +778,7 @@
               <div class="tl-title" style="color: #7a5a60">喂奶 120ml</div>
               <div class="tl-desc">
                 辅食：南瓜泥 20g
-                <span class="badge tag-new">⚠️ 新食物 D3</span>
+                <span class="badge tag-new"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;vertical-align:-1px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> 新食物 D3</span>
               </div>
             </div>
             <span class="tl-arrow">›</span>
@@ -791,7 +806,7 @@
             </div>
             <div class="trans-hint">
               稳定期第 42 天 · 进度 12% ·
-              <span class="warn">今日无症状未确认</span>
+              <span class="warn">今日无表现未确认</span>
             </div>
           </div>
         </div>
@@ -866,12 +881,45 @@
           <div class="fab-menu-item" onclick="nav('form-activity.html')">
             <div class="fab-menu-icon-box">
               <svg class="icon" viewBox="0 0 24 24">
+                <use href="#icon-activity"></use>
+              </svg>
+            </div>
+            <div>
+              <div class="fab-menu-label">活动</div>
+              <div class="fab-menu-sub">爬走练习 · 视力活动 · 户外活动</div>
+            </div>
+          </div>
+          <div class="fab-menu-item" onclick="nav('form-diaper.html')">
+            <div class="fab-menu-icon-box">
+              <svg class="icon" viewBox="0 0 24 24">
+                <use href="#icon-droplets"></use>
+              </svg>
+            </div>
+            <div>
+              <div class="fab-menu-label">尿布</div>
+              <div class="fab-menu-sub">大便次数性状 · 小便次数</div>
+            </div>
+          </div>
+          <div class="fab-menu-item" onclick="nav('form-health.html')">
+            <div class="fab-menu-icon-box">
+              <svg class="icon" viewBox="0 0 24 24">
+                <use href="#icon-heart"></use>
+              </svg>
+            </div>
+            <div>
+              <div class="fab-menu-label">健康</div>
+              <div class="fab-menu-sub">过敏表现 · 用药 · 护理</div>
+            </div>
+          </div>
+          <div class="fab-menu-item" onclick="nav('form-symptom.html')">
+            <div class="fab-menu-icon-box">
+              <svg class="icon" viewBox="0 0 24 24">
                 <use href="#icon-smile"></use>
               </svg>
             </div>
             <div>
-              <div class="fab-menu-label">活动与状态</div>
-              <div class="fab-menu-sub">便便 · 尿布 · 精神 · 过敏症状</div>
+              <div class="fab-menu-label">表现</div>
+              <div class="fab-menu-sub">心情状态 · 精神状态</div>
             </div>
           </div>
           <div class="fab-menu-item" onclick="nav('form-growth.html')">

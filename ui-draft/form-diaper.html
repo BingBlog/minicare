@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>敏宝日记 · 尿布记录</title>
+  <link rel="stylesheet" href="common.css"/>
+  <style>
+    .section-card {
+      margin: 0 16px 12px;
+      background: var(--card-bg); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm);
+    }
+    .sc-sub-title {
+      font-size: 13px; font-weight: 700; color: #7A5A60;
+      padding: 14px 16px 4px; border-bottom: .5px solid var(--gray-100);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .sc-sub-title svg.icon { width:16px; height:16px; }
+
+    /* Diaper */
+    .diaper-row { display: flex; gap: 8px; padding: 12px 16px 14px; flex-wrap: wrap; }
+
+    /* Poop */
+    .poop-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; padding: 8px 16px 14px; }
+    .poop-item {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      padding: 10px 4px; border-radius: var(--radius-sm);
+      border: 1.5px solid var(--gray-200); cursor: pointer; transition: all .15s;
+    }
+    .poop-item.selected { border-color: var(--orange); background: var(--orange-lt); }
+    .poop-item .pi-dot { width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0; }
+    .poop-item .pi-label { font-size: 11px; color: var(--sub-text); font-weight: 500; }
+    .poop-item.selected .pi-label { color: var(--orange-dk); font-weight: 600; }
+    .poop-item:active { transform: scale(.93); }
+
+    /* Count badge */
+    .count-badge {
+      display: inline-flex; align-items: center; gap: 6px; margin-left: 8px;
+    }
+    .count-btn { width:24px;height:24px;border-radius:50%;border:1.5px solid var(--gray-200);background:var(--card-bg);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .1s; }
+    .count-btn:active { background:var(--primary-lt); border-color:var(--primary-md); }
+    .count-num { font-size:14px;font-weight:700;color:var(--text);min-width:16px;text-align:center; }
+  </style>
+</head>
+<body>
+<div class="phone">
+  <div class="notch"><div class="notch-pill"></div></div>
+  <div class="status-bar">
+    <span class="status-time">9:41</span>
+    <div class="status-icons">
+      <svg viewBox="0 0 17 12"><rect x="0" y="6" width="3" height="6" rx="1"/><rect x="4.5" y="4" width="3" height="8" rx="1"/><rect x="9" y="2" width="3" height="10" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+      <svg viewBox="0 0 25 12"><rect x="0" y="1" width="22" height="10" rx="3" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="1.5" y="2.5" width="17" height="7" rx="2" fill="currentColor"/><path d="M23 4v4a2 2 0 0 0 0-4z"/></svg>
+    </div>
+  </div>
+
+  <div class="nav-bar">
+    <button class="nav-back" onclick="nav('home.html')">←</button>
+    <span class="nav-title">尿布记录</span>
+    <span class="nav-action"></span>
+  </div>
+
+  <div class="scroll-area">
+
+    <!-- Time -->
+    <div class="form-section-title" style="padding:14px 20px 6px;font-size:12px;font-weight:600;color:var(--sub-text)">记录时间</div>
+    <div class="form-section">
+      <div class="form-row">
+        <span class="form-label">记录时间</span>
+        <input class="form-input" type="time" value="09:41"/>
+      </div>
+    </div>
+
+    <!-- Diaper / 换尿布 -->
+    <div class="section-card">
+      <div class="sc-sub-title">
+        <svg class="icon" style="color:#4CAF82" viewBox="0 0 24 24"><use href="#icon-droplets"></use></svg>
+        换尿布
+      </div>
+      <div class="diaper-row">
+        <div class="chip selected" onclick="toggleChip(this)">湿尿布</div>
+        <div class="chip" onclick="toggleChip(this)">大便</div>
+        <div class="chip" onclick="toggleChip(this)">都有</div>
+        <div class="chip" onclick="toggleChip(this)">未换</div>
+      </div>
+      <div class="form-row" style="padding-top:4px">
+        <span class="form-label">今日次数</span>
+        <div class="count-badge">
+          <div class="count-btn" onclick="countChange(-1,'diaperCount')">−</div>
+          <span class="count-num" id="diaperCount">3</span>
+          <div class="count-btn" onclick="countChange(1,'diaperCount')">＋</div>
+        </div>
+        <span class="form-value" style="flex:1;text-align:right"></span>
+      </div>
+    </div>
+
+    <!-- Poop -->
+    <div class="section-card">
+      <div class="sc-sub-title">
+        <svg class="icon" style="color:#DDB870" viewBox="0 0 24 24"><use href="#icon-info"></use></svg>
+        大便性状
+      </div>
+      <div class="poop-grid">
+        <div class="poop-item selected" onclick="selectPoop(this)"><div class="pi-dot" style="background:#F5C842"></div><div class="pi-label">正常软便</div></div>
+        <div class="poop-item" onclick="selectPoop(this)"><div class="pi-dot" style="background:#8BC34A"></div><div class="pi-label">稀便</div></div>
+        <div class="poop-item" onclick="selectPoop(this)"><div class="pi-dot" style="background:#64B5F6"></div><div class="pi-label">水样便</div></div>
+        <div class="poop-item" onclick="selectPoop(this)"><div class="pi-dot" style="background:#B0B0B0"></div><div class="pi-label">干硬粒</div></div>
+        <div class="poop-item" onclick="selectPoop(this)"><div class="pi-dot" style="background:#EF5350"></div><div class="pi-label">血丝便</div></div>
+        <div class="poop-item" onclick="selectPoop(this)"><div class="pi-dot" style="background:#8D6E63"></div><div class="pi-label">正常成形</div></div>
+      </div>
+      <div class="form-row" style="padding-top:0">
+        <span class="form-label" style="font-size:12px;color:var(--sub-text)">颜色</span>
+        <div class="chip-row" style="padding:0;gap:6px;flex:1;justify-content:flex-end">
+          <div class="chip" style="padding:4px 10px;font-size:11px" onclick="toggleChip(this)">黄色</div>
+          <div class="chip selected" style="padding:4px 10px;font-size:11px" onclick="toggleChip(this)">棕黄</div>
+          <div class="chip" style="padding:4px 10px;font-size:11px" onclick="toggleChip(this)">绿色</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Note -->
+    <div class="form-section-title" style="padding:14px 20px 6px;font-size:12px;font-weight:600;color:var(--sub-text)">备注（可选）</div>
+    <div class="form-section">
+      <div class="form-row">
+        <input class="form-input" placeholder="其他观察或备注…" style="text-align:left"/>
+      </div>
+    </div>
+
+    <div class="h-16"></div>
+    <button class="btn-primary" onclick="saveRecord()">保存记录</button>
+    <button class="btn-secondary" onclick="nav('home.html')">取消</button>
+    <div class="h-60"></div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+  function nav(p) { window.location.href = p; }
+
+  function toggleChip(el) { el.classList.toggle('selected'); }
+  function selectPoop(el) {
+    el.closest('.poop-grid').querySelectorAll('.poop-item').forEach(i=>i.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function countChange(delta, id) {
+    const el = document.getElementById(id);
+    el.textContent = Math.max(0, parseInt(el.textContent) + delta);
+  }
+
+  function saveRecord() {
+    showToast('✓ 尿布记录已保存');
+    setTimeout(() => nav('home.html'), 1600);
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+  }
+</script>
+  <script src="icons-sprite.js"></script>
+</body>
+</html>

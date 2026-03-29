@@ -54,7 +54,7 @@
       background: var(--card-bg); cursor: pointer; transition: all .15s;
     }
     .quality-btn.selected { border-color: var(--primary); background: var(--primary-lt); }
-    .quality-btn .q-emoji { font-size: 24px; }
+    .quality-btn .q-icon { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
     .quality-btn .q-label { font-size: 12px; color: var(--sub-text); font-weight: 500; }
     .quality-btn.selected .q-label { color: var(--primary); font-weight: 600; }
     .quality-btn:active { transform: scale(.93); }
@@ -120,7 +120,7 @@
 
       <!-- Abnormal banner (shown if >12h) -->
       <div class="abnormal-banner" id="abnormalBanner" style="display:none">
-        <div class="ab-title">⚠️ 睡眠计时超过 12 小时</div>
+        <div class="ab-title" style="display:flex;align-items:center;gap:6px"><svg style="width:14px;height:14px;flex-shrink:0;fill:none;stroke:var(--red);stroke-width:2;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> 睡眠计时超过 12 小时</div>
         <div class="ab-desc">该记录持续时间超过 12 小时，可能是忘记结束计时。请选择处理方式：</div>
         <div class="ab-btns">
           <button class="ab-btn ab-btn-fix" onclick="nav('form-sleep.html')">修改结束时间</button>
@@ -170,9 +170,9 @@
       <div class="form-section-title" style="padding:14px 20px 4px;font-size:12px;font-weight:600;color:var(--sub-text)">睡眠时段</div>
       <div class="mx-16" style="background:var(--card-bg);border-radius:var(--radius-md);box-shadow:var(--shadow-sm)">
         <div class="period-row">
-          <div class="chip selected" onclick="selectChip(this)">🌙 夜间</div>
-          <div class="chip" onclick="selectChip(this)">🌤 上午小睡</div>
-          <div class="chip" onclick="selectChip(this)">☀️ 下午小睡</div>
+          <div class="chip selected" onclick="selectChip(this)" style="display:flex;align-items:center;gap:4px"><svg style="width:13px;height:13px;fill:none;stroke:#7B68EE;stroke-width:2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg> 夜间</div>
+          <div class="chip" onclick="selectChip(this)" style="display:flex;align-items:center;gap:4px"><svg style="width:13px;height:13px;fill:none;stroke:#DDB870;stroke-width:2" viewBox="0 0 24 24"><use href="#icon-cloud-sun"/></svg> 上午小睡</div>
+          <div class="chip" onclick="selectChip(this)" style="display:flex;align-items:center;gap:4px"><svg style="width:13px;height:13px;fill:none;stroke:#F87098;stroke-width:2" viewBox="0 0 24 24"><use href="#icon-sun"/></svg> 下午小睡</div>
           <div class="chip" onclick="selectChip(this)">其他</div>
         </div>
       </div>
@@ -184,13 +184,13 @@
       <div class="mx-16" style="background:var(--card-bg);border-radius:var(--radius-md);box-shadow:var(--shadow-sm)">
         <div class="quality-row">
           <div class="quality-btn selected" onclick="selectQuality(this)">
-            <div class="q-emoji">😴</div><div class="q-label">良好</div>
+            <div class="q-icon" style="background:#E8F5E9"><svg style="width:20px;height:20px;fill:none;stroke:#4CAF82;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><use href="#icon-laugh"/></svg></div><div class="q-label">良好</div>
           </div>
           <div class="quality-btn" onclick="selectQuality(this)">
-            <div class="q-emoji">😐</div><div class="q-label">一般</div>
+            <div class="q-icon" style="background:var(--gray-100)"><svg style="width:20px;height:20px;fill:none;stroke:var(--sub-text);stroke-width:2;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><use href="#icon-meh"/></svg></div><div class="q-label">一般</div>
           </div>
           <div class="quality-btn" onclick="selectQuality(this)">
-            <div class="q-emoji">😿</div><div class="q-label">较差</div>
+            <div class="q-icon" style="background:#FFF0F4"><svg style="width:20px;height:20px;fill:none;stroke:var(--primary);stroke-width:2;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><use href="#icon-frown"/></svg></div><div class="q-label">较差</div>
           </div>
         </div>
       </div>

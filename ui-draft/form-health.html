@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>敏宝日记 · 健康记录</title>
+  <link rel="stylesheet" href="common.css"/>
+  <style>
+    .section-card {
+      margin: 0 16px 12px;
+      background: var(--card-bg); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm);
+    }
+    .sc-sub-title {
+      font-size: 13px; font-weight: 700; color: #7A5A60;
+      padding: 14px 16px 4px; border-bottom: .5px solid var(--gray-100);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .sc-sub-title svg.icon { width:16px; height:16px; }
+
+    /* Allergy */
+    .allergy-severity {
+      display: flex; gap: 8px; padding: 10px 16px 14px; flex-wrap: wrap;
+    }
+    .sev-btn {
+      flex: 1; padding: 10px 8px; border-radius: var(--radius-sm); text-align: center;
+      border: 1.5px solid var(--gray-200); cursor: pointer; transition: all .15s;
+    }
+    .sev-btn .sev-label { font-size: 13px; font-weight: 600; }
+    .sev-btn.mild { border-color: var(--green); background: var(--green-lt); }
+    .sev-btn.moderate { border-color: var(--orange); background: var(--orange-lt); }
+    .sev-btn.severe { border-color: var(--red); background: var(--red-lt); }
+    .sev-btn.mild .sev-label { color: var(--green-dk); }
+    .sev-btn.moderate .sev-label { color: var(--orange-dk); }
+    .sev-btn.severe .sev-label { color: var(--red); }
+    .sev-btn:active { transform: scale(.95); }
+
+    .allergy-grid {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; padding: 8px 16px 14px;
+    }
+    .allergy-item {
+      padding: 10px 8px; border-radius: var(--radius-sm); text-align: center;
+      border: 1.5px solid var(--gray-200); cursor: pointer; transition: all .15s;
+      font-size: 13px; font-weight: 500; color: var(--sub-text);
+    }
+    .allergy-item.selected { border-color: var(--red); background: var(--red-lt); color: var(--red); font-weight: 600; }
+    .allergy-item:active { transform: scale(.95); }
+
+    /* Photo upload */
+    .photo-area {
+      display: flex; gap: 10px; padding: 10px 16px 14px; flex-wrap: wrap;
+    }
+    .photo-thumb {
+      width: 64px; height: 64px; border-radius: var(--radius-sm);
+      background: var(--primary-lt); border: 1.5px dashed var(--primary-md);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; cursor: pointer;
+    }
+    .photo-add { background: var(--gray-100); border-color: var(--gray-300); color: var(--gray-400); font-size: 28px; }
+
+    /* Medication */
+    .med-row { display: flex; gap: 8px; padding: 10px 16px 14px; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+<div class="phone">
+  <div class="notch"><div class="notch-pill"></div></div>
+  <div class="status-bar">
+    <span class="status-time">9:41</span>
+    <div class="status-icons">
+      <svg viewBox="0 0 17 12"><rect x="0" y="6" width="3" height="6" rx="1"/><rect x="4.5" y="4" width="3" height="8" rx="1"/><rect x="9" y="2" width="3" height="10" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+      <svg viewBox="0 0 25 12"><rect x="0" y="1" width="22" height="10" rx="3" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="1.5" y="2.5" width="17" height="7" rx="2" fill="currentColor"/><path d="M23 4v4a2 2 0 0 0 0-4z"/></svg>
+    </div>
+  </div>
+
+  <div class="nav-bar">
+    <button class="nav-back" onclick="nav('home.html')">←</button>
+    <span class="nav-title">健康记录</span>
+    <span class="nav-action"></span>
+  </div>
+
+  <div class="scroll-area">
+
+    <!-- Time -->
+    <div class="form-section-title" style="padding:14px 20px 6px;font-size:12px;font-weight:600;color:var(--sub-text)">记录时间</div>
+    <div class="form-section">
+      <div class="form-row">
+        <span class="form-label">记录时间</span>
+        <input class="form-input" type="time" value="09:41"/>
+      </div>
+    </div>
+
+    <!-- Allergy Symptoms -->
+    <div class="section-card">
+      <div class="sc-sub-title">
+        <svg class="icon" style="color:#F0A0B0" viewBox="0 0 24 24"><use href="#icon-alert-triangle"></use></svg>
+        过敏表现（多选，无则跳过）
+      </div>
+      <div class="allergy-grid">
+        <div class="allergy-item selected" onclick="toggleAllergy(this)">皮疹/湿疹</div>
+        <div class="allergy-item" onclick="toggleAllergy(this)">荨麻疹</div>
+        <div class="allergy-item" onclick="toggleAllergy(this)">腹泻</div>
+        <div class="allergy-item" onclick="toggleAllergy(this)">呕吐</div>
+        <div class="allergy-item" onclick="toggleAllergy(this)">鼻塞/流鼻涕</div>
+        <div class="allergy-item" onclick="toggleAllergy(this)">打喷嚏</div>
+        <div class="allergy-item" onclick="toggleAllergy(this)">眼睛红肿</div>
+        <div class="allergy-item" onclick="toggleAllergy(this)">血便</div>
+        <div class="allergy-item" onclick="toggleAllergy(this)">呼吸急促</div>
+      </div>
+      <!-- Severity (shown when symptom selected) -->
+      <div id="severitySection">
+        <div class="form-section-title" style="padding:4px 16px;font-size:12px;color:var(--sub-text)">表现程度</div>
+        <div class="allergy-severity">
+          <div class="sev-btn mild" onclick="selectSev(this)"><div class="sev-label">轻度</div></div>
+          <div class="sev-btn moderate active-sev" onclick="selectSev(this)" style="border-width:2px"><div class="sev-label">中度 ✓</div></div>
+          <div class="sev-btn severe" onclick="selectSev(this)"><div class="sev-label">重度</div></div>
+        </div>
+        <!-- Photo -->
+        <div class="form-section-title" style="padding:4px 16px;font-size:12px;color:var(--sub-text)">表现拍照（可选）</div>
+        <div class="photo-area">
+          <div class="photo-thumb" title="表现照片1">
+            <svg class="icon icon-lg" style="color:#F0B8C8" viewBox="0 0 24 24"><use href="#icon-camera"></use></svg>
+          </div>
+          <div class="photo-add photo-thumb" onclick="addPhoto()">＋</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Medication -->
+    <div class="section-card">
+      <div class="sc-sub-title">
+        <svg class="icon" style="color:#9B8ED8" viewBox="0 0 24 24"><use href="#icon-syringe"></use></svg>
+        用药记录
+      </div>
+      <div class="med-row">
+        <div class="chip" onclick="toggleChip(this)">维生素D</div>
+        <div class="chip" onclick="toggleChip(this)">铁剂</div>
+        <div class="chip" onclick="toggleChip(this)">益生菌</div>
+        <div class="chip" onclick="toggleChip(this)">钙剂</div>
+      </div>
+      <div class="form-row" style="padding:4px 16px 14px">
+        <span class="form-label">剂量</span>
+        <input class="form-input" type="text" placeholder="如：400IU" style="text-align:right"/>
+      </div>
+    </div>
+
+    <!-- Skin Care -->
+    <div class="section-card">
+      <div class="sc-sub-title">
+        <svg class="icon" style="color:#F0B8C8" viewBox="0 0 24 24"><use href="#icon-heart"></use></svg>
+        保湿护理
+      </div>
+      <div class="med-row">
+        <div class="chip selected" onclick="toggleChip(this)">已做保湿</div>
+        <div class="chip" onclick="toggleChip(this)">涂抹面霜</div>
+        <div class="chip" onclick="toggleChip(this)">涂抹身体乳</div>
+      </div>
+    </div>
+
+    <!-- Note -->
+    <div class="form-section-title" style="padding:14px 20px 6px;font-size:12px;font-weight:600;color:var(--sub-text)">备注（可选）</div>
+    <div class="form-section">
+      <div class="form-row">
+        <input class="form-input" placeholder="其他观察或备注…" style="text-align:left"/>
+      </div>
+    </div>
+
+    <div class="h-16"></div>
+    <button class="btn-primary" onclick="saveRecord()">保存记录</button>
+    <button class="btn-secondary" onclick="nav('home.html')">取消</button>
+    <div class="h-60"></div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+  function nav(p) { window.location.href = p; }
+
+  function toggleAllergy(el) { el.classList.toggle('selected'); }
+  function toggleChip(el) { el.classList.toggle('selected'); }
+  function selectSev(el) {
+    el.closest('.allergy-severity').querySelectorAll('.sev-btn').forEach(b => b.style.borderWidth='1.5px');
+    el.style.borderWidth = '2.5px';
+  }
+  function addPhoto() { showToast('拍照功能（MVP 原型演示）'); }
+
+  function saveRecord() {
+    showToast('✓ 健康记录已保存');
+    setTimeout(() => nav('home.html'), 1600);
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+  }
+</script>
+  <script src="icons-sprite.js"></script>
+</body>
+</html>

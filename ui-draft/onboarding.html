@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>敏宝日记 · 引导</title>
+  <link rel="stylesheet" href="common.css"/>
+  <style>
+    /* ══ 整体布局 ══ */
+    .ob-phone-content {
+      display: flex; flex-direction: column; height: 100%; overflow: hidden;
+    }
+
+    /* ══ 引导页（Step 0）══ */
+    .ob-splash {
+      flex: 1; display: flex; flex-direction: column;
+      background: linear-gradient(170deg, #FFF0F4 0%, #fff 50%);
+      padding: 0 0 32px;
+    }
+    .ob-splash-hero {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; padding: 24px 32px;
+    }
+    .ob-logo-circle {
+      width: 90px; height: 90px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-md), var(--primary));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 46px; box-shadow: 0 12px 32px rgba(248,112,152,.35);
+      margin-bottom: 24px;
+    }
+    .ob-splash-title {
+      font-size: 26px; font-weight: 900; color: var(--text);
+      letter-spacing: -0.5px; margin-bottom: 6px; text-align: center;
+    }
+    .ob-splash-subtitle {
+      font-size: 14px; color: var(--sub-text); text-align: center; margin-bottom: 28px;
+    }
+    .ob-feature-list {
+      width: 100%; display: flex; flex-direction: column; gap: 12px;
+    }
+    .ob-feature-item {
+      display: flex; align-items: center; gap: 14px;
+      background: var(--card-bg); border-radius: var(--radius-md);
+      padding: 14px 16px; box-shadow: var(--shadow-sm);
+    }
+    .ob-feature-icon {
+      width: 40px; height: 40px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; flex-shrink: 0;
+    }
+    .ob-feature-title { font-size: 14px; font-weight: 700; color: var(--text); }
+    .ob-feature-desc  { font-size: 12px; color: var(--sub-text); margin-top: 2px; }
+    .ob-splash-actions { padding: 0 24px; }
+
+    /* ══ 档案创建页（Step 1）══ */
+    .ob-form-page {
+      flex: 1; display: flex; flex-direction: column; overflow: hidden;
+    }
+    .ob-form-nav {
+      display: flex; align-items: center; padding: 12px 16px;
+      flex-shrink: 0;
+    }
+    .ob-form-nav-back {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--gray-100); border: none; font-size: 18px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--text); flex-shrink: 0;
+    }
+    .ob-form-nav-title {
+      flex: 1; text-align: center; font-size: 17px; font-weight: 700; color: var(--text);
+    }
+    .ob-form-nav-spacer { width: 36px; }
+
+    /* ══ 步骤进度点 ══ */
+    .ob-step-dots {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 4px 0 12px;
+    }
+    .ob-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--gray-200); transition: all .3s;
+    }
+    .ob-dot.active { width: 18px; border-radius: 4px; background: var(--primary); }
+    .ob-dot.done { background: var(--primary); opacity: .4; }
+
+    /* ══ 表单内容 ══ */
+    .ob-form-scroll { flex: 1; overflow-y: auto; padding: 0 0 20px; }
+    .ob-section-label {
+      font-size: 12px; font-weight: 700; color: var(--sub-text);
+      padding: 16px 20px 6px; letter-spacing: .3px;
+    }
+    .allergy-slider { display: flex; gap: 0; margin: 8px 16px 14px; background: var(--gray-100); border-radius: var(--radius-md); padding: 3px; }
+    .asev-btn { flex: 1; text-align: center; padding: 9px; border-radius: 10px; font-size: 13px; font-weight: 600; color: var(--sub-text); cursor: pointer; transition: all .2s; }
+    .asev-btn.active { background: var(--card-bg); color: var(--text); box-shadow: var(--shadow-sm); }
+    .asev-btn.mild.active    { color: #4CAF82; }
+    .asev-btn.moderate.active { color: #DDB870; }
+    .asev-btn.severe.active  { color: var(--red); }
+
+    /* ══ 成功动画页 ══ */
+    .ob-success {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; padding: 32px;
+      background: linear-gradient(170deg, #FFF0F4 0%, #fff 60%);
+    }
+    .ob-success-circle {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-md), var(--primary));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 38px; box-shadow: 0 10px 28px rgba(248,112,152,.4);
+      margin-bottom: 24px; animation: scaleIn .5s cubic-bezier(.175,.885,.32,1.275) both;
+    }
+    @keyframes scaleIn {
+      from { transform: scale(0.3); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+    .ob-success-title {
+      font-size: 22px; font-weight: 900; color: var(--text);
+      margin-bottom: 8px; text-align: center;
+    }
+    .ob-success-sub {
+      font-size: 14px; color: var(--sub-text); text-align: center; line-height: 1.6;
+      margin-bottom: 32px;
+    }
+    .ob-baby-card {
+      width: 100%; background: var(--card-bg); border-radius: var(--radius-lg);
+      padding: 18px 20px; box-shadow: var(--shadow-md);
+      display: flex; align-items: center; gap: 14px; margin-bottom: 28px;
+    }
+    .ob-baby-avatar {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-md), var(--primary));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; flex-shrink: 0;
+    }
+    .ob-baby-name { font-size: 18px; font-weight: 800; color: var(--text); }
+    .ob-baby-info { font-size: 12px; color: var(--sub-text); margin-top: 3px; }
+    .ob-baby-allergy {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: var(--red-lt); color: var(--red);
+      font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 8px; margin-top: 5px;
+    }
+
+    /* ══ 按钮 ══ */
+    .ob-btn-primary {
+      width: 100%; padding: 16px; border-radius: 50px;
+      background: linear-gradient(90deg, #F87098, #F9A8C0);
+      color: #fff; border: none;
+      font-size: 16px; font-weight: 700; cursor: pointer; font-family: var(--font);
+      box-shadow: 0 6px 20px rgba(248, 112, 152, 0.4);
+      transition: all .15s;
+    }
+    .ob-btn-primary:active { transform: scale(.97); }
+  </style>
+</head>
+<body>
+<div class="phone">
+  <div class="notch"><div class="notch-pill"></div></div>
+  <div class="status-bar">
+    <span class="status-time">9:41</span>
+    <div class="status-icons">
+      <svg viewBox="0 0 17 12"><rect x="0" y="6" width="3" height="6" rx="1"/><rect x="4.5" y="4" width="3" height="8" rx="1"/><rect x="9" y="2" width="3" height="10" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+      <svg viewBox="0 0 25 12"><rect x="0" y="1" width="22" height="10" rx="3" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="1.5" y="2.5" width="17" height="7" rx="2" fill="currentColor"/><path d="M23 4v4a2 2 0 0 0 0-4z"/></svg>
+    </div>
+  </div>
+
+  <div class="ob-phone-content">
+
+    <!-- ══ Step 0：引导页 ══ -->
+    <div id="step-splash" class="ob-splash">
+      <div class="ob-splash-hero">
+        <div class="ob-logo-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:46px;height:46px"><path d="M12 2a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/><path d="M5 20a7 7 0 0 1 14 0"/><circle cx="9" cy="10.5" r="1" fill="#fff"/><circle cx="15" cy="10.5" r="1" fill="#fff"/></svg>
+        </div>
+        <div class="ob-splash-title">敏宝日记</div>
+        <div class="ob-splash-subtitle">专为牛奶蛋白过敏宝宝家庭设计</div>
+
+        <div class="ob-feature-list">
+          <div class="ob-feature-item">
+            <div class="ob-feature-icon" style="background:var(--primary-lt)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px;color:var(--primary)"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            </div>
+            <div>
+              <div class="ob-feature-title">结构化记录</div>
+              <div class="ob-feature-desc">饮食·睡眠·活动·尿布·生长·健康，一键记录不遗漏</div>
+            </div>
+          </div>
+          <div class="ob-feature-item">
+            <div class="ob-feature-icon" style="background:#FFF8E6">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px;color:#DDB870"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            </div>
+            <div>
+              <div class="ob-feature-title">一键生成报告</div>
+              <div class="ob-feature-desc">综合数据自动汇总，PDF 格式一键分享给医生</div>
+            </div>
+          </div>
+          <div class="ob-feature-item">
+            <div class="ob-feature-icon" style="background:#DCFCE7">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px;color:#4CAF82"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <div>
+              <div class="ob-feature-title">就医沟通更顺畅</div>
+              <div class="ob-feature-desc">完整数据记录，门诊时不再遗忘关键信息</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ob-splash-actions">
+        <button class="ob-btn-primary" onclick="goToStep(1)">开始创建宝宝档案</button>
+        <div style="text-align:center;margin-top:14px;font-size:12px;color:var(--sub-text)">
+          已有档案？<span style="color:var(--primary);font-weight:600;cursor:pointer" onclick="nav('home.html')">直接进入首页</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ Step 1：创建档案 ══ -->
+    <div id="step-form" class="ob-form-page" style="display:none">
+      <div class="ob-form-nav">
+        <button class="ob-form-nav-back" onclick="goToStep(0)">←</button>
+        <div class="ob-form-nav-title">创建宝宝档案</div>
+        <div class="ob-form-nav-spacer"></div>
+      </div>
+      <div class="ob-step-dots">
+        <div class="ob-dot done" id="dot0"></div>
+        <div class="ob-dot active" id="dot1"></div>
+        <div class="ob-dot" id="dot2"></div>
+      </div>
+
+      <div class="ob-form-scroll">
+        <!-- 基本信息 -->
+        <div class="ob-section-label">基本信息</div>
+        <div class="form-section">
+          <div class="form-row">
+            <span class="form-label">宝宝昵称 <span style="color:var(--red)">*</span></span>
+            <input class="form-input" id="babyName" placeholder="给宝宝起个名字" style="text-align:left"/>
+          </div>
+          <div class="form-row">
+            <span class="form-label">出生日期 <span style="color:var(--red)">*</span></span>
+            <input class="form-input" id="babyBirthday" type="date"/>
+            <span class="form-arrow">›</span>
+          </div>
+          <div class="form-row">
+            <span class="form-label">性别 <span style="color:var(--red)">*</span></span>
+            <div style="display:flex;gap:8px;justify-content:flex-end">
+              <div class="chip selected" style="padding:5px 18px" id="genderM" onclick="selectGender('M')">男</div>
+              <div class="chip" style="padding:5px 18px" id="genderF" onclick="selectGender('F')">女</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 过敏信息 -->
+        <div class="ob-section-label">过敏信息</div>
+        <div class="form-section">
+          <div class="form-row">
+            <span class="form-label">过敏类型 <span style="color:var(--red)">*</span></span>
+            <span class="form-value" style="color:var(--text)">牛奶蛋白过敏</span>
+            <span class="form-arrow">›</span>
+          </div>
+        </div>
+
+        <div class="ob-section-label">过敏程度</div>
+        <div class="allergy-slider">
+          <div class="asev-btn mild" id="sev-mild" onclick="selectSev('mild')">轻度</div>
+          <div class="asev-btn moderate" id="sev-moderate" onclick="selectSev('moderate')">中度</div>
+          <div class="asev-btn severe" id="sev-severe" onclick="selectSev('severe')">重度</div>
+          <div class="asev-btn active" id="sev-unknown" onclick="selectSev('unknown')">未知</div>
+        </div>
+
+        <!-- CDC 提示 -->
+        <div style="margin:0 16px 16px;padding:12px 14px;background:var(--primary-lt);border-radius:var(--radius-sm)">
+          <div style="font-size:12px;color:var(--sub-text);line-height:1.6">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;vertical-align:-2px;color:var(--primary)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> 不确定过敏程度？
+            <span style="color:var(--primary);font-weight:600;cursor:pointer" onclick="showToast('跳转 CDC 评分标准页面')">
+              [查看 CDC 评分标准]
+            </span>
+            — 可先选「未知」，就诊后再更新。
+          </div>
+        </div>
+
+        <!-- 提示说明 -->
+        <div style="margin:0 16px 20px;padding:12px 14px;background:var(--gray-50);border-radius:var(--radius-sm);border:1px solid var(--gray-100)">
+          <div style="font-size:11px;color:var(--sub-text);line-height:1.7">
+            身高、体重等生长数据可在档案创建后，通过「生长记录」模块随时补充。
+          </div>
+        </div>
+      </div>
+
+      <div style="padding:0 16px 24px;flex-shrink:0">
+        <button class="ob-btn-primary" onclick="saveProfile()">保存档案</button>
+      </div>
+    </div>
+
+    <!-- ══ Step 2：创建成功 ══ -->
+    <div id="step-success" class="ob-success" style="display:none">
+        <div class="ob-success-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:40px;height:40px"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+      <div class="ob-success-title">宝宝档案已创建！</div>
+      <div class="ob-success-sub">
+        开始用敏宝日记记录宝宝的<br/>每一天，就医时不再烦恼
+      </div>
+      <div class="ob-baby-card">
+        <div class="ob-baby-avatar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:28px;height:28px"><path d="M12 2a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>
+        </div>
+        <div>
+          <div class="ob-baby-name" id="successName">小宝</div>
+          <div class="ob-baby-info" id="successInfo">男宝宝</div>
+          <div class="ob-baby-allergy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;vertical-align:-1px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> 牛奶蛋白过敏 · <span id="successSev">未知程度</span></div>
+        </div>
+      </div>
+      <button class="ob-btn-primary" onclick="nav('home.html')">进入首页，开始记录</button>
+    </div>
+
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script src="icons-sprite.js"></script>
+<script>
+  function nav(p) { window.location.href = p; }
+
+  function goToStep(step) {
+    document.getElementById('step-splash').style.display = step === 0 ? '' : 'none';
+    document.getElementById('step-form').style.display   = step === 1 ? '' : 'none';
+    document.getElementById('step-success').style.display = step === 2 ? '' : 'none';
+  }
+
+  let selectedGender = 'M';
+  let selectedSev = 'unknown';
+
+  function selectGender(g) {
+    selectedGender = g;
+    document.getElementById('genderM').classList.toggle('selected', g === 'M');
+    document.getElementById('genderF').classList.toggle('selected', g === 'F');
+  }
+
+  function selectSev(sev) {
+    selectedSev = sev;
+    ['mild','moderate','severe','unknown'].forEach(s => {
+      const el = document.getElementById('sev-' + s);
+      el.classList.remove('active');
+      if (s === sev) el.classList.add('active');
+    });
+  }
+
+  function saveProfile() {
+    const name = document.getElementById('babyName').value.trim();
+    const bday = document.getElementById('babyBirthday').value;
+    if (!name) { showToast('请输入宝宝昵称'); return; }
+    if (!bday) { showToast('请选择出生日期'); return; }
+
+    // 填充成功页
+    document.getElementById('successName').textContent = name;
+    const genderText = selectedGender === 'M' ? '男宝宝' : '女宝宝';
+    const sevMap = { mild:'轻度', moderate:'中度', severe:'重度', unknown:'未知程度' };
+    // 计算月龄
+    const birthDate = new Date(bday);
+    const now = new Date();
+    const months = (now.getFullYear() - birthDate.getFullYear()) * 12 + (now.getMonth() - birthDate.getMonth());
+    document.getElementById('successInfo').textContent = genderText + (months > 0 ? ' · ' + months + '个月' : '');
+    document.getElementById('successSev').textContent = sevMap[selectedSev];
+
+    goToStep(2);
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  }
+</script>
+</body>
+</html>

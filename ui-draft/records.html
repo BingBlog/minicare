@@ -86,9 +86,10 @@
     <div class="filter-chip active" onclick="setFilter(this,'全部')">全部</div>
     <div class="filter-chip" onclick="setFilter(this,'饮食')">饮食</div>
     <div class="filter-chip" onclick="setFilter(this,'睡眠')">睡眠</div>
-    <div class="filter-chip" onclick="setFilter(this,'状态')">状态</div>
-    <div class="filter-chip" onclick="setFilter(this,'生长')">生长</div>
-    <div class="filter-chip" onclick="setFilter(this,'医疗')">医疗</div>
+    <div class="filter-chip" onclick="setFilter(this,'活动')">活动</div>
+    <div class="filter-chip" onclick="setFilter(this,'尿布')">尿布</div>
+    <div class="filter-chip" onclick="setFilter(this,'健康')">健康</div>
+    <div class="filter-chip" onclick="setFilter(this,'表现')">表现</div>
     <div class="filter-chip" onclick="setFilter(this,'今天')">今天</div>
   </div>
 
@@ -103,7 +104,7 @@
         </div>
         <div class="rec-meta">
           <div class="rec-title">喂奶 120ml</div>
-          <div class="rec-desc">氨基酸奶粉 · 辅食：南瓜泥 20g <span class="badge badge-yellow tag-new">⚠️新食物 D3</span></div>
+          <div class="rec-desc">氨基酸奶粉 · 辅食：南瓜泥 20g <span class="badge badge-yellow tag-new"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;vertical-align:-1px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>新食物 D3</span></div>
         </div>
         <div class="rec-time">08:00</div>
       </div>
@@ -117,13 +118,13 @@
         </div>
         <div class="rec-time">08:45</div>
       </div>
-      <div class="record-row" onclick="nav('form-activity.html')">
-        <div class="rec-icon" style="background:#FFF8E6">
-          <svg class="icon" style="color:#DDB870" viewBox="0 0 24 24"><use href="#icon-smile"></use></svg>
+      <div class="record-row" onclick="nav('form-diaper.html')">
+        <div class="rec-icon" style="background:#E8F5E9">
+          <svg class="icon" style="color:#4CAF82" viewBox="0 0 24 24"><use href="#icon-droplets"></use></svg>
         </div>
         <div class="rec-meta">
-          <div class="rec-title">活动与状态</div>
-          <div class="rec-desc">大便 ×1（软便）· 精神：良好 · 情绪：😊</div>
+          <div class="rec-title">尿布</div>
+          <div class="rec-desc">大便 ×1（软便）· 小便 ×2</div>
         </div>
         <div class="rec-time">07:30</div>
       </div>
@@ -230,9 +231,27 @@
       </div>
       <div class="ctx-item" onclick="nav('form-activity.html')">
         <span class="ctx-icon" style="color:#DDB870;font-size:22px">
+          <svg class="icon icon-lg" viewBox="0 0 24 24"><use href="#icon-activity"></use></svg>
+        </span>
+        <span class="ctx-label">活动</span>
+      </div>
+      <div class="ctx-item" onclick="nav('form-diaper.html')">
+        <span class="ctx-icon" style="color:#4CAF82;font-size:22px">
+          <svg class="icon icon-lg" viewBox="0 0 24 24"><use href="#icon-droplets"></use></svg>
+        </span>
+        <span class="ctx-label">尿布</span>
+      </div>
+      <div class="ctx-item" onclick="nav('form-health.html')">
+        <span class="ctx-icon" style="color:#E8507A;font-size:22px">
+          <svg class="icon icon-lg" viewBox="0 0 24 24"><use href="#icon-heart"></use></svg>
+        </span>
+        <span class="ctx-label">健康</span>
+      </div>
+      <div class="ctx-item" onclick="nav('form-symptom.html')">
+        <span class="ctx-icon" style="color:#F0B8C8;font-size:22px">
           <svg class="icon icon-lg" viewBox="0 0 24 24"><use href="#icon-smile"></use></svg>
         </span>
-        <span class="ctx-label">活动与状态</span>
+        <span class="ctx-label">表现</span>
       </div>
       <div class="ctx-item" onclick="nav('form-growth.html')">
         <span class="ctx-icon" style="color:#9B8ED8;font-size:22px">
@@ -253,8 +272,8 @@
   <div class="modal-overlay" id="ctxSheet" onclick="closeCtxMenu(event)">
     <div class="bottom-sheet">
       <div class="sheet-handle"></div>
-      <div class="ctx-item" onclick="nav('form-feeding.html')"><span class="ctx-icon">✏️</span><span class="ctx-label">编辑记录</span></div>
-      <div class="ctx-item danger" onclick="confirmDelete()"><span class="ctx-icon">🗑️</span><span class="ctx-label">删除记录</span></div>
+      <div class="ctx-item" onclick="nav('form-feeding.html')"><span class="ctx-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:var(--sub-text)"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span><span class="ctx-label">编辑记录</span></div>
+      <div class="ctx-item danger" onclick="confirmDelete()"><span class="ctx-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:var(--red)"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></span><span class="ctx-label">删除记录</span></div>
     </div>
   </div>
 
