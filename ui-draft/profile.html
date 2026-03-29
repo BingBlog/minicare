@@ -748,6 +748,15 @@
 
   /* ── 宝宝档案编辑 ── */
   function openEditSheet()  { document.getElementById('editSheet').classList.add('show'); }
+
+  // 读取 URL 参数：edit=1 时自动打开档案编辑弹层
+  (function initFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('edit') === '1') {
+      // 等 DOM 就绪后打开
+      setTimeout(() => openEditSheet(), 80);
+    }
+  })();
   function closeEditSheetDirect() { document.getElementById('editSheet').classList.remove('show'); }
   function closeEditSheet(e) { if(e && e.target===document.getElementById('editSheet')) document.getElementById('editSheet').classList.remove('show'); }
   function selectGender(el) {

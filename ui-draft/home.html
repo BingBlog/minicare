@@ -198,6 +198,9 @@
       .baby-stat:not(:last-child) {
         border-right: 1px solid rgba(255, 255, 255, 0.18);
       }
+      .baby-stat:active {
+        background: rgba(255, 255, 255, 0.12);
+      }
       .baby-stat-val {
         font-size: 20px;
         font-weight: 800;
@@ -565,16 +568,16 @@
             <!-- 头像：SVG icon -->
             <div
               class="header-avatar"
-              onclick="nav('profile.html')"
-              title="我的">
+              onclick="nav('profile.html?edit=1')"
+              title="编辑宝宝档案">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:26px;height:26px"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             </div>
           </div>
         </div>
 
         <div class="hero-section">
-          <div class="baby-card" onclick="nav('profile.html')">
-            <div class="baby-card-top">
+          <div class="baby-card">
+            <div class="baby-card-top" onclick="nav('profile.html?edit=1')" style="cursor:pointer">
               <div class="baby-avatar">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:34px;height:34px;color:#fff"><path d="M12 2a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/><path d="M5 20a7 7 0 0 1 14 0"/><circle cx="8.5" cy="10" r="1" fill="currentColor"/><circle cx="15.5" cy="10" r="1" fill="currentColor"/></svg>
             </div>
@@ -585,25 +588,25 @@
               <div class="baby-severity-tag">中度</div>
             </div>
             <div class="baby-stats">
-              <div class="baby-stat">
+              <div class="baby-stat" onclick="nav('records.html?filter=饮食')" style="cursor:pointer">
                 <div class="baby-stat-val">
                   480<span class="baby-stat-u">ml</span>
                 </div>
                 <div class="baby-stat-label">今日奶量</div>
               </div>
-              <div class="baby-stat">
+              <div class="baby-stat" onclick="nav('records.html?filter=睡眠')" style="cursor:pointer">
                 <div class="baby-stat-val">
                   9<span class="baby-stat-u">h</span>
                 </div>
                 <div class="baby-stat-label">今日睡眠</div>
               </div>
-              <div class="baby-stat">
+              <div class="baby-stat" onclick="nav('records.html?filter=尿布')" style="cursor:pointer">
                 <div class="baby-stat-val">
                   3<span class="baby-stat-u">次</span>
                 </div>
                 <div class="baby-stat-label">换尿布</div>
               </div>
-              <div class="baby-stat">
+              <div class="baby-stat" onclick="nav('records.html?filter=表现')" style="cursor:pointer">
                 <div class="baby-stat-val">
                   0<span class="baby-stat-u">项</span>
                 </div>

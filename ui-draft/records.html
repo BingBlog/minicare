@@ -285,7 +285,25 @@
   function setFilter(el, name) {
     document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
     el.classList.add('active');
+    // 滚动到筛选 chip 使其可见
+    el.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
   }
+
+  // 读取 URL 参数自动激活筛选项
+  (function initFilter() {
+    const params = new URLSearchParams(window.location.search);
+    const filter = params.get('filter');
+    if (!filter) return;
+    const chips = document.querySelectorAll('.filter-chip');
+    chips.forEach(chip => {
+      if (chip.textContent.trim() === filter) {
+        chips.forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        // 延迟确保 DOM 渲染后滚动
+        setTimeout(() => chip.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' }), 100);
+      }
+    });
+  })();
   function showFabSheet() { document.getElementById('fabSheet').classList.add('show'); }
   function closeFabSheet(e) { if(e.target===document.getElementById('fabSheet')) document.getElementById('fabSheet').classList.remove('show'); }
   function showCtxMenu() { document.getElementById('ctxSheet').classList.add('show'); }
