@@ -2,7 +2,7 @@
 
 > 平台：腾讯云 CloudBase（云开发）  
 > 适用阶段：MVP 上线前  
-> 最后更新：2026-03-29（v8：阶段五 NestJS 后端代码骨架已创建，CloudRun 部署待执行）
+> 最后更新：2026-03-29（v10：阶段五 CloudRun 服务部署完成，/health 验证通过）
 
 ---
 
@@ -14,7 +14,7 @@
 | 阶段二 | 数据库初始化（MySQL 建表） | ✅ 已完成 | 2026-03-29 |
 | 阶段三 | Auth 认证配置 | ✅ 已完成 | 2026-03-29 |
 | 阶段四 | 云存储配置（照片 CDN） | ✅ 已完成 | 2026-03-29 |
-| 阶段五 | CloudRun 后端服务部署 | 🔧 进行中 | — |
+| 阶段五 | CloudRun 后端服务部署 | ✅ 已完成 | 2026-03-29 |
 | 阶段六 | Web H5 前端静态托管 | 🔲 待执行 | — |
 | 阶段七 | 移动端接入（iOS/Android） | 🔲 待执行 | — |
 | 阶段八 | 云函数（定时任务） | 🔲 待执行 | — |
@@ -247,7 +247,8 @@ cloud://minicare-cloud-6gqledlle0132cbe.ap-shanghai/
 > 详见 `docs/architecture.md` § 三、后端技术选型
 >
 > **5.1 代码骨架已创建（2026-03-29）**：`minicare/minicare-server/` 目录已包含完整 NestJS 项目结构。
-> **5.2 ～ 5.4 CloudRun 部署待执行**：需在 CloudRun 控制台创建服务并配置环境变量。
+> **本地开发环境已全面就绪（2026-03-29）**：本地 MySQL 5.7 已初始化，迁移体系建立，`npm run start:dev` 运行正常。
+> **5.3 ～ 5.4 CloudRun 部署待执行**：需在 CloudRun 控制台创建服务并配置环境变量。
 
 ### 5.1 项目结构
 
@@ -292,7 +293,44 @@ minicare-server/                      ✅ 已创建
   ├── .gitignore                      ✅
   ├── nest-cli.json                   ✅
   ├── tsconfig.json                   ✅
+  ├── migrations/
+  │   └── 001_init_schema.sql          ✅ 完整建表 DDL（兼容 MySQL 5.7 + 8.0）
+  └── scripts/
+      └── migrate.sh                  ✅ 迁移管理脚本（自动追踪版本，支持 dry-run）
   └── package.json                    ✅ NestJS v10 + mysql2 + socket.io + @cloudbase/node-sdk
+```
+
+### 5.1b 本地开发环境 ✅ 已就绪（2026-03-29）
+
+> 本地开发连接本地 MySQL 5.7，不污染 CloudBase 生产数据库。
+
+| 项目 | 状态 | 说明 |
+|------|------|------|
+| 本地 MySQL 5.7.31 | ✅ 运行中 | DMG 安装版，root 密码已重置 |
+| `minicare_dev` 数据库 | ✅ 已创建 | `utf8mb4_unicode_ci` |
+| `migrations/001_init_schema.sql` | ✅ 已执行 | 14 张表（含 `schema_migrations`） |
+| `.env` 本地配置 | ✅ 已配置 | `DB_HOST=127.0.0.1`，`DB_NAME=minicare_dev` |
+| `npm run start:dev` | ✅ 正常启动 | 所有模块加载成功，无报错 |
+| `npm run migrate` | ✅ 可用 | 支持 `--status` / `--dry-run` |
+
+**数据库版本差异说明**：
+
+| | 本地 | CloudBase 远程 |
+|---|---|---|
+| MySQL 版本 | 5.7.31 | 8.0（CynosDB Serverless）|
+| `DEFAULT (uuid())` | ❌ 不支持 | ✅ 支持 |
+| 应对 | UUID 由应用层（`uuid` npm 包）生成传入 | 同左 |
+| `JSON` 类型 | ✅ 支持（5.7.8+） | ✅ 支持 |
+
+**后续加字段流程**：
+```bash
+# 1. 新建迁移文件（文件名递增）
+echo "-- 描述: xxx\nALTER TABLE xxx ADD COLUMN yyy;" > migrations/002_xxx.sql
+
+# 2. 本地执行
+npm run migrate
+
+# 3. 生产执行：通过 CloudBase MCP 工具执行同一条 ALTER SQL，并在此文档记录
 ```
 
 ### 5.2 关键环境变量
@@ -313,7 +351,8 @@ minicare-server/                      ✅ 已创建
 
 - [x] 环境变量清单已在 `.env.example` 列出（含说明）
 - [x] JWT_SECRET 生成命令已在注释中提供
-- [ ] **待执行**：所有环境变量在 CloudRun「环境变量」面板配置完毕
+- [x] **本地 `.env` 已配置**（连接本地 MySQL `minicare_dev`，`dotenv/config` 在 `main.ts` 顶部加载）
+- [x] **已完成**：所有环境变量在 CloudRun `minicare-api-002` 版本环境变量面板配置完毕
 - [x] **`.env` 已加入 `.gitignore`，禁止提交真实密钥**
 
 ### 5.3 部署 CloudRun 服务
@@ -326,16 +365,22 @@ cloudbase run deploy --name minicare-api --path ./minicare/minicare-server
 # 在 .github/workflows/deploy.yml 中配置自动部署
 ```
 
-- [ ] **待执行**：首次部署成功，服务状态为「运行中」
+- [x] **已完成**：首次部署成功，版本 `minicare-api-002` 状态为「正常」，流量 100%
 - [ ] **待执行**：配置「最小实例数=1」防止冷启动（月增约 ¥15，R-2 风险缓解）
 - [ ] **待执行**：配置「自定义域名」：`api.minicare.xxx.com`（需 HTTPS + ICP 备案，上线前）
-- [ ] **待执行**：通过 `curl https://[cloudrun域名]/health` 确认服务健康
+- [x] **已完成**：`/health` 验证通过 ✅
+  ```bash
+  # 访问域名
+  https://minicare-cloud-6gqledlle0132cbe-1253854169.ap-shanghai.app.tcloudbase.com
+  # 响应：{"status":"ok","service":"minicare-api","version":"0.1.0","env":"production"}
+  ```
+- [ ] HTTP 访问服务路由：`/` → `minicare-api`（云托管）✅ 已配置
 
 ### 5.4 WebSocket 配置（家庭实时同步）
 
 - [x] `EventsGateway` Socket.IO `/ws` 命名空间已实现，按 `family_id` room 广播
-- [ ] **待执行**：CloudRun 控制台确认 WebSocket 长连接支持已开启
-- [ ] 在 CloudRun 控制台开启「长连接支持」
+- [ ] **待确认**：CloudRun 控制台确认 WebSocket 长连接支持已开启（暂未找到入口，上线前再确认）
+- [ ] 在 CloudRun 控制台开启「长连接支持」（上线前执行）
 - [ ] 实现消息类型：
   - `record:created` — 家庭成员新增记录后广播
   - `record:updated` — 家庭成员修改记录后广播

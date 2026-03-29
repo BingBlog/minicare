@@ -45,6 +45,18 @@ async function bootstrap() {
     console.log('[minicare] Swagger: http://localhost:3000/api-docs');
   }
 
+  // ── /health 端点（CloudRun 健康检查 + curl 验证）────────────
+  const httpAdapter = app.getHttpAdapter();
+  httpAdapter.get('/health', (_req: unknown, res: { json: (data: unknown) => void }) => {
+    res.json({
+      status: 'ok',
+      service: 'minicare-api',
+      version: '0.1.0',
+      timestamp: new Date().toISOString(),
+      env: process.env.NODE_ENV ?? 'development',
+    });
+  });
+
   // ── 启动监听（CloudRun 会注入 PORT）──────────────────────────
   const port = process.env.PORT ?? 3000;
   await app.listen(port, '0.0.0.0');
