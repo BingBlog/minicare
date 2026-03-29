@@ -1,3 +1,6 @@
+// 本地开发：从 .env 文件加载环境变量（生产环境 CloudRun 直接注入，无需此步骤）
+import 'dotenv/config';
+
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';

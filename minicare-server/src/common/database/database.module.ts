@@ -1,4 +1,4 @@
-import { Global, Module } from '@nestjs/common';
+import { Global, Logger, Module } from '@nestjs/common';
 import { createPool, Pool } from 'mysql2/promise';
 
 export const DATABASE_POOL = 'DATABASE_POOL';
@@ -16,12 +16,14 @@ export const DATABASE_POOL = 'DATABASE_POOL';
     {
       provide: DATABASE_POOL,
       useFactory: (): Pool => {
+        const logger = new Logger('DatabaseModule');
+
         const pool = createPool({
-          host: process.env.DB_HOST,
+          host: process.env.DB_HOST ?? 'localhost',
           port: Number(process.env.DB_PORT ?? 3306),
-          database: process.env.DB_NAME,
-          user: process.env.DB_USER,
-          password: process.env.DB_PASS,
+          database: process.env.DB_NAME ?? 'minicare',
+          user: process.env.DB_USER ?? 'root',
+          password: process.env.DB_PASS ?? '',
           charset: 'utf8mb4',
           timezone: '+08:00',
           waitForConnections: true,
@@ -32,15 +34,19 @@ export const DATABASE_POOL = 'DATABASE_POOL';
           keepAliveInitialDelay: 10_000,
         });
 
-        // 启动时预热一个连接，减少第一次请求的延迟
-        pool.getConnection()
-          .then((conn) => {
-            console.log('[Database] MySQL 连接池初始化成功');
-            conn.release();
-          })
-          .catch((err) => {
-            console.warn('[Database] MySQL 连接池预热失败（Serverless 冷启动中）:', err.message);
-          });
+        // 仅在已配置 DB_HOST 时才预热（本地开发未配置时跳过）
+        if (process.env.DB_HOST) {
+          pool.getConnection()
+            .then((conn) => {
+              logger.log('MySQL 连接池初始化成功');
+              conn.release();
+            })
+            .catch((err: Error) => {
+              logger.warn(`MySQL 连接池预热失败（Serverless 冷启动中）: ${err.message}`);
+            });
+        } else {
+          logger.debug('DB_HOST 未配置，跳过连接预热（本地开发模式）');
+        }
 
         return pool;
       },

@@ -1,5 +1,7 @@
 import { Global, Module } from '@nestjs/common';
-import cloudbase from '@cloudbase/node-sdk';
+// @cloudbase/node-sdk 没有 default export，需用 require 或 * as 导入
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const cloudbase = require('@cloudbase/node-sdk') as typeof import('@cloudbase/node-sdk');
 
 export const CLOUDBASE_APP = 'CLOUDBASE_APP';
 
