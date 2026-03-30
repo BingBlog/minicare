@@ -121,6 +121,13 @@ export const babyApi = {
       method: 'POST',
       body: JSON.stringify(data),
     }),
+
+  /** 更新宝宝档案（部分字段） */
+  update: (familyId: string, babyId: string, data: Partial<CreateBabyDto>) =>
+    request<Baby>(`/api/family/${familyId}/baby/${babyId}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    }),
 }
 
 // ── Records ───────────────────────────────────────────────────────
@@ -152,6 +159,10 @@ export const recordsApi = {
   growth: makeRecordsApi('growth'),
   medical: makeRecordsApi('medical'),
   symptom: makeRecordsApi('symptom'),
+
+  /** 今日聚合时间轴（多类型，倒序） */
+  today: (familyId: string) =>
+    request<TodayRecord[]>(`/api/family/${familyId}/records/today`),
 }
 
 // ── Types ─────────────────────────────────────────────────────────
@@ -170,34 +181,52 @@ export interface Family {
 
 export interface FamilyMember {
   id: string
-  userId: string
-  role: 'owner' | 'editor' | 'viewer'
-  nickname: string
+  user_id: string
+  /** DDL: 1=owner  2=member */
+  role: 1 | 2
+  name: string       // ua.nickname aliased as name
+  avatar_url?: string | null
 }
+
+export type AllergyType = 'milk' | 'egg' | 'wheat' | 'peanut' | 'tree_nut' | 'soy' | 'fish' | 'shellfish' | 'other'
+export type AllergyLevel = 'mild' | 'moderate' | 'severe' | 'unknown'
 
 export interface Baby {
   id: string
-  familyId: string
+  family_id: string
   name: string
   gender: 'male' | 'female' | 'unknown'
-  birthDate: string
-  avatarUrl?: string
+  birth_date: string
+  allergy_types?: AllergyType[]
+  allergy_level?: AllergyLevel | null
+  birth_weight_g?: number | null
+  birth_height_cm?: number | null
+  avatar_url?: string | null
 }
 
 export interface CreateBabyDto {
   name: string
   gender: 'male' | 'female' | 'unknown'
-  birthDate: string
+  birth_date: string
+  allergy_types?: AllergyType[]
+  allergy_level?: AllergyLevel
+  birth_weight_g?: number
+  birth_height_cm?: number
 }
 
+export interface TodayRecord {
+  type: string
+  id: string
+  time: string
+  note?: string | null
+}
+
+/** 通用记录基础字段（各记录表实际返回的列名以 DDL 为准）*/
 export interface RecordItem {
   id: string
-  babyId: string
-  familyId: string
-  type: string
-  startTime: string
-  endTime?: string
-  note?: string
-  createdBy?: string
+  baby_id: string
+  recorded_by: string
+  note?: string | null
+  created_at: string
   [key: string]: unknown
 }

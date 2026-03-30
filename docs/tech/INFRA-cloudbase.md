@@ -2,34 +2,34 @@
 
 > 平台：腾讯云 CloudBase（云开发）  
 > 适用阶段：MVP 上线前  
-> 最后更新：2026-03-29（v10：阶段五 CloudRun 服务部署完成，/health 验证通过）
+> 最后更新：2026-03-30（v11：阶段六 Web H5 前端静态托管完成，前端已上线）
 
 ---
 
 ## 📊 执行进度总览
 
-| 阶段 | 名称 | 状态 | 完成时间 |
-|------|------|------|----------|
-| 阶段一 | CloudBase 环境初始化 | ✅ 已完成 | 2026-03-29 |
+| 阶段   | 名称                       | 状态      | 完成时间   |
+| ------ | -------------------------- | --------- | ---------- |
+| 阶段一 | CloudBase 环境初始化       | ✅ 已完成 | 2026-03-29 |
 | 阶段二 | 数据库初始化（MySQL 建表） | ✅ 已完成 | 2026-03-29 |
-| 阶段三 | Auth 认证配置 | ✅ 已完成 | 2026-03-29 |
-| 阶段四 | 云存储配置（照片 CDN） | ✅ 已完成 | 2026-03-29 |
-| 阶段五 | CloudRun 后端服务部署 | ✅ 已完成 | 2026-03-29 |
-| 阶段六 | Web H5 前端静态托管 | 🔲 待执行 | — |
-| 阶段七 | 移动端接入（iOS/Android） | 🔲 待执行 | — |
-| 阶段八 | 云函数（定时任务） | 🔲 待执行 | — |
-| 阶段九 | 监控与运维 | 🔲 待执行 | — |
+| 阶段三 | Auth 认证配置              | ✅ 已完成 | 2026-03-29 |
+| 阶段四 | 云存储配置（照片 CDN）     | ✅ 已完成 | 2026-03-29 |
+| 阶段五 | CloudRun 后端服务部署      | ✅ 已完成 | 2026-03-29 |
+| 阶段六 | Web H5 前端静态托管        | ✅ 已完成 | 2026-03-30 |
+| 阶段七 | 移动端接入（iOS/Android）  | 🔲 待执行 | —          |
+| 阶段八 | 云函数（定时任务）         | 🔲 待执行 | —          |
+| 阶段九 | 监控与运维                 | 🔲 待执行 | —          |
 
 ---
 
 ## 执行前提
 
-| 项目 | 说明 |
-|------|------|
-| 腾讯云账号 | 已完成实名认证，建议使用企业账号 |
-| ICP 备案 | 域名备案（Web H5 及 API 域名）已完成或进行中 |
+| 项目            | 说明                                         |
+| --------------- | -------------------------------------------- |
+| 腾讯云账号      | 已完成实名认证，建议使用企业账号             |
+| ICP 备案        | 域名备案（Web H5 及 API 域名）已完成或进行中 |
 | 手机号 SMS 配额 | 在 CloudBase 控制台申请短信配额（Auth 登录） |
-| 开发机环境 | Node.js ≥ 18、`@cloudbase/cli` 已安装 |
+| 开发机环境      | Node.js ≥ 18、`@cloudbase/cli` 已安装        |
 
 ---
 
@@ -39,17 +39,17 @@
 
 ### 关键信息记录
 
-| 项目 | 值 |
-|------|----|
-| **envId** | `minicare-cloud-6gqledlle0132cbe` |
-| **环境别名** | `minicare-cloud` |
-| **地域** | `ap-shanghai`（上海）|
-| **套餐** | 体验版，到期 `2026-09-29` |
-| **静态托管域名** | `minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com` |
+| 项目                | 值                                                              |
+| ------------------- | --------------------------------------------------------------- |
+| **envId**           | `minicare-cloud-6gqledlle0132cbe`                               |
+| **环境别名**        | `minicare-cloud`                                                |
+| **地域**            | `ap-shanghai`（上海）                                           |
+| **套餐**            | 体验版，到期 `2026-09-29`                                       |
+| **静态托管域名**    | `minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com`  |
 | **云存储 CDN 域名** | `6d69-minicare-cloud-6gqledlle0132cbe-1253854169.tcb.qcloud.la` |
-| **云函数命名空间** | `minicare-cloud-6gqledlle0132cbe` |
-| **CloudBase CLI** | v2.12.9 |
-| **本地 Node.js** | v24.14.0 |
+| **云函数命名空间**  | `minicare-cloud-6gqledlle0132cbe`                               |
+| **CloudBase CLI**   | v2.12.9                                                         |
+| **本地 Node.js**    | v24.14.0                                                        |
 
 ### 1.1 创建 CloudBase 环境
 
@@ -159,10 +159,10 @@ cloudbase init
 
 ### ⚠️ 已知风险（需手动处理）
 
-| # | 风险 | 影响 | 状态 | 处置方式 |
-|---|------|------|------|---------|
-| R-1 | **数据库回档能力未开启** | 🔴 高 — 误操作/Bug 批量写入后无法回滚 | ❌ 待处理 | 控制台 → [CynosDB](https://console.cloud.tencent.com/cynosdb) → 集群 `cynosdbmysql-dg17geyu` → **备份管理** → 开启自动备份，保留 7 天 |
-| R-2 | **Serverless 自动启停无法关闭** | 🟡 中 — 10 分钟无连接后 DB 暂停，下次唤醒冷启动 5~10s | ⏳ 暂接受 | 开发阶段可接受；MVP 上线前评估升级为标准版 MySQL（~¥30-50/月）或在 `/health` 路由加 `SELECT 1` 保活 |
+| #   | 风险                            | 影响                                                  | 状态      | 处置方式                                                                                                                              |
+| --- | ------------------------------- | ----------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| R-1 | **数据库回档能力未开启**        | 🔴 高 — 误操作/Bug 批量写入后无法回滚                 | ❌ 待处理 | 控制台 → [CynosDB](https://console.cloud.tencent.com/cynosdb) → 集群 `cynosdbmysql-dg17geyu` → **备份管理** → 开启自动备份，保留 7 天 |
+| R-2 | **Serverless 自动启停无法关闭** | 🟡 中 — 10 分钟无连接后 DB 暂停，下次唤醒冷启动 5~10s | ⏳ 暂接受 | 开发阶段可接受；MVP 上线前评估升级为标准版 MySQL（~¥30-50/月）或在 `/health` 路由加 `SELECT 1` 保活                                   |
 
 ---
 
@@ -184,12 +184,12 @@ cloudbase init
 
 **已配置域名**：
 
-| 域名 | 用途 | 状态 |
-|------|------|------|
-| `minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com` | 静态托管默认域名 | ✅ 已启用 |
+| 域名                                                                        | 用途               | 状态      |
+| --------------------------------------------------------------------------- | ------------------ | --------- |
+| `minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com`              | 静态托管默认域名   | ✅ 已启用 |
 | `minicare-cloud-6gqledlle0132cbe-1253854169.ap-shanghai.app.tcloudbase.com` | CloudBase 应用域名 | ✅ 已启用 |
-| `localhost` | 本地 Vite 开发 | ✅ 已添加 |
-| `127.0.0.1` | 本地开发备用 | ✅ 已添加 |
+| `localhost`                                                                 | 本地 Vite 开发     | ✅ 已添加 |
+| `127.0.0.1`                                                                 | 本地开发备用       | ✅ 已添加 |
 
 - [x] 控制台手动添加 `localhost` 安全域名
 - [x] 控制台手动添加 `127.0.0.1` 安全域名
@@ -238,7 +238,7 @@ cloud://minicare-cloud-6gqledlle0132cbe.ap-shanghai/
 
 ---
 
-## 阶段五：CloudRun 后端服务部署 🔧 进行中
+## 阶段五：CloudRun 后端服务部署 ✅ 已完成（2026-03-29）
 
 > **框架选型：NestJS v10**
 > 理由：minicare 有 3 层角色 × 50+ API 的权限校验矩阵，NestJS Guards 装饰器声明一次全局复用；
@@ -304,25 +304,26 @@ minicare-server/                      ✅ 已创建
 
 > 本地开发连接本地 MySQL 5.7，不污染 CloudBase 生产数据库。
 
-| 项目 | 状态 | 说明 |
-|------|------|------|
-| 本地 MySQL 5.7.31 | ✅ 运行中 | DMG 安装版，root 密码已重置 |
-| `minicare_dev` 数据库 | ✅ 已创建 | `utf8mb4_unicode_ci` |
-| `migrations/001_init_schema.sql` | ✅ 已执行 | 14 张表（含 `schema_migrations`） |
-| `.env` 本地配置 | ✅ 已配置 | `DB_HOST=127.0.0.1`，`DB_NAME=minicare_dev` |
-| `npm run start:dev` | ✅ 正常启动 | 所有模块加载成功，无报错 |
-| `npm run migrate` | ✅ 可用 | 支持 `--status` / `--dry-run` |
+| 项目                             | 状态        | 说明                                        |
+| -------------------------------- | ----------- | ------------------------------------------- |
+| 本地 MySQL 5.7.31                | ✅ 运行中   | DMG 安装版，root 密码已重置                 |
+| `minicare_dev` 数据库            | ✅ 已创建   | `utf8mb4_unicode_ci`                        |
+| `migrations/001_init_schema.sql` | ✅ 已执行   | 14 张表（含 `schema_migrations`）           |
+| `.env` 本地配置                  | ✅ 已配置   | `DB_HOST=127.0.0.1`，`DB_NAME=minicare_dev` |
+| `npm run start:dev`              | ✅ 正常启动 | 所有模块加载成功，无报错                    |
+| `npm run migrate`                | ✅ 可用     | 支持 `--status` / `--dry-run`               |
 
 **数据库版本差异说明**：
 
-| | 本地 | CloudBase 远程 |
-|---|---|---|
-| MySQL 版本 | 5.7.31 | 8.0（CynosDB Serverless）|
-| `DEFAULT (uuid())` | ❌ 不支持 | ✅ 支持 |
-| 应对 | UUID 由应用层（`uuid` npm 包）生成传入 | 同左 |
-| `JSON` 类型 | ✅ 支持（5.7.8+） | ✅ 支持 |
+|                    | 本地                                   | CloudBase 远程            |
+| ------------------ | -------------------------------------- | ------------------------- |
+| MySQL 版本         | 5.7.31                                 | 8.0（CynosDB Serverless） |
+| `DEFAULT (uuid())` | ❌ 不支持                              | ✅ 支持                   |
+| 应对               | UUID 由应用层（`uuid` npm 包）生成传入 | 同左                      |
+| `JSON` 类型        | ✅ 支持（5.7.8+）                      | ✅ 支持                   |
 
 **后续加字段流程**：
+
 ```bash
 # 1. 新建迁移文件（文件名递增）
 echo "-- 描述: xxx\nALTER TABLE xxx ADD COLUMN yyy;" > migrations/002_xxx.sql
@@ -337,17 +338,17 @@ npm run migrate
 
 在 CloudRun 控制台配置以下环境变量（不存入代码）：
 
-| 变量名 | 说明 |
-|--------|------|
-| `TCB_ENV_ID` | CloudBase 环境 ID |
-| `DB_HOST` | MySQL 内网地址（CloudBase 控制台获取） |
-| `DB_PORT` | `3306` |
-| `DB_NAME` | 数据库名 |
-| `DB_USER` | 数据库用户名 |
-| `DB_PASS` | 数据库密码 |
-| `JWT_SECRET` | JWT 签名密钥（随机 32 字节） |
-| `SMS_SIGN` | 短信签名名称 |
-| `SMS_TEMPLATE_ID` | 短信验证码模板 ID |
+| 变量名            | 说明                                   |
+| ----------------- | -------------------------------------- |
+| `TCB_ENV_ID`      | CloudBase 环境 ID                      |
+| `DB_HOST`         | MySQL 内网地址（CloudBase 控制台获取） |
+| `DB_PORT`         | `3306`                                 |
+| `DB_NAME`         | 数据库名                               |
+| `DB_USER`         | 数据库用户名                           |
+| `DB_PASS`         | 数据库密码                             |
+| `JWT_SECRET`      | JWT 签名密钥（随机 32 字节）           |
+| `SMS_SIGN`        | 短信签名名称                           |
+| `SMS_TEMPLATE_ID` | 短信验证码模板 ID                      |
 
 - [x] 环境变量清单已在 `.env.example` 列出（含说明）
 - [x] JWT_SECRET 生成命令已在注释中提供
@@ -388,7 +389,7 @@ cloudbase run deploy --name minicare-api --path ./minicare/minicare-server
 
 ---
 
-## 阶段六：Web H5 前端（React + Vite）静态托管
+## 阶段六：Web H5 前端（React + Vite）静态托管 ✅ 已完成（2026-03-30）
 
 > **技术栈：React 18 + Vite 5**
 > CloudBase 静态托管对 Vite 构建产物完全兼容；`@cloudbase/js-sdk` 通过 npm 安装，支持 Tree-shaking。
@@ -413,32 +414,32 @@ npx tailwindcss init -p
 
 ```typescript
 // vite.config.ts
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
-  base: './',           // ⚠️ 必须使用相对路径，静态托管 CDN 部署必须
+  base: "./", // ⚠️ 必须使用相对路径，静态托管 CDN 部署必须
   build: {
-    outDir: 'dist',
+    outDir: "dist",
   },
-})
+});
 ```
 
 ### 6.3 CloudBase SDK 初始化（单例）
 
 ```typescript
 // src/lib/cloudbase.ts
-import cloudbase from '@cloudbase/js-sdk'
+import cloudbase from "@cloudbase/js-sdk";
 
 // ⚠️ 必须同步初始化，不能 async/lazy import
 export const app = cloudbase.init({
-  env: import.meta.env.VITE_TCB_ENV_ID,   // .env.local 中配置
-  region: 'ap-shanghai',
+  env: import.meta.env.VITE_TCB_ENV_ID, // .env.local 中配置
+  region: "ap-shanghai",
   auth: { detectSessionInUrl: true },
-})
+});
 
-export const auth = app.auth
+export const auth = app.auth;
 ```
 
 ```bash
@@ -451,10 +452,10 @@ VITE_API_BASE_URL=https://minicare-api.xxxx.run.tcloudbase.com
 
 ```typescript
 // src/router.ts — TanStack Router，Hash 模式
-import { createHashHistory, createRouter } from '@tanstack/react-router'
+import { createHashHistory, createRouter } from "@tanstack/react-router";
 
-const hashHistory = createHashHistory()
-export const router = createRouter({ routeTree, history: hashHistory })
+const hashHistory = createHashHistory();
+export const router = createRouter({ routeTree, history: hashHistory });
 // ✅ Hash 模式（#/home）：静态托管刷新不会 404，无需服务端配置
 ```
 
@@ -478,6 +479,7 @@ cloudbase hosting deploy ./dist minicare/ -e minicare-cloud-6gqledlle0132cbe
 - [ ] 在控制台「安全域名」中添加前端域名（Auth SDK 跨域要求）
 
 > **✅ 阶段六完成** （2026-03-30）
+>
 > - 前端访问地址：**https://minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com**
 > - 技术栈：React 18 + Vite 6 + TypeScript + TailwindCSS 3 + Zustand + react-router-dom 6
 > - 已实现页面：登录、注册、新用户引导（添加宝宝）、首页、记录列表（含新增弹窗）、我的
@@ -488,30 +490,33 @@ cloudbase hosting deploy ./dist minicare/ -e minicare-cloud-6gqledlle0132cbe
 
 ```typescript
 // src/api/records/feeding.ts
-import { app } from '@/lib/cloudbase'
+import { app } from "@/lib/cloudbase";
 
 export async function createFeedingRecord(data: CreateFeedingInput) {
   // 方式一：通过 CloudBase SDK 调用 CloudRun（自动注入 Auth Token）
   const res = await app.callContainer({
-    name: 'minicare-api',
-    method: 'POST',
-    path: '/records/feeding',
-    header: { 'Content-Type': 'application/json' },
+    name: "minicare-api",
+    method: "POST",
+    path: "/records/feeding",
+    header: { "Content-Type": "application/json" },
     data,
-  })
-  return res.data
+  });
+  return res.data;
 }
 
 // 方式二：直接 fetch（手动附加 Bearer Token）
-const { data: session } = await auth.getSession()
-const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/records/feeding`, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${session?.access_token}`,
+const { data: session } = await auth.getSession();
+const res = await fetch(
+  `${import.meta.env.VITE_API_BASE_URL}/records/feeding`,
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.access_token}`,
+    },
+    body: JSON.stringify(data),
   },
-  body: JSON.stringify(data),
-})
+);
 ```
 
 - [ ] 确认 SDK 版本 `@cloudbase/js-sdk >= 2.x`
@@ -526,12 +531,12 @@ const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/records/feeding`, 
 
 移动端**不使用 CloudBase 原生 SDK**，统一通过 HTTP/WebSocket 接入 CloudRun API：
 
-| 能力 | 接入方式 |
-|------|---------|
-| 认证 | `POST /auth/send-code` + `POST /auth/verify-code` → 返回 JWT Token |
-| 数据读写 | 携带 `Authorization: Bearer <token>` 的 HTTP REST API |
-| 实时推送 | WebSocket `wss://api.minicare.xxx.com/ws?token=<jwt>` |
-| 图片上传 | `GET /storage/upload-url` → 获取预签名 URL → 直传 CloudBase CDN |
+| 能力     | 接入方式                                                           |
+| -------- | ------------------------------------------------------------------ |
+| 认证     | `POST /auth/send-code` + `POST /auth/verify-code` → 返回 JWT Token |
+| 数据读写 | 携带 `Authorization: Bearer <token>` 的 HTTP REST API              |
+| 实时推送 | WebSocket `wss://api.minicare.xxx.com/ws?token=<jwt>`              |
+| 图片上传 | `GET /storage/upload-url` → 获取预签名 URL → 直传 CloudBase CDN    |
 
 ### 7.2 iOS 接入清单
 
@@ -597,14 +602,14 @@ const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/records/feeding`, 
 
 ## 成本估算（MVP 阶段，≤1000 DAU）
 
-| 资源 | 配置 | 月估算费用 |
-|------|------|-----------|
-| CloudBase 环境 | 按量计费 | 免费额度覆盖 |
-| MySQL | 1C1G，按量 | ~¥30–50/月 |
-| CloudRun | 0.25C/0.5G，最小实例=0 | ~¥10–20/月（流量触发） |
-| 云存储 | 5GB + CDN | ~¥5–10/月 |
-| SMS 短信 | 1000条验证码 | ~¥50/月 |
-| **合计** | | **~¥100–130/月** |
+| 资源           | 配置                   | 月估算费用             |
+| -------------- | ---------------------- | ---------------------- |
+| CloudBase 环境 | 按量计费               | 免费额度覆盖           |
+| MySQL          | 1C1G，按量             | ~¥30–50/月             |
+| CloudRun       | 0.25C/0.5G，最小实例=0 | ~¥10–20/月（流量触发） |
+| 云存储         | 5GB + CDN              | ~¥5–10/月              |
+| SMS 短信       | 1000条验证码           | ~¥50/月                |
+| **合计**       |                        | **~¥100–130/月**       |
 
 > 随 DAU 增长，主要费用增量来自 MySQL 读写次数和 CloudRun 调用次数。  
 > 建议在 10,000 DAU 时评估是否升级至包年包月套餐。

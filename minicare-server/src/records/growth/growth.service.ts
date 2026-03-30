@@ -10,20 +10,26 @@ export class GrowthService {
 
   async create(userId: string, dto: CreateGrowthDto) {
     const id = uuidv4();
-    // TODO: 后续可在此处调用 WHO 百分位计算服务
     await this.db.execute(
-      `INSERT INTO growth_record (id, baby_id, recorded_by, measured_at, weight_g, height_cm, head_cm, note)
+      `INSERT INTO growth_record (id, baby_id, recorded_by, record_date, weight_g, height_mm, head_mm, note)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [id, dto.baby_id, userId, dto.measured_at,
-       dto.weight_g ?? null, dto.height_cm ?? null,
-       dto.head_cm ?? null, dto.note ?? null],
+      [
+        id,
+        dto.baby_id,
+        userId,
+        dto.record_date,
+        dto.weight_g  ?? null,
+        dto.height_mm ?? null,
+        dto.head_mm   ?? null,
+        dto.note      ?? null,
+      ],
     );
     return { id };
   }
 
   async findAll(babyId: string, limit = 50, offset = 0) {
     const [rows] = await this.db.execute<any[]>(
-      'SELECT * FROM growth_record WHERE baby_id = ? ORDER BY measured_at DESC LIMIT ? OFFSET ?',
+      'SELECT * FROM growth_record WHERE baby_id = ? ORDER BY record_date DESC LIMIT ? OFFSET ?',
       [babyId, limit, offset],
     );
     return rows;

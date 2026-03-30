@@ -15,7 +15,7 @@ import { MinRole, FamilyRole } from '../../common/decorators/min-role.decorator'
 export class SymptomController {
   constructor(private readonly symptomService: SymptomService) {}
 
-  @Post() @MinRole(FamilyRole.EDITOR)
+  @Post() @MinRole(FamilyRole.MEMBER)
   create(@CurrentUser() userId: string, @Body() dto: CreateSymptomDto) {
     return this.symptomService.create(userId, dto);
   }
@@ -25,6 +25,6 @@ export class SymptomController {
     return this.symptomService.findAll(babyId, Number(limit), Number(offset));
   }
 
-  @Delete(':id') @MinRole(FamilyRole.EDITOR)
+  @Delete(':id') @MinRole(FamilyRole.MEMBER)
   remove(@Param('id') id: string) { return this.symptomService.remove(id); }
 }

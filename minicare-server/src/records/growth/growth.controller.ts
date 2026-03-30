@@ -15,7 +15,7 @@ import { MinRole, FamilyRole } from '../../common/decorators/min-role.decorator'
 export class GrowthController {
   constructor(private readonly growthService: GrowthService) {}
 
-  @Post() @MinRole(FamilyRole.EDITOR)
+  @Post() @MinRole(FamilyRole.MEMBER)
   create(@CurrentUser() userId: string, @Body() dto: CreateGrowthDto) {
     return this.growthService.create(userId, dto);
   }
@@ -25,6 +25,6 @@ export class GrowthController {
     return this.growthService.findAll(babyId, Number(limit), Number(offset));
   }
 
-  @Delete(':id') @MinRole(FamilyRole.EDITOR)
+  @Delete(':id') @MinRole(FamilyRole.MEMBER)
   remove(@Param('id') id: string) { return this.growthService.remove(id); }
 }

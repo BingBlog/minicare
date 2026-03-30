@@ -15,7 +15,7 @@ import { MinRole, FamilyRole } from '../../common/decorators/min-role.decorator'
 export class MedicalController {
   constructor(private readonly medicalService: MedicalService) {}
 
-  @Post() @MinRole(FamilyRole.EDITOR)
+  @Post() @MinRole(FamilyRole.MEMBER)
   create(@CurrentUser() userId: string, @Body() dto: CreateMedicalDto) {
     return this.medicalService.create(userId, dto);
   }
@@ -25,6 +25,6 @@ export class MedicalController {
     return this.medicalService.findAll(babyId, Number(limit), Number(offset));
   }
 
-  @Delete(':id') @MinRole(FamilyRole.EDITOR)
+  @Delete(':id') @MinRole(FamilyRole.MEMBER)
   remove(@Param('id') id: string) { return this.medicalService.remove(id); }
 }

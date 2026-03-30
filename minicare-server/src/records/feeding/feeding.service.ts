@@ -2,7 +2,13 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Pool } from 'mysql2/promise';
 import { v4 as uuidv4 } from 'uuid';
 import { DATABASE_POOL } from '../../common/database/database.module';
-import { CreateFeedingDto } from './dto/create-feeding.dto';
+import {
+  CreateFeedingDto,
+  FEED_TYPE_TO_INT,
+  BREAST_SIDE_TO_INT,
+  INT_TO_FEED_TYPE,
+  INT_TO_BREAST_SIDE,
+} from './dto/create-feeding.dto';
 
 @Injectable()
 export class FeedingService {
@@ -11,28 +17,51 @@ export class FeedingService {
   async create(userId: string, dto: CreateFeedingDto) {
     const id = uuidv4();
     await this.db.execute(
-      `INSERT INTO feeding_record (id, baby_id, recorded_by, type, started_at, duration_min, amount_ml, food_name, note)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [id, dto.baby_id, userId, dto.type, dto.started_at,
-       dto.duration_min ?? null, dto.amount_ml ?? null,
-       dto.food_name ?? null, dto.note ?? null],
+      `INSERT INTO feeding_record
+         (id, baby_id, recorded_by, record_time, feed_type,
+          breast_side, duration_min, formula_ml,
+          complementary_food, amount_g, note)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        id,
+        dto.baby_id,
+        userId,
+        dto.record_time,
+        FEED_TYPE_TO_INT[dto.feed_type] ?? 1,
+        dto.breast_side != null ? (BREAST_SIDE_TO_INT[dto.breast_side] ?? null) : null,
+        dto.duration_min    ?? null,
+        dto.formula_ml      ?? null,
+        dto.complementary_food ?? null,
+        dto.amount_g        ?? null,
+        dto.note            ?? null,
+      ],
     );
     return { id };
   }
 
   async findAll(babyId: string, limit = 20, offset = 0) {
     const [rows] = await this.db.execute<any[]>(
-      `SELECT * FROM feeding_record WHERE baby_id = ? ORDER BY started_at DESC LIMIT ? OFFSET ?`,
+      `SELECT * FROM feeding_record WHERE baby_id = ? ORDER BY record_time DESC LIMIT ? OFFSET ?`,
       [babyId, limit, offset],
     );
-    return rows;
+    return rows.map((r) => ({
+      ...r,
+      feed_type:   INT_TO_FEED_TYPE[r.feed_type]   ?? r.feed_type,
+      breast_side: r.breast_side != null ? (INT_TO_BREAST_SIDE[r.breast_side] ?? r.breast_side) : null,
+    }));
   }
 
   async findOne(id: string) {
     const [rows] = await this.db.execute<any[]>(
       'SELECT * FROM feeding_record WHERE id = ?', [id],
     );
-    return rows[0] ?? null;
+    if (!rows[0]) return null;
+    const r = rows[0];
+    return {
+      ...r,
+      feed_type:   INT_TO_FEED_TYPE[r.feed_type]   ?? r.feed_type,
+      breast_side: r.breast_side != null ? (INT_TO_BREAST_SIDE[r.breast_side] ?? r.breast_side) : null,
+    };
   }
 
   async remove(id: string) {

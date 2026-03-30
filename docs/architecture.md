@@ -614,118 +614,169 @@ Fastify v4 + TypeScript  ✅ 选用（替代 Express）
 
 ## 七、数据表关系图（ER Diagram）
 
+> **权威来源**：字段定义以 `minicare-server/migrations/001_init_schema.sql` 为准，`baby_profile` 另有 `002_baby_allergy_fields.sql` 增量字段。完整 DDL 请直接阅读 migration 文件。
+
 ```mermaid
 erDiagram
     user_account {
-        CHAR36 id PK
-        VARCHAR20 phone
-        VARCHAR64 name
-        TEXT avatar_url
+        CHAR36 id PK "UUID"
+        VARCHAR20 phone "手机号（唯一）"
+        VARCHAR50 nickname "用户昵称"
+        VARCHAR500 avatar_url
         DATETIME created_at
         DATETIME updated_at
     }
     family_group {
-        CHAR36 id PK
-        VARCHAR64 name
-        CHAR36 created_by FK
-        VARCHAR16 invite_code
+        CHAR36 id PK "UUID"
+        VARCHAR50 name "家庭名称"
+        VARCHAR16 invite_code "邀请码（NOT NULL）"
+        CHAR36 created_by FK "→ user_account.id"
         DATETIME created_at
         DATETIME updated_at
     }
     family_member {
-        CHAR36 id PK
-        CHAR36 family_id FK
-        CHAR36 user_id FK
-        VARCHAR32 member_name
-        TINYINT role "0=创建者 1=编辑 2=查看"
+        CHAR36 id PK "UUID"
+        CHAR36 family_id FK "→ family_group.id"
+        CHAR36 user_id FK "→ user_account.id（待接受时 NULL）"
+        TINYINT role "1=owner 2=member"
         VARCHAR20 invite_phone
-        TINYINT invite_status
-        CHAR36 invited_by FK
+        TINYINT status "1=pending 2=active 3=left"
+        CHAR36 invited_by FK "→ user_account.id"
         DATETIME joined_at
+        DATETIME created_at
+        DATETIME updated_at
     }
     baby_profile {
-        CHAR36 id PK
-        CHAR36 family_id FK
-        VARCHAR32 name
+        CHAR36 id PK "UUID"
+        CHAR36 family_id FK "→ family_group.id（每家庭唯一）"
+        VARCHAR50 name "宝宝姓名"
+        TINYINT gender "0=unknown 1=male 2=female"
         DATE birth_date
-        TINYINT gender
-        TINYINT allergy_type
-        TINYINT allergy_severity
-        CHAR36 created_by FK
+        VARCHAR500 avatar_url
+        CHAR36 created_by FK "→ user_account.id"
+        DATETIME created_at
+        DATETIME updated_at
     }
     feeding_record {
-        CHAR36 id PK
-        CHAR36 baby_id FK
-        CHAR36 recorded_by FK
+        CHAR36 id PK "UUID"
+        CHAR36 baby_id FK "→ baby_profile.id"
+        CHAR36 recorded_by FK "→ user_account.id"
         DATETIME record_time
-        TINYINT feeding_type
-        JSON milk_types
-        FLOAT milk_volume
-        TINYINT breastfeed_side
-        SMALLINT breastfeed_duration
-        JSON nutrient_items
-        VARCHAR64 complementary_food
-        TINYINT1 is_new_food
-        TINYINT new_food_status
+        TINYINT feed_type "1=breast 2=formula 3=complementary"
+        TINYINT breast_side "1=left 2=right 3=both"
+        SMALLINT duration_min
+        SMALLINT formula_ml
+        VARCHAR100 complementary_food
+        SMALLINT amount_g
+        DATETIME created_at
+        DATETIME updated_at
     }
     sleep_record {
-        CHAR36 id PK
-        CHAR36 baby_id FK
-        CHAR36 recorded_by FK
+        CHAR36 id PK "UUID"
+        CHAR36 baby_id FK "→ baby_profile.id"
+        CHAR36 recorded_by FK "→ user_account.id"
         DATETIME start_time
-        DATETIME end_time
+        DATETIME end_time "NULL=进行中"
         SMALLINT duration_min
-        TINYINT sleep_period
-        VARCHAR16 status "sleeping/completed/abnormal"
+        TINYINT status "1=ongoing 2=ended"
+        DATETIME created_at
+        DATETIME updated_at
+    }
+    diaper_record {
+        CHAR36 id PK "UUID"
+        CHAR36 baby_id FK "→ baby_profile.id"
+        CHAR36 recorded_by FK "→ user_account.id"
+        DATETIME record_time
+        TINYINT diaper_type "1=wet 2=dirty 3=mixed 4=dry"
+        VARCHAR20 color
+        DATETIME created_at
+        DATETIME updated_at
+    }
+    health_record {
+        CHAR36 id PK "UUID"
+        CHAR36 baby_id FK "→ baby_profile.id"
+        CHAR36 recorded_by FK "→ user_account.id"
+        DATETIME record_time
+        DECIMAL41 temperature "体温（℃）"
+        TINYINT mood "1=happy 2=neutral 3=fussy 4=crying"
+        DATETIME created_at
+        DATETIME updated_at
+    }
+    symptom_record {
+        CHAR36 id PK "UUID"
+        CHAR36 baby_id FK "→ baby_profile.id"
+        CHAR36 recorded_by FK "→ user_account.id"
+        DATETIME record_time
+        JSON symptoms "症状列表 [{type, severity}]"
+        JSON photo_ids "照片 fileID 列表"
+        DATETIME created_at
+        DATETIME updated_at
+    }
+    activity_record {
+        CHAR36 id PK "UUID"
+        CHAR36 baby_id FK "→ baby_profile.id"
+        CHAR36 recorded_by FK "→ user_account.id"
+        DATETIME record_time
+        TINYINT activity_type "1=bath 2=outdoor 3=play 4=tummy_time 5=other"
+        SMALLINT duration_min
+        DATETIME created_at
+        DATETIME updated_at
     }
     growth_record {
-        CHAR36 id PK
-        CHAR36 baby_id FK
+        CHAR36 id PK "UUID"
+        CHAR36 baby_id FK "→ baby_profile.id（每天唯一）"
+        CHAR36 recorded_by FK "→ user_account.id"
         DATE record_date
-        FLOAT height
-        FLOAT weight
-        FLOAT head_circumference
-        FLOAT height_percentile
-        FLOAT weight_percentile
-        FLOAT head_percentile
+        INT weight_g "体重（克）"
+        INT height_mm "身高（毫米）"
+        INT head_mm "头围（毫米）"
+        DATETIME created_at
+        DATETIME updated_at
     }
     medical_record {
-        CHAR36 id PK
-        CHAR36 baby_id FK
+        CHAR36 id PK "UUID"
+        CHAR36 baby_id FK "→ baby_profile.id"
+        CHAR36 recorded_by FK "→ user_account.id"
         DATE visit_date
-        TINYINT visit_type
-        TEXT result_summary
+        VARCHAR100 hospital "就诊机构"
         TEXT diagnosis
-        JSON medication
-        JSON photo_urls
-        TEXT ocr_text
+        JSON medications "用药列表 [{name, dose}]"
+        JSON photo_ids "照片 fileID 列表"
+        DATETIME created_at
+        DATETIME updated_at
     }
     food_observation {
-        CHAR36 id PK
-        CHAR36 baby_id FK
-        VARCHAR64 food_name
-        TINYINT status "1=观察中 2=耐受 3=疑似 4=过敏"
-        DATE first_introduced
-        SMALLINT observation_days
-        DATE observation_end
+        CHAR36 id PK "UUID"
+        CHAR36 baby_id FK "→ baby_profile.id（每种食物唯一）"
+        VARCHAR100 food_name "食物名称"
+        DATE first_intro_at "首次引入日期"
+        TINYINT status "1=observing 2=safe 3=allergic"
+        TEXT reaction_note
+        DATETIME created_at
+        DATETIME updated_at
     }
 
     user_account ||--o{ family_member : "加入"
     family_group ||--o{ family_member : "包含"
     family_group ||--o{ baby_profile : "拥有"
-    family_member ||--o{ feeding_record : "创建"
-    family_member ||--o{ sleep_record : "创建"
-    family_member ||--o{ growth_record : "创建"
-    family_member ||--o{ medical_record : "创建"
+    user_account ||--o{ feeding_record : "创建"
+    user_account ||--o{ sleep_record : "创建"
+    user_account ||--o{ diaper_record : "创建"
+    user_account ||--o{ health_record : "创建"
+    user_account ||--o{ symptom_record : "创建"
+    user_account ||--o{ activity_record : "创建"
+    user_account ||--o{ growth_record : "创建"
+    user_account ||--o{ medical_record : "创建"
     baby_profile ||--o{ feeding_record : "属于"
     baby_profile ||--o{ sleep_record : "属于"
+    baby_profile ||--o{ diaper_record : "属于"
+    baby_profile ||--o{ health_record : "属于"
+    baby_profile ||--o{ symptom_record : "属于"
+    baby_profile ||--o{ activity_record : "属于"
     baby_profile ||--o{ growth_record : "属于"
     baby_profile ||--o{ medical_record : "属于"
     baby_profile ||--o{ food_observation : "属于"
-    feeding_record }o--o{ food_observation : "触发"
 ```
-
-> 完整 DDL 见 `docs/tech/DB-02-schema.md`（13张表全量字段）
 
 ---
 

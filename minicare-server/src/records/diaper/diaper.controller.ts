@@ -15,7 +15,7 @@ import { MinRole, FamilyRole } from '../../common/decorators/min-role.decorator'
 export class DiaperController {
   constructor(private readonly diaperService: DiaperService) {}
 
-  @Post() @MinRole(FamilyRole.EDITOR)
+  @Post() @MinRole(FamilyRole.MEMBER)
   create(@CurrentUser() userId: string, @Body() dto: CreateDiaperDto) {
     return this.diaperService.create(userId, dto);
   }
@@ -25,6 +25,6 @@ export class DiaperController {
     return this.diaperService.findAll(babyId, Number(limit), Number(offset));
   }
 
-  @Delete(':id') @MinRole(FamilyRole.EDITOR)
+  @Delete(':id') @MinRole(FamilyRole.MEMBER)
   remove(@Param('id') id: string) { return this.diaperService.remove(id); }
 }

@@ -16,14 +16,14 @@ export class SleepController {
   constructor(private readonly sleepService: SleepService) {}
 
   @Post('start')
-  @MinRole(FamilyRole.EDITOR)
+  @MinRole(FamilyRole.MEMBER)
   @ApiOperation({ summary: '开始睡眠计时' })
   start(@CurrentUser() userId: string, @Body() dto: StartSleepDto) {
     return this.sleepService.startSleep(userId, dto);
   }
 
   @Patch(':id/end')
-  @MinRole(FamilyRole.EDITOR)
+  @MinRole(FamilyRole.MEMBER)
   @ApiOperation({ summary: '结束睡眠计时' })
   end(@Param('id') id: string, @Body() dto: EndSleepDto) {
     return this.sleepService.endSleep(id, dto);

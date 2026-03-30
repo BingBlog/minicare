@@ -13,6 +13,7 @@ const HomePage = lazy(() => import('./pages/HomePage'))
 const RecordsPage = lazy(() => import('./pages/RecordsPage'))
 const ProfilePage = lazy(() => import('./pages/ProfilePage'))
 const OnboardingPage = lazy(() => import('./pages/OnboardingPage'))
+const ReportPage = lazy(() => import('./pages/ReportPage'))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 
 const Loading = () => (
@@ -50,6 +51,7 @@ export const router = createHashRouter([
     children: [
       { index: true, element: <Suspense fallback={<Loading />}><HomePage /></Suspense> },
       { path: 'records', element: <Suspense fallback={<Loading />}><RecordsPage /></Suspense> },
+      { path: 'report',  element: <Suspense fallback={<Loading />}><ReportPage /></Suspense> },
       { path: 'profile', element: <Suspense fallback={<Loading />}><ProfilePage /></Suspense> },
     ],
   },

@@ -15,181 +15,159 @@
 ```mermaid
 erDiagram
     user_account {
-        TEXT id PK "UUID，全局唯一用户"
-        TEXT phone "手机号（登录凭据）"
-        TEXT name "用户昵称"
-        TEXT avatar_url "头像 URL"
+        CHAR36 id PK "UUID"
+        VARCHAR20 phone "手机号（唯一，登录凭据）"
+        VARCHAR50 nickname "用户昵称"
+        VARCHAR500 avatar_url "头像 URL"
         DATETIME created_at
         DATETIME updated_at
     }
 
     family_group {
-        TEXT id PK "UUID"
-        TEXT name "家庭群组名称"
-        TEXT created_by FK "→ user_account.id"
-        TEXT invite_code "6位邀请码（备用）"
+        CHAR36 id PK "UUID"
+        VARCHAR50 name "家庭名称"
+        VARCHAR16 invite_code "邀请码（NOT NULL）"
+        CHAR36 created_by FK "→ user_account.id"
         DATETIME created_at
         DATETIME updated_at
     }
 
     family_member {
-        TEXT id PK "UUID"
-        TEXT family_id FK "→ family_group.id"
-        TEXT user_id FK "→ user_account.id（接受后关联）"
-        TEXT member_name "昵称（爸爸/妈妈/奶奶）"
-        INTEGER role "0=创建者 1=编辑者 2=查看者"
-        TEXT invite_phone "被邀请手机号"
-        INTEGER invite_status "0=待接受 1=已接受 2=已拒绝"
-        TEXT invited_by FK "→ family_member.id"
+        CHAR36 id PK "UUID"
+        CHAR36 family_id FK "→ family_group.id"
+        CHAR36 user_id FK "→ user_account.id（待接受时 NULL）"
+        TINYINT role "1=owner 2=member"
+        VARCHAR20 invite_phone "被邀请手机号"
+        TINYINT status "1=pending 2=active 3=left"
+        CHAR36 invited_by FK "→ user_account.id"
         DATETIME joined_at
         DATETIME created_at
         DATETIME updated_at
     }
 
     baby_profile {
-        TEXT id PK "UUID"
-        TEXT family_id FK "→ family_group.id"
-        TEXT name "宝宝姓名"
+        CHAR36 id PK "UUID"
+        CHAR36 family_id FK "→ family_group.id（每家庭唯一）"
+        VARCHAR50 name "宝宝姓名"
+        TINYINT gender "0=unknown 1=male 2=female"
         DATE birth_date
-        INTEGER gender "0=女 1=男"
-        INTEGER allergy_type "0=牛奶蛋白 1=其他食物"
-        INTEGER allergy_severity "1=轻 2=中 3=重 NULL=未知"
-        TEXT created_by FK "→ family_member.id"
+        VARCHAR500 avatar_url
+        CHAR36 created_by FK "→ user_account.id"
         DATETIME created_at
         DATETIME updated_at
     }
 
     feeding_record {
-        TEXT id PK "UUID"
-        TEXT baby_id FK "→ baby_profile.id"
-        TEXT recorded_by FK "→ family_member.id"
+        CHAR36 id PK "UUID"
+        CHAR36 baby_id FK "→ baby_profile.id"
+        CHAR36 recorded_by FK "→ user_account.id"
         DATETIME record_time
-        INTEGER feeding_type "1=奶粉 2=母乳 3=营养素 4=辅食"
-        TEXT milk_types "JSON 数组（奶粉类型+勺数）"
-        FLOAT milk_volume "奶量 ml"
-        INTEGER breastfeed_side "1=左 2=右 3=双侧"
-        INTEGER breastfeed_duration "母乳时长（分钟）"
-        TEXT nutrient_items "JSON 数组（营养素类型+剂量）"
-        TEXT complementary_food "辅食名称"
-        BOOLEAN is_new_food "是否为新食物"
-        INTEGER new_food_status "NULL/1=观察中/2=耐受/3=疑似/4=确认过敏"
+        TINYINT feed_type "1=breast 2=formula 3=complementary"
+        TINYINT breast_side "1=left 2=right 3=both"
+        SMALLINT duration_min "母乳时长（分钟）"
+        SMALLINT formula_ml "奶粉量（ml）"
+        VARCHAR100 complementary_food "辅食名称"
+        SMALLINT amount_g "辅食克数"
+        TEXT note
         DATETIME created_at
         DATETIME updated_at
     }
 
     symptom_record {
-        TEXT id PK "UUID"
-        TEXT baby_id FK "→ baby_profile.id"
-        TEXT recorded_by FK "→ family_member.id"
+        CHAR36 id PK "UUID"
+        CHAR36 baby_id FK "→ baby_profile.id"
+        CHAR36 recorded_by FK "→ user_account.id"
         DATETIME record_time
-        TEXT symptom_types "JSON 数组"
-        INTEGER severity "1=轻 2=中 3=重"
-        TEXT photo_urls "JSON 数组（CDN URL）"
+        JSON symptoms "症状列表 [{type, severity}]"
+        JSON photo_ids "照片 fileID 列表"
         TEXT note
         DATETIME created_at
         DATETIME updated_at
     }
 
     growth_record {
-        TEXT id PK "UUID"
-        TEXT baby_id FK "→ baby_profile.id"
-        TEXT recorded_by FK "→ family_member.id"
+        CHAR36 id PK "UUID"
+        CHAR36 baby_id FK "→ baby_profile.id（每天唯一）"
+        CHAR36 recorded_by FK "→ user_account.id"
         DATE record_date
-        FLOAT height "cm"
-        FLOAT weight "kg"
-        FLOAT head_circumference "cm"
-        FLOAT height_percentile "WHO 百分位"
-        FLOAT weight_percentile "WHO 百分位"
-        FLOAT head_percentile "WHO 百分位"
-        TEXT measurement_place
-        TEXT photo_urls "JSON 数组（CDN URL）"
+        INT weight_g "体重（克）"
+        INT height_mm "身高（毫米）"
+        INT head_mm "头围（毫米）"
+        TEXT note
         DATETIME created_at
         DATETIME updated_at
     }
 
     sleep_record {
-        TEXT id PK "UUID"
-        TEXT baby_id FK "→ baby_profile.id"
-        TEXT recorded_by FK "→ family_member.id"
+        CHAR36 id PK "UUID"
+        CHAR36 baby_id FK "→ baby_profile.id"
+        CHAR36 recorded_by FK "→ user_account.id"
         DATETIME start_time
-        DATETIME end_time
-        INTEGER duration_min
-        INTEGER sleep_period "0=夜间 1=上午 2=下午 3=其他"
-        INTEGER quality "1=良好 2=一般 3=较差"
-        TEXT status "sleeping/completed/abnormal"
+        DATETIME end_time "NULL=进行中"
+        SMALLINT duration_min "结束后计算写入"
+        TINYINT status "1=ongoing 2=ended"
         TEXT note
         DATETIME created_at
         DATETIME updated_at
     }
 
     activity_record {
-        TEXT id PK "UUID"
-        TEXT baby_id FK "→ baby_profile.id"
-        TEXT recorded_by FK "→ family_member.id"
+        CHAR36 id PK "UUID"
+        CHAR36 baby_id FK "→ baby_profile.id"
+        CHAR36 recorded_by FK "→ user_account.id"
         DATETIME record_time
-        INTEGER activity_type "1=安静 2=正常 3=活跃"
-        INTEGER duration_min
+        TINYINT activity_type "1=bath 2=outdoor 3=play 4=tummy_time 5=other"
+        SMALLINT duration_min
         TEXT note
         DATETIME created_at
         DATETIME updated_at
     }
 
     diaper_record {
-        TEXT id PK "UUID"
-        TEXT baby_id FK "→ baby_profile.id"
-        TEXT recorded_by FK "→ family_member.id"
+        CHAR36 id PK "UUID"
+        CHAR36 baby_id FK "→ baby_profile.id"
+        CHAR36 recorded_by FK "→ user_account.id"
         DATETIME record_time
-        INTEGER diaper_type "0=小便 1=大便 2=混合"
-        INTEGER stool_count
-        TEXT stool_types "JSON 数组"
-        TEXT stool_photo_urls "JSON 数组（CDN URL）"
-        INTEGER urine_level "1=少 2=中 3=多"
+        TINYINT diaper_type "1=wet 2=dirty 3=mixed 4=dry"
+        VARCHAR20 color
         TEXT note
         DATETIME created_at
         DATETIME updated_at
     }
 
     health_record {
-        TEXT id PK "UUID"
-        TEXT baby_id FK "→ baby_profile.id"
-        TEXT recorded_by FK "→ family_member.id"
+        CHAR36 id PK "UUID"
+        CHAR36 baby_id FK "→ baby_profile.id"
+        CHAR36 recorded_by FK "→ user_account.id"
         DATETIME record_time
-        FLOAT temperature "℃"
-        INTEGER mood "1=良好 2=一般 3=低落"
+        DECIMAL41 temperature "体温（℃）"
+        TINYINT mood "1=happy 2=neutral 3=fussy 4=crying"
         TEXT note
         DATETIME created_at
         DATETIME updated_at
     }
 
     medical_record {
-        TEXT id PK "UUID"
-        TEXT baby_id FK "→ baby_profile.id"
-        TEXT recorded_by FK "→ family_member.id"
+        CHAR36 id PK "UUID"
+        CHAR36 baby_id FK "→ baby_profile.id"
+        CHAR36 recorded_by FK "→ user_account.id"
         DATE visit_date
-        INTEGER visit_type "0=儿保 1=过敏检查 2=门诊 3=自定义"
-        TEXT institution
-        TEXT result_summary
-        TEXT diagnosis
-        TEXT medication "JSON 数组（名称+剂量+频次）"
-        DATE next_visit_date
-        TEXT photo_urls "JSON 数组（CDN URL）"
-        TEXT ocr_text "OCR 提取原文"
+        VARCHAR100 hospital "就诊机构"
+        TEXT diagnosis "诊断结论"
+        JSON medications "用药列表 [{name, dose}]"
+        JSON photo_ids "照片 fileID 列表"
         TEXT note
         DATETIME created_at
         DATETIME updated_at
     }
 
-    %% sync_log 表已移除（联网写入优先，无需离线队列）
-
     food_observation {
-        TEXT id PK "UUID"
-        TEXT baby_id FK "→ baby_profile.id"
-        TEXT food_name "食物名称"
-        INTEGER status "1=观察中 2=已耐受 3=疑似过敏 4=确认过敏"
-        DATE first_introduced "首次引入日期"
-        INTEGER observation_days "观察期天数（默认5）"
-        DATE observation_end "观察期结束日期"
-        TEXT related_feeding_ids "JSON 数组（关联 feeding_record.id）"
+        CHAR36 id PK "UUID"
+        CHAR36 baby_id FK "→ baby_profile.id（每种食物唯一）"
+        VARCHAR100 food_name "食物名称"
+        DATE first_intro_at "首次引入日期"
+        TINYINT status "1=observing 2=safe 3=allergic"
+        TEXT reaction_note
         DATETIME created_at
         DATETIME updated_at
     }
@@ -197,14 +175,14 @@ erDiagram
     user_account ||--o{ family_member : "作为成员加入"
     family_group ||--o{ family_member : "包含成员"
     family_group ||--o{ baby_profile : "拥有宝宝"
-    family_member ||--o{ feeding_record : "创建"
-    family_member ||--o{ symptom_record : "创建"
-    family_member ||--o{ growth_record : "创建"
-    family_member ||--o{ sleep_record : "创建"
-    family_member ||--o{ activity_record : "创建"
-    family_member ||--o{ diaper_record : "创建"
-    family_member ||--o{ health_record : "创建"
-    family_member ||--o{ medical_record : "创建"
+    user_account ||--o{ feeding_record : "创建"
+    user_account ||--o{ symptom_record : "创建"
+    user_account ||--o{ growth_record : "创建"
+    user_account ||--o{ sleep_record : "创建"
+    user_account ||--o{ activity_record : "创建"
+    user_account ||--o{ diaper_record : "创建"
+    user_account ||--o{ health_record : "创建"
+    user_account ||--o{ medical_record : "创建"
     baby_profile ||--o{ feeding_record : "属于"
     baby_profile ||--o{ symptom_record : "属于"
     baby_profile ||--o{ growth_record : "属于"
@@ -214,14 +192,9 @@ erDiagram
     baby_profile ||--o{ health_record : "属于"
     baby_profile ||--o{ medical_record : "属于"
     baby_profile ||--o{ food_observation : "属于"
-    feeding_record }o--o{ food_observation : "触发/关联"
 ```
 
-> **注**：`sync_log` 表已从数据模型中移除，详见「二、存储策略」。
-
-```mermaid
-erDiagram
-```
+> **注**：字段以 `minicare-server/migrations/001_init_schema.sql` 为权威，`baby_profile` 另有 `002_baby_allergy_fields.sql` 增量字段。`sync_log` 表已移除（联网写入优先）。
 
 ### 表层级依赖说明
 
@@ -478,5 +451,6 @@ iOS 和 Android 两端共用同一套数据模型设计（字段名、类型、�
 
 ---
 
-*→ 详细建表 DDL 见 [DB-02-schema.md](DB-02-schema.md)*  
+*→ 完整建表 DDL 见 `minicare-server/migrations/001_init_schema.sql`（初始表结构）及 `002_baby_allergy_fields.sql`（baby_profile 增量字段）*  
+*→ Schema 说明与 TINYINT 枚举映射见 [DB-02-schema.md](DB-02-schema.md)*  
 *→ Mock 数据与用户故事演练见 [DB-03-mock-data.md](DB-03-mock-data.md)*

@@ -43,10 +43,17 @@ export class FamilyController {
 
   @Post(':familyId/invite')
   @UseGuards(FamilyMemberGuard, RoleGuard)
-  @MinRole(FamilyRole.EDITOR)
+  @MinRole(FamilyRole.MEMBER)
   @ApiOperation({ summary: '生成邀请码' })
   createInviteCode(@Param('familyId') familyId: string) {
     return this.familyService.createInviteCode(familyId);
+  }
+
+  @Get(':familyId/records/today')
+  @UseGuards(FamilyMemberGuard, RoleGuard)
+  @ApiOperation({ summary: '获取今日所有记录聚合（时间轴）' })
+  getTodayRecords(@Param('familyId') familyId: string) {
+    return this.familyService.getTodayRecords(familyId);
   }
 
   @Post('join')

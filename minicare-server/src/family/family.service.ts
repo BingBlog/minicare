@@ -21,16 +21,21 @@ export class FamilyService {
     try {
       await conn.beginTransaction();
 
-      const familyId = uuidv4();
+      const familyId   = uuidv4();
+      const memberId   = uuidv4();
+      // 生成初始邀请码（6 位大写字母数字）
+      const inviteCode = Math.random().toString(36).slice(2, 8).toUpperCase();
+
       await conn.execute(
-        'INSERT INTO family_group (id, name, created_by) VALUES (?, ?, ?)',
-        [familyId, dto.name, userId],
+        'INSERT INTO family_group (id, name, invite_code, created_by) VALUES (?, ?, ?, ?)',
+        [familyId, dto.name, inviteCode, userId],
       );
 
-      // 创建者加入家庭，role=0（OWNER）
+      // 创建者加入家庭，role=1（owner），status=2（active）
+      // DDL: role TINYINT  1=owner 2=member
       await conn.execute(
-        'INSERT INTO family_member (family_id, user_id, role, status) VALUES (?, ?, 0, "active")',
-        [familyId, userId],
+        'INSERT INTO family_member (id, family_id, user_id, role, status) VALUES (?, ?, ?, 1, 2)',
+        [memberId, familyId, userId],
       );
 
       await conn.commit();
@@ -52,7 +57,7 @@ export class FamilyService {
       `SELECT fg.id, fg.name, fg.created_at, fm.role
        FROM family_group fg
        JOIN family_member fm ON fg.id = fm.family_id
-       WHERE fm.user_id = ? AND fm.status = 'active'
+       WHERE fm.user_id = ? AND fm.status = 2
        ORDER BY fg.created_at DESC`,
       [userId],
     );
@@ -65,10 +70,10 @@ export class FamilyService {
   async getMembers(familyId: string) {
     const [rows] = await this.db.execute<any[]>(
       `SELECT fm.id, fm.role, fm.status, fm.joined_at,
-              ua.id AS user_id, ua.name, ua.avatar_url
+              ua.id AS user_id, ua.nickname AS name, ua.avatar_url
        FROM family_member fm
        JOIN user_account ua ON fm.user_id = ua.id
-       WHERE fm.family_id = ? AND fm.status = 'active'
+       WHERE fm.family_id = ? AND fm.status = 2
        ORDER BY fm.role ASC, fm.joined_at ASC`,
       [familyId],
     );
@@ -82,11 +87,68 @@ export class FamilyService {
   async createInviteCode(familyId: string): Promise<string> {
     const code = Math.random().toString(36).slice(2, 8).toUpperCase();
     await this.db.execute(
-      `UPDATE family_group SET invite_code = ?, invite_code_expires_at = DATE_ADD(NOW(), INTERVAL 24 HOUR)
-       WHERE id = ?`,
+      `UPDATE family_group SET invite_code = ? WHERE id = ?`,
       [code, familyId],
     );
     return code;
+  }
+
+  /**
+   * 今日记录聚合（多类型时间轴）
+   * 合并喂养/睡眠/尿布/活动/健康/症状记录，按时间倒序排列
+   */
+  async getTodayRecords(familyId: string) {
+    // 先取 baby_id（MVP: 每家庭 1 个宝宝）
+    const [babies] = await this.db.execute<any[]>(
+      'SELECT id FROM baby_profile WHERE family_id = ? LIMIT 1',
+      [familyId],
+    );
+    if (babies.length === 0) return [];
+    const babyId = babies[0].id;
+
+    const today = new Date();
+    const dateStr = today.toISOString().slice(0, 10); // 'YYYY-MM-DD'
+
+    const sql = `
+      SELECT 'feeding'  AS type, id, record_time AS time, note FROM feeding_record
+        WHERE baby_id = ? AND DATE(record_time) = ?
+      UNION ALL
+      SELECT 'sleep'    AS type, id, start_time  AS time, note FROM sleep_record
+        WHERE baby_id = ? AND DATE(start_time)  = ?
+      UNION ALL
+      SELECT 'diaper'   AS type, id, record_time AS time, note FROM diaper_record
+        WHERE baby_id = ? AND DATE(record_time) = ?
+      UNION ALL
+      SELECT 'activity' AS type, id, record_time AS time, note FROM activity_record
+        WHERE baby_id = ? AND DATE(record_time) = ?
+      UNION ALL
+      SELECT 'health'   AS type, id, record_time AS time, note FROM health_record
+        WHERE baby_id = ? AND DATE(record_time) = ?
+      UNION ALL
+      SELECT 'symptom'  AS type, id, record_time AS time, note FROM symptom_record
+        WHERE baby_id = ? AND DATE(record_time) = ?
+      UNION ALL
+      SELECT 'growth'   AS type, id, record_date AS time, note FROM growth_record
+        WHERE baby_id = ? AND record_date = ?
+      UNION ALL
+      SELECT 'medical'  AS type, id, visit_date  AS time, note FROM medical_record
+        WHERE baby_id = ? AND visit_date  = ?
+      ORDER BY time DESC
+    `;
+
+    const params = [
+      babyId, dateStr,  // feeding
+      babyId, dateStr,  // sleep
+      babyId, dateStr,  // diaper
+      babyId, dateStr,  // activity
+      babyId, dateStr,  // health
+      babyId, dateStr,  // symptom
+      babyId, dateStr,  // growth
+      babyId, dateStr,  // medical
+    ];
+
+    const [rows] = await this.db.execute<any[]>(sql, params);
+    return rows;
   }
 
   /**
@@ -94,8 +156,7 @@ export class FamilyService {
    */
   async joinByCode(userId: string, code: string) {
     const [rows] = await this.db.execute<any[]>(
-      `SELECT id FROM family_group 
-       WHERE invite_code = ? AND invite_code_expires_at > NOW()`,
+      `SELECT id FROM family_group WHERE invite_code = ?`,
       [code],
     );
 
@@ -115,9 +176,10 @@ export class FamilyService {
       throw new ConflictException('您已经是该家庭的成员');
     }
 
+    // 通过邀请码加入，role=2（member），status=2（active）
     await this.db.execute(
-      'INSERT INTO family_member (family_id, user_id, role, status) VALUES (?, ?, 2, "active")',
-      [familyId, userId],
+      'INSERT INTO family_member (id, family_id, user_id, role, status) VALUES (?, ?, ?, 2, 2)',
+      [uuidv4(), familyId, userId],
     );
 
     return { familyId };

@@ -1,16 +1,17 @@
 # DB-03 · Mock 数据与用户故事演练
 
-> 通过完整的用户故事场景，验证数据库表字段设计的合理性
-> 最后同步：2026-03-29
+> 通过完整的用户故事场景，验证数据库表字段设计的合理性  
+> **字段以 `minicare-server/migrations/001_init_schema.sql` 为权威**  
+> 最后同步：2026-03-30
 
 ---
 
 ## 场景设定
 
 **家庭背景**：
-- 宝宝：小宝（男，2025-12-16 出生，3 个月 13 天）
+- 宝宝：小宝（男，2025-12-16 出生，约 3 个月）
 - 诊断：牛奶蛋白过敏（中度），目前喝氨基酸奶粉
-- 家庭成员：妈妈（创建者）+ 爸爸（编辑者）+ 奶奶（查看者）
+- 家庭成员：妈妈（owner）+ 爸爸（member）+ 奶奶（member）
 
 ---
 
@@ -18,258 +19,235 @@
 
 ### user_account
 
-| id | phone | name | avatar_url | created_at |
-|----|-------|------|-----------|-----------|
-| `ua-001` | `13811112222` | 小宝妈妈 | `https://cdn.example.com/avatar/mom.jpg` | `2026-01-01T10:00:00+08` |
-| `ua-002` | `13933334444` | 小宝爸爸 | `https://cdn.example.com/avatar/dad.jpg` | `2026-01-01T10:05:00+08` |
-| `ua-003` | `13755556666` | 奶奶 | NULL | `2026-01-02T09:00:00+08` |
+| id | phone | nickname | avatar_url | created_at |
+|----|-------|----------|-----------|-----------|
+| `ua-001` | `13811112222` | 小宝妈妈 | `https://cdn.example.com/avatar/mom.jpg` | `2026-01-01T10:00:00` |
+| `ua-002` | `13933334444` | 小宝爸爸 | `https://cdn.example.com/avatar/dad.jpg` | `2026-01-01T10:05:00` |
+| `ua-003` | `13755556666` | 奶奶 | NULL | `2026-01-02T09:00:00` |
+
+> 字段名 `nickname`（非 `name`）；时间以 UTC 存储
 
 ### family_group
 
-| id | name | created_by | invite_code | created_at |
-|----|------|-----------|------------|-----------|
-| `fg-001` | 小宝的家 | `ua-001` | `ABC123` | `2026-01-01T10:01:00+08` |
+| id | name | invite_code | created_by | created_at |
+|----|------|------------|-----------|-----------|
+| `fg-001` | 小宝的家 | `ABC123` | `ua-001` | `2026-01-01T10:01:00` |
+
+> `invite_code` 为 NOT NULL 字段，创建家庭时必须传入
 
 ### family_member
 
-| id | family_id | user_id | member_name | role | invite_phone | invite_status | invited_by | joined_at |
-|----|----------|---------|------------|------|-------------|--------------|-----------|---------|
-| `fm-001` | `fg-001` | `ua-001` | 妈妈 | 0 | NULL | 1 | NULL | `2026-01-01T10:01:00+08` |
-| `fm-002` | `fg-001` | `ua-002` | 爸爸 | 1 | `13933334444` | 1 | `fm-001` | `2026-01-01T10:30:00+08` |
-| `fm-003` | `fg-001` | `ua-003` | 奶奶 | 2 | `13755556666` | 1 | `fm-001` | `2026-01-02T09:10:00+08` |
+| id | family_id | user_id | role | invite_phone | status | invited_by | joined_at |
+|----|----------|---------|------|-------------|--------|-----------|---------|
+| `fm-001` | `fg-001` | `ua-001` | 1 | NULL | 2 | NULL | `2026-01-01T10:01:00` |
+| `fm-002` | `fg-001` | `ua-002` | 2 | `13933334444` | 2 | `ua-001` | `2026-01-01T10:30:00` |
+| `fm-003` | `fg-001` | `ua-003` | 2 | `13755556666` | 2 | `ua-001` | `2026-01-02T09:10:00` |
 
-**role 枚举**：0=创建者，1=编辑者，2=查看者
+**字段说明**：
+- `role`：`1=owner`，`2=member`（DDL 默认值 2）
+- `status`：`1=pending`，`2=active`，`3=left`
+- `invited_by`：指向 `user_account.id`（非 `family_member.id`）
+- 原设计中的 `member_name`、`invite_status` 字段在实际 DDL 中**不存在**
 
 ### baby_profile
 
-| id | family_id | name | birth_date | gender | allergy_type | allergy_severity | created_by |
-|----|----------|------|-----------|--------|-------------|-----------------|-----------|
-| `bp-001` | `fg-001` | 小宝 | `2025-12-16` | 1 | 0 | 2 | `fm-001` |
+| id | family_id | name | gender | birth_date | avatar_url | created_by |
+|----|----------|------|--------|-----------|-----------|-----------|
+| `bp-001` | `fg-001` | 小宝 | 1 | `2025-12-16` | NULL | `ua-001` |
 
 **枚举说明**：
-- `gender`: 0=女，1=男
-- `allergy_type`: 0=牛奶蛋白过敏，1=其他食物过敏
-- `allergy_severity`: 1=轻度，2=中度，3=重度，NULL=未知
+- `gender`：`0=unknown`，`1=male`，`2=female`
+- `created_by` 指向 `user_account.id`
+- 过敏字段（`allergy_types`、`allergy_level` 等）由 `002_baby_allergy_fields.sql` 增量添加
 
 ---
 
 ## 二、用户故事演练
 
-### 故事 1：妈妈早晨喂奶粉（单一类型）
+### 故事 1：妈妈早晨喂配方奶（formula）
 
-**场景**：08:00 妈妈用氨基酸奶粉 4 勺 + 120ml
+**场景**：08:00 妈妈喂氨基酸奶粉 120ml
 
 ```json
 // feeding_record
 {
   "id": "fr-001",
   "baby_id": "bp-001",
-  "recorded_by": "fm-001",
-  "record_time": "2026-03-29T08:00:00+08",
-  "feeding_type": 1,
-  "milk_types": "[{\"type\":0,\"scoops\":4}]",
-  "milk_volume": 120,
-  "breastfeed_side": null,
-  "breastfeed_duration": null,
-  "nutrient_items": null,
+  "recorded_by": "ua-001",
+  "record_time": "2026-03-29T08:00:00",
+  "feed_type": 2,
+  "formula_ml": 120,
+  "breast_side": null,
+  "duration_min": null,
   "complementary_food": null,
-  "is_new_food": false,
-  "new_food_status": null
+  "amount_g": null,
+  "note": null
 }
 ```
 
-**milk_types 解析**：
-- `type=0`: 氨基酸奶粉
-- `scoops=4`: 4 勺
+**枚举说明**：
+- `feed_type`：`1=breast`，`2=formula`，`3=complementary`
 
 ---
 
-### 故事 2：爸爸中午记录转奶过渡（多类型混合）
-
-**场景**：转奶第 3 天，深度水解 1 勺 + 氨基酸 3 勺，奶量 150ml
-
-```json
-// feeding_record
-{
-  "id": "fr-002",
-  "baby_id": "bp-001",
-  "recorded_by": "fm-002",
-  "record_time": "2026-03-29T12:00:00+08",
-  "feeding_type": 1,
-  "milk_types": "[{\"type\":0,\"scoops\":3},{\"type\":1,\"scoops\":1,\"has_lactose\":false}]",
-  "milk_volume": 150
-}
-```
-
-**milk_types 解析**：
-| 类型 | type | scoops | has_lactose |
-|------|------|--------|-------------|
-| 氨基酸 | 0 | 3 | - |
-| 深度水解 | 1 | 1 | false |
-
-**配比计算（应用层）**：总勺数=4，氨基酸 75%，深度水解 25%
-
----
-
-### 故事 3：妈妈记录母乳喂养
+### 故事 2：妈妈记录母乳喂养
 
 **场景**：15:30 母乳喂养，双侧共 20 分钟
 
 ```json
 // feeding_record
 {
-  "id": "fr-003",
+  "id": "fr-002",
   "baby_id": "bp-001",
-  "recorded_by": "fm-001",
-  "record_time": "2026-03-29T15:30:00+08",
-  "feeding_type": 2,
-  "milk_types": null,
-  "milk_volume": null,
-  "breastfeed_side": 3,
-  "breastfeed_duration": 20
+  "recorded_by": "ua-001",
+  "record_time": "2026-03-29T15:30:00",
+  "feed_type": 1,
+  "breast_side": 3,
+  "duration_min": 20,
+  "formula_ml": null,
+  "complementary_food": null,
+  "amount_g": null,
+  "note": null
 }
 ```
 
-**breastfeed_side 枚举**：1=左侧，2=右侧，3=双侧
+**`breast_side` 枚举**：`1=left`，`2=right`，`3=both`
 
 ---
 
-### 故事 4：爸爸首次引入辅食「南瓜泥」
+### 故事 3：爸爸首次引入辅食「南瓜泥」
 
-**场景**：14:00 宝宝第一次吃南瓜泥，自动开启 5 天观察期
+**场景**：14:00 宝宝第一次吃南瓜泥 30g，自动开启 5 天观察期
 
 ```json
 // feeding_record
 {
-  "id": "fr-004",
+  "id": "fr-003",
   "baby_id": "bp-001",
-  "recorded_by": "fm-002",
-  "record_time": "2026-03-29T14:00:00+08",
-  "feeding_type": 4,
+  "recorded_by": "ua-002",
+  "record_time": "2026-03-29T14:00:00",
+  "feed_type": 3,
   "complementary_food": "南瓜泥",
-  "is_new_food": true,
-  "new_food_status": 1
+  "amount_g": 30,
+  "breast_side": null,
+  "duration_min": null,
+  "formula_ml": null,
+  "note": "第一次尝试南瓜泥，接受良好"
 }
 
-// food_observation（触发创建）
+// food_observation（应用层检测新食物后创建）
 {
   "id": "fo-001",
   "baby_id": "bp-001",
   "food_name": "南瓜泥",
+  "first_intro_at": "2026-03-29",
   "status": 1,
-  "first_introduced": "2026-03-29",
-  "observation_days": 5,
-  "observation_end": "2026-04-03",
-  "related_feeding_ids": "[\"fr-004\"]"
+  "reaction_note": null
 }
 ```
 
-**new_food_status 枚举**：1=观察中，2=已耐受，3=疑似过敏，4=确认过敏
+**`food_observation.status` 枚举**：`1=observing`，`2=safe`，`3=allergic`
 
 ---
 
-### 故事 5：妈妈记录营养素补充
-
-**场景**：09:00 补充维生素 D 400IU + 铁 1mg
-
-```json
-// feeding_record
-{
-  "id": "fr-005",
-  "baby_id": "bp-001",
-  "recorded_by": "fm-001",
-  "record_time": "2026-03-29T09:00:00+08",
-  "feeding_type": 3,
-  "nutrient_items": "[{\"name\":\"维生素D\",\"dose\":400,\"unit\":\"IU\"},{\"name\":\"铁\",\"dose\":1,\"unit\":\"mg\"}]"
-}
-```
-
----
-
-### 故事 6：妈妈补录昨晚睡眠记录
+### 故事 4：妈妈补录昨晚睡眠记录
 
 **场景**：昨晚 22:30 入睡，今早 06:00 醒来，补录
 
 ```json
 // sleep_record
 {
-  "id": "sr-001",
+  "id": "slr-001",
   "baby_id": "bp-001",
-  "recorded_by": "fm-001",
-  "start_time": "2026-03-28T22:30:00+08",
-  "end_time": "2026-03-29T06:00:00+08",
+  "recorded_by": "ua-001",
+  "start_time": "2026-03-28T22:30:00",
+  "end_time": "2026-03-29T06:00:00",
   "duration_min": 450,
-  "sleep_period": 0,
-  "quality": 1,
-  "status": "completed",
+  "status": 2,
   "note": "宝宝睡了整晚，只醒了一次"
 }
 ```
 
-**枚举说明**：
-- `sleep_period`: 0=夜间，1=上午，2=下午，3=其他
-- `quality`: 1=良好，2=一般，3=较差
-- `status`: sleeping/completed/abnormal
+**`status` 枚举**：`1=ongoing`，`2=ended`
+
+> 原设计中的 `sleep_period`（夜间/上午/下午）、`quality`（良好/一般/较差）字段在实际 DDL 中**不存在**
 
 ---
 
-### 故事 7：爸爸记录换尿布（大便 + 小便混合）
+### 故事 5：妈妈开始睡眠计时（实时记录）
 
-**场景**：10:30 换尿布，大便软便 + 小便中等
+**场景**：21:00 宝宝开始入睡，点击「开始」按钮
+
+```json
+// sleep_record（立即写入数据库）
+{
+  "id": "slr-002",
+  "baby_id": "bp-001",
+  "recorded_by": "ua-001",
+  "start_time": "2026-03-29T21:00:00",
+  "end_time": null,
+  "duration_min": null,
+  "status": 1,
+  "note": null
+}
+```
+
+> `status=1`（ongoing）；App 冷启动时查询 `status=1` 检测未结束计时；超 12h 由定时任务自动标记异常
+
+---
+
+### 故事 6：爸爸记录换尿布
+
+**场景**：10:30 换尿布，混合型，大便颜色偏黄
 
 ```json
 // diaper_record
 {
   "id": "dr-001",
   "baby_id": "bp-001",
-  "recorded_by": "fm-002",
-  "record_time": "2026-03-29T10:30:00+08",
-  "diaper_type": 2,
-  "stool_count": 1,
-  "stool_types": "[\"soft\"]",
-  "stool_photo_urls": null,
-  "urine_level": 2,
+  "recorded_by": "ua-002",
+  "record_time": "2026-03-29T10:30:00",
+  "diaper_type": 3,
+  "color": "yellow",
   "note": null
 }
 ```
 
-**枚举说明**：
-- `diaper_type`: 0=小便，1=大便，2=混合
-- `stool_types`: loose/soft/hard/blood/mucus/normal
-- `urine_level`: 1=少，2=中，3=多
+**`diaper_type` 枚举**：`1=wet`，`2=dirty`，`3=mixed`，`4=dry`
+
+> 原设计中的 `stool_count`、`stool_types`、`stool_photo_urls`、`urine_level` 字段在实际 DDL 中**不存在**
 
 ---
 
-### 故事 8：妈妈记录宝宝出现皮疹
+### 故事 7：妈妈记录宝宝出现皮疹
 
-**场景**：第 2 天发现面部皮疹，拍照记录，关联新食物观察期
+**场景**：第 2 天发现面部皮疹，拍照记录，触发辅食观察期状态更新
 
 ```json
 // symptom_record
 {
   "id": "sym-001",
   "baby_id": "bp-001",
-  "recorded_by": "fm-001",
-  "record_time": "2026-03-30T09:30:00+08",
-  "symptom_types": "[\"rash\"]",
-  "severity": 1,
-  "photo_urls": "[\"https://cdn.example.com/symptom/rash-001.jpg\"]",
+  "recorded_by": "ua-001",
+  "record_time": "2026-03-30T09:30:00",
+  "symptoms": [{"type": "rash", "severity": 1}],
+  "photo_ids": ["fileID-rash-001"],
   "note": "面部两颊淡红色皮疹"
 }
 
-// 触发更新 food_observation
+// 触发更新 food_observation（应用层判断后执行）
 {
   "id": "fo-001",
   "status": 3,
-  "updated_at": "2026-03-30T09:35:00+08"
+  "reaction_note": "引入南瓜泥后第2天出现面部皮疹"
 }
 ```
 
-**symptom_types 预设值**：rash/vomiting/diarrhea/cough/wheeze/eczema/other
+> 照片存储为 CloudBase 云存储 fileID（非 URL），`photo_ids` 字段为 JSON 数组
 
 ---
 
-### 故事 9：妈妈记录生长数据
+### 故事 8：妈妈记录生长数据
 
 **场景**：3 个月儿保，身高 65cm，体重 6.8kg，头围 42cm
 
@@ -278,71 +256,70 @@
 {
   "id": "gr-001",
   "baby_id": "bp-001",
-  "recorded_by": "fm-001",
+  "recorded_by": "ua-001",
   "record_date": "2026-03-29",
-  "height": 65.0,
-  "weight": 6.8,
-  "head_circumference": 42.0,
-  "height_percentile": 45.2,
-  "weight_percentile": 52.8,
-  "head_percentile": 48.5,
-  "measurement_place": "北京儿童医院",
-  "photo_urls": "[\"https://cdn.example.com/growth/report-001.jpg\"]"
+  "weight_g": 6800,
+  "height_mm": 650,
+  "head_mm": 420,
+  "note": "北京儿童医院儿保测量"
 }
 ```
 
-**percentile 字段**：由服务端基于 WHO 标准计算后写入
+> 单位：`weight_g`（克）、`height_mm`（毫米）、`head_mm`（毫米）  
+> 原设计中的 `height`（cm）、`weight`（kg）、`head_circumference`（cm）、百分位字段、`measurement_place` 在实际 DDL 中**不存在**
 
 ---
 
-### 故事 10：妈妈记录医疗就诊
+### 故事 9：妈妈记录医疗就诊
 
-**场景**：儿保检查，上传报告照片，OCR 提取文字
+**场景**：儿保检查，上传报告照片
 
 ```json
 // medical_record
 {
   "id": "mr-001",
   "baby_id": "bp-001",
-  "recorded_by": "fm-001",
+  "recorded_by": "ua-001",
   "visit_date": "2026-03-29",
-  "visit_type": 0,
-  "institution": "北京儿童医院",
-  "result_summary": "身高65cm，体重6.8kg，头围42cm。发育正常。",
+  "hospital": "北京儿童医院",
   "diagnosis": "牛奶蛋白过敏（中度），建议继续氨基酸奶粉",
-  "medication": "[{\"name\":\"氯雷他定糖浆\",\"dose\":\"2.5ml\",\"frequency\":\"每日一次\"}]",
-  "next_visit_date": "2026-09-29",
-  "photo_urls": "[\"https://cdn.example.com/medical/report-001.jpg\"]",
-  "ocr_text": "检查日期：2026年3月29日\n姓名：小宝\n身高：65cm\n体重：6.8kg\n特异性IgE：牛奶4.3kU/L"
+  "medications": [
+    {"name": "氯雷他定糖浆", "dose": "2.5ml"}
+  ],
+  "photo_ids": ["fileID-medical-001"],
+  "note": "下次复查：2026-09-29"
 }
 ```
 
-**visit_type 枚举**：0=儿保检查，1=过敏相关检查，2=门诊就诊，3=自定义
+> 原设计中的 `visit_type`、`result_summary`、`next_visit_date`、`ocr_text`、`photo_urls` 在实际 DDL 中**不存在**  
+> 照片存为 CloudBase fileID，字段名为 `photo_ids`（非 `photo_urls`）
 
 ---
 
-### 故事 11：爸爸记录宝宝活动
+### 故事 10：爸爸记录宝宝活动
 
-**场景**：下午 17:00 趴趴练习 15 分钟，状态活跃
+**场景**：下午 17:00 趴趴练习 15 分钟
 
 ```json
 // activity_record
 {
   "id": "ar-001",
   "baby_id": "bp-001",
-  "recorded_by": "fm-002",
-  "record_time": "2026-03-29T17:00:00+08",
-  "activity_type": 3,
+  "recorded_by": "ua-002",
+  "record_time": "2026-03-29T17:00:00",
+  "activity_type": 4,
   "duration_min": 15,
   "note": "趴趴练习，抬头很稳"
 }
 ```
 
-**activity_type 枚举**：1=安静，2=正常，3=活跃
+**`activity_type` 枚举**：`1=bath`，`2=outdoor`，`3=play`，`4=tummy_time`，`5=other`
+
+> 原设计的「1=安静，2=正常，3=活跃」与实际 DDL 不符
 
 ---
 
-### 故事 12：妈妈记录健康状态
+### 故事 11：妈妈记录健康状态
 
 **场景**：晚上 20:00 测体温 36.8℃，情绪良好
 
@@ -351,108 +328,77 @@
 {
   "id": "hr-001",
   "baby_id": "bp-001",
-  "recorded_by": "fm-001",
-  "record_time": "2026-03-29T20:00:00+08",
+  "recorded_by": "ua-001",
+  "record_time": "2026-03-29T20:00:00",
   "temperature": 36.8,
   "mood": 1,
   "note": null
 }
 ```
 
-**mood 枚举**：1=良好，2=一般，3=低落
+**`mood` 枚举**：`1=happy`，`2=neutral`，`3=fussy`，`4=crying`
+
+> 原设计的「1=良好，2=一般，3=低落」与实际 DDL 不符（实际有 4 个值）
 
 ---
 
 ## 三、权限控制场景
 
-### 场景：奶奶（查看者）尝试新增记录
+### 场景：成员尝试执行超出权限的操作
+
+**当前权限模型**（实际 DDL）：
+
+| role | 说明 |
+|------|------|
+| `1=owner` | 家庭创建者，拥有全部权限 |
+| `2=member` | 普通成员，可查看和新增记录 |
+
+> 注意：实际 DDL 仅有 `owner` 和 `member` 两种角色，不再区分「编辑者」和「查看者」。  
+> 若需要细粒度权限（如只读成员），需通过新 migration 扩展 `role` 值域。
 
 **流程**：
-1. 奶奶打开 App，点击「饮食记录」
-2. 客户端查询 `family_member.role`，发现 `role=2`（查看者）
-3. 弹出提示：「查看者无法新增记录，请联系创建者修改权限」
-4. 请求在应用层被拒绝，**不会到达数据库层**
-
-**权限矩阵**：
-
-| role | 查看 | 新增 | 编辑 | 删除 | 邀请成员 | 修改档案 |
-|------|:----:|:----:|:----:|:----:|:--------:|:--------:|
-| 0 创建者 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 1 编辑者 | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ |
-| 2 查看者 | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+1. 客户端查询 `family_member WHERE user_id = ? AND family_id = ? AND status = 2`
+2. 获取 `role` 值，在应用层判断权限
+3. 不符合权限的操作在 API 层拦截，不下发到数据库
 
 ---
 
-## 四、离线同步场景
+## 四、存储策略场景（Cloud-first）
 
-### 场景：妈妈在地铁上离线记录喂奶
+### 场景：妈妈在无网络环境尝试记录
 
 **流程**：
 
-1. 妈妈手机无网络，08:0sup0 记录一条奶粉记录
-2. 写入本地 SQLite，`sync_log` 新增：
-   ```json
-   {
-     "id": "sl-001",
-     "table_name": "feeding_record",
-     "record_id": "fr-001",
-     "operation_type": 0,
-     "operated_by": "fm-001",
-     "operated_at": "2026-03-29T08:00:05+08",
-     "sync_status": 0
-   }
-   ```
-3. UI 立即响应，显示「保存成功 ✓」
-4. 08:30 地铁出站，网络恢复
-5. 客户端检测网络状态，读取 `sync_log WHERE sync_status = 0`
-6. 批量上传到云端，更新 `sync_status = 1`
-7. 云端推送 WebSocket 事件给爸爸、奶奶的设备
-8. 爸爸、奶奶客户端收到事件后，拉取这条新记录写入本地缓存
+1. 客户端检测网络状态 → 无网络
+2. 弹出提示：「当前无网络，请检查网络连接后重试」
+3. 表单保持填写状态，**不写入任何本地或云端数据**
+4. 网络恢复后，用户重新提交
+5. API 写入 CloudBase MySQL 成功
+6. WebSocket 广播事件给同 `family_id` 的在线成员
+7. 其他成员客户端实时刷新
+
+> `sync_log` 表已从数据模型中**完全移除**（v2 联网写入优先，无离线队列，无冲突解决逻辑）
 
 ---
 
-## 五、冲突解决场景
-
-### 场景：妈妈和爸爸同时修改同一条记录
-
-**前提**：
-- 妈妈手机离线，10:00 修改 `fr-001` 的奶量从 120ml → 150ml
-- 爸爸手机在线，10:05 修改 `fr-001` 的奶量从 120ml → 130ml
-
-**冲突**：
-- 爸爸 10:05 的修改先到达云端，`updated_at = 10:05`
-- 妈妈 10:30 恢复网络，上传修改，`updated_at = 10:00`
-
-**解决策略**：**Last-Write-Wins（以云端 updated_at 为准）**
-- 云端 `updated_at = 10:05` > 妈妈的 `updated_at = 10:00`
-- 妈妈的修改被拒绝，客户端收到最新版本（130ml）
-- 原始冲突数据写入 `sync_log.conflict_data` 存档：
-  ```json
-  {
-    "conflict_data": "{\"milk_volume\":150,\"updated_at\":\"2026-03-29T10:00:00+08\"}"
-  }
-  ```
-
----
-
-## 六、字段覆盖检查清单
+## 五、字段覆盖检查清单
 
 通过以上用户故事演练，验证所有关键字段均已覆盖：
 
-| 功能模块 | 关键字段 | 覆盖状态 |
-|----------|---------|:--------:|
-| 奶粉多选 | `milk_types` JSON 数组 | ✅ |
-| 深度水解含乳糖 | `has_lactose` 嵌套字段 | ✅ |
-| 母乳记录 | `breastfeed_side`, `breastfeed_duration` | ✅ |
-| 营养素记录 | `nutrient_items` JSON 数组 | ✅ |
-| 辅食新食物 | `is_new_food`, `new_food_status` | ✅ |
-| 辅食观察期 | `food_observation` 表 | ✅ |
-| 睡眠计时 | `status`, `start_time`, `end_time` | ✅ |
-| 尿布记录 | `stool_types`, `urine_level` | ✅ |
-| 表现记录 | `symptom_types` JSON 数组 | ✅ |
-| 生长百分位 | `height_percentile`, `weight_percentile` | ✅ |
-| 医疗 OCR | `photo_urls`, `ocr_text` | ✅ |
-| 成员权限 | `family_member.role` | ✅ |
-| 记录者标识 | `recorded_by` 所有记录表 | ✅ |
-| 离线同步 | `sync_log` 表 | ✅ |
-| 冲突解决 | `sync_log.conflict_data`, `server_version` | ✅ |
+| 功能模块 | 实际字段（DDL 为准） | 覆盖状态 |
+|----------|-------------------|:--------:|
+| 配方奶记录 | `feed_type=2`, `formula_ml` | ✅ |
+| 母乳记录 | `feed_type=1`, `breast_side`, `duration_min` | ✅ |
+| 辅食记录 | `feed_type=3`, `complementary_food`, `amount_g` | ✅ |
+| 辅食新食物观察期 | `food_observation` 表（`food_name`, `first_intro_at`, `status`, `reaction_note`） | ✅ |
+| 睡眠计时（实时） | `status=1(ongoing)`, `start_time`, `end_time=NULL` | ✅ |
+| 睡眠补录 | `status=2(ended)`, `duration_min` | ✅ |
+| 尿布记录 | `diaper_type`, `color` | ✅ |
+| 症状记录 | `symptoms` JSON, `photo_ids` JSON | ✅ |
+| 生长数据 | `weight_g`, `height_mm`, `head_mm` | ✅ |
+| 健康记录 | `temperature`, `mood`（4值枚举） | ✅ |
+| 活动记录 | `activity_type`（5值枚举） | ✅ |
+| 医疗记录 | `hospital`, `diagnosis`, `medications` JSON, `photo_ids` JSON | ✅ |
+| 成员权限 | `family_member.role`（1=owner, 2=member） | ✅ |
+| 记录者标识 | `recorded_by → user_account.id` | ✅ |
+| 照片存储 | `photo_ids`（CloudBase fileID） | ✅ |

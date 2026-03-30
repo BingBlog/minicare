@@ -12,13 +12,13 @@ import { FamilyContext } from './family-member.guard';
  * RoleGuard — 验证当前家庭成员角色是否满足最低要求
  *
  * 依赖 FamilyMemberGuard 已将 FamilyContext 注入 request.familyContext。
- * 读取路由装饰器 @MinRole(FamilyRole.EDITOR) 的元数据进行比较。
+ * 读取路由装饰器 @MinRole(FamilyRole.MEMBER) 的元数据进行比较。
  *
- * 规则：role 值越小权限越高（OWNER=0 > EDITOR=1 > VIEWER=2）
+ * 规则：role 值越小权限越高（OWNER=1 > MEMBER=2），与 DDL 保持一致
  *
  * 使用方式（顺序不可颠倒）：
  * @UseGuards(JwtGuard, FamilyMemberGuard, RoleGuard)
- * @MinRole(FamilyRole.EDITOR)
+ * @MinRole(FamilyRole.MEMBER)
  */
 @Injectable()
 export class RoleGuard implements CanActivate {
@@ -36,7 +36,7 @@ export class RoleGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const familyCtx: FamilyContext = request.familyContext;
 
-    // role 数值越小权限越高，要求 EDITOR(1) 则 role <= 1 才通过
+    // role 数值越小权限越高，要求 OWNER(1) 则 role <= 1 才通过
     if (familyCtx.role > minRole) {
       throw new ForbiddenException('您的角色权限不足以执行此操作');
     }

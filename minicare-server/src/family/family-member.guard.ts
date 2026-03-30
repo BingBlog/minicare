@@ -11,7 +11,7 @@ import { DATABASE_POOL } from '../common/database/database.module';
 export interface FamilyContext {
   familyId: string;
   userId: string;
-  role: number;   // 0=创建者, 1=编辑者, 2=查看者
+  role: number;   // DDL: 1=owner, 2=member
   memberId: string;
 }
 
@@ -38,7 +38,7 @@ export class FamilyMemberGuard implements CanActivate {
     }
 
     const [rows] = await this.db.execute<any[]>(
-      'SELECT id, role FROM family_member WHERE family_id = ? AND user_id = ? AND status = "active"',
+      'SELECT id, role FROM family_member WHERE family_id = ? AND user_id = ? AND status = 2',
       [familyId, userId],
     );
 

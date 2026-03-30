@@ -16,7 +16,7 @@ export class FeedingController {
   constructor(private readonly feedingService: FeedingService) {}
 
   @Post()
-  @MinRole(FamilyRole.EDITOR)
+  @MinRole(FamilyRole.MEMBER)
   @ApiOperation({ summary: '记录喂养' })
   create(@CurrentUser() userId: string, @Body() dto: CreateFeedingDto) {
     return this.feedingService.create(userId, dto);
@@ -33,7 +33,7 @@ export class FeedingController {
   }
 
   @Delete(':id')
-  @MinRole(FamilyRole.EDITOR)
+  @MinRole(FamilyRole.MEMBER)
   @ApiOperation({ summary: '删除喂养记录' })
   remove(@Param('id') id: string) {
     return this.feedingService.remove(id);

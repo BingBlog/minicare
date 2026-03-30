@@ -9,6 +9,19 @@ import { v4 as uuidv4 } from 'uuid';
 import { DATABASE_POOL } from '../common/database/database.module';
 import { CreateBabyDto } from './dto/create-baby.dto';
 
+/** gender 字符串 → TINYINT（DDL: 0=unknown 1=male 2=female） */
+const GENDER_TO_INT: Record<string, number> = {
+  unknown: 0,
+  male:    1,
+  female:  2,
+};
+/** gender TINYINT → 字符串 */
+const GENDER_TO_STR: Record<number, string> = {
+  0: 'unknown',
+  1: 'male',
+  2: 'female',
+};
+
 @Injectable()
 export class BabyService {
   constructor(@Inject(DATABASE_POOL) private readonly db: Pool) {}
@@ -16,7 +29,7 @@ export class BabyService {
   /**
    * 在家庭下创建宝宝档案（MVP 每家庭限 1 个宝宝）
    */
-  async createBaby(familyId: string, dto: CreateBabyDto) {
+  async createBaby(familyId: string, createdBy: string, dto: CreateBabyDto) {
     // MVP 阶段：每家庭限 1 个宝宝
     const [existing] = await this.db.execute<any[]>(
       'SELECT id FROM baby_profile WHERE family_id = ?',
@@ -27,21 +40,31 @@ export class BabyService {
     }
 
     const babyId = uuidv4();
+    const allergyTypesJson = dto.allergy_types?.length
+      ? JSON.stringify(dto.allergy_types)
+      : null;
+
     await this.db.execute(
-      `INSERT INTO baby_profile (id, family_id, name, birth_date, gender, birth_weight_g, birth_height_cm)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO baby_profile
+         (id, family_id, name, birth_date, gender,
+          allergy_types, allergy_level,
+          birth_weight_g, birth_height_cm, created_by)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         babyId,
         familyId,
         dto.name,
         dto.birth_date,
-        dto.gender,
+        GENDER_TO_INT[dto.gender] ?? 0,
+        allergyTypesJson,
+        dto.allergy_level ?? null,
         dto.birth_weight_g ?? null,
         dto.birth_height_cm ?? null,
+        createdBy,
       ],
     );
 
-    return { id: babyId, ...dto, family_id: familyId };
+    return this.getBabyByFamily(familyId);
   }
 
   /**
@@ -49,12 +72,23 @@ export class BabyService {
    */
   async getBabyByFamily(familyId: string) {
     const [rows] = await this.db.execute<any[]>(
-      `SELECT id, family_id, name, birth_date, gender, birth_weight_g, birth_height_cm, avatar_url, created_at
+      `SELECT id, family_id, name, birth_date, gender,
+              allergy_types, allergy_level,
+              birth_weight_g, birth_height_cm,
+              avatar_url, created_at
        FROM baby_profile WHERE family_id = ? LIMIT 1`,
       [familyId],
     );
     if (rows.length === 0) throw new NotFoundException('尚未创建宝宝档案');
-    return rows[0];
+
+    const baby = rows[0];
+    // allergy_types 存的是 JSON 字符串，需解析
+    if (typeof baby.allergy_types === 'string') {
+      try { baby.allergy_types = JSON.parse(baby.allergy_types); } catch { baby.allergy_types = []; }
+    }
+    // gender TINYINT → 字符串
+    baby.gender = GENDER_TO_STR[baby.gender] ?? 'unknown';
+    return baby;
   }
 
   /**
@@ -62,10 +96,46 @@ export class BabyService {
    */
   async getBabyById(babyId: string, familyId: string) {
     const [rows] = await this.db.execute<any[]>(
-      'SELECT * FROM baby_profile WHERE id = ? AND family_id = ?',
+      `SELECT id, family_id, name, birth_date, gender,
+              allergy_types, allergy_level,
+              birth_weight_g, birth_height_cm,
+              avatar_url, created_at
+       FROM baby_profile WHERE id = ? AND family_id = ?`,
       [babyId, familyId],
     );
     if (rows.length === 0) throw new NotFoundException('宝宝档案不存在');
-    return rows[0];
+
+    const baby = rows[0];
+    if (typeof baby.allergy_types === 'string') {
+      try { baby.allergy_types = JSON.parse(baby.allergy_types); } catch { baby.allergy_types = []; }
+    }
+    baby.gender = GENDER_TO_STR[baby.gender] ?? 'unknown';
+    return baby;
+  }
+
+  /**
+   * 更新宝宝档案（可选字段，任意组合）
+   */
+  async updateBaby(babyId: string, familyId: string, dto: Partial<CreateBabyDto>) {
+    const fields: string[] = [];
+    const values: (string | number | null)[] = [];
+
+    if (dto.name !== undefined)            { fields.push('name = ?');            values.push(dto.name); }
+    if (dto.birth_date !== undefined)      { fields.push('birth_date = ?');      values.push(dto.birth_date); }
+    if (dto.gender !== undefined)          { fields.push('gender = ?');          values.push(GENDER_TO_INT[dto.gender] ?? 0); }
+    if (dto.allergy_types !== undefined)   { fields.push('allergy_types = ?');   values.push(JSON.stringify(dto.allergy_types)); }
+    if (dto.allergy_level !== undefined)   { fields.push('allergy_level = ?');   values.push(dto.allergy_level); }
+    if (dto.birth_weight_g !== undefined)  { fields.push('birth_weight_g = ?');  values.push(dto.birth_weight_g); }
+    if (dto.birth_height_cm !== undefined) { fields.push('birth_height_cm = ?'); values.push(dto.birth_height_cm); }
+
+    if (fields.length === 0) return this.getBabyById(babyId, familyId);
+
+    values.push(babyId, familyId);
+    await this.db.execute(
+      `UPDATE baby_profile SET ${fields.join(', ')} WHERE id = ? AND family_id = ?`,
+      values,
+    );
+
+    return this.getBabyById(babyId, familyId);
   }
 }
