@@ -58,7 +58,9 @@ minicare/docs/
 
 | 文件 | 内容 |
 |------|------|
-| [tech/DB-01-overview.md](tech/DB-01-overview.md) | ER 图 · 本地/远程存储策略 · 数据库选型（Supabase） |
+| [tech/INFRA-cloudbase.md](tech/INFRA-cloudbase.md) | CloudBase 基础设施搭建执行清单 |
+| [tech/INFRA-env-config.md](tech/INFRA-env-config.md) | **开发环境配置方案**（dev / staging / prod 三套环境、认证流程、部署脚本） |
+| [tech/DB-01-overview.md](tech/DB-01-overview.md) | ER 图 · 本地/远程存储策略 · 数据库选型 |
 | [tech/DB-02-schema.md](tech/DB-02-schema.md) | 完整建表 DDL · 字段变更汇总 |
 | [tech/DB-03-mock-data.md](tech/DB-03-mock-data.md) | Mock 数据 · 用户故事演练 · 字段覆盖检查 |
 

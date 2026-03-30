@@ -471,11 +471,18 @@ cloudbase hosting deploy ./dist -e minicare-cloud-6gqledlle0132cbe
 cloudbase hosting deploy ./dist minicare/ -e minicare-cloud-6gqledlle0132cbe
 ```
 
-- [ ] 静态托管已开启，默认域名可访问（`xxx.tcloudbaseapp.com`）
-- [ ] `vite.config.ts` 中 `base: './'` 已配置（相对路径，CDN 必须）
-- [ ] `TanStack Router` 使用 Hash 模式（`createHashHistory`），刷新不 404
+- [x] 静态托管已开启，默认域名可访问（`minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com`）
+- [x] `vite.config.ts` 中 `base: './'` 已配置（相对路径，CDN 必须）
+- [x] `react-router-dom` 使用 `createHashRouter`（Hash 模式），刷新不 404
 - [ ] 配置自定义域名（`app.minicare.xxx.com`）+ HTTPS 证书
 - [ ] 在控制台「安全域名」中添加前端域名（Auth SDK 跨域要求）
+
+> **✅ 阶段六完成** （2026-03-30）
+> - 前端访问地址：**https://minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com**
+> - 技术栈：React 18 + Vite 6 + TypeScript + TailwindCSS 3 + Zustand + react-router-dom 6
+> - 已实现页面：登录、注册、新用户引导（添加宝宝）、首页、记录列表（含新增弹窗）、我的
+> - 构建产物：12 个文件，主 bundle 218 KB（gzip 72 KB）
+> - 部署命令：`tcb hosting deploy dist -e minicare-cloud-6gqledlle0132cbe`
 
 ### 6.6 前端调用 CloudRun API
 

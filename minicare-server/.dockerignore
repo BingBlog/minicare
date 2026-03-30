@@ -1,5 +1,5 @@
 node_modules
-dist
+src
 .git
 .gitignore
 .env
@@ -10,3 +10,6 @@ coverage
 .DS_Store
 migrations
 scripts
+tsconfig.json
+nest-cli.json
+dist/*.tsbuildinfo

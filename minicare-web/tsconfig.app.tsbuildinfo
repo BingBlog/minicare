@@ -1,0 +1,1 @@
+{"root":["./src/main.tsx","./src/router.tsx","./src/components/applayout.tsx","./src/components/authguard.tsx","./src/lib/api.ts","./src/lib/cloudbase.ts","./src/lib/store.ts","./src/pages/homepage.tsx","./src/pages/loginpage.tsx","./src/pages/notfoundpage.tsx","./src/pages/onboardingpage.tsx","./src/pages/profilepage.tsx","./src/pages/recordspage.tsx"],"version":"5.6.3"}

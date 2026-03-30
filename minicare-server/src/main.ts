@@ -1,5 +1,10 @@
-// 本地开发：从 .env 文件加载环境变量（生产环境 CloudRun 直接注入，无需此步骤）
-import 'dotenv/config';
+// 环境变量加载：本地开发从 .env.local 读取，生产环境由 CloudRun 直接注入
+import { config } from 'dotenv';
+import { resolve } from 'path';
+// 非生产环境加载 .env.local（本地开发）
+if (process.env.NODE_ENV !== 'production') {
+  config({ path: resolve(process.cwd(), '.env.local') });
+}
 
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
@@ -10,6 +15,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: ['error', 'warn', 'log'],
   });
+
+  // ── 全局路由前缀 /api（排除 /health）────────────────────────────
+  app.setGlobalPrefix('api', { exclude: ['health'] });
 
   // ── 全局校验管道（class-validator + class-transformer）──────────
   app.useGlobalPipes(

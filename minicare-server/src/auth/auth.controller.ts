@@ -12,11 +12,18 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { IsString, IsNotEmpty } from 'class-validator';
 import { AuthService } from './auth.service';
 import { JwtGuard } from './jwt.guard';
 import { SendCodeDto } from './dto/send-code.dto';
 import { VerifyCodeDto } from './dto/verify-code.dto';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
+
+class TcbLoginDto {
+  @IsString()
+  @IsNotEmpty()
+  accessToken!: string;
+}
 
 @ApiTags('auth')
 @Controller('auth')
@@ -44,6 +51,17 @@ export class AuthController {
   @ApiOperation({ summary: '验证短信验证码，完成登录/注册' })
   async verifyCode(@Body() dto: VerifyCodeDto) {
     return this.authService.verifyCode(dto.phone, dto.code);
+  }
+
+  /**
+   * POST /auth/tcb-login
+   * 前端 SDK 完成短信登录后，传 CloudBase access_token，换取自定义 JWT
+   */
+  @Post('tcb-login')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: '使用 CloudBase Token 登录，换取自定义 JWT' })
+  async tcbLogin(@Body() dto: TcbLoginDto) {
+    return this.authService.tcbLogin(dto.accessToken);
   }
 
   /**

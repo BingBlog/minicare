@@ -6,14 +6,18 @@
   "scripts": {
     "build": "nest build",
     "start": "node dist/main",
-    "start:dev": "nest start --watch",
-    "start:debug": "nest start --debug --watch",
+    "start:dev": "NODE_ENV=development nest start --watch",
+    "start:prod": "NODE_ENV=production node dist/main",
+    "start:debug": "NODE_ENV=development nest start --debug --watch",
     "lint": "eslint \"{src,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:cov": "jest --coverage",
     "migrate": "bash scripts/migrate.sh",
     "migrate:status": "bash scripts/migrate.sh --status",
-    "migrate:dry-run": "bash scripts/migrate.sh --dry-run"
+    "migrate:dry-run": "bash scripts/migrate.sh --dry-run",
+    "deploy": "bash scripts/deploy.sh",
+    "deploy:check": "bash scripts/deploy.sh --check",
+    "deploy:list": "tcb run:deprecated version list -e minicare-cloud-6gqledlle0132cbe -s minicare-api"
   },
   "dependencies": {
     "@cloudbase/node-sdk": "^3.16.0",
