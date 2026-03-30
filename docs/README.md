@@ -3,6 +3,8 @@
 > 按功能模块拆分，便于 AI coding 环节精准引用。
 > 开发时直接阅读对应 `features/F0x-*.md` 文件即可，无需翻阅完整 PRD。
 
+📋 **开发进度跟踪** → [`DEV-PLAN.md`](DEV-PLAN.md)（每完成一项任务在此更新）
+
 ---
 
 ## 目录结构
@@ -10,6 +12,7 @@
 ```
 minicare/docs/
 ├── README.md              ← 总索引（本文件）
+├── DEV-PLAN.md            ← 开发计划与进度跟踪（每完成一项更新）
 ├── overview.md            ← 产品概述、目标用户（只读背景）
 ├── design-system.md       ← 视觉/交互设计规范（开发全程参考）
 ├── architecture.md        ← 数据架构摘要（详细方案见 tech/ 目录）
