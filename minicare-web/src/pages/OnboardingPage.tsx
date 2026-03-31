@@ -11,9 +11,10 @@
  */
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { familyApi, babyApi } from '@/lib/api'
+import DatePicker from '@/components/DatePicker'
+import { familyApi, babyApi } from '@/api'
 import { useAppStore } from '@/lib/store'
-import type { AllergyType, AllergyLevel } from '@/lib/api'
+import type { AllergyType, AllergyLevel } from '@/api'
 
 // ── 配置表 ────────────────────────────────────────────────────────
 const allergyTypeOptions: { value: AllergyType; label: string }[] = [
@@ -381,17 +382,17 @@ export default function OnboardingPage() {
           </div>
           {/* 出生日期 */}
           <div className="flex items-center px-4 py-3.5" style={{ borderBottom: '1px solid #F5F0F2' }}>
-            <span className="text-sm text-[#4A3035]">
+            <span className="text-sm text-[#4A3035] flex-shrink-0">
               出生日期 <span className="text-red-400">*</span>
             </span>
-            <input
-              type="date"
+            <DatePicker
+              label=""
               value={birthDate}
-              onChange={(e) => setBirthDate(e.target.value)}
+              onChange={setBirthDate}
               max={new Date().toISOString().split('T')[0]}
-              className="flex-1 text-right border-none outline-none bg-transparent text-sm text-[#4A3035]"
+              min="2010-01-01"
+              className="flex-1 justify-end"
             />
-            <span className="text-[#C0A8AD] ml-1 text-base">›</span>
           </div>
           {/* 性别 */}
           <div className="flex items-center px-4 py-3.5">

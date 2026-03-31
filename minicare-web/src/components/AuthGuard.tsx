@@ -8,7 +8,7 @@
 import { Navigate, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { useAppStore } from '@/lib/store'
-import { familyApi, babyApi } from '@/lib/api'
+import { familyApi, babyApi } from '@/api'
 import type { ReactNode } from 'react'
 
 interface Props {

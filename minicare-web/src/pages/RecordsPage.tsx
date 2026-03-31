@@ -9,9 +9,9 @@
  *   - 空状态
  */
 import { useState, useEffect } from 'react'
-import { recordsApi } from '@/lib/api'
+import { recordsApi } from '@/api'
 import { useAppStore } from '@/lib/store'
-import type { RecordItem } from '@/lib/api'
+import type { RecordItem } from '@/api'
 
 // ── 工具函数 ──────────────────────────────────────────────────────
 function getRecordTime(rec: RecordItem): string {

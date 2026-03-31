@@ -14,7 +14,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { auth } from '@/lib/cloudbase'
-import { authApi, familyApi, babyApi, setToken } from '@/lib/api'
+import { authApi, familyApi, babyApi, setToken } from '@/api'
 import { useAppStore } from '@/lib/store'
 
 const AUTH_MODE = (import.meta.env.VITE_AUTH_MODE as string) || 'test'
@@ -117,8 +117,10 @@ export default function LoginPage() {
     setLoadingLogin(true)
     setError('')
     try {
+      let isNew = false
       if (IS_TEST_MODE) {
-        const { token, user } = await authApi.verifyCode({ phone, code })
+        const { token, user, isNewUser } = await authApi.verifyCode({ phone, code })
+        isNew = isNewUser
         setToken(token)
         setUser(user, token)
       } else {
@@ -127,10 +129,12 @@ export default function LoginPage() {
         if (sdkError) throw new Error(sdkError.message || '验证码错误或已过期')
         const accessToken = data?.session?.access_token
         if (!accessToken) throw new Error('登录失败，无法获取凭证，请重试')
-        const { token, user } = await authApi.tcbLogin(accessToken)
+        const { token, user, isNewUser } = await authApi.tcbLogin(accessToken)
+        isNew = isNewUser
         setToken(token)
         setUser(user, token)
       }
+      if (isNew) showToast('欢迎加入敏宝日记！账号创建成功 🎉')
       await afterLogin()
     } catch (err) {
       setError(err instanceof Error ? err.message : '验证失败，请重试')

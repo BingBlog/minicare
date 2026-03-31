@@ -581,6 +581,9 @@ const res = await fetch(
 
 ## 阶段九：监控与运维
 
+> **总方案文档**：[`INFRA-ops-monitoring.md`](INFRA-ops-monitoring.md)（背景、现状、调研、目标、架构/流程图、详细设计、计划、风险）  
+> **CLS 专项**：[`INFRA-cls-logging.md`](INFRA-cls-logging.md)
+
 ### 9.1 基础监控
 
 - [ ] CloudBase 控制台 → 「监控告警」→ 配置以下告警：
@@ -590,7 +593,7 @@ const res = await fetch(
 
 ### 9.2 日志接入
 
-- [ ] CloudRun 服务日志接入「日志服务（CLS）」
+- [ ] CloudRun 服务日志接入「日志服务（CLS）」→ **操作步骤见 [`INFRA-cls-logging.md`](INFRA-cls-logging.md)**
 - [ ] 关键操作日志（写入/删除/邀请）需结构化记录 `{ user_id, action, table, record_id, timestamp }`
 
 ### 9.3 数据备份

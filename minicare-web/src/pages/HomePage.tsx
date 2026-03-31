@@ -4,9 +4,9 @@
  */
 import { useState, useEffect, type ReactElement } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { familyApi, babyApi, recordsApi } from '@/lib/api'
+import { familyApi, babyApi, recordsApi } from '@/api'
 import { useAppStore } from '@/lib/store'
-import type { TodayRecord } from '@/lib/api'
+import type { TodayRecord } from '@/api'
 
 // ── 工具函数 ──────────────────────────────────────────────────────
 function getBabyAge(birthDate: string): string {
@@ -76,26 +76,26 @@ const IconSmile = () => (
 
 // ── 快捷记录宫格配置（4 列，SVG 图标） ──────────────────────────────
 const quickActions = [
-  { key: 'feeding',  label: '饮食',  icon: <IconMilk />,        path: '/records' },
-  { key: 'diaper',   label: '尿布',  icon: <IconDroplets />,    path: '/records' },
-  { key: 'sleep',    label: '睡眠',  icon: <IconMoon />,        path: '/records' },
-  { key: 'activity', label: '活动',  icon: <IconActivity />,    path: '/records' },
-  { key: 'growth',   label: '生长',  icon: <IconRuler />,       path: '/records' },
-  { key: 'health',   label: '健康',  icon: <IconHeart />,       path: '/records' },
-  { key: 'medical',  label: '医疗',  icon: <IconStethoscope />, path: '/records' },
-  { key: 'symptom',  label: '表现',  icon: <IconSmile />,       path: '/records' },
+  { key: 'feeding',  label: '饮食',  icon: <IconMilk />,        path: '/records/form/feeding' },
+  { key: 'diaper',   label: '尿布',  icon: <IconDroplets />,    path: '/records/form/diaper' },
+  { key: 'sleep',    label: '睡眠',  icon: <IconMoon />,        path: '/records/form/sleep' },
+  { key: 'activity', label: '活动',  icon: <IconActivity />,    path: '/records/form/activity' },
+  { key: 'growth',   label: '生长',  icon: <IconRuler />,       path: '/records/form/growth' },
+  { key: 'health',   label: '健康',  icon: <IconHeart />,       path: '/records/form/health' },
+  { key: 'medical',  label: '医疗',  icon: <IconStethoscope />, path: '/records/form/medical' },
+  { key: 'symptom',  label: '表现',  icon: <IconSmile />,       path: '/records/form/symptom' },
 ]
 
 // ── FAB Sheet 条目配置 ─────────────────────────────────────────────
 const fabItems = [
-  { key: 'feeding',  label: '饮食记录', sub: '喂奶 · 辅食 · 营养素',    icon: <IconMilk /> },
-  { key: 'sleep',    label: '睡眠记录', sub: '计时模式 · 补录模式',     icon: <IconMoon /> },
-  { key: 'activity', label: '活动',     sub: '爬走练习 · 视力活动 · 户外活动', icon: <IconActivity /> },
-  { key: 'diaper',   label: '尿布',     sub: '大便次数性状 · 小便次数', icon: <IconDroplets /> },
-  { key: 'health',   label: '健康',     sub: '过敏表现 · 用药 · 护理',  icon: <IconHeart /> },
-  { key: 'symptom',  label: '表现',     sub: '心情状态 · 精神状态',     icon: <IconSmile /> },
-  { key: 'growth',   label: '生长记录', sub: '身高 · 体重 · 头围',      icon: <IconRuler /> },
-  { key: 'medical',  label: '医疗记录', sub: '儿保 · 过敏检查 · 就诊',  icon: <IconStethoscope /> },
+  { key: 'feeding',  label: '饮食记录', sub: '喂奶 · 辅食 · 营养素',    icon: <IconMilk />,        path: '/records/form/feeding' },
+  { key: 'sleep',    label: '睡眠记录', sub: '计时模式 · 补录模式',     icon: <IconMoon />,        path: '/records/form/sleep' },
+  { key: 'activity', label: '活动',     sub: '爬走练习 · 视力活动 · 户外活动', icon: <IconActivity />,    path: '/records/form/activity' },
+  { key: 'diaper',   label: '尿布',     sub: '大便次数性状 · 小便次数', icon: <IconDroplets />,    path: '/records/form/diaper' },
+  { key: 'health',   label: '健康',     sub: '过敏表现 · 用药 · 护理',  icon: <IconHeart />,       path: '/records/form/health' },
+  { key: 'symptom',  label: '表现',     sub: '心情状态 · 精神状态',     icon: <IconSmile />,       path: '/records/form/symptom' },
+  { key: 'growth',   label: '生长记录', sub: '身高 · 体重 · 头围',      icon: <IconRuler />,       path: '/records/form/growth' },
+  { key: 'medical',  label: '医疗记录', sub: '儿保 · 过敏检查 · 就诊',  icon: <IconStethoscope />, path: '/records/form/medical' },
 ]
 
 // ── 记录类型配置 ──────────────────────────────────────────────────
@@ -332,11 +332,11 @@ export default function HomePage() {
             </span>
           </div>
           <div className="grid grid-cols-4 gap-2 p-3 pt-1">
-            {quickActions.map(({ key, label, icon }) => (
+            {quickActions.map(({ key, label, icon, path }) => (
               <button
                 key={key}
                 type="button"
-                onClick={() => navigate('/records')}
+                onClick={() => navigate(path)}
                 className="bg-white border border-gray-100 rounded-xl flex flex-col items-center gap-1.5 cursor-pointer transition-transform active:scale-95"
                 style={{ padding: '12px 4px 10px' }}
               >
@@ -420,11 +420,11 @@ export default function HomePage() {
               <div className="w-10 h-1 rounded-full bg-gray-200" />
             </div>
             <div className="text-center text-base font-bold text-[#4A3035] py-3">记录什么？</div>
-            {fabItems.map(({ key, label, sub, icon }) => (
+            {fabItems.map(({ key, label, sub, icon, path }) => (
               <div
                 key={key}
                 className="flex items-center gap-3.5 px-5 py-3.5 cursor-pointer active:bg-[#FFF0F4] transition-colors"
-                onClick={() => { setFabOpen(false); navigate('/records') }}
+                onClick={() => { setFabOpen(false); navigate(path) }}
               >
                 <div
                   className="flex items-center justify-center rounded-xl flex-shrink-0"

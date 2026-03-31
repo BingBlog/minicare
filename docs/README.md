@@ -17,6 +17,10 @@ minicare/docs/
 ├── design-system.md       ← 视觉/交互设计规范（开发全程参考）
 ├── architecture.md        ← 数据架构摘要（详细方案见 tech/ 目录）
 ├── tech/                  ← 技术方案（数据库设计、Mock 数据）
+│   ├── INFRA-cloudbase.md ← CloudBase 基建清单
+│   ├── INFRA-ops-monitoring.md ← 运维监控体系（总方案）
+│   ├── INFRA-cls-logging.md ← CLS 日志接入
+│   ├── INFRA-env-config.md ← 环境配置与部署
 │   ├── DB-01-overview.md  ← 数据表关系图 · 存储策略 · 技术选型
 │   ├── DB-02-schema.md    ← 完整建表 DDL（含新增字段）
 │   └── DB-03-mock-data.md ← Mock 数据 · 用户故事演练
@@ -62,6 +66,8 @@ minicare/docs/
 | 文件 | 内容 |
 |------|------|
 | [tech/INFRA-cloudbase.md](tech/INFRA-cloudbase.md) | CloudBase 基础设施搭建执行清单 |
+| [tech/INFRA-ops-monitoring.md](tech/INFRA-ops-monitoring.md) | **运维监控体系总方案**（流量、稳定性告警、CLS、架构/流程、计划与风险） |
+| [tech/INFRA-cls-logging.md](tech/INFRA-cls-logging.md) | **CLS 日志接入**（云托管 → CLS、NestJS 结构化日志建议、索引与成本） |
 | [tech/INFRA-env-config.md](tech/INFRA-env-config.md) | **开发环境配置方案**（dev / staging / prod 三套环境、认证流程、部署脚本） |
 | [tech/DB-01-overview.md](tech/DB-01-overview.md) | ER 图 · 本地/远程存储策略 · 数据库选型 |
 | [tech/DB-02-schema.md](tech/DB-02-schema.md) | 完整建表 DDL · 字段变更汇总 |

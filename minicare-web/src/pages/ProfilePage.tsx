@@ -9,12 +9,14 @@
  *   - 设置菜单组（家庭 / 关于）
  *   - 退出登录按钮
  *   - 编辑宝宝档案底部弹层（edit sheet）
+ *   - 家庭成员弹层
  */
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import DatePicker from '@/components/DatePicker'
 import { useAppStore } from '@/lib/store'
-import { removeToken } from '@/lib/api'
-import type { AllergyLevel } from '@/lib/api'
+import { removeToken, babyApi, familyApi } from '@/api'
+import type { AllergyLevel, AllergyType, FamilyMember } from '@/api'
 
 // ── 工具函数 ──────────────────────────────────────────────────────
 function getBabyAge(birthDate: string): string {
@@ -41,6 +43,10 @@ const allergyTypeLabels: Record<string, string> = {
   tree_nut: '坚果', soy: '大豆', fish: '鱼类', shellfish: '贝类', other: '其他',
 }
 
+const ALL_ALLERGY_TYPES: AllergyType[] = [
+  'milk', 'egg', 'wheat', 'peanut', 'tree_nut', 'soy', 'fish', 'shellfish', 'other',
+]
+
 // ── SVG 图标 ──────────────────────────────────────────────────────
 const IconUsers = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 18, height: 18 }}>
@@ -50,8 +56,10 @@ const IconUsers = () => (
 )
 const IconUserPlus = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 18, height: 18, color: '#4CAF82' }}>
-    <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
-    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+    <circle cx="9" cy="7" r="4"/>
+    <line x1="19" y1="8" x2="19" y2="14"/>
+    <line x1="22" y1="11" x2="16" y2="11"/>
   </svg>
 )
 const IconPhone = () => (
@@ -89,6 +97,17 @@ const IconLogOut = () => (
     <polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
   </svg>
 )
+const IconCopy = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 15, height: 15 }}>
+    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+  </svg>
+)
+const IconX = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: 18, height: 18 }}>
+    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+  </svg>
+)
 
 // ── 过敏程度选项 ──────────────────────────────────────────────────
 const allergyLevelOptions: { value: AllergyLevel; label: string; activeColor: string }[] = [
@@ -98,75 +117,131 @@ const allergyLevelOptions: { value: AllergyLevel; label: string; activeColor: st
   { value: 'unknown',  label: '未知', activeColor: '#9A8090' },
 ]
 
-// ── 设置菜单组 ────────────────────────────────────────────────────
-const settingsGroups = [
-  {
-    title: '家庭',
-    items: [
-      {
-        key: 'family',
-        icon: <IconUsers />,
-        iconBg: '#FFF0F4',
-        label: '家庭成员管理',
-        value: '',
-        hasArrow: true,
-      },
-      {
-        key: 'invite',
-        icon: <IconUserPlus />,
-        iconBg: '#DCFCE7',
-        label: '邀请家庭成员',
-        value: '',
-        hasArrow: true,
-      },
-    ],
-  },
-  {
-    title: '关于',
-    items: [
-      {
-        key: 'version',
-        icon: <IconPhone />,
-        iconBg: '#FFF0F4',
-        label: '版本号',
-        value: 'v1.0.0（MVP）',
-        hasArrow: false,
-      },
-      {
-        key: 'about',
-        icon: <IconHeart />,
-        iconBg: '#FFF1F4',
-        label: '关于敏宝日记',
-        value: '',
-        hasArrow: true,
-      },
-      {
-        key: 'privacy',
-        icon: <IconFileText />,
-        iconBg: '#F5F5F5',
-        label: '隐私政策',
-        value: '',
-        hasArrow: true,
-      },
-    ],
-  },
-]
+// ── 角色标签映射 ──────────────────────────────────────────────────
+const roleLabel: Record<number, string> = {
+  1: 'owner',
+  2: 'member',
+}
+const roleText: Record<number, string> = {
+  1: '创建者',
+  2: '成员',
+}
 
 export default function ProfilePage() {
   const navigate = useNavigate()
-  const { user, currentBaby, logout } = useAppStore()
+  const { user, currentBaby, currentFamily, setCurrentBaby, logout } = useAppStore()
 
-  // 编辑弹层状态
+  // ── 编辑弹层状态 ──
   const [editOpen, setEditOpen] = useState(false)
+  const [saving, setSaving] = useState(false)
+
+  // 编辑表单受控字段
+  const [editName, setEditName] = useState(currentBaby?.name ?? '')
+  const [editBirthDate, setEditBirthDate] = useState(currentBaby?.birth_date ?? '')
+  const [editGender, setEditGender] = useState<'male' | 'female' | 'unknown'>(
+    (currentBaby?.gender as 'male' | 'female' | 'unknown') ?? 'unknown'
+  )
+  const [editAllergyTypes, setEditAllergyTypes] = useState<AllergyType[]>(
+    currentBaby?.allergy_types ?? []
+  )
   const [editAllergyLevel, setEditAllergyLevel] = useState<AllergyLevel>(
     (currentBaby?.allergy_level as AllergyLevel) ?? 'unknown'
   )
+
+  // ── 家庭成员弹层状态 ──
+  const [membersOpen, setMembersOpen] = useState(false)
+  const [members, setMembers] = useState<FamilyMember[]>([])
+  const [membersLoading, setMembersLoading] = useState(false)
+  const [inviteCode, setInviteCode] = useState('')
+  const [inviteLoading, setInviteLoading] = useState(false)
 
   // Toast
   const [toast, setToast] = useState('')
   const showToast = (msg: string) => {
     setToast(msg)
     setTimeout(() => setToast(''), 2200)
+  }
+
+  // 打开编辑弹层时重置表单值（同步最新 currentBaby）
+  const openEdit = () => {
+    setEditName(currentBaby?.name ?? '')
+    setEditBirthDate(currentBaby?.birth_date ?? '')
+    setEditGender((currentBaby?.gender as 'male' | 'female' | 'unknown') ?? 'unknown')
+    setEditAllergyTypes(currentBaby?.allergy_types ?? [])
+    setEditAllergyLevel((currentBaby?.allergy_level as AllergyLevel) ?? 'unknown')
+    setEditOpen(true)
+  }
+
+  // 过敏类型 toggle
+  const toggleAllergyType = (type: AllergyType) => {
+    setEditAllergyTypes(prev =>
+      prev.includes(type) ? prev.filter(t => t !== type) : [...prev, type]
+    )
+  }
+
+  // 保存档案
+  const handleSave = async () => {
+    if (!editName.trim()) { showToast('请填写宝宝昵称'); return }
+    if (!editBirthDate)    { showToast('请填写出生日期'); return }
+    if (!currentBaby || !currentFamily) { showToast('数据未就绪，请稍后再试'); return }
+
+    setSaving(true)
+    try {
+      const updated = await babyApi.update(currentFamily.id, currentBaby.id, {
+        name: editName.trim(),
+        birth_date: editBirthDate,
+        gender: editGender,
+        allergy_types: editAllergyTypes,
+        allergy_level: editAllergyLevel,
+      })
+      setCurrentBaby(updated)
+      setEditOpen(false)
+      showToast('✓ 档案已保存')
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : '保存失败，请重试'
+      showToast(msg)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  // 加载家庭成员
+  const openMembers = async () => {
+    if (!currentFamily) { showToast('暂无家庭信息'); return }
+    setMembersOpen(true)
+    setMembersLoading(true)
+    try {
+      const list = await familyApi.getMembers(currentFamily.id)
+      setMembers(list)
+    } catch {
+      showToast('加载成员列表失败')
+    } finally {
+      setMembersLoading(false)
+    }
+  }
+
+  // 生成邀请码
+  const handleInvite = async () => {
+    if (!currentFamily) return
+    setInviteLoading(true)
+    try {
+      const res = await familyApi.createInviteCode(currentFamily.id)
+      setInviteCode(res.code)
+    } catch {
+      showToast('生成邀请码失败，请重试')
+    } finally {
+      setInviteLoading(false)
+    }
+  }
+
+  // 复制邀请码
+  const copyInviteCode = () => {
+    if (!inviteCode) return
+    navigator.clipboard.writeText(inviteCode).then(() => {
+      showToast(`✓ 邀请码 ${inviteCode} 已复制`)
+    }).catch(() => {
+      showToast(`邀请码：${inviteCode}`)
+    })
   }
 
   const handleLogout = () => {
@@ -178,11 +253,64 @@ export default function ProfilePage() {
   }
 
   const handleMenuClick = (key: string) => {
-    if (key === 'family')  { showToast('家庭成员管理 — 功能开发中'); return }
-    if (key === 'invite')  { showToast('邀请功能 — 功能开发中'); return }
+    if (key === 'family')  { openMembers(); return }
+    if (key === 'invite')  { openMembers(); return }
     if (key === 'about')   { showToast('敏宝日记 · 专为敏感宝宝家庭打造'); return }
     if (key === 'privacy') { showToast('隐私政策与用户协议'); return }
   }
+
+  const settingsGroups = [
+    {
+      title: '家庭',
+      items: [
+        {
+          key: 'family',
+          icon: <IconUsers />,
+          iconBg: '#FFF0F4',
+          label: '家庭成员管理',
+          value: '',
+          hasArrow: true,
+        },
+        {
+          key: 'invite',
+          icon: <IconUserPlus />,
+          iconBg: '#DCFCE7',
+          label: '邀请家庭成员',
+          value: '',
+          hasArrow: true,
+        },
+      ],
+    },
+    {
+      title: '关于',
+      items: [
+        {
+          key: 'version',
+          icon: <IconPhone />,
+          iconBg: '#FFF0F4',
+          label: '版本号',
+          value: 'v1.0.0（MVP）',
+          hasArrow: false,
+        },
+        {
+          key: 'about',
+          icon: <IconHeart />,
+          iconBg: '#FFF1F4',
+          label: '关于敏宝日记',
+          value: '',
+          hasArrow: true,
+        },
+        {
+          key: 'privacy',
+          icon: <IconFileText />,
+          iconBg: '#F5F5F5',
+          label: '隐私政策',
+          value: '',
+          hasArrow: true,
+        },
+      ],
+    },
+  ]
 
   return (
     <div className="min-h-full bg-bg">
@@ -197,7 +325,7 @@ export default function ProfilePage() {
         {/* ── Profile Hero ── */}
         <div
           className="flex items-center gap-4 px-5 py-4 cursor-pointer"
-          onClick={() => setEditOpen(true)}
+          onClick={openEdit}
         >
           {/* 头像 */}
           <div
@@ -246,7 +374,7 @@ export default function ProfilePage() {
           {/* 编辑按钮 */}
           <button
             type="button"
-            onClick={(e) => { e.stopPropagation(); setEditOpen(true) }}
+            onClick={(e) => { e.stopPropagation(); openEdit() }}
             className="flex items-center gap-1 px-3.5 py-2 rounded-full text-[13px] font-semibold border-none cursor-pointer flex-shrink-0"
             style={{ background: '#FFF0F4', color: '#F87098' }}
           >
@@ -345,7 +473,7 @@ export default function ProfilePage() {
             style={{
               maxWidth: 430,
               margin: '0 auto',
-              maxHeight: '90%',
+              maxHeight: '92%',
               paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 8px)',
               overflowY: 'auto',
             }}
@@ -357,6 +485,7 @@ export default function ProfilePage() {
             <div className="text-center text-[17px] font-bold text-[#4A3035] py-3">编辑宝宝档案</div>
 
             {/* 基本信息 */}
+            <div className="text-[12px] font-semibold text-[#9A8090] px-5 pb-1.5 tracking-[.3px]">基本信息</div>
             <div
               className="mx-4 bg-white rounded-2xl overflow-hidden mb-4"
               style={{ boxShadow: '0 1px 6px rgba(200,100,120,0.07)' }}
@@ -365,30 +494,33 @@ export default function ProfilePage() {
                 <span className="text-sm text-[#4A3035] flex-shrink-0">宝宝昵称</span>
                 <input
                   type="text"
-                  defaultValue={currentBaby?.name ?? ''}
+                  value={editName}
+                  onChange={e => setEditName(e.target.value)}
                   placeholder="给宝宝起个名字"
                   className="flex-1 text-right border-none outline-none bg-transparent text-sm text-[#4A3035] placeholder:text-[#C0A8AD]"
                   maxLength={20}
                 />
               </div>
               <div className="flex items-center px-4 py-3.5" style={{ borderBottom: '1px solid #F5F0F2' }}>
-                <span className="text-sm text-[#4A3035] flex-shrink-0">出生日期</span>
-                <input
-                  type="date"
-                  defaultValue={currentBaby?.birth_date ?? ''}
-                  className="flex-1 text-right border-none outline-none bg-transparent text-sm text-[#4A3035]"
+                <DatePicker
+                  label="出生日期"
+                  value={editBirthDate}
+                  onChange={setEditBirthDate}
+                  max={new Date().toISOString().split('T')[0]}
+                  min="2010-01-01"
+                  className="flex-1"
                 />
-                <span className="text-[#C0A8AD] ml-1 text-base">›</span>
               </div>
               <div className="flex items-center px-4 py-3.5">
                 <span className="text-sm text-[#4A3035] flex-shrink-0">性别</span>
                 <div className="flex-1 flex gap-2 justify-end">
-                  {['male', 'female'].map((g) => (
+                  {(['male', 'female'] as const).map((g) => (
                     <div
                       key={g}
+                      onClick={() => setEditGender(g)}
                       className="cursor-pointer px-4 py-1 rounded-full text-sm font-medium border transition-all"
                       style={
-                        (currentBaby?.gender ?? 'male') === g
+                        editGender === g
                           ? { background: '#F87098', color: '#fff', borderColor: '#F87098' }
                           : { background: '#fff', color: '#9A8090', borderColor: '#E8E0E4' }
                       }
@@ -401,15 +533,23 @@ export default function ProfilePage() {
             </div>
 
             {/* 过敏信息 */}
-            <div className="text-[12px] font-semibold text-[#9A8090] px-5 pb-1.5 tracking-[.3px]">过敏信息</div>
-            <div
-              className="mx-4 bg-white rounded-2xl overflow-hidden mb-4"
-              style={{ boxShadow: '0 1px 6px rgba(200,100,120,0.07)' }}
-            >
-              <div className="flex items-center px-4 py-3.5">
-                <span className="text-sm text-[#4A3035]">过敏类型</span>
-                <span className="flex-1 text-right text-sm text-[#4A3035]">牛奶蛋白过敏</span>
-                <span className="text-[#C0A8AD] ml-1 text-base">›</span>
+            <div className="text-[12px] font-semibold text-[#9A8090] px-5 pb-1.5 tracking-[.3px]">过敏类型</div>
+            <div className="mx-4 mb-4">
+              <div className="flex flex-wrap gap-2">
+                {ALL_ALLERGY_TYPES.map(type => (
+                  <div
+                    key={type}
+                    onClick={() => toggleAllergyType(type)}
+                    className="cursor-pointer px-3 py-1.5 rounded-full text-[12px] font-medium border transition-all"
+                    style={
+                      editAllergyTypes.includes(type)
+                        ? { background: '#FFF0F4', color: '#F87098', borderColor: '#F8B8CC' }
+                        : { background: '#fff', color: '#9A8090', borderColor: '#E8E0E4' }
+                    }
+                  >
+                    {allergyTypeLabels[type]}
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -435,68 +575,43 @@ export default function ProfilePage() {
               ))}
             </div>
 
-            {/* CDC 提示 */}
-            <div
-              className="mx-4 mb-4 px-3.5 py-3 rounded-xl"
-              style={{ background: '#FFF0F4' }}
-            >
-              <div className="text-xs text-[#9A8090] leading-relaxed">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 13, height: 13, verticalAlign: -2, color: '#F87098', display: 'inline' }}>
-                  <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-                </svg>
-                {' '}不确定过敏程度？{' '}
-                <span
-                  className="font-semibold cursor-pointer"
-                  style={{ color: '#F87098' }}
-                  onClick={() => showToast('跳转 CDC 评分标准页面')}
-                >
-                  [查看 CDC 评分标准]
-                </span>
-              </div>
-            </div>
-
-            {/* 最新生长数据 */}
-            <div className="text-[12px] font-semibold text-[#9A8090] px-5 pb-1.5 tracking-[.3px]">最新生长数据</div>
-            <div
-              className="mx-4 bg-white rounded-2xl overflow-hidden mb-4"
-              style={{ boxShadow: '0 1px 6px rgba(200,100,120,0.07)' }}
-            >
-              {[
-                { label: '身高', unit: 'cm', placeholder: '如：68.0', step: '0.1' },
-                { label: '体重', unit: 'kg', placeholder: '如：7.5',  step: '0.1' },
-                { label: '头围', unit: 'cm', placeholder: '如：43.0', step: '0.1' },
-              ].map((f, i) => (
-                <div
-                  key={f.label}
-                  className="flex items-center px-4 py-3.5"
-                  style={i > 0 ? { borderTop: '1px solid #F5F0F2' } : {}}
-                >
-                  <span className="text-sm text-[#4A3035] flex-shrink-0 w-12">{f.label}</span>
-                  <input
-                    type="number"
-                    placeholder={f.placeholder}
-                    step={f.step}
-                    className="flex-1 text-right border-none outline-none bg-transparent text-sm text-[#4A3035] placeholder:text-[#C0A8AD]"
-                  />
-                  <span className="text-[12px] text-[#9A8090] ml-1.5">{f.unit}</span>
+            {/* CDC 提示（unknown 时显示） */}
+            {editAllergyLevel === 'unknown' && (
+              <div
+                className="mx-4 mb-4 px-3.5 py-3 rounded-xl"
+                style={{ background: '#FFF0F4' }}
+              >
+                <div className="text-xs text-[#9A8090] leading-relaxed">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 13, height: 13, verticalAlign: -2, color: '#F87098', display: 'inline' }}>
+                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                  </svg>
+                  {' '}不确定过敏程度？{' '}
+                  <span
+                    className="font-semibold cursor-pointer"
+                    style={{ color: '#F87098' }}
+                    onClick={() => showToast('跳转 CDC 评分标准页面')}
+                  >
+                    [查看 CDC 评分标准]
+                  </span>
                 </div>
-              ))}
-            </div>
+              </div>
+            )}
 
             <div className="h-4" />
             {/* 保存按钮 */}
             <div className="px-4">
               <button
                 type="button"
-                onClick={() => { setEditOpen(false); showToast('✓ 档案已保存，全局生效') }}
-                className="w-full py-4 text-white font-bold text-base border-none cursor-pointer transition-all active:scale-[0.97]"
+                onClick={handleSave}
+                disabled={saving}
+                className="w-full py-4 text-white font-bold text-base border-none cursor-pointer transition-all active:scale-[0.97] disabled:opacity-60"
                 style={{
                   borderRadius: 50,
                   background: 'linear-gradient(90deg, #F87098, #F9A8C0)',
                   boxShadow: '0 6px 20px rgba(248,112,152,0.4)',
                 }}
               >
-                保存档案
+                {saving ? '保存中…' : '保存档案'}
               </button>
             </div>
             <div className="px-4 mt-3">
@@ -514,12 +629,156 @@ export default function ProfilePage() {
         </div>
       )}
 
+      {/* ══ 家庭成员 底部弹层 ══ */}
+      {membersOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-end"
+          style={{ background: 'rgba(0,0,0,0.45)' }}
+          onClick={(e) => { if (e.target === e.currentTarget) { setMembersOpen(false); setInviteCode('') } }}
+        >
+          <div
+            className="w-full bg-white rounded-t-3xl overflow-hidden"
+            style={{
+              maxWidth: 430,
+              margin: '0 auto',
+              maxHeight: '80%',
+              paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 8px)',
+              overflowY: 'auto',
+            }}
+          >
+            {/* 把手 */}
+            <div className="flex justify-center pt-3 pb-1">
+              <div className="w-10 h-1 rounded-full bg-gray-200" />
+            </div>
+
+            {/* 标题行 */}
+            <div className="flex items-center justify-between px-5 py-3">
+              <div className="text-[17px] font-bold text-[#4A3035]">家庭成员</div>
+              <button
+                type="button"
+                onClick={() => { setMembersOpen(false); setInviteCode('') }}
+                className="border-none bg-transparent cursor-pointer p-1 text-[#9A8090]"
+              >
+                <IconX />
+              </button>
+            </div>
+
+            {/* 成员列表 */}
+            <div
+              className="mx-4 bg-white rounded-2xl overflow-hidden mb-4"
+              style={{ boxShadow: '0 1px 6px rgba(200,100,120,0.07)' }}
+            >
+              {membersLoading ? (
+                <div className="flex items-center justify-center py-8 text-[#9A8090] text-sm">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 18, height: 18, marginRight: 8, animation: 'spin 1s linear infinite' }}>
+                    <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+                  </svg>
+                  加载中…
+                </div>
+              ) : members.length === 0 ? (
+                <div className="flex items-center justify-center py-8 text-[#9A8090] text-sm">
+                  暂无成员数据
+                </div>
+              ) : (
+                members.map((member, i) => (
+                  <div
+                    key={member.id}
+                    className="flex items-center gap-3 px-4 py-3.5"
+                    style={i > 0 ? { borderTop: '.5px solid #F5F0F2' } : {}}
+                  >
+                    {/* 头像 */}
+                    <div
+                      className="flex items-center justify-center rounded-full flex-shrink-0 text-white text-[14px] font-bold"
+                      style={{
+                        width: 40, height: 40,
+                        background: 'linear-gradient(135deg, #F9A8C0, #F87098)',
+                      }}
+                    >
+                      {(member.name ?? '?').charAt(0).toUpperCase()}
+                    </div>
+                    {/* 信息 */}
+                    <div className="flex-1 min-w-0">
+                      <div className="text-[14px] font-semibold text-[#4A3035] truncate">{member.name ?? '未知用户'}</div>
+                    </div>
+                    {/* 角色标签 */}
+                    <div
+                      className="px-2 py-0.5 rounded-full text-[11px] font-bold flex-shrink-0"
+                      style={
+                        member.role === 1
+                          ? { background: '#FFF0F4', color: '#F87098' }
+                          : { background: '#F5F5F5', color: '#9A8090' }
+                      }
+                    >
+                      {roleText[member.role] ?? '成员'}
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
+            {/* 邀请码区域 */}
+            <div className="text-[12px] font-semibold text-[#9A8090] px-5 pb-1.5 tracking-[.3px]">邀请新成员</div>
+            <div className="mx-4 mb-4">
+              {inviteCode ? (
+                <div
+                  className="flex items-center justify-between px-4 py-3.5 rounded-2xl"
+                  style={{ background: '#FFF0F4', border: '1px solid #F8B8CC' }}
+                >
+                  <div>
+                    <div className="text-[12px] text-[#9A8090] mb-0.5">邀请码（24小时内有效）</div>
+                    <div className="text-[20px] font-extrabold text-[#F87098] tracking-[4px]">{inviteCode}</div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={copyInviteCode}
+                    className="flex items-center gap-1 px-3 py-2 rounded-xl border-none cursor-pointer text-[12px] font-semibold"
+                    style={{ background: '#F87098', color: '#fff' }}
+                  >
+                    <IconCopy />
+                    复制
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleInvite}
+                  disabled={inviteLoading}
+                  className="w-full py-3.5 rounded-2xl text-[14px] font-semibold border-none cursor-pointer transition-all active:scale-[0.98] disabled:opacity-60"
+                  style={{ background: '#FFF0F4', color: '#F87098' }}
+                >
+                  {inviteLoading ? '生成中…' : '生成邀请码'}
+                </button>
+              )}
+              <div className="text-[11px] text-[#C0A8AD] mt-2 px-1">
+                将邀请码分享给家人，对方可在「加入家庭」页面输入邀请码加入
+              </div>
+            </div>
+
+            <div className="px-4 mb-2">
+              <button
+                type="button"
+                onClick={() => { setMembersOpen(false); setInviteCode('') }}
+                className="w-full py-3.5 text-[#9A8090] font-semibold text-sm border-none cursor-pointer transition-all active:scale-[0.97] rounded-2xl"
+                style={{ background: '#F5F0F2' }}
+              >
+                关闭
+              </button>
+            </div>
+            <div className="h-4" />
+          </div>
+        </div>
+      )}
+
       {/* Toast */}
       {toast && (
         <div className="fixed bottom-24 left-1/2 -translate-x-1/2 bg-[#4A3035] text-white text-sm px-5 py-2.5 rounded-full z-[60] whitespace-nowrap shadow-lg">
           {toast}
         </div>
       )}
+
+      <style>{`
+        @keyframes spin { to { transform: rotate(360deg); } }
+      `}</style>
     </div>
   )
 }
