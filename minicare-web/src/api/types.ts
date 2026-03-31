@@ -40,10 +40,20 @@ export interface Family {
 export interface FamilyMember {
   id: string
   user_id: string
-  /** 1 = owner, 2 = member */
-  role: 1 | 2
+  /**
+   * 1 = owner（创建者）
+   * 2 = editor（编辑者）
+   * 3 = viewer（查看者）
+   */
+  role: 1 | 2 | 3
   /** user.nickname aliased */
   name: string
+  /** 手机号（脱敏），如 138****5678 */
+  phone?: string | null
+  /** 加入时间 ISO 8601 */
+  joined_at?: string | null
+  /** 是否是当前登录用户 */
+  is_self?: boolean
   avatar_url?: string | null
 }
 
@@ -272,4 +282,27 @@ export interface TodayRecord {
   id: string
   time: string
   note?: string | null
+}
+
+// ── 通用记录条目（用于记录列表页跨类型展示） ────────────────────────────────
+/**
+ * RecordItem 是跨记录类型的通用视图模型
+ * 各类型记录（feeding/sleep/diaper/...）列表接口均返回此结构
+ *
+ * 字段说明：
+ * - id: 记录唯一 ID
+ * - type: 记录类型（feeding | sleep | diaper | ...）
+ * - note: 备注，由各记录模块自行填充，格式自由（如 "120ml"、"Bristol 3"）
+ * - created_at: 创建时间 ISO 8601
+ * - start_time / startTime: 部分记录类型使用"开始时间"字段，命名不统一
+ * - [key]: 允许各类型携带额外字段（保持向后兼容）
+ */
+export interface RecordItem {
+  id: string
+  type?: string
+  note?: string | null
+  created_at?: string
+  start_time?: string
+  startTime?: string
+  [key: string]: unknown
 }

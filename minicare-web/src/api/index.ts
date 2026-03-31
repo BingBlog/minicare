@@ -121,4 +121,6 @@ export type {
   SymptomRecord,
   // Timeline
   TodayRecord,
+  // 通用记录条目（记录列表页使用）
+  RecordItem,
 } from './types'
