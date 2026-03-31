@@ -70,15 +70,18 @@ export default function MedicalFormPage() {
     try {
       const validMeds = medications.filter((m) => m.name.trim());
       const noteArr: string[] = [];
-      if (resultSummary) noteArr.push("摘要：" + resultSummary);
       if (note) noteArr.push(note);
       await recordsApi.medical.create(currentFamily.id, {
         baby_id: currentBaby.id,
         visit_date: visitDate,
+        visit_type: (visitType as import("@/api").VisitType) || undefined,
         hospital: hospital || undefined,
+        doctor: doctor || undefined,
         diagnosis: diagnosis || undefined,
+        result_summary: resultSummary || undefined,
         medications:
           validMeds.length > 0 ? validMeds.map((m) => ({ name: m.name, dose: m.dose || undefined })) : undefined,
+        follow_up_date: followUpEnabled && followUpDate ? followUpDate : undefined,
         note: noteArr.join(" / ") || undefined,
       });
       showToast("✓ 医疗记录已保存");

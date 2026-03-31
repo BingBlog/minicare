@@ -81,16 +81,18 @@ export class FamilyService {
   }
 
   /**
-   * 生成邀请码（简单实现：6 位随机字母数字，有效期 24h）
+   * 生成（刷新）邀请码（6 位随机大写字母数字，调用后旧码立即失效）
    * TODO: 生产阶段可改为存储到 Redis 并设置 TTL
+   *
+   * @returns { code: string } 前端期望的响应结构
    */
-  async createInviteCode(familyId: string): Promise<string> {
+  async createInviteCode(familyId: string): Promise<{ code: string }> {
     const code = Math.random().toString(36).slice(2, 8).toUpperCase();
     await this.db.execute(
       `UPDATE family_group SET invite_code = ? WHERE id = ?`,
       [code, familyId],
     );
-    return code;
+    return { code };
   }
 
   /**

@@ -9,6 +9,7 @@ import {
   INT_TO_FEED_TYPE,
   INT_TO_BREAST_SIDE,
 } from './dto/create-feeding.dto';
+import { toMysqlDatetime } from '../../common/utils/date.util';
 
 @Injectable()
 export class FeedingService {
@@ -26,7 +27,7 @@ export class FeedingService {
         id,
         dto.baby_id,
         userId,
-        dto.record_time,
+        toMysqlDatetime(dto.record_time),
         FEED_TYPE_TO_INT[dto.feed_type] ?? 1,
         dto.breast_side != null ? (BREAST_SIDE_TO_INT[dto.breast_side] ?? null) : null,
         dto.duration_min    ?? null,

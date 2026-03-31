@@ -3,6 +3,7 @@ import { Pool } from 'mysql2/promise';
 import { v4 as uuidv4 } from 'uuid';
 import { DATABASE_POOL } from '../../common/database/database.module';
 import { CreateGrowthDto } from './dto/create-growth.dto';
+import { toMysqlDate } from '../../common/utils/date.util';
 
 @Injectable()
 export class GrowthService {
@@ -17,7 +18,7 @@ export class GrowthService {
         id,
         dto.baby_id,
         userId,
-        dto.record_date,
+        toMysqlDate(dto.record_date),
         dto.weight_g  ?? null,
         dto.height_mm ?? null,
         dto.head_mm   ?? null,

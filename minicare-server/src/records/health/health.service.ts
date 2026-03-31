@@ -3,6 +3,7 @@ import { Pool } from 'mysql2/promise';
 import { v4 as uuidv4 } from 'uuid';
 import { DATABASE_POOL } from '../../common/database/database.module';
 import { CreateHealthDto, MOOD_TO_INT, INT_TO_MOOD } from './dto/create-health.dto';
+import { toMysqlDatetime } from '../../common/utils/date.util';
 
 @Injectable()
 export class HealthService {
@@ -17,7 +18,7 @@ export class HealthService {
         id,
         dto.baby_id,
         userId,
-        dto.record_time,
+        toMysqlDatetime(dto.record_time),
         dto.temperature ?? null,
         dto.mood != null ? (MOOD_TO_INT[dto.mood] ?? null) : null,
         dto.note ?? null,

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { SleepService } from './sleep.service';
 import { JwtGuard } from '../../auth/jwt.guard';
@@ -43,5 +43,12 @@ export class SleepController {
     @Query('offset') offset = 0,
   ) {
     return this.sleepService.findAll(babyId, Number(limit), Number(offset));
+  }
+
+  @Delete(':id')
+  @MinRole(FamilyRole.MEMBER)
+  @ApiOperation({ summary: '删除睡眠记录（仅已结束状态）' })
+  remove(@Param('id') id: string) {
+    return this.sleepService.remove(id);
   }
 }

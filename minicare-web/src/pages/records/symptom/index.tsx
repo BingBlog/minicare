@@ -2,8 +2,9 @@
  * 表现记录表单页
  * UI 对齐 ui-draft/form-symptom.html
  * API: POST /api/family/:familyId/records/symptom
- * 字段：baby_id, record_time, mood, spirit, note
- * mood: happy/normal/sad   spirit: calm/normal/active/sleepy
+ * 字段：baby_id, record_time, symptoms, note
+ * mood（心情）和 spirit（精神）在前端选择后拼接为文字，放入 note 字段传入后端
+ * DDL 中无 mood/spirit 独立列；symptoms JSON 必传（当前以 type=6 占位）
  */
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";

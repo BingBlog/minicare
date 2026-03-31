@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
+  ArrayMinSize,
   IsArray,
   IsDateString,
   IsNumber,
@@ -42,6 +43,7 @@ export class CreateSymptomDto {
     type: [SymptomItemDto],
   })
   @IsArray()
+  @ArrayMinSize(1, { message: 'symptoms 至少需要包含一条症状记录' })
   @ValidateNested({ each: true })
   @Type(() => SymptomItemDto)
   symptoms: SymptomItemDto[];

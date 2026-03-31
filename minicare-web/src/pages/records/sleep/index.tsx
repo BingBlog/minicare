@@ -151,9 +151,12 @@ export default function SleepFormPage() {
       noteArr.push("质量：" + (qualityLabels[sleepQuality] || sleepQuality));
       if (note) noteArr.push(note);
 
-      await recordsApi.sleep.create(currentFamily.id, {
+      // 两步流程：先 startSleep 创建 ongoing 记录，再 endSleep 结束并计算时长
+      const { id: sleepId } = await recordsApi.sleep.startSleep(currentFamily.id, {
         baby_id: currentBaby.id,
         start_time: startISO,
+      });
+      await recordsApi.sleep.endSleep(currentFamily.id, sleepId, {
         end_time: endISO,
         note: noteArr.join(" / ") || undefined,
       });

@@ -7,6 +7,7 @@ import {
   DIAPER_TYPE_TO_INT,
   INT_TO_DIAPER_TYPE,
 } from './dto/create-diaper.dto';
+import { toMysqlDatetime } from '../../common/utils/date.util';
 
 @Injectable()
 export class DiaperService {
@@ -21,7 +22,7 @@ export class DiaperService {
         id,
         dto.baby_id,
         userId,
-        dto.record_time,
+        toMysqlDatetime(dto.record_time),
         DIAPER_TYPE_TO_INT[dto.diaper_type] ?? 1,
         dto.color ?? null,
         dto.note  ?? null,

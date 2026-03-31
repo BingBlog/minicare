@@ -7,6 +7,7 @@ import {
   ACTIVITY_TYPE_TO_INT,
   INT_TO_ACTIVITY_TYPE,
 } from './dto/create-activity.dto';
+import { toMysqlDatetime } from '../../common/utils/date.util';
 
 @Injectable()
 export class ActivityService {
@@ -21,7 +22,7 @@ export class ActivityService {
         id,
         dto.baby_id,
         userId,
-        dto.record_time,
+        toMysqlDatetime(dto.record_time),
         ACTIVITY_TYPE_TO_INT[dto.activity_type] ?? 5,
         dto.duration_min ?? null,
         dto.note         ?? null,

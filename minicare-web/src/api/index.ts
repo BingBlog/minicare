@@ -93,6 +93,8 @@ export type {
   CreateFeedingDto,
   FeedingRecord,
   // Sleep
+  StartSleepDto,
+  EndSleepDto,
   CreateSleepDto,
   SleepRecord,
   // Diaper
@@ -104,6 +106,7 @@ export type {
   CreateActivityDto,
   ActivityRecord,
   // Health
+  MoodType,
   CreateHealthDto,
   HealthRecord,
   // Growth
@@ -115,8 +118,7 @@ export type {
   CreateMedicalDto,
   MedicalRecord,
   // Symptom
-  MoodType,
-  SpiritType,
+  SymptomItem,
   CreateSymptomDto,
   SymptomRecord,
   // Timeline

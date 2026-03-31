@@ -9,6 +9,7 @@ import { Pool } from 'mysql2/promise';
 import { v4 as uuidv4 } from 'uuid';
 import { DATABASE_POOL } from '../../common/database/database.module';
 import { StartSleepDto, EndSleepDto } from './dto/create-sleep.dto';
+import { toMysqlDatetime } from '../../common/utils/date.util';
 
 /**
  * DDL: sleep_record.status TINYINT  1=ongoing  2=ended
@@ -38,7 +39,7 @@ export class SleepService {
     await this.db.execute(
       `INSERT INTO sleep_record (id, baby_id, recorded_by, start_time, status, note)
        VALUES (?, ?, ?, ?, ?, ?)`,
-      [id, dto.baby_id, userId, dto.start_time, SLEEP_STATUS.ONGOING, dto.note ?? null],
+      [id, dto.baby_id, userId, toMysqlDatetime(dto.start_time), SLEEP_STATUS.ONGOING, dto.note ?? null],
     );
     return { id, status: 'ongoing' };
   }
@@ -55,8 +56,10 @@ export class SleepService {
       throw new NotFoundException('找不到进行中的睡眠记录');
     }
 
+    // mysql2 driver 已配置 timezone='+00:00'，DATETIME 字段直接以 UTC 返回 Date 对象
     const startTime = new Date(rows[0].start_time);
     const endTime   = new Date(dto.end_time);
+
     if (endTime <= startTime) {
       throw new BadRequestException('结束时间不能早于开始时间');
     }
@@ -68,7 +71,7 @@ export class SleepService {
        SET end_time = ?, duration_min = ?, status = ?,
            note = COALESCE(?, note)
        WHERE id = ?`,
-      [dto.end_time, durationMin, SLEEP_STATUS.ENDED, dto.note ?? null, sleepId],
+      [toMysqlDatetime(dto.end_time), durationMin, SLEEP_STATUS.ENDED, dto.note ?? null, sleepId],
     );
 
     return { id: sleepId, duration_min: durationMin, status: 'ended' };
@@ -93,5 +96,22 @@ export class SleepService {
     );
     if (!rows[0]) return null;
     return { ...rows[0], status: 'ongoing' };
+  }
+
+  /** 删除睡眠记录（仅允许删除已结束的记录） */
+  async remove(sleepId: string) {
+    const [rows] = await this.db.execute<any[]>(
+      'SELECT id, status FROM sleep_record WHERE id = ?',
+      [sleepId],
+    );
+    if (rows.length === 0) {
+      throw new NotFoundException('找不到该睡眠记录');
+    }
+    if (rows[0].status === SLEEP_STATUS.ONGOING) {
+      throw new BadRequestException('无法删除进行中的睡眠记录，请先结束');
+    }
+
+    await this.db.execute('DELETE FROM sleep_record WHERE id = ?', [sleepId]);
+    return { id: sleepId, deleted: true };
   }
 }

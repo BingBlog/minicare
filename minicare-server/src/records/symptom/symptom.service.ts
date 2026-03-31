@@ -3,6 +3,7 @@ import { Pool } from 'mysql2/promise';
 import { v4 as uuidv4 } from 'uuid';
 import { DATABASE_POOL } from '../../common/database/database.module';
 import { CreateSymptomDto } from './dto/create-symptom.dto';
+import { toMysqlDatetime } from '../../common/utils/date.util';
 
 @Injectable()
 export class SymptomService {
@@ -17,7 +18,7 @@ export class SymptomService {
         id,
         dto.baby_id,
         userId,
-        dto.record_time,
+        toMysqlDatetime(dto.record_time),
         JSON.stringify(dto.symptoms),
         dto.photo_ids ? JSON.stringify(dto.photo_ids) : null,
         dto.note ?? null,

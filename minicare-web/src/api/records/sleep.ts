@@ -2,35 +2,141 @@
  * 睡眠记录 API
  * 路由：/api/family/:familyId/records/sleep
  *
+ * 睡眠记录采用两步流程：
+ *   1. startSleep：开始计时，创建 status=ongoing 记录
+ *   2. endSleep：结束计时，更新 status=ended 并计算 duration_min
+ *
  * 字段说明：
  *   start_time: 入睡时间（ISO 8601）
- *   end_time:   醒来时间（ISO 8601）
- *   note:       睡眠时段、质量等附加信息
+ *   end_time:   醒来时间（ISO 8601），结束后非 null
+ *   status:     'ongoing'=进行中  'ended'=已结束
+ *   duration_min: 睡眠时长（分钟），由后端计算
+ *   note:       睡眠时段、质量等附加信息（前端拼接后传入）
  */
 import { request } from '../http'
-import type { SleepRecord, CreateSleepDto, PaginationParams, ListResult } from '../types'
+import type {
+  SleepRecord,
+  StartSleepDto,
+  EndSleepDto,
+  PaginationParams,
+  ListResult,
+} from '../types'
 
 export const sleepApi = {
-  /** 获取睡眠记录列表 */
-  list: (
-    familyId: string,
-    babyId: string,
-    params: PaginationParams = {}
-  ): Promise<ListResult<SleepRecord>> => {
-    const { limit = 20, offset = 0 } = params
-    return request<ListResult<SleepRecord>>(
-      `/api/family/${familyId}/records/sleep?baby_id=${babyId}&limit=${limit}&offset=${offset}`
-    )
-  },
-
-  /** 创建睡眠记录（计时模式或补录模式均使用此接口） */
-  create: (familyId: string, data: CreateSleepDto): Promise<SleepRecord> =>
-    request<SleepRecord>(`/api/family/${familyId}/records/sleep`, {
+  /**
+   * 开始睡眠计时（创建 status=ongoing 记录）
+   * 一个宝宝同时只能有一条 ongoing 记录，若已有则后端返回 409
+   *
+   * @example 请求体
+   * {
+   *   "baby_id": "a1b2c3d4-...",
+   *   "start_time": "2026-04-01T21:30:00.000Z",
+   *   "note": "时段：夜间"
+   * }
+   *
+   * @example 响应体
+   * {
+   *   "id": "e5f6g7h8-...",
+   *   "status": "ongoing"
+   * }
+   */
+  startSleep: (familyId: string, data: StartSleepDto): Promise<{ id: string; status: 'ongoing' }> =>
+    request<{ id: string; status: 'ongoing' }>(`/api/family/${familyId}/records/sleep/start`, {
       method: 'POST',
       body: JSON.stringify(data),
     }),
 
-  /** 删除睡眠记录 */
+  /**
+   * 结束睡眠计时（更新 status=ended，后端计算 duration_min）
+   *
+   * @param sleepId 进行中的睡眠记录 ID（由 startSleep 返回）
+   *
+   * @example 请求体
+   * {
+   *   "end_time": "2026-04-02T06:15:00.000Z",
+   *   "note": "时段：夜间 / 质量：良好"
+   * }
+   *
+   * @example 响应体
+   * {
+   *   "id": "e5f6g7h8-...",
+   *   "duration_min": 525,
+   *   "status": "ended"
+   * }
+   */
+  endSleep: (
+    familyId: string,
+    sleepId: string,
+    data: EndSleepDto,
+  ): Promise<{ id: string; duration_min: number; status: 'ended' }> =>
+    request<{ id: string; duration_min: number; status: 'ended' }>(
+      `/api/family/${familyId}/records/sleep/${sleepId}/end`,
+      {
+        method: 'PATCH',
+        body: JSON.stringify(data),
+      },
+    ),
+
+  /**
+   * 获取当前宝宝进行中的睡眠记录（用于首页计时横幅）
+   * 若没有进行中的记录，返回 null
+   *
+   * @example 响应体（有记录时）
+   * {
+   *   "id": "e5f6g7h8-...",
+   *   "baby_id": "a1b2c3d4-...",
+   *   "recorded_by": "u1u2u3u4-...",
+   *   "start_time": "2026-04-01T21:30:00.000Z",
+   *   "end_time": null,
+   *   "status": "ongoing",
+   *   "duration_min": null,
+   *   "note": null,
+   *   "created_at": "2026-04-01T21:30:00.000Z"
+   * }
+   *
+   * @example 响应体（无记录时）
+   * null
+   */
+  getOngoing: (familyId: string, babyId: string): Promise<SleepRecord | null> =>
+    request<SleepRecord | null>(
+      `/api/family/${familyId}/records/sleep/ongoing?baby_id=${babyId}`,
+    ),
+
+  /**
+   * 获取睡眠记录列表（按 start_time 倒序）
+   *
+   * @example 响应体
+   * [
+   *   {
+   *     "id": "e5f6g7h8-...",
+   *     "baby_id": "a1b2c3d4-...",
+   *     "recorded_by": "u1u2u3u4-...",
+   *     "start_time": "2026-04-01T21:30:00.000Z",
+   *     "end_time": "2026-04-02T06:15:00.000Z",
+   *     "status": "ended",
+   *     "duration_min": 525,
+   *     "note": "时段：夜间 / 质量：良好",
+   *     "created_at": "2026-04-01T21:30:05.000Z"
+   *   }
+   * ]
+   */
+  list: (
+    familyId: string,
+    babyId: string,
+    params: PaginationParams = {},
+  ): Promise<ListResult<SleepRecord>> => {
+    const { limit = 20, offset = 0 } = params
+    return request<ListResult<SleepRecord>>(
+      `/api/family/${familyId}/records/sleep?baby_id=${babyId}&limit=${limit}&offset=${offset}`,
+    )
+  },
+
+  /**
+   * 删除睡眠记录
+   *
+   * @example 响应体
+   * { "id": "e5f6g7h8-..." }
+   */
   remove: (familyId: string, id: string): Promise<void> =>
     request<void>(`/api/family/${familyId}/records/sleep/${id}`, {
       method: 'DELETE',
