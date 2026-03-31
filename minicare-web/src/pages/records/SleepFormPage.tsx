@@ -22,6 +22,34 @@ const IconMoon = () => (
     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
   </svg>
 )
+// 睡眠质量 SVG 图标
+const IconLaugh = ({ color }: { color: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
+    strokeLinecap="round" strokeLinejoin="round" style={{ width: 22, height: 22 }}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M8 13s1.5 2 4 2 4-2 4-2" />
+    <line x1="9" y1="9" x2="9.01" y2="9" strokeWidth="3" />
+    <line x1="15" y1="9" x2="15.01" y2="9" strokeWidth="3" />
+  </svg>
+)
+const IconNeutral = ({ color }: { color: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
+    strokeLinecap="round" strokeLinejoin="round" style={{ width: 22, height: 22 }}>
+    <circle cx="12" cy="12" r="10" />
+    <line x1="8" y1="15" x2="16" y2="15" />
+    <line x1="9" y1="9" x2="9.01" y2="9" strokeWidth="3" />
+    <line x1="15" y1="9" x2="15.01" y2="9" strokeWidth="3" />
+  </svg>
+)
+const IconFrown = ({ color }: { color: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
+    strokeLinecap="round" strokeLinejoin="round" style={{ width: 22, height: 22 }}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M16 16s-1.5-2-4-2-4 2-4 2" />
+    <line x1="9" y1="9" x2="9.01" y2="9" strokeWidth="3" />
+    <line x1="15" y1="9" x2="15.01" y2="9" strokeWidth="3" />
+  </svg>
+)
 
 type SleepMode = 'timer' | 'manual'
 
@@ -44,8 +72,9 @@ function calcDurationMin(startTime: string, endTime: string): number {
 function formatTimer(seconds: number): string {
   const h = Math.floor(seconds / 3600)
   const m = Math.floor((seconds % 3600) / 60)
-  if (h > 0) return `${h}:${String(m).padStart(2, '0')}`
-  return `${m}m`
+  const s = seconds % 60
+  if (h > 0) return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
 }
 
 export default function SleepFormPage() {
@@ -140,10 +169,10 @@ export default function SleepFormPage() {
     }
   }
 
-  const qualityOptions = [
-    { key: 'good' as const,   label: '良好', icon: '😊', color: '#4CAF82', bg: '#E8F5E9' },
-    { key: 'normal' as const, label: '一般', icon: '😐', color: '#9A8090', bg: '#F5F0F2' },
-    { key: 'poor' as const,   label: '较差', icon: '😟', color: '#F87098', bg: '#FFF0F4' },
+  const qualityOptions: { key: 'good' | 'normal' | 'poor'; label: string; Icon: React.ComponentType<{ color: string }>; color: string; bg: string }[] = [
+    { key: 'good',   label: '良好', Icon: IconLaugh,  color: '#4CAF82', bg: '#E8F5E9' },
+    { key: 'normal', label: '一般', Icon: IconNeutral, color: '#9A8090', bg: '#F5F0F2' },
+    { key: 'poor',   label: '较差', Icon: IconFrown,  color: '#F87098', bg: '#FFF0F4' },
   ]
 
   const periodOptions = [
@@ -285,16 +314,16 @@ export default function SleepFormPage() {
         </div>
         <div className="mx-4 mb-3 bg-white rounded-2xl overflow-hidden" style={{ boxShadow: '0 1px 6px rgba(200,100,120,0.08)' }}>
           <div className="flex gap-2.5 px-4 py-3">
-            {qualityOptions.map(({ key, label, icon, color, bg }) => (
+            {qualityOptions.map(({ key, label, Icon, color, bg }) => (
               <button key={key} type="button" onClick={() => setSleepQuality(key)}
                 className="flex-1 flex flex-col items-center gap-1.5 py-3 rounded-xl border transition-all active:scale-95"
                 style={{
                   borderColor: sleepQuality === key ? color : '#E5D8DA',
                   background: sleepQuality === key ? bg : '#fff',
                 }}>
-                <span className="w-7 h-7 rounded-lg flex items-center justify-center"
+                <span className="w-8 h-8 rounded-lg flex items-center justify-center"
                   style={{ background: sleepQuality === key ? bg : '#F5F0F2' }}>
-                  <span className="text-[18px]">{icon}</span>
+                  <Icon color={sleepQuality === key ? color : '#9A8090'} />
                 </span>
                 <span className="text-[12px] font-medium" style={{ color: sleepQuality === key ? color : '#9A8090' }}>{label}</span>
               </button>
