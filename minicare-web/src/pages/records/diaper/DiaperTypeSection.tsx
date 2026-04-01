@@ -2,7 +2,7 @@
  * 尿布记录 - 换尿布卡片
  *
  * 包含：
- *  1. 尿布类型 Chip 多选（湿尿布 / 大便 / 都有 / 未换）
+ *  1. 尿布类型 Chip 单选（湿尿布 / 大便 / 都有 / 未换）
  *  2. 今日次数步进器（最小 0，无上限）
  */
 
@@ -16,10 +16,10 @@ const CHIP_OPTIONS: { key: DiaperChip; label: string }[] = [
 ];
 
 interface Props {
-  /** 当前选中的 Chip 集合 */
-  selected: Set<DiaperChip>;
-  /** 切换某 Chip 选中状态 */
-  onToggle: (key: DiaperChip) => void;
+  /** 当前选中的 Chip（单选） */
+  selected: DiaperChip;
+  /** 选择某 Chip */
+  onSelect: (key: DiaperChip) => void;
   /** 今日换尿布次数 */
   count: number;
   /** 更新今日次数 */
@@ -28,7 +28,7 @@ interface Props {
 
 export default function DiaperTypeSection({
   selected,
-  onToggle,
+  onSelect,
   count,
   onCountChange,
 }: Props) {
@@ -53,18 +53,18 @@ export default function DiaperTypeSection({
         <span className="text-[13px] font-bold text-[#7A5A60]">换尿布</span>
       </div>
 
-      {/* Chip 多选行 */}
+      {/* Chip 单选行 */}
       <div className="flex gap-2 px-4 py-3 flex-wrap">
         {CHIP_OPTIONS.map(({ key, label }) => (
           <button
             key={key}
             type="button"
-            onClick={() => onToggle(key)}
+            onClick={() => onSelect(key)}
             className="px-4 py-1.5 rounded-full text-[13px] font-semibold border transition-all"
             style={{
-              borderColor: selected.has(key) ? "#F87098" : "#E5D8DA",
-              background: selected.has(key) ? "#FFF0F4" : "#fff",
-              color: selected.has(key) ? "#F87098" : "#7A5A60",
+              borderColor: selected === key ? "#F87098" : "#E5D8DA",
+              background: selected === key ? "#FFF0F4" : "#fff",
+              color: selected === key ? "#F87098" : "#7A5A60",
             }}>
             {label}
           </button>

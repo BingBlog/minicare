@@ -1,12 +1,26 @@
 /**
  * E2E 测试 — 症状/生长/医疗记录模块（F08/F09/F10）
  *
+ * 测试端点：
+ *   POST   /api/family/:id/records/symptom            创建症状记录（含 spirit/mood 结构化字段）
+ *   GET    /api/family/:id/records/symptom             列表查询
+ *   PATCH  /api/family/:id/records/symptom/:rid        更新记录
+ *   DELETE /api/family/:id/records/symptom/:rid        删除记录
+ *
+ *   POST   /api/family/:id/records/growth              创建生长记录
+ *   GET    /api/family/:id/records/growth              列表查询
+ *   DELETE /api/family/:id/records/growth/:rid         删除记录
+ *
+ *   POST   /api/family/:id/records/medical             创建医疗记录
+ *   GET    /api/family/:id/records/medical             列表查询
+ *   DELETE /api/family/:id/records/medical/:rid        删除记录
+ *
  * Mock 数据来源：
  *   api/records/symptom.ts
  *   api/records/growth.ts
  *   api/records/medical.ts
  */
-import { post, get, del } from './http-client';
+import { post, get, patch, del } from './http-client';
 import { buildTestContext, TestContext } from './helpers/auth-helper';
 
 const SGM_TEST_PHONE = '18811110061';
@@ -23,20 +37,23 @@ describe('[Records/Symptom+Growth+Medical] 症状/生长/医疗记录', () => {
   // ═══════════════════════════════════════════════════════════════
   describe('[Symptom] 症状记录模块', () => {
     const basePath = () => `/api/family/${ctx.familyId}/records/symptom`;
+    let symptomRecordId: string;
 
     describe('POST 创建症状记录', () => {
-      it('✅ 心情/精神拼入 note（无具体症状）', async () => {
+      it('✅ 心情/精神：使用结构化 spirit+mood 字段', async () => {
         const res = await post<{ id: string }>(basePath(), {
           baby_id: ctx.babyId,
           record_time: '2026-04-01T10:00:00.000Z',
           symptoms: [{ type: 6, severity: 1 }],
-          note: '心情：开心 / 精神：正常',
+          spirit: 'active',
+          mood: 'happy',
         }, ctx.token);
         expect([200, 201]).toContain(res.status);
         expect(typeof res.data.id).toBe('string');
+        symptomRecordId = res.data.id;
       });
 
-      it('✅ 多个症状（发烧+腹泻）带严重程度', async () => {
+      it('✅ 多个症状（发烧+腹泻）带严重程度和精神状态', async () => {
         const res = await post<{ id: string }>(basePath(), {
           baby_id: ctx.babyId,
           record_time: '2026-04-01T08:30:00.000Z',
@@ -44,27 +61,32 @@ describe('[Records/Symptom+Growth+Medical] 症状/生长/医疗记录', () => {
             { type: 3, severity: 2 },  // 发烧-中度
             { type: 4, severity: 1 },  // 腹泻-轻度
           ],
+          spirit: 'tired',
+          mood: 'fussy',
           note: '发烧 38.5℃，伴随腹泻',
         }, ctx.token);
         expect([200, 201]).toContain(res.status);
       });
 
-      it('✅ 带照片 ID 的症状记录', async () => {
+      it('✅ 带照片 ID 的症状记录，情绪烦躁', async () => {
         const res = await post<{ id: string }>(basePath(), {
           baby_id: ctx.babyId,
           record_time: '2026-04-01T09:00:00.000Z',
           symptoms: [{ type: 1, severity: 1 }],  // 皮疹-轻度
           photo_ids: ['cloud://test-file-001.jpg'],
+          mood: 'fussy',
           note: '手臂皮疹',
         }, ctx.token);
         expect([200, 201]).toContain(res.status);
       });
 
-      it('✅ 便秘（type=5）记录', async () => {
+      it('✅ 便秘（type=5）+精神正常', async () => {
         const res = await post<{ id: string }>(basePath(), {
           baby_id: ctx.babyId,
           record_time: '2026-04-01T11:00:00.000Z',
           symptoms: [{ type: 5, severity: 1 }],  // 便秘-轻度
+          spirit: 'normal',
+          mood: 'neutral',
         }, ctx.token);
         expect([200, 201]).toContain(res.status);
       });
@@ -85,20 +107,89 @@ describe('[Records/Symptom+Growth+Medical] 症状/生长/医疗记录', () => {
         }, ctx.token);
         expect(res.status).toBe(400);
       });
+
+      it('❌ 非法 spirit 枚举值应返回 400', async () => {
+        const res = await post(basePath(), {
+          baby_id: ctx.babyId,
+          record_time: '2026-04-01T10:00:00.000Z',
+          symptoms: [{ type: 6 }],
+          spirit: 'sleepy',  // 不在枚举内
+        }, ctx.token);
+        expect(res.status).toBe(400);
+      });
+
+      it('❌ 非法 mood 枚举值应返回 400', async () => {
+        const res = await post(basePath(), {
+          baby_id: ctx.babyId,
+          record_time: '2026-04-01T10:00:00.000Z',
+          symptoms: [{ type: 6 }],
+          mood: 'angry',  // 不在枚举内
+        }, ctx.token);
+        expect(res.status).toBe(400);
+      });
     });
 
     describe('GET 列表查询', () => {
-      it('✅ 应返回症状记录列表，symptoms 为数组', async () => {
+      it('✅ 应返回症状记录列表，symptoms 为数组，并包含 spirit/mood', async () => {
         const res = await get<Array<{
           id: string;
           symptoms: Array<{ type: number; severity?: number }>;
+          spirit?: string | null;
+          mood?: string | null;
         }>>(`${basePath()}?baby_id=${ctx.babyId}`, ctx.token);
 
         expect(res.status).toBe(200);
         expect(Array.isArray(res.data)).toBe(true);
+
+        const validSpirits = ['active', 'normal', 'tired', 'lethargic', null, undefined];
+        const validMoods = ['happy', 'neutral', 'fussy', 'crying', null, undefined];
+
         for (const r of res.data) {
           expect(Array.isArray(r.symptoms)).toBe(true);
+          if (r.spirit !== undefined) expect(validSpirits).toContain(r.spirit);
+          if (r.mood !== undefined) expect(validMoods).toContain(r.mood);
         }
+      });
+    });
+
+    describe('PATCH 更新症状记录', () => {
+      it('✅ 更新 spirit 和 mood 字段', async () => {
+        expect(symptomRecordId).toBeTruthy();
+
+        const res = await patch<{
+          id: string;
+          spirit?: string;
+          mood?: string;
+        }>(`${basePath()}/${symptomRecordId}`, {
+          spirit: 'lethargic',
+          mood: 'crying',
+        }, ctx.token);
+
+        expect(res.status).toBe(200);
+        expect(res.data.id).toBe(symptomRecordId);
+      });
+
+      it('✅ 更新症状列表', async () => {
+        const res = await patch<{ id: string }>(
+          `${basePath()}/${symptomRecordId}`,
+          {
+            symptoms: [
+              { type: 3, severity: 3 }, // 发烧-重度
+            ],
+            note: '高烧 39℃',
+          },
+          ctx.token,
+        );
+        expect(res.status).toBe(200);
+      });
+
+      it('❌ 更新不存在记录应返回 404', async () => {
+        const res = await patch(
+          `${basePath()}/00000000-0000-0000-0000-000000000000`,
+          { mood: 'happy' },
+          ctx.token,
+        );
+        expect(res.status).toBe(404);
       });
     });
 
@@ -172,11 +263,18 @@ describe('[Records/Symptom+Growth+Medical] 症状/生长/医疗记录', () => {
           id: string;
           record_date: string;
           weight_g: number | null;
+          height_mm?: number | null;
+          head_mm?: number | null;
         }>>(`${basePath()}?baby_id=${ctx.babyId}`, ctx.token);
 
         expect(res.status).toBe(200);
         expect(Array.isArray(res.data)).toBe(true);
         expect(res.data.length).toBeGreaterThan(0);
+
+        // 验证字段存在
+        const first = res.data[0];
+        expect(typeof first.id).toBe('string');
+        expect(typeof first.record_date).toBe('string');
       });
     });
 

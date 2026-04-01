@@ -9,7 +9,7 @@
  *   note:         过敏表现、用药、护理等附加信息（前端拼接后传入）
  */
 import { request } from '../http'
-import type { HealthRecord, CreateHealthDto, PaginationParams, ListResult } from '../types'
+import type { HealthRecord, CreateHealthDto, UpdateHealthDto, PaginationParams, ListResult } from '../types'
 
 export const healthApi = {
   /**
@@ -47,7 +47,7 @@ export const healthApi = {
     const { limit = 20, offset = 0 } = params
     return request<ListResult<HealthRecord>>(
       `/api/family/${familyId}/records/health?baby_id=${babyId}&limit=${limit}&offset=${offset}`,
-    )
+    ).then((items) => items.map((r) => ({ ...r, type: 'health' as const })))
   },
 
   /**
@@ -75,6 +75,21 @@ export const healthApi = {
   create: (familyId: string, data: CreateHealthDto): Promise<HealthRecord> =>
     request<HealthRecord>(`/api/family/${familyId}/records/health`, {
       method: 'POST',
+      body: JSON.stringify(data),
+    }),
+
+  /**
+   * 获取单条健康记录（编辑前重新查询，确保数据最新）
+   */
+  getOne: (familyId: string, id: string): Promise<HealthRecord> =>
+    request<HealthRecord>(`/api/family/${familyId}/records/health/${id}`),
+
+  /**
+   * 更新健康记录（PATCH 局部更新）
+   */
+  update: (familyId: string, id: string, data: UpdateHealthDto): Promise<HealthRecord> =>
+    request<HealthRecord>(`/api/family/${familyId}/records/health/${id}`, {
+      method: 'PATCH',
       body: JSON.stringify(data),
     }),
 

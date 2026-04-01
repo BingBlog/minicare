@@ -85,3 +85,40 @@ export class CreateMedicalDto {
 
   @ApiPropertyOptional() @IsOptional() @IsString() note?: string;
 }
+
+export class UpdateMedicalDto {
+  @ApiPropertyOptional({ description: '就诊日期（YYYY-MM-DD）' })
+  @IsOptional()
+  @IsDateString()
+  visit_date?: string;
+
+  @ApiPropertyOptional({ enum: VisitType })
+  @IsOptional()
+  @IsEnum(VisitType)
+  visit_type?: VisitType;
+
+  @ApiPropertyOptional() @IsOptional() @IsString() hospital?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() doctor?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() diagnosis?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() result_summary?: string;
+
+  @ApiPropertyOptional({ type: [MedicationItemDto] })
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => MedicationItemDto)
+  medications?: MedicationItemDto[];
+
+  @ApiPropertyOptional({ type: [String] })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  photo_ids?: string[];
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsDateString()
+  follow_up_date?: string;
+
+  @ApiPropertyOptional() @IsOptional() @IsString() note?: string;
+}

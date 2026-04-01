@@ -1,10 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { FeedingService } from './feeding.service';
 import { JwtGuard } from '../../auth/jwt.guard';
 import { FamilyMemberGuard } from '../../family/family-member.guard';
 import { RoleGuard } from '../../family/role.guard';
-import { CreateFeedingDto } from './dto/create-feeding.dto';
+import { CreateFeedingDto, UpdateFeedingDto } from './dto/create-feeding.dto';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { MinRole, FamilyRole } from '../../common/decorators/min-role.decorator';
 
@@ -30,6 +30,19 @@ export class FeedingController {
     @Query('offset') offset = 0,
   ) {
     return this.feedingService.findAll(babyId, Number(limit), Number(offset));
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: '获取单条喂养记录' })
+  findOne(@Param('id') id: string) {
+    return this.feedingService.findOne(id);
+  }
+
+  @Patch(':id')
+  @MinRole(FamilyRole.MEMBER)
+  @ApiOperation({ summary: '更新喂养记录' })
+  update(@Param('id') id: string, @Body() dto: UpdateFeedingDto) {
+    return this.feedingService.update(id, dto);
   }
 
   @Delete(':id')

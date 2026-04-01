@@ -8,51 +8,19 @@
  *   breast_side:        母乳哺乳侧（DDL: 1=left 2=right 3=both），feed_type='breast' 时使用
  *   duration_min:       母乳哺乳时长（分钟，范围 0~120）
  *   formula_ml:         奶粉喂养量（毫升，范围 0~500）
+ *   milk_types:         奶粉类型列表，如 ["aa", "eh_no_lactose"]
+ *   milk_scoops:        各类奶粉勺数映射，如 { "aa": 3, "eh_no_lactose": 0.33 }
  *   complementary_food: 辅食或营养素名称（多项逗号/顿号分隔）
  *   amount_g:           辅食克数（范围 0~500）
- *   note:               奶粉勺数等附加信息（前端拼接后传入）
- *
- * 注意：前端"营养素"Tab 使用 feed_type='complementary'，
- *       complementary_food='营养素'，勺数等信息拼入 note。
+ *   supplement_items:   营养素明细列表，如 [{ key, label, dose, unit }]
+ *   note:               附加备注（可选）
  */
 import { request } from '../http'
-import type { FeedingRecord, CreateFeedingDto, PaginationParams, ListResult } from '../types'
+import type { FeedingRecord, CreateFeedingDto, UpdateFeedingDto, PaginationParams, ListResult } from '../types'
 
 export const feedingApi = {
   /**
    * 获取饮食记录列表（按 record_time 倒序）
-   *
-   * @example 响应体
-   * [
-   *   {
-   *     "id": "fr1fr2fr3-...",
-   *     "baby_id": "b1b2b3b4-...",
-   *     "recorded_by": "u1u2u3u4-...",
-   *     "feed_type": "formula",
-   *     "record_time": "2026-04-01T08:00:00.000Z",
-   *     "breast_side": null,
-   *     "duration_min": null,
-   *     "formula_ml": 120,
-   *     "complementary_food": null,
-   *     "amount_g": null,
-   *     "note": "AA3勺 / 混合喂养",
-   *     "created_at": "2026-04-01T08:00:05.000Z"
-   *   },
-   *   {
-   *     "id": "fr4fr5fr6-...",
-   *     "baby_id": "b1b2b3b4-...",
-   *     "recorded_by": "u1u2u3u4-...",
-   *     "feed_type": "breast",
-   *     "record_time": "2026-04-01T06:00:00.000Z",
-   *     "breast_side": "left",
-   *     "duration_min": 15,
-   *     "formula_ml": null,
-   *     "complementary_food": null,
-   *     "amount_g": null,
-   *     "note": null,
-   *     "created_at": "2026-04-01T06:00:05.000Z"
-   *   }
-   * ]
    */
   list: (
     familyId: string,
@@ -62,19 +30,20 @@ export const feedingApi = {
     const { limit = 20, offset = 0 } = params
     return request<ListResult<FeedingRecord>>(
       `/api/family/${familyId}/records/feeding?baby_id=${babyId}&limit=${limit}&offset=${offset}`,
-    )
+    ).then((items) => items.map((r) => ({ ...r, type: 'feeding' })))
   },
 
   /**
    * 创建饮食记录
    *
-   * @example 请求体（奶粉喂养）
+   * @example 请求体（奶粉喂养，使用结构化字段）
    * {
    *   "baby_id": "b1b2b3b4-...",
    *   "feed_type": "formula",
    *   "record_time": "2026-04-01T08:00:00.000Z",
    *   "formula_ml": 120,
-   *   "note": "AA3勺"
+   *   "milk_types": ["aa", "eh_no_lactose"],
+   *   "milk_scoops": { "aa": 3, "eh_no_lactose": 0.33 }
    * }
    *
    * @example 请求体（母乳喂养）
@@ -86,38 +55,41 @@ export const feedingApi = {
    *   "duration_min": 15
    * }
    *
-   * @example 请求体（辅食）
-   * {
-   *   "baby_id": "b1b2b3b4-...",
-   *   "feed_type": "complementary",
-   *   "record_time": "2026-04-01T12:00:00.000Z",
-   *   "complementary_food": "米糊、南瓜泥",
-   *   "amount_g": 30
-   * }
-   *
-   * @example 请求体（营养素，使用 complementary 类型）
+   * @example 请求体（营养素，结构化字段）
    * {
    *   "baby_id": "b1b2b3b4-...",
    *   "feed_type": "complementary",
    *   "record_time": "2026-04-01T09:00:00.000Z",
    *   "complementary_food": "营养素",
-   *   "note": "维生素D400IU、DHA100mg"
+   *   "supplement_items": [{ "key": "vitD", "label": "维D", "dose": "400", "unit": "IU" }]
    * }
    *
    * @example 响应体
    * { "id": "fr1fr2fr3-..." }
    */
-  create: (familyId: string, data: CreateFeedingDto): Promise<FeedingRecord> =>
-    request<FeedingRecord>(`/api/family/${familyId}/records/feeding`, {
+  create: (familyId: string, data: CreateFeedingDto): Promise<{ id: string }> =>
+    request<{ id: string }>(`/api/family/${familyId}/records/feeding`, {
       method: 'POST',
       body: JSON.stringify(data),
     }),
 
   /**
+   * 获取单条饮食记录（编辑前重新查询，确保数据最新）
+   */
+  getOne: (familyId: string, id: string): Promise<FeedingRecord> =>
+    request<FeedingRecord>(`/api/family/${familyId}/records/feeding/${id}`),
+
+  /**
+   * 更新饮食记录（PATCH 局部更新）
+   */
+  update: (familyId: string, id: string, data: UpdateFeedingDto): Promise<FeedingRecord> =>
+    request<FeedingRecord>(`/api/family/${familyId}/records/feeding/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    }),
+
+  /**
    * 删除饮食记录
-   *
-   * @example 响应体
-   * { "id": "fr1fr2fr3-..." }
    */
   remove: (familyId: string, id: string): Promise<void> =>
     request<void>(`/api/family/${familyId}/records/feeding/${id}`, {

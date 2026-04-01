@@ -1,10 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { MedicalService } from './medical.service';
 import { JwtGuard } from '../../auth/jwt.guard';
 import { FamilyMemberGuard } from '../../family/family-member.guard';
 import { RoleGuard } from '../../family/role.guard';
-import { CreateMedicalDto } from './dto/create-medical.dto';
+import { CreateMedicalDto, UpdateMedicalDto } from './dto/create-medical.dto';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { MinRole, FamilyRole } from '../../common/decorators/min-role.decorator';
 
@@ -23,6 +23,16 @@ export class MedicalController {
   @Get()
   findAll(@Query('baby_id') babyId: string, @Query('limit') limit = 20, @Query('offset') offset = 0) {
     return this.medicalService.findAll(babyId, Number(limit), Number(offset));
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.medicalService.findOne(id);
+  }
+
+  @Patch(':id') @MinRole(FamilyRole.MEMBER)
+  update(@Param('id') id: string, @Body() dto: UpdateMedicalDto) {
+    return this.medicalService.update(id, dto);
   }
 
   @Delete(':id') @MinRole(FamilyRole.MEMBER)

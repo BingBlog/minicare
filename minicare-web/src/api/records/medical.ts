@@ -17,7 +17,7 @@
  * 注意：visit_type/doctor/result_summary/follow_up_date 需要 Migration 003 建列后才生效。
  */
 import { request } from '../http'
-import type { MedicalRecord, CreateMedicalDto, PaginationParams, ListResult } from '../types'
+import type { MedicalRecord, CreateMedicalDto, UpdateMedicalDto, PaginationParams, ListResult } from '../types'
 
 export const medicalApi = {
   /**
@@ -68,7 +68,7 @@ export const medicalApi = {
     const { limit = 20, offset = 0 } = params
     return request<ListResult<MedicalRecord>>(
       `/api/family/${familyId}/records/medical?baby_id=${babyId}&limit=${limit}&offset=${offset}`,
-    )
+    ).then((items) => items.map((r) => ({ ...r, type: 'medical' as const })))
   },
 
   /**
@@ -105,6 +105,21 @@ export const medicalApi = {
   create: (familyId: string, data: CreateMedicalDto): Promise<MedicalRecord> =>
     request<MedicalRecord>(`/api/family/${familyId}/records/medical`, {
       method: 'POST',
+      body: JSON.stringify(data),
+    }),
+
+  /**
+   * 获取单条医疗记录（编辑前重新查询，确保数据最新）
+   */
+  getOne: (familyId: string, id: string): Promise<MedicalRecord> =>
+    request<MedicalRecord>(`/api/family/${familyId}/records/medical/${id}`),
+
+  /**
+   * 更新医疗记录（PATCH 局部更新）
+   */
+  update: (familyId: string, id: string, data: UpdateMedicalDto): Promise<MedicalRecord> =>
+    request<MedicalRecord>(`/api/family/${familyId}/records/medical/${id}`, {
+      method: 'PATCH',
       body: JSON.stringify(data),
     }),
 

@@ -117,6 +117,14 @@ export interface RecordBase {
 export type FeedType = 'breast' | 'formula' | 'complementary'
 export type BreastSide = 'left' | 'right' | 'both'
 
+/** 营养素条目 */
+export interface SupplementItem {
+  key: string
+  label?: string
+  dose?: string
+  unit?: string
+}
+
 export interface CreateFeedingDto {
   baby_id: string
   /** DDL: 1=breast 2=formula 3=complementary */
@@ -132,8 +140,25 @@ export interface CreateFeedingDto {
   complementary_food?: string
   /** 辅食克数，范围 0~500 */
   amount_g?: number
+  /**
+   * formula 专用：奶粉类型列表（替代写入 note）
+   * 如 ["aa", "eh_no_lactose"]
+   */
+  milk_types?: string[]
+  /**
+   * formula 专用：各类奶粉勺数映射（替代写入 note）
+   * 如 { "aa": 3, "eh_no_lactose": 0.33 }
+   */
+  milk_scoops?: Record<string, number>
+  /**
+   * complementary 营养素专用：营养素明细列表
+   * 如 [{ key: "vitD", label: "维D", dose: "400", unit: "IU" }]
+   */
+  supplement_items?: SupplementItem[]
   note?: string
 }
+
+export type UpdateFeedingDto = Partial<Omit<CreateFeedingDto, 'baby_id'>>
 
 export interface FeedingRecord extends RecordBase {
   /** DDL: 1=breast 2=formula 3=complementary（后端返回字符串） */
@@ -144,9 +169,17 @@ export interface FeedingRecord extends RecordBase {
   formula_ml?: number | null
   complementary_food?: string | null
   amount_g?: number | null
+  milk_types?: string[] | null
+  milk_scoops?: Record<string, number> | null
+  supplement_items?: SupplementItem[] | null
 }
 
 // ── Sleep ────────────────────────────────────────────────────────
+
+/** 睡眠质量 */
+export type SleepQuality = 'good' | 'normal' | 'poor'
+/** 睡眠时段 */
+export type SleepPeriod = 'night' | 'morning_nap' | 'afternoon_nap' | 'other'
 
 /**
  * 开始睡眠（计时模式 & 补录模式开始）
@@ -155,6 +188,8 @@ export interface FeedingRecord extends RecordBase {
 export interface StartSleepDto {
   baby_id: string
   start_time: string        // ISO 8601
+  quality?: SleepQuality
+  sleep_period?: SleepPeriod
   note?: string
 }
 
@@ -164,6 +199,8 @@ export interface StartSleepDto {
  */
 export interface EndSleepDto {
   end_time: string          // ISO 8601
+  quality?: SleepQuality
+  sleep_period?: SleepPeriod
   note?: string
 }
 
@@ -175,6 +212,16 @@ export interface CreateSleepDto {
   baby_id: string
   start_time: string        // ISO 8601
   end_time?: string         // ISO 8601，补录时必传
+  quality?: SleepQuality
+  sleep_period?: SleepPeriod
+  note?: string
+}
+
+export interface UpdateSleepDto {
+  start_time?: string
+  end_time?: string
+  quality?: SleepQuality
+  sleep_period?: SleepPeriod
   note?: string
 }
 
@@ -187,12 +234,26 @@ export interface SleepRecord extends RecordBase {
    */
   status: 'ongoing' | 'ended'
   duration_min?: number | null
+  quality?: SleepQuality | null
+  sleep_period?: SleepPeriod | null
 }
 
 // ── Diaper ───────────────────────────────────────────────────────
 
 /** DDL: diaper_type TINYINT  1=wet 2=dirty 3=mixed 4=dry */
 export type DiaperType = 'wet' | 'dirty' | 'mixed' | 'dry'
+
+/**
+ * 大便性状枚举
+ * DDL: diaper_record.poop_type VARCHAR(30)
+ */
+export type PoopType =
+  | 'normal_soft'   // 正常软便
+  | 'loose'         // 稀便
+  | 'watery'        // 水样便
+  | 'hard'          // 干硬粒
+  | 'bloody'        // 血丝便
+  | 'normal_form'   // 正常成形
 
 export interface CreateDiaperDto {
   baby_id: string
@@ -201,19 +262,30 @@ export interface CreateDiaperDto {
   record_time: string       // ISO 8601
   /** 大便颜色（如 yellow/green/brown），dirty/mixed 时使用 */
   color?: string
+  /** 大便性状，dirty/mixed 时使用 */
+  poop_type?: PoopType
+  /** 今日换尿布次数（0~20） */
+  diaper_count?: number
   note?: string
 }
+
+export type UpdateDiaperDto = Partial<Omit<CreateDiaperDto, 'baby_id'>>
 
 export interface DiaperRecord extends RecordBase {
   diaper_type: DiaperType
   record_time: string
   color?: string | null
+  poop_type?: PoopType | null
+  diaper_count?: number | null
 }
 
 // ── Activity ─────────────────────────────────────────────────────
 
 /** DDL: activity_type TINYINT  1=bath 2=outdoor 3=play 4=tummy_time 5=other */
 export type ActivityType = 'bath' | 'outdoor' | 'play' | 'tummy_time' | 'other'
+
+/** 活动强度 */
+export type ActivityIntensity = 'easy' | 'medium' | 'active'
 
 export interface CreateActivityDto {
   baby_id: string
@@ -222,13 +294,18 @@ export interface CreateActivityDto {
   record_time: string       // ISO 8601
   /** 活动时长（分钟） */
   duration_min?: number
+  /** 活动强度 */
+  intensity?: ActivityIntensity
   note?: string
 }
+
+export type UpdateActivityDto = Partial<Omit<CreateActivityDto, 'baby_id'>>
 
 export interface ActivityRecord extends RecordBase {
   activity_type: ActivityType
   record_time: string
   duration_min?: number | null
+  intensity?: ActivityIntensity | null
 }
 
 // ── Health ───────────────────────────────────────────────────────
@@ -240,6 +317,15 @@ export interface ActivityRecord extends RecordBase {
  */
 export type MoodType = 'happy' | 'neutral' | 'fussy' | 'crying'
 
+/** 过敏严重程度 */
+export type AllergySeverity = 'mild' | 'moderate' | 'severe'
+
+/** 用药条目 */
+export interface HealthMedicationItem {
+  name: string
+  dose?: string
+}
+
 export interface CreateHealthDto {
   baby_id: string
   record_time: string       // ISO 8601
@@ -250,14 +336,28 @@ export interface CreateHealthDto {
    * 后端传字符串，自动映射到 TINYINT
    */
   mood?: MoodType
+  /** 过敏症状列表，如 ["荨麻疹", "血便"] */
+  allergy_symptoms?: string[]
+  /** 过敏严重程度 */
+  allergy_severity?: AllergySeverity
+  /** 用药列表，如 [{ name: "维生素D", dose: "400IU" }] */
+  medications?: HealthMedicationItem[]
+  /** 护理项目列表，如 ["已做保湿", "涂抹面霜"] */
+  skin_care?: string[]
   note?: string
 }
+
+export type UpdateHealthDto = Partial<Omit<CreateHealthDto, 'baby_id'>>
 
 export interface HealthRecord extends RecordBase {
   record_time: string
   temperature?: number | null
   /** DDL: 1=happy 2=neutral 3=fussy 4=crying（后端返回字符串） */
   mood?: MoodType | null
+  allergy_symptoms?: string[] | null
+  allergy_severity?: AllergySeverity | null
+  medications?: HealthMedicationItem[] | null
+  skin_care?: string[] | null
 }
 
 // ── Growth ───────────────────────────────────────────────────────
@@ -273,6 +373,8 @@ export interface CreateGrowthDto {
   head_mm?: number
   note?: string
 }
+
+export type UpdateGrowthDto = Partial<Omit<CreateGrowthDto, 'baby_id'>>
 
 export interface GrowthRecord extends RecordBase {
   record_date: string
@@ -318,6 +420,8 @@ export interface CreateMedicalDto {
   note?: string
 }
 
+export type UpdateMedicalDto = Partial<Omit<CreateMedicalDto, 'baby_id'>>
+
 export interface MedicalRecord extends RecordBase {
   visit_date: string
   visit_type?: VisitType | null
@@ -341,6 +445,12 @@ export interface SymptomItem {
   severity?: number
 }
 
+/** 精神状态 */
+export type SpiritLevel = 'active' | 'normal' | 'tired' | 'lethargic'
+
+/** 情绪状态 */
+export type MoodLevel = 'happy' | 'neutral' | 'fussy' | 'crying'
+
 export interface CreateSymptomDto {
   baby_id: string
   record_time: string       // ISO 8601
@@ -349,7 +459,20 @@ export interface CreateSymptomDto {
    * DDL: symptom_record.symptoms JSON
    */
   symptoms: SymptomItem[]
+  /** 精神状态（DDL: spirit VARCHAR(20)） */
+  spirit?: SpiritLevel
+  /** 情绪状态（DDL: mood VARCHAR(20)） */
+  mood?: MoodLevel
   /** 照片 fileID 列表，DDL: photo_ids JSON */
+  photo_ids?: string[]
+  note?: string
+}
+
+export interface UpdateSymptomDto {
+  record_time?: string
+  symptoms?: SymptomItem[]
+  spirit?: SpiritLevel
+  mood?: MoodLevel
   photo_ids?: string[]
   note?: string
 }
@@ -357,6 +480,8 @@ export interface CreateSymptomDto {
 export interface SymptomRecord extends RecordBase {
   record_time: string
   symptoms: SymptomItem[]
+  spirit?: SpiritLevel | null
+  mood?: MoodLevel | null
   photo_ids?: string[] | null
 }
 
@@ -367,6 +492,19 @@ export interface TodayRecord {
   id: string
   time: string
   note?: string | null
+  /**
+   * 各记录类型的关键摘要字段（由后端 JSON_OBJECT 生成）
+   *
+   * feeding:  feed_type / formula_ml / milk_types / milk_scoops / breast_side / duration_min / complementary_food / supplement_items
+   * sleep:    duration_min / sleep_period / quality / status
+   * diaper:   diaper_type / poop_type / diaper_count
+   * activity: activity_type / duration_min / intensity
+   * health:   temperature / mood
+   * symptom:  spirit / mood
+   * growth:   height_mm / weight_g / head_mm
+   * medical:  hospital / diagnosis
+   */
+  detail?: Record<string, unknown> | null
 }
 
 // ── 通用记录条目（用于记录列表页跨类型展示） ────────────────────────────────

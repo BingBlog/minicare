@@ -2,6 +2,8 @@
  * 全局通用工具函数
  * 将各页面散落的重复逻辑统一收口到此处，供所有模块引用
  */
+import { formatScoop } from '@/pages/records/feeding/scoopUtils'
+import { milkTypeOptions } from '@/pages/records/feeding/types'
 
 // ────────────────────────────────────────────────────────────────────────────
 // 日期 / 时间格式化
@@ -134,10 +136,29 @@ export function getReportRangeText(key: string): string {
 
 /**
  * 从 RecordItem 中提取时间字段
- * 后端可能返回 startTime / start_time / created_at 任一形式
+ * 优先级：record_time > startTime > start_time > created_at
+ * 各记录类型说明：
+ *  - feeding/diaper/activity/symptom/health：使用 record_time
+ *  - sleep：使用 start_time
+ *  - growth：使用 record_date（当作时间处理）
+ *  - medical：使用 visit_date
  */
-export function getRecordTime(rec: { startTime?: string; start_time?: string; created_at?: string }): string {
-  return (rec.startTime ?? rec.start_time ?? rec.created_at) ?? ''
+export function getRecordTime(rec: {
+  record_time?: string
+  startTime?: string
+  start_time?: string
+  record_date?: string
+  visit_date?: string
+  created_at?: string
+}): string {
+  return (
+    rec.record_time ??
+    rec.startTime ??
+    rec.start_time ??
+    rec.record_date ??
+    rec.visit_date ??
+    rec.created_at
+  ) ?? ''
 }
 
 /**
@@ -145,4 +166,191 @@ export function getRecordTime(rec: { startTime?: string; start_time?: string; cr
  */
 export function getRecordType(rec: { type?: string }): string {
   return rec.type ?? ''
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// 记录摘要生成（适配结构化字段，替代从 note 中解析）
+// ────────────────────────────────────────────────────────────────────────────
+
+/** 奶粉类型 key → 中文名（统一从 milkTypeOptions 派生，避免重复维护） */
+const MILK_TYPE_LABELS: Record<string, string> = Object.fromEntries(
+  milkTypeOptions.map((o) => [o.key, o.label])
+)
+
+/** 睡眠时段 key → 中文名 */
+const SLEEP_PERIOD_LABELS: Record<string, string> = {
+  night:         '夜觉',
+  morning_nap:   '上午觉',
+  afternoon_nap: '下午觉',
+  other:         '其他',
+}
+
+/** 睡眠质量 key → 中文名 */
+const SLEEP_QUALITY_LABELS: Record<string, string> = {
+  good:   '质量好',
+  normal: '一般',
+  poor:   '较差',
+}
+
+/** 尿布类型 key → 中文名 */
+const DIAPER_TYPE_LABELS: Record<string, string> = {
+  wet:   '小便',
+  dirty: '大便',
+  mixed: '混合',
+  dry:   '干净',
+}
+
+/** 大便性状 key → 中文名 */
+const POOP_TYPE_LABELS: Record<string, string> = {
+  normal_soft:  '正常软便',
+  loose:        '稀便',
+  watery:       '水样便',
+  hard:         '干硬粒',
+  bloody:       '血丝便',
+  normal_form:  '正常成形',
+}
+
+/** 活动类型 key → 中文名 */
+const ACTIVITY_TYPE_LABELS: Record<string, string> = {
+  bath:       '洗澡',
+  outdoor:    '户外活动',
+  play:       '玩耍',
+  tummy_time: '俯趴练习',
+  other:      '其他活动',
+}
+
+/** 活动强度 key → 中文名 */
+const ACTIVITY_INTENSITY_LABELS: Record<string, string> = {
+  easy:   '轻松',
+  medium: '适中',
+  active: '活跃',
+}
+
+/** 情绪 key → 中文名 */
+const MOOD_LABELS: Record<string, string> = {
+  happy:   '开心',
+  neutral: '平静',
+  fussy:   '烦躁',
+  crying:  '哭闹',
+}
+
+/** 精神 key → 中文名 */
+const SPIRIT_LABELS: Record<string, string> = {
+  active:    '精神活跃',
+  normal:    '精神正常',
+  tired:     '有点累',
+  lethargic: '萎靡',
+}
+
+/**
+ * 根据记录数据生成简短的可读摘要
+ * 适配结构化字段（milk_types/milk_scoops/supplement_items 等）
+ * 不再依赖 note 字段拼接
+ *
+ * @param rec RecordItem（含各模块专有字段）
+ * @returns 单行可读摘要字符串
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function getRecordSummary(rec: Record<string, any>): string {
+  const type = rec.type ?? ''
+
+  switch (type) {
+    case 'feeding': {
+      const feedType = rec.feed_type ?? ''
+      if (feedType === 'formula') {
+        const ml = rec.formula_ml ? `${rec.formula_ml}ml` : ''
+        // 奶粉类型摘要
+        let milkDesc = ''
+        if (rec.milk_types && Array.isArray(rec.milk_types) && rec.milk_types.length > 0) {
+          const scoops = (rec.milk_scoops as Record<string, number>) ?? {}
+          milkDesc = rec.milk_types
+            .map((k: string) => {
+              const label = MILK_TYPE_LABELS[k] ?? k
+              const s = scoops[k]
+              return s != null ? `${label}${formatScoop(Number(s))}勺` : label
+            })
+            .join('、')
+        }
+        return [ml, milkDesc].filter(Boolean).join(' · ')
+      } else if (feedType === 'breast') {
+        const side = rec.breast_side === 'left' ? '左侧' : rec.breast_side === 'right' ? '右侧' : '双侧'
+        const dur = rec.duration_min ? `${rec.duration_min}min` : ''
+        return [side, dur].filter(Boolean).join(' · ')
+      } else if (feedType === 'complementary') {
+        // 营养素
+        if (rec.complementary_food === '营养素') {
+          if (rec.supplement_items && Array.isArray(rec.supplement_items) && rec.supplement_items.length > 0) {
+            return rec.supplement_items
+              .map((item: {label?: string; dose?: string; unit?: string}) =>
+                `${item.label ?? ''}${item.dose ?? ''}${item.unit ?? ''}`
+              )
+              .join('、')
+          }
+          return '营养素'
+        }
+        // 辅食
+        const food = rec.complementary_food ?? ''
+        const amount = rec.amount_g ? `${rec.amount_g}g` : ''
+        return [food, amount].filter(Boolean).join(' · ')
+      }
+      return rec.note ?? ''
+    }
+
+    case 'sleep': {
+      const parts: string[] = []
+      if (rec.sleep_period) parts.push(SLEEP_PERIOD_LABELS[rec.sleep_period] ?? rec.sleep_period)
+      if (rec.duration_min) parts.push(`${rec.duration_min}min`)
+      if (rec.quality) parts.push(SLEEP_QUALITY_LABELS[rec.quality] ?? rec.quality)
+      if (rec.status === 'ongoing') parts.push('进行中')
+      return parts.join(' · ')
+    }
+
+    case 'diaper': {
+      const parts: string[] = []
+      if (rec.diaper_type) parts.push(DIAPER_TYPE_LABELS[rec.diaper_type] ?? rec.diaper_type)
+      if (rec.poop_type) parts.push(POOP_TYPE_LABELS[rec.poop_type] ?? rec.poop_type)
+      if (rec.diaper_count != null) parts.push(`今日${rec.diaper_count}次`)
+      return parts.join(' · ')
+    }
+
+    case 'activity': {
+      const parts: string[] = []
+      if (rec.activity_type) parts.push(ACTIVITY_TYPE_LABELS[rec.activity_type] ?? rec.activity_type)
+      if (rec.duration_min) parts.push(`${rec.duration_min}min`)
+      if (rec.intensity) parts.push(ACTIVITY_INTENSITY_LABELS[rec.intensity] ?? rec.intensity)
+      return parts.join(' · ')
+    }
+
+    case 'symptom': {
+      const parts: string[] = []
+      if (rec.spirit) parts.push(SPIRIT_LABELS[rec.spirit] ?? rec.spirit)
+      if (rec.mood) parts.push(MOOD_LABELS[rec.mood] ?? rec.mood)
+      return parts.join(' · ')
+    }
+
+    case 'health': {
+      const parts: string[] = []
+      if (rec.temperature != null) parts.push(`体温${rec.temperature}℃`)
+      if (rec.mood) parts.push(MOOD_LABELS[rec.mood] ?? rec.mood)
+      return parts.join(' · ')
+    }
+
+    case 'growth': {
+      const parts: string[] = []
+      if (rec.height_mm != null) parts.push(`身高${(rec.height_mm / 10).toFixed(1)}cm`)
+      if (rec.weight_g != null) parts.push(`体重${(rec.weight_g / 1000).toFixed(2)}kg`)
+      if (rec.head_mm != null) parts.push(`头围${(rec.head_mm / 10).toFixed(1)}cm`)
+      return parts.join(' · ')
+    }
+
+    case 'medical': {
+      const parts: string[] = []
+      if (rec.hospital) parts.push(rec.hospital)
+      if (rec.diagnosis) parts.push(rec.diagnosis)
+      return parts.join(' · ')
+    }
+
+    default:
+      return rec.note ?? ''
+  }
 }

@@ -19,11 +19,14 @@ export function nowTime(): string {
 }
 
 export function nowDate(): string {
-  return new Date().toISOString().split("T")[0];
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
 export function timeToISO(dateStr: string, timeStr: string): string {
-  return new Date(`${dateStr}T${timeStr}:00`).toISOString();
+  // 全链路 CST：直接返回本地时间字符串，不转 UTC（不加 Z 后缀）
+  // 后端 toMysqlDatetime() 用本地时间分量写入，数据库连接 timezone='+08:00' 保证一致
+  return `${dateStr}T${timeStr}:00`;
 }
 
 // ─── 通用 Toast Hook ─────────────────────────────────────────────────
@@ -243,16 +246,22 @@ export function Stepper({
 
 /**
  * 底部提交按钮栏
- * @param label      按钮文字
- * @param onClick    点击回调
- * @param submitting 提交中状态（已废弃，请使用 disabled）
- * @param disabled   禁用状态
- * @param color      主色（默认 #F87098）
+ *
+ * - 无 onDelete：单按钮（保存）
+ * - 有 onDelete：左侧删除按钮 + 右侧保存按钮；点击删除后弹出全屏蒙层二次确认
+ *
+ * @param label          按钮文字
+ * @param onClick        保存点击回调
+ * @param onDelete       删除确认后回调（传入时显示删除按钮）
+ * @param submitting     提交中状态（已废弃，请使用 disabled）
+ * @param disabled       禁用状态
+ * @param color          主色（默认 #F87098）
  * @param disabledColor  禁用色（默认 #F9A8C0）
  */
 export function SubmitBar({
   label = "保存记录",
   onClick,
+  onDelete,
   submitting,
   disabled,
   color = "#F87098",
@@ -260,25 +269,100 @@ export function SubmitBar({
 }: {
   label?: string;
   onClick: () => void;
+  onDelete?: () => void;
   submitting?: boolean;
   disabled?: boolean;
   color?: string;
   disabledColor?: string;
 }) {
+  const [confirmOpen, setConfirmOpen] = React.useState(false);
   const isDisabled = disabled ?? submitting ?? false;
+
   return (
-    <div
-      className="fixed bottom-0 left-0 right-0 bg-white px-5 pt-3 pb-8"
-      style={{ boxShadow: "0 -1px 0 #F5EEF0" }}>
-      <button
-        type="button"
-        onClick={onClick}
-        disabled={isDisabled}
-        className="w-full py-4 rounded-full text-white text-[16px] font-bold transition-opacity"
-        style={{ background: isDisabled ? disabledColor : color }}>
-        {isDisabled ? "保存中…" : label}
-      </button>
-    </div>
+    <>
+      <div
+        className="fixed bottom-0 left-0 right-0 bg-white px-5 pt-3 pb-8"
+        style={{ boxShadow: "0 -1px 0 #F5EEF0" }}>
+        {onDelete ? (
+          /* 编辑模式：删除 + 保存 双按钮 */
+          <div className="flex gap-3">
+            <button
+              type="button"
+              onClick={() => setConfirmOpen(true)}
+              disabled={isDisabled}
+              className="flex-none py-4 px-5 rounded-full text-[15px] font-bold transition-opacity border"
+              style={{ color: "#F05060", borderColor: "#FFCDD2", background: "#FFF5F5" }}>
+              删除
+            </button>
+            <button
+              type="button"
+              onClick={onClick}
+              disabled={isDisabled}
+              className="flex-1 py-4 rounded-full text-white text-[16px] font-bold transition-opacity"
+              style={{ background: isDisabled ? disabledColor : color }}>
+              {isDisabled ? "保存中…" : label}
+            </button>
+          </div>
+        ) : (
+          /* 新建模式：单按钮 */
+          <button
+            type="button"
+            onClick={onClick}
+            disabled={isDisabled}
+            className="w-full py-4 rounded-full text-white text-[16px] font-bold transition-opacity"
+            style={{ background: isDisabled ? disabledColor : color }}>
+            {isDisabled ? "保存中…" : label}
+          </button>
+        )}
+      </div>
+
+      {/* 删除二次确认蒙层 */}
+      {confirmOpen && (
+        <div
+          className="fixed inset-0 flex items-end"
+          style={{ background: "rgba(0,0,0,0.45)", zIndex: 60 }}
+          onClick={(e) => { if (e.target === e.currentTarget) setConfirmOpen(false); }}>
+          <div
+            className="w-full bg-white rounded-t-3xl"
+            style={{ maxWidth: 430, margin: "0 auto", paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 8px)" }}>
+            {/* 把手 */}
+            <div className="flex justify-center pt-3 pb-1">
+              <div className="w-10 h-1 rounded-full bg-gray-200" />
+            </div>
+            {/* 提示内容 */}
+            <div className="px-5 pt-4 pb-3 text-center">
+              <div
+                className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3"
+                style={{ background: "#FFF0F0" }}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="#F05060" strokeWidth="2"
+                  strokeLinecap="round" strokeLinejoin="round" style={{ width: 22, height: 22 }}>
+                  <polyline points="3 6 5 6 21 6"/>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                </svg>
+              </div>
+              <div className="text-[15px] font-semibold text-[#4A3035] mb-1">确定删除这条记录吗？</div>
+              <div className="text-xs text-[#9A8090]">删除后无法恢复</div>
+            </div>
+            {/* 操作按钮 */}
+            <div className="px-4 pb-4 pt-1 flex gap-3">
+              <button
+                className="flex-1 py-3 rounded-2xl text-[14px] font-medium transition-colors active:opacity-70"
+                style={{ background: "#F5F0F2", color: "#9A8090" }}
+                onClick={() => setConfirmOpen(false)}>
+                取消
+              </button>
+              <button
+                className="flex-1 py-3 rounded-2xl text-[14px] font-medium transition-colors active:opacity-70"
+                style={{ background: "#F05060", color: "#fff" }}
+                onClick={() => { setConfirmOpen(false); onDelete?.(); }}>
+                确认删除
+              </button>
+            </div>
+            <div className="h-2" />
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

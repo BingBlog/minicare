@@ -205,7 +205,7 @@ export default function AppLayout() {
                 <div
                   key={key}
                   className="flex items-center gap-3.5 px-5 py-3.5 cursor-pointer active:bg-[#FFF0F4] transition-colors"
-                  onClick={() => { setFabOpen(false); navigate('/records') }}
+                  onClick={() => { setFabOpen(false); navigate(`/records/form/${key}`) }}
                 >
                   <div
                     className="flex items-center justify-center rounded-xl flex-shrink-0"

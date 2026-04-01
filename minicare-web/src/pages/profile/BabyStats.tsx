@@ -2,10 +2,13 @@
  * BabyStats 宝宝生长指标迷你数据格
  *
  * 横向 4 格均等分布，展示：身高 / 体重 / 头围 / 稳定期（天数）。
- * 数据来源于最近一次 growth 记录，未有数据时显示"—"占位。
+ * 数据来源：自动请求 /records/growth 获取最近一条记录，未有数据时显示"—"占位。
  *
  * 被引用：ProfilePage.tsx
  */
+import { useState, useEffect } from 'react'
+import { useAppStore } from '@/lib/store'
+import { recordsApi } from '@/api'
 
 /** 单格统计数据结构 */
 interface StatItem {
@@ -17,53 +20,58 @@ interface StatItem {
   name: string
 }
 
-/** BabyStats 属性 */
-interface BabyStatsProps {
-  /**
-   * 身高（cm），未知时传 null 或 undefined
-   * 显示格式：数字 + cm，如 "68"
-   */
-  height?: number | null
-  /**
-   * 体重（kg），未知时传 null 或 undefined
-   * 显示格式：保留一位小数，如 "7.5"
-   */
-  weight?: number | null
-  /**
-   * 头围（cm），未知时传 null 或 undefined
-   */
-  head?: number | null
-  /**
-   * 稳定期天数（自上次引入新食物/药物后的天数）
-   * 未知时传 null 或 undefined
-   */
-  stableDays?: number | null
-}
-
 /**
  * 宝宝生长指标迷你数据格组件
  *
+ * 无需传入任何 props，组件内部自动从 growth API 读取最新数据。
+ *
  * @example
- * <BabyStats height={68} weight={7.5} head={43} stableDays={18} />
- * <BabyStats /> // 全部显示"—"占位
+ * <BabyStats />
  */
-export default function BabyStats({ height, weight, head, stableDays }: BabyStatsProps) {
+export default function BabyStats() {
+  const { currentFamily, currentBaby } = useAppStore()
+
+  // 从最近一条 growth 记录中取出的数值（单位：mm/g）
+  const [heightMm, setHeightMm] = useState<number | null>(null)
+  const [weightG, setWeightG] = useState<number | null>(null)
+  const [headMm, setHeadMm] = useState<number | null>(null)
+
+  useEffect(() => {
+    if (!currentFamily || !currentBaby) return
+    recordsApi.growth
+      .list(currentFamily.id, currentBaby.id, { limit: 1, offset: 0 })
+      .then((records) => {
+        const latest = records[0]
+        if (!latest) return
+        setHeightMm(latest.height_mm ?? null)
+        setWeightG(latest.weight_g ?? null)
+        setHeadMm(latest.head_mm ?? null)
+      })
+      .catch(() => {
+        // 加载失败时保持"—"占位，不影响页面展示
+      })
+  }, [currentFamily, currentBaby])
+
   /**
    * 将可能为 null/undefined 的数值格式化为字符串
-   * - weight 保留一位小数
-   * - 其他整数显示
+   * - 身高/头围：mm → cm，保留一位小数
+   * - 体重：g → kg，保留一位小数
    * - 无值时返回"—"
    */
-  const fmt = (val: number | null | undefined, isWeight = false): string => {
-    if (val == null) return '—'
-    return isWeight ? val.toFixed(1) : String(Math.round(val))
+  const fmtCm = (mm: number | null): string => {
+    if (mm == null) return '—'
+    return (mm / 10).toFixed(1)
+  }
+  const fmtKg = (g: number | null): string => {
+    if (g == null) return '—'
+    return (g / 1000).toFixed(1)
   }
 
   const stats: StatItem[] = [
-    { val: fmt(height),             unit: 'cm', name: '身高' },
-    { val: fmt(weight, true),       unit: 'kg', name: '体重' },
-    { val: fmt(head),               unit: 'cm', name: '头围' },
-    { val: stableDays != null ? String(stableDays) : '—', unit: '天', name: '稳定期' },
+    { val: fmtCm(heightMm), unit: 'cm', name: '身高' },
+    { val: fmtKg(weightG),  unit: 'kg', name: '体重' },
+    { val: fmtCm(headMm),   unit: 'cm', name: '头围' },
+    { val: '—',             unit: '天', name: '稳定期' },
   ]
 
   return (

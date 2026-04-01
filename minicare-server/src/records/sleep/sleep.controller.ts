@@ -4,7 +4,7 @@ import { SleepService } from './sleep.service';
 import { JwtGuard } from '../../auth/jwt.guard';
 import { FamilyMemberGuard } from '../../family/family-member.guard';
 import { RoleGuard } from '../../family/role.guard';
-import { StartSleepDto, EndSleepDto } from './dto/create-sleep.dto';
+import { StartSleepDto, EndSleepDto, UpdateSleepDto } from './dto/create-sleep.dto';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { MinRole, FamilyRole } from '../../common/decorators/min-role.decorator';
 
@@ -43,6 +43,19 @@ export class SleepController {
     @Query('offset') offset = 0,
   ) {
     return this.sleepService.findAll(babyId, Number(limit), Number(offset));
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: '获取单条睡眠记录' })
+  findOne(@Param('id') id: string) {
+    return this.sleepService.findOne(id);
+  }
+
+  @Patch(':id')
+  @MinRole(FamilyRole.MEMBER)
+  @ApiOperation({ summary: '更新睡眠记录（质量、时段、备注、时间）' })
+  update(@Param('id') id: string, @Body() dto: UpdateSleepDto) {
+    return this.sleepService.update(id, dto);
   }
 
   @Delete(':id')

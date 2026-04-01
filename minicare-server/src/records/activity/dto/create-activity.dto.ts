@@ -13,6 +13,16 @@ export enum ActivityType {
   OTHER      = 'other',
 }
 
+/**
+ * 活动强度枚举
+ * DDL: activity_record.intensity VARCHAR(10)
+ */
+export enum ActivityIntensity {
+  EASY   = 'easy',
+  MEDIUM = 'medium',
+  ACTIVE = 'active',
+}
+
 /** activity_type → TINYINT 映射 */
 export const ACTIVITY_TYPE_TO_INT: Record<string, number> = {
   bath:       1,
@@ -48,5 +58,19 @@ export class CreateActivityDto {
   @Min(0)
   duration_min?: number;
 
+  @ApiPropertyOptional({ enum: ActivityIntensity, description: '活动强度: easy/medium/active' })
+  @IsOptional()
+  @IsEnum(ActivityIntensity)
+  intensity?: ActivityIntensity;
+
+  @ApiPropertyOptional() @IsOptional() @IsString() note?: string;
+}
+
+/** 更新活动记录 DTO */
+export class UpdateActivityDto {
+  @ApiPropertyOptional({ enum: ActivityType }) @IsOptional() @IsEnum(ActivityType) activity_type?: ActivityType;
+  @ApiPropertyOptional() @IsOptional() @IsDateString() record_time?: string;
+  @ApiPropertyOptional() @IsOptional() @IsNumber() @Min(0) duration_min?: number;
+  @ApiPropertyOptional({ enum: ActivityIntensity }) @IsOptional() @IsEnum(ActivityIntensity) intensity?: ActivityIntensity;
   @ApiPropertyOptional() @IsOptional() @IsString() note?: string;
 }

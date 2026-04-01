@@ -97,7 +97,15 @@ export class FamilyService {
 
   /**
    * 今日记录聚合（多类型时间轴）
-   * 合并喂养/睡眠/尿布/活动/健康/症状记录，按时间倒序排列
+   * 合并喂养/睡眠/尿布/活动/健康/症状/生长/医疗记录，按时间倒序排列
+   *
+   * 每条记录携带 detail JSON 对象，包含该类型的关键摘要字段，
+   * 供前端 getRecordSummary() 直接消费，无需额外请求。
+   *
+   * 注意：
+   *  - feed_type / breast_side / sleep status 在 DB 中存整数，此处用 CASE WHEN 转回字符串
+   *  - milk_types / milk_scoops / supplement_items 是 JSON 字符串，通过 JSON_OBJECT 嵌套后
+   *    仍为字符串，Service 层统一对 detail 做 JSON.parse
    */
   async getTodayRecords(familyId: string) {
     // 先取 baby_id（MVP: 每家庭 1 个宝宝）
@@ -108,33 +116,78 @@ export class FamilyService {
     if (babies.length === 0) return [];
     const babyId = babies[0].id;
 
+    // 全链路使用北京时间（CST），数据库连接已配置 timezone: '+08:00'
+    // DATE(field) 直接按 CST 截取日期，与 dateStr 完全一致，无需时区换算
     const today = new Date();
-    const dateStr = today.toISOString().slice(0, 10); // 'YYYY-MM-DD'
+    const dateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
     const sql = `
-      SELECT 'feeding'  AS type, id, record_time AS time, note FROM feeding_record
-        WHERE baby_id = ? AND DATE(record_time) = ?
+      SELECT 'feeding' AS type, id, record_time AS time, note,
+        JSON_OBJECT(
+          'feed_type',          CASE feed_type WHEN 1 THEN 'breast' WHEN 2 THEN 'formula' WHEN 3 THEN 'complementary' ELSE NULL END,
+          'formula_ml',         formula_ml,
+          'milk_types',         milk_types,
+          'milk_scoops',        milk_scoops,
+          'breast_side',        CASE breast_side WHEN 1 THEN 'left' WHEN 2 THEN 'right' WHEN 3 THEN 'both' ELSE NULL END,
+          'duration_min',       duration_min,
+          'complementary_food', complementary_food,
+          'supplement_items',   supplement_items
+        ) AS detail
+      FROM feeding_record WHERE baby_id = ? AND DATE(record_time) = ?
       UNION ALL
-      SELECT 'sleep'    AS type, id, start_time  AS time, note FROM sleep_record
-        WHERE baby_id = ? AND DATE(start_time)  = ?
+      SELECT 'sleep' AS type, id, start_time AS time, note,
+        JSON_OBJECT(
+          'duration_min',  duration_min,
+          'sleep_period',  sleep_period,
+          'quality',       quality,
+          'status',        CASE status WHEN 1 THEN 'ongoing' ELSE 'ended' END
+        ) AS detail
+      FROM sleep_record WHERE baby_id = ? AND DATE(start_time) = ?
       UNION ALL
-      SELECT 'diaper'   AS type, id, record_time AS time, note FROM diaper_record
-        WHERE baby_id = ? AND DATE(record_time) = ?
+      SELECT 'diaper' AS type, id, record_time AS time, note,
+        JSON_OBJECT(
+          'diaper_type',  CASE diaper_type WHEN 1 THEN 'wet' WHEN 2 THEN 'dirty' WHEN 3 THEN 'mixed' WHEN 4 THEN 'dry' ELSE NULL END,
+          'poop_type',    poop_type,
+          'diaper_count', diaper_count
+        ) AS detail
+      FROM diaper_record WHERE baby_id = ? AND DATE(record_time) = ?
       UNION ALL
-      SELECT 'activity' AS type, id, record_time AS time, note FROM activity_record
-        WHERE baby_id = ? AND DATE(record_time) = ?
+      SELECT 'activity' AS type, id, record_time AS time, note,
+        JSON_OBJECT(
+          'activity_type', CASE activity_type WHEN 1 THEN 'bath' WHEN 2 THEN 'outdoor' WHEN 3 THEN 'play' WHEN 4 THEN 'tummy_time' WHEN 5 THEN 'other' ELSE NULL END,
+          'duration_min',  duration_min,
+          'intensity',     intensity
+        ) AS detail
+      FROM activity_record WHERE baby_id = ? AND DATE(record_time) = ?
       UNION ALL
-      SELECT 'health'   AS type, id, record_time AS time, note FROM health_record
-        WHERE baby_id = ? AND DATE(record_time) = ?
+      SELECT 'health' AS type, id, record_time AS time, note,
+        JSON_OBJECT(
+          'temperature', temperature,
+          'mood',        CASE mood WHEN 1 THEN 'happy' WHEN 2 THEN 'neutral' WHEN 3 THEN 'fussy' WHEN 4 THEN 'crying' ELSE NULL END
+        ) AS detail
+      FROM health_record WHERE baby_id = ? AND DATE(record_time) = ?
       UNION ALL
-      SELECT 'symptom'  AS type, id, record_time AS time, note FROM symptom_record
-        WHERE baby_id = ? AND DATE(record_time) = ?
+      SELECT 'symptom' AS type, id, record_time AS time, note,
+        JSON_OBJECT(
+          'spirit', spirit,
+          'mood',   mood
+        ) AS detail
+      FROM symptom_record WHERE baby_id = ? AND DATE(record_time) = ?
       UNION ALL
-      SELECT 'growth'   AS type, id, record_date AS time, note FROM growth_record
-        WHERE baby_id = ? AND record_date = ?
+      SELECT 'growth' AS type, id, record_date AS time, note,
+        JSON_OBJECT(
+          'height_mm', height_mm,
+          'weight_g',  weight_g,
+          'head_mm',   head_mm
+        ) AS detail
+      FROM growth_record WHERE baby_id = ? AND record_date = ?
       UNION ALL
-      SELECT 'medical'  AS type, id, visit_date  AS time, note FROM medical_record
-        WHERE baby_id = ? AND visit_date  = ?
+      SELECT 'medical' AS type, id, visit_date AS time, note,
+        JSON_OBJECT(
+          'hospital',  hospital,
+          'diagnosis', diagnosis
+        ) AS detail
+      FROM medical_record WHERE baby_id = ? AND visit_date = ?
       ORDER BY time DESC
     `;
 
@@ -150,7 +203,30 @@ export class FamilyService {
     ];
 
     const [rows] = await this.db.execute<any[]>(sql, params);
-    return rows;
+
+    // mysql2 不自动解析 JSON 列，手动 parse detail 字段
+    // milk_types / milk_scoops / supplement_items 也是 JSON 字符串，嵌套在 detail 内，同样需要解析
+    return rows.map((row) => {
+      let detail: Record<string, unknown> = {};
+      if (row.detail) {
+        const parsed = typeof row.detail === 'string' ? JSON.parse(row.detail) : row.detail;
+        // 对 detail 内部的 JSON 字符串字段再次解析（feeding 专有字段）
+        detail = {
+          ...parsed,
+          milk_types:       this.tryParseJson(parsed.milk_types),
+          milk_scoops:      this.tryParseJson(parsed.milk_scoops),
+          supplement_items: this.tryParseJson(parsed.supplement_items),
+        };
+      }
+      return { ...row, detail };
+    });
+  }
+
+  /** 安全 JSON 解析辅助（非字符串或 null 直接返回原值） */
+  private tryParseJson(val: unknown): unknown {
+    if (val == null) return null;
+    if (typeof val !== 'string') return val;
+    try { return JSON.parse(val); } catch { return val; }
   }
 
   /**

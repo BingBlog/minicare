@@ -4,11 +4,12 @@
  * 测试端点：
  *   POST   /api/family/:id/records/feeding          创建记录
  *   GET    /api/family/:id/records/feeding           列表查询
+ *   PATCH  /api/family/:id/records/feeding/:rid      更新记录
  *   DELETE /api/family/:id/records/feeding/:rid      删除记录
  *
  * Mock 数据来源：api/records/feeding.ts 中的 JSDoc @example
  */
-import { post, get, del } from './http-client';
+import { post, get, patch, del } from './http-client';
 import { buildTestContext, TestContext } from './helpers/auth-helper';
 
 const FEEDING_TEST_PHONE = '18811110031';
@@ -21,20 +22,23 @@ describe('[Records/Feeding] 饮食记录模块', () => {
   });
 
   const basePath = () => `/api/family/${ctx.familyId}/records/feeding`;
+  let formulaRecordId: string;
 
   // ─────────────────────────────────────────────────────────────
   describe('POST 创建饮食记录', () => {
-    it('✅ 奶粉喂养（formula）应创建成功', async () => {
+    it('✅ 奶粉喂养（formula）带结构化 milk_types + milk_scoops', async () => {
       const res = await post<{ id: string }>(basePath(), {
         baby_id: ctx.babyId,
         feed_type: 'formula',
         record_time: '2026-04-01T08:00:00.000Z',
         formula_ml: 120,
-        note: 'AA3勺',
+        milk_types: ['aa', 'eh_no_lactose'],
+        milk_scoops: { aa: 3, eh_no_lactose: 0.33 },
       }, ctx.token);
 
       expect([200, 201]).toContain(res.status);
       expect(typeof res.data.id).toBe('string');
+      formulaRecordId = res.data.id;
     });
 
     it('✅ 母乳喂养（breast）- 左侧 15 分钟', async () => {
@@ -63,13 +67,16 @@ describe('[Records/Feeding] 饮食记录模块', () => {
       expect(typeof res.data.id).toBe('string');
     });
 
-    it('✅ 营养素（complementary 类型）', async () => {
+    it('✅ 营养素（complementary 类型）带结构化 supplement_items', async () => {
       const res = await post<{ id: string }>(basePath(), {
         baby_id: ctx.babyId,
         feed_type: 'complementary',
         record_time: '2026-04-01T09:00:00.000Z',
         complementary_food: '营养素',
-        note: '维生素D400IU、DHA100mg',
+        supplement_items: [
+          { key: 'vitD', label: '维生素D', dose: '400', unit: 'IU' },
+          { key: 'dha', label: 'DHA', dose: '100', unit: 'mg' },
+        ],
       }, ctx.token);
 
       expect([200, 201]).toContain(res.status);
@@ -104,11 +111,14 @@ describe('[Records/Feeding] 饮食记录模块', () => {
 
   // ─────────────────────────────────────────────────────────────
   describe('GET 列表查询', () => {
-    it('✅ 应返回记录列表（数组）', async () => {
+    it('✅ 应返回记录列表（数组）并包含结构化字段', async () => {
       const res = await get<Array<{
         id: string;
         feed_type: string;
         record_time: string;
+        formula_ml?: number;
+        milk_types?: string[];
+        milk_scoops?: Record<string, number>;
       }>>(`${basePath()}?baby_id=${ctx.babyId}`, ctx.token);
 
       expect(res.status).toBe(200);
@@ -120,6 +130,15 @@ describe('[Records/Feeding] 饮食记录模块', () => {
       expect(typeof first.id).toBe('string');
       expect(typeof first.feed_type).toBe('string');
       expect(['breast', 'formula', 'complementary']).toContain(first.feed_type);
+
+      // 验证 formula 记录包含结构化字段
+      const formulaRecord = res.data.find(r => r.feed_type === 'formula');
+      if (formulaRecord) {
+        // milk_types 若存在，应为数组
+        if (formulaRecord.milk_types !== undefined && formulaRecord.milk_types !== null) {
+          expect(Array.isArray(formulaRecord.milk_types)).toBe(true);
+        }
+      }
     });
 
     it('✅ 支持 limit/offset 分页', async () => {
@@ -129,6 +148,78 @@ describe('[Records/Feeding] 饮食记录模块', () => {
       );
       expect(res.status).toBe(200);
       expect(res.data.length).toBeLessThanOrEqual(2);
+    });
+  });
+
+  // ─────────────────────────────────────────────────────────────
+  describe('PATCH 更新记录', () => {
+    it('✅ 更新奶粉记录：修改奶量和勺数', async () => {
+      // 依赖 POST 测试中创建的 formulaRecordId
+      expect(formulaRecordId).toBeTruthy();
+
+      const res = await patch<{
+        id: string;
+        formula_ml: number;
+        milk_types: string[];
+        milk_scoops: Record<string, number>;
+      }>(`${basePath()}/${formulaRecordId}`, {
+        formula_ml: 150,
+        milk_types: ['aa'],
+        milk_scoops: { aa: 4 },
+      }, ctx.token);
+
+      expect(res.status).toBe(200);
+      expect(res.data.id).toBe(formulaRecordId);
+      expect(res.data.formula_ml).toBe(150);
+    });
+
+    it('✅ 更新母乳记录：切换哺乳侧', async () => {
+      // 先创建一条 breast 记录
+      const createRes = await post<{ id: string }>(basePath(), {
+        baby_id: ctx.babyId,
+        feed_type: 'breast',
+        record_time: new Date().toISOString(),
+        breast_side: 'left',
+        duration_min: 10,
+      }, ctx.token);
+      const breastId = createRes.data.id;
+
+      const res = await patch<{ id: string; breast_side: string; duration_min: number }>(
+        `${basePath()}/${breastId}`,
+        { breast_side: 'right', duration_min: 20 },
+        ctx.token,
+      );
+
+      expect(res.status).toBe(200);
+      expect(res.data.breast_side).toBe('right');
+      expect(res.data.duration_min).toBe(20);
+
+      // 清理
+      await del(`${basePath()}/${breastId}`, ctx.token);
+    });
+
+    it('✅ 更新补录：只修改记录时间', async () => {
+      const newTime = '2026-04-02T10:00:00.000Z';
+      const res = await patch<{ id: string; record_time: string }>(
+        `${basePath()}/${formulaRecordId}`,
+        { record_time: newTime },
+        ctx.token,
+      );
+      expect(res.status).toBe(200);
+    });
+
+    it('❌ 更新不存在记录应返回 404', async () => {
+      const res = await patch(
+        `${basePath()}/00000000-0000-0000-0000-000000000000`,
+        { formula_ml: 100 },
+        ctx.token,
+      );
+      expect(res.status).toBe(404);
+    });
+
+    it('❌ 无 token 更新应返回 401', async () => {
+      const res = await patch(`${basePath()}/${formulaRecordId}`, { formula_ml: 100 });
+      expect(res.status).toBe(401);
     });
   });
 

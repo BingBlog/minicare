@@ -108,14 +108,17 @@ export type {
   // Health
   MoodType,
   CreateHealthDto,
+  UpdateHealthDto,
   HealthRecord,
   // Growth
   CreateGrowthDto,
+  UpdateGrowthDto,
   GrowthRecord,
   // Medical
   VisitType,
   MedicationItem,
   CreateMedicalDto,
+  UpdateMedicalDto,
   MedicalRecord,
   // Symptom
   SymptomItem,

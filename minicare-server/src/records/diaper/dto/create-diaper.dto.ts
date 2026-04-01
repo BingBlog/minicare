@@ -1,15 +1,27 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsDateString, IsEnum, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsDateString, IsEnum, IsInt, IsOptional, IsString, IsUUID, Max, Min } from 'class-validator';
 
 /**
  * DDL: diaper_record.diaper_type TINYINT  1=wet 2=dirty 3=mixed 4=dry
- * DDL 中只有 color VARCHAR(20)，不存在 stool_color / stool_consistency / stool_count / urine_level 字段
  */
 export enum DiaperType {
   WET   = 'wet',
   DIRTY = 'dirty',
   MIXED = 'mixed',
   DRY   = 'dry',
+}
+
+/**
+ * 大便性状枚举
+ * DDL: diaper_record.poop_type VARCHAR(30)
+ */
+export enum PoopType {
+  NORMAL_SOFT  = 'normal_soft',   // 正常软便
+  LOOSE        = 'loose',         // 稀便
+  WATERY       = 'watery',        // 水样便
+  HARD         = 'hard',          // 干硬粒
+  BLOODY       = 'bloody',        // 血丝便
+  NORMAL_FORM  = 'normal_form',   // 正常成形
 }
 
 /** diaper_type → TINYINT 映射 */
@@ -39,10 +51,32 @@ export class CreateDiaperDto {
   @IsDateString()
   record_time: string;
 
-  @ApiPropertyOptional({ description: '大便颜色（如 yellow/green/brown）' })
+  @ApiPropertyOptional({ description: '大便颜色（如 yellow/green/brown_yellow/green）' })
   @IsOptional()
   @IsString()
   color?: string;
 
+  @ApiPropertyOptional({ enum: PoopType, description: '大便性状（dirty/mixed 时使用）' })
+  @IsOptional()
+  @IsEnum(PoopType)
+  poop_type?: PoopType;
+
+  @ApiPropertyOptional({ description: '今日换尿布次数（0~20）' })
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  @Max(20)
+  diaper_count?: number;
+
+  @ApiPropertyOptional() @IsOptional() @IsString() note?: string;
+}
+
+/** 更新尿布记录 DTO（所有字段可选） */
+export class UpdateDiaperDto {
+  @ApiPropertyOptional({ enum: DiaperType }) @IsOptional() @IsEnum(DiaperType) diaper_type?: DiaperType;
+  @ApiPropertyOptional() @IsOptional() @IsDateString() record_time?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() color?: string;
+  @ApiPropertyOptional({ enum: PoopType }) @IsOptional() @IsEnum(PoopType) poop_type?: PoopType;
+  @ApiPropertyOptional() @IsOptional() @IsInt() @Min(0) @Max(20) diaper_count?: number;
   @ApiPropertyOptional() @IsOptional() @IsString() note?: string;
 }

@@ -1,10 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { GrowthService } from './growth.service';
 import { JwtGuard } from '../../auth/jwt.guard';
 import { FamilyMemberGuard } from '../../family/family-member.guard';
 import { RoleGuard } from '../../family/role.guard';
-import { CreateGrowthDto } from './dto/create-growth.dto';
+import { CreateGrowthDto, UpdateGrowthDto } from './dto/create-growth.dto';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { MinRole, FamilyRole } from '../../common/decorators/min-role.decorator';
 
@@ -23,6 +23,16 @@ export class GrowthController {
   @Get()
   findAll(@Query('baby_id') babyId: string, @Query('limit') limit = 50, @Query('offset') offset = 0) {
     return this.growthService.findAll(babyId, Number(limit), Number(offset));
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.growthService.findOne(id);
+  }
+
+  @Patch(':id') @MinRole(FamilyRole.MEMBER)
+  update(@Param('id') id: string, @Body() dto: UpdateGrowthDto) {
+    return this.growthService.update(id, dto);
   }
 
   @Delete(':id') @MinRole(FamilyRole.MEMBER)

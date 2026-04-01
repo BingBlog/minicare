@@ -7,11 +7,14 @@
  * 子组件：
  *  - ActivityTypeSection  活动类型选择（横排卡片）
  *  - IntensitySection     活动强度（轻松 / 适中 / 活跃）
+ *
+ * 编辑模式：通过 location.state.record 携带原始记录数据，回填表单，保存时调用 update API
  */
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAppStore } from "@/lib/store";
 import { recordsApi } from "@/api";
+import type { ActivityRecord, ActivityIntensity } from "@/api/types";
 import TimePicker from "@/components/TimePicker";
 
 import ActivityTypeSection from "./ActivityTypeSection";
@@ -31,20 +34,55 @@ import {
 } from "../shared";
 
 type ActivityType = "tummy_time" | "outdoor" | "play" | "bath" | "other";
-type Intensity = "easy" | "medium" | "active";
+
+/** 从 ISO 时间提取本地 HH:mm */
+function isoToLocalTime(iso: string): string {
+  const d = new Date(iso);
+  return `${d.getHours().toString().padStart(2, "0")}:${d.getMinutes().toString().padStart(2, "0")}`;
+}
 
 export default function ActivityFormPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { currentFamily, currentBaby } = useAppStore();
   const { toast, showToast } = useToastMsg();
 
+  // 编辑模式：从路由 state 中读取原始记录
+  const editRecord = location.state?.record as ActivityRecord | undefined;
+  const isEditMode = Boolean(editRecord);
+
   const [recordDate] = useState(nowDate());
-  const [recordTime, setRecordTime] = useState(nowTime());
-  const [activityType, setActivityType] = useState<ActivityType>("tummy_time");
-  const [intensity, setIntensity] = useState<Intensity>("medium");
-  const [durationMin, setDurationMin] = useState(15);
-  const [note, setNote] = useState("");
+  const [recordTime, setRecordTime] = useState(() => {
+    if (editRecord?.record_time) return isoToLocalTime(editRecord.record_time);
+    return nowTime();
+  });
+  const [activityType, setActivityType] = useState<ActivityType>(
+    (editRecord?.activity_type as ActivityType) ?? "tummy_time"
+  );
+  const [intensity, setIntensity] = useState<ActivityIntensity>(
+    editRecord?.intensity ?? "medium"
+  );
+  const [durationMin, setDurationMin] = useState(editRecord?.duration_min ?? 15);
+  const [note, setNote] = useState(editRecord?.note ?? "");
   const [submitting, setSubmitting] = useState(false);
+  const [loadingRecord, setLoadingRecord] = useState(isEditMode);
+
+  /** 编辑模式下：进入页面时重新查询后端获取最新数据并回填 */
+  useEffect(() => {
+    if (!isEditMode || !editRecord || !currentFamily) return;
+    recordsApi.activity.getOne(currentFamily.id, editRecord.id)
+      .then((fresh) => {
+        if (!fresh) return;
+        if (fresh.record_time) setRecordTime(isoToLocalTime(fresh.record_time));
+        if (fresh.activity_type) setActivityType(fresh.activity_type as ActivityType);
+        if (fresh.intensity) setIntensity(fresh.intensity as ActivityIntensity);
+        if (fresh.duration_min != null) setDurationMin(fresh.duration_min);
+        setNote(fresh.note ?? '');
+      })
+      .catch(() => { /* 查询失败保留快照数据 */ })
+      .finally(() => setLoadingRecord(false));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSubmit = async () => {
     if (!currentFamily || !currentBaby) {
@@ -53,21 +91,24 @@ export default function ActivityFormPage() {
     }
     setSubmitting(true);
     try {
-      const intensityLabel = { easy: "轻松", medium: "适中", active: "活跃" }[
-        intensity
-      ];
-      const noteArr = [`强度：${intensityLabel}`];
-      if (note) noteArr.push(note);
-
-      await recordsApi.activity.create(currentFamily.id, {
+      const payload = {
         baby_id: currentBaby.id,
         activity_type: activityType,
         record_time: timeToISO(recordDate, recordTime),
         duration_min: durationMin,
-        note: noteArr.join(" / ") || undefined,
-      });
-      showToast("✓ 活动记录已保存");
-      setTimeout(() => navigate("/"), 1400);
+        intensity: intensity,
+        note: note || undefined,
+      };
+
+      if (isEditMode && editRecord) {
+        const { baby_id: _b, ...updatePayload } = payload;
+        await recordsApi.activity.update(currentFamily.id, editRecord.id, updatePayload);
+      } else {
+        await recordsApi.activity.create(currentFamily.id, payload);
+      }
+
+      showToast(isEditMode ? "✓ 活动记录已更新" : "✓ 活动记录已保存");
+      setTimeout(() => navigate(-1), 1400);
     } catch (err) {
       showToast(err instanceof Error ? err.message : "保存失败，请重试");
     } finally {
@@ -75,10 +116,34 @@ export default function ActivityFormPage() {
     }
   };
 
+  const handleDelete = async () => {
+    if (!currentFamily || !editRecord) return;
+    try {
+      await recordsApi.activity.remove(currentFamily.id, editRecord.id);
+      showToast("✓ 记录已删除");
+      setTimeout(() => navigate(-1), 1200);
+    } catch {
+      showToast("删除失败，请重试");
+    }
+  };
+
   return (
     <div className="min-h-screen" style={{ background: "#FAF5F6" }}>
       {/* 导航栏 */}
-      <NavBar title="活动记录" onBack={() => navigate(-1)} />
+      <NavBar
+        title={isEditMode ? "编辑活动记录" : "活动记录"}
+        onBack={() => navigate(-1)}
+      />
+
+      {/* 编辑模式加载数据提示 */}
+      {loadingRecord && (
+        <div className="flex items-center justify-center gap-2 py-2 text-[12px] text-[#9A8090]">
+          <svg className="animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 14, height: 14 }}>
+            <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+          </svg>
+          正在加载最新数据…
+        </div>
+      )}
 
       <div className="pb-32">
         {/* 记录时间 */}
@@ -156,8 +221,10 @@ export default function ActivityFormPage() {
       <SubmitBar
         onClick={handleSubmit}
         submitting={submitting}
+        label={isEditMode ? "更新记录" : "保存记录"}
         color="#DDB870"
         disabledColor="#DDCAD0"
+        onDelete={isEditMode ? handleDelete : undefined}
       />
 
       <ToastMessage toast={toast} />

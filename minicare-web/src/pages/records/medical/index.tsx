@@ -3,11 +3,14 @@
  * UI 对齐 ui-draft/form-medical.html
  * API: POST /api/family/:familyId/records/medical
  * 字段：baby_id, visit_date, hospital, doctor, diagnosis, result_summary, medications:[{name,dose}], note, follow_up_date
+ *
+ * 编辑模式：通过 location.state.record 携带原始记录数据，回填表单，保存时调用 update API
  */
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAppStore } from "@/lib/store";
 import { recordsApi } from "@/api";
+import type { MedicalRecord, VisitType } from "@/api/types";
 
 import { NavBar, SectionLabel, FormSection, SubmitBar, useToastMsg, ToastMessage } from "../shared";
 import VisitTypeSection from "./VisitTypeSection";
@@ -35,25 +38,63 @@ const IconFileText = () => (
 );
 
 function nowDate(): string {
-  return new Date().toISOString().split("T")[0];
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
 export default function MedicalFormPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { currentFamily, currentBaby } = useAppStore();
   const { toast, showToast } = useToastMsg();
 
-  const [visitDate, setVisitDate] = useState(nowDate());
-  const [visitType, setVisitType] = useState<string>("checkup");
-  const [hospital, setHospital] = useState("");
-  const [doctor, setDoctor] = useState("");
-  const [resultSummary, setResultSummary] = useState("");
-  const [diagnosis, setDiagnosis] = useState("");
-  const [medications, setMedications] = useState<Medication[]>([]);
-  const [note, setNote] = useState("");
-  const [followUpDate, setFollowUpDate] = useState("");
-  const [followUpEnabled, setFollowUpEnabled] = useState(false);
+  // 编辑模式：从路由 state 中读取原始记录
+  const editRecord = location.state?.record as MedicalRecord | undefined;
+  const isEditMode = Boolean(editRecord);
+
+  const [visitDate, setVisitDate] = useState(editRecord?.visit_date ?? nowDate());
+  const [visitType, setVisitType] = useState<string>(editRecord?.visit_type ?? "checkup");
+  const [hospital, setHospital] = useState(editRecord?.hospital ?? "");
+  const [doctor, setDoctor] = useState(editRecord?.doctor ?? "");
+  const [resultSummary, setResultSummary] = useState(editRecord?.result_summary ?? "");
+  const [diagnosis, setDiagnosis] = useState(editRecord?.diagnosis ?? "");
+  const [medications, setMedications] = useState<Medication[]>(() => {
+    if (editRecord?.medications && editRecord.medications.length > 0) {
+      return editRecord.medications.map((m) => ({ name: m.name, dose: m.dose ?? "" }));
+    }
+    return [];
+  });
+  const [note, setNote] = useState(editRecord?.note ?? "");
+  const [followUpDate, setFollowUpDate] = useState(editRecord?.follow_up_date ?? "");
+  const [followUpEnabled, setFollowUpEnabled] = useState(Boolean(editRecord?.follow_up_date));
   const [submitting, setSubmitting] = useState(false);
+  const [loadingRecord, setLoadingRecord] = useState(isEditMode);
+
+  /** 编辑模式下：进入页面时重新查询后端获取最新数据并回填 */
+  useEffect(() => {
+    if (!isEditMode || !editRecord || !currentFamily) return;
+    recordsApi.medical.getOne(currentFamily.id, editRecord.id)
+      .then((fresh) => {
+        if (!fresh) return;
+        if (fresh.visit_date) setVisitDate(fresh.visit_date);
+        if (fresh.visit_type) setVisitType(fresh.visit_type);
+        setHospital(fresh.hospital ?? '');
+        setDoctor(fresh.doctor ?? '');
+        setResultSummary(fresh.result_summary ?? '');
+        setDiagnosis(fresh.diagnosis ?? '');
+        if (fresh.medications && fresh.medications.length > 0) {
+          setMedications(fresh.medications.map((m) => ({ name: m.name, dose: m.dose ?? '' })));
+        }
+        setNote(fresh.note ?? '');
+        if (fresh.follow_up_date) {
+          setFollowUpDate(fresh.follow_up_date);
+          setFollowUpEnabled(true);
+        }
+      })
+      .catch(() => { /* 查询失败保留快照数据 */ })
+      .finally(() => setLoadingRecord(false));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const addMed = () => setMedications((prev) => [...prev, { name: "", dose: "" }]);
   const removeMed = (i: number) => setMedications((prev) => prev.filter((_, idx) => idx !== i));
@@ -71,10 +112,10 @@ export default function MedicalFormPage() {
       const validMeds = medications.filter((m) => m.name.trim());
       const noteArr: string[] = [];
       if (note) noteArr.push(note);
-      await recordsApi.medical.create(currentFamily.id, {
-        baby_id: currentBaby.id,
+
+      const payload = {
         visit_date: visitDate,
-        visit_type: (visitType as import("@/api").VisitType) || undefined,
+        visit_type: (visitType as VisitType) || undefined,
         hospital: hospital || undefined,
         doctor: doctor || undefined,
         diagnosis: diagnosis || undefined,
@@ -83,9 +124,19 @@ export default function MedicalFormPage() {
           validMeds.length > 0 ? validMeds.map((m) => ({ name: m.name, dose: m.dose || undefined })) : undefined,
         follow_up_date: followUpEnabled && followUpDate ? followUpDate : undefined,
         note: noteArr.join(" / ") || undefined,
-      });
-      showToast("✓ 医疗记录已保存");
-      setTimeout(() => navigate("/"), 1400);
+      };
+
+      if (isEditMode && editRecord) {
+        await recordsApi.medical.update(currentFamily.id, editRecord.id, payload);
+        showToast("✓ 医疗记录已更新");
+      } else {
+        await recordsApi.medical.create(currentFamily.id, {
+          baby_id: currentBaby.id,
+          ...payload,
+        });
+        showToast("✓ 医疗记录已保存");
+      }
+      setTimeout(() => navigate(-1), 1400);
     } catch (err) {
       showToast(err instanceof Error ? err.message : "保存失败，请重试");
     } finally {
@@ -93,9 +144,30 @@ export default function MedicalFormPage() {
     }
   };
 
+  const handleDelete = async () => {
+    if (!currentFamily || !editRecord) return;
+    try {
+      await recordsApi.medical.remove(currentFamily.id, editRecord.id);
+      showToast("✓ 记录已删除");
+      setTimeout(() => navigate(-1), 1200);
+    } catch {
+      showToast("删除失败，请重试");
+    }
+  };
+
   return (
     <div className="min-h-screen" style={{ background: "#FAF5F6" }}>
-      <NavBar title="医疗记录" onBack={() => navigate(-1)} />
+      <NavBar title={isEditMode ? "编辑医疗记录" : "医疗记录"} onBack={() => navigate(-1)} />
+
+      {/* 编辑模式加载数据提示 */}
+      {loadingRecord && (
+        <div className="flex items-center justify-center gap-2 py-2 text-[12px] text-[#9A8090]">
+          <svg className="animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 14, height: 14 }}>
+            <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+          </svg>
+          正在加载最新数据…
+        </div>
+      )}
 
       <div className="pb-32">
         {/* ── 检查类型 ── */}
@@ -183,7 +255,7 @@ export default function MedicalFormPage() {
         </FormSection>
       </div>
 
-      <SubmitBar label="保存记录" submitting={submitting} onClick={handleSubmit} />
+      <SubmitBar label={isEditMode ? "更新记录" : "保存记录"} submitting={submitting} onClick={handleSubmit} onDelete={isEditMode ? handleDelete : undefined} />
 
       <ToastMessage toast={toast} />
     </div>

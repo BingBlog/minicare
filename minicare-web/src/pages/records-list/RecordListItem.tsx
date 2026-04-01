@@ -10,7 +10,7 @@
  */
 import RecordTypeIcon from '@/components/record/RecordTypeIcon'
 import { RECORD_TYPE_CFG } from '@/lib/constants'
-import { formatTime, getRecordTime, getRecordType } from '@/lib/utils'
+import { formatTime, getRecordTime, getRecordType, getRecordSummary } from '@/lib/utils'
 import type { RecordItem } from '@/api'
 
 /** RecordListItem 属性 */
@@ -37,6 +37,9 @@ export default function RecordListItem({ record, showDivider, onClick }: RecordL
   const recType = getRecordType(record)
   const cfg = RECORD_TYPE_CFG[recType] ?? { label: recType, bg: '#F5F5F5', color: '#9A8090' }
   const time = getRecordTime(record)
+  // 优先从结构化字段生成摘要；如结构化摘要为空，则回退到 note
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const summary = getRecordSummary(record as Record<string, any>) || (record.note as string | null | undefined) || ''
 
   return (
     <div
@@ -51,16 +54,9 @@ export default function RecordListItem({ record, showDivider, onClick }: RecordL
       <div className="flex-1 min-w-0">
         <div className="text-[14px] font-semibold leading-snug" style={{ color: '#7A5A60' }}>
           {cfg.label}
-          {/* 如果备注中包含 ml 数量，内联展示（如 "120ml"）*/}
-          {record.note && record.note.includes('ml') && (
-            <span style={{ color: '#7A5A60' }}>
-              {' '}
-              {(record.note.match(/(\d+)\s*ml/i) || [])[0]}
-            </span>
-          )}
         </div>
-        {record.note && (
-          <div className="text-[12px] text-[#9A8090] mt-0.5 truncate">{record.note}</div>
+        {summary && (
+          <div className="text-[12px] text-[#9A8090] mt-0.5 truncate">{summary}</div>
         )}
       </div>
 

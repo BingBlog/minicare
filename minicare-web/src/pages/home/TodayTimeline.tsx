@@ -9,13 +9,15 @@
 import { useNavigate } from 'react-router-dom'
 import RecordTypeIcon from '@/components/record/RecordTypeIcon'
 import { RECORD_TYPE_CFG } from '@/lib/constants'
-import { formatTime } from '@/lib/utils'
+import { formatTime, getRecordSummary } from '@/lib/utils'
 import type { TodayRecord } from '@/api/types'
 
 /** TodayTimeline 属性 */
 interface TodayTimelineProps {
   /** 今日记录列表（已按时间降序排列） */
   records: TodayRecord[]
+  /** 点击单条记录回调（用于弹出 ActionSheet） */
+  onRecordClick?: (record: TodayRecord) => void
 }
 
 /**
@@ -25,9 +27,9 @@ interface TodayTimelineProps {
  * - 左侧时间（HH:MM）
  * - 图标（带背景色）
  * - 记录类型名称 + 备注
- * - 右侧 › 导航箭头
+ * - 右侧 ⋯ 操作指示
  */
-export default function TodayTimeline({ records }: TodayTimelineProps) {
+export default function TodayTimeline({ records, onRecordClick }: TodayTimelineProps) {
   const navigate = useNavigate()
 
   return (
@@ -58,12 +60,15 @@ export default function TodayTimeline({ records }: TodayTimelineProps) {
       ) : (
         records.map((rec, i) => {
           const cfg = RECORD_TYPE_CFG[rec.type] ?? { label: rec.type, bg: '#f5f5f5', color: '#9A7E82' }
+          // 将 detail 字段的结构化内容 spread 进 rec，供 getRecordSummary 读取各类型专有字段
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const summary = getRecordSummary({ ...rec, ...(rec.detail ?? {}) } as Record<string, any>) || rec.note || ''
           return (
             <div
               key={rec.id}
-              className="flex items-center gap-3 px-4 py-3 cursor-pointer active:bg-gray-50 transition-colors"
+              className="flex items-center gap-3 px-4 py-3 cursor-pointer active:bg-[#FFF9FA] transition-colors"
               style={i > 0 ? { borderTop: '1px solid #F5F0F2' } : {}}
-              onClick={() => navigate('/records')}
+              onClick={() => onRecordClick ? onRecordClick(rec) : navigate('/records')}
             >
               {/* 左侧时间戳（HH:MM 格式，右对齐，固定宽度保证列表对齐） */}
               <span className="text-xs text-[#9A8090] flex-shrink-0 w-10 text-right">
@@ -73,16 +78,16 @@ export default function TodayTimeline({ records }: TodayTimelineProps) {
               {/* 记录类型图标 */}
               <RecordTypeIcon type={rec.type} containerSize={36} iconSize={19} />
 
-              {/* 内容区：类型名 + 备注 */}
+              {/* 内容区：类型名 + 摘要 */}
               <div className="flex-1 min-w-0">
                 <div className="text-sm font-medium text-[#7a5a60]">{cfg.label}</div>
-                {rec.note && (
-                  <div className="text-xs text-[#9A8090] truncate mt-0.5">{rec.note}</div>
+                {summary && (
+                  <div className="text-xs text-[#9A8090] truncate mt-0.5">{summary}</div>
                 )}
               </div>
 
-              {/* 导航箭头 */}
-              <span className="text-[#C0A8AD] text-base flex-shrink-0">›</span>
+              {/* 操作指示（三点图标） */}
+              <span className="text-[#C0A8AD] text-base flex-shrink-0 leading-none">···</span>
             </div>
           )
         })

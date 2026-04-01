@@ -7,11 +7,20 @@
  * 子组件：
  *  - TemperatureSection  体温步进器 + 高温警告
  *  - AllergySection      过敏症状 9 项网格 + 程度 + 拍照
+ *
+ * 编辑模式：通过 location.state.record 携带原始记录数据，回填表单，保存时调用 update API
+ *
+ * 结构化字段（Migration 005）：
+ *  - allergy_symptoms: string[]  过敏症状列表
+ *  - allergy_severity: string    过敏严重程度
+ *  - medications: { name, dose }[] 用药列表
+ *  - skin_care: string[]         护理项目列表
  */
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useCallback } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAppStore } from "@/lib/store";
 import { recordsApi } from "@/api";
+import type { HealthRecord } from "@/api/types";
 import TimePicker from "@/components/TimePicker";
 
 import TemperatureSection from "./TemperatureSection";
@@ -32,35 +41,93 @@ import {
 
 type Severity = "mild" | "moderate" | "severe";
 
-/** 用药 Chip 列表 */
+/** 用药 Chip 列表（固定预设） */
 const MED_CHIPS = ["维生素D", "铁剂", "益生菌", "钙剂"];
 /** 保湿护理 Chip 列表 */
 const SKIN_CHIPS = ["已做保湿", "涂抹面霜", "涂抹身体乳"];
 
+/** 从 ISO 时间提取本地 HH:mm */
+function isoToLocalTime(iso: string): string {
+  const d = new Date(iso);
+  return `${d.getHours().toString().padStart(2, "0")}:${d.getMinutes().toString().padStart(2, "0")}`;
+}
+
 export default function HealthFormPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { currentFamily, currentBaby } = useAppStore();
   const { toast, showToast } = useToastMsg();
 
+  // 编辑模式：从路由 state 中读取原始记录
+  const editRecord = location.state?.record as HealthRecord | undefined;
+  const isEditMode = Boolean(editRecord);
+
   const [recordDate] = useState(nowDate());
-  const [recordTime, setRecordTime] = useState(nowTime());
+  const [recordTime, setRecordTime] = useState(() => {
+    if (editRecord?.record_time) return isoToLocalTime(editRecord.record_time);
+    return nowTime();
+  });
 
   // 体温（字符串，空表示未填）
-  const [temperature, setTemperature] = useState("");
+  const [temperature, setTemperature] = useState(() => {
+    if (editRecord?.temperature != null) return String(editRecord.temperature);
+    return "";
+  });
 
-  // 过敏症状多选
-  const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
-  const [severity, setSeverity] = useState<Severity | null>(null);
+  // 过敏症状多选（编辑时从结构化字段 allergy_symptoms 回填）
+  const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>(() => {
+    return editRecord?.allergy_symptoms ?? [];
+  });
+  const [severity, setSeverity] = useState<Severity | null>(() => {
+    return (editRecord?.allergy_severity as Severity) ?? null;
+  });
 
-  // 用药 Chip 多选 + 剂量
-  const [selectedMeds, setSelectedMeds] = useState<Set<string>>(new Set());
-  const [medDose, setMedDose] = useState("");
+  // 用药：预设 Chip 多选 + 剂量（从 medications 结构化字段回填）
+  // medications 可含非预设项目，预设 Chip 与自由输入分开处理
+  const [selectedMeds, setSelectedMeds] = useState<Set<string>>(() => {
+    const names = (editRecord?.medications ?? []).map((m) => m.name);
+    return new Set(names.filter((n) => MED_CHIPS.includes(n)));
+  });
+  // 剂量：从第一个有剂量的预设用药中取（简化处理）
+  const [medDose, setMedDose] = useState(() => {
+    const med = (editRecord?.medications ?? []).find(
+      (m) => MED_CHIPS.includes(m.name) && m.dose
+    );
+    return med?.dose ?? "";
+  });
 
-  // 保湿护理 Chip 多选
-  const [selectedSkin, setSelectedSkin] = useState<Set<string>>(new Set());
+  // 保湿护理 Chip 多选（从 skin_care 结构化字段回填）
+  const [selectedSkin, setSelectedSkin] = useState<Set<string>>(() => {
+    return new Set(editRecord?.skin_care ?? []);
+  });
 
-  const [note, setNote] = useState("");
+  const [note, setNote] = useState(editRecord?.note ?? "");
   const [submitting, setSubmitting] = useState(false);
+  const [loadingRecord, setLoadingRecord] = useState(isEditMode);
+
+  /** 用最新数据回填所有状态 */
+  const applyRecord = useCallback((r: HealthRecord) => {
+    if (r.record_time) setRecordTime(isoToLocalTime(r.record_time));
+    if (r.temperature != null) setTemperature(String(r.temperature));
+    setSelectedSymptoms(r.allergy_symptoms ?? []);
+    setSeverity((r.allergy_severity as Severity) ?? null);
+    const names = (r.medications ?? []).map((m) => m.name);
+    setSelectedMeds(new Set(names.filter((n) => MED_CHIPS.includes(n))));
+    const med = (r.medications ?? []).find((m) => MED_CHIPS.includes(m.name) && m.dose);
+    setMedDose(med?.dose ?? "");
+    setSelectedSkin(new Set(r.skin_care ?? []));
+    setNote(r.note ?? "");
+  }, []);
+
+  /** 编辑模式下：进入页面时重新查询后端获取最新数据 */
+  useEffect(() => {
+    if (!isEditMode || !editRecord || !currentFamily) return;
+    recordsApi.health.getOne(currentFamily.id, editRecord.id)
+      .then((fresh) => { if (fresh) applyRecord(fresh); })
+      .catch(() => { /* 查询失败保留快照数据 */ })
+      .finally(() => setLoadingRecord(false));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const toggleSymptom = (s: string) => {
     setSelectedSymptoms((prev) =>
@@ -94,36 +161,33 @@ export default function HealthFormPage() {
     }
     setSubmitting(true);
     try {
-      const noteArr: string[] = [];
-      if (selectedSymptoms.length > 0) {
-        noteArr.push("过敏表现：" + selectedSymptoms.join("、"));
-        if (severity) {
-          const sevLabel = { mild: "轻度", moderate: "中度", severe: "重度" }[
-            severity
-          ];
-          noteArr.push("严重程度：" + sevLabel);
-        }
-      }
-      if (selectedMeds.size > 0) {
-        noteArr.push(
-          "用药：" +
-            [...selectedMeds].join("、") +
-            (medDose ? `（${medDose}）` : "")
-        );
-      }
-      if (selectedSkin.size > 0) {
-        noteArr.push("护理：" + [...selectedSkin].join("、"));
-      }
-      if (note) noteArr.push(note);
+      // 构建结构化用药列表（预设 Chip）
+      const medicationsPayload = [...selectedMeds].map((name) => ({
+        name,
+        dose: medDose || undefined,
+      }));
 
-      await recordsApi.health.create(currentFamily.id, {
-        baby_id: currentBaby.id,
-        record_time: timeToISO(recordDate, recordTime),
-        temperature: temp,
-        note: noteArr.join(" / ") || undefined,
-      });
-      showToast("✓ 健康记录已保存");
-      setTimeout(() => navigate("/"), 1400);
+      const payload = {
+        record_time:      timeToISO(recordDate, recordTime),
+        temperature:      temp,
+        allergy_symptoms: selectedSymptoms.length > 0 ? selectedSymptoms : undefined,
+        allergy_severity: selectedSymptoms.length > 0 ? (severity ?? undefined) : undefined,
+        medications:      medicationsPayload.length > 0 ? medicationsPayload : undefined,
+        skin_care:        selectedSkin.size > 0 ? [...selectedSkin] : undefined,
+        note:             note || undefined,
+      };
+
+      if (isEditMode && editRecord) {
+        await recordsApi.health.update(currentFamily.id, editRecord.id, payload);
+        showToast("✓ 健康记录已更新");
+      } else {
+        await recordsApi.health.create(currentFamily.id, {
+          baby_id: currentBaby.id,
+          ...payload,
+        });
+        showToast("✓ 健康记录已保存");
+      }
+      setTimeout(() => navigate(-1), 1400);
     } catch (err) {
       showToast(err instanceof Error ? err.message : "保存失败，请重试");
     } finally {
@@ -131,10 +195,31 @@ export default function HealthFormPage() {
     }
   };
 
+  const handleDelete = async () => {
+    if (!currentFamily || !editRecord) return;
+    try {
+      await recordsApi.health.remove(currentFamily.id, editRecord.id);
+      showToast("✓ 记录已删除");
+      setTimeout(() => navigate(-1), 1200);
+    } catch {
+      showToast("删除失败，请重试");
+    }
+  };
+
   return (
     <div className="min-h-screen" style={{ background: "#FAF5F6" }}>
       {/* 导航栏 */}
-      <NavBar title="健康记录" onBack={() => navigate(-1)} />
+      <NavBar title={isEditMode ? "编辑健康记录" : "健康记录"} onBack={() => navigate(-1)} />
+
+      {/* 编辑模式加载数据提示 */}
+      {loadingRecord && (
+        <div className="flex items-center justify-center gap-2 py-2 text-[12px] text-[#9A8090]">
+          <svg className="animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 14, height: 14 }}>
+            <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+          </svg>
+          正在加载最新数据…
+        </div>
+      )}
 
       <div className="pb-32">
         {/* 记录时间 */}
@@ -267,7 +352,12 @@ export default function HealthFormPage() {
       </div>
 
       {/* 底部按钮 */}
-      <SubmitBar onClick={handleSubmit} submitting={submitting} />
+      <SubmitBar
+        onClick={handleSubmit}
+        submitting={submitting}
+        label={isEditMode ? "更新记录" : "保存记录"}
+        onDelete={isEditMode ? handleDelete : undefined}
+      />
 
       <ToastMessage toast={toast} />
     </div>

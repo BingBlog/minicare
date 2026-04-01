@@ -4,13 +4,15 @@
  * 表单内容：
  *   - 基本信息：昵称 / 出生日期 / 性别
  *   - 过敏信息：过敏类型（多选 Tag）/ 过敏程度（Segmented Control）
- *   - 最新生长数据：身高 / 体重 / 头围
  *   - 底部：保存档案 + 取消 按钮
  *
  * 完全受控组件，所有表单状态均由父组件维护，
  * 通过 onChange 系列回调回传。
  *
  * 被引用：ProfilePage.tsx
+ *
+ * 注意：身高 / 体重 / 头围数据请在「生长记录」模块中录入，
+ *       profile 页面仅展示最新数据，不再支持在此处写入。
  */
 import DatePicker from '@/components/DatePicker'
 import type { AllergyLevel, AllergyType } from '@/api'
@@ -19,6 +21,11 @@ import {
   ALL_ALLERGY_TYPES,
   ALLERGY_LEVEL_OPTIONS,
 } from '@/lib/constants'
+
+function localDateStr(): string {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
 
 /** EditBabyModal 属性 */
 interface EditBabyModalProps {
@@ -53,18 +60,6 @@ interface EditBabyModalProps {
   allergyLevel: AllergyLevel
   onAllergyLevelChange: (v: AllergyLevel) => void
 
-  /** 身高输入值（字符串，允许含小数点） */
-  height: string
-  onHeightChange: (v: string) => void
-
-  /** 体重输入值（字符串，允许含小数点） */
-  weight: string
-  onWeightChange: (v: string) => void
-
-  /** 头围输入值（字符串，允许含小数点） */
-  head: string
-  onHeadChange: (v: string) => void
-
   // ── 操作回调 ──────────────────────────────────────────────
 
   /** 点击「保存档案」 */
@@ -93,45 +88,11 @@ export default function EditBabyModal({
   onToggleAllergyType,
   allergyLevel,
   onAllergyLevelChange,
-  height,
-  onHeightChange,
-  weight,
-  onWeightChange,
-  head,
-  onHeadChange,
   onSave,
   onCancel,
   onCdcHelp,
 }: EditBabyModalProps) {
   if (!open) return null
-
-  /**
-   * 生长数据输入行配置
-   * 每行限制输入格式为纯数字 + 最多一个小数点（正则：/^[0-9]*\.?[0-9]*$/）
-   */
-  const growthRows = [
-    {
-      label: '身高',
-      value: height,
-      onChange: onHeightChange,
-      unit: 'cm',
-      placeholder: '如 68.0',
-    },
-    {
-      label: '体重',
-      value: weight,
-      onChange: onWeightChange,
-      unit: 'kg',
-      placeholder: '如 7.5',
-    },
-    {
-      label: '头围',
-      value: head,
-      onChange: onHeadChange,
-      unit: 'cm',
-      placeholder: '如 43.0',
-    },
-  ]
 
   return (
     <div
@@ -191,7 +152,7 @@ export default function EditBabyModal({
               label="出生日期"
               value={birthDate}
               onChange={onBirthDateChange}
-              max={new Date().toISOString().split('T')[0]}
+              max={localDateStr()}
               min="2010-01-01"
               className="flex-1"
             />
@@ -278,7 +239,7 @@ export default function EditBabyModal({
         </div>
 
         {/* CDC 评分标准提示 */}
-        <div className="mx-4 mb-4 px-3.5 py-2.5 rounded-xl" style={{ background: '#FFF0F4' }}>
+        <div className="mx-4 mb-6 px-3.5 py-2.5 rounded-xl" style={{ background: '#FFF0F4' }}>
           <div className="text-xs text-[#9A8090] leading-relaxed">
             {/* 信息圆圈图标（inline，与文字基线对齐） */}
             <svg
@@ -305,40 +266,6 @@ export default function EditBabyModal({
             </span>
           </div>
         </div>
-
-        {/* ── 最新生长数据 ── */}
-        <div className="text-[12px] font-semibold text-[#9A8090] px-5 pb-1.5 tracking-[.3px]">
-          最新生长数据
-        </div>
-        <div
-          className="mx-4 bg-white rounded-2xl overflow-hidden mb-4"
-          style={{ boxShadow: '0 1px 6px rgba(200,100,120,0.07)' }}
-        >
-          {growthRows.map((row, i) => (
-            <div
-              key={row.label}
-              className="flex items-center px-4 py-3.5"
-              style={i > 0 ? { borderTop: '1px solid #F5F0F2' } : {}}
-            >
-              <span className="text-sm text-[#4A3035] flex-shrink-0 w-10">{row.label}</span>
-              <input
-                type="text"
-                inputMode="decimal"
-                value={row.value}
-                onChange={(e) => {
-                  const v = e.target.value
-                  // 只允许数字和单个小数点，防止非法字符输入
-                  if (/^[0-9]*\.?[0-9]*$/.test(v)) row.onChange(v)
-                }}
-                placeholder={row.placeholder}
-                className="flex-1 text-right border-none outline-none bg-transparent text-sm text-[#4A3035] placeholder:text-[#C0A8AD]"
-              />
-              <span className="text-[12px] text-[#9A8090] ml-1.5 flex-shrink-0">{row.unit}</span>
-            </div>
-          ))}
-        </div>
-
-        <div className="h-4" />
 
         {/* ── 保存按钮（胶囊形，渐变色）── */}
         <div className="px-4">

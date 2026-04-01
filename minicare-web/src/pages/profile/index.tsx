@@ -165,10 +165,6 @@ export default function ProfilePage() {
   const [editAllergyLevel, setEditAllergyLevel] = useState<AllergyLevel>(
     (currentBaby?.allergy_level as AllergyLevel) ?? "unknown"
   );
-  // 最新生长数据（可选，本次编辑时快速录入）
-  const [editHeight, setEditHeight] = useState("");
-  const [editWeight, setEditWeight] = useState("");
-  const [editHead, setEditHead] = useState("");
 
   // ── 家庭成员弹层状态 ──────────────────────────────────────────
   const [membersOpen, setMembersOpen] = useState(false);
@@ -186,9 +182,6 @@ export default function ProfilePage() {
     setEditGender((currentBaby?.gender as "male" | "female" | "unknown") ?? "unknown");
     setEditAllergyTypes(currentBaby?.allergy_types ?? []);
     setEditAllergyLevel((currentBaby?.allergy_level as AllergyLevel) ?? "unknown");
-    setEditHeight("");
-    setEditWeight("");
-    setEditHead("");
     setEditOpen(true);
   };
 
@@ -214,6 +207,7 @@ export default function ProfilePage() {
 
     setSaving(true);
     try {
+      // ── 1. 更新宝宝基础档案 ──────────────────────────────────
       const updated = await babyApi.update(currentFamily.id, currentBaby.id, {
         name: editName.trim(),
         birth_date: editBirthDate,
@@ -223,7 +217,7 @@ export default function ProfilePage() {
       });
       setCurrentBaby(updated);
       setEditOpen(false);
-      showToast("✓ 档案已保存，全局生效");
+      showToast("✓ 档案已保存");
     } catch (e: unknown) {
       showToast(e instanceof Error ? e.message : "保存失败，请重试");
     } finally {
@@ -419,12 +413,6 @@ export default function ProfilePage() {
         onToggleAllergyType={toggleAllergyType}
         allergyLevel={editAllergyLevel}
         onAllergyLevelChange={setEditAllergyLevel}
-        height={editHeight}
-        onHeightChange={setEditHeight}
-        weight={editWeight}
-        onWeightChange={setEditWeight}
-        head={editHead}
-        onHeadChange={setEditHead}
         onSave={handleSave}
         onCancel={() => setEditOpen(false)}
         onCdcHelp={() => showToast("跳转 CDC 评分标准页面")}

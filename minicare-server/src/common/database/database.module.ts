@@ -25,7 +25,7 @@ export const DATABASE_POOL = 'DATABASE_POOL';
           user: process.env.DB_USER ?? 'root',
           password: process.env.DB_PASS ?? '',
           charset: 'utf8mb4',
-          timezone: '+00:00',    // 强制 UTC：与 toMysqlDatetime() 写入的 UTC 数值保持一致
+          timezone: '+08:00',    // 北京时间（CST）：全链路统一使用本地时间，无需时区转换
           waitForConnections: true,
           connectionLimit: 10,        // CloudRun 单实例建议 ≤ 10
           queueLimit: 0,

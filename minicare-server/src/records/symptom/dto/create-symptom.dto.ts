@@ -3,6 +3,7 @@ import {
   ArrayMinSize,
   IsArray,
   IsDateString,
+  IsEnum,
   IsNumber,
   IsOptional,
   IsString,
@@ -16,8 +17,25 @@ import { Type } from 'class-transformer';
  *   record_time  DATETIME
  *   symptoms     JSON  -- [{"type":1,"severity":2}]
  *   photo_ids    JSON  -- 照片 fileID 列表
- * 注：DDL 中不存在独立的 severity / photo_urls 字段
+ *   spirit       VARCHAR(20) -- 精神状态: active/normal/tired/lethargic
+ *   mood         VARCHAR(20) -- 情绪状态: happy/neutral/fussy/crying
  */
+
+/** 精神状态枚举 */
+export enum SpiritLevel {
+  ACTIVE   = 'active',    // 活跃
+  NORMAL   = 'normal',    // 正常
+  TIRED    = 'tired',     // 偏疲惫
+  LETHARGIC = 'lethargic', // 非常差
+}
+
+/** 情绪状态枚举 */
+export enum MoodLevel {
+  HAPPY   = 'happy',    // 开心
+  NEUTRAL = 'neutral',  // 平静
+  FUSSY   = 'fussy',    // 烦躁
+  CRYING  = 'crying',   // 哭闹
+}
 
 /** 单条症状对象 */
 export class SymptomItemDto {
@@ -48,11 +66,31 @@ export class CreateSymptomDto {
   @Type(() => SymptomItemDto)
   symptoms: SymptomItemDto[];
 
+  @ApiPropertyOptional({ enum: SpiritLevel, description: '精神状态' })
+  @IsOptional()
+  @IsEnum(SpiritLevel)
+  spirit?: SpiritLevel;
+
+  @ApiPropertyOptional({ enum: MoodLevel, description: '情绪状态' })
+  @IsOptional()
+  @IsEnum(MoodLevel)
+  mood?: MoodLevel;
+
   @ApiPropertyOptional({ description: '照片 fileID 列表', type: [String] })
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
   photo_ids?: string[];
 
+  @ApiPropertyOptional() @IsOptional() @IsString() note?: string;
+}
+
+/** 更新症状记录 DTO */
+export class UpdateSymptomDto {
+  @ApiPropertyOptional() @IsOptional() @IsDateString() record_time?: string;
+  @ApiPropertyOptional({ type: [SymptomItemDto] }) @IsOptional() @IsArray() @ValidateNested({ each: true }) @Type(() => SymptomItemDto) symptoms?: SymptomItemDto[];
+  @ApiPropertyOptional({ enum: SpiritLevel }) @IsOptional() @IsEnum(SpiritLevel) spirit?: SpiritLevel;
+  @ApiPropertyOptional({ enum: MoodLevel }) @IsOptional() @IsEnum(MoodLevel) mood?: MoodLevel;
+  @ApiPropertyOptional({ type: [String] }) @IsOptional() @IsArray() @IsString({ each: true }) photo_ids?: string[];
   @ApiPropertyOptional() @IsOptional() @IsString() note?: string;
 }

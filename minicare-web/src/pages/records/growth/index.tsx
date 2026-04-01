@@ -12,11 +12,14 @@
  *
  * 子组件：
  *  - MeasureCards  顶部 3 格数据预览卡片
+ *
+ * 编辑模式：通过 location.state.record 携带原始记录数据，回填表单，保存时调用 update API
  */
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAppStore } from "@/lib/store";
 import { recordsApi } from "@/api";
+import type { GrowthRecord } from "@/api/types";
 import DatePicker from "@/components/DatePicker";
 
 import MeasureCards from "./MeasureCards";
@@ -37,17 +40,55 @@ const ORG_OPTIONS = ["儿保门诊", "家中自测", "社区卫生", "其他"];
 
 export default function GrowthFormPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { currentFamily, currentBaby } = useAppStore();
   const { toast, showToast } = useToastMsg();
 
-  const [recordDate, setRecordDate] = useState(nowDate());
-  const [height, setHeight] = useState("");   // cm（字符串，保留输入中间态）
-  const [weight, setWeight] = useState("");   // kg
-  const [head, setHead] = useState("");       // cm
+  // 编辑模式：从路由 state 中读取原始记录
+  const editRecord = location.state?.record as GrowthRecord | undefined;
+  const isEditMode = Boolean(editRecord);
+
+  const [recordDate, setRecordDate] = useState(() => {
+    if (editRecord?.record_date) return editRecord.record_date;
+    return nowDate();
+  });
+
+  // 编辑时从 mm/g 反推回 cm/kg
+  const [height, setHeight] = useState(() => {
+    if (editRecord?.height_mm != null) return (editRecord.height_mm / 10).toFixed(1);
+    return "";
+  });
+  const [weight, setWeight] = useState(() => {
+    if (editRecord?.weight_g != null) return (editRecord.weight_g / 1000).toFixed(1);
+    return "";
+  });
+  const [head, setHead] = useState(() => {
+    if (editRecord?.head_mm != null) return (editRecord.head_mm / 10).toFixed(1);
+    return "";
+  });
+
   const [activeCard, setActiveCard] = useState<MeasureKey | null>(null);
   const [orgChip, setOrgChip] = useState<string | null>("儿保门诊");
-  const [note, setNote] = useState("");
+  const [note, setNote] = useState(editRecord?.note ?? "");
   const [submitting, setSubmitting] = useState(false);
+  const [loadingRecord, setLoadingRecord] = useState(isEditMode);
+
+  /** 编辑模式下：进入页面时重新查询后端获取最新数据并回填 */
+  useEffect(() => {
+    if (!isEditMode || !editRecord || !currentFamily) return;
+    recordsApi.growth.getOne(currentFamily.id, editRecord.id)
+      .then((fresh) => {
+        if (!fresh) return;
+        if (fresh.record_date) setRecordDate(fresh.record_date);
+        if (fresh.height_mm != null) setHeight((fresh.height_mm / 10).toFixed(1));
+        if (fresh.weight_g != null) setWeight((fresh.weight_g / 1000).toFixed(1));
+        if (fresh.head_mm != null) setHead((fresh.head_mm / 10).toFixed(1));
+        if (fresh.note) setNote(fresh.note);
+      })
+      .catch(() => { /* 查询失败保留快照数据 */ })
+      .finally(() => setLoadingRecord(false));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   /** setter 映射（用于统一的输入行处理） */
   const setterMap: Record<MeasureKey, (v: string) => void> = {
@@ -79,16 +120,25 @@ export default function GrowthFormPage() {
       if (orgChip) noteArr.push("机构：" + orgChip);
       if (note) noteArr.push(note);
 
-      await recordsApi.growth.create(currentFamily.id, {
-        baby_id: currentBaby.id,
+      const payload = {
         record_date: recordDate,
         height_mm: heightMm,
         weight_g: weightG,
         head_mm: headMm,
         note: noteArr.join(" / ") || undefined,
-      });
-      showToast("✓ 生长记录已保存");
-      setTimeout(() => navigate("/"), 1400);
+      };
+
+      if (isEditMode && editRecord) {
+        await recordsApi.growth.update(currentFamily.id, editRecord.id, payload);
+        showToast("✓ 生长记录已更新");
+      } else {
+        await recordsApi.growth.create(currentFamily.id, {
+          baby_id: currentBaby.id,
+          ...payload,
+        });
+        showToast("✓ 生长记录已保存");
+      }
+      setTimeout(() => navigate(-1), 1400);
     } catch (err) {
       showToast(
         err instanceof Error ? err.message : "保存失败（同日只可记录一次）"
@@ -98,10 +148,31 @@ export default function GrowthFormPage() {
     }
   };
 
+  const handleDelete = async () => {
+    if (!currentFamily || !editRecord) return;
+    try {
+      await recordsApi.growth.remove(currentFamily.id, editRecord.id);
+      showToast("✓ 记录已删除");
+      setTimeout(() => navigate(-1), 1200);
+    } catch {
+      showToast("删除失败，请重试");
+    }
+  };
+
   return (
     <div className="min-h-screen" style={{ background: "#FAF5F6" }}>
       {/* 导航栏 */}
-      <NavBar title="生长记录" onBack={() => navigate(-1)} />
+      <NavBar title={isEditMode ? "编辑生长记录" : "生长记录"} onBack={() => navigate(-1)} />
+
+      {/* 编辑模式加载数据提示 */}
+      {loadingRecord && (
+        <div className="flex items-center justify-center gap-2 py-2 text-[12px] text-[#9A8090]">
+          <svg className="animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 14, height: 14 }}>
+            <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+          </svg>
+          正在加载最新数据…
+        </div>
+      )}
 
       <div className="pb-32">
         {/* 测量数据预览卡片 */}
@@ -230,17 +301,21 @@ export default function GrowthFormPage() {
         />
 
         {/* 提示文字 */}
-        <div className="mx-4 text-[11px] text-[#9A8090] text-center">
-          同一天只能记录一次，如已有记录将覆盖
-        </div>
+        {!isEditMode && (
+          <div className="mx-4 text-[11px] text-[#9A8090] text-center">
+            同一天只能记录一次，如已有记录将覆盖
+          </div>
+        )}
       </div>
 
       {/* 底部按钮 */}
       <SubmitBar
         onClick={handleSubmit}
         submitting={submitting}
+        label={isEditMode ? "更新记录" : "保存记录"}
         color="#9B8ED8"
         disabledColor="#DDCAD0"
+        onDelete={isEditMode ? handleDelete : undefined}
       />
 
       <ToastMessage toast={toast} />

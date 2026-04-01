@@ -1,10 +1,24 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsDateString, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsDateString, IsEnum, IsOptional, IsString, IsUUID } from 'class-validator';
 
 /**
  * DDL: sleep_record.status TINYINT 1=ongoing 2=ended
- * 注：DDL 中不存在 quality / sleep_period 字段
+ *      sleep_record.quality VARCHAR(10): good/normal/poor
+ *      sleep_record.sleep_period VARCHAR(20): night/morning_nap/afternoon_nap/other
  */
+
+export enum SleepQuality {
+  GOOD   = 'good',
+  NORMAL = 'normal',
+  POOR   = 'poor',
+}
+
+export enum SleepPeriod {
+  NIGHT         = 'night',
+  MORNING_NAP   = 'morning_nap',
+  AFTERNOON_NAP = 'afternoon_nap',
+  OTHER         = 'other',
+}
 
 export class StartSleepDto {
   @ApiProperty() @IsUUID() baby_id: string;
@@ -12,6 +26,14 @@ export class StartSleepDto {
   @ApiProperty({ description: '睡眠开始时间（ISO 8601）' })
   @IsDateString()
   start_time: string;
+
+  @ApiPropertyOptional({ enum: SleepQuality, description: '睡眠质量' })
+  @IsOptional() @IsEnum(SleepQuality)
+  quality?: SleepQuality;
+
+  @ApiPropertyOptional({ enum: SleepPeriod, description: '睡眠时段' })
+  @IsOptional() @IsEnum(SleepPeriod)
+  sleep_period?: SleepPeriod;
 
   @ApiPropertyOptional() @IsOptional() @IsString() note?: string;
 }
@@ -21,5 +43,22 @@ export class EndSleepDto {
   @IsDateString()
   end_time: string;
 
+  @ApiPropertyOptional({ enum: SleepQuality, description: '睡眠质量' })
+  @IsOptional() @IsEnum(SleepQuality)
+  quality?: SleepQuality;
+
+  @ApiPropertyOptional({ enum: SleepPeriod, description: '睡眠时段' })
+  @IsOptional() @IsEnum(SleepPeriod)
+  sleep_period?: SleepPeriod;
+
+  @ApiPropertyOptional() @IsOptional() @IsString() note?: string;
+}
+
+/** 更新睡眠记录 DTO（已结束的记录可修改时间、质量、时段、备注） */
+export class UpdateSleepDto {
+  @ApiPropertyOptional() @IsOptional() @IsDateString() start_time?: string;
+  @ApiPropertyOptional() @IsOptional() @IsDateString() end_time?: string;
+  @ApiPropertyOptional({ enum: SleepQuality }) @IsOptional() @IsEnum(SleepQuality) quality?: SleepQuality;
+  @ApiPropertyOptional({ enum: SleepPeriod }) @IsOptional() @IsEnum(SleepPeriod) sleep_period?: SleepPeriod;
   @ApiPropertyOptional() @IsOptional() @IsString() note?: string;
 }

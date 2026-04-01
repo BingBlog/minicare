@@ -12,7 +12,7 @@
  * 注意：同一天只允许一条记录，重复提交后端返回 409。
  */
 import { request } from '../http'
-import type { GrowthRecord, CreateGrowthDto, PaginationParams, ListResult } from '../types'
+import type { GrowthRecord, CreateGrowthDto, UpdateGrowthDto, PaginationParams, ListResult } from '../types'
 
 export const growthApi = {
   /**
@@ -52,7 +52,7 @@ export const growthApi = {
     const { limit = 50, offset = 0 } = params
     return request<ListResult<GrowthRecord>>(
       `/api/family/${familyId}/records/growth?baby_id=${babyId}&limit=${limit}&offset=${offset}`,
-    )
+    ).then((items) => items.map((r) => ({ ...r, type: 'growth' as const })))
   },
 
   /**
@@ -81,6 +81,21 @@ export const growthApi = {
   create: (familyId: string, data: CreateGrowthDto): Promise<GrowthRecord> =>
     request<GrowthRecord>(`/api/family/${familyId}/records/growth`, {
       method: 'POST',
+      body: JSON.stringify(data),
+    }),
+
+  /**
+   * 获取单条生长记录（编辑前重新查询，确保数据最新）
+   */
+  getOne: (familyId: string, id: string): Promise<GrowthRecord> =>
+    request<GrowthRecord>(`/api/family/${familyId}/records/growth/${id}`),
+
+  /**
+   * 更新生长记录（PATCH 局部更新）
+   */
+  update: (familyId: string, id: string, data: UpdateGrowthDto): Promise<GrowthRecord> =>
+    request<GrowthRecord>(`/api/family/${familyId}/records/growth/${id}`, {
+      method: 'PATCH',
       body: JSON.stringify(data),
     }),
 
