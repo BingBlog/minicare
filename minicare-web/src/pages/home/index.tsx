@@ -21,9 +21,10 @@ import HeroSection from "./HeroSection";
 import QuickActions from "./QuickActions";
 import TodayTimeline from "./TodayTimeline";
 import FabSheet from "./FabSheet";
+import SleepBanner from "./SleepBanner";
 import RecordActionSheet from "@/pages/records-list/RecordActionSheet";
 import { RECORD_ROUTES } from "@/lib/constants";
-import type { TodayRecord } from "@/api/types";
+import type { TodayRecord, SleepRecord } from "@/api/types";
 import type { BabyStat } from "./HeroSection";
 
 // 支持删除的记录类型（与 recordsApi 的子模块 key 保持一致）
@@ -39,6 +40,9 @@ export default function HomePage() {
   const [todayRecords, setTodayRecords] = useState<TodayRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [fabOpen, setFabOpen] = useState(false);
+
+  // 进行中的睡眠记录（用于展示 SleepBanner）
+  const [ongoingSleep, setOngoingSleep] = useState<SleepRecord | null>(null);
 
   // 时间线记录操作弹层
   const [selectedRecord, setSelectedRecord] = useState<TodayRecord | null>(null);
@@ -84,8 +88,13 @@ export default function HomePage() {
           }
         }
 
-        // 3. 加载今日记录
-        await loadTodayRecords(family.id);
+        // 3. 并发加载：今日记录 + 进行中睡眠
+        await Promise.all([
+          loadTodayRecords(family.id),
+          recordsApi.sleep.getOngoing(family.id, baby.id)
+            .then((rec) => setOngoingSleep(rec))
+            .catch(() => { /* 查询失败不影响主流程 */ }),
+        ]);
       } catch (err) {
         console.error("[HomePage] 加载失败", err);
         showToast("数据加载失败，请重试");
@@ -167,8 +176,24 @@ export default function HomePage() {
 
   return (
     <div className="min-h-full bg-bg">
-      {/* ── 英雄区（渐变背景 + 宝宝卡片） ── */}
-      <HeroSection currentBaby={currentBaby} stats={babyStats} />
+      {/* ── 英雄区（渐变背景 + 宝宝卡片 + 可选睡眠横幅） ── */}
+      <HeroSection
+        currentBaby={currentBaby}
+        stats={babyStats}
+        sleepBanner={
+          ongoingSleep && currentFamily ? (
+            <SleepBanner
+              familyId={currentFamily.id}
+              ongoingRecord={ongoingSleep}
+              onEnded={() => {
+                // 结束睡眠后：清除 banner + 刷新今日记录
+                setOngoingSleep(null);
+                if (currentFamily) loadTodayRecords(currentFamily.id);
+              }}
+            />
+          ) : undefined
+        }
+      />
 
       {/* ── 内容区（白色背景，含快捷宫格和时间线） ── */}
       <div className="px-4 space-y-4 pt-3 pb-8">

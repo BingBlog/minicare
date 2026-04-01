@@ -2,16 +2,21 @@
  * 睡眠记录表单页（入口）
  *
  * UI 对齐 ui-draft/form-sleep.html
- * API: POST /api/family/:familyId/records/sleep
  *
  * 子组件：
  *  - TimerMode      计时模式（圆形计时 + 开始/结束按钮）
  *  - ManualMode     补录模式（入睡/醒来时间 + 睡眠时段）
  *  - QualitySection 睡眠质量（两模式均显示）
  *
- * 计时器逻辑（setInterval）统一由本页管理，不下放至子组件。
+ * ═══════════ 计时模式流程 ═══════════
+ *  1. 页面加载时先查询 getOngoing，若有则恢复计时（断线重连）
+ *  2. 点「开始计时」→ 立即调用 startSleep API → 记录 ongoingId
+ *  3. 点「结束睡眠」→ 立即调用 endSleep API（携带质量/备注）→ 结束后跳回
+ *  4. 计时模式不显示「保存记录」按钮；结束后自动保存
  *
- * 编辑模式：通过 location.state.record 携带原始记录数据，回填表单，保存时调用 update API
+ * ═══════════ 补录/编辑模式流程 ═══════════
+ *  手动填写时间范围 → 点「保存记录」→ 调用 startSleep + endSleep
+ *  编辑模式直接 PATCH 更新
  */
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -43,7 +48,7 @@ function isoToLocalTime(iso: string): string {
 
 /** Date 对象 → 本地时间字符串（不带 Z，如 '2026-04-01T07:18:00'），全链路 CST */
 function dateToLocalISO(d: Date): string {
-  const pad = (n: number) => String(n).padStart(2, '0');
+  const pad = (n: number) => String(n).padStart(2, "0");
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
 }
 
@@ -73,7 +78,14 @@ export default function SleepFormPage() {
   const [timerRunning, setTimerRunning] = useState(false);
   const [timerSeconds, setTimerSeconds] = useState(0);
   const [timerStartTime, setTimerStartTime] = useState<Date | null>(null);
+  /** 计时模式下服务端返回的进行中记录 ID（用于 endSleep） */
+  const [ongoingId, setOngoingId] = useState<string | null>(null);
+  /** 计时已结束（endSleep 已成功调用） */
   const [timerStopped, setTimerStopped] = useState(false);
+  /** 正在调用 startSleep / endSleep API */
+  const [timerApiLoading, setTimerApiLoading] = useState(false);
+  /** 页面首次加载时查询 ongoing，防止重复渲染时多次查询 */
+  const ongoingCheckedRef = useRef(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // 计时器 tick：每秒 +1
@@ -90,16 +102,104 @@ export default function SleepFormPage() {
     };
   }, [timerRunning]);
 
-  const startTimer = () => {
-    setTimerStartTime(new Date());
-    setTimerSeconds(0);
-    setTimerRunning(true);
-    setTimerStopped(false);
+  /**
+   * 页面挂载时：查询是否有进行中的睡眠记录
+   * 若有则恢复计时（刷新页面也能继续）
+   */
+  useEffect(() => {
+    if (isEditMode || ongoingCheckedRef.current) return;
+    if (!currentFamily || !currentBaby) return;
+    ongoingCheckedRef.current = true;
+
+    recordsApi.sleep.getOngoing(currentFamily.id, currentBaby.id).then((ongoing) => {
+      if (!ongoing) return;
+      // 恢复计时状态
+      const start = new Date(ongoing.start_time);
+      const elapsedSeconds = Math.floor((Date.now() - start.getTime()) / 1000);
+      setTimerStartTime(start);
+      setTimerSeconds(Math.max(0, elapsedSeconds));
+      setOngoingId(ongoing.id);
+      setTimerRunning(true);
+    }).catch(() => {
+      // 查询失败静默处理，不影响正常使用
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentFamily, currentBaby]);
+
+  /**
+   * 点「开始计时」→ 立即调用 startSleep API
+   */
+  const handleTimerStart = async () => {
+    if (!currentFamily || !currentBaby) {
+      showToast("请先完成宝宝建档");
+      return;
+    }
+    if (timerApiLoading) return;
+    setTimerApiLoading(true);
+    try {
+      const startDate = new Date();
+      const { id } = await recordsApi.sleep.startSleep(currentFamily.id, {
+        baby_id: currentBaby.id,
+        start_time: dateToLocalISO(startDate),
+        sleep_period: sleepPeriod as SleepPeriod,
+      });
+      setOngoingId(id);
+      setTimerStartTime(startDate);
+      setTimerSeconds(0);
+      setTimerRunning(true);
+      setTimerStopped(false);
+    } catch (err: any) {
+      // 409：该宝宝已有进行中的记录，重新查询后恢复
+      if (err?.statusCode === 409 || err?.message?.includes("已有进行中")) {
+        try {
+          const ongoing = await recordsApi.sleep.getOngoing(currentFamily.id, currentBaby.id);
+          if (ongoing) {
+            const start = new Date(ongoing.start_time);
+            setTimerStartTime(start);
+            setTimerSeconds(Math.max(0, Math.floor((Date.now() - start.getTime()) / 1000)));
+            setOngoingId(ongoing.id);
+            setTimerRunning(true);
+            setTimerStopped(false);
+            showToast("已恢复进行中的睡眠计时");
+            return;
+          }
+        } catch { /* ignore */ }
+      }
+      showToast(err instanceof Error ? err.message : "开始计时失败，请重试");
+    } finally {
+      setTimerApiLoading(false);
+    }
   };
 
-  const stopTimer = () => {
+  /**
+   * 点「结束睡眠」→ 立即调用 endSleep API（携带质量/备注）→ 成功后跳回
+   */
+  const handleTimerStop = async () => {
+    if (!currentFamily || !ongoingId) {
+      showToast("未找到进行中的睡眠记录");
+      return;
+    }
+    if (timerApiLoading) return;
+    setTimerApiLoading(true);
+    // 先停止本地计时器
     setTimerRunning(false);
-    setTimerStopped(true);
+    try {
+      await recordsApi.sleep.endSleep(currentFamily.id, ongoingId, {
+        end_time: dateToLocalISO(new Date()),
+        quality: sleepQuality,
+        sleep_period: sleepPeriod as SleepPeriod,
+        note: note || undefined,
+      });
+      setTimerStopped(true);
+      showToast("✓ 睡眠记录已保存");
+      setTimeout(() => navigate(-1), 1400);
+    } catch (err) {
+      // 恢复计时（结束失败）
+      setTimerRunning(true);
+      showToast(err instanceof Error ? err.message : "结束计时失败，请重试");
+    } finally {
+      setTimerApiLoading(false);
+    }
   };
 
   // ── 补录模式状态 ────────────────────────────────────────────────
@@ -139,7 +239,7 @@ export default function SleepFormPage() {
         if (fresh.end_time) setEndTime(isoToLocalTime(fresh.end_time));
         if (fresh.sleep_period) setSleepPeriod(fresh.sleep_period);
         if (fresh.quality) setSleepQuality(fresh.quality as SleepQuality);
-        setNote(fresh.note ?? '');
+        setNote(fresh.note ?? "");
       })
       .catch(() => { /* 查询失败保留快照数据 */ })
       .finally(() => setLoadingRecord(false));
@@ -148,7 +248,7 @@ export default function SleepFormPage() {
 
   const durationMin = calcDurationMin(startTime, endTime);
 
-  // ── 提交 ──────────────────────────────────────────────────────
+  // ── 补录/编辑模式提交 ──────────────────────────────────────────
   const handleSubmit = async () => {
     if (!currentFamily || !currentBaby) {
       showToast("请先完成宝宝建档");
@@ -158,27 +258,13 @@ export default function SleepFormPage() {
     try {
       // 编辑模式：直接 PATCH 更新
       if (isEditMode && editRecord) {
-        let startISO: string;
-        let endISO: string;
-
-        if (mode === "manual") {
-          if (durationMin <= 0) {
-            showToast("结束时间应晚于开始时间");
-            setSubmitting(false);
-            return;
-          }
-          startISO = timeToISO(recordDate, startTime);
-          endISO = timeToISO(recordDate, endTime);
-        } else {
-          // 计时模式下编辑，使用当前计时结果
-          if (!timerStopped || !timerStartTime) {
-            showToast("请先开始并结束计时");
-            setSubmitting(false);
-            return;
-          }
-          startISO = dateToLocalISO(timerStartTime);
-          endISO = dateToLocalISO(new Date());
+        if (durationMin <= 0) {
+          showToast("结束时间应晚于开始时间");
+          setSubmitting(false);
+          return;
         }
+        const startISO = timeToISO(recordDate, startTime);
+        const endISO = timeToISO(recordDate, endTime);
 
         await recordsApi.sleep.update(currentFamily.id, editRecord.id, {
           start_time: startISO,
@@ -193,30 +279,15 @@ export default function SleepFormPage() {
         return;
       }
 
-      // 新建模式
-      let startISO: string;
-      let endISO: string;
-
-      if (mode === "timer") {
-        if (!timerStopped || !timerStartTime) {
-          showToast("请先开始并结束计时");
-          setSubmitting(false);
-          return;
-        }
-        startISO = dateToLocalISO(timerStartTime);
-        endISO = dateToLocalISO(new Date());
-      } else {
-        if (durationMin <= 0) {
-          showToast("结束时间应晚于开始时间");
-          setSubmitting(false);
-          return;
-        }
-        startISO = timeToISO(recordDate, startTime);
-        endISO = timeToISO(recordDate, endTime);
+      // 补录模式（mode === "manual"）：两步流程
+      if (durationMin <= 0) {
+        showToast("结束时间应晚于开始时间");
+        setSubmitting(false);
+        return;
       }
+      const startISO = timeToISO(recordDate, startTime);
+      const endISO = timeToISO(recordDate, endTime);
 
-      // 两步流程：先 startSleep 创建 ongoing 记录，再 endSleep 结束并计算时长
-      // 睡眠质量和时段在 endSleep 时一并提交
       const { id: sleepId } = await recordsApi.sleep.startSleep(currentFamily.id, {
         baby_id: currentBaby.id,
         start_time: startISO,
@@ -249,6 +320,9 @@ export default function SleepFormPage() {
     }
   };
 
+  // 计时模式下是否处于「进行中」或「已结束」状态
+  const timerActive = timerRunning || timerStopped;
+
   return (
     <div className="min-h-screen" style={{ background: "#FAF5F6" }}>
       {/* 导航栏 */}
@@ -267,8 +341,8 @@ export default function SleepFormPage() {
         </div>
       )}
 
-      {/* 模式切换（编辑模式下固定为补录模式，无需切换） */}
-      {!isEditMode && (
+      {/* 模式切换（编辑模式或计时进行中时隐藏） */}
+      {!isEditMode && !timerActive && (
         <div
           className="mx-4 mt-3 flex gap-0 rounded-xl overflow-hidden p-[3px]"
           style={{ background: "#F0E8EA" }}>
@@ -303,8 +377,9 @@ export default function SleepFormPage() {
             stopped={timerStopped}
             seconds={timerSeconds}
             startTime={timerStartTime}
-            onStart={startTimer}
-            onStop={stopTimer}
+            apiLoading={timerApiLoading}
+            onStart={handleTimerStart}
+            onStop={handleTimerStop}
           />
         )}
 
@@ -332,15 +407,17 @@ export default function SleepFormPage() {
         />
       </div>
 
-      {/* 底部按钮 */}
-      <SubmitBar
-        onClick={handleSubmit}
-        submitting={submitting}
-        label={isEditMode ? "更新记录" : "保存记录"}
-        color="#4CAF82"
-        disabledColor="#A8D8B0"
-        onDelete={isEditMode ? handleDelete : undefined}
-      />
+      {/* 底部按钮：计时模式下隐藏（开始/结束由计时器按钮控制） */}
+      {mode !== "timer" && (
+        <SubmitBar
+          onClick={handleSubmit}
+          submitting={submitting}
+          label={isEditMode ? "更新记录" : "保存记录"}
+          color="#4CAF82"
+          disabledColor="#A8D8B0"
+          onDelete={isEditMode ? handleDelete : undefined}
+        />
+      )}
 
       <ToastMessage toast={toast} />
     </div>

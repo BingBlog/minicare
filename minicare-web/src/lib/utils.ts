@@ -4,6 +4,16 @@
  */
 import { formatScoop } from '@/pages/records/feeding/scoopUtils'
 import { milkTypeOptions } from '@/pages/records/feeding/types'
+import {
+  SLEEP_PERIOD_LABELS,
+  SLEEP_QUALITY_LABELS,
+  DIAPER_TYPE_LABELS,
+  POOP_TYPE_LABELS,
+  ACTIVITY_TYPE_LABELS,
+  ACTIVITY_INTENSITY_LABELS,
+  MOOD_LABELS,
+  SPIRIT_LABELS,
+} from '@/lib/constants'
 
 // ────────────────────────────────────────────────────────────────────────────
 // 日期 / 时间格式化
@@ -176,71 +186,6 @@ export function getRecordType(rec: { type?: string }): string {
 const MILK_TYPE_LABELS: Record<string, string> = Object.fromEntries(
   milkTypeOptions.map((o) => [o.key, o.label])
 )
-
-/** 睡眠时段 key → 中文名 */
-const SLEEP_PERIOD_LABELS: Record<string, string> = {
-  night:         '夜觉',
-  morning_nap:   '上午觉',
-  afternoon_nap: '下午觉',
-  other:         '其他',
-}
-
-/** 睡眠质量 key → 中文名 */
-const SLEEP_QUALITY_LABELS: Record<string, string> = {
-  good:   '质量好',
-  normal: '一般',
-  poor:   '较差',
-}
-
-/** 尿布类型 key → 中文名 */
-const DIAPER_TYPE_LABELS: Record<string, string> = {
-  wet:   '小便',
-  dirty: '大便',
-  mixed: '混合',
-  dry:   '干净',
-}
-
-/** 大便性状 key → 中文名 */
-const POOP_TYPE_LABELS: Record<string, string> = {
-  normal_soft:  '正常软便',
-  loose:        '稀便',
-  watery:       '水样便',
-  hard:         '干硬粒',
-  bloody:       '血丝便',
-  normal_form:  '正常成形',
-}
-
-/** 活动类型 key → 中文名 */
-const ACTIVITY_TYPE_LABELS: Record<string, string> = {
-  bath:       '洗澡',
-  outdoor:    '户外活动',
-  play:       '玩耍',
-  tummy_time: '俯趴练习',
-  other:      '其他活动',
-}
-
-/** 活动强度 key → 中文名 */
-const ACTIVITY_INTENSITY_LABELS: Record<string, string> = {
-  easy:   '轻松',
-  medium: '适中',
-  active: '活跃',
-}
-
-/** 情绪 key → 中文名 */
-const MOOD_LABELS: Record<string, string> = {
-  happy:   '开心',
-  neutral: '平静',
-  fussy:   '烦躁',
-  crying:  '哭闹',
-}
-
-/** 精神 key → 中文名 */
-const SPIRIT_LABELS: Record<string, string> = {
-  active:    '精神活跃',
-  normal:    '精神正常',
-  tired:     '有点累',
-  lethargic: '萎靡',
-}
 
 /**
  * 根据记录数据生成简短的可读摘要

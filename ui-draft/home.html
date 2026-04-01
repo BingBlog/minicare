@@ -391,6 +391,132 @@
         stroke-width: 1.5;
       }
 
+      /* ── 时间线：重点数值展示 ── */
+
+      /* 关键数值 chip（奶量、时长等） */
+      .tl-metric {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 1px;
+        background: var(--primary-lt);
+        border-radius: 6px;
+        padding: 1px 7px;
+        margin-left: 6px;
+        vertical-align: middle;
+        flex-shrink: 0;
+      }
+      .tl-metric-val {
+        font-size: 15px;
+        font-weight: 800;
+        color: var(--primary);
+        letter-spacing: -0.5px;
+        line-height: 1.2;
+      }
+      .tl-metric-unit {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--primary);
+        opacity: 0.8;
+        margin-left: 1px;
+      }
+
+      /* 睡眠进行中：活跃状态时长 */
+      .tl-metric.active {
+        background: #fff0f4;
+        border: 1px solid var(--primary-md);
+      }
+      .tl-metric.active .tl-metric-val {
+        color: var(--primary);
+      }
+
+      /* 睡眠完成：温和暖金色 */
+      .tl-metric.done {
+        background: var(--yellow-lt);
+      }
+      .tl-metric.done .tl-metric-val,
+      .tl-metric.done .tl-metric-unit {
+        color: var(--yellow-dk);
+      }
+
+      /* 尿布类型 pills */
+      .tl-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-top: 5px;
+      }
+      .tl-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        padding: 3px 8px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+        line-height: 1.3;
+      }
+      .tl-pill.poop {
+        background: #fff8ec;
+        color: #b07820;
+      }
+      .tl-pill.pee {
+        background: #e8f5fd;
+        color: #2080b8;
+      }
+      .tl-pill.poop-warn {
+        background: var(--orange-lt);
+        color: var(--orange-dk);
+        border: 1px solid rgba(245,166,35,0.3);
+      }
+
+      /* 辅食 / 营养素 highlight */
+      .tl-food-row {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 4px;
+        margin-top: 4px;
+      }
+      .tl-food-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        padding: 2px 7px;
+        border-radius: 5px;
+        font-size: 11px;
+        font-weight: 600;
+        background: #fff8ec;
+        color: #b07820;
+      }
+
+      /* 时间线标题行 flex 布局 */
+      .tl-title-row {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 4px;
+        line-height: 1.4;
+      }
+
+      /* 进行中状态小点（已有 sleep-dot，这里复用为内联版） */
+      .tl-live-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--primary);
+        animation: pulse-pink 2s infinite;
+        flex-shrink: 0;
+        display: inline-block;
+        margin-right: 2px;
+        vertical-align: middle;
+      }
+
+      /* 活动类型 chip */
+      .tl-pill.activity {
+        background: var(--primary-lt);
+        color: var(--primary-dk);
+      }
+
       /* 转奶进度 */
       .trans-body {
         padding: 0 16px 16px;
@@ -716,10 +842,10 @@
         <div class="content-card">
           <div class="card-label-row">
             <span class="card-label">今日时间线</span>
-            <span class="card-label-link" onclick="nav('records.html')"
-              >全部 ›</span
-            >
+            <span class="card-label-link" onclick="nav('records.html')">全部 ›</span>
           </div>
+
+          <!-- ① 睡眠·进行中 —— 核心：实时时长 + 进行中状态 -->
           <div class="list-row" onclick="nav('form-sleep.html')">
             <span class="tl-time">08:45</span>
             <div class="tl-icon" style="background: #fff0f4">
@@ -728,22 +854,21 @@
               </svg>
             </div>
             <div class="tl-body">
-              <div class="tl-title" style="color: #7a5a60">
-                睡眠进行中
-                <span
-                  style="
-                    color: var(--primary);
-                    font-size: 11px;
-                    font-weight: 700;
-                    margin-left: 4px;
-                  "
-                  >1h 23m</span
-                >
+              <div class="tl-title-row">
+                <span class="tl-title" style="color: #7a5a60">
+                  <span class="tl-live-dot"></span>睡眠中
+                </span>
+                <!-- 重点：实时时长用 active metric chip 突出 -->
+                <span class="tl-metric active">
+                  <span class="tl-metric-val">1h 23m</span>
+                </span>
               </div>
-              <div class="tl-desc">上午小睡</div>
+              <div class="tl-desc" style="margin-top: 3px">上午小睡</div>
             </div>
             <span class="tl-arrow">›</span>
           </div>
+
+          <!-- ② 喂奶 08:00 —— 核心：奶量数值 -->
           <div class="list-row" onclick="nav('form-feeding.html')">
             <span class="tl-time">08:00</span>
             <div class="tl-icon" style="background: #fff0f4">
@@ -752,11 +877,20 @@
               </svg>
             </div>
             <div class="tl-body">
-              <div class="tl-title" style="color: #7a5a60">喂奶 120ml</div>
-              <div class="tl-desc">氨基酸奶粉 · 转奶进度 Day 3</div>
+              <div class="tl-title-row">
+                <span class="tl-title" style="color: #7a5a60">喂奶</span>
+                <!-- 重点：奶量用 metric chip -->
+                <span class="tl-metric">
+                  <span class="tl-metric-val">120</span>
+                  <span class="tl-metric-unit">ml</span>
+                </span>
+              </div>
+              <div class="tl-desc" style="margin-top: 3px">氨基酸奶粉 · 转奶进度 Day 3</div>
             </div>
             <span class="tl-arrow">›</span>
           </div>
+
+          <!-- ③ 尿布 07:30 —— 核心：大便/小便类型与次数 pills -->
           <div class="list-row" onclick="nav('form-diaper.html')">
             <span class="tl-time">07:30</span>
             <div class="tl-icon" style="background: #e8f5e9">
@@ -765,11 +899,17 @@
               </svg>
             </div>
             <div class="tl-body">
-              <div class="tl-title" style="color: #7a5a60">尿布</div>
-              <div class="tl-desc">大便 ×1（软便）· 小便 ×2</div>
+              <div class="tl-title" style="color: #7a5a60">换尿布</div>
+              <!-- 重点：类型次数用彩色 pill 展示 -->
+              <div class="tl-pills">
+                <span class="tl-pill poop">💩 软便 ×1</span>
+                <span class="tl-pill pee">💧 小便 ×2</span>
+              </div>
             </div>
             <span class="tl-arrow">›</span>
           </div>
+
+          <!-- ④ 喂奶 07:00 + 辅食新食物 —— 核心：奶量 + 辅食新食物警示 -->
           <div class="list-row" onclick="nav('form-feeding.html')">
             <span class="tl-time">07:00</span>
             <div class="tl-icon" style="background: #fff0f4">
@@ -778,10 +918,20 @@
               </svg>
             </div>
             <div class="tl-body">
-              <div class="tl-title" style="color: #7a5a60">喂奶 120ml</div>
-              <div class="tl-desc">
-                辅食：南瓜泥 20g
-                <span class="badge tag-new"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;vertical-align:-1px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> 新食物 D3</span>
+              <div class="tl-title-row">
+                <span class="tl-title" style="color: #7a5a60">喂奶</span>
+                <span class="tl-metric">
+                  <span class="tl-metric-val">120</span>
+                  <span class="tl-metric-unit">ml</span>
+                </span>
+              </div>
+              <!-- 重点：辅食信息 + 新食物标签提升到独立行 -->
+              <div class="tl-food-row">
+                <span class="tl-food-chip">🥕 南瓜泥 20g</span>
+                <span class="badge tag-new" style="vertical-align:middle">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px;vertical-align:-1px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                  新食物 D3
+                </span>
               </div>
             </div>
             <span class="tl-arrow">›</span>
