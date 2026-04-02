@@ -29,16 +29,19 @@ async function bootstrap() {
     }),
   );
 
-  // ── CORS（允许 Web H5 本地开发和线上域名）──────────────────────
-  app.enableCors({
-    origin: [
-      'http://localhost:5173',
-      'http://127.0.0.1:5173',
-      /\.tcloudbaseapp\.com$/,
-      /\.app\.tcloudbase\.com$/,
-    ],
-    credentials: true,
-  });
+  // ── CORS ──────────────────────────────────────────────────────
+  // 生产环境（CloudRun）：网关已注入 CORS 头，NestJS 不再重复设置，
+  // 否则会出现 Access-Control-Allow-Origin 重复头导致浏览器拒绝。
+  // 本地开发：正常启用 CORS。
+  if (process.env.NODE_ENV !== 'production') {
+    app.enableCors({
+      origin: [
+        'http://localhost:5173',
+        'http://127.0.0.1:5173',
+      ],
+      credentials: true,
+    });
+  }
 
   // ── Swagger（仅非生产环境）────────────────────────────────────
   if (process.env.NODE_ENV !== 'production') {

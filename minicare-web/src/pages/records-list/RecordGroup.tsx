@@ -41,12 +41,15 @@ export default function RecordGroup({ group, onRecordClick }: RecordGroupProps) 
     <div>
       {/* 日期分组标题 */}
       <div
-        className="flex items-center gap-1.5 px-5 py-3.5 pt-4"
+        className="flex items-center gap-1.5 px-5"
         style={{
-          fontSize: 13,
-          fontWeight: 700,
+          fontSize: 12,
+          fontWeight: 600,
+          paddingTop: 16,
+          paddingBottom: 8,
           /* 今天用深色，历史用浅色 */
           color: group.isToday ? '#7A5A60' : '#9A8090',
+          letterSpacing: '0.2px',
         }}
       >
         {/* 圆点：今天品牌粉色，历史灰色 */}

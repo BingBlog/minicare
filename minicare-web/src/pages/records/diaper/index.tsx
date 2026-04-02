@@ -14,7 +14,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAppStore } from "@/lib/store";
 import { recordsApi } from "@/api";
-import type { DiaperRecord, DiaperType } from "@/api/types";
+import type { DiaperRecord, DiaperType, PoopType } from "@/api/types";
 import TimePicker from "@/components/TimePicker";
 
 import DiaperTypeSection from "./DiaperTypeSection";
@@ -66,7 +66,7 @@ export default function DiaperFormPage() {
   const [diaperCount, setDiaperCount] = useState(editRecord?.diaper_count ?? 1);
 
   // 大便性状（单选，null = 未选）
-  const [poopType, setPoopType] = useState<string | null>(editRecord?.poop_type ?? null);
+  const [poopType, setPoopType] = useState<PoopType | null>((editRecord?.poop_type ?? null) as PoopType | null);
 
   // 颜色 Chip 多选（从编辑记录恢复，存储的颜色可能是多个用逗号分隔）
   const [colorSelected, setColorSelected] = useState<Set<string>>(() => {
@@ -124,7 +124,7 @@ export default function DiaperFormPage() {
         diaper_type: diaperType,
         record_time: timeToISO(recordDate, recordTime),
         color: colorStr,
-        poop_type: (showPoop && poopType ? poopType : undefined) as DiaperRecord["poop_type"],
+        poop_type: (showPoop && poopType ? poopType : undefined) ?? undefined,
         diaper_count: diaperCount !== 1 ? diaperCount : undefined,
         note: note || undefined,
       };
@@ -197,7 +197,7 @@ export default function DiaperFormPage() {
         {showPoop && (
           <PoopSection
             poopType={poopType}
-            onPoopTypeChange={setPoopType}
+            onPoopTypeChange={(key) => setPoopType(key as PoopType | null)}
             colorSelected={colorSelected}
             onToggleColor={toggleColor}
           />

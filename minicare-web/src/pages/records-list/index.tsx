@@ -23,6 +23,10 @@ import RecordGroup from "./RecordGroup";
 import RecordActionSheet from "./RecordActionSheet";
 import { getRecordTime, getDateKey, getDateLabel, getRecordType } from "@/lib/utils";
 import { RECORD_ROUTES } from "@/lib/constants";
+import {
+  IconMilk, IconMoon, IconDroplets, IconActivity,
+  IconHeart, IconSmile, IconRuler, IconStethoscope,
+} from "@/components/ui/icons";
 import type { RecordItem } from "@/api";
 import type { FilterChipOption } from "@/components/record/FilterChip";
 import type { ActionRecord } from "./RecordActionSheet";
@@ -33,16 +37,17 @@ type RecordTypeKey = "feeding" | "sleep" | "diaper" | "activity" | "health" | "g
 /** 所有支持的记录类型 key */
 const ALL_TYPE_KEYS: RecordTypeKey[] = ["feeding", "sleep", "diaper", "activity", "health", "growth", "medical", "symptom"];
 
-// ── 筛选栏配置 ──────────────────────────────────────────────────────────────
+// ── 筛选栏配置（不含「今天」，今天已提升为标题行独立按钮） ────────────────
 const FILTER_CHIPS: FilterChipOption[] = [
-  { key: "all", label: "全部" },
-  { key: "feeding", label: "饮食" },
-  { key: "sleep", label: "睡眠" },
-  { key: "activity", label: "活动" },
-  { key: "diaper", label: "尿布" },
-  { key: "health", label: "健康" },
-  { key: "symptom", label: "表现" },
-  { key: "today", label: "今天" },
+  { key: "all",      label: "全部" },
+  { key: "feeding",  label: "饮食",  icon: <IconMilk size={12} color="currentColor" /> },
+  { key: "sleep",    label: "睡眠",  icon: <IconMoon size={12} color="currentColor" /> },
+  { key: "activity", label: "活动",  icon: <IconActivity size={12} color="currentColor" /> },
+  { key: "diaper",   label: "尿布",  icon: <IconDroplets size={12} color="currentColor" /> },
+  { key: "health",   label: "健康",  icon: <IconHeart size={12} color="currentColor" /> },
+  { key: "symptom",  label: "表现",  icon: <IconSmile size={12} color="currentColor" /> },
+  { key: "growth",   label: "生长",  icon: <IconRuler size={12} color="currentColor" /> },
+  { key: "medical",  label: "医疗",  icon: <IconStethoscope size={12} color="currentColor" /> },
 ];
 
 export default function RecordsPage() {
@@ -52,6 +57,7 @@ export default function RecordsPage() {
 
   const [records, setRecords] = useState<RecordItem[]>([]);
   const [activeFilter, setActiveFilter] = useState("all");
+  const [todayOnly, setTodayOnly] = useState(false);
   const [loading, setLoading] = useState(true);
 
   // 当前被操作的记录（用于 ActionSheet）
@@ -72,7 +78,7 @@ export default function RecordsPage() {
     }
   >;
 
-  // ── 数据加载（依赖 currentFamily / currentBaby / activeFilter / refreshKey） ─
+  // ── 数据加载（依赖 currentFamily / currentBaby / activeFilter / todayOnly / refreshKey） ─
   useEffect(() => {
     async function load() {
       if (!currentFamily || !currentBaby) {
@@ -83,7 +89,7 @@ export default function RecordsPage() {
       try {
         let allRecs: RecordItem[] = [];
 
-        if (activeFilter === "all" || activeFilter === "today") {
+        if (activeFilter === "all") {
           // 并发加载所有类型（使用 allSettled 避免某一类失败影响其他）
           const results = await Promise.allSettled(
             ALL_TYPE_KEYS.map((t) =>
@@ -106,8 +112,8 @@ export default function RecordsPage() {
           return new Date(getRecordTime(b)).getTime() - new Date(getRecordTime(a)).getTime();
         });
 
-        // "今天"筛选：过滤只保留今日记录
-        if (activeFilter === "today") {
+        // 「今天」时间过滤（由标题行切换按钮驱动，与类型筛选正交）
+        if (todayOnly) {
           const todayKey = getDateKey(new Date().toISOString());
           allRecs = allRecs.filter((r) => getDateKey(getRecordTime(r)) === todayKey);
         }
@@ -122,7 +128,7 @@ export default function RecordsPage() {
     }
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentFamily, currentBaby, activeFilter, refreshKey]);
+  }, [currentFamily, currentBaby, activeFilter, todayOnly, refreshKey]);
 
   // ── 无家庭/宝宝时的占位 ───────────────────────────────────────────────────
   if (!currentFamily || !currentBaby) {
@@ -193,7 +199,14 @@ export default function RecordsPage() {
   return (
     <div className="min-h-full bg-bg flex flex-col">
       {/* ── 筛选栏 ── */}
-      <FilterBar options={FILTER_CHIPS} activeKey={activeFilter} onChange={setActiveFilter} />
+      <FilterBar
+        options={FILTER_CHIPS}
+        activeKey={activeFilter}
+        onChange={setActiveFilter}
+        count={loading ? undefined : records.length}
+        todayOnly={todayOnly}
+        onToggleToday={() => setTodayOnly((v) => !v)}
+      />
 
       {/* ── 记录列表 ── */}
       <div className="flex-1 overflow-y-auto pb-24">

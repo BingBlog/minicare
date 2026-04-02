@@ -122,7 +122,10 @@ export type {
   MedicalRecord,
   // Symptom
   SymptomItem,
+  SpiritLevel,
+  MoodLevel,
   CreateSymptomDto,
+  UpdateSymptomDto,
   SymptomRecord,
   // Timeline
   TodayRecord,
