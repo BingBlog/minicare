@@ -15,6 +15,15 @@ import {
   type BabyFood,
   type FoodCategory,
 } from "@/api/babyFoods";
+import {
+  IconSearch,
+  IconAlertTriangle,
+  IconGrain,
+  IconVegetable,
+  IconFruit,
+  IconMeatEgg,
+  IconBean,
+} from "@/components/ui/icons";
 
 interface Props {
   /** 已添加的辅食列表 */
@@ -30,6 +39,15 @@ interface Props {
   /** 删除某项辅食 */
   onRemove: (idx: number) => void;
 }
+
+/** 分类对应图标组件映射 */
+const CATEGORY_ICONS: Record<string, React.FC<{ size?: number; color?: string }>> = {
+  grain:     IconGrain,
+  vegetable: IconVegetable,
+  fruit:     IconFruit,
+  meat_egg:  IconMeatEgg,
+  bean:      IconBean,
+};
 
 /** 分类对应颜色
  *  chipBgLight — 未选中时的极浅背景
@@ -107,9 +125,12 @@ export default function FoodSection({
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  /** 点击快捷 chip 直接添加 */
+  /** 点击快捷 chip：已添加则取消，未添加则直接添加 */
   const handleQuickAdd = (name: string) => {
-    if (!foodList.includes(name)) {
+    const idx = foodList.indexOf(name);
+    if (idx !== -1) {
+      onRemove(idx);
+    } else {
       onDirectAdd(name);
     }
   };
@@ -164,7 +185,7 @@ export default function FoodSection({
           className="bg-white rounded-2xl"
           style={{ boxShadow: "0 1px 6px rgba(200,100,120,0.08)" }}>
           <div className="flex items-center gap-2 px-4 py-3">
-            <span className="text-[14px] text-[#D0B8BC]">🔍</span>
+            <IconSearch size={14} color="#D0B8BC" />
             <input
               ref={inputRef}
               type="text"
@@ -223,15 +244,19 @@ export default function FoodSection({
                       idx < suggestions.length - 1 ? "0.5px solid #F5EEF0" : "none",
                   }}>
                   <span
-                    className="text-[11px] px-1.5 py-0.5 rounded-full font-medium flex-shrink-0"
+                    className="inline-flex items-center gap-1 text-[11px] px-1.5 py-0.5 rounded-full font-medium flex-shrink-0"
                     style={{ background: colors.chipBg, color: colors.chipText }}>
-                    {catLabel?.emoji} {catLabel?.label}
+                    {catLabel && (() => { const CatIcon = CATEGORY_ICONS[catLabel.key]; return CatIcon ? <CatIcon size={10} color={colors.chipText} /> : null; })()}
+                    {catLabel?.label}
                   </span>
                   <span className="text-[13px] text-[#4A3035] font-medium flex-1">
                     {food.name}
                   </span>
                   {food.allergen && (
-                    <span className="text-[10px] text-[#F87098]">⚠️ 过敏原</span>
+                    <span className="inline-flex items-center gap-0.5 text-[10px] text-[#F87098]">
+                      <IconAlertTriangle size={10} color="#F87098" />
+                      过敏原
+                    </span>
                   )}
                   {food.note && (
                     <span className="text-[11px] text-[#B09098] truncate max-w-[100px]">
@@ -274,7 +299,7 @@ export default function FoodSection({
                         ? `1.5px solid ${colors.activeBg}`
                         : "1.5px solid transparent",
                     }}>
-                    <span>{cat.emoji}</span>
+                    {(() => { const CatIcon = CATEGORY_ICONS[cat.key]; return CatIcon ? <CatIcon size={12} color={isActive ? "#fff" : colors.text} /> : null; })()}
                     <span>{cat.label}</span>
                   </button>
                 );
@@ -296,13 +321,16 @@ export default function FoodSection({
                         onClick={() => handleQuickAdd(food.name)}
                         className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-[12px] font-medium transition-all"
                         style={{
-                          background: isAdded ? colors.activeBg : colors.chipBgLight,
-                          color: isAdded ? "#fff" : colors.chipText,
+                          background: isAdded ? colors.chipBg : colors.chipBgLight,
+                          color: isAdded ? colors.chipText : colors.chipText,
+                          border: isAdded
+                            ? `1.5px solid ${colors.activeBg}55`
+                            : "1.5px solid transparent",
                           cursor: "pointer",
                         }}>
                         {food.name}
-                        {food.allergen && (
-                          <span style={{ fontSize: 9, opacity: isAdded ? 0.85 : 1 }}>⚠️</span>
+                        {food.allergen && !isAdded && (
+                          <IconAlertTriangle size={9} color={colors.chipText} />
                         )}
                         {food.popularity === 1 && !isAdded && (
                           <span
@@ -312,7 +340,16 @@ export default function FoodSection({
                           </span>
                         )}
                         {isAdded && (
-                          <span style={{ fontSize: 11, opacity: 0.9 }}>✓</span>
+                          <span
+                            className="w-3.5 h-3.5 rounded-full flex items-center justify-center flex-shrink-0"
+                            style={{
+                              background: colors.activeBg,
+                              color: "#fff",
+                              fontSize: 9,
+                              lineHeight: 1,
+                            }}>
+                            ×
+                          </span>
                         )}
                       </button>
                     );
@@ -322,8 +359,9 @@ export default function FoodSection({
                 {/* 过敏原提示 */}
                 {activeCategoryFoods.some((f) => f.allergen) && (
                   <div className="px-4 pb-3">
-                    <span className="text-[11px] text-[#C0A8B0]">
-                      ⚠️ 标注项为常见过敏原，建议少量引入观察3天
+                    <span className="inline-flex items-center gap-1 text-[11px] text-[#C0A8B0]">
+                      <IconAlertTriangle size={11} color="#C0A8B0" />
+                      标注项为常见过敏原，建议少量引入观察3天
                     </span>
                   </div>
                 )}

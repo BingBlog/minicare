@@ -549,6 +549,60 @@ export const IconClock = ({ size = 12, color = 'currentColor', style, className 
   </svg>
 )
 
+// ── 辅食分类图标 ────────────────────────────────────────────────────────────
+
+/** 主食/米粒 */
+export const IconGrain = ({ size = 14, color = 'currentColor', style, className }: IconProps) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
+    strokeLinecap="round" strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }} className={className}>
+    <path d="M12 2a4 4 0 0 1 4 4c0 1.5-.7 2.8-1.8 3.6A4 4 0 0 1 16 13a4 4 0 0 1-8 0 4 4 0 0 1 1.8-3.4A4 4 0 0 1 8 6a4 4 0 0 1 4-4z"/>
+    <line x1="12" y1="17" x2="12" y2="22"/>
+  </svg>
+)
+
+/** 蔬菜/叶子 */
+export const IconVegetable = ({ size = 14, color = 'currentColor', style, className }: IconProps) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
+    strokeLinecap="round" strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }} className={className}>
+    <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/>
+    <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+  </svg>
+)
+
+/** 水果/苹果 */
+export const IconFruit = ({ size = 14, color = 'currentColor', style, className }: IconProps) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
+    strokeLinecap="round" strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }} className={className}>
+    <path d="M12 20.94c1.5.05 5.37-4.02 5.5-8.57.13-4.35-2.77-7.8-6.27-7.36C7.73 5.46 5.37 9.35 5.5 13.37 5.63 17.4 9.5 20.89 12 20.94z"/>
+    <path d="M12 5V2"/>
+    <path d="M12 2c0 0 2-1 3-2"/>
+  </svg>
+)
+
+/** 肉蛋/鸡腿 */
+export const IconMeatEgg = ({ size = 14, color = 'currentColor', style, className }: IconProps) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
+    strokeLinecap="round" strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }} className={className}>
+    <path d="M15 11l-4.5 4.5a2.12 2.12 0 0 0 3 3L18 14"/>
+    <path d="M9.5 9.5c-.67-.67-1.5-1-2.5-1a4.5 4.5 0 0 0 0 9c1 0 1.83-.33 2.5-1"/>
+    <path d="M14.5 4.5c.67.67 1 1.5 1 2.5a4.5 4.5 0 0 1-9 0c0-1 .33-1.83 1-2.5"/>
+  </svg>
+)
+
+/** 豆制品/豆子 */
+export const IconBean = ({ size = 14, color = 'currentColor', style, className }: IconProps) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
+    strokeLinecap="round" strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }} className={className}>
+    <path d="M10.5 22C6.5 22 3 18.5 3 14.5a7.5 7.5 0 0 1 7.5-7.5c2.5 0 4.5 1 6 2.5 1.5 1.5 2.5 3.5 2.5 5.5 0 3.5-3 6.5-6.5 7z"/>
+    <path d="M13.5 2C17.5 2 21 5.5 21 9.5a7.5 7.5 0 0 1-7.5 7.5c-2.5 0-4.5-1-6-2.5"/>
+  </svg>
+)
+
 // ── 挥手图标（首页问候） ────────────────────────────────────────────────────
 export const IconWave = ({ size = 16, color = 'rgba(255,255,255,0.9)', style, className }: IconProps) => (
   <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"

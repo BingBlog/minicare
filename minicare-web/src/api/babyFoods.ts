@@ -19,7 +19,6 @@ export interface BabyFood {
 export interface FoodCategory {
   key: string
   label: string
-  emoji: string
 }
 
 interface BabyFoodsResponse {

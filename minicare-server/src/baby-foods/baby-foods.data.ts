@@ -393,9 +393,9 @@ export const BABY_FOODS: BabyFood[] = [
 
 /** 分类配置 */
 export const FOOD_CATEGORIES = [
-  { key: 'grain', label: '主食', emoji: '🌾' },
-  { key: 'vegetable', label: '蔬菜', emoji: '🥦' },
-  { key: 'fruit', label: '水果', emoji: '🍎' },
-  { key: 'meat_egg', label: '肉蛋', emoji: '🥩' },
-  { key: 'bean', label: '豆制品', emoji: '🫘' },
+  { key: 'grain', label: '主食' },
+  { key: 'vegetable', label: '蔬菜' },
+  { key: 'fruit', label: '水果' },
+  { key: 'meat_egg', label: '肉蛋' },
+  { key: 'bean', label: '豆制品' },
 ] as const;
