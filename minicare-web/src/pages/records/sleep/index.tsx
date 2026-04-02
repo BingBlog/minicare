@@ -60,6 +60,38 @@ function calcDurationMin(startTime: string, endTime: string): number {
   return Math.round((e - s) / 60000);
 }
 
+/**
+ * 将一对 HH:mm 时间字符串（startTime / endTime）转为正确的 ISO 字符串对。
+ *
+ * 处理跨午夜情况：若 endTime < startTime，则 endDate = startDate + 1 天。
+ *
+ * 例：startDate="2026-04-02", startTime="22:34", endTime="07:48"
+ *   → startISO = "2026-04-02T22:34:00"
+ *   → endISO   = "2026-04-03T07:48:00"  ← 自动加了一天
+ */
+function timePairToISO(
+  startDateStr: string,
+  startTime: string,
+  endTime: string,
+): { startISO: string; endISO: string } {
+  const startISO = `${startDateStr}T${startTime}:00`;
+
+  const sMs = new Date(`2000-01-01T${startTime}:00`).getTime();
+  const eMs = new Date(`2000-01-01T${endTime}:00`).getTime();
+
+  if (eMs >= sMs) {
+    // 同一天（或恰好相等）
+    return { startISO, endISO: `${startDateStr}T${endTime}:00` };
+  }
+
+  // 跨午夜：end 日期 = start 日期 + 1
+  const startDate = new Date(`${startDateStr}T00:00:00`);
+  startDate.setDate(startDate.getDate() + 1);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  const endDateStr = `${startDate.getFullYear()}-${pad(startDate.getMonth() + 1)}-${pad(startDate.getDate())}`;
+  return { startISO, endISO: `${endDateStr}T${endTime}:00` };
+}
+
 export default function SleepFormPage() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -203,7 +235,14 @@ export default function SleepFormPage() {
   };
 
   // ── 补录模式状态 ────────────────────────────────────────────────
-  const [recordDate] = useState(nowDate());
+  // 编辑模式：recordDate 取原始 start_time 的日期（可随 getOne 刷新后更新）
+  const [recordDate, setRecordDate] = useState(() => {
+    if (editRecord?.start_time) {
+      const d = new Date(editRecord.start_time);
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    }
+    return nowDate();
+  });
   const [startTime, setStartTime] = useState(() => {
     if (editRecord?.start_time) return isoToLocalTime(editRecord.start_time);
     const d = new Date();
@@ -235,7 +274,14 @@ export default function SleepFormPage() {
     recordsApi.sleep.getOne(currentFamily.id, editRecord.id)
       .then((fresh) => {
         if (!fresh) return;
-        if (fresh.start_time) setStartTime(isoToLocalTime(fresh.start_time));
+        if (fresh.start_time) {
+          setStartTime(isoToLocalTime(fresh.start_time));
+          // 同步更新 recordDate 为实际 start_time 所在日期
+          const d = new Date(fresh.start_time);
+          setRecordDate(
+            `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`
+          );
+        }
         if (fresh.end_time) setEndTime(isoToLocalTime(fresh.end_time));
         if (fresh.sleep_period) setSleepPeriod(fresh.sleep_period);
         if (fresh.quality) setSleepQuality(fresh.quality as SleepQuality);
@@ -263,8 +309,8 @@ export default function SleepFormPage() {
           setSubmitting(false);
           return;
         }
-        const startISO = timeToISO(recordDate, startTime);
-        const endISO = timeToISO(recordDate, endTime);
+        // 使用跨午夜感知的 timePairToISO，夜间睡眠 end < start 时自动推到次日
+        const { startISO, endISO } = timePairToISO(recordDate, startTime, endTime);
 
         await recordsApi.sleep.update(currentFamily.id, editRecord.id, {
           start_time: startISO,
@@ -285,8 +331,8 @@ export default function SleepFormPage() {
         setSubmitting(false);
         return;
       }
-      const startISO = timeToISO(recordDate, startTime);
-      const endISO = timeToISO(recordDate, endTime);
+      // 使用跨午夜感知的 timePairToISO
+      const { startISO, endISO } = timePairToISO(recordDate, startTime, endTime);
 
       const { id: sleepId } = await recordsApi.sleep.startSleep(currentFamily.id, {
         baby_id: currentBaby.id,

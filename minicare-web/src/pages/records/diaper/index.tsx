@@ -63,7 +63,7 @@ export default function DiaperFormPage() {
   });
 
   // 今日次数
-  const [diaperCount, setDiaperCount] = useState(editRecord?.diaper_count ?? 3);
+  const [diaperCount, setDiaperCount] = useState(editRecord?.diaper_count ?? 1);
 
   // 大便性状（单选，null = 未选）
   const [poopType, setPoopType] = useState<string | null>(editRecord?.poop_type ?? null);
@@ -125,7 +125,7 @@ export default function DiaperFormPage() {
         record_time: timeToISO(recordDate, recordTime),
         color: colorStr,
         poop_type: (showPoop && poopType ? poopType : undefined) as DiaperRecord["poop_type"],
-        diaper_count: diaperCount !== 3 ? diaperCount : undefined,
+        diaper_count: diaperCount !== 1 ? diaperCount : undefined,
         note: note || undefined,
       };
 

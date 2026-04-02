@@ -146,6 +146,20 @@ export default function FeedingFormPage() {
     return dose;
   });
 
+  // ── 营养素「其他」自由输入状态 ─────────────────────
+  const [suppOtherName, setSuppOtherName] = useState<string>(() => {
+    const other = editRecord?.supplement_items?.find((i) => i.key === "other");
+    return other?.label ?? "";
+  });
+  const [suppOtherDose, setSuppOtherDose] = useState<string>(() => {
+    const other = editRecord?.supplement_items?.find((i) => i.key === "other");
+    return other?.dose ?? "";
+  });
+  const [suppOtherUnit, setSuppOtherUnit] = useState<string>(() => {
+    const other = editRecord?.supplement_items?.find((i) => i.key === "other");
+    return other?.unit ?? "";
+  });
+
   /** 切换营养素勾选 */
   const toggleSupp = (key: string) => {
     setSuppChecked((p) => ({ ...p, [key]: !p[key] }));
@@ -177,13 +191,23 @@ export default function FeedingFormPage() {
         if (fresh.breast_side) setBreastSide(fresh.breast_side as 'left' | 'right' | 'both');
         if (fresh.duration_min != null) setDurationMin(fresh.duration_min);
         if (fresh.supplement_items && fresh.supplement_items.length > 0) {
-          const checked: Record<string, boolean> = {};
-          const dose: Record<string, string> = {};
+          const newChecked: Record<string, boolean> = {};
+          const newDose: Record<string, string> = {};
           for (const item of fresh.supplement_items) {
-            if (item.key) { checked[item.key] = true; if (item.dose) dose[item.key] = item.dose; }
+            if (item.key && item.key !== "other") {
+              newChecked[item.key] = true;
+              if (item.dose) newDose[item.key] = item.dose;
+            }
           }
-          setSuppChecked(checked);
-          setSuppDose(dose);
+          setSuppChecked(newChecked);
+          setSuppDose(newDose);
+          // 回填「其他」行
+          const otherItem = fresh.supplement_items.find((i) => i.key === "other");
+          if (otherItem) {
+            setSuppOtherName(otherItem.label ?? "");
+            setSuppOtherDose(otherItem.dose ?? "");
+            setSuppOtherUnit(otherItem.unit ?? "");
+          }
         }
         if (fresh.complementary_food && fresh.complementary_food !== '营养素') {
           setFoodList(fresh.complementary_food.split('、').filter(Boolean));
@@ -209,6 +233,12 @@ export default function FeedingFormPage() {
     if (!t) return;
     setFoodList((prev) => [...prev, t]);
     setFoodInput("");
+  };
+  /** 直接添加辅食名称（快捷chip / 搜索下拉，不经过 inputValue 中转） */
+  const directAddFood = (name: string) => {
+    const t = name.trim();
+    if (!t) return;
+    setFoodList((prev) => (prev.includes(t) ? prev : [...prev, t]));
   };
   const removeFood = (idx: number) =>
     setFoodList((prev) => prev.filter((_, i) => i !== idx));
@@ -291,6 +321,15 @@ export default function FeedingFormPage() {
             dose: suppDose[s.key] || "",
             unit: s.unit,
           }));
+        // 合并「其他」自由输入项（名称不为空时才记录）
+        if (suppOtherName.trim()) {
+          activeSuppItems.push({
+            key: "other",
+            label: suppOtherName.trim(),
+            dose: suppOtherDose || "",
+            unit: suppOtherUnit || "",
+          });
+        }
 
         const payload = {
           baby_id: currentBaby.id,
@@ -389,6 +428,12 @@ export default function FeedingFormPage() {
             dose={suppDose}
             onToggle={toggleSupp}
             onDoseChange={updateSuppDose}
+            otherName={suppOtherName}
+            onOtherNameChange={setSuppOtherName}
+            otherDose={suppOtherDose}
+            onOtherDoseChange={setSuppOtherDose}
+            otherUnit={suppOtherUnit}
+            onOtherUnitChange={setSuppOtherUnit}
           />
         )}
 
@@ -399,6 +444,7 @@ export default function FeedingFormPage() {
             inputValue={foodInput}
             onInputChange={setFoodInput}
             onAdd={addFood}
+            onDirectAdd={directAddFood}
             onRemove={removeFood}
           />
         )}

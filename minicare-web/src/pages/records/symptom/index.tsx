@@ -8,6 +8,14 @@
  * symptoms JSON 必传（当前以 type=6 占位）
  *
  * 编辑模式：通过 location.state.record 携带原始记录数据，回填表单，保存时调用 update API
+ *
+ * spirit 前端→后端映射：
+ *   good      → active
+ *   fussy     → tired    （烦躁不安，映射为 tired）
+ *   lethargic → lethargic
+ *
+ * mood 前端 key 与后端 MoodLevel 完全一致：
+ *   happy / neutral / fussy / crying
  */
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -28,58 +36,54 @@ function isoToLocalTime(iso: string): string {
   return `${d.getHours().toString().padStart(2, "0")}:${d.getMinutes().toString().padStart(2, "0")}`;
 }
 
-/**
- * 前端 MoodSection 的值（happy/normal/sad）→ 后端 MoodLevel (happy/neutral/fussy/crying)
- * 由于 MoodSection 组件使用 happy/normal/sad，这里做一个映射
- * 注意：后端的 neutral/fussy/crying 在编辑时显示为对应的前端值
- */
-function toBackendMood(frontendMood: string): MoodLevel {
-  const map: Record<string, MoodLevel> = {
-    happy: "happy",
-    normal: "neutral",
-    sad: "fussy",   // 低落 → 烦躁（最接近）
-    // 已存储的后端值也透传
-    neutral: "neutral",
-    fussy: "fussy",
-    crying: "crying",
-  };
-  return map[frontendMood] ?? "neutral";
-}
+// ── Spirit 映射 ──────────────────────────────────────────────────
+// 前端三选项: good / fussy / lethargic
+// 后端四枚举: active / normal / tired / lethargic
 
-function toFrontendMood(backendMood: MoodLevel): string {
-  const map: Record<MoodLevel, string> = {
-    happy: "happy",
-    neutral: "normal",
-    fussy: "sad",
-    crying: "sad",
-  };
-  return map[backendMood] ?? "normal";
-}
-
-/**
- * 前端 SpiritSection 的值（calm/normal/active/sleepy）→ 后端 SpiritLevel (active/normal/tired/lethargic)
- */
 function toBackendSpirit(frontendSpirit: string): SpiritLevel {
   const map: Record<string, SpiritLevel> = {
-    calm: "normal",
-    normal: "normal",
-    active: "active",
-    sleepy: "tired",
-    // 已存储的后端值也透传
-    tired: "tired",
-    lethargic: "lethargic",
+    good:      'active',
+    fussy:     'tired',
+    lethargic: 'lethargic',
+    // 兼容旧存储值
+    active:    'active',
+    normal:    'active',
+    tired:     'tired',
+    calm:      'active',
+    sleepy:    'tired',
   };
-  return map[frontendSpirit] ?? "normal";
+  return map[frontendSpirit] ?? 'active';
 }
 
 function toFrontendSpirit(backendSpirit: SpiritLevel): string {
   const map: Record<SpiritLevel, string> = {
-    active: "active",
-    normal: "normal",
-    tired: "sleepy",
-    lethargic: "sleepy",
+    active:    'good',
+    normal:    'good',
+    tired:     'fussy',
+    lethargic: 'lethargic',
   };
-  return map[backendSpirit] ?? "normal";
+  return map[backendSpirit] ?? 'good';
+}
+
+// ── Mood 映射 ────────────────────────────────────────────────────
+// 前端四选项与后端完全一致: happy / neutral / fussy / crying
+
+function toBackendMood(frontendMood: string): MoodLevel {
+  const map: Record<string, MoodLevel> = {
+    happy:   'happy',
+    neutral: 'neutral',
+    fussy:   'fussy',
+    crying:  'crying',
+    // 兼容旧存储值
+    normal:  'neutral',
+    sad:     'fussy',
+  };
+  return map[frontendMood] ?? 'neutral';
+}
+
+function toFrontendMood(backendMood: MoodLevel): string {
+  // 后端值与前端 key 完全一致，直接透传
+  return backendMood ?? 'neutral';
 }
 
 export default function SymptomFormPage() {
@@ -97,19 +101,18 @@ export default function SymptomFormPage() {
     if (editRecord?.record_time) return isoToLocalTime(editRecord.record_time);
     return nowTime();
   });
-  // 使用前端枚举值，提交时转换为后端值
+
   const [mood, setMood] = useState<string>(() => {
     if (editRecord?.mood) return toFrontendMood(editRecord.mood);
     return "happy";
   });
   const [spirit, setSpirit] = useState<string>(() => {
     if (editRecord?.spirit) return toFrontendSpirit(editRecord.spirit);
-    return "normal";
+    return "good";
   });
   const [note, setNote] = useState(editRecord?.note ?? "");
   const [submitting, setSubmitting] = useState(false);
   const [loadingRecord, setLoadingRecord] = useState(isEditMode);
-  // 编辑时保存最新的 symptoms（更新时需要此字段）
   const [latestSymptoms, setLatestSymptoms] = useState(editRecord?.symptoms ?? []);
 
   /** 编辑模式下：进入页面时重新查询后端获取最新数据并回填 */
@@ -142,7 +145,7 @@ export default function SymptomFormPage() {
       if (isEditMode && editRecord) {
         await recordsApi.symptom.update(currentFamily.id, editRecord.id, {
           record_time: timeToISO(recordDate, recordTime),
-          symptoms: latestSymptoms, // 使用最新查询到的症状列表
+          symptoms: latestSymptoms,
           spirit: backendSpirit,
           mood: backendMood,
           note: note || undefined,
@@ -195,7 +198,7 @@ export default function SymptomFormPage() {
         </div>
       )}
 
-      <div className="pb-32">
+      <div className="pb-32 pt-3">
         {/* ── 记录时间 ── */}
         <SectionLabel label="记录时间" />
         <FormSection>
@@ -204,11 +207,13 @@ export default function SymptomFormPage() {
           </div>
         </FormSection>
 
-        {/* ── 心情状态 ── */}
-        <MoodSection value={mood} onChange={setMood} />
+        {/* ── 精神状态（三分类卡片） ── */}
+        <div className="mt-4 mb-1">
+          <SpiritSection value={spirit} onChange={setSpirit} />
+        </div>
 
-        {/* ── 精神状态 ── */}
-        <SpiritSection value={spirit} onChange={setSpirit} />
+        {/* ── 心情状态（四分类卡片） ── */}
+        <MoodSection value={mood} onChange={setMood} />
 
         {/* ── 备注 ── */}
         <SectionLabel label="备注（可选）" />

@@ -39,14 +39,71 @@ export interface SuppItem {
   key: string;
   label: string;
   unit: string;
+  /** 补充说明文字，显示在名称下方 */
+  hint?: string;
+  /** 分组：必吃 | 看情况 */
+  group: "must" | "optional";
 }
 
 export const suppItems: SuppItem[] = [
-  { key: "vitD", label: "维生素 D", unit: "IU" },
-  { key: "iron", label: "铁", unit: "mg" },
-  { key: "probiotic", label: "益生菌", unit: "亿" },
-  { key: "prebiotic", label: "益生元", unit: "g" },
-  { key: "calcium", label: "钙", unit: "mg" },
+  // ── 必吃 ──────────────────────────────────────────────
+  {
+    key: "vitD",
+    label: "维生素 D",
+    unit: "IU",
+    hint: "出生后即补，促钙吸收、防佝偻病",
+    group: "must",
+  },
+  {
+    key: "iron",
+    label: "铁",
+    unit: "mg",
+    hint: "母乳宝宝 4～6 个月后易缺铁",
+    group: "must",
+  },
+  // ── 看情况 ────────────────────────────────────────────
+  {
+    key: "calcium",
+    label: "钙",
+    unit: "mg",
+    hint: "奶量够一般不缺，缺时再补",
+    group: "optional",
+  },
+  {
+    key: "dha",
+    label: "DHA",
+    unit: "mg",
+    hint: "促进大脑、视力发育",
+    group: "optional",
+  },
+  {
+    key: "vitAD",
+    label: "维生素 AD",
+    unit: "IU",
+    hint: "预防夜盲、呼吸道感染、缺钙",
+    group: "optional",
+  },
+  {
+    key: "zinc",
+    label: "锌",
+    unit: "mg",
+    hint: "食欲差、生长慢、易感冒时考虑",
+    group: "optional",
+  },
+  {
+    key: "probiotic",
+    label: "益生菌",
+    unit: "亿",
+    hint: "腹泻、便秘、消化不好时用",
+    group: "optional",
+  },
+  {
+    key: "vitC",
+    label: "维生素 C",
+    unit: "mg",
+    hint: "加辅食后多吃果蔬即可",
+    group: "optional",
+  },
 ];
 
 /** 奶量快捷 chip */

@@ -4,6 +4,7 @@ import {
   Inject,
   Injectable,
   NotFoundException,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import { Pool } from 'mysql2/promise';
 import { v4 as uuidv4 } from 'uuid';
@@ -144,6 +145,12 @@ export class SleepService {
     const newStart = dto.start_time ? new Date(dto.start_time) : new Date(rows[0].start_time);
     const newEnd   = dto.end_time   ? new Date(dto.end_time)   : (rows[0].end_time ? new Date(rows[0].end_time) : null);
     if (newEnd && newStart) {
+      if (newEnd <= newStart) {
+        throw new UnprocessableEntityException(
+          `结束时间（${newEnd.toISOString()}）不能早于或等于开始时间（${newStart.toISOString()}），` +
+          '若为夜间跨午夜睡眠，请确保结束时间日期为次日',
+        );
+      }
       const durationMin = Math.round((newEnd.getTime() - newStart.getTime()) / 60_000);
       setClauses.push('duration_min = ?');
       values.push(durationMin);

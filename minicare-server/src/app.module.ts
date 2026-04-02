@@ -9,6 +9,7 @@ import { RecordsModule } from './records/records.module';
 import { StorageModule } from './storage/storage.module';
 import { WebsocketModule } from './websocket/websocket.module';
 import { SchedulerModule } from './scheduler/scheduler.module';
+import { BabyFoodsModule } from './baby-foods/baby-foods.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { SchedulerModule } from './scheduler/scheduler.module';
     StorageModule,
     WebsocketModule,
     SchedulerModule,
+    BabyFoodsModule,
   ],
 })
 export class AppModule {}

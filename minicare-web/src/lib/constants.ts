@@ -66,7 +66,8 @@ export const FAB_SUBTITLES: Record<string, string> = {
   activity: '爬走练习 · 视力活动 · 户外活动',
   diaper:   '大便次数性状 · 小便次数',
   health:   '过敏表现 · 用药 · 护理',
-  symptom:  '心情状态 · 精神状态',
+  symptom:  '精神状态 · 心情状态',
+
   growth:   '身高 · 体重 · 头围',
   medical:  '儿保 · 过敏检查 · 就诊',
 }
@@ -203,18 +204,18 @@ export const ACTIVITY_INTENSITY_LABELS: Record<string, string> = {
 
 /** 情绪 */
 export const MOOD_LABELS: Record<string, string> = {
-  happy:   '开心',
-  neutral: '平静',
-  fussy:   '烦躁',
-  crying:  '哭闹',
+  happy:   '愉悦满足',
+  neutral: '平静舒适',
+  fussy:   '烦躁不开心',
+  crying:  '痛苦哭闹',
 }
 
 /** 精神状态 */
 export const SPIRIT_LABELS: Record<string, string> = {
-  active:    '精神活跃',
-  normal:    '精神正常',
-  tired:     '有点累',
-  lethargic: '萎靡',
+  active:    '状态良好',
+  normal:    '状态良好',
+  tired:     '烦躁不安',
+  lethargic: '萎靡嗜睡',
 }
 
 /** 就诊类型 */
