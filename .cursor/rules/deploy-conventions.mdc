@@ -1,5 +1,5 @@
 ---
-description: minicare 后端构建与部署规范（CloudRun + tcb CLI）。涵盖 TypeScript 编译配置、.tcbignore 与 .dockerignore 的区别、deploy.sh 检查项、CloudRun 环境变量配置、故障排查。在涉及构建、部署、Dockerfile、tsconfig、deploy.sh 时自动生效。
+description: minicare 后端构建与部署规范（CloudRun + CloudBase MCP 工具）。涵盖 TypeScript 编译配置、Dockerfile、部署预检脚本、CloudRun 环境变量配置、故障排查。在涉及构建、部署、Dockerfile、tsconfig、deploy.sh 时自动生效。
 globs:
   - "minicare-server/Dockerfile"
   - "minicare-server/scripts/deploy.sh"
@@ -14,6 +14,9 @@ alwaysApply: false
 
 # minicare-server 构建与部署规范
 
+> **CloudBase MCP 工具和 Skill 使用规范见** `cloudbase-conventions.mdc`（`alwaysApply: true`，已全局生效）。
+> 本文件专注于**构建流程与预检**，不重复描述 MCP 工具清单和 Skill 读取方式。
+
 ---
 
 ## 一、快速参考（标准构建部署流程）
@@ -23,14 +26,13 @@ alwaysApply: false
 ```bash
 cd minicare-server
 
-# 1. 标准构建 + 部署（一键）
-npm run deploy
+# 1. 编译 TypeScript（生成 dist/）
+npm run build
 
-# 2. 仅检查构建产物大小，不触发部署
-npm run deploy:check
-
-# 3. 查看 CloudRun 已发布版本列表
-npm run deploy:list
+# 2. 运行构建预检（检查 dist/ 大小 / 清理残留 zip）
+npm run deploy        # = npm run build && bash scripts/deploy.sh
+# 或单独预检：
+npm run deploy:check  # = bash scripts/deploy.sh --check
 ```
 
 ### 各 npm script 对应的实际命令
@@ -38,23 +40,60 @@ npm run deploy:list
 | Script | 实际命令 |
 |--------|---------|
 | `npm run build` | `nest build` |
-| `npm run deploy` | `bash scripts/deploy.sh` |
+| `npm run deploy` | `npm run build && bash scripts/deploy.sh` |
 | `npm run deploy:check` | `bash scripts/deploy.sh --check` |
-| `npm run deploy:list` | `tcb run:deprecated version list -e minicare-cloud-6gqledlle0132cbe -s minicare-api` |
+| `npm run deploy:list` | 打印提示，引导使用 MCP 工具查询 |
 
-### 部署脚本执行的 5 个步骤
+### 实际部署命令（CloudBase MCP 工具）
 
-1. **Step 1** — TypeScript 编译：`npm run build` → 产出 `dist/`
-2. **Step 2** — 检查构建产物：大小 / 文件数 / `dist/test/` 是否存在
-3. **Step 3** — 检查 tcb CLI 版本 + `.tcbignore` 是否存在 + 预估上传文件数
-4. **Step 4** — 提示确认 CloudRun 控制台环境变量配置（需手动输入 `y`）
-5. **Step 5** — 调用 `tcb run:deprecated version create` 上传并创建新版本
+**⚠ 部署不再使用 `tcb` CLI，而是使用 CatPaw 内置的 CloudBase MCP 工具。**
 
-> **非交互模式（自动确认）**：`echo "y" | npm run deploy`
+```
+manageCloudRun(
+  action      = 'deploy',
+  serverName  = 'minicare-api',
+  targetPath  = '<绝对路径>/minicare/minicare-server',
+  serverType  = 'container'
+)
+```
+
+查看部署状态：
+```
+queryCloudRun(
+  action           = 'detail',
+  detailServerName = 'minicare-api'
+)
+```
+
+### 完整构建 + 部署流程
+
+1. **编译**：`npm run build` → 产出 `dist/`
+2. **预检**：`bash scripts/deploy.sh` → 清理残留 zip + 检查 `dist/` 大小
+3. **部署**：调用 `manageCloudRun(deploy)` MCP 工具上传并创建新版本（完整参数见 `cloudbase-conventions.mdc` § 4.1）
+4. **验证**：`queryCloudRun(detail)` 确认版本号更新 + `curl /health` 确认服务启动正常
 
 ---
 
-## 二、TypeScript 编译配置
+## 二、为什么不再使用 tcb CLI 部署
+
+### tcb CLI 已知问题（已废弃，不得使用）
+
+| 问题 | 描述 |
+|------|------|
+| `package detail param is missing` | `tcb run:deprecated version create` 调用的旧版 API 与云端服务端签名不匹配，反复失败 |
+| zip 自包含膨胀 | `tcb` CLI 在 `-p` 指定的目录内生成 `code*.zip`，若 `-p` 指向项目根目录，zip 会被打进自身，导致包体积指数级膨胀（历史最高 17GB） |
+| 交互式提示 | CLI 有多处 `[y/N]` 确认，CI/CD 环境无法无人值守运行 |
+
+### CloudBase MCP 工具的优势
+
+- **无 CLI 依赖**：CatPaw 内置，无需安装 `@cloudbase/cli`
+- **无 zip 问题**：MCP 工具内部管理打包流程，不污染项目目录
+- **无交互阻塞**：完全非交互式，适合 AI Agent 直接调用
+- **环境变量支持**：可直接在 `serverConfig.EnvParams` 中传入，无需控制台手动配置
+
+---
+
+## 三、TypeScript 编译配置
 
 ### tsconfig.build.json 是构建的唯一入口
 
@@ -88,140 +127,87 @@ NestJS 项目**必须**使用 `tsconfig.build.json` 而不是 `tsconfig.json` �
 
 ---
 
-## 三、.tcbignore vs .dockerignore（核心区别）
+## 四、deploy.sh 预检脚本说明
 
-### 两个文件作用完全不同，必须同时存在
+`scripts/deploy.sh` 是**纯预检脚本**，不执行任何上传/部署操作，职责：
 
-| 文件 | 生效时机 | 控制内容 |
-|------|----------|----------|
-| `.tcbignore` | tcb CLI **本地**打包压缩时 | 哪些文件被**上传**给 CloudRun |
-| `.dockerignore` | CloudRun **云端** docker build 时 | 哪些文件**复制进** Docker 镜像 |
+1. **清理 `code*.zip` 残留** — 防止历史中断留下的临时 zip 污染下次打包
+2. **检查 `dist/` 大小** — 超过阈值立即中止，防止携带异常文件
 
-### 只有 .dockerignore 没有 .tcbignore 的严重后果
+### 预检阈值
 
-`node_modules/` 会被整个打包上传：34000+ 个文件，压缩包约 18MB，上传极慢甚至超时报错。
-
-### .tcbignore 必须包含的排除项
-
-```
-node_modules       <- 最关键！生产依赖由云端 npm ci 安装，不需要上传
-src                <- 源码，云端直接运行 dist/，不需要
-test
-dist/test
-dist/*.tsbuildinfo
-dist/tsconfig.tsbuildinfo
-.git
-.gitignore
-coverage
-*.log
-.DS_Store
-migrations
-scripts
-tsconfig.json
-tsconfig.build.json
-nest-cli.json
-.env
-.env.*
-```
+| 指标 | 正常值 | 警告 | 中止 |
+|------|--------|------|------|
+| `dist/` 大小 | ~1~1.5MB | > 2MB | > 5MB |
+| `dist/` 文件数 | ~200 个 | — | — |
+| `dist/test/` 存在 | 不存在 | — | 立即中止 |
 
 ---
 
-## 四、deploy.sh 检查项说明
+## 五、CloudRun 服务配置
 
-`npm run deploy` / `npm run deploy:check` 依次验证：
+### 服务基本信息
 
-1. **`dist/test/` 存在** → 立即中止，说明 `tsconfig.build.json` 的 `exclude` 失效
-2. **`dist/` 超过 5MB** → 立即中止，说明混入了测试文件或其他无关内容
-3. **`.tcbignore` 不存在** → 立即中止，防止上传 `node_modules`
-4. **上传预估文件数 > 400** → 警告并需要确认（正常约 220 个）
+| 属性 | 值 |
+|------|-----|
+| 环境 ID | `minicare-cloud-6gqledlle0132cbe` |
+| 服务名 | `minicare-api` |
+| 服务类型 | `container`（容器模式） |
+| 访问域名 | `https://minicare-api-240137-10-1253854169.sh.run.tcloudbase.com` |
+| 端口 | `3000` |
+| CPU / 内存 | `1 核 / 2 GB` |
+| 最小 / 最大实例 | `0 / 5` |
+| 访问类型 | `OA`、`PUBLIC`、`MINIAPP` |
 
-### 正常指标参考
+### 环境变量（通过 MCP 工具 serverConfig.EnvParams 传入）
 
-| 指标 | 正常值 | 异常值（需排查） |
-|------|--------|-----------------|
-| `dist/` 大小 | ~1~1.5MB | > 2MB 警告 / > 5MB 中止 |
-| `dist/` 文件数 | ~200 个 | > 300 个需排查 |
-| 上传文件总数（.tcbignore 后） | ~220 个 | > 400 个 |
-| 上传压缩包大小 | ~1~2MB | > 5MB 说明 .tcbignore 失效 |
+> 完整的带真实值的 `EnvParams` 字符串见 `cloudbase-conventions.mdc` § 4.1，直接复制使用。
 
----
+```json
+{
+  "NODE_ENV":       "production",
+  "TCB_ENV_ID":     "minicare-cloud-6gqledlle0132cbe",
+  "AUTH_TEST_MODE": "true",
+  "DB_HOST":        "sh-cynosdbmysql-grp-6a0nj6a8.sql.tencentcdb.com",
+  "DB_PORT":        "21002",
+  "DB_NAME":        "minicare-cloud-6gqledlle0132cbe",
+  "DB_USER":        "bing",
+  "DB_PASS":        "Wb13227560988",
+  "JWT_SECRET":     "99c376c37f830320612fed8d4bf9b5d86a7e2461577656322ac32ab52f56da01"
+}
+```
 
-## 五、CloudRun 与配置文件
+> `AUTH_TEST_MODE=true`：固定验证码 `123456`，不发真实短信。正式上线前改为 `false`。
+> `DB_HOST` 使用公网域名而非内网 IP（CloudRun 未配置 VPC，内网地址不可达）。
 
-### cloudbaserc.json（tcb CLI 配置文件）
+### 数据库连接说明
+
+> ⚠️ **重要教训（2026-04-02）**：CloudRun 服务当前**未配置 VPC**（`VpcId: ""`），无法通过内网 IP `172.17.0.9` 访问 MySQL，每次请求会触发 30 秒连接超时后报 500。
+> **诊断线索**：响应头 `x-cloudbase-upstream-timecost: 30058`（≈ `connectTimeout` 的值）表明是数据库连接超时而非业务逻辑错误。
+
+- **当前正确配置**：使用 MySQL **公网地址**
+  - `DB_HOST`: `sh-cynosdbmysql-grp-6a0nj6a8.sql.tencentcdb.com`
+  - `DB_PORT`: `21002`
+- **内网地址** `172.17.0.9:3306` 仅在 CloudRun 已配置 VPC（`vpc-mkwdhlzc` / `subnet-823cr3pt`）时才可用；当前 CloudRun 服务未配 VPC，禁止使用内网地址
+- 数据库名即 CloudBase 环境 ID：`minicare-cloud-6gqledlle0132cbe`
+
+### cloudbaserc.json
 
 ```json
 {
   "version": "2.0",
   "envId": "minicare-cloud-6gqledlle0132cbe",
-  "$schema": "https://framework-1258016615.tcloudbaseapp.com/schema/latest.json",
   "cloudrun": {
     "name": "minicare-api"
   }
 }
 ```
 
-`tcb` 命令读取此文件确认目标环境和服务名，**不要修改 `envId` 和 `name`**。
-
-### CloudRun 环境变量（必须在控制台手动配置）
-
-#### tcb CLI 的 --env 参数有 bug，禁止使用
-
-`tcb run:deprecated version create --env "KEY=val&..."` 与本地上传模式（`-p .`）配合时必定报错：
-```
-[CreateCloudBaseRunServerVersion] package detail param is missing
-```
-
-**必须在腾讯云 CloudRun 控制台手动配置环境变量**，参考文件 `.env.staging`：
-
-```
-NODE_ENV        = production
-TCB_ENV_ID      = minicare-cloud-6gqledlle0132cbe
-AUTH_TEST_MODE  = true               # 测试模式：固定验证码 123456
-DB_HOST         = 172.17.0.9         # CloudBase MySQL VPC 内网地址（不走公网）
-DB_PORT         = 3306
-DB_NAME         = minicare-cloud-6gqledlle0132cbe
-DB_USER         = bing
-DB_PASS         = <见 .env.staging>
-JWT_SECRET      = <见 .env.staging>
-```
-
-### 数据库连接说明
-
-- CloudRun 与 MySQL 在同一 VPC（`vpc-mkwdhlzc`，`subnet-823cr3pt`）
-- **必须走内网地址** `172.17.0.9:3306`，不能走公网地址
-- 数据库名即 CloudBase 环境 ID：`minicare-cloud-6gqledlle0132cbe`
+此文件由 MCP 工具读取，**不要修改 `envId` 和 `name`**。
 
 ---
 
-## 六、网络受限时的构建注意事项
-
-当本地网络受限（公司代理/防火墙）时，`npm run build` 本身不需要网络（纯本地 TypeScript 编译），但以下操作会受影响：
-
-### 受影响的操作
-
-| 操作 | 是否需要网络 | 说明 |
-|------|------------|------|
-| `nest build`（TypeScript 编译） | 否 | 纯本地，无需网络 |
-| `npm ci --omit=dev`（云端安装依赖） | 是（云端执行） | CloudRun 内部网络，不受本地影响 |
-| `tcb run:deprecated version create` | **是**（上传） | 需连接腾讯云 API，受本地网络影响 |
-| `tcb run:deprecated version list` | **是** | 同上 |
-
-### 网络受限时的处理策略
-
-1. **仅编译，不部署**：执行 `npm run build` 或 `npm run deploy:check` 完成本地构建和产物检查
-2. **等网络恢复后再上传**：产物已在 `dist/` 下，网络恢复后直接运行 `npm run deploy` 即可（`nest build` 会重新执行，但速度很快）
-3. **构建产物不要手动删除**：`dist/` 由 `deploy.sh` 的 Step 1 自动重建（`deleteOutDir: true`），无需手动清理
-
-### tcb CLI 网络超时处理
-
-若 `tcb run:deprecated version create` 上传过程中超时中断：
-- 可以直接重新执行 `npm run deploy`（重新构建后重传）
-- 不需要先删除 `dist/`
-
----
-
-## 七、Dockerfile 说明
+## 六、Dockerfile 说明
 
 ```dockerfile
 FROM node:20-alpine
@@ -241,6 +227,13 @@ CMD ["node", "dist/main"]                # 启动入口：dist/main（不是 dis
 **关键约束**：
 - 启动命令必须是 `node dist/main`，不能是 `node dist/src/main`
 - `--prefer-offline` 优先使用 npm 缓存，加速云端安装
+- 上传内容：`dist/` + `package.json` + `package-lock.json` + `Dockerfile`（不含 `node_modules`）
+
+---
+
+## 七、.tcbignore 说明
+
+`.tcbignore` 由旧版 `tcb` CLI 使用，**新的 MCP 工具部署模式下已不需要此文件控制上传范围**（MCP 工具只上传必要文件）。文件保留仅作向后兼容。
 
 ---
 
@@ -248,11 +241,9 @@ CMD ["node", "dist/main"]                # 启动入口：dist/main（不是 dis
 
 | 现象 | 根本原因 | 解决方法 |
 |------|----------|----------|
-| `POST /api/auth/verify-code` 返回 500 | CloudRun 环境变量中数据库配置缺失或错误 | 在控制台配置 `DB_HOST`/`DB_USER`/`DB_PASS`/`DB_NAME` |
-| `POST /api/auth/send-code` 返回 503 | CloudRun 冷启动（Serverless 缩容到 0） | 重试即可；频繁出现可设最小实例数=1 |
-| 上传超时或极慢 | 压缩包过大（`.tcbignore` 缺失，上传了 node_modules） | 确认 `.tcbignore` 存在且包含 `node_modules` |
 | `dist/` 体积异常（>5MB） | `test/` 被编译进 `dist/test/`（tsconfig.build.json 失效） | 确认 `nest-cli.json` 中 `tsConfigPath` 指向 `tsconfig.build.json` |
-| `node dist/src/main` 找不到模块 | Dockerfile/package.json 的启动路径未随编译配置更新 | 改为 `node dist/main` |
-| `tcb run:deprecated version create` 报 `package detail param is missing` | 使用了 `--env` 参数 | 删除 `--env` 参数，改在控制台配置环境变量 |
-| 网络受限，`tcb` 命令无响应 | 本地网络无法访问腾讯云 API | 先执行 `npm run deploy:check` 完成本地编译检查，等网络恢复再部署 |
-| 数据库连接失败（`ECONNREFUSED 172.17.0.9`） | CloudRun 与 MySQL 未在同一 VPC，或内网地址配置错误 | 确认 `DB_HOST=172.17.0.9`，VPC 配置见 CloudRun 控制台 |
+| `node dist/src/main` 找不到模块 | 启动路径未更新 | 改为 `node dist/main` |
+| 部署后服务无响应 | CloudRun 冷启动（缩容到 0）| 重试；频繁出现可在 MCP 工具 `serverConfig.MinNum` 设为 `1` |
+| `POST /api/auth/verify-code` 返回 500，响应耗时恰好 30s | CloudRun 无法连接 MySQL（数据库连接超时）| 检查 `DB_HOST`/`DB_PORT` 是否正确；当前应使用公网地址 `sh-cynosdbmysql-grp-6a0nj6a8.sql.tencentcdb.com:21002` |
+| 数据库连接超时，`x-cloudbase-upstream-timecost ≈ 30000` | CloudRun 未配置 VPC，内网 IP `172.17.0.9` 不可达 | 改用公网地址 `DB_HOST=sh-cynosdbmysql-grp-6a0nj6a8.sql.tencentcdb.com`，`DB_PORT=21002` |
+| MCP 工具不可用 | CatPaw 中 CloudBase MCP 未配置 | 检查 `~/Library/Application Support/CatPaw/.../mcopilot_mcp_settings.json` 是否含 `cloudbase` 条目 |

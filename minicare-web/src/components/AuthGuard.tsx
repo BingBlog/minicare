@@ -23,18 +23,25 @@ export default function AuthGuard({ children }: Props) {
   const isOnboarding = location.pathname === '/onboarding'
 
   const [status, setStatus] = useState<Status>(() => {
-    // 如果 store 里已有缓存，直接 ready（快速路径）
     if (!token) return 'unauthed'
     if (currentFamily && currentBaby) return 'ready'
     return 'checking'
   })
 
   useEffect(() => {
+    if (status === 'checking' && currentFamily && currentBaby) {
+      setStatus('ready')
+      return
+    }
+
     if (status !== 'checking') return
+
+    let cancelled = false
 
     async function check() {
       try {
         const families = await familyApi.getMine()
+        if (cancelled) return
         if (families.length === 0) {
           setStatus('onboarding')
           return
@@ -43,19 +50,32 @@ export default function AuthGuard({ children }: Props) {
         setCurrentFamily(family)
         try {
           const baby = await babyApi.get(family.id)
+          if (cancelled) return
           setCurrentBaby(baby)
           setStatus('ready')
         } catch {
+          if (cancelled) return
           setStatus('onboarding')
         }
       } catch {
-        // 接口报错（如 401）
+        if (cancelled) return
         setStatus('unauthed')
       }
     }
 
     check()
-  }, [status])
+
+    return () => { cancelled = true }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status, currentFamily, currentBaby])
+
+  // store 里的 family/baby 被外部更新（如 onboarding 创建完成），
+  // 把 status 也同步升为 ready
+  useEffect(() => {
+    if (currentFamily && currentBaby && status === 'onboarding') {
+      setStatus('ready')
+    }
+  }, [currentFamily, currentBaby, status])
 
   if (status === 'unauthed') return <Navigate to="/login" replace />
 

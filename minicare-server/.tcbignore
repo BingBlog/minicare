@@ -1,5 +1,8 @@
 # tcb CLI 上传前过滤（.tcbignore），语法同 .gitignore
-# 注意：.dockerignore 仅在云端 docker build 时生效，不控制上传内容
+#
+# ⚠ 注意：deploy.sh 已改为将上传内容复制到 /tmp 专用目录后再上传，
+#   /tmp 目录中仅含 dist/ + package*.json + Dockerfile，
+#   本文件作为防御性兜底，防止意外直接对项目目录执行 tcb 命令时把不该上传的文件带上去。
 
 # 开发依赖（最大体积，必须排除）
 node_modules
@@ -25,10 +28,12 @@ nest-cli.json
 .env
 .env.*
 
+# tcb CLI 上传时生成的临时 zip 文件（防止被意外打包进自身）
+code*.zip
+
 # 其他无用文件
 coverage
 *.log
 .DS_Store
 migrations
 scripts
-code*.zip

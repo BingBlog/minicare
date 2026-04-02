@@ -1,22 +1,19 @@
 #!/usr/bin/env bash
 # =============================================================
-# deploy.sh — 后端 CloudRun 部署脚本
+# deploy.sh — 后端部署前预检脚本
 #
-# 流程：
-#   1. 本地 TypeScript 编译 (nest build → dist/)
+# 职责（仅预检，不执行上传/部署）：
+#   1. 清理项目根目录下的 code*.zip 残留
 #   2. 检查 dist/ 大小和内容是否异常（警告/阻止）
-#   3. 通过 tcb CLI 上传源码包 + 创建新版本
-#      上传内容：dist/ + package*.json + Dockerfile（约 1~2MB）
-#      排除内容：由 .tcbignore 定义（node_modules / src 等）
-#      注意：.dockerignore 只在云端 docker build 时生效，不控制上传内容
-#            tcb CLI 使用 .tcbignore 在本地打包压缩时过滤文件
+#
+# 实际部署由 CloudBase MCP 工具负责：
+#   - 工具：manageCloudRun(action=deploy)
+#   - 无需 tcb CLI，无 zip 自包含问题，无交互提示
 #
 # 用法:
-#   ./scripts/deploy.sh                   # 默认部署到 staging 环境
-#   ./scripts/deploy.sh --env staging     # 明确指定 staging 环境
-#   ./scripts/deploy.sh --env production  # 部署到生产环境（待配置）
-#   ./scripts/deploy.sh --check           # 仅检查构建产物大小，不部署
-#   npm run deploy                        # 同上（推荐入口）
+#   npm run deploy            # 推荐入口（build → 预检）
+#   bash scripts/deploy.sh   # 仅运行预检
+#   bash scripts/deploy.sh --check  # 同上（兼容旧用法）
 # =============================================================
 
 set -euo pipefail
@@ -35,83 +32,47 @@ warn()    { echo -e "${YELLOW}⚠ ${NC}$*"; }
 error()   { echo -e "${RED}✗ ${NC}$*" >&2; }
 step()    { echo -e "\n${BOLD}── $* ──${NC}"; }
 
-# ── 解析参数 ─────────────────────────────────────────────────
-DEPLOY_ENV="staging"   # 默认测试环境
-CHECK_ONLY=false
-
+# ── 解析参数（兼容旧 --check / --env 用法）───────────────────
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --env)
-      DEPLOY_ENV="$2"
-      shift 2
-      ;;
-    --check)
-      CHECK_ONLY=true
+    --check|--env)
       shift
+      [[ $# -gt 0 && "$1" != --* ]] && shift
       ;;
     *)
-      error "未知参数：$1"
-      echo "用法: $0 [--env staging|production] [--check]"
-      exit 1
+      shift
       ;;
   esac
 done
-
-# ── 环境配置 ─────────────────────────────────────────────────
-case "$DEPLOY_ENV" in
-  staging)
-    ENV_ID="minicare-cloud-6gqledlle0132cbe"
-    SERVICE_NAME="minicare-api"
-    PORT=3000
-    AUTH_TEST_MODE="true"
-    ;;
-  production)
-    # 生产环境占位，后续配置真实 CloudBase 环境
-    ENV_ID="${PROD_ENV_ID:-}"
-    SERVICE_NAME="minicare-api"
-    PORT=3000
-    AUTH_TEST_MODE="false"
-    if [[ -z "$ENV_ID" ]]; then
-      error "生产环境尚未配置，请设置 PROD_ENV_ID 环境变量或更新此脚本"
-      exit 1
-    fi
-    ;;
-  *)
-    error "不支持的环境：${DEPLOY_ENV}，可选：staging | production"
-    exit 1
-    ;;
-esac
-
-# dist 大小阈值（KB）
-DIST_SIZE_WARN_KB=2000       # 2 MB 警告（含 .js/.map/.d.ts，正常约 1~1.5MB）
-DIST_SIZE_HARD_LIMIT_KB=5000 # 5 MB 阻止（超出说明混入了 test/ 或其他无关文件）
-
-# 上传文件数阈值（tcbignore 后）
-UPLOAD_FILES_WARN=400        # 超过此数量说明可能混入了不该上传的文件
 
 # ── 项目根目录 ────────────────────────────────────────────────
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 cd "${PROJECT_DIR}"
 
+# 阈值配置
+DIST_SIZE_WARN_KB=2000       # dist/ 2 MB 警告
+DIST_SIZE_HARD_LIMIT_KB=5000 # dist/ 5 MB 阻止
+
 echo ""
 echo -e "${BOLD}╔══════════════════════════════════════════════╗${NC}"
-echo -e "${BOLD}║   minicare-server 部署                       ║${NC}"
+echo -e "${BOLD}║   minicare-server 构建预检                   ║${NC}"
 echo -e "${BOLD}╚══════════════════════════════════════════════╝${NC}"
-echo ""
-info "目标环境:    ${BOLD}${DEPLOY_ENV}${NC}"
-info "CloudBase:   ${ENV_ID}"
-info "服务名称:    ${SERVICE_NAME}"
-info "AUTH_TEST:   ${AUTH_TEST_MODE} $([ "$AUTH_TEST_MODE" = 'true' ] && echo '（固定验证码 123456）' || echo '（真实短信）')"
 echo ""
 
 # ══════════════════════════════════════════════════════════════
-# Step 1：TypeScript 编译
+# Step 1：清理 code*.zip 残留
 # ══════════════════════════════════════════════════════════════
-step "Step 1  TypeScript 编译"
-info "执行 nest build ..."
-npm run build
-success "编译完成 → dist/"
+step "Step 1  清理 code*.zip 残留"
+
+STALE_ZIPS=$(find "${PROJECT_DIR}" -maxdepth 1 -name 'code*.zip' 2>/dev/null)
+if [[ -n "${STALE_ZIPS}" ]]; then
+  warn "发现残留的 code*.zip 文件，正在删除..."
+  find "${PROJECT_DIR}" -maxdepth 1 -name 'code*.zip' -exec rm -f {} \;
+  success "已清理残留 zip 文件"
+else
+  success "无残留 code*.zip 文件"
+fi
 
 # ══════════════════════════════════════════════════════════════
 # Step 2：检查构建产物大小
@@ -141,115 +102,31 @@ echo ""
 
 # 检查 dist/test 是否被意外编译进来
 if [ -d "dist/test" ]; then
-  error "dist/test/ 目录存在！tsconfig.build.json 的 exclude 配置可能失效，部署已中止"
+  error "dist/test/ 目录存在！tsconfig.build.json 的 exclude 配置可能失效"
   error "请检查 nest-cli.json 的 tsConfigPath 是否指向 tsconfig.build.json"
   exit 1
 fi
 
 if [ "${DIST_SIZE_KB}" -gt "${DIST_SIZE_HARD_LIMIT_KB}" ]; then
-  error "dist/ 超过硬限制 $(( DIST_SIZE_HARD_LIMIT_KB / 1024 )) MB（当前 ${DIST_SIZE_HUMAN}），部署已中止"
-  error "常见原因：test/ 目录被编译进 dist/，或 tsconfig.json 未使用 tsconfig.build.json"
+  error "dist/ 超过硬限制 $(( DIST_SIZE_HARD_LIMIT_KB / 1024 )) MB（当前 ${DIST_SIZE_HUMAN}），中止"
+  error "常见原因：test/ 目录被编译进 dist/，或 tsconfig 未使用 tsconfig.build.json"
   exit 1
 elif [ "${DIST_SIZE_KB}" -gt "${DIST_SIZE_WARN_KB}" ]; then
   warn "dist/ 较大（${DIST_SIZE_HUMAN}），建议排查是否有多余文件"
 else
-  success "构建产物大小正常（${DIST_SIZE_HUMAN}）"
-fi
-
-if $CHECK_ONLY; then
-  info "仅检查模式，跳过部署"
-  exit 0
+  success "构建产物大小正常（${DIST_SIZE_HUMAN}，${DIST_FILES} 个文件）"
 fi
 
 # ══════════════════════════════════════════════════════════════
-# Step 3：检查 tcb CLI + 上传文件预估
+# 预检完成
 # ══════════════════════════════════════════════════════════════
-step "Step 3  检查部署环境"
-
-if ! command -v tcb &>/dev/null; then
-  error "未找到 tcb CLI，请先安装：npm install -g @cloudbase/cli"
-  exit 1
-fi
-
-TCB_VERSION=$(tcb --version 2>/dev/null | head -1 || echo "unknown")
-info "tcb CLI: ${TCB_VERSION}"
-
-# 检查 .tcbignore 是否存在（控制上传时的打包内容，不同于 .dockerignore）
-if [ ! -f ".tcbignore" ]; then
-  error ".tcbignore 文件不存在！缺少此文件会导致 node_modules 被打包上传（体积 ~100MB+）"
-  error "请创建 .tcbignore 文件，参考 .dockerignore 内容"
-  exit 1
-fi
-
-# 预估上传文件数（排除 tcbignore 中的目录）
-UPLOAD_FILES=$(find . -not -path "./node_modules/*" -not -path "./.git/*" \
-  -not -path "./src/*" -not -path "./test/*" -not -path "./coverage/*" \
-  -not -name "*.tsbuildinfo" -not -name "*.log" -not -name ".DS_Store" \
-  -type f | wc -l | tr -d ' ')
-
 echo ""
-info "预估上传文件数：${UPLOAD_FILES} 个"
-
-if [ "${UPLOAD_FILES}" -gt "${UPLOAD_FILES_WARN}" ]; then
-  warn "上传文件数（${UPLOAD_FILES}）异常偏多，可能 node_modules 未被 .tcbignore 排除"
-  warn "继续部署将导致超大压缩包（>100MB），上传极慢"
-  read -r -p "  确认继续？[y/N] " size_confirm
-  if [[ ! "$size_confirm" =~ ^[Yy]$ ]]; then
-    info "已取消，请检查 .tcbignore 配置"
-    exit 0
-  fi
-else
-  success "上传文件数正常（${UPLOAD_FILES} 个）"
-fi
-
-# ══════════════════════════════════════════════════════════════
-# Step 4：提示 CloudRun 环境变量配置
-# ══════════════════════════════════════════════════════════════
-step "Step 4  CloudRun 环境变量提示"
-
+success "预检通过！代码已就绪，可通过 CloudBase MCP 工具部署："
 echo ""
-echo -e "  ${YELLOW}⚠ 请确认 CloudRun 控制台已配置以下环境变量：${NC}"
-echo -e "  ┌─────────────────────────────────────────────────"
-echo -e "  │  NODE_ENV        = production"
-echo -e "  │  TCB_ENV_ID      = ${ENV_ID}"
-echo -e "  │  AUTH_TEST_MODE  = ${AUTH_TEST_MODE}"
-echo -e "  │  JWT_SECRET      = <强随机密钥>"
-echo -e "  │  DB_HOST         = <CloudBase MySQL 内网地址>"
-echo -e "  │  DB_PORT         = 3306"
-echo -e "  │  DB_NAME         = <数据库名>"
-echo -e "  │  DB_USER         = <用户名>"
-echo -e "  │  DB_PASS         = <密码>"
-echo -e "  └─────────────────────────────────────────────────"
+echo -e "  ${BOLD}MCP 工具调用：${NC}"
+echo -e "  ${CYAN}manageCloudRun(action='deploy', serverName='minicare-api',"
+echo -e "    targetPath='${PROJECT_DIR}', serverType='container')${NC}"
 echo ""
-echo -e "  参考文件：${BOLD}.env.staging${NC}"
-echo ""
-
-read -r -p "  已确认环境变量配置，继续部署？[y/N] " confirm
-if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
-  info "已取消部署"
-  exit 0
-fi
-
-# ══════════════════════════════════════════════════════════════
-# Step 5：部署到 CloudRun
-# ══════════════════════════════════════════════════════════════
-step "Step 5  部署到 CloudRun（${DEPLOY_ENV}）"
-
-info "上传内容：dist/ + package*.json + Dockerfile（.tcbignore 排除 node_modules/src/test 等）"
-info "开始上传..."
-
-tcb run:deprecated version create \
-  -e "${ENV_ID}" \
-  -s "${SERVICE_NAME}" \
-  -p . \
-  --port "${PORT}" \
-  -f 100
-
-success "部署完成！100% 流量已切换到新版本"
-echo ""
-info "查看版本列表："
-echo "  npm run deploy:list"
-echo ""
-info "服务访问地址："
-echo "  https://${ENV_ID}-1253854169.ap-shanghai.app.tcloudbase.com"
+echo -e "  ${BOLD}查看部署状态：${NC}"
+echo -e "  ${CYAN}queryCloudRun(action='detail', detailServerName='minicare-api')${NC}"
 echo ""

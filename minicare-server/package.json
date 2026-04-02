@@ -17,9 +17,9 @@
     "migrate": "bash scripts/migrate.sh",
     "migrate:status": "bash scripts/migrate.sh --status",
     "migrate:dry-run": "bash scripts/migrate.sh --dry-run",
-    "deploy": "bash scripts/deploy.sh",
+    "deploy": "npm run build && bash scripts/deploy.sh",
     "deploy:check": "bash scripts/deploy.sh --check",
-    "deploy:list": "tcb run:deprecated version list -e minicare-cloud-6gqledlle0132cbe -s minicare-api"
+    "deploy:list": "echo '请使用 CloudBase MCP 工具 queryCloudRun(detail, minicare-api) 查看部署状态'"
   },
   "dependencies": {
     "@cloudbase/node-sdk": "^3.16.0",

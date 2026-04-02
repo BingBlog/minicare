@@ -1,0 +1,250 @@
+---
+description: minicare CloudBase 平台使用规范。规定 CloudBase Skill 的引用时机、MCP 工具的调用方式、环境信息、CloudRun/数据库/存储等各类操作的正确工具选择。凡涉及部署、数据库操作、存储、CloudRun 服务查询、CloudBase 环境管理时自动生效。
+globs:
+  - "minicare-server/**"
+  - "minicare-web/**"
+alwaysApply: true
+---
+
+# minicare CloudBase 使用规范
+
+---
+
+## 一、环境信息（固定，不得修改）
+
+| 属性 | 值 |
+|------|-----|
+| 环境 ID | `minicare-cloud-6gqledlle0132cbe` |
+| 环境别名 | `minicare-cloud` |
+| 地域 | `ap-shanghai` |
+| CloudRun 服务名 | `minicare-api` |
+| CloudRun 访问域名 | `https://minicare-api-240137-10-1253854169.sh.run.tcloudbase.com` |
+| MySQL **公网**地址（当前使用） | `sh-cynosdbmysql-grp-6a0nj6a8.sql.tencentcdb.com:21002` |
+| MySQL **内网**地址（暂不可用，CloudRun 未配 VPC） | `172.17.0.9:3306` |
+| 数据库名 / 用户 | `minicare-cloud-6gqledlle0132cbe` / `bing` |
+
+> ⚠️ **内网地址不可达**：CloudRun 服务尚未配置 VPC（`vpc-mkwdhlzc/subnet-823cr3pt`），
+> 使用 `172.17.0.9` 会导致连接超时 30s 后返回 500，**必须使用公网地址**。
+
+---
+
+## 二、CloudBase MCP 工具（首选）
+
+### 工具可用性确认
+
+CatPaw 内置 CloudBase MCP，配置文件位置：
+```
+~/Library/Application Support/CatPaw/User/globalStorage/
+  mt-idekit.mt-idekit-code/settings/mcopilot_mcp_settings.json
+```
+
+其中 `cloudbase` 条目：
+```json
+{
+  "cloudbase": {
+    "command": "npx",
+    "args": ["@cloudbase/cloudbase-mcp@latest"]
+  }
+}
+```
+
+在 CatPaw 对话中，所有 `mcp_tool_cloudbase_*` 前缀的工具均可直接调用，无需任何安装。
+
+### 认证状态检查
+
+执行任何 CloudBase 操作前，先确认认证和环境绑定：
+
+```
+auth(action='status')
+```
+
+若未绑定环境：
+```
+auth(action='set_env', envId='minicare-cloud-6gqledlle0132cbe')
+```
+
+### 完整工具清单
+
+| 工具名 | 用途 |
+|--------|------|
+| `auth` | 登录/登出/查询认证状态/绑定环境 |
+| `envQuery` | 查询环境列表、环境详情、安全域名、静态托管配置 |
+| `queryCloudRun` | 查询 CloudRun 服务列表、详情、模板 |
+| `manageCloudRun` | 部署/初始化/下载/本地运行/删除 CloudRun 服务 |
+| `querySqlDatabase` | 执行只读 SQL、查询 MySQL 实例信息 |
+| `manageSqlDatabase` | 执行写 SQL/DDL、初始化 Schema |
+| `readNoSqlDatabaseStructure` | 查看文档数据库集合列表/结构/索引 |
+| `writeNoSqlDatabaseStructure` | 创建/更新/删除文档数据库集合 |
+| `readNoSqlDatabaseContent` | 查询文档数据库数据 |
+| `writeNoSqlDatabaseContent` | 插入/更新/删除文档数据库数据 |
+| `queryFunctions` | 查询云函数列表、详情、日志 |
+| `manageFunctions` | 创建/更新/调用云函数 |
+| `queryStorage` | 查询云存储文件列表、文件信息、临时 URL |
+| `manageStorage` | 上传/下载/删除云存储文件 |
+| `uploadFiles` | 上传文件到静态网站托管（非 COS） |
+| `deleteFiles` | 删除静态托管文件 |
+| `findFiles` | 搜索静态托管文件 |
+| `readSecurityRule` | 读取数据库/函数/存储安全规则 |
+| `writeSecurityRule` | 设置安全规则 |
+| `callCloudApi` | 调用腾讯云管控面 API（tcb/scf/cam 等） |
+| `searchWeb` | 联网搜索 |
+| `searchKnowledgeBase` | 搜索 CloudBase 官方知识库和 Skill 文档 |
+| `downloadTemplate` | 下载 CloudBase 项目模板 |
+| `downloadRemoteFile` | 下载远程文件到本地 |
+| `domainManagement` | 绑定/解绑/查询/修改域名配置 |
+| `envDomainManagement` | 管理环境安全域名 |
+| `queryGateway` | 查询网关域名和访问入口 |
+| `manageGateway` | 创建目标访问入口 |
+| `manageDataModel` | 查询/获取数据模型文档 |
+| `modifyDataModel` | 创建数据模型 |
+| `activateInviteCode` | 激活邀请码 |
+
+---
+
+## 三、CloudBase Skill（知识文档）
+
+### 何时读取 Skill
+
+在执行以下任务前，**必须先读取对应 Skill**，确保使用正确的 API 和模式：
+
+| 场景 | 必读 Skill |
+|------|-----------|
+| 部署/更新 CloudRun 服务 | `cloudrun-development` |
+| 操作 MySQL 数据库（SQL） | `relational-database-tool` |
+| 前端读写 MySQL | `relational-database-web` |
+| 操作文档数据库（NoSQL） | `no-sql-web-sdk` 或 `no-sql-wx-mp-sdk` |
+| Web 认证登录 | `auth-tool` → `auth-web` |
+| 云函数开发/部署 | `cloud-functions` |
+| 云存储操作 | `cloud-storage-web` |
+| AI 功能集成（后端） | `ai-model-nodejs` |
+| AI 功能集成（前端） | `ai-model-web` |
+| 平台全局问题 | `cloudbase-platform` |
+
+### Skill 读取方式
+
+Skill 文件位于：
+```
+/Users/bing/Desktop/工作区/.catpaw/skills/cloudbase/references/<skill-name>/SKILL.md
+```
+
+例如读取 `cloudrun-development` Skill：
+```
+read_file('/Users/bing/Desktop/工作区/.catpaw/skills/cloudbase/references/cloudrun-development/SKILL.md')
+```
+
+也可通过 MCP 工具直接检索：
+```
+searchKnowledgeBase(mode='skill', skillName='cloudrun-development')
+```
+
+---
+
+## 四、操作规范（按场景）
+
+### 4.1 部署 CloudRun（最常用）
+
+**完整流程**（三步，缺一不可）：
+
+```bash
+# Step 1：编译
+cd minicare-server && npm run build
+
+# Step 2：预检（检查 dist/ 大小 / 清理残留 zip）
+bash scripts/deploy.sh
+```
+
+```
+# Step 3：MCP 工具部署（直接复制执行，参数已填写完整）
+manageCloudRun(
+  action     = 'deploy',
+  serverName = 'minicare-api',
+  targetPath = '/Users/bing/Desktop/工作区/minicare/minicare-server',
+  serverType = 'container',
+  serverConfig = {
+    Cpu: 1,
+    Mem: 2,
+    MinNum: 0,
+    MaxNum: 5,
+    Port: 3000,
+    OpenAccessTypes: ['OA', 'PUBLIC', 'MINIAPP'],
+    EnvParams: "{\"NODE_ENV\":\"production\",\"TCB_ENV_ID\":\"minicare-cloud-6gqledlle0132cbe\",\"DB_HOST\":\"sh-cynosdbmysql-grp-6a0nj6a8.sql.tencentcdb.com\",\"DB_PORT\":\"21002\",\"DB_NAME\":\"minicare-cloud-6gqledlle0132cbe\",\"DB_USER\":\"bing\",\"DB_PASS\":\"Wb13227560988\",\"JWT_SECRET\":\"99c376c37f830320612fed8d4bf9b5d86a7e2461577656322ac32ab52f56da01\",\"AUTH_TEST_MODE\":\"true\"}"
+  }
+)
+```
+
+**Step 4：部署后验证（必须执行）**：
+
+```
+# 4a. 确认版本号已更新
+queryCloudRun(action='detail', detailServerName='minicare-api')
+# 观察：OnlineVersionInfos[0].VersionName 应为新版本号（比上次 +1）
+
+# 4b. 调用 /health 端点确认服务正常启动
+curl https://minicare-api-240137-10-1253854169.sh.run.tcloudbase.com/health
+# 期望返回：{"status":"ok","db":{"host_set":true,"pass_set":true,...}}
+# 若 db.host_set=false 说明环境变量未生效，需重新部署
+```
+
+### 4.2 查询/执行 SQL
+
+**只读 SQL**（`querySqlDatabase`）：
+```
+querySqlDatabase(action='runQuery', sql='SELECT COUNT(*) FROM users')
+```
+
+**写入/DDL**（`manageSqlDatabase`）：
+```
+manageSqlDatabase(action='runStatement', sql='ALTER TABLE ...')
+```
+
+> ⚠ 写操作不可逆，执行前必须先用 `runQuery` 确认数据状态。
+
+### 4.3 云存储操作
+
+- 上传到**静态托管**（网站文件）→ `uploadFiles`
+- 上传到 **COS 云存储**（业务文件/图片）→ `manageStorage(action='upload')`
+- 获取临时下载链接 → `queryStorage(action='url', cloudPath='...')`
+
+### 4.4 环境和服务查询
+
+```
+# 查询环境基本信息
+envQuery(action='info')
+
+# 查询所有 CloudRun 服务
+queryCloudRun(action='list')
+
+# 查询特定服务详情
+queryCloudRun(action='detail', detailServerName='minicare-api')
+```
+
+---
+
+## 五、禁止事项
+
+| ❌ 禁止 | ✅ 替代方案 |
+|---------|-----------|
+| 使用 `tcb run:deprecated version create` 部署 | `manageCloudRun(action='deploy')` |
+| 使用 `tcb run:deprecated version list` 查询版本 | `queryCloudRun(action='detail')` |
+| 使用 `tcb run service:deploy`（此环境不支持） | `manageCloudRun(action='deploy')` |
+| EnvParams 中使用内网地址 `172.17.0.9` | 使用公网地址 `sh-cynosdbmysql-grp-6a0nj6a8.sql.tencentcdb.com:21002` |
+| 部署后不验证，直接认为成功 | 执行 Step 4a（版本号）+ Step 4b（`/health`） |
+| 硬编码 SecretId / SecretKey 到配置文件 | 使用 MCP 设备码登录（`auth(action='start_auth')`） |
+| 不读 Skill 直接操作 CloudBase API | 先读对应 Skill，确认正确的工具和参数 |
+
+---
+
+## 六、MCP 配置验证
+
+若 MCP 工具调用失败，执行以下排查：
+
+```bash
+# 1. 确认配置文件中有 cloudbase 条目
+cat ~/Library/Application\ Support/CatPaw/User/globalStorage/mt-idekit.mt-idekit-code/settings/mcopilot_mcp_settings.json | grep -A4 cloudbase
+
+# 2. 确认 npx 可执行
+which npx && npx --version
+
+# 3. 手动测试 MCP 包
+npx @cloudbase/cloudbase-mcp@latest --help
+```

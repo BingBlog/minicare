@@ -30,11 +30,17 @@ function calcAge(birthDate: string): string {
   const birth = new Date(birthDate);
   const now = new Date();
   const months =
-    (now.getFullYear() - birth.getFullYear()) * 12 + (now.getMonth() - birth.getMonth());
+    (now.getFullYear() - birth.getFullYear()) * 12 +
+    (now.getMonth() - birth.getMonth());
   return months > 0 ? `${months}个月` : "";
 }
 
-export default function Step2SuccessPage({ babyName, gender, birthDate, allergyLevel }: Props) {
+export default function Step2SuccessPage({
+  babyName,
+  gender,
+  birthDate,
+  allergyLevel,
+}: Props) {
   const navigate = useNavigate();
   const genderText = gender === "male" ? "男宝宝" : "女宝宝";
   const ageText = calcAge(birthDate);
@@ -66,7 +72,9 @@ export default function Step2SuccessPage({ babyName, gender, birthDate, allergyL
         </svg>
       </div>
 
-      <div className="text-[22px] font-black text-[#4A3035] mb-2 text-center">宝宝档案已创建！</div>
+      <div className="text-[22px] font-black text-[#4A3035] mb-2 text-center">
+        宝宝档案已创建！
+      </div>
       <div className="text-sm text-[#9A8090] text-center leading-relaxed mb-8">
         开始用敏宝日记记录宝宝的
         <br />
@@ -76,7 +84,10 @@ export default function Step2SuccessPage({ babyName, gender, birthDate, allergyL
       {/* 宝宝信息卡片 */}
       <div
         className="w-full flex items-center gap-3.5 rounded-2xl px-5 py-4 mb-7"
-        style={{ background: "#fff", boxShadow: "0 4px 20px rgba(200,100,120,0.12)" }}>
+        style={{
+          background: "#fff",
+          boxShadow: "0 4px 20px rgba(200,100,120,0.12)",
+        }}>
         {/* 头像 */}
         <div
           className="flex items-center justify-center rounded-full flex-shrink-0"
@@ -100,7 +111,9 @@ export default function Step2SuccessPage({ babyName, gender, birthDate, allergyL
 
         {/* 信息 */}
         <div className="flex-1 min-w-0">
-          <div className="text-lg font-extrabold text-[#4A3035]">{babyName || "小宝"}</div>
+          <div className="text-lg font-extrabold text-[#4A3035]">
+            {babyName || "小宝"}
+          </div>
           <div className="text-xs text-[#9A8090] mt-0.5">
             {genderText}
             {ageText ? ` · ${ageText}` : ""}
@@ -121,7 +134,10 @@ export default function Step2SuccessPage({ babyName, gender, birthDate, allergyL
               <line x1="12" y1="9" x2="12" y2="13" />
               <line x1="12" y1="17" x2="12.01" y2="17" />
             </svg>
-            牛奶蛋白过敏 · {allergyLevel ? SEVERITY_LABELS[allergyLevel as AllergyLevel] : "未知程度"}
+            牛奶蛋白过敏 ·{" "}
+            {allergyLevel
+              ? SEVERITY_LABELS[allergyLevel as AllergyLevel]
+              : "未知程度"}
           </div>
         </div>
       </div>
