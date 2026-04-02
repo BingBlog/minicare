@@ -549,6 +549,47 @@ export const IconClock = ({ size = 12, color = 'currentColor', style, className 
   </svg>
 )
 
+// ── 医疗类型图标 ────────────────────────────────────────────────────────────
+
+/** 显微镜/过敏原检测 */
+export const IconMicroscope = ({ size = 14, color = 'currentColor', style, className }: IconProps) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
+    strokeLinecap="round" strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }} className={className}>
+    <path d="M6 18h8"/>
+    <path d="M3 22h18"/>
+    <path d="M14 22a7 7 0 1 0 0-14h-1"/>
+    <path d="M9 14h2"/>
+    <path d="M9 12a2 2 0 0 1-2-2V6h6v4a2 2 0 0 1-2 2z"/>
+    <path d="M12 6V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3"/>
+  </svg>
+)
+
+/** 注射器/疫苗接种 */
+export const IconSyringe = ({ size = 14, color = 'currentColor', style, className }: IconProps) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
+    strokeLinecap="round" strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }} className={className}>
+    <path d="m18 2 4 4"/>
+    <path d="m17 7 3-3"/>
+    <path d="M19 9 8.7 19.3c-1 1-2.5 1-3.4 0l-.6-.6c-1-1-1-2.5 0-3.4L15 5"/>
+    <path d="m9 11 4 4"/>
+    <path d="m5 19-3 3"/>
+    <path d="m14 4 6 6"/>
+  </svg>
+)
+
+/** 血滴/血液检查 */
+export const IconBloodDrop = ({ size = 14, color = 'currentColor', style, className }: IconProps) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
+    strokeLinecap="round" strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }} className={className}>
+    <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+    <path d="M12 12v4"/>
+    <path d="M10 14h4"/>
+  </svg>
+)
+
 // ── 辅食分类图标 ────────────────────────────────────────────────────────────
 
 /** 主食/米粒 */

@@ -1,14 +1,28 @@
 /**
  * 医疗记录 - 检查类型选择（2 列网格，6 种类型）
  */
+import {
+  IconBaby,
+  IconMicroscope,
+  IconHospital,
+  IconSyringe,
+  IconBloodDrop,
+  IconFileText,
+} from "@/components/ui/icons";
+import type { IconProps } from "@/components/ui/icons";
 
-const VISIT_TYPE_OPTIONS = [
-  { key: "checkup", label: "儿保检查", color: "#F0B8C8", emoji: "👶" },
-  { key: "allergy", label: "过敏原检测", color: "#F0A0B0", emoji: "🔬" },
-  { key: "sick", label: "就诊记录", color: "#C8A8D8", emoji: "🩺" },
-  { key: "vaccine", label: "疫苗接种", color: "#88C8A0", emoji: "💉" },
-  { key: "blood", label: "血液检查", color: "#F87098", emoji: "🩸" },
-  { key: "other", label: "其他检查", color: "#B09A9D", emoji: "📋" },
+const VISIT_TYPE_OPTIONS: {
+  key: string;
+  label: string;
+  color: string;
+  Icon: React.FC<IconProps>;
+}[] = [
+  { key: "checkup", label: "儿保检查",   color: "#F0B8C8", Icon: IconBaby       },
+  { key: "allergy", label: "过敏原检测", color: "#F0A0B0", Icon: IconMicroscope },
+  { key: "sick",    label: "就诊记录",   color: "#C8A8D8", Icon: IconHospital   },
+  { key: "vaccine", label: "疫苗接种",   color: "#88C8A0", Icon: IconSyringe    },
+  { key: "blood",   label: "血液检查",   color: "#F87098", Icon: IconBloodDrop  },
+  { key: "other",   label: "其他检查",   color: "#B09A9D", Icon: IconFileText   },
 ];
 
 interface Props {
@@ -28,7 +42,7 @@ export default function VisitTypeSection({ value, onChange }: Props) {
           gap: 8,
           padding: "8px 12px 14px",
         }}>
-        {VISIT_TYPE_OPTIONS.map(({ key, label, color, emoji }) => (
+        {VISIT_TYPE_OPTIONS.map(({ key, label, color, Icon }) => (
           <button
             key={key}
             type="button"
@@ -43,7 +57,7 @@ export default function VisitTypeSection({ value, onChange }: Props) {
             <div
               className="flex items-center justify-center rounded-lg flex-shrink-0"
               style={{ width: 28, height: 28, background: `${color}22` }}>
-              <span style={{ fontSize: 14, color }}>{emoji}</span>
+              <Icon size={15} color={color} />
             </div>
             <span
               className="text-[13px] font-semibold"
