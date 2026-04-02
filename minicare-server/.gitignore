@@ -6,3 +6,4 @@ dist/
 cloudrun-env.json
 coverage/
 *.js.map
+code*.zip

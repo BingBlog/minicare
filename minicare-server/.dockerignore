@@ -12,4 +12,6 @@ migrations
 scripts
 tsconfig.json
 nest-cli.json
+dist/test
 dist/*.tsbuildinfo
+dist/tsconfig.tsbuildinfo

@@ -59,12 +59,25 @@ async function bootstrap() {
   // ── /health 端点（CloudRun 健康检查 + curl 验证）────────────
   const httpAdapter = app.getHttpAdapter();
   httpAdapter.get('/health', (_req: unknown, res: { json: (data: unknown) => void }) => {
+    // DB 配置脱敏检查：只暴露是否存在、host 前缀、端口，不暴露密码
+    const dbHost = process.env.DB_HOST;
+    const dbDiag = {
+      host_set: !!dbHost,
+      host_hint: dbHost ? `${dbHost.slice(0, 10)}...` : '(not set)',
+      port: process.env.DB_PORT ?? '(not set)',
+      name: process.env.DB_NAME ?? '(not set)',
+      user_set: !!process.env.DB_USER,
+      pass_set: !!process.env.DB_PASS,
+      jwt_set: !!process.env.JWT_SECRET,
+      auth_test_mode: process.env.AUTH_TEST_MODE ?? '(not set)',
+    };
     res.json({
       status: 'ok',
       service: 'minicare-api',
       version: '0.1.0',
       timestamp: new Date().toISOString(),
       env: process.env.NODE_ENV ?? 'development',
+      db: dbDiag,
     });
   });
 

@@ -1,0 +1,148 @@
+---
+description: minicare 后端构建与部署规范（CloudRun + tcb CLI）。涵盖 TypeScript 编译配置、.tcbignore 与 .dockerignore 的区别、deploy.sh 检查项、CloudRun 环境变量配置、故障排查。在涉及构建、部署、Dockerfile、tsconfig、deploy.sh 时自动生效。
+globs:
+  - "minicare-server/Dockerfile"
+  - "minicare-server/scripts/deploy.sh"
+  - "minicare-server/tsconfig*.json"
+  - "minicare-server/nest-cli.json"
+  - "minicare-server/.tcbignore"
+  - "minicare-server/.dockerignore"
+alwaysApply: false
+---
+
+# minicare-server 构建与部署规范
+
+---
+
+## 一、TypeScript 编译配置
+
+### tsconfig.build.json 是构建的唯一入口
+
+NestJS 项目**必须**使用 `tsconfig.build.json` 而不是 `tsconfig.json` 执行生产构建：
+
+```json
+// tsconfig.build.json（必须存在）
+{
+  "extends": "./tsconfig.json",
+  "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
+}
+```
+
+```json
+// nest-cli.json（必须指定 tsConfigPath）
+{
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "tsConfigPath": "tsconfig.build.json"
+  }
+}
+```
+
+**不能直接用 `tsconfig.json` 构建**：它没有 `exclude`，会把 `test/` 也编译进 `dist/test/`，导致构建产物体积异常（从正常 ~1MB 膨胀并混入无用测试文件）。
+
+### 正常构建产物
+
+- 启动入口：`node dist/main`（**不是** `node dist/src/main`，使用 tsconfig.build.json 后无 `dist/src/` 层级）
+- 正常大小：~1~1.5MB，~200 个文件
+- 目录结构：`dist/main.js`、`dist/auth/`、`dist/records/`、`dist/baby/` 等
+
+---
+
+## 二、.tcbignore vs .dockerignore（核心区别）
+
+### 两个文件作用完全不同，必须同时存在
+
+| 文件 | 生效时机 | 控制内容 |
+|------|----------|----------|
+| `.tcbignore` | tcb CLI **本地**打包压缩时 | 哪些文件被**上传**给 CloudRun |
+| `.dockerignore` | CloudRun **云端** docker build 时 | 哪些文件**复制进** Docker 镜像 |
+
+### 只有 .dockerignore 没有 .tcbignore 的严重后果
+
+`node_modules/` 会被整个打包上传：34000+ 个文件，压缩包约 18MB，上传极慢甚至超时报错。
+
+### .tcbignore 必须包含的排除项
+
+```
+node_modules       <- 最关键！生产依赖由云端 npm ci 安装，不需要上传
+src                <- 源码，云端直接运行 dist/，不需要
+test
+dist/test
+dist/*.tsbuildinfo
+dist/tsconfig.tsbuildinfo
+.git
+.gitignore
+coverage
+*.log
+.DS_Store
+migrations
+scripts
+tsconfig.json
+tsconfig.build.json
+nest-cli.json
+.env
+.env.*
+```
+
+---
+
+## 三、deploy.sh 检查项说明
+
+`npm run deploy` / `npm run deploy:check` 依次验证：
+
+1. **`dist/test/` 存在** → 立即中止，说明 `tsconfig.build.json` 的 `exclude` 失效
+2. **`dist/` 超过 5MB** → 立即中止，说明混入了测试文件或其他无关内容
+3. **`.tcbignore` 不存在** → 立即中止，防止上传 `node_modules`
+4. **上传预估文件数 > 400** → 警告并需要确认（正常约 220 个）
+
+### 正常指标参考
+
+| 指标 | 正常值 | 异常值（需排查） |
+|------|--------|-----------------|
+| `dist/` 大小 | ~1~1.5MB | > 2MB 警告 / > 5MB 中止 |
+| `dist/` 文件数 | ~200 个 | > 300 个需排查 |
+| 上传文件总数（.tcbignore 后） | ~220 个 | > 400 个 |
+| 上传压缩包大小 | ~1~2MB | > 5MB 说明 .tcbignore 失效 |
+
+---
+
+## 四、CloudRun 环境变量
+
+### tcb CLI 的 --env 参数有 bug，禁止使用
+
+`tcb run:deprecated version create --env "KEY=val&..."` 与本地上传模式（`-p .`）配合时必定报错：
+```
+[CreateCloudBaseRunServerVersion] package detail param is missing
+```
+
+**必须在腾讯云 CloudRun 控制台手动配置环境变量**，参考文件 `.env.staging`：
+
+```
+NODE_ENV        = production
+TCB_ENV_ID      = minicare-cloud-6gqledlle0132cbe
+AUTH_TEST_MODE  = true               # 测试模式：固定验证码 123456
+DB_HOST         = 172.17.0.9         # CloudBase MySQL VPC 内网地址（不走公网）
+DB_PORT         = 3306
+DB_NAME         = minicare-cloud-6gqledlle0132cbe
+DB_USER         = bing
+DB_PASS         = <见 .env.staging>
+JWT_SECRET      = <见 .env.staging>
+```
+
+### 数据库连接说明
+
+- CloudRun 与 MySQL 在同一 VPC（`vpc-mkwdhlzc`，`subnet-823cr3pt`）
+- **必须走内网地址** `172.17.0.9:3306`，不能走公网地址
+- 数据库名即 CloudBase 环境 ID：`minicare-cloud-6gqledlle0132cbe`
+
+---
+
+## 五、故障排查速查
+
+| 现象 | 根本原因 | 解决方法 |
+|------|----------|----------|
+| `POST /api/auth/verify-code` 返回 500 | CloudRun 环境变量中数据库配置缺失或错误 | 在控制台配置 `DB_HOST`/`DB_USER`/`DB_PASS`/`DB_NAME` |
+| `POST /api/auth/send-code` 返回 503 | CloudRun 冷启动（Serverless 缩容到 0） | 重试即可；频繁出现可设最小实例数=1 |
+| 上传超时或极慢 | 压缩包过大（`.tcbignore` 缺失，上传了 node_modules） | 创建 `.tcbignore` 并重试 |
+| `dist/` 体积异常（>5MB） | `test/` 被编译进 `dist/test/`（tsconfig.build.json 失效） | 确认 `nest-cli.json` 中 `tsConfigPath` 指向 `tsconfig.build.json` |
+| `node dist/src/main` 找不到模块 | Dockerfile/package.json 的启动路径未随编译配置更新 | 改为 `node dist/main` |

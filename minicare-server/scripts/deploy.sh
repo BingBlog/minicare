@@ -4,10 +4,12 @@
 #
 # 流程：
 #   1. 本地 TypeScript 编译 (nest build → dist/)
-#   2. 检查 dist/ 大小是否超出阈值（警告/阻止）
+#   2. 检查 dist/ 大小和内容是否异常（警告/阻止）
 #   3. 通过 tcb CLI 上传源码包 + 创建新版本
-#      上传内容：dist/ + package*.json + Dockerfile（约 400KB）
-#      排除内容：由 .dockerignore 定义（node_modules / src 等）
+#      上传内容：dist/ + package*.json + Dockerfile（约 1~2MB）
+#      排除内容：由 .tcbignore 定义（node_modules / src 等）
+#      注意：.dockerignore 只在云端 docker build 时生效，不控制上传内容
+#            tcb CLI 使用 .tcbignore 在本地打包压缩时过滤文件
 #
 # 用法:
 #   ./scripts/deploy.sh                   # 默认部署到 staging 环境
@@ -81,8 +83,11 @@ case "$DEPLOY_ENV" in
 esac
 
 # dist 大小阈值（KB）
-DIST_SIZE_WARN_KB=3000       # 3 MB 警告
-DIST_SIZE_HARD_LIMIT_KB=10000  # 10 MB 阻止
+DIST_SIZE_WARN_KB=2000       # 2 MB 警告（含 .js/.map/.d.ts，正常约 1~1.5MB）
+DIST_SIZE_HARD_LIMIT_KB=5000 # 5 MB 阻止（超出说明混入了 test/ 或其他无关文件）
+
+# 上传文件数阈值（tcbignore 后）
+UPLOAD_FILES_WARN=400        # 超过此数量说明可能混入了不该上传的文件
 
 # ── 项目根目录 ────────────────────────────────────────────────
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -134,8 +139,16 @@ du -sh dist/* 2>/dev/null | sort -rh | while read -r size path; do
 done
 echo ""
 
+# 检查 dist/test 是否被意外编译进来
+if [ -d "dist/test" ]; then
+  error "dist/test/ 目录存在！tsconfig.build.json 的 exclude 配置可能失效，部署已中止"
+  error "请检查 nest-cli.json 的 tsConfigPath 是否指向 tsconfig.build.json"
+  exit 1
+fi
+
 if [ "${DIST_SIZE_KB}" -gt "${DIST_SIZE_HARD_LIMIT_KB}" ]; then
   error "dist/ 超过硬限制 $(( DIST_SIZE_HARD_LIMIT_KB / 1024 )) MB（当前 ${DIST_SIZE_HUMAN}），部署已中止"
+  error "常见原因：test/ 目录被编译进 dist/，或 tsconfig.json 未使用 tsconfig.build.json"
   exit 1
 elif [ "${DIST_SIZE_KB}" -gt "${DIST_SIZE_WARN_KB}" ]; then
   warn "dist/ 较大（${DIST_SIZE_HUMAN}），建议排查是否有多余文件"
@@ -149,7 +162,7 @@ if $CHECK_ONLY; then
 fi
 
 # ══════════════════════════════════════════════════════════════
-# Step 3：检查 tcb CLI
+# Step 3：检查 tcb CLI + 上传文件预估
 # ══════════════════════════════════════════════════════════════
 step "Step 3  检查部署环境"
 
@@ -160,6 +173,34 @@ fi
 
 TCB_VERSION=$(tcb --version 2>/dev/null | head -1 || echo "unknown")
 info "tcb CLI: ${TCB_VERSION}"
+
+# 检查 .tcbignore 是否存在（控制上传时的打包内容，不同于 .dockerignore）
+if [ ! -f ".tcbignore" ]; then
+  error ".tcbignore 文件不存在！缺少此文件会导致 node_modules 被打包上传（体积 ~100MB+）"
+  error "请创建 .tcbignore 文件，参考 .dockerignore 内容"
+  exit 1
+fi
+
+# 预估上传文件数（排除 tcbignore 中的目录）
+UPLOAD_FILES=$(find . -not -path "./node_modules/*" -not -path "./.git/*" \
+  -not -path "./src/*" -not -path "./test/*" -not -path "./coverage/*" \
+  -not -name "*.tsbuildinfo" -not -name "*.log" -not -name ".DS_Store" \
+  -type f | wc -l | tr -d ' ')
+
+echo ""
+info "预估上传文件数：${UPLOAD_FILES} 个"
+
+if [ "${UPLOAD_FILES}" -gt "${UPLOAD_FILES_WARN}" ]; then
+  warn "上传文件数（${UPLOAD_FILES}）异常偏多，可能 node_modules 未被 .tcbignore 排除"
+  warn "继续部署将导致超大压缩包（>100MB），上传极慢"
+  read -r -p "  确认继续？[y/N] " size_confirm
+  if [[ ! "$size_confirm" =~ ^[Yy]$ ]]; then
+    info "已取消，请检查 .tcbignore 配置"
+    exit 0
+  fi
+else
+  success "上传文件数正常（${UPLOAD_FILES} 个）"
+fi
 
 # ══════════════════════════════════════════════════════════════
 # Step 4：提示 CloudRun 环境变量配置
@@ -194,7 +235,7 @@ fi
 # ══════════════════════════════════════════════════════════════
 step "Step 5  部署到 CloudRun（${DEPLOY_ENV}）"
 
-info "上传内容：dist/ + package*.json + Dockerfile（排除 node_modules/src 等）"
+info "上传内容：dist/ + package*.json + Dockerfile（.tcbignore 排除 node_modules/src/test 等）"
 info "开始上传..."
 
 tcb run:deprecated version create \

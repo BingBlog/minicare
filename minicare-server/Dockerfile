@@ -6,6 +6,9 @@ FROM node:20-alpine
 WORKDIR /app
 
 ENV NODE_ENV=production
+# 测试模式：固定验证码 123456，不发真实短信
+# 正式上线前需在 CloudRun 控制台将此变量设为 false 或删除
+ENV AUTH_TEST_MODE=true
 
 # 只安装生产依赖
 COPY package.json package-lock.json* ./
