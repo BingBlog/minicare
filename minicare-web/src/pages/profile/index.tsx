@@ -428,7 +428,7 @@ export default function ProfilePage() {
         onInvite={handleInvite}
         onCopyCode={copyInviteCode}
         onMemberClick={(m) =>
-          showToast(`${m.name ?? "未知用户"} · ${m.role === 1 ? "创建者" : m.role === 3 ? "查看者" : "编辑者"}`)
+          showToast(`${m.name ?? "未知用户"} · ${m.role === 1 ? "创建者" : "编辑者"}`)
         }
         onClose={closeMembers}
       />

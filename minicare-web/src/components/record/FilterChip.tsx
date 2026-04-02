@@ -64,7 +64,7 @@ interface FilterBarProps {
 
 /**
  * FilterBar 横向滚动筛选栏
- * 将多个 FilterChip 组合成可横向滚动的容器
+ * 将多个 FilterChip 组合成可横向滚动的容器，顶部含页面标题行
  *
  * @example
  * <FilterBar
@@ -78,23 +78,70 @@ export function FilterBar({ options, activeKey, onChange }: FilterBarProps) {
     <div
       className="flex-shrink-0"
       style={{
-        display: 'flex',
-        gap: 8,
-        padding: '10px 16px 4px',
         background: '#fff',
-        /* 隐藏横向滚动条（移动端体验） */
-        overflowX: 'auto',
-        scrollbarWidth: 'none',
+        borderBottom: '1px solid #F5EFF2',
+        paddingBottom: 12,
       }}
     >
-      {options.map((opt) => (
-        <FilterChip
-          key={opt.key}
-          option={opt}
-          active={activeKey === opt.key}
-          onClick={onChange}
-        />
-      ))}
+      {/* 页面标题行 */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '16px 18px 12px',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span
+            style={{
+              fontSize: 18,
+              fontWeight: 700,
+              color: '#3A2428',
+              letterSpacing: '-0.3px',
+            }}
+          >
+            宝宝记录
+          </span>
+          <span
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: 18,
+              padding: '0 7px',
+              borderRadius: 9,
+              fontSize: 10,
+              fontWeight: 600,
+              background: 'linear-gradient(135deg, #F87098, #F9A8C0)',
+              color: '#fff',
+              letterSpacing: '0.2px',
+            }}
+          >
+            {options.find(o => o.key === activeKey)?.label ?? '全部'}
+          </span>
+        </div>
+      </div>
+
+      {/* 横向滚动筛选胶囊 */}
+      <div
+        style={{
+          display: 'flex',
+          gap: 7,
+          padding: '0 18px',
+          overflowX: 'auto',
+          scrollbarWidth: 'none',
+        }}
+      >
+        {options.map((opt) => (
+          <FilterChip
+            key={opt.key}
+            option={opt}
+            active={activeKey === opt.key}
+            onClick={onChange}
+          />
+        ))}
+      </div>
     </div>
   )
 }

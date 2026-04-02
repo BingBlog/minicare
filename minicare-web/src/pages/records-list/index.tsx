@@ -25,6 +25,7 @@ import { getRecordTime, getDateKey, getDateLabel, getRecordType } from "@/lib/ut
 import { RECORD_ROUTES } from "@/lib/constants";
 import type { RecordItem } from "@/api";
 import type { FilterChipOption } from "@/components/record/FilterChip";
+import type { ActionRecord } from "./RecordActionSheet";
 
 // ── 支持的记录类型（对应 API 模块名称） ────────────────────────────────────
 type RecordTypeKey = "feeding" | "sleep" | "diaper" | "activity" | "health" | "growth" | "medical" | "symptom";
@@ -158,29 +159,31 @@ export default function RecordsPage() {
     setActionOpen(true);
   };
 
-  const handleEdit = (record: RecordItem) => {
-    const type = getRecordType(record);
+  const handleEdit = (record: ActionRecord) => {
+    const r = record as RecordItem;
+    const type = getRecordType(r);
     const route = RECORD_ROUTES[type];
     if (!route) {
       showToast("暂不支持编辑该类型记录");
       return;
     }
     // 跳转到对应表单页，携带 record 作为 state（表单页通过 location.state.record 读取）
-    navigate(route, { state: { record } });
+    navigate(route, { state: { record: r } });
   };
 
-  const handleDelete = async (record: RecordItem) => {
+  const handleDelete = async (record: ActionRecord) => {
+    const r = record as RecordItem;
     if (!currentFamily) return;
-    const type = getRecordType(record) as RecordTypeKey;
+    const type = getRecordType(r) as RecordTypeKey;
     const api = detailedApis[type];
     if (!api?.remove) {
       showToast("暂不支持删除该类型记录");
       return;
     }
     try {
-      await api.remove(currentFamily.id, record.id);
+      await api.remove(currentFamily.id, r.id);
       // 乐观更新：立即从列表移除，无需重新请求接口
-      setRecords((prev) => prev.filter((r) => r.id !== record.id));
+      setRecords((prev) => prev.filter((item) => item.id !== r.id));
       showToast("✓ 记录已删除");
     } catch {
       showToast("删除失败，请重试");

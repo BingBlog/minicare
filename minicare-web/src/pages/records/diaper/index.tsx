@@ -14,7 +14,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAppStore } from "@/lib/store";
 import { recordsApi } from "@/api";
-import type { DiaperRecord } from "@/api/types";
+import type { DiaperRecord, DiaperType } from "@/api/types";
 import TimePicker from "@/components/TimePicker";
 
 import DiaperTypeSection from "./DiaperTypeSection";
@@ -32,7 +32,7 @@ import {
   useToastMsg,
 } from "../shared";
 
-type DiaperChip = "wet" | "dirty" | "mixed" | "dry";
+type DiaperChip = DiaperType;
 
 /** 从 ISO 时间提取本地 HH:mm */
 function isoToLocalTime(iso: string): string {

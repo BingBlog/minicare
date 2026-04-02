@@ -49,7 +49,7 @@ export type {
   CreateMedicalDto,
   MedicalRecord,
   MoodType,
-  SpiritType,
+  SpiritLevel,
   CreateSymptomDto,
   SymptomRecord,
   TodayRecord,
