@@ -7,6 +7,8 @@ globs:
   - "minicare-server/nest-cli.json"
   - "minicare-server/.tcbignore"
   - "minicare-server/.dockerignore"
+  - "minicare-server/package.json"
+  - "minicare-server/cloudbaserc.json"
 alwaysApply: false
 ---
 
@@ -14,7 +16,45 @@ alwaysApply: false
 
 ---
 
-## 一、TypeScript 编译配置
+## 一、快速参考（标准构建部署流程）
+
+所有部署操作**必须在 `minicare-server/` 目录下**执行：
+
+```bash
+cd minicare-server
+
+# 1. 标准构建 + 部署（一键）
+npm run deploy
+
+# 2. 仅检查构建产物大小，不触发部署
+npm run deploy:check
+
+# 3. 查看 CloudRun 已发布版本列表
+npm run deploy:list
+```
+
+### 各 npm script 对应的实际命令
+
+| Script | 实际命令 |
+|--------|---------|
+| `npm run build` | `nest build` |
+| `npm run deploy` | `bash scripts/deploy.sh` |
+| `npm run deploy:check` | `bash scripts/deploy.sh --check` |
+| `npm run deploy:list` | `tcb run:deprecated version list -e minicare-cloud-6gqledlle0132cbe -s minicare-api` |
+
+### 部署脚本执行的 5 个步骤
+
+1. **Step 1** — TypeScript 编译：`npm run build` → 产出 `dist/`
+2. **Step 2** — 检查构建产物：大小 / 文件数 / `dist/test/` 是否存在
+3. **Step 3** — 检查 tcb CLI 版本 + `.tcbignore` 是否存在 + 预估上传文件数
+4. **Step 4** — 提示确认 CloudRun 控制台环境变量配置（需手动输入 `y`）
+5. **Step 5** — 调用 `tcb run:deprecated version create` 上传并创建新版本
+
+> **非交互模式（自动确认）**：`echo "y" | npm run deploy`
+
+---
+
+## 二、TypeScript 编译配置
 
 ### tsconfig.build.json 是构建的唯一入口
 
@@ -48,7 +88,7 @@ NestJS 项目**必须**使用 `tsconfig.build.json` 而不是 `tsconfig.json` �
 
 ---
 
-## 二、.tcbignore vs .dockerignore（核心区别）
+## 三、.tcbignore vs .dockerignore（核心区别）
 
 ### 两个文件作用完全不同，必须同时存在
 
@@ -86,7 +126,7 @@ nest-cli.json
 
 ---
 
-## 三、deploy.sh 检查项说明
+## 四、deploy.sh 检查项说明
 
 `npm run deploy` / `npm run deploy:check` 依次验证：
 
@@ -106,9 +146,26 @@ nest-cli.json
 
 ---
 
-## 四、CloudRun 环境变量
+## 五、CloudRun 与配置文件
 
-### tcb CLI 的 --env 参数有 bug，禁止使用
+### cloudbaserc.json（tcb CLI 配置文件）
+
+```json
+{
+  "version": "2.0",
+  "envId": "minicare-cloud-6gqledlle0132cbe",
+  "$schema": "https://framework-1258016615.tcloudbaseapp.com/schema/latest.json",
+  "cloudrun": {
+    "name": "minicare-api"
+  }
+}
+```
+
+`tcb` 命令读取此文件确认目标环境和服务名，**不要修改 `envId` 和 `name`**。
+
+### CloudRun 环境变量（必须在控制台手动配置）
+
+#### tcb CLI 的 --env 参数有 bug，禁止使用
 
 `tcb run:deprecated version create --env "KEY=val&..."` 与本地上传模式（`-p .`）配合时必定报错：
 ```
@@ -137,12 +194,65 @@ JWT_SECRET      = <见 .env.staging>
 
 ---
 
-## 五、故障排查速查
+## 六、网络受限时的构建注意事项
+
+当本地网络受限（公司代理/防火墙）时，`npm run build` 本身不需要网络（纯本地 TypeScript 编译），但以下操作会受影响：
+
+### 受影响的操作
+
+| 操作 | 是否需要网络 | 说明 |
+|------|------------|------|
+| `nest build`（TypeScript 编译） | 否 | 纯本地，无需网络 |
+| `npm ci --omit=dev`（云端安装依赖） | 是（云端执行） | CloudRun 内部网络，不受本地影响 |
+| `tcb run:deprecated version create` | **是**（上传） | 需连接腾讯云 API，受本地网络影响 |
+| `tcb run:deprecated version list` | **是** | 同上 |
+
+### 网络受限时的处理策略
+
+1. **仅编译，不部署**：执行 `npm run build` 或 `npm run deploy:check` 完成本地构建和产物检查
+2. **等网络恢复后再上传**：产物已在 `dist/` 下，网络恢复后直接运行 `npm run deploy` 即可（`nest build` 会重新执行，但速度很快）
+3. **构建产物不要手动删除**：`dist/` 由 `deploy.sh` 的 Step 1 自动重建（`deleteOutDir: true`），无需手动清理
+
+### tcb CLI 网络超时处理
+
+若 `tcb run:deprecated version create` 上传过程中超时中断：
+- 可以直接重新执行 `npm run deploy`（重新构建后重传）
+- 不需要先删除 `dist/`
+
+---
+
+## 七、Dockerfile 说明
+
+```dockerfile
+FROM node:20-alpine
+WORKDIR /app
+ENV NODE_ENV=production
+ENV AUTH_TEST_MODE=true         # 测试模式，正式上线前在控制台改为 false
+
+COPY package.json package-lock.json* ./
+RUN npm ci --omit=dev --prefer-offline   # 云端安装生产依赖
+
+COPY dist ./dist                          # 复制本地预编译产物
+
+EXPOSE 3000
+CMD ["node", "dist/main"]                # 启动入口：dist/main（不是 dist/src/main）
+```
+
+**关键约束**：
+- 启动命令必须是 `node dist/main`，不能是 `node dist/src/main`
+- `--prefer-offline` 优先使用 npm 缓存，加速云端安装
+
+---
+
+## 八、故障排查速查
 
 | 现象 | 根本原因 | 解决方法 |
 |------|----------|----------|
 | `POST /api/auth/verify-code` 返回 500 | CloudRun 环境变量中数据库配置缺失或错误 | 在控制台配置 `DB_HOST`/`DB_USER`/`DB_PASS`/`DB_NAME` |
 | `POST /api/auth/send-code` 返回 503 | CloudRun 冷启动（Serverless 缩容到 0） | 重试即可；频繁出现可设最小实例数=1 |
-| 上传超时或极慢 | 压缩包过大（`.tcbignore` 缺失，上传了 node_modules） | 创建 `.tcbignore` 并重试 |
+| 上传超时或极慢 | 压缩包过大（`.tcbignore` 缺失，上传了 node_modules） | 确认 `.tcbignore` 存在且包含 `node_modules` |
 | `dist/` 体积异常（>5MB） | `test/` 被编译进 `dist/test/`（tsconfig.build.json 失效） | 确认 `nest-cli.json` 中 `tsConfigPath` 指向 `tsconfig.build.json` |
 | `node dist/src/main` 找不到模块 | Dockerfile/package.json 的启动路径未随编译配置更新 | 改为 `node dist/main` |
+| `tcb run:deprecated version create` 报 `package detail param is missing` | 使用了 `--env` 参数 | 删除 `--env` 参数，改在控制台配置环境变量 |
+| 网络受限，`tcb` 命令无响应 | 本地网络无法访问腾讯云 API | 先执行 `npm run deploy:check` 完成本地编译检查，等网络恢复再部署 |
+| 数据库连接失败（`ECONNREFUSED 172.17.0.9`） | CloudRun 与 MySQL 未在同一 VPC，或内网地址配置错误 | 确认 `DB_HOST=172.17.0.9`，VPC 配置见 CloudRun 控制台 |
