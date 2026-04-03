@@ -18,18 +18,19 @@ export class DiaperService {
     const id = uuidv4();
     await this.db.execute(
       `INSERT INTO diaper_record
-         (id, baby_id, recorded_by, record_time, diaper_type, color, poop_type, diaper_count, note)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+         (id, baby_id, recorded_by, record_time, diaper_type, color, poop_type, butt_condition, diaper_count, note)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         id,
         dto.baby_id,
         userId,
         toMysqlDatetime(dto.record_time),
         DIAPER_TYPE_TO_INT[dto.diaper_type] ?? 1,
-        dto.color        ?? null,
-        dto.poop_type    ?? null,
-        dto.diaper_count ?? null,
-        dto.note         ?? null,
+        dto.color          ?? null,
+        dto.poop_type      ?? null,
+        dto.butt_condition ?? null,
+        dto.diaper_count   ?? null,
+        dto.note           ?? null,
       ],
     );
     return { id };
@@ -70,10 +71,11 @@ export class DiaperService {
 
     if (dto.record_time !== undefined) { setClauses.push('record_time = ?'); values.push(toMysqlDatetime(dto.record_time)); }
     if (dto.diaper_type !== undefined) { setClauses.push('diaper_type = ?'); values.push(DIAPER_TYPE_TO_INT[dto.diaper_type] ?? 1); }
-    if (dto.color        !== undefined) { setClauses.push('color = ?');        values.push(dto.color); }
-    if (dto.poop_type    !== undefined) { setClauses.push('poop_type = ?');    values.push(dto.poop_type); }
-    if (dto.diaper_count !== undefined) { setClauses.push('diaper_count = ?'); values.push(dto.diaper_count); }
-    if (dto.note         !== undefined) { setClauses.push('note = ?');         values.push(dto.note); }
+    if (dto.color          !== undefined) { setClauses.push('color = ?');          values.push(dto.color); }
+    if (dto.poop_type      !== undefined) { setClauses.push('poop_type = ?');      values.push(dto.poop_type); }
+    if (dto.butt_condition !== undefined) { setClauses.push('butt_condition = ?'); values.push(dto.butt_condition); }
+    if (dto.diaper_count   !== undefined) { setClauses.push('diaper_count = ?');   values.push(dto.diaper_count); }
+    if (dto.note           !== undefined) { setClauses.push('note = ?');           values.push(dto.note); }
 
     if (setClauses.length === 0) return this.findOne(id);
 

@@ -83,17 +83,17 @@ export default function Step2SuccessPage({
 
       {/* 宝宝信息卡片 */}
       <div
-        className="w-full flex items-center gap-3.5 rounded-2xl px-5 py-4 mb-7"
+        className="w-full flex flex-col items-center rounded-2xl px-5 py-5 mb-7"
         style={{
           background: "#fff",
           boxShadow: "0 4px 20px rgba(200,100,120,0.12)",
         }}>
         {/* 头像 */}
         <div
-          className="flex items-center justify-center rounded-full flex-shrink-0"
+          className="flex items-center justify-center rounded-full mb-3"
           style={{
-            width: 52,
-            height: 52,
+            width: 64,
+            height: 64,
             background: "linear-gradient(135deg, #F9A8C0, #F87098)",
           }}>
           <svg
@@ -103,42 +103,19 @@ export default function Step2SuccessPage({
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            style={{ width: 28, height: 28 }}>
+            style={{ width: 32, height: 32 }}>
             <path d="M12 2a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4" />
             <path d="M5 20a7 7 0 0 1 14 0" />
           </svg>
         </div>
 
         {/* 信息 */}
-        <div className="flex-1 min-w-0">
-          <div className="text-lg font-extrabold text-[#4A3035]">
-            {babyName || "小宝"}
-          </div>
-          <div className="text-xs text-[#9A8090] mt-0.5">
-            {genderText}
-            {ageText ? ` · ${ageText}` : ""}
-          </div>
-          {/* 过敏标签 */}
-          <div
-            className="inline-flex items-center gap-1 mt-1.5 px-2 py-0.5 rounded-lg text-[11px] font-bold"
-            style={{ background: "#FFF0F4", color: "#F05060" }}>
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              style={{ width: 11, height: 11 }}>
-              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-              <line x1="12" y1="9" x2="12" y2="13" />
-              <line x1="12" y1="17" x2="12.01" y2="17" />
-            </svg>
-            牛奶蛋白过敏 ·{" "}
-            {allergyLevel
-              ? SEVERITY_LABELS[allergyLevel as AllergyLevel]
-              : "未知程度"}
-          </div>
+        <div className="text-lg font-extrabold text-[#4A3035] text-center">
+          {babyName || "小宝"}
+        </div>
+        <div className="text-xs text-[#9A8090] mt-1 text-center">
+          {genderText}
+          {ageText ? ` · ${ageText}` : ""}
         </div>
       </div>
 

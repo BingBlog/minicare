@@ -33,7 +33,7 @@ import {
   useToastMsg,
 } from "../shared";
 
-type ActivityType = "tummy_time" | "outdoor" | "play" | "bath" | "other";
+type ActivityType = 'gross_motor' | 'fine_motor' | 'edu_play' | 'outdoor' | 'daily_care' | 'other';
 
 /** 从 ISO 时间提取本地 HH:mm */
 function isoToLocalTime(iso: string): string {
@@ -57,7 +57,7 @@ export default function ActivityFormPage() {
     return nowTime();
   });
   const [activityType, setActivityType] = useState<ActivityType>(
-    (editRecord?.activity_type as ActivityType) ?? "tummy_time"
+    (editRecord?.activity_type as ActivityType) ?? 'gross_motor'
   );
   const [intensity, setIntensity] = useState<ActivityIntensity>(
     editRecord?.intensity ?? "medium"

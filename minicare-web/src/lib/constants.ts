@@ -188,11 +188,12 @@ export const POOP_TYPE_LABELS: Record<string, string> = {
 
 /** 活动类型 */
 export const ACTIVITY_TYPE_LABELS: Record<string, string> = {
-  bath:       '洗澡',
-  outdoor:    '户外活动',
-  play:       '玩耍',
-  tummy_time: '俯趴练习',
-  other:      '其他活动',
+  gross_motor: '大运动练习',
+  fine_motor:  '精细运动练习',
+  edu_play:    '亲子早教互动',
+  outdoor:     '户外活动',
+  daily_care:  '日常护理',
+  other:       '其他活动',
 }
 
 /** 活动强度 */

@@ -10,7 +10,7 @@ import DatePicker from "@/components/DatePicker";
 
 function localDateStr(): string {
   const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
 interface Props {
@@ -23,7 +23,13 @@ interface Props {
 }
 
 /** 表单行容器，带下边线 */
-function Row({ children, noBorder }: { children: React.ReactNode; noBorder?: boolean }) {
+function Row({
+  children,
+  noBorder,
+}: {
+  children: React.ReactNode;
+  noBorder?: boolean;
+}) {
   return (
     <div
       className="flex items-center px-4 py-3.5"
@@ -71,12 +77,16 @@ export default function BabyInfoForm({
   return (
     <>
       {/* 节标题 */}
-      <div className="text-xs font-bold text-[#9A8090] px-5 pt-4 pb-1.5" style={{ letterSpacing: ".3px" }}>
+      <div
+        className="text-xs font-bold text-[#9A8090] px-5 pt-4 pb-1.5"
+        style={{ letterSpacing: ".3px" }}>
         基本信息
       </div>
 
       {/* 卡片容器 */}
-      <div className="mx-4 bg-white rounded-2xl overflow-hidden" style={{ boxShadow: "0 1px 6px rgba(200,100,120,0.07)" }}>
+      <div
+        className="mx-4 bg-white rounded-2xl overflow-hidden"
+        style={{ boxShadow: "0 1px 6px rgba(200,100,120,0.07)" }}>
         {/* 宝宝昵称 */}
         <Row>
           <span className="text-sm text-[#4A3035]">
@@ -84,7 +94,7 @@ export default function BabyInfoForm({
           </span>
           <input
             type="text"
-            placeholder="给宝宝起个名字"
+            placeholder="输入宝宝昵称"
             value={babyName}
             onChange={(e) => onBabyNameChange(e.target.value)}
             className="flex-1 text-right border-none outline-none bg-transparent text-sm text-[#4A3035] placeholder:text-[#C0A8AD]"
@@ -113,8 +123,16 @@ export default function BabyInfoForm({
             性别 <Required />
           </span>
           <div className="flex-1 flex gap-2 justify-end">
-            <GenderPill label="男" active={gender === "male"} onClick={() => onGenderChange("male")} />
-            <GenderPill label="女" active={gender === "female"} onClick={() => onGenderChange("female")} />
+            <GenderPill
+              label="男"
+              active={gender === "male"}
+              onClick={() => onGenderChange("male")}
+            />
+            <GenderPill
+              label="女"
+              active={gender === "female"}
+              onClick={() => onGenderChange("female")}
+            />
           </div>
         </Row>
       </div>

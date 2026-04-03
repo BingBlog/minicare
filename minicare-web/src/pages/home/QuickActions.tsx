@@ -54,12 +54,12 @@ export default function QuickActions({ onMoreClick }: QuickActionsProps) {
               type="button"
               onClick={() => navigate(path)}
               className="bg-white border border-gray-100 rounded-xl flex flex-col items-center gap-1.5 cursor-pointer transition-transform active:scale-95"
-              style={{ padding: '12px 4px 10px' }}
+              style={{ padding: '16px 4px 14px' }}
             >
               {/* 图标容器 */}
-              <RecordTypeIcon type={key} containerSize={38} iconSize={19} borderRadius={12} />
+              <RecordTypeIcon type={key} containerSize={56} iconSize={28} borderRadius={16} />
               {/* 文字标签 */}
-              <span className="text-[11px] font-semibold text-[#4a3035]">{cfg.label}</span>
+              <span className="text-[14px] font-semibold text-[#4a3035]">{cfg.label}</span>
             </button>
           )
         })}

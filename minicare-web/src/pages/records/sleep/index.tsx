@@ -5,24 +5,28 @@
  *
  * 子组件：
  *  - TimerMode      计时模式（圆形计时 + 开始/结束按钮）
- *  - ManualMode     补录模式（入睡/醒来时间 + 睡眠时段）
+ *  - ManualMode     补录模式（日期 + 入睡/醒来时间）
  *  - QualitySection 睡眠质量（两模式均显示）
  *
  * ═══════════ 计时模式流程 ═══════════
  *  1. 页面加载时先查询 getOngoing，若有则恢复计时（断线重连）
  *  2. 点「开始计时」→ 立即调用 startSleep API → 记录 ongoingId
- *  3. 点「结束睡眠」→ 立即调用 endSleep API（携带质量/备注）→ 结束后跳回
+ *  3. 点「结束睡眠」→
+ *     - 若计时 < 3 分钟：弹二次确认弹窗
+ *       - 「仍然保存」→ 调用 endSleep 正常保存
+ *       - 「继续计时」→ 恢复计时，同时删除服务端 ongoing 记录（避免孤立）
+ *     - 若计时 ≥ 3 分钟：直接调用 endSleep API → 结束后跳回
  *  4. 计时模式不显示「保存记录」按钮；结束后自动保存
  *
  * ═══════════ 补录/编辑模式流程 ═══════════
- *  手动填写时间范围 → 点「保存记录」→ 调用 startSleep + endSleep
+ *  手动填写日期 + 时间范围 → 点「保存记录」→ 调用 startSleep + endSleep
  *  编辑模式直接 PATCH 更新
  */
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAppStore } from "@/lib/store";
 import { recordsApi } from "@/api";
-import type { SleepRecord, SleepQuality, SleepPeriod } from "@/api/types";
+import type { SleepRecord, SleepQuality } from "@/api/types";
 
 import TimerMode from "./TimerMode";
 import ManualMode from "./ManualMode";
@@ -34,7 +38,6 @@ import {
   ToastMessage,
   nowTime,
   nowDate,
-  timeToISO,
   useToastMsg,
 } from "../shared";
 
@@ -80,7 +83,6 @@ function timePairToISO(
   const eMs = new Date(`2000-01-01T${endTime}:00`).getTime();
 
   if (eMs >= sMs) {
-    // 同一天（或恰好相等）
     return { startISO, endISO: `${startDateStr}T${endTime}:00` };
   }
 
@@ -91,6 +93,141 @@ function timePairToISO(
   const endDateStr = `${startDate.getFullYear()}-${pad(startDate.getMonth() + 1)}-${pad(startDate.getDate())}`;
   return { startISO, endISO: `${endDateStr}T${endTime}:00` };
 }
+
+/** 将秒数格式化为「X 分 Y 秒」或「X 秒」的可读文案 */
+function formatShortDuration(seconds: number): string {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  if (m > 0) return `${m} 分 ${s} 秒`;
+  return `${s} 秒`;
+}
+
+// ── 二次确认弹窗（时间太短） ────────────────────────────────────────
+interface ShortSleepDialogProps {
+  seconds: number;
+  onKeepTiming: () => void;
+  onSaveAnyway: () => void;
+  loading: boolean;
+}
+
+function ShortSleepDialog({ seconds, onKeepTiming, onSaveAnyway, loading }: ShortSleepDialogProps) {
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-end justify-center"
+      style={{ background: "rgba(0,0,0,0.4)" }}
+      onClick={onKeepTiming}>
+      <div
+        className="w-full max-w-sm mb-6 mx-4 bg-white rounded-2xl overflow-hidden"
+        style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.18)" }}
+        onClick={(e) => e.stopPropagation()}>
+        {/* 标题区 */}
+        <div className="px-5 pt-5 pb-3 text-center">
+          <div className="text-2xl mb-2">😴</div>
+          <h3 className="text-[16px] font-bold text-[#4A3035]">睡眠时间太短</h3>
+          <p className="mt-1.5 text-[13px] text-[#7A5A60] leading-relaxed">
+            本次睡眠仅 <span className="font-semibold text-[#F87098]">{formatShortDuration(seconds)}</span>，
+            可能是误触了结束按钮。
+          </p>
+        </div>
+
+        {/* 分割线 */}
+        <div style={{ height: "0.5px", background: "#F5EEF0" }} />
+
+        {/* 操作按钮 */}
+        <div className="flex">
+          <button
+            type="button"
+            onClick={onKeepTiming}
+            disabled={loading}
+            className="flex-1 py-4 text-[15px] font-semibold"
+            style={{
+              color: "#9A8090",
+              borderRight: "0.5px solid #F5EEF0",
+            }}>
+            继续计时
+          </button>
+          <button
+            type="button"
+            onClick={onSaveAnyway}
+            disabled={loading}
+            className="flex-1 py-4 text-[15px] font-semibold flex items-center justify-center gap-1.5"
+            style={{ color: "#F87098" }}>
+            {loading && (
+              <svg className="animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ width: 14, height: 14 }}>
+                <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+              </svg>
+            )}
+            仍然保存
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── 取消计时确认弹窗 ────────────────────────────────────────────────
+interface CancelTimerDialogProps {
+  onKeep: () => void;
+  onConfirm: () => void;
+  loading: boolean;
+}
+
+function CancelTimerDialog({ onKeep, onConfirm, loading }: CancelTimerDialogProps) {
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-end justify-center"
+      style={{ background: "rgba(0,0,0,0.4)" }}
+      onClick={onKeep}>
+      <div
+        className="w-full max-w-sm mb-6 mx-4 bg-white rounded-2xl overflow-hidden"
+        style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.18)" }}
+        onClick={(e) => e.stopPropagation()}>
+        {/* 标题区 */}
+        <div className="px-5 pt-5 pb-3 text-center">
+          <div className="text-2xl mb-2">🗑️</div>
+          <h3 className="text-[16px] font-bold text-[#4A3035]">取消本次计时？</h3>
+          <p className="mt-1.5 text-[13px] text-[#7A5A60] leading-relaxed">
+            已记录的时间将不会保存，此操作不可撤销。
+          </p>
+        </div>
+
+        {/* 分割线 */}
+        <div style={{ height: "0.5px", background: "#F5EEF0" }} />
+
+        {/* 操作按钮 */}
+        <div className="flex">
+          <button
+            type="button"
+            onClick={onKeep}
+            disabled={loading}
+            className="flex-1 py-4 text-[15px] font-semibold"
+            style={{
+              color: "#9A8090",
+              borderRight: "0.5px solid #F5EEF0",
+            }}>
+            继续计时
+          </button>
+          <button
+            type="button"
+            onClick={onConfirm}
+            disabled={loading}
+            className="flex-1 py-4 text-[15px] font-semibold flex items-center justify-center gap-1.5"
+            style={{ color: "#F87098" }}>
+            {loading && (
+              <svg className="animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ width: 14, height: 14 }}>
+                <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+              </svg>
+            )}
+            确认取消
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── 短时睡眠阈值（秒） ───────────────────────────────────────────────
+const SHORT_SLEEP_THRESHOLD_SECONDS = 3 * 60; // 3 分钟
 
 export default function SleepFormPage() {
   const navigate = useNavigate();
@@ -103,7 +240,6 @@ export default function SleepFormPage() {
   const isEditMode = Boolean(editRecord);
 
   // ── 模式切换 ────────────────────────────────────────────────────
-  // 编辑模式下直接进入补录模式（已有完整时间数据）
   const [mode, setMode] = useState<SleepMode>(isEditMode ? "manual" : "timer");
 
   // ── 计时模式状态 ────────────────────────────────────────────────
@@ -119,6 +255,16 @@ export default function SleepFormPage() {
   /** 页面首次加载时查询 ongoing，防止重复渲染时多次查询 */
   const ongoingCheckedRef = useRef(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // ── 二次确认弹窗状态（时间太短） ──────────────────────────────────
+  const [shortSleepDialogOpen, setShortSleepDialogOpen] = useState(false);
+  const [shortSleepDialogLoading, setShortSleepDialogLoading] = useState(false);
+  /** 弹窗打开时快照的计时秒数（供弹窗文案显示） */
+  const [shortSleepSeconds, setShortSleepSeconds] = useState(0);
+
+  // ── 取消计时弹窗状态 ─────────────────────────────────────────────
+  const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
+  const [cancelDialogLoading, setCancelDialogLoading] = useState(false);
 
   // 计时器 tick：每秒 +1
   useEffect(() => {
@@ -145,7 +291,6 @@ export default function SleepFormPage() {
 
     recordsApi.sleep.getOngoing(currentFamily.id, currentBaby.id).then((ongoing) => {
       if (!ongoing) return;
-      // 恢复计时状态
       const start = new Date(ongoing.start_time);
       const elapsedSeconds = Math.floor((Date.now() - start.getTime()) / 1000);
       setTimerStartTime(start);
@@ -173,16 +318,16 @@ export default function SleepFormPage() {
       const { id } = await recordsApi.sleep.startSleep(currentFamily.id, {
         baby_id: currentBaby.id,
         start_time: dateToLocalISO(startDate),
-        sleep_period: sleepPeriod as SleepPeriod,
       });
       setOngoingId(id);
       setTimerStartTime(startDate);
       setTimerSeconds(0);
       setTimerRunning(true);
       setTimerStopped(false);
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const e = err as { statusCode?: number; message?: string };
       // 409：该宝宝已有进行中的记录，重新查询后恢复
-      if (err?.statusCode === 409 || err?.message?.includes("已有进行中")) {
+      if (e?.statusCode === 409 || e?.message?.includes("已有进行中")) {
         try {
           const ongoing = await recordsApi.sleep.getOngoing(currentFamily.id, currentBaby.id);
           if (ongoing) {
@@ -204,38 +349,138 @@ export default function SleepFormPage() {
   };
 
   /**
-   * 点「结束睡眠」→ 立即调用 endSleep API（携带质量/备注）→ 成功后跳回
+   * 实际执行 endSleep API 调用（供"结束睡眠"和"弹窗-仍然保存"共用）
    */
-  const handleTimerStop = async () => {
+  const doEndSleep = async () => {
+    if (!currentFamily || !ongoingId) return;
+    setTimerApiLoading(true);
+    try {
+      await recordsApi.sleep.endSleep(currentFamily.id, ongoingId, {
+        end_time: dateToLocalISO(new Date()),
+        quality: sleepQuality,
+        note: note || undefined,
+      });
+      setTimerStopped(true);
+      setShortSleepDialogOpen(false);
+      showToast("✓ 睡眠记录已保存");
+      setTimeout(() => navigate(-1), 1400);
+    } catch (err) {
+      // 结束失败：恢复计时
+      setTimerRunning(true);
+      showToast(err instanceof Error ? err.message : "结束计时失败，请重试");
+    } finally {
+      setTimerApiLoading(false);
+      setShortSleepDialogLoading(false);
+    }
+  };
+
+  /**
+   * 点「结束睡眠」：
+   *   < 3 分钟 → 暂停本地计时 + 弹二次确认（秒数保留，方便「继续计时」接续）
+   *   ≥ 3 分钟 → 直接结束
+   */
+  const handleTimerStop = () => {
     if (!currentFamily || !ongoingId) {
       showToast("未找到进行中的睡眠记录");
       return;
     }
     if (timerApiLoading) return;
-    setTimerApiLoading(true);
-    // 先停止本地计时器
+
+    // 暂停本地计时器（秒数不重置，「继续计时」时从此处接续）
     setTimerRunning(false);
-    try {
-      await recordsApi.sleep.endSleep(currentFamily.id, ongoingId, {
-        end_time: dateToLocalISO(new Date()),
-        quality: sleepQuality,
-        sleep_period: sleepPeriod as SleepPeriod,
-        note: note || undefined,
-      });
-      setTimerStopped(true);
-      showToast("✓ 睡眠记录已保存");
-      setTimeout(() => navigate(-1), 1400);
-    } catch (err) {
-      // 恢复计时（结束失败）
-      setTimerRunning(true);
-      showToast(err instanceof Error ? err.message : "结束计时失败，请重试");
-    } finally {
-      setTimerApiLoading(false);
+
+    if (timerSeconds < SHORT_SLEEP_THRESHOLD_SECONDS) {
+      // 时间太短：快照当前秒数 → 弹确认
+      setShortSleepSeconds(timerSeconds);
+      setShortSleepDialogOpen(true);
+    } else {
+      // 正常结束
+      doEndSleep();
     }
   };
 
+  /**
+   * 弹窗「继续计时」：关闭弹窗，恢复本地计时器，服务端 ongoing 记录保留不动。
+   * 此操作等同于「误触了结束按钮，什么都没发生」。
+   */
+  const handleKeepTiming = () => {
+    setShortSleepDialogOpen(false);
+    // 恢复本地计时，秒数从弹窗前暂停的位置继续（timerSeconds 未被重置）
+    setTimerRunning(true);
+  };
+
+  /**
+   * TimerMode 按钮「继续计时」：直接恢复本地计时，不调用任何 API。
+   * 与 handleKeepTiming 动作相同，但是不需要关闭弹窗（弹窗已经关闭）。
+   */
+  const handleTimerResume = () => {
+    setTimerRunning(true);
+  };
+
+  /**
+   * 点「取消本次计时」→ 暂停计时器，弹取消确认弹窗
+   */
+  const handleCancelRequest = () => {
+    if (timerApiLoading) return;
+    setTimerRunning(false);
+    setCancelDialogOpen(true);
+  };
+
+  /**
+   * 取消弹窗「继续计时」：关闭弹窗，恢复计时
+   */
+  const handleCancelDialogKeep = () => {
+    setCancelDialogOpen(false);
+    setTimerRunning(true);
+  };
+
+  /**
+   * 取消弹窗「确认取消」：
+   *   1. 调用 remove API 删除服务端 ongoing 记录（防孤立数据）
+   *   2. 成功 → 重置所有计时状态回 idle
+   *   3. 失败 → Toast 提示，恢复计时（数据不丢失）
+   */
+  const handleCancelConfirm = async () => {
+    if (!currentFamily || !ongoingId) {
+      // 没有服务端记录（理论上不会走到这里），直接重置
+      setCancelDialogOpen(false);
+      setTimerRunning(false);
+      setTimerSeconds(0);
+      setTimerStartTime(null);
+      setOngoingId(null);
+      setTimerStopped(false);
+      return;
+    }
+    setCancelDialogLoading(true);
+    try {
+      await recordsApi.sleep.remove(currentFamily.id, ongoingId);
+      // 删除成功：重置所有计时状态 → idle
+      setCancelDialogOpen(false);
+      setTimerRunning(false);
+      setTimerSeconds(0);
+      setTimerStartTime(null);
+      setOngoingId(null);
+      setTimerStopped(false);
+      showToast("计时已取消");
+    } catch {
+      // 删除失败：恢复计时，数据不丢失
+      setCancelDialogOpen(false);
+      setTimerRunning(true);
+      showToast("取消失败，请重试");
+    } finally {
+      setCancelDialogLoading(false);
+    }
+  };
+
+  /**
+   * 弹窗「仍然保存」：正常调用 endSleep
+   */
+  const handleSaveAnyway = () => {
+    setShortSleepDialogLoading(true);
+    doEndSleep();
+  };
+
   // ── 补录模式状态 ────────────────────────────────────────────────
-  // 编辑模式：recordDate 取原始 start_time 的日期（可随 getOne 刷新后更新）
   const [recordDate, setRecordDate] = useState(() => {
     if (editRecord?.start_time) {
       const d = new Date(editRecord.start_time);
@@ -256,9 +501,6 @@ export default function SleepFormPage() {
     if (editRecord?.end_time) return isoToLocalTime(editRecord.end_time);
     return nowTime();
   });
-  const [sleepPeriod, setSleepPeriod] = useState<string>(
-    editRecord?.sleep_period ?? "night"
-  );
 
   // ── 公共状态 ───────────────────────────────────────────────────
   const [sleepQuality, setSleepQuality] = useState<SleepQuality>(
@@ -276,14 +518,12 @@ export default function SleepFormPage() {
         if (!fresh) return;
         if (fresh.start_time) {
           setStartTime(isoToLocalTime(fresh.start_time));
-          // 同步更新 recordDate 为实际 start_time 所在日期
           const d = new Date(fresh.start_time);
           setRecordDate(
             `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`
           );
         }
         if (fresh.end_time) setEndTime(isoToLocalTime(fresh.end_time));
-        if (fresh.sleep_period) setSleepPeriod(fresh.sleep_period);
         if (fresh.quality) setSleepQuality(fresh.quality as SleepQuality);
         setNote(fresh.note ?? "");
       })
@@ -309,14 +549,12 @@ export default function SleepFormPage() {
           setSubmitting(false);
           return;
         }
-        // 使用跨午夜感知的 timePairToISO，夜间睡眠 end < start 时自动推到次日
         const { startISO, endISO } = timePairToISO(recordDate, startTime, endTime);
 
         await recordsApi.sleep.update(currentFamily.id, editRecord.id, {
           start_time: startISO,
           end_time: endISO,
           quality: sleepQuality,
-          sleep_period: sleepPeriod as SleepPeriod,
           note: note || undefined,
         });
 
@@ -331,18 +569,15 @@ export default function SleepFormPage() {
         setSubmitting(false);
         return;
       }
-      // 使用跨午夜感知的 timePairToISO
       const { startISO, endISO } = timePairToISO(recordDate, startTime, endTime);
 
       const { id: sleepId } = await recordsApi.sleep.startSleep(currentFamily.id, {
         baby_id: currentBaby.id,
         start_time: startISO,
-        sleep_period: sleepPeriod as SleepPeriod,
       });
       await recordsApi.sleep.endSleep(currentFamily.id, sleepId, {
         end_time: endISO,
         quality: sleepQuality,
-        sleep_period: sleepPeriod as SleepPeriod,
         note: note || undefined,
       });
 
@@ -367,7 +602,8 @@ export default function SleepFormPage() {
   };
 
   // 计时模式下是否处于「进行中」或「已结束」状态
-  const timerActive = timerRunning || timerStopped;
+  // 注意：弹窗打开时 timerRunning 为 false，需将两个弹窗状态也纳入，避免 Tab 闪现
+  const timerActive = timerRunning || timerStopped || shortSleepDialogOpen || cancelDialogOpen;
 
   return (
     <div className="min-h-screen" style={{ background: "#FAF5F6" }}>
@@ -425,19 +661,21 @@ export default function SleepFormPage() {
             startTime={timerStartTime}
             apiLoading={timerApiLoading}
             onStart={handleTimerStart}
+            onResume={handleTimerResume}
             onStop={handleTimerStop}
+            onCancel={handleCancelRequest}
           />
         )}
 
         {/* 补录模式 */}
         {mode === "manual" && (
           <ManualMode
+            recordDate={recordDate}
             startTime={startTime}
             endTime={endTime}
+            onDateChange={setRecordDate}
             onStartChange={setStartTime}
             onEndChange={setEndTime}
-            sleepPeriod={sleepPeriod}
-            onPeriodChange={setSleepPeriod}
           />
         )}
 
@@ -462,6 +700,25 @@ export default function SleepFormPage() {
           color="#4CAF82"
           disabledColor="#A8D8B0"
           onDelete={isEditMode ? handleDelete : undefined}
+        />
+      )}
+
+      {/* 二次确认弹窗：睡眠时间过短 */}
+      {shortSleepDialogOpen && (
+        <ShortSleepDialog
+          seconds={shortSleepSeconds}
+          onKeepTiming={handleKeepTiming}
+          onSaveAnyway={handleSaveAnyway}
+          loading={shortSleepDialogLoading}
+        />
+      )}
+
+      {/* 取消计时确认弹窗 */}
+      {cancelDialogOpen && (
+        <CancelTimerDialog
+          onKeep={handleCancelDialogKeep}
+          onConfirm={handleCancelConfirm}
+          loading={cancelDialogLoading}
         />
       )}
 

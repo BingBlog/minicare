@@ -240,30 +240,44 @@ export interface SleepRecord extends RecordBase {
 
 // ── Diaper ───────────────────────────────────────────────────────
 
-/** DDL: diaper_type TINYINT  1=wet 2=dirty 3=mixed 4=dry */
-export type DiaperType = 'wet' | 'dirty' | 'mixed' | 'dry'
+/** DDL: diaper_type TINYINT  1=wet 2=dirty 3=mixed（已移除 4=dry） */
+export type DiaperType = 'wet' | 'dirty' | 'mixed'
 
 /**
  * 大便性状枚举
  * DDL: diaper_record.poop_type VARCHAR(30)
+ * normal_soft / normal_form 已合并为 normal（正常）
  */
 export type PoopType =
-  | 'normal_soft'   // 正常软便
-  | 'loose'         // 稀便
-  | 'watery'        // 水样便
-  | 'hard'          // 干硬粒
-  | 'bloody'        // 血丝便
-  | 'normal_form'   // 正常成形
+  | 'normal'   // 正常（含原 normal_soft / normal_form）
+  | 'loose'    // 稀便
+  | 'watery'   // 水样便
+  | 'hard'     // 干硬粒
+  | 'bloody'   // 血丝便
+
+/**
+ * 屁屁状态枚举
+ * DDL: diaper_record.butt_condition VARCHAR(30)
+ */
+export type ButtCondition =
+  | 'normal'        // 正常
+  | 'slightly_red'  // 轻微发红
+  | 'rash'          // 红屁屁（尿布疹）
+  | 'severe_rash'   // 严重红屁屁（破皮渗出）
+  | 'fungal'        // 疑似真菌感染
+  | 'other'         // 其他异常
 
 export interface CreateDiaperDto {
   baby_id: string
-  /** DDL: 1=wet 2=dirty 3=mixed 4=dry */
+  /** DDL: 1=wet(嘘嘘) 2=dirty(臭臭) 3=mixed(臭臭+嘘嘘) */
   diaper_type: DiaperType
   record_time: string       // ISO 8601
   /** 大便颜色（如 yellow/green/brown），dirty/mixed 时使用 */
   color?: string
   /** 大便性状，dirty/mixed 时使用 */
   poop_type?: PoopType
+  /** 屁屁状态 */
+  butt_condition?: ButtCondition
   /** 今日换尿布次数（0~20） */
   diaper_count?: number
   note?: string
@@ -276,20 +290,21 @@ export interface DiaperRecord extends RecordBase {
   record_time: string
   color?: string | null
   poop_type?: PoopType | null
+  butt_condition?: ButtCondition | null
   diaper_count?: number | null
 }
 
 // ── Activity ─────────────────────────────────────────────────────
 
-/** DDL: activity_type TINYINT  1=bath 2=outdoor 3=play 4=tummy_time 5=other */
-export type ActivityType = 'bath' | 'outdoor' | 'play' | 'tummy_time' | 'other'
+/** DDL: activity_type VARCHAR(20) 直接存储字符串枚举值，新增类型无需数据迁移 */
+export type ActivityType = 'gross_motor' | 'fine_motor' | 'edu_play' | 'outdoor' | 'daily_care' | 'other'
 
 /** 活动强度 */
 export type ActivityIntensity = 'easy' | 'medium' | 'active'
 
 export interface CreateActivityDto {
   baby_id: string
-  /** DDL: 1=bath 2=outdoor 3=play 4=tummy_time 5=other */
+  /** gross_motor=大运动练习 fine_motor=精细运动练习 edu_play=亲子早教互动 outdoor=户外活动 daily_care=日常护理 other=其他活动 */
   activity_type: ActivityType
   record_time: string       // ISO 8601
   /** 活动时长（分钟） */

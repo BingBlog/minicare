@@ -60,7 +60,7 @@ export class SleepController {
 
   @Delete(':id')
   @MinRole(FamilyRole.MEMBER)
-  @ApiOperation({ summary: '删除睡眠记录（仅已结束状态）' })
+  @ApiOperation({ summary: '删除睡眠记录（ongoing / ended 均可，取消计时时使用）' })
   remove(@Param('id') id: string) {
     return this.sleepService.remove(id);
   }

@@ -174,7 +174,7 @@ export class SleepService {
     return { ...r, status: r.status === SLEEP_STATUS.ONGOING ? 'ongoing' : 'ended' };
   }
 
-  /** 删除睡眠记录（仅允许删除已结束的记录） */
+  /** 删除睡眠记录（ongoing / ended 均可删除；ongoing 用于「取消计时」场景） */
   async remove(sleepId: string) {
     const [rows] = await this.db.execute<any[]>(
       'SELECT id, status FROM sleep_record WHERE id = ?',
@@ -182,9 +182,6 @@ export class SleepService {
     );
     if (rows.length === 0) {
       throw new NotFoundException('找不到该睡眠记录');
-    }
-    if (rows[0].status === SLEEP_STATUS.ONGOING) {
-      throw new BadRequestException('无法删除进行中的睡眠记录，请先结束');
     }
 
     await this.db.execute('DELETE FROM sleep_record WHERE id = ?', [sleepId]);

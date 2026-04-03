@@ -17,7 +17,7 @@
 | 阶段五 | CloudRun 后端服务部署      | ✅ 已完成 | 2026-03-29 |
 | 阶段六 | Web H5 前端静态托管        | ✅ 已完成 | 2026-03-30 |
 | 阶段七 | 移动端接入（iOS/Android）  | 🔲 待执行 | —          |
-| 阶段八 | 云函数（定时任务）         | 🔲 待执行 | —          |
+| 阶段八 | 云函数（定时任务）         | ✅ 已完成 | 2026-04-03 |
 | 阶段九 | 监控与运维                 | 🔲 待执行 | —          |
 
 ---
@@ -162,7 +162,7 @@ cloudbase init
 | #   | 风险                            | 影响                                                  | 状态      | 处置方式                                                                                                                              |
 | --- | ------------------------------- | ----------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 | R-1 | **数据库回档能力未开启**        | 🔴 高 — 误操作/Bug 批量写入后无法回滚                 | ❌ 待处理 | 控制台 → [CynosDB](https://console.cloud.tencent.com/cynosdb) → 集群 `cynosdbmysql-dg17geyu` → **备份管理** → 开启自动备份，保留 7 天 |
-| R-2 | **Serverless 自动启停无法关闭** | 🟡 中 — 10 分钟无连接后 DB 暂停，下次唤醒冷启动 5~10s | ⏳ 暂接受 | 开发阶段可接受；MVP 上线前评估升级为标准版 MySQL（~¥30-50/月）或在 `/health` 路由加 `SELECT 1` 保活                                   |
+| R-2 | **Serverless 自动启停无法关闭** | 🟡 中 — 30 分钟无连接后 DB 暂停，下次唤醒冷启动 30~60s | ✅ 已缓解 | 双层保活：层一 CloudRun 内 `TasksService.keepDatabaseAlive`（每 8 分钟 `SELECT 1`）；层二 CloudBase 云函数 `keepalive-ping`（每 20 分钟 HTTP GET `/health`，防 CloudRun 缩容至 0 导致层一失效）。详见阶段八 § 8.3 |
 
 ---
 
@@ -577,6 +577,124 @@ const res = await fetch(
 - [ ] 每日 09:00 查询 `observation_end = TODAY()` 且 `status=1` 的记录
 - [ ] 通过腾讯云短信或 App 推送通知家长确认
 
+### 8.3 数据库 + CloudRun 双层保活 ✅ 已完成（2026-04-03）
+
+> 背景：CynosDB Serverless 30 分钟无连接后自动暂停，冷启动 30~60 秒（R-2 风险）。CloudRun 自动缩容到 0 后，
+> 容器内定时任务 `TasksService.keepDatabaseAlive`（层一）也随之停止，保活链断裂。
+> 解决方案：增加层二——CloudBase 定时云函数定期 ping CloudRun，使 CloudRun 保持至少 1 个运行实例，
+> 让层一的 8 分钟 DB ping 持续有效，形成闭环。
+
+#### 保活链路图
+
+```
+[CloudBase 定时云函数 keepalive-ping]
+  │  每 20 分钟  GET /health
+  ▼
+[CloudRun minicare-api]  ← 被唤醒 / 保持运行
+  │  每 8 分钟  SELECT 1
+  ▼
+[CynosDB Serverless]  ← 不会 30 分钟无连接暂停
+```
+
+#### 层一（已有）：CloudRun 内部 DB 保活
+
+文件：`minicare-server/src/scheduler/tasks.service.ts`
+
+```typescript
+// 每 8 分钟执行一次，防止 MySQL Serverless 30 分钟无连接后自动暂停
+@Cron('0 */8 * * * *')
+async keepDatabaseAlive() {
+  await this.db.execute('SELECT 1');
+}
+```
+
+> 当 CloudRun 至少有 1 个实例在运行时，此任务持续生效。
+> **层一单独存在时的盲点**：CloudRun 长时间无请求会缩容至 0，层一随之停止。
+
+#### 层二（新增）：CloudBase 定时云函数
+
+**云函数名称**：`keepalive-ping`  
+**运行时**：`Nodejs18.15`  
+**触发频率**：每 20 分钟（`0 */20 * * * *`）  
+**目标**：HTTP GET CloudRun `/health` 端点，唤醒实例并触发层一
+
+**函数代码**：
+
+```javascript
+// functions/keepalive-ping/index.js
+const https = require('https');
+
+const HEALTH_URL =
+  'https://minicare-api-240137-10-1253854169.sh.run.tcloudbase.com/health';
+
+exports.main = async (event, context) => {
+  return new Promise((resolve) => {
+    const req = https.get(HEALTH_URL, { timeout: 15000 }, (res) => {
+      let body = '';
+      res.on('data', (chunk) => (body += chunk));
+      res.on('end', () => {
+        console.log(`[keepalive] status=${res.statusCode} body=${body}`);
+        resolve({ statusCode: res.statusCode, body });
+      });
+    });
+    req.on('error', (err) => {
+      console.error('[keepalive] error:', err.message);
+      resolve({ error: err.message });
+    });
+    req.on('timeout', () => {
+      req.destroy();
+      console.error('[keepalive] timeout after 15s');
+      resolve({ error: 'timeout' });
+    });
+  });
+};
+```
+
+**创建步骤（控制台）**：
+
+1. 进入 [CloudBase 控制台](https://console.cloud.tencent.com/tcb) → 「云函数」
+2. 点击「新建云函数」，填写：
+   - 函数名称：`keepalive-ping`
+   - 运行时：`Node.js 18.15`
+   - 超时时间：`20s`
+   - 内存：`64 MB`
+3. 粘贴上方函数代码，点击「保存并部署」
+4. 点击「触发器」→「新建触发器」：
+   - 触发方式：**定时触发**
+   - Cron 表达式：`0 */20 * * * *`（每 20 分钟）
+   - 触发器名称：`every-20min`
+5. 手动点击「测试」，确认日志输出 `status=200`
+
+**创建步骤（CLI 方式）**：
+
+```bash
+# 在项目根目录
+mkdir -p functions/keepalive-ping
+# 写入上述 index.js 后执行
+cloudbase functions:deploy keepalive-ping -e minicare-cloud-6gqledlle0132cbe
+```
+
+**执行清单**：
+
+- [x] 创建云函数 `keepalive-ping`（Node.js 18.15，超时 60s，HTTP 请求超时 55s）
+- [x] 配置定时触发器：`0 */20 * * * * *`，触发器名 `every-20min`
+- [x] 手动测试：日志输出 `status=200`，347ms 返回✅
+- [ ] 观察 24 小时日志：确认每 20 分钟触发一次且无报错
+- [ ] 配置告警：连续 3 次触发失败时邮件通知
+
+> ℹ️ **已知第一次冷启动超时问题**：首次测试返回 `timeout`，因为 CloudRun MinNum=0，实例为 0 时冷启动需 30~60s。
+> 将函数超时改为 60s、HTTP 请求超时改为 55s 后，第二次调用成功返回 `status=200`。
+> 实际运行中，CloudRun 实例已启动的情况下每次请求 < 500ms，冷启动只发生一次。
+
+#### 成本评估
+
+| 项目 | 量级 | 费用 |
+|------|------|------|
+| 云函数调用次数 | 每 20 分钟 1 次 × 24h × 30d = 2,160 次/月 | 免费额度 10 万次/月，**¥0** |
+| 云函数计算资源 | 每次 < 1 秒，64 MB | 免费额度 40 万 GBs/月，**¥0** |
+| CynosDB CCU | 每次 `SELECT 1` ≈ 0.001 CCU，层一 + 层二共约 5 CCU/月 | **< ¥0.01/月** |
+| **合计** | | **可忽略不计（< ¥0.1/月）** |
+
 ---
 
 ## 阶段九：监控与运维
@@ -612,6 +730,7 @@ const res = await fetch(
 | CloudRun       | 0.25C/0.5G，最小实例=0 | ~¥10–20/月（流量触发） |
 | 云存储         | 5GB + CDN              | ~¥5–10/月              |
 | SMS 短信       | 1000条验证码           | ~¥50/月                |
+| 保活云函数     | 2160 次/月，< 1s/次    | **¥0**（免费额度内）   |
 | **合计**       |                        | **~¥100–130/月**       |
 
 > 随 DAU 增长，主要费用增量来自 MySQL 读写次数和 CloudRun 调用次数。  

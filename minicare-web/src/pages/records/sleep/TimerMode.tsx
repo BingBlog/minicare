@@ -1,16 +1,17 @@
 /**
  * 睡眠记录 - 计时模式组件
  *
- * 功能：
- *  - 圆形 conic-gradient 进度环可视化（满环 = 12 小时）
- *  - 计时数字显示
- *  - 开始 / 结束 三态按钮
+ * 四种状态：
+ *   idle    — 未开始（seconds === 0, !running, !stopped）→ 显示「开始计时」
+ *   running — 计时中（running）                          → 显示「结束睡眠」
+ *   paused  — 暂停中（seconds > 0, !running, !stopped）  → 显示「继续计时」（弹窗取消后）
+ *   stopped — 已保存（stopped）                          → 显示保存成功提示
  *
  * 注意：
  *  - 计时器的 setInterval 逻辑由父组件管理（通过 Props 注入状态）
- *  - 「开始计时」点击后立即调用 startSleep API（父组件处理）
- *  - 「结束睡眠」点击后立即调用 endSleep API（父组件处理），结束后自动跳回
- *  - 本组件仅负责 UI 渲染
+ *  - onStart  → 父组件调用 startSleep API（首次开始，创建服务端记录）
+ *  - onResume → 父组件直接恢复 setTimerRunning(true)，不调用 API（弹窗「继续计时」后的恢复）
+ *  - onStop   → 父组件判断时长，短则弹窗，长则调用 endSleep API
  */
 
 /** 月亮图标（计时圆圈中心） */
@@ -40,9 +41,7 @@ const IconSpinner = () => (
   </svg>
 );
 
-/**
- * 将秒数格式化为 mm:ss 或 h:mm:ss
- */
+/** 将秒数格式化为 mm:ss 或 h:mm:ss */
 function formatTimer(seconds: number): string {
   const h = Math.floor(seconds / 3600);
   const m = Math.floor((seconds % 3600) / 60);
@@ -63,10 +62,14 @@ interface Props {
   startTime: Date | null;
   /** 正在调用 startSleep / endSleep API */
   apiLoading: boolean;
-  /** 点击「开始计时」→ 父组件调用 startSleep API */
+  /** 首次点击「开始计时」→ 父组件调用 startSleep API 创建服务端记录 */
   onStart: () => void;
-  /** 点击「结束睡眠」→ 父组件调用 endSleep API */
+  /** 暂停后点击「继续计时」→ 父组件直接恢复本地计时，不调用 API */
+  onResume: () => void;
+  /** 点击「结束睡眠」→ 父组件判断时长，短则弹窗，长则调用 endSleep API */
   onStop: () => void;
+  /** 点击「取消本次计时」→ 父组件弹确认弹窗 */
+  onCancel: () => void;
 }
 
 export default function TimerMode({
@@ -76,8 +79,13 @@ export default function TimerMode({
   startTime,
   apiLoading,
   onStart,
+  onResume,
   onStop,
+  onCancel,
 }: Props) {
+  const isIdle   = !running && !stopped && seconds === 0;
+  const isPaused = !running && !stopped && seconds > 0;
+
   return (
     <div className="flex flex-col items-center pt-8 pb-4 gap-4">
       {/* 圆形计时器进度环 */}
@@ -87,7 +95,8 @@ export default function TimerMode({
           width: 180,
           height: 180,
           borderRadius: "50%",
-          background: running
+          // 运行中 / 暂停中 均渲染已积累的进度弧
+          background: (!isIdle)
             ? `conic-gradient(#4CAF82 ${Math.min(
                 100,
                 (seconds / (12 * 3600)) * 100
@@ -105,10 +114,13 @@ export default function TimerMode({
           }}>
           <IconMoon />
           <span className="text-[32px] font-extrabold text-[#4A3035] leading-none tracking-tight">
-            {running || stopped ? formatTimer(seconds) : "0m"}
+            {isIdle ? "0m" : formatTimer(seconds)}
           </span>
           <span className="text-[12px] text-[#9A8090] font-medium">
-            {running ? "睡眠进行中" : stopped ? "已保存" : "准备好了"}
+            {running  ? "睡眠进行中"
+            : stopped  ? "已保存"
+            : isPaused ? "已暂停"
+            :            "准备好了"}
           </span>
         </div>
       </div>
@@ -122,9 +134,10 @@ export default function TimerMode({
         </span>
       )}
 
-      {/* 操作按钮 */}
-      {/* 未开始：显示「开始计时」 */}
-      {!running && !stopped && (
+      {/* ── 按钮区 ── */}
+
+      {/* idle：「开始计时」*/}
+      {isIdle && (
         <button
           type="button"
           onClick={onStart}
@@ -139,23 +152,56 @@ export default function TimerMode({
         </button>
       )}
 
-      {/* 计时中：显示「结束睡眠」 */}
-      {running && (
-        <button
-          type="button"
-          onClick={onStop}
-          disabled={apiLoading}
-          className="w-44 py-4 rounded-2xl text-white text-[16px] font-bold flex items-center justify-center gap-2"
-          style={{
-            background: apiLoading ? "#FBB8CA" : "#F87098",
-            boxShadow: apiLoading ? "none" : "0 4px 14px rgba(248,112,152,.35)",
-          }}>
-          {apiLoading ? <IconSpinner /> : null}
-          结束睡眠
-        </button>
+      {/* paused：「继续计时」 + 「取消本次计时」（不调 API，直接恢复本地计时器） */}
+      {isPaused && (
+        <div className="flex flex-col items-center gap-2">
+          <button
+            type="button"
+            onClick={onResume}
+            className="w-44 py-4 rounded-2xl text-white text-[16px] font-bold flex items-center justify-center gap-2"
+            style={{
+              background: "#4CAF82",
+              boxShadow: "0 4px 14px rgba(52,199,89,.4)",
+            }}>
+            继续计时
+          </button>
+          <button
+            type="button"
+            onClick={onCancel}
+            className="text-[13px] font-medium"
+            style={{ color: "#C4A8B0" }}>
+            取消本次计时
+          </button>
+        </div>
       )}
 
-      {/* 已结束：显示保存成功提示（即将自动跳回，无需额外按钮） */}
+      {/* running：「结束睡眠」 + 「取消本次计时」 */}
+      {running && (
+        <div className="flex flex-col items-center gap-2">
+          <button
+            type="button"
+            onClick={onStop}
+            disabled={apiLoading}
+            className="w-44 py-4 rounded-2xl text-white text-[16px] font-bold flex items-center justify-center gap-2"
+            style={{
+              background: apiLoading ? "#FBB8CA" : "#F87098",
+              boxShadow: apiLoading ? "none" : "0 4px 14px rgba(248,112,152,.35)",
+            }}>
+            {apiLoading ? <IconSpinner /> : null}
+            结束睡眠
+          </button>
+          <button
+            type="button"
+            onClick={onCancel}
+            disabled={apiLoading}
+            className="text-[13px] font-medium"
+            style={{ color: "#C4A8B0" }}>
+            取消本次计时
+          </button>
+        </div>
+      )}
+
+      {/* stopped：保存成功提示（即将自动跳回） */}
       {stopped && (
         <div
           className="flex items-center gap-2 text-[14px] font-semibold"

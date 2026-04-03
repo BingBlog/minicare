@@ -2,15 +2,16 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsDateString, IsEnum, IsNumber, IsOptional, IsString, IsUUID, Min } from 'class-validator';
 
 /**
- * DDL: activity_record.activity_type TINYINT
- *   1=bath 2=outdoor 3=play 4=tummy_time 5=other
+ * DDL: activity_record.activity_type VARCHAR(20)
+ *   直接存储字符串枚举值，未来新增类型只需扩展此枚举，无需数据迁移。
  */
 export enum ActivityType {
-  BATH       = 'bath',
-  OUTDOOR    = 'outdoor',
-  PLAY       = 'play',
-  TUMMY_TIME = 'tummy_time',
-  OTHER      = 'other',
+  GROSS_MOTOR = 'gross_motor', // 大运动练习
+  FINE_MOTOR  = 'fine_motor',  // 精细运动练习
+  EDU_PLAY    = 'edu_play',    // 亲子早教互动
+  OUTDOOR     = 'outdoor',     // 户外活动
+  DAILY_CARE  = 'daily_care',  // 日常护理
+  OTHER       = 'other',       // 其他活动
 }
 
 /**
@@ -23,28 +24,10 @@ export enum ActivityIntensity {
   ACTIVE = 'active',
 }
 
-/** activity_type → TINYINT 映射 */
-export const ACTIVITY_TYPE_TO_INT: Record<string, number> = {
-  bath:       1,
-  outdoor:    2,
-  play:       3,
-  tummy_time: 4,
-  other:      5,
-};
-
-/** TINYINT → activity_type 映射 */
-export const INT_TO_ACTIVITY_TYPE: Record<number, string> = {
-  1: 'bath',
-  2: 'outdoor',
-  3: 'play',
-  4: 'tummy_time',
-  5: 'other',
-};
-
 export class CreateActivityDto {
   @ApiProperty() @IsUUID() baby_id: string;
 
-  @ApiProperty({ enum: ActivityType, description: 'DDL: 1=bath 2=outdoor 3=play 4=tummy_time 5=other' })
+  @ApiProperty({ enum: ActivityType, description: 'gross_motor=大运动练习 fine_motor=精细运动练习 edu_play=亲子早教互动 outdoor=户外活动 daily_care=日常护理 other=其他活动' })
   @IsEnum(ActivityType)
   activity_type: ActivityType;
 

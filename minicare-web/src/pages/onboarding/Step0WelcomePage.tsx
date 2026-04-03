@@ -21,15 +21,15 @@ const FEATURES = [
         strokeLinecap="round"
         strokeLinejoin="round"
         style={{ width: 22, height: 22, color: "#F87098" }}>
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-        <polyline points="14 2 14 8 20 8" />
-        <line x1="16" y1="13" x2="8" y2="13" />
-        <line x1="16" y1="17" x2="8" y2="17" />
+        {/* 叉勺：饮食记录 */}
+        <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
+        <line x1="7" y1="2" x2="7" y2="11" />
+        <path d="M21 2c0 4.4-3.6 8-8 8v12" />
       </svg>
     ),
     iconBg: "var(--color-primary-lt, #FFF0F4)",
-    title: "结构化记录",
-    desc: "饮食·睡眠·活动·尿布·生长·健康，一键记录不遗漏",
+    title: "饮食与表现追踪",
+    desc: "记录每次进食与宝宝反应，轻松找到规律",
   },
   {
     icon: (
@@ -41,14 +41,16 @@ const FEATURES = [
         strokeLinecap="round"
         strokeLinejoin="round"
         style={{ width: 22, height: 22, color: "#DDB870" }}>
-        <line x1="18" y1="20" x2="18" y2="10" />
-        <line x1="12" y1="20" x2="12" y2="4" />
-        <line x1="6" y1="20" x2="6" y2="14" />
+        {/* 用户组：家庭协作 */}
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
       </svg>
     ),
     iconBg: "#FFF8E6",
-    title: "一键生成报告",
-    desc: "综合数据自动汇总，PDF 格式一键分享给医生",
+    title: "全家一起记录",
+    desc: "爸妈、祖辈同步记录，不漏一次喂奶、一个细节",
   },
   {
     icon: (
@@ -60,13 +62,14 @@ const FEATURES = [
         strokeLinecap="round"
         strokeLinejoin="round"
         style={{ width: 22, height: 22, color: "#4CAF82" }}>
-        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-        <polyline points="9 22 9 12 15 12 15 22" />
+        {/* 趋势折线图：数据分析 */}
+        <polyline points="22 12 18 8 13 13 9 9 2 16" />
+        <line x1="2" y1="20" x2="22" y2="20" />
       </svg>
     ),
     iconBg: "#DCFCE7",
-    title: "就医沟通更顺畅",
-    desc: "完整数据记录，门诊时不再遗忘关键信息",
+    title: "数据分析与科学喂养",
+    desc: "生长曲线、喂养规律一目了然，每天都在进步",
   },
 ];
 
@@ -118,7 +121,7 @@ export default function Step0WelcomePage({ onStart }: Props) {
           敏宝日记
         </div>
         <div className="text-sm text-[#9A8090] text-center mb-7">
-          专为牛奶蛋白过敏宝宝家庭设计
+          记录每一口，呵护每一天
         </div>
 
         {/* 特性卡片列表 */}

@@ -2,12 +2,7 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Pool } from 'mysql2/promise';
 import { v4 as uuidv4 } from 'uuid';
 import { DATABASE_POOL } from '../../common/database/database.module';
-import {
-  CreateActivityDto,
-  UpdateActivityDto,
-  ACTIVITY_TYPE_TO_INT,
-  INT_TO_ACTIVITY_TYPE,
-} from './dto/create-activity.dto';
+import { CreateActivityDto, UpdateActivityDto } from './dto/create-activity.dto';
 import { toMysqlDatetime } from '../../common/utils/date.util';
 
 @Injectable()
@@ -25,7 +20,7 @@ export class ActivityService {
         dto.baby_id,
         userId,
         toMysqlDatetime(dto.record_time),
-        ACTIVITY_TYPE_TO_INT[dto.activity_type] ?? 5,
+        dto.activity_type,
         dto.duration_min ?? null,
         dto.intensity    ?? null,
         dto.note         ?? null,
@@ -41,10 +36,7 @@ export class ActivityService {
       `SELECT * FROM activity_record WHERE baby_id = ? ORDER BY record_time DESC LIMIT ${safeLimit} OFFSET ${safeOffset}`,
       [babyId],
     );
-    return rows.map((r) => ({
-      ...r,
-      activity_type: INT_TO_ACTIVITY_TYPE[r.activity_type] ?? r.activity_type,
-    }));
+    return rows;
   }
 
   async findOne(id: string) {
@@ -53,8 +45,7 @@ export class ActivityService {
       [id],
     );
     if (!rows[0]) return null;
-    const r = rows[0];
-    return { ...r, activity_type: INT_TO_ACTIVITY_TYPE[r.activity_type] ?? r.activity_type };
+    return rows[0];
   }
 
   async update(id: string, dto: UpdateActivityDto) {
@@ -68,7 +59,7 @@ export class ActivityService {
     const values: any[] = [];
 
     if (dto.record_time   !== undefined) { setClauses.push('record_time = ?');   values.push(toMysqlDatetime(dto.record_time)); }
-    if (dto.activity_type !== undefined) { setClauses.push('activity_type = ?'); values.push(ACTIVITY_TYPE_TO_INT[dto.activity_type] ?? 5); }
+    if (dto.activity_type !== undefined) { setClauses.push('activity_type = ?'); values.push(dto.activity_type); }
     if (dto.duration_min  !== undefined) { setClauses.push('duration_min = ?');  values.push(dto.duration_min); }
     if (dto.intensity     !== undefined) { setClauses.push('intensity = ?');     values.push(dto.intensity); }
     if (dto.note          !== undefined) { setClauses.push('note = ?');          values.push(dto.note); }

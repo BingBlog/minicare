@@ -40,7 +40,10 @@ export default function OnboardingPage() {
   // 宝宝基础信息
   const [babyName, setBabyName] = useState("");
   const [gender, setGender] = useState<"male" | "female">("male");
-  const [birthDate, setBirthDate] = useState("");
+  const [birthDate, setBirthDate] = useState(() => {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  });
 
   // 过敏信息
   const [allergyLevel, setAllergyLevel] = useState<AllergyLevelKey>("unknown");
@@ -133,7 +136,9 @@ export default function OnboardingPage() {
           className="w-9 h-9 rounded-full bg-gray-100 border-none flex items-center justify-center cursor-pointer text-[18px] text-[#4A3035] flex-shrink-0">
           ←
         </button>
-        <div className="flex-1 text-center text-[17px] font-bold text-[#4A3035]">创建宝宝档案</div>
+        <div className="flex-1 text-center text-[17px] font-bold text-[#4A3035]">
+          创建宝宝档案
+        </div>
         <div className="w-9" />
       </div>
 
@@ -159,14 +164,14 @@ export default function OnboardingPage() {
         />
 
         {/* 可选字段展开区 */}
-        <OptionalFields
+        {/* <OptionalFields
           birthWeightG={birthWeightG}
           onBirthWeightChange={setBirthWeightG}
           birthHeightCm={birthHeightCm}
           onBirthHeightChange={setBirthHeightCm}
           show={showOptional}
           onToggle={() => setShowOptional((v) => !v)}
-        />
+        /> */}
 
         {/* 错误提示 */}
         {error && (

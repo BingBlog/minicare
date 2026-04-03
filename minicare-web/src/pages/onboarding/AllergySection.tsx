@@ -11,11 +11,15 @@ import type { AllergyLevel } from "@/api";
 
 type AllergyLevelKey = AllergyLevel | "";
 
-const ALLERGY_LEVEL_OPTIONS: { value: AllergyLevel; label: string; activeColor: string }[] = [
-  { value: "mild",     label: "轻度", activeColor: "#4CAF82" },
+const ALLERGY_LEVEL_OPTIONS: {
+  value: AllergyLevel;
+  label: string;
+  activeColor: string;
+}[] = [
+  { value: "mild", label: "轻度", activeColor: "#4CAF82" },
   { value: "moderate", label: "中度", activeColor: "#DDB870" },
-  { value: "severe",   label: "重度", activeColor: "#F05060" },
-  { value: "unknown",  label: "未知", activeColor: "#9A8090" },
+  { value: "severe", label: "重度", activeColor: "#F05060" },
+  { value: "unknown", label: "未知", activeColor: "#9A8090" },
 ];
 
 interface Props {
@@ -23,11 +27,16 @@ interface Props {
   onAllergyLevelChange: (v: AllergyLevel) => void;
 }
 
-export default function AllergySection({ allergyLevel, onAllergyLevelChange }: Props) {
+export default function AllergySection({
+  allergyLevel,
+  onAllergyLevelChange,
+}: Props) {
   return (
     <>
       {/* 过敏类型固定项 */}
-      <div className="text-xs font-bold text-[#9A8090] px-5 pt-4 pb-1.5" style={{ letterSpacing: ".3px" }}>
+      {/* <div
+        className="text-xs font-bold text-[#9A8090] px-5 pt-4 pb-1.5"
+        style={{ letterSpacing: ".3px" }}>
         过敏信息
       </div>
       <div
@@ -37,13 +46,17 @@ export default function AllergySection({ allergyLevel, onAllergyLevelChange }: P
           <span className="text-sm text-[#4A3035]">
             过敏类型 <span className="text-red-400">*</span>
           </span>
-          <span className="flex-1 text-right text-sm text-[#4A3035]">牛奶蛋白过敏</span>
+          <span className="flex-1 text-right text-sm text-[#4A3035]">
+            牛奶蛋白过敏
+          </span>
           <span className="text-[#C0A8AD] ml-1 text-base">›</span>
         </div>
-      </div>
+      </div> */}
 
       {/* 过敏程度分段选择器 */}
-      <div className="text-xs font-bold text-[#9A8090] px-5 pt-4 pb-1.5" style={{ letterSpacing: ".3px" }}>
+      <div
+        className="text-xs font-bold text-[#9A8090] px-5 pt-4 pb-1.5"
+        style={{ letterSpacing: ".3px" }}>
         过敏程度
       </div>
       <div
@@ -56,7 +69,11 @@ export default function AllergySection({ allergyLevel, onAllergyLevelChange }: P
             className="flex-1 text-center py-2.5 rounded-xl cursor-pointer text-[13px] font-semibold transition-all"
             style={
               allergyLevel === value
-                ? { background: "#fff", color: activeColor, boxShadow: "0 1px 4px rgba(0,0,0,0.08)" }
+                ? {
+                    background: "#fff",
+                    color: activeColor,
+                    boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
+                  }
                 : { color: "#9A8090" }
             }>
             {label}
@@ -76,7 +93,13 @@ export default function AllergySection({ allergyLevel, onAllergyLevelChange }: P
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            style={{ width: 13, height: 13, verticalAlign: -2, color: "#F87098", display: "inline" }}>
+            style={{
+              width: 13,
+              height: 13,
+              verticalAlign: -2,
+              color: "#F87098",
+              display: "inline",
+            }}>
             <circle cx="12" cy="12" r="10" />
             <line x1="12" y1="8" x2="12" y2="12" />
             <line x1="12" y1="16" x2="12.01" y2="16" />

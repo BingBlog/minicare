@@ -255,6 +255,79 @@ queryCloudRun(action='list')
 queryCloudRun(action='detail', detailServerName='minicare-api')
 ```
 
+### 4.5 云函数操作
+
+#### 现有云函数清单
+
+| 函数名 | 运行时 | 触发方式 | 超时 | 用途 |
+|--------|--------|---------|------|------|
+| `keepalive-ping` | Nodejs18.15 | 定时，每 20 分钟 | 60s | 双层保活层二：GET CloudRun `/health`，防止 CloudRun 缩容至 0 |
+
+#### keepalive-ping 保活函数
+
+**代码位置**：`minicare-server/functions/keepalive-ping/index.js`
+
+**环境变量**（在云函数配置中注入，不是 `.env.local`）：
+
+| 变量名 | 当前值 | 说明 |
+|--------|--------|------|
+| `CLOUDRUN_HEALTH_URL` | `https://minicare-api-240137-10-1253854169.sh.run.tcloudbase.com/health` | CloudRun /health 端点；域名变更时只改此变量，不改代码 |
+
+**定时触发器**：
+
+| 触发器名 | Cron 表达式 | 含义 |
+|----------|------------|------|
+| `every-20min` | `0 */20 * * * * *` | 每 20 分钟触发一次 |
+
+**保活链路**：
+
+```
+[CloudBase 定时云函数 keepalive-ping]
+  │  每 20 分钟  GET /health
+  ▼
+[CloudRun minicare-api]  ← 被唤醒 / 保持运行
+  │  每 8 分钟  SELECT 1（TasksService.keepDatabaseAlive）
+  ▼
+[CynosDB Serverless]  ← 不会 30 分钟无连接暂停
+```
+
+> **冷启动说明**：CloudRun `MinNum=0`，从完全冷启动到首次响应可能需要 30~60s。
+> 函数超时设为 60s、HTTP 请求超时设为 55s，足以覆盖冷启动场景。
+> 保活生效后 CloudRun 实例持续运行，后续每次请求 < 500ms。
+
+#### 更新云函数代码的流程
+
+```
+# 1. 修改本地文件
+minicare-server/functions/keepalive-ping/index.js
+
+# 2. 上传代码（MCP 工具）
+manageFunctions(
+  action           = 'updateFunctionCode',
+  functionName     = 'keepalive-ping',
+  functionRootPath = '/Users/bing/Desktop/工作区/minicare/minicare-server/functions',
+  handler          = 'index.main'
+)
+
+# 3. 如需修改环境变量或超时（MCP 工具）
+manageFunctions(
+  action       = 'updateFunctionConfig',
+  functionName = 'keepalive-ping',
+  timeout      = 60,
+  envVariables = { "CLOUDRUN_HEALTH_URL": "<新地址>" }
+)
+
+# 4. 验证
+manageFunctions(action='invokeFunction', functionName='keepalive-ping', params={})
+# 期望日志：[keepalive] status=200
+```
+
+#### 查询云函数日志
+
+```
+queryFunctions(action='listFunctionLogs', functionName='keepalive-ping', limit=20)
+```
+
 ---
 
 ## 五、禁止事项

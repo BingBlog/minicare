@@ -14,11 +14,12 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAppStore } from "@/lib/store";
 import { recordsApi } from "@/api";
-import type { DiaperRecord, DiaperType, PoopType } from "@/api/types";
+import type { DiaperRecord, DiaperType, PoopType, ButtCondition } from "@/api/types";
 import TimePicker from "@/components/TimePicker";
 
 import DiaperTypeSection from "./DiaperTypeSection";
 import PoopSection from "./PoopSection";
+import ButtConditionSection from "./ButtConditionSection";
 import {
   NavBar,
   SectionLabel,
@@ -65,8 +66,15 @@ export default function DiaperFormPage() {
   // 今日次数
   const [diaperCount, setDiaperCount] = useState(editRecord?.diaper_count ?? 1);
 
-  // 大便性状（单选，null = 未选）
-  const [poopType, setPoopType] = useState<PoopType | null>((editRecord?.poop_type ?? null) as PoopType | null);
+  // 大便性状（单选，新建记录默认为 "normal"）
+  const [poopType, setPoopType] = useState<PoopType | null>(
+    editRecord ? (editRecord.poop_type ?? null) as PoopType | null : "normal" as PoopType
+  );
+
+  // 屁屁状态（单选，新建记录默认为 "normal"）
+  const [buttCondition, setButtCondition] = useState<ButtCondition | null>(
+    editRecord ? (editRecord.butt_condition ?? null) as ButtCondition | null : "normal" as ButtCondition
+  );
 
   // 颜色 Chip 多选（从编辑记录恢复，存储的颜色可能是多个用逗号分隔）
   const [colorSelected, setColorSelected] = useState<Set<string>>(() => {
@@ -90,6 +98,7 @@ export default function DiaperFormPage() {
         if (fresh.diaper_type) setDiaperType(fresh.diaper_type as DiaperChip);
         if (fresh.diaper_count != null) setDiaperCount(fresh.diaper_count);
         setPoopType(fresh.poop_type ?? null);
+        setButtCondition((fresh.butt_condition ?? null) as ButtCondition | null);
         if (fresh.color) setColorSelected(new Set(fresh.color.split(',').map((c) => c.trim()).filter(Boolean)));
         setNote(fresh.note ?? '');
       })
@@ -98,7 +107,7 @@ export default function DiaperFormPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // 当选中"大便"/"都有"时，显示大便性状卡片
+  // 当选中「臭臭」/「臭臭+嘘嘘」时，显示大便性状卡片
   const showPoop = diaperType === "dirty" || diaperType === "mixed";
 
   const toggleColor = (key: string) => {
@@ -125,6 +134,7 @@ export default function DiaperFormPage() {
         record_time: timeToISO(recordDate, recordTime),
         color: colorStr,
         poop_type: (showPoop && poopType ? poopType : undefined) ?? undefined,
+        butt_condition: buttCondition ?? undefined,
         diaper_count: diaperCount !== 1 ? diaperCount : undefined,
         note: note || undefined,
       };
@@ -202,6 +212,12 @@ export default function DiaperFormPage() {
             onToggleColor={toggleColor}
           />
         )}
+
+        {/* 屁屁状态 */}
+        <ButtConditionSection
+          value={buttCondition}
+          onChange={setButtCondition}
+        />
 
         {/* 备注 */}
         <NoteCard
