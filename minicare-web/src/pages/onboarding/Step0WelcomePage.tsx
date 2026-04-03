@@ -127,14 +127,19 @@ export default function Step0WelcomePage({ onStart }: Props) {
             <div
               key={item.title}
               className="flex items-center gap-3.5 rounded-2xl px-4 py-3.5"
-              style={{ background: "#fff", boxShadow: "0 1px 6px rgba(200,100,120,0.08)" }}>
+              style={{
+                background: "#fff",
+                boxShadow: "0 1px 6px rgba(200,100,120,0.08)",
+              }}>
               <div
                 className="flex items-center justify-center rounded-xl flex-shrink-0"
                 style={{ width: 40, height: 40, background: item.iconBg }}>
                 {item.icon}
               </div>
               <div>
-                <div className="text-sm font-bold text-[#4A3035]">{item.title}</div>
+                <div className="text-sm font-bold text-[#4A3035]">
+                  {item.title}
+                </div>
                 <div className="text-xs text-[#9A8090] mt-0.5">{item.desc}</div>
               </div>
             </div>

@@ -88,9 +88,11 @@ export class FeedingService {
   }
 
   async findAll(babyId: string, limit = 20, offset = 0) {
-    const [rows] = await this.db.execute<any[]>(
-      `SELECT * FROM feeding_record WHERE baby_id = ? ORDER BY record_time DESC LIMIT ? OFFSET ?`,
-      [babyId, limit, offset],
+    const safeLimit  = Math.max(1, Math.min(200, Math.floor(Number(limit)  || 20)));
+    const safeOffset = Math.max(0, Math.floor(Number(offset) || 0));
+    const [rows] = await this.db.query<any[]>(
+      `SELECT * FROM feeding_record WHERE baby_id = ? ORDER BY record_time DESC LIMIT ${safeLimit} OFFSET ${safeOffset}`,
+      [babyId],
     );
     return rows.map((r) => this.mapRow(r));
   }

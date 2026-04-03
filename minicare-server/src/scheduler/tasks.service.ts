@@ -41,10 +41,10 @@ export class TasksService {
     try {
       const [result] = await this.db.execute(
         `UPDATE sleep_record
-         SET status = 'timeout', ended_at = DATE_ADD(started_at, INTERVAL 16 HOUR),
+         SET status = 2, end_time = DATE_ADD(start_time, INTERVAL 16 HOUR),
              duration_min = 960, note = CONCAT(IFNULL(note, ''), ' [系统自动关闭: 超过16小时]')
-         WHERE status = 'ongoing'
-           AND started_at < DATE_SUB(NOW(), INTERVAL 16 HOUR)`,
+         WHERE status = 1
+           AND start_time < DATE_SUB(NOW(), INTERVAL 16 HOUR)`,
       );
       const affected = (result as any).affectedRows;
       if (affected > 0) {

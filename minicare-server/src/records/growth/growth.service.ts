@@ -44,9 +44,11 @@ export class GrowthService {
   }
 
   async findAll(babyId: string, limit = 50, offset = 0) {
-    const [rows] = await this.db.execute<any[]>(
-      'SELECT * FROM growth_record WHERE baby_id = ? ORDER BY record_date DESC LIMIT ? OFFSET ?',
-      [babyId, limit, offset],
+    const safeLimit  = Math.max(1, Math.min(200, Math.floor(Number(limit)  || 50)));
+    const safeOffset = Math.max(0, Math.floor(Number(offset) || 0));
+    const [rows] = await this.db.query<any[]>(
+      `SELECT * FROM growth_record WHERE baby_id = ? ORDER BY record_date DESC LIMIT ${safeLimit} OFFSET ${safeOffset}`,
+      [babyId],
     );
     return rows;
   }

@@ -38,7 +38,9 @@ export class MedicalService {
   }
 
   async findAll(babyId: string, limit = 20, offset = 0) {
-    const [rows] = await this.db.execute<any[]>(
+    const safeLimit  = Math.max(1, Math.min(200, Math.floor(Number(limit)  || 20)));
+    const safeOffset = Math.max(0, Math.floor(Number(offset) || 0));
+    const [rows] = await this.db.query<any[]>(
       `SELECT id, baby_id, recorded_by, visit_date,
               visit_type, hospital, doctor, diagnosis,
               result_summary, medications, photo_ids,
@@ -46,8 +48,8 @@ export class MedicalService {
        FROM medical_record
        WHERE baby_id = ?
        ORDER BY visit_date DESC
-       LIMIT ? OFFSET ?`,
-      [babyId, limit, offset],
+       LIMIT ${safeLimit} OFFSET ${safeOffset}`,
+      [babyId],
     );
     return rows.map((r) => ({
       ...r,
