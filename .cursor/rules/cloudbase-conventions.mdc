@@ -12,6 +12,8 @@ alwaysApply: true
 
 ## 一、环境信息（固定，不得修改）
 
+### 1.1 平台信息
+
 | 属性 | 值 |
 |------|-----|
 | 环境 ID | `minicare-cloud-6gqledlle0132cbe` |
@@ -19,12 +21,47 @@ alwaysApply: true
 | 地域 | `ap-shanghai` |
 | CloudRun 服务名 | `minicare-api` |
 | CloudRun 访问域名 | `https://minicare-api-240137-10-1253854169.sh.run.tcloudbase.com` |
-| MySQL **公网**地址（当前使用） | `sh-cynosdbmysql-grp-6a0nj6a8.sql.tencentcdb.com:21002` |
+| MySQL **公网**地址 | `sh-cynosdbmysql-grp-6a0nj6a8.sql.tencentcdb.com:21002` |
 | MySQL **内网**地址（暂不可用，CloudRun 未配 VPC） | `172.17.0.9:3306` |
-| 数据库名 / 用户 | `minicare-cloud-6gqledlle0132cbe` / `bing` |
+| MySQL 用户 | `bing` |
 
 > ⚠️ **内网地址不可达**：CloudRun 服务尚未配置 VPC（`vpc-mkwdhlzc/subnet-823cr3pt`），
 > 使用 `172.17.0.9` 会导致连接超时 30s 后返回 500，**必须使用公网地址**。
+
+### 1.2 数据库环境（双库隔离）
+
+同一台 CynosDB 实例上有两个 database，职责分离：
+
+| Database | 用途 | DB_NAME 环境变量 |
+|----------|------|------------------|
+| `minicare-cloud-6gqledlle0132cbe` | **生产库** — 线上真实数据 | CloudRun EnvParams 中使用 |
+| `minicare_dev` | **开发库** — 本地开发测试数据 | `.env.local` 中使用 |
+
+**为什么本地直连远程数据库？**
+
+本地 MySQL 与 CynosDB Serverless 存在兼容性差异，典型如 `LIMIT ? OFFSET ?` 的 prepared statement 类型处理：
+- 本地 MySQL 8.0 会隐式转换字符串参数
+- CynosDB Serverless 严格拒绝，直接报 `Incorrect arguments to mysqld_stmt_execute`
+
+直连远程 CynosDB 可彻底消除「本地通过、线上 500」的环境差异问题。
+
+### 1.3 本地开发配置
+
+`.env.local` 已配置直连远程 CynosDB 开发库：
+
+```bash
+# minicare-server/.env.local
+DB_HOST=sh-cynosdbmysql-grp-6a0nj6a8.sql.tencentcdb.com
+DB_PORT=21002
+DB_NAME=minicare_dev          # 开发库，与生产隔离
+DB_USER=bing
+DB_PASS=Wb13227560988
+```
+
+**首次使用空库时注意**：
+- `minicare_dev` 是独立空库，需重新注册账号
+- 浏览器 localStorage 中的旧 token（线上账号）会导致 403
+- 解决：清空 `localStorage.minicare_token`，用测试手机号重新登录
 
 ---
 

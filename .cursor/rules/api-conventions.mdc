@@ -10,6 +10,30 @@ alwaysApply: true
 
 ---
 
+## 零、本地开发环境说明
+
+### 数据库连接
+
+本地开发直连远程 CynosDB 开发库（`minicare_dev`），详见 `cloudbase-conventions.mdc` §1.2。
+
+### 前端 API 代理
+
+Vite dev server 已配置代理：
+```ts
+// vite.config.ts
+server: {
+  port: 3000,
+  proxy: {
+    '/api': { target: 'http://localhost:3001', changeOrigin: true }
+  }
+}
+```
+
+- 前端访问 `http://localhost:3000/api/...` → 自动代理到 `http://localhost:3001/api/...`
+- `.env.development` 中 `VITE_API_BASE_URL=` 为空，让请求走 Vite proxy
+
+---
+
 ## 一、后端路由约定
 
 ### 全局前缀
