@@ -1,0 +1,40 @@
+name: Deploy Web to CloudBase Static Hosting
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'minicare-web/**'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: minicare-web/package-lock.json
+
+      - name: Install dependencies
+        working-directory: minicare-web
+        run: npm ci
+
+      - name: Build project
+        working-directory: minicare-web
+        run: npm run build:prod
+
+      - name: Install CloudBase CLI
+        run: npm install -g @cloudbase/cli
+
+      - name: Login CloudBase CLI
+        run: tcb login --apiKeyId ${{ secrets.TCB_SECRET_ID }} --apiKey ${{ secrets.TCB_SECRET_KEY }}
+
+      - name: Deploy to CloudBase Static Hosting
+        run: tcb hosting deploy ./minicare-web/dist / -e ${{ secrets.TCB_ENV_ID }}
