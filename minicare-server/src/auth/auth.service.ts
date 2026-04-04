@@ -38,7 +38,7 @@ export class AuthService {
    * 验证 OTP 并颁发 JWT（仅测试模式使用）
    * 生产模式：请使用 tcbLogin 接口（前端 SDK 完成验证后传 access_token）
    */
-  async verifyCode(phone: string, code: string): Promise<{ token: string; user: UserProfile; isNewUser: boolean }> {
+  async verifyCode(phone: string, code: string): Promise<{ token: string; user: UserProfile; isNewUser: boolean; activatedFamilyIds: string[] }> {
     if (!this.isTestMode) {
       throw new BadRequestException('请使用前端 SDK 完成验证，再调用 /api/auth/tcb-login');
     }
@@ -57,14 +57,13 @@ export class AuthService {
    * 2. 前端拿到 session.access_token 发到此接口
    * 3. 后端用 Node SDK queryUserInfo 验证 token 有效性，取出手机号
    * 4. 查/创 user_account，颁发自定义 JWT
+   * 5. 自动激活该手机号下所有 pending 邀请
    */
-  async tcbLogin(accessToken: string): Promise<{ token: string; user: UserProfile; isNewUser: boolean }> {
-    // 用 CloudBase HTTP API 验证 access_token，获取用户信息（含手机号）
+  async tcbLogin(accessToken: string): Promise<{ token: string; user: UserProfile; isNewUser: boolean; activatedFamilyIds: string[] }> {
     let phone = '';
     try {
       const envId = process.env.TCB_ENV_ID!;
       const apiUrl = `https://${envId}.api.tcloudbasegateway.com/v1/auth/users/me`;
-      // Node.js 18+ 内置 fetch
       const resp = await fetch(apiUrl, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
@@ -74,7 +73,6 @@ export class AuthService {
         throw new UnauthorizedException('CloudBase Token 无效');
       }
       const data = await resp.json() as any;
-      // 响应结构：{ data: { user: { phone, uid, ... } } }
       const tcbUser = data?.data?.user ?? data?.user ?? data;
       phone = tcbUser?.phone ?? tcbUser?.phone_number;
       if (!phone) {
@@ -92,8 +90,11 @@ export class AuthService {
     return this.findOrCreateUser(phone);
   }
 
-  /** 查找或创建 user_account，颁发 JWT */
-  private async findOrCreateUser(phone: string): Promise<{ token: string; user: UserProfile; isNewUser: boolean }> {
+  /**
+   * 查找或创建 user_account，颁发 JWT
+   * 登录/注册成功后，自动激活该手机号下所有 pending 家庭邀请
+   */
+  private async findOrCreateUser(phone: string): Promise<{ token: string; user: UserProfile; isNewUser: boolean; activatedFamilyIds: string[] }> {
     const conn = await this.db.getConnection();
     try {
       const [rows] = await conn.execute<any[]>(
@@ -107,7 +108,6 @@ export class AuthService {
         user = rows[0] as UserProfile;
       } else {
         isNewUser = true;
-        // 首次登录：自动注册（id 为 char(36)，需手动传入 UUID）
         const { v4: uuidv4 } = await import('uuid');
         await conn.execute(
           'INSERT INTO user_account (id, phone, nickname) VALUES (?, ?, ?)',
@@ -123,16 +123,49 @@ export class AuthService {
         user = newRows[0] as UserProfile;
       }
 
+      // ── 激活该手机号下所有 pending 家庭邀请 ──────────────────────────
+      const activatedFamilyIds = await this.activatePendingInvites(user.id, phone);
+      if (activatedFamilyIds.length > 0) {
+        console.log(`[Auth] 激活 pending 邀请：userId=${user.id}, 家庭数=${activatedFamilyIds.length}`);
+      }
+
       // 颁发 JWT（有效期 30 天）
       const token = await this.jwtService.signAsync(
         { sub: user.id },
         { expiresIn: '30d', secret: process.env.JWT_SECRET },
       );
 
-      return { token, user, isNewUser };
+      return { token, user, isNewUser, activatedFamilyIds };
     } finally {
       conn.release();
     }
+  }
+
+  /**
+   * 激活该手机号下所有 pending 邀请
+   * 将 invite_phone=phone、status=1 的记录更新为 user_id=userId、status=2
+   *
+   * 直接在 AuthService 中实现（避免循环依赖 AuthModule ↔ FamilyModule）
+   *
+   * @returns 被激活的家庭 ID 列表
+   */
+  private async activatePendingInvites(userId: string, phone: string): Promise<string[]> {
+    const [pending] = await this.db.execute<any[]>(
+      `SELECT id, family_id FROM family_member
+       WHERE invite_phone = ? AND status = 1 AND user_id IS NULL`,
+      [phone],
+    );
+
+    if (pending.length === 0) return [];
+
+    await this.db.execute(
+      `UPDATE family_member
+       SET user_id = ?, status = 2, joined_at = NOW()
+       WHERE invite_phone = ? AND status = 1 AND user_id IS NULL`,
+      [userId, phone],
+    );
+
+    return pending.map((r: any) => r.family_id as string);
   }
 
   /**

@@ -1,5 +1,6 @@
 import {
   ConflictException,
+  ForbiddenException,
   Inject,
   Injectable,
   NotFoundException,
@@ -14,7 +15,7 @@ export class FamilyService {
   constructor(@Inject(DATABASE_POOL) private readonly db: Pool) {}
 
   /**
-   * 创建家庭，创建者自动成为 OWNER（role=0）
+   * 创建家庭，创建者自动成为 OWNER（role=1）
    */
   async createFamily(userId: string, dto: CreateFamilyDto) {
     const conn = await this.db.getConnection();
@@ -23,7 +24,7 @@ export class FamilyService {
 
       const familyId   = uuidv4();
       const memberId   = uuidv4();
-      // 生成初始邀请码（6 位大写字母数字）
+      // 保留 invite_code 字段（兼容旧数据，不再对外暴露）
       const inviteCode = Math.random().toString(36).slice(2, 8).toUpperCase();
 
       await conn.execute(
@@ -32,7 +33,6 @@ export class FamilyService {
       );
 
       // 创建者加入家庭，role=1（owner），status=2（active）
-      // DDL: role TINYINT  1=owner 2=member
       await conn.execute(
         'INSERT INTO family_member (id, family_id, user_id, role, status) VALUES (?, ?, ?, 1, 2)',
         [memberId, familyId, userId],
@@ -65,26 +65,141 @@ export class FamilyService {
   }
 
   /**
-   * 获取家庭成员列表
+   * 获取家庭成员列表（active + pending 分开返回）
+   * - active 成员：status=2，展示昵称、手机号
+   * - pending 成员：status=1，展示 invite_phone（脱敏），无 user_id
    */
   async getMembers(familyId: string) {
     const [rows] = await this.db.execute<any[]>(
-      `SELECT fm.id, fm.role, fm.status, fm.joined_at,
+      `SELECT fm.id, fm.role, fm.status, fm.joined_at, fm.invite_phone,
               ua.id AS user_id, ua.nickname AS name, ua.avatar_url
        FROM family_member fm
-       JOIN user_account ua ON fm.user_id = ua.id
-       WHERE fm.family_id = ? AND fm.status = 2
-       ORDER BY fm.role ASC, fm.joined_at ASC`,
+       LEFT JOIN user_account ua ON fm.user_id = ua.id
+       WHERE fm.family_id = ? AND fm.status IN (1, 2)
+       ORDER BY fm.status ASC, fm.role ASC, fm.joined_at ASC`,
       [familyId],
     );
     return rows;
   }
 
   /**
-   * 生成（刷新）邀请码（6 位随机大写字母数字，调用后旧码立即失效）
-   * TODO: 生产阶段可改为存储到 Redis 并设置 TTL
+   * 按手机号邀请成员（创建 pending 记录）
    *
-   * @returns { code: string } 前端期望的响应结构
+   * 规则：
+   * - 不可重复邀请已 active 的成员（通过 invite_phone 或 user phone 查找）
+   * - 不可重复邀请已 pending 的相同手机号
+   * - 被邀请人可以尚未注册（user_id=NULL，等待注册后激活）
+   * - 不可邀请自己
+   */
+  async inviteByPhone(familyId: string, inviterId: string, phone: string) {
+    // 检查邀请人自身手机号
+    const [selfRows] = await this.db.execute<any[]>(
+      'SELECT phone FROM user_account WHERE id = ?',
+      [inviterId],
+    );
+    if (selfRows.length > 0 && selfRows[0].phone === phone) {
+      throw new ConflictException('不能邀请自己');
+    }
+
+    // 检查该手机号是否已有 active/pending 记录（两种情况）
+    // 1) 已注册用户通过 user_account.phone 关联
+    // 2) 尚未注册通过 invite_phone 直接关联
+    const [existing] = await this.db.execute<any[]>(
+      `SELECT fm.id, fm.status FROM family_member fm
+       LEFT JOIN user_account ua ON fm.user_id = ua.id
+       WHERE fm.family_id = ?
+         AND fm.status IN (1, 2)
+         AND (fm.invite_phone = ? OR ua.phone = ?)`,
+      [familyId, phone, phone],
+    );
+
+    if (existing.length > 0) {
+      const status = existing[0].status;
+      if (status === 2) {
+        throw new ConflictException('该成员已在家庭中');
+      } else {
+        throw new ConflictException('已邀请，等待对方登录接受');
+      }
+    }
+
+    // 创建 pending 记录（user_id=NULL，待登录激活）
+    const memberId = uuidv4();
+    await this.db.execute(
+      `INSERT INTO family_member (id, family_id, user_id, role, status, invite_phone, invited_by)
+       VALUES (?, ?, NULL, 2, 1, ?, ?)`,
+      [memberId, familyId, phone, inviterId],
+    );
+
+    return { memberId, status: 'pending' };
+  }
+
+  /**
+   * 激活该手机号下所有 pending 邀请
+   *
+   * 在用户登录/注册成功后调用。
+   * 将 invite_phone=phone、status=1 的记录更新为 user_id=userId、status=2。
+   *
+   * @returns 被激活的家庭 ID 列表（供前端判断是否需要展示切换引导）
+   */
+  async activatePendingInvites(userId: string, phone: string): Promise<string[]> {
+    // 查找待激活的 pending 记录
+    const [pending] = await this.db.execute<any[]>(
+      `SELECT id, family_id FROM family_member
+       WHERE invite_phone = ? AND status = 1 AND user_id IS NULL`,
+      [phone],
+    );
+
+    if (pending.length === 0) return [];
+
+    // 批量激活
+    await this.db.execute(
+      `UPDATE family_member
+       SET user_id = ?, status = 2, joined_at = NOW()
+       WHERE invite_phone = ? AND status = 1 AND user_id IS NULL`,
+      [userId, phone],
+    );
+
+    return pending.map((r: any) => r.family_id as string);
+  }
+
+  /**
+   * 移除家庭成员（仅 Owner 可操作，不可移除自身）
+   * memberId 为 family_member.id
+   */
+  async removeMember(familyId: string, memberId: string, operatorUserId: string) {
+    // 校验目标成员存在且属于该家庭
+    const [rows] = await this.db.execute<any[]>(
+      'SELECT id, user_id, role, status FROM family_member WHERE id = ? AND family_id = ?',
+      [memberId, familyId],
+    );
+    if (rows.length === 0) {
+      throw new NotFoundException('成员不存在');
+    }
+
+    const target = rows[0];
+
+    // 不可移除创建者
+    if (target.role === 1) {
+      throw new ForbiddenException('不可移除家庭创建者');
+    }
+
+    // 不可移除自身
+    if (target.user_id === operatorUserId) {
+      throw new ForbiddenException('不可移除自身');
+    }
+
+    // 软删除（status=3 表示已离开）
+    await this.db.execute(
+      'UPDATE family_member SET status = 3 WHERE id = ?',
+      [memberId],
+    );
+
+    return { success: true };
+  }
+
+  /**
+   * 生成（刷新）邀请码
+   * @deprecated 已被手机号邀请流程替代，保留接口用于兼容旧版本
    */
   async createInviteCode(familyId: string): Promise<{ code: string }> {
     const code = Math.random().toString(36).slice(2, 8).toUpperCase();
@@ -101,11 +216,6 @@ export class FamilyService {
    *
    * 每条记录携带 detail JSON 对象，包含该类型的关键摘要字段，
    * 供前端 getRecordSummary() 直接消费，无需额外请求。
-   *
-   * 注意：
-   *  - feed_type / breast_side / sleep status 在 DB 中存整数，此处用 CASE WHEN 转回字符串
-   *  - milk_types / milk_scoops / supplement_items 是 JSON 字符串，通过 JSON_OBJECT 嵌套后
-   *    仍为字符串，Service 层统一对 detail 做 JSON.parse
    */
   async getTodayRecords(familyId: string) {
     // 先取 baby_id（MVP: 每家庭 1 个宝宝）
@@ -116,8 +226,6 @@ export class FamilyService {
     if (babies.length === 0) return [];
     const babyId = babies[0].id;
 
-    // 全链路使用北京时间（CST），数据库连接已配置 timezone: '+08:00'
-    // DATE(field) 直接按 CST 截取日期，与 dateStr 完全一致，无需时区换算
     const today = new Date();
     const dateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
@@ -204,13 +312,10 @@ export class FamilyService {
 
     const [rows] = await this.db.execute<any[]>(sql, params);
 
-    // mysql2 不自动解析 JSON 列，手动 parse detail 字段
-    // milk_types / milk_scoops / supplement_items 也是 JSON 字符串，嵌套在 detail 内，同样需要解析
     return rows.map((row) => {
       let detail: Record<string, unknown> = {};
       if (row.detail) {
         const parsed = typeof row.detail === 'string' ? JSON.parse(row.detail) : row.detail;
-        // 对 detail 内部的 JSON 字符串字段再次解析（feeding 专有字段）
         detail = {
           ...parsed,
           milk_types:       this.tryParseJson(parsed.milk_types),
@@ -231,6 +336,7 @@ export class FamilyService {
 
   /**
    * 通过邀请码加入家庭
+   * @deprecated 已被手机号邀请流程替代
    */
   async joinByCode(userId: string, code: string) {
     const [rows] = await this.db.execute<any[]>(
@@ -244,7 +350,6 @@ export class FamilyService {
 
     const familyId: string = rows[0].id;
 
-    // 检查是否已是成员
     const [existing] = await this.db.execute<any[]>(
       'SELECT id FROM family_member WHERE family_id = ? AND user_id = ?',
       [familyId, userId],
@@ -254,7 +359,6 @@ export class FamilyService {
       throw new ConflictException('您已经是该家庭的成员');
     }
 
-    // 通过邀请码加入，role=2（member），status=2（active）
     await this.db.execute(
       'INSERT INTO family_member (id, family_id, user_id, role, status) VALUES (?, ?, ?, 2, 2)',
       [uuidv4(), familyId, userId],

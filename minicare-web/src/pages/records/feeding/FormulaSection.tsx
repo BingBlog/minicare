@@ -167,6 +167,10 @@ interface Props {
   formulaMl: number;
   /** 更新奶量 */
   onChangeFormulaMl: (v: number) => void;
+  /** 是否从上次配方加载（用于显示轻提示） */
+  loadedFromLast?: boolean;
+  /** 重置配方为默认值 */
+  onResetToDefault?: () => void;
 }
 
 export default function FormulaSection({
@@ -176,6 +180,8 @@ export default function FormulaSection({
   onUpdateScoop,
   formulaMl,
   onChangeFormulaMl,
+  loadedFromLast,
+  onResetToDefault,
 }: Props) {
   // 总勺数（用于配比百分比计算）
   const totalScoops = Object.values(scoops).reduce((a, b) => a + b, 0);
@@ -195,6 +201,25 @@ export default function FormulaSection({
 
   return (
     <>
+      {/* ── 上次配方轻提示 ────────────────────────── */}
+      {loadedFromLast && (
+        <div
+          className="mx-4 mb-2.5 flex items-center justify-between px-3 py-2 rounded-xl text-[12px]"
+          style={{ background: "#FFF0F4", border: "1px solid #FFD6E2" }}>
+          <span className="flex items-center gap-1.5 text-[#C8607A]">
+            <span className="text-[14px]">✨</span>
+            已为您加载上次配方
+          </span>
+          <button
+            type="button"
+            onClick={onResetToDefault}
+            className="text-[#9A8090] underline underline-offset-2 active:opacity-60"
+            style={{ fontSize: 11 }}>
+            重置
+          </button>
+        </div>
+      )}
+
       {/* ── 奶粉类型多选 ─────────────────────────── */}
       <div className="px-4 mb-1">
         <div className="text-[12px] font-semibold text-[#9A8090] mb-2">

@@ -6,6 +6,7 @@
  *   - 发送验证码（TEST 模式 / SMS 模式）+ 60 秒倒计时
  *   - 登录验证（TEST 模式 / SMS 模式）
  *   - 登录后跳转逻辑（有家庭 → 首页，无家庭 → 引导页）
+ *   - 登录后自动激活 pending 邀请 → 若有新家庭则触发切换宝宝引导
  *   - Toast 提示
  *   - Tab 切换
  *
@@ -18,6 +19,7 @@ import { useNavigate } from 'react-router-dom'
 import { auth } from '@/lib/cloudbase'
 import { authApi, familyApi, babyApi, setToken } from '@/api'
 import { useAppStore } from '@/lib/store'
+import type { SwitchBabyOption } from '@/lib/store'
 
 const AUTH_MODE = (import.meta.env.VITE_AUTH_MODE as string) || 'test'
 const IS_TEST_MODE = AUTH_MODE === 'test'
@@ -26,7 +28,7 @@ export type LoginMode = 'sms' | 'pwd'
 
 export function useLoginLogic() {
   const navigate = useNavigate()
-  const { setUser, setCurrentFamily, setCurrentBaby } = useAppStore()
+  const { setUser, setCurrentFamily, setCurrentBaby, setPendingSwitchOptions } = useAppStore()
 
   // ── Tab ────────────────────────────────────────────────────────────
   const [mode, setMode] = useState<LoginMode>('sms')
@@ -56,21 +58,63 @@ export function useLoginLogic() {
   }
 
   // ── 登录后检查家庭/宝宝档案，决定跳转目标 ──────────────────────────────
-  const afterLogin = async () => {
+  const afterLogin = async (activatedFamilyIds: string[] = []) => {
     try {
       const families = await familyApi.getMine()
+
       if (families.length === 0) {
+        // 没有任何家庭 → 去引导页
         navigate('/onboarding', { replace: true })
         return
       }
-      const family = families[0]
-      setCurrentFamily(family)
-      try {
-        const baby = await babyApi.get(family.id)
-        setCurrentBaby(baby)
+
+      // 找出被激活的新家庭（本次登录新加入的）
+      const newFamilies = activatedFamilyIds.length > 0
+        ? families.filter((f) => activatedFamilyIds.includes(f.id))
+        : []
+
+      // 已有家庭（除新激活外）
+      const existingFamilies = families.filter((f) => !activatedFamilyIds.includes(f.id))
+
+      if (existingFamilies.length > 0) {
+        // 用户已有家庭：优先设置原家庭
+        const primaryFamily = existingFamilies[0]
+        setCurrentFamily(primaryFamily)
+        try {
+          const baby = await babyApi.get(primaryFamily.id)
+          setCurrentBaby(baby)
+        } catch {
+          // 家庭无宝宝，忽略
+        }
+
+        // 若同时有新激活的家庭，准备切换宝宝引导弹层
+        if (newFamilies.length > 0) {
+          const switchOptions: SwitchBabyOption[] = await Promise.all(
+            newFamilies.map(async (f) => {
+              try {
+                const baby = await babyApi.get(f.id)
+                return { family: f, baby }
+              } catch {
+                return { family: f, baby: null }
+              }
+            }),
+          )
+          setPendingSwitchOptions(switchOptions)
+        }
+
         navigate('/', { replace: true })
-      } catch {
-        navigate('/onboarding', { replace: true })
+      } else {
+        // 用户只有新激活的家庭（首次通过邀请加入）
+        const family = newFamilies[0] ?? families[0]
+        setCurrentFamily(family)
+        try {
+          const baby = await babyApi.get(family.id)
+          setCurrentBaby(baby)
+          navigate('/', { replace: true })
+        } catch {
+          // 新家庭暂无宝宝，进首页
+          navigate('/', { replace: true })
+        }
       }
     } catch {
       navigate('/', { replace: true })
@@ -120,24 +164,31 @@ export function useLoginLogic() {
     setError('')
     try {
       let isNew = false
+      let activatedFamilyIds: string[] = []
+
       if (IS_TEST_MODE) {
-        const { token, user, isNewUser } = await authApi.verifyCode({ phone, code })
-        isNew = isNewUser
-        setToken(token)
-        setUser(user, token)
+        const res = await authApi.verifyCode({ phone, code })
+        isNew = res.isNewUser
+        activatedFamilyIds = res.activatedFamilyIds ?? []
+        setToken(res.token)
+        setUser(res.user, res.token)
       } else {
         if (!verifyOtp) throw new Error('请先获取验证码')
         const { data, error: sdkError } = await (verifyOtp as (p: { token: string }) => Promise<{ data?: { session?: { access_token?: string } }; error?: { message?: string } }>)({ token: code })
         if (sdkError) throw new Error(sdkError.message || '验证码错误或已过期')
         const accessToken = data?.session?.access_token
         if (!accessToken) throw new Error('登录失败，无法获取凭证，请重试')
-        const { token, user, isNewUser } = await authApi.tcbLogin(accessToken)
-        isNew = isNewUser
-        setToken(token)
-        setUser(user, token)
+        const res = await authApi.tcbLogin(accessToken)
+        isNew = res.isNewUser
+        activatedFamilyIds = res.activatedFamilyIds ?? []
+        setToken(res.token)
+        setUser(res.user, res.token)
       }
+
       if (isNew) showToast('欢迎加入敏宝日记！账号创建成功 🎉')
-      await afterLogin()
+      else if (activatedFamilyIds.length > 0) showToast('你被加入了新家庭 🎉')
+
+      await afterLogin(activatedFamilyIds)
     } catch (err) {
       setError(err instanceof Error ? err.message : '验证失败，请重试')
     } finally {

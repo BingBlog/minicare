@@ -27,6 +27,11 @@ export interface AuthResult {
   token: string
   user: User
   isNewUser: boolean
+  /**
+   * 本次登录/注册时被激活的家庭 ID 列表（手机号邀请流程）
+   * 非空时前端需展示"切换宝宝"引导弹层
+   */
+  activatedFamilyIds?: string[]
 }
 
 // ── Family ────────────────────────────────────────────────────────
@@ -39,17 +44,26 @@ export interface Family {
 
 export interface FamilyMember {
   id: string
-  user_id: string
+  user_id: string | null
   /**
    * DDL: family_member.role TINYINT
    * 1 = owner（创建者，可邀请/移除成员、修改宝宝档案）
    * 2 = member（普通成员，可查看和新增所有记录）
    */
   role: 1 | 2
-  /** user.nickname aliased */
-  name: string
-  /** 手机号（脱敏），如 138****5678 */
+  /**
+   * DDL: family_member.status TINYINT
+   * 1 = pending（待接受：已发出手机号邀请，对方尚未登录激活）
+   * 2 = active（已激活：正式成员）
+   * 3 = left（已离开）
+   */
+  status?: 1 | 2 | 3
+  /** user.nickname aliased；pending 状态时可能为 null */
+  name: string | null
+  /** 手机号（脱敏），如 138****5678；active 成员来自 user_account，pending 来自 invite_phone */
   phone?: string | null
+  /** 被邀请手机号（pending 状态下展示用，脱敏后） */
+  invite_phone?: string | null
   /** 加入时间 ISO 8601 */
   joined_at?: string | null
   /** 是否是当前登录用户 */

@@ -9,7 +9,7 @@
  *   - SettingsGroup 设置菜单组（外观 / 家庭 / 关于）
  *   - 退出登录按钮
  *   - EditBabyModal  编辑宝宝档案底部弹层
- *   - MembersModal   家庭成员管理弹层
+ *   - MembersModal   家庭成员管理弹层（v2 手机号邀请）
  *
  * 子组件均位于 ./profile/ 目录下
  */
@@ -58,24 +58,6 @@ const IconUsers = () => (
     <circle cx="9" cy="7" r="4" />
     <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
     <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-  </svg>
-);
-
-/** 分享/邀请图标 */
-const IconShare = () => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    style={{ width: 18, height: 18, color: "#4CAF82" }}>
-    <circle cx="18" cy="5" r="3" />
-    <circle cx="6" cy="12" r="3" />
-    <circle cx="18" cy="19" r="3" />
-    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
   </svg>
 );
 
@@ -145,7 +127,8 @@ const IconLogOut = () => (
 // ══ 我的页面主体 ══════════════════════════════════════════════════
 export default function ProfilePage() {
   const navigate = useNavigate();
-  const { user, currentBaby, currentFamily, setCurrentBaby, logout } = useAppStore();
+  const { user, currentBaby, currentFamily, setCurrentBaby, logout } =
+    useAppStore();
   const { showToast, ToastNode } = useToast();
 
   // ── 外观设置 ──────────────────────────────────────────────────
@@ -157,21 +140,26 @@ export default function ProfilePage() {
 
   // 编辑表单受控字段（打开弹层时从 currentBaby 同步初始值）
   const [editName, setEditName] = useState(currentBaby?.name ?? "");
-  const [editBirthDate, setEditBirthDate] = useState(currentBaby?.birth_date ?? "");
-  const [editGender, setEditGender] = useState<"male" | "female" | "unknown">(
-    (currentBaby?.gender as "male" | "female" | "unknown") ?? "unknown"
+  const [editBirthDate, setEditBirthDate] = useState(
+    currentBaby?.birth_date ?? "",
   );
-  const [editAllergyTypes, setEditAllergyTypes] = useState<AllergyType[]>(currentBaby?.allergy_types ?? []);
+  const [editGender, setEditGender] = useState<"male" | "female" | "unknown">(
+    (currentBaby?.gender as "male" | "female" | "unknown") ?? "unknown",
+  );
+  const [editAllergyTypes, setEditAllergyTypes] = useState<AllergyType[]>(
+    currentBaby?.allergy_types ?? [],
+  );
   const [editAllergyLevel, setEditAllergyLevel] = useState<AllergyLevel>(
-    (currentBaby?.allergy_level as AllergyLevel) ?? "unknown"
+    (currentBaby?.allergy_level as AllergyLevel) ?? "unknown",
   );
 
   // ── 家庭成员弹层状态 ──────────────────────────────────────────
   const [membersOpen, setMembersOpen] = useState(false);
   const [members, setMembers] = useState<FamilyMember[]>([]);
   const [membersLoading, setMembersLoading] = useState(false);
-  const [inviteCode, setInviteCode] = useState("");
-  const [inviteLoading, setInviteLoading] = useState(false);
+
+  // 当前用户在家庭中的角色（用于控制邀请/移除权限）
+  const [currentUserRole, setCurrentUserRole] = useState<1 | 2>(2);
 
   // ── 编辑弹层操作 ──────────────────────────────────────────────
 
@@ -179,15 +167,21 @@ export default function ProfilePage() {
   const openEdit = () => {
     setEditName(currentBaby?.name ?? "");
     setEditBirthDate(currentBaby?.birth_date ?? "");
-    setEditGender((currentBaby?.gender as "male" | "female" | "unknown") ?? "unknown");
+    setEditGender(
+      (currentBaby?.gender as "male" | "female" | "unknown") ?? "unknown",
+    );
     setEditAllergyTypes(currentBaby?.allergy_types ?? []);
-    setEditAllergyLevel((currentBaby?.allergy_level as AllergyLevel) ?? "unknown");
+    setEditAllergyLevel(
+      (currentBaby?.allergy_level as AllergyLevel) ?? "unknown",
+    );
     setEditOpen(true);
   };
 
   /** 过敏类型多选 toggle：已选则取消，未选则添加 */
   const toggleAllergyType = (type: AllergyType) => {
-    setEditAllergyTypes((prev) => (prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]));
+    setEditAllergyTypes((prev) =>
+      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type],
+    );
   };
 
   /** 保存宝宝档案：调用 API 更新，成功后更新全局 store */
@@ -207,7 +201,6 @@ export default function ProfilePage() {
 
     setSaving(true);
     try {
-      // ── 1. 更新宝宝基础档案 ──────────────────────────────────
       const updated = await babyApi.update(currentFamily.id, currentBaby.id, {
         name: editName.trim(),
         birth_date: editBirthDate,
@@ -237,7 +230,17 @@ export default function ProfilePage() {
     setMembersLoading(true);
     try {
       const list = await familyApi.getMembers(currentFamily.id);
-      setMembers(list);
+
+      // 用当前登录用户 ID 标记 is_self，并同时得出角色
+      const enriched = list.map((m) => ({
+        ...m,
+        is_self: m.user_id === user?.id,
+      }));
+      setMembers(enriched);
+
+      // 找到自身成员记录，拿到角色
+      const selfMember = enriched.find((m) => m.is_self);
+      setCurrentUserRole((selfMember?.role as 1 | 2) ?? 2);
     } catch {
       showToast("加载成员列表失败");
     } finally {
@@ -245,37 +248,34 @@ export default function ProfilePage() {
     }
   };
 
-  /** 关闭成员弹层，同时清空邀请码 */
+  /** 刷新成员列表（enrich is_self + 更新角色） */
+  const refreshMembers = async (familyId: string) => {
+    const list = await familyApi.getMembers(familyId);
+    const enriched = list.map((m) => ({ ...m, is_self: m.user_id === user?.id }));
+    setMembers(enriched);
+    const selfMember = enriched.find((m) => m.is_self);
+    setCurrentUserRole((selfMember?.role as 1 | 2) ?? 2);
+  };
+
+  /** 按手机号邀请成员 */
+  const handleInviteByPhone = async (phone: string) => {
+    if (!currentFamily) throw new Error("暂无家庭信息");
+    await familyApi.inviteByPhone(currentFamily.id, phone);
+    showToast("✓ 邀请已发送，等待对方登录接受");
+    await refreshMembers(currentFamily.id);
+  };
+
+  /** 移除成员或撤销 pending 邀请 */
+  const handleRemoveMember = async (memberId: string) => {
+    if (!currentFamily) throw new Error("暂无家庭信息");
+    await familyApi.removeMember(currentFamily.id, memberId);
+    showToast("✓ 操作成功");
+    await refreshMembers(currentFamily.id);
+  };
+
+  /** 关闭成员弹层 */
   const closeMembers = () => {
     setMembersOpen(false);
-    setInviteCode("");
-  };
-
-  /** 生成邀请码（调用 API，code 24小时有效） */
-  const handleInvite = async () => {
-    if (!currentFamily) return;
-    setInviteLoading(true);
-    try {
-      const res = await familyApi.createInviteCode(currentFamily.id);
-      setInviteCode(res.code);
-    } catch {
-      showToast("生成邀请码失败，请重试");
-    } finally {
-      setInviteLoading(false);
-    }
-  };
-
-  /** 复制邀请码到剪贴板 */
-  const copyInviteCode = () => {
-    if (!inviteCode) return;
-    navigator.clipboard
-      .writeText(inviteCode)
-      .then(() => {
-        showToast(`✓ 邀请码 ${inviteCode} 已复制`);
-      })
-      .catch(() => {
-        showToast(`邀请码：${inviteCode}`);
-      });
   };
 
   /** 退出登录：确认弹窗 → 清除 token → 跳转登录页 */
@@ -302,7 +302,8 @@ export default function ProfilePage() {
     },
   ];
 
-  /** 家庭分组：家庭成员管理 + 邀请家庭成员 */
+  /** 家庭分组：家庭成员管理（合并邀请入口）*/
+  const activeCount = members.filter((m) => m.status === 2 || m.status === undefined).length;
   const familyRows: SettingsRow[] = [
     {
       id: "members",
@@ -310,15 +311,7 @@ export default function ProfilePage() {
       icon: <IconUsers />,
       iconBg: "#FFF0F4",
       label: "家庭成员管理",
-      subText: members.length > 0 ? `${members.length}人` : undefined,
-      onClick: openMembers,
-    },
-    {
-      id: "invite",
-      type: "arrow",
-      icon: <IconShare />,
-      iconBg: "#DCFCE7",
-      label: "邀请家庭成员",
+      subText: activeCount > 0 ? `${activeCount}人` : undefined,
       onClick: openMembers,
     },
   ];
@@ -331,7 +324,6 @@ export default function ProfilePage() {
       icon: <IconPhone />,
       iconBg: "#FFF0F4",
       label: "版本号",
-      // v1.0.0（MVP）为当前测试版版本
       value: "v1.0.0（MVP）",
     },
     {
@@ -356,7 +348,9 @@ export default function ProfilePage() {
     <div className="min-h-full bg-bg">
       {/* ── 页面标题 ── */}
       <div className="px-5 pt-12 pb-0 bg-bg flex-shrink-0">
-        <div className="text-[22px] font-extrabold text-[#4A3035] tracking-tight">我的</div>
+        <div className="text-[22px] font-extrabold text-[#4A3035] tracking-tight">
+          我的
+        </div>
       </div>
 
       {/* ── 可滚动内容区 ── */}
@@ -376,7 +370,7 @@ export default function ProfilePage() {
         <BabyStats />
 
         {/* 外观设置组 */}
-        <SettingsGroup title="外观" rows={appearanceRows} />
+        {/* <SettingsGroup title="外观" rows={appearanceRows} /> */}
 
         {/* 家庭设置组 */}
         <SettingsGroup title="家庭" rows={familyRows} />
@@ -418,18 +412,14 @@ export default function ProfilePage() {
         onCdcHelp={() => showToast("跳转 CDC 评分标准页面")}
       />
 
-      {/* ── 家庭成员管理弹层 ── */}
+      {/* ── 家庭成员管理弹层（v2 手机号邀请）── */}
       <MembersModal
         open={membersOpen}
         members={members}
         loading={membersLoading}
-        inviteCode={inviteCode}
-        inviteLoading={inviteLoading}
-        onInvite={handleInvite}
-        onCopyCode={copyInviteCode}
-        onMemberClick={(m) =>
-          showToast(`${m.name ?? "未知用户"} · ${m.role === 1 ? "创建者" : "编辑者"}`)
-        }
+        isOwner={currentUserRole === 1}
+        onInviteByPhone={handleInviteByPhone}
+        onRemoveMember={handleRemoveMember}
         onClose={closeMembers}
       />
 

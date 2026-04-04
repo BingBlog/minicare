@@ -5,6 +5,10 @@
  * 权限模型：
  *   role=1（owner）：创建者，可邀请/移除成员、修改宝宝档案、查看和新增所有记录
  *   role=2（member）：普通成员，可查看和新增所有记录
+ *
+ * 邀请流程（v2，手机号邀请）：
+ *   邀请方：inviteByPhone() → 创建 pending 记录
+ *   被邀请方：登录后后端自动激活 pending → activatedFamilyIds 返回给前端
  */
 import { request } from './http'
 import type { Family, FamilyMember } from './types'
@@ -12,31 +16,12 @@ import type { Family, FamilyMember } from './types'
 export const familyApi = {
   /**
    * 获取我的家庭列表
-   *
-   * @example 响应体
-   * [
-   *   {
-   *     "id": "f1f2f3f4-1234-5678-abcd-ef0123456789",
-   *     "name": "我们家",
-   *     "created_at": "2026-03-01T08:00:00.000Z",
-   *     "role": 1
-   *   }
-   * ]
    */
   getMine: () =>
     request<Family[]>('/api/family/mine'),
 
   /**
    * 创建家庭（创建者自动成为 owner，role=1，status=active）
-   *
-   * @example 请求体
-   * { "name": "我们家" }
-   *
-   * @example 响应体
-   * {
-   *   "id": "f1f2f3f4-1234-5678-abcd-ef0123456789",
-   *   "name": "我们家"
-   * }
    */
   create: (name: string) =>
     request<Family>('/api/family', {
@@ -45,39 +30,50 @@ export const familyApi = {
     }),
 
   /**
-   * 获取家庭成员列表（仅返回 status=active 的成员）
-   *
-   * @example 响应体
-   * [
-   *   {
-   *     "id": "m1m2m3m4-...",
-   *     "role": 1,
-   *     "status": 2,
-   *     "joined_at": "2026-03-01T08:00:00.000Z",
-   *     "user_id": "u1u2u3u4-...",
-   *     "name": "宝妈",
-   *     "avatar_url": null
-   *   },
-   *   {
-   *     "id": "m5m6m7m8-...",
-   *     "role": 2,
-   *     "status": 2,
-   *     "joined_at": "2026-03-05T10:00:00.000Z",
-   *     "user_id": "u5u6u7u8-...",
-   *     "name": "宝爸",
-   *     "avatar_url": null
-   *   }
-   * ]
+   * 获取家庭成员列表
+   * 返回 active（status=2）+ pending（status=1）两类成员
+   * pending 成员无 name/user_id，展示 invite_phone
    */
   getMembers: (familyId: string) =>
     request<FamilyMember[]>(`/api/family/${familyId}/members`),
 
   /**
-   * 生成（刷新）邀请码
-   * 调用后旧邀请码立即失效，返回新的 6 位大写字母数字码
+   * 按手机号邀请家庭成员（替代邀请码流程）
+   * 仅 Owner 可调用
+   *
+   * @example 请求体
+   * { "phone": "13812345678" }
    *
    * @example 响应体
-   * { "code": "A3K9MZ" }
+   * { "memberId": "uuid", "status": "pending" }
+   *
+   * @example 错误
+   *   409 - "该成员已在家庭中" / "已邀请，等待对方登录接受" / "不能邀请自己"
+   *   403 - 当前用户非 Owner
+   */
+  inviteByPhone: (familyId: string, phone: string) =>
+    request<{ memberId: string; status: 'pending' }>(
+      `/api/family/${familyId}/invite-by-phone`,
+      {
+        method: 'POST',
+        body: JSON.stringify({ phone }),
+      },
+    ),
+
+  /**
+   * 移除家庭成员或撤销 pending 邀请
+   * 仅 Owner 可调用，memberId 为 family_member.id
+   */
+  removeMember: (familyId: string, memberId: string) =>
+    request<{ success: boolean }>(
+      `/api/family/${familyId}/members/${memberId}`,
+      { method: 'DELETE' },
+    ),
+
+  // ── 以下接口已废弃，保留供旧版本兼容 ───────────────────────────────
+
+  /**
+   * @deprecated 邀请码流程已废弃，请使用 inviteByPhone()
    */
   createInviteCode: (familyId: string) =>
     request<{ code: string }>(`/api/family/${familyId}/invite`, {
@@ -85,14 +81,7 @@ export const familyApi = {
     }),
 
   /**
-   * 通过邀请码加入家庭
-   * 加入后自动成为 member（role=2），状态为 active
-   *
-   * @example 请求体
-   * { "code": "A3K9MZ" }
-   *
-   * @example 响应体
-   * { "familyId": "f1f2f3f4-1234-5678-abcd-ef0123456789" }
+   * @deprecated 邀请码流程已废弃，登录后自动激活 pending 邀请
    */
   join: (code: string) =>
     request<Family>('/api/family/join', {

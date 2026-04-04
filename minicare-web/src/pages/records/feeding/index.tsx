@@ -47,6 +47,33 @@ function isoToLocalTime(iso: string): string {
   return `${d.getHours().toString().padStart(2, "0")}:${d.getMinutes().toString().padStart(2, "0")}`;
 }
 
+// ── 上次奶粉配方 localStorage 持久化 ─────────────────────────────────
+const LAST_FORMULA_KEY_PREFIX = "minicare_last_formula_";
+
+interface LastFormulaCache {
+  milkTypes: MilkType[];
+  scoops: Record<MilkType, number>;
+  formulaMl: number;
+}
+
+function loadLastFormula(babyId: string): LastFormulaCache | null {
+  try {
+    const raw = localStorage.getItem(LAST_FORMULA_KEY_PREFIX + babyId);
+    if (!raw) return null;
+    return JSON.parse(raw) as LastFormulaCache;
+  } catch {
+    return null;
+  }
+}
+
+function saveLastFormula(babyId: string, data: LastFormulaCache) {
+  try {
+    localStorage.setItem(LAST_FORMULA_KEY_PREFIX + babyId, JSON.stringify(data));
+  } catch {
+    // localStorage 不可用时静默失败
+  }
+}
+
 /** 从已有记录初始化表单状态 */
 function initFromRecord(record: FeedingRecord) {
   const feedType = record.feed_type;
@@ -85,9 +112,17 @@ export default function FeedingFormPage() {
   const [submitting, setSubmitting] = useState(false);
 
   // ── 奶粉 Tab 状态 ──────────────────────────────────────────────
+  // 新建模式下尝试从 localStorage 读取上次配方
+  const lastFormula = !isEditMode && currentBaby
+    ? loadLastFormula(currentBaby.id)
+    : null;
+
   const [selectedMilkTypes, setSelectedMilkTypes] = useState<Set<MilkType>>(() => {
     if (editRecord?.milk_types && editRecord.milk_types.length > 0) {
       return new Set(editRecord.milk_types as MilkType[]);
+    }
+    if (lastFormula?.milkTypes && lastFormula.milkTypes.length > 0) {
+      return new Set(lastFormula.milkTypes);
     }
     return new Set(["aa"] as MilkType[]);
   });
@@ -96,9 +131,25 @@ export default function FeedingFormPage() {
     if (editRecord?.milk_scoops) {
       return { ...defaults, ...(editRecord.milk_scoops as Record<MilkType, number>) };
     }
+    if (lastFormula?.scoops) {
+      return { ...defaults, ...lastFormula.scoops };
+    }
     return defaults;
   });
-  const [formulaMl, setFormulaMl] = useState(editRecord?.formula_ml ?? 120);
+  const [formulaMl, setFormulaMl] = useState(
+    editRecord?.formula_ml ?? lastFormula?.formulaMl ?? 120
+  );
+
+  // 标记是否从上次配方加载（用于 UI 提示）
+  const [loadedFromLast, setLoadedFromLast] = useState(Boolean(!isEditMode && lastFormula));
+
+  /** 重置奶粉配方为硬编码默认值 */
+  const resetFormulaToDefault = () => {
+    setSelectedMilkTypes(new Set(["aa"] as MilkType[]));
+    setScoops({ aa: 3, eh_lactose: 0, eh_no_lactose: 0, ph: 0, std: 0 });
+    setFormulaMl(120);
+    setLoadedFromLast(false);
+  };
 
   /** 切换奶粉类型选中状态（取消时勺数归零） */
   const toggleMilkType = (key: MilkType) => {
@@ -348,6 +399,17 @@ export default function FeedingFormPage() {
         }
       }
 
+      // 奶粉 Tab 提交成功后缓存本次配方，下次新建时回填
+      if (!isEditMode && tab === "formula" && currentBaby) {
+        const activeMilkTypesForCache = milkTypeOptions
+          .filter((m) => selectedMilkTypes.has(m.key) && scoops[m.key] > 0)
+          .map((m) => m.key);
+        saveLastFormula(currentBaby.id, {
+          milkTypes: activeMilkTypesForCache.length > 0 ? activeMilkTypesForCache : Array.from(selectedMilkTypes),
+          scoops,
+          formulaMl,
+        });
+      }
       showToast(isEditMode ? "✓ 饮食记录已更新" : "✓ 饮食记录已保存");
       setTimeout(() => navigate(-1), 1400);
     } catch (err) {
@@ -408,6 +470,8 @@ export default function FeedingFormPage() {
             onUpdateScoop={updateScoop}
             formulaMl={formulaMl}
             onChangeFormulaMl={setFormulaMl}
+            loadedFromLast={loadedFromLast}
+            onResetToDefault={resetFormulaToDefault}
           />
         )}
 

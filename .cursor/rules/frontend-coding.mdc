@@ -115,3 +115,66 @@ const SLEEP_PERIOD_LABELS = {  // 不允许！
 1. 在 `src/lib/constants.ts` 中添加新的 `export const XXXX_LABELS`
 2. 在使用该标签的组件中 `import { XXXX_LABELS } from '@/lib/constants'`
 3. 不得在组件文件中临时定义同名私有字典
+
+---
+
+## 规则三：禁止使用浏览器原生对话框，必须用内联弹层替代
+
+**禁止**在任何 React 组件中调用以下浏览器原生 API：
+
+| 禁止 API | 原因 |
+|---|---|
+| `window.confirm(...)` | 样式无法定制，移动端体验极差，iOS WebView 可能被屏蔽 |
+| `window.alert(...)` | 同上 |
+| `window.prompt(...)` | 同上 |
+
+### 必须改用内联确认弹层（BottomSheet 风格）
+
+所有需要用户"二次确认"的危险操作（删除、移除、清空、退出等），**必须**使用与整体设计风格一致的底部弹层实现。
+
+#### 实现模式
+
+在组件内维护一个 `confirm` 状态，点击危险按钮时更新状态、展开确认弹层，用户点击"确认"后再执行异步操作：
+
+```tsx
+// ✅ 正确：内联 ConfirmSheet
+interface ConfirmState {
+  open: boolean
+  targetId: string
+  targetName: string
+}
+const CONFIRM_INIT: ConfirmState = { open: false, targetId: '', targetName: '' }
+
+const [confirm, setConfirm] = useState<ConfirmState>(CONFIRM_INIT)
+const [confirmLoading, setConfirmLoading] = useState(false)
+
+// 打开确认弹层
+const openConfirm = (id: string, name: string) => {
+  setConfirm({ open: true, targetId: id, targetName: name })
+}
+
+// 执行删除
+const handleConfirm = async () => {
+  setConfirmLoading(true)
+  try {
+    await deleteApi(confirm.targetId)
+  } finally {
+    setConfirmLoading(false)
+    setConfirm(CONFIRM_INIT)
+  }
+}
+```
+
+弹层 UI 要求：
+- 使用 `rounded-t-3xl` 圆角底部弹层，覆盖蒙层背景
+- 顶部显示拖拽把手（`w-10 h-1 rounded-full bg-gray-200`）
+- 包含警告图标 + 操作说明文字
+- **确认按钮**：危险操作使用红色 `#F05060`，普通操作使用品牌色 `#F87098`，支持 `loading` 状态
+- **取消按钮**：灰色次要样式 `#F5F0F2`，文字"再想想"
+- `z-index` 必须高于触发它的父弹层（如父层 z-50，则确认弹层用 z-[70]）
+
+```tsx
+// ❌ 禁止
+if (window.confirm('确定要删除吗？')) {
+  await deleteItem(id)
+}
