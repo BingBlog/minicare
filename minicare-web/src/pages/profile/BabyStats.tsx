@@ -68,10 +68,10 @@ export default function BabyStats() {
   }
 
   const stats: StatItem[] = [
-    { val: fmtCm(heightMm), unit: 'cm', name: '身高' },
-    { val: fmtKg(weightG),  unit: 'kg', name: '体重' },
-    { val: fmtCm(headMm),   unit: 'cm', name: '头围' },
-    { val: '—',             unit: '天', name: '稳定期' },
+    { val: fmtCm(heightMm), unit: heightMm != null ? 'cm' : '', name: '身高' },
+    { val: fmtKg(weightG),  unit: weightG  != null ? 'kg' : '', name: '体重' },
+    { val: fmtCm(headMm),   unit: headMm   != null ? 'cm' : '', name: '头围' },
+    { val: '—',             unit: '',                            name: '稳定期' },
   ]
 
   return (
@@ -83,22 +83,37 @@ export default function BabyStats() {
         padding: 14,
       }}
     >
-      {stats.map((stat, i) => (
-        <div
-          key={stat.name}
-          className="text-center"
-          // 非最后一格右侧增加分割线
-          style={i < 3 ? { borderRight: '.5px solid #F5F0F2' } : {}}
-        >
-          {/* 数值 + 单位（单位字号更小） */}
-          <div className="text-[16px] font-extrabold text-[#4A3035] leading-none">
-            {stat.val}
-            <span className="text-[11px] font-medium text-[#9A8090]">{stat.unit}</span>
+      {stats.map((stat, i) => {
+        const isEmpty = stat.val === '—'
+        return (
+          <div
+            key={stat.name}
+            className="text-center"
+            style={i < 3 ? { borderRight: '.5px solid #F5F0F2' } : {}}
+          >
+            {/* 数值 + 单位：无数据时整体降权 */}
+            <div
+              className="leading-none"
+              style={isEmpty
+                ? { fontSize: 15, fontWeight: 400, color: 'rgba(154,128,144,0.45)' }
+                : { fontSize: 16, fontWeight: 800, color: '#4A3035' }
+              }
+            >
+              {stat.val}
+              {!isEmpty && (
+                <span className="text-[11px] font-medium" style={{ color: '#9A8090' }}>{stat.unit}</span>
+              )}
+            </div>
+            {/* 指标名称：无数据时同步降权 */}
+            <div
+              className="text-[10px] mt-1"
+              style={{ color: isEmpty ? 'rgba(154,128,144,0.45)' : '#9A8090' }}
+            >
+              {stat.name}
+            </div>
           </div>
-          {/* 指标名称 */}
-          <div className="text-[10px] text-[#9A8090] mt-1">{stat.name}</div>
-        </div>
-      ))}
+        )
+      })}
     </div>
   )
 }

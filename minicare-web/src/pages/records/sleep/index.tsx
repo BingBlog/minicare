@@ -626,7 +626,7 @@ export default function SleepFormPage() {
       {/* 模式切换（编辑模式或计时进行中时隐藏） */}
       {!isEditMode && !timerActive && (
         <div
-          className="mx-4 mt-3 flex gap-0 rounded-xl overflow-hidden p-[3px]"
+          className="mx-4 mt-3 flex gap-0 rounded-2xl overflow-hidden p-[3px]"
           style={{ background: "#F0E8EA" }}>
           {(
             [
@@ -638,7 +638,7 @@ export default function SleepFormPage() {
               key={key}
               type="button"
               onClick={() => setMode(key)}
-              className="flex-1 py-[9px] text-[14px] font-semibold rounded-[10px] transition-all"
+              className="flex-1 py-[9px] text-[14px] font-semibold rounded-[13px] transition-all"
               style={{
                 background: mode === key ? "#fff" : "transparent",
                 color: mode === key ? "#4A3035" : "#9A8090",

@@ -83,11 +83,11 @@ export default function BabyHero({
   const genderLabel =
     gender === "male" ? "男宝" : gender === "female" ? "女宝" : null;
 
-  /** 过敏类型的中文标签拼接（如"牛奶蛋白、鸡蛋"） */
+  /** 过敏类型的中文标签拼接（如"牛奶蛋白、鸡蛋"），无数据时为 null */
   const allergyTypeText =
     allergyTypes && allergyTypes.length > 0
       ? allergyTypes.map((t) => ALLERGY_TYPE_LABELS[t] ?? t).join("、")
-      : "牛奶蛋白"; // 没有数据时展示默认占位
+      : null;
 
   return (
     <div
@@ -130,8 +130,8 @@ export default function BabyHero({
           {displayName}
         </div>
 
-        {/* 年龄 + 性别 + 生日（仅有 birthDate 时才显示） */}
-        {birthDate && (
+        {/* 年龄 + 性别 + 生日（有数据时正常显示，无数据时降权提示去编辑） */}
+        {birthDate ? (
           <div className="text-[13px] text-[#9A8090] mt-0.5">
             {getBabyAge(birthDate)}
             {genderLabel && ` · ${genderLabel}`}
@@ -142,6 +142,10 @@ export default function BabyHero({
               day: "numeric",
             })}
             出生
+          </div>
+        ) : (
+          <div className="text-[12px] mt-0.5" style={{ color: 'rgba(154,128,144,0.5)' }}>
+            点击编辑，补充宝宝信息
           </div>
         )}
       </div>

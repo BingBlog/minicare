@@ -14,12 +14,12 @@ interface Props {
 
 export default function TemperatureSection({ value, onChange }: Props) {
   const handleDecrease = () => {
-    const cur = parseFloat(value) || 37.0;
+    const cur = parseFloat(value) || 36.5;
     onChange(Math.max(35.0, +(cur - 0.1).toFixed(1)).toString());
   };
 
   const handleIncrease = () => {
-    const cur = parseFloat(value) || 37.0;
+    const cur = parseFloat(value) || 36.5;
     onChange(Math.min(42.0, +(cur + 0.1).toFixed(1)).toString());
   };
 

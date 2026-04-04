@@ -68,10 +68,10 @@ export default function HealthFormPage() {
     return nowTime();
   });
 
-  // 体温（字符串，空表示未填）
+  // 体温（字符串，默认 36.5℃）
   const [temperature, setTemperature] = useState(() => {
     if (editRecord?.temperature != null) return String(editRecord.temperature);
-    return "";
+    return "36.5";
   });
 
   // 过敏症状多选（编辑时从结构化字段 allergy_symptoms 回填）

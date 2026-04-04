@@ -128,14 +128,22 @@ export default function HomePage() {
     if (d.duration_min) return acc + Number(d.duration_min);
     return acc;
   }, 0);
-  // "—" 表示尚无睡眠记录
-  const sleepH = totalSleepMin >= 60 ? `${Math.floor(totalSleepMin / 60)}` : "—";
+  // 无数据时 val="—" unit="" 统一空单位，语义更清晰
+  const sleepH = totalSleepMin >= 60 ? `${Math.floor(totalSleepMin / 60)}` : null;
 
   const babyStats: BabyStat[] = [
-    { val: totalMl > 0 ? totalMl : feedingRecs.length, unit: totalMl > 0 ? "ml" : "次", label: "今日奶量" },
-    { val: sleepH, unit: "h", label: "今日睡眠" },
-    { val: diaperRecs.length, unit: "次", label: "换尿布" },
-    { val: symptomRecs.length, unit: "项", label: "表现" },
+    feedingRecs.length > 0
+      ? { val: totalMl > 0 ? totalMl : feedingRecs.length, unit: totalMl > 0 ? "ml" : "次", label: "今日奶量" }
+      : { val: "—", unit: "", label: "今日奶量" },
+    sleepH !== null
+      ? { val: sleepH, unit: "h", label: "今日睡眠" }
+      : { val: "—", unit: "", label: "今日睡眠" },
+    diaperRecs.length > 0
+      ? { val: diaperRecs.length, unit: "次", label: "换尿布" }
+      : { val: "—", unit: "", label: "换尿布" },
+    symptomRecs.length > 0
+      ? { val: symptomRecs.length, unit: "项", label: "表现" }
+      : { val: "—", unit: "", label: "表现" },
   ];
 
   // ── 时间线操作处理 ────────────────────────────────────────────────────────

@@ -24,6 +24,7 @@ import BabyStats from "./BabyStats";
 import SettingsGroup from "./SettingsGroup";
 import type { SettingsRow } from "./SettingsGroup";
 import EditBabyModal from "./EditBabyModal";
+import BottomSheet from "@/components/ui/BottomSheet";
 import MembersModal from "./MembersModal";
 
 // ── SettingsGroup 所需的图标（仅在本文件内使用）──────────────────
@@ -153,6 +154,9 @@ export default function ProfilePage() {
     (currentBaby?.allergy_level as AllergyLevel) ?? "unknown",
   );
 
+  // ── 退出登录确认弹层状态 ────────────────────────────────────
+  const [logoutOpen, setLogoutOpen] = useState(false);
+
   // ── 家庭成员弹层状态 ──────────────────────────────────────────
   const [membersOpen, setMembersOpen] = useState(false);
   const [members, setMembers] = useState<FamilyMember[]>([]);
@@ -278,13 +282,17 @@ export default function ProfilePage() {
     setMembersOpen(false);
   };
 
-  /** 退出登录：确认弹窗 → 清除 token → 跳转登录页 */
+  /** 退出登录：打开确认弹层 */
   const handleLogout = () => {
-    if (window.confirm("确定要退出登录吗？")) {
-      removeToken();
-      logout();
-      navigate("/login", { replace: true });
-    }
+    setLogoutOpen(true);
+  };
+
+  /** 确认退出登录：清除 token → 跳转登录页 */
+  const confirmLogout = () => {
+    setLogoutOpen(false);
+    removeToken();
+    logout();
+    navigate("/login", { replace: true });
   };
 
   // ── SettingsGroup 数据配置 ──────────────────────────────────
@@ -411,6 +419,62 @@ export default function ProfilePage() {
         onCancel={() => setEditOpen(false)}
         onCdcHelp={() => showToast("跳转 CDC 评分标准页面")}
       />
+
+      {/* ── 退出登录确认弹层 ── */}
+      <BottomSheet
+        open={logoutOpen}
+        onClose={() => setLogoutOpen(false)}
+        maxHeightVh={40}
+        scrollable={false}
+      >
+        <div className="px-5 pb-4">
+          {/* 图标 + 标题 */}
+          <div className="flex flex-col items-center pt-2 pb-5">
+            <div
+              className="w-14 h-14 rounded-full flex items-center justify-center mb-3"
+              style={{ background: "#FFF0F4" }}
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#F05060"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{ width: 28, height: 28 }}
+              >
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16 17 21 12 16 7" />
+                <line x1="21" y1="12" x2="9" y2="12" />
+              </svg>
+            </div>
+            <p className="text-[17px] font-bold text-[#4A3035] mb-1">退出登录</p>
+            <p className="text-[13px] text-[#9A8090] text-center leading-relaxed">
+              退出后需要重新登录才能<br />访问宝宝数据，确定退出吗？
+            </p>
+          </div>
+
+          {/* 操作按钮 */}
+          <div className="flex gap-3">
+            <button
+              type="button"
+              onClick={() => setLogoutOpen(false)}
+              className="flex-1 py-3.5 rounded-2xl text-[15px] font-semibold border-none cursor-pointer transition-all active:scale-[0.98]"
+              style={{ background: "#F5F0F2", color: "#9A8090" }}
+            >
+              取消
+            </button>
+            <button
+              type="button"
+              onClick={confirmLogout}
+              className="flex-1 py-3.5 rounded-2xl text-[15px] font-semibold border-none cursor-pointer transition-all active:scale-[0.98]"
+              style={{ background: "#F05060", color: "#fff" }}
+            >
+              确定退出
+            </button>
+          </div>
+        </div>
+      </BottomSheet>
 
       {/* ── 家庭成员管理弹层（v2 手机号邀请）── */}
       <MembersModal

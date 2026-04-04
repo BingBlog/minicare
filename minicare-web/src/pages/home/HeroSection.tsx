@@ -10,7 +10,6 @@
  */
 import { useNavigate } from 'react-router-dom'
 import { IconUserSingle } from '@/components/ui/icons'
-import { ALLERGY_TYPE_LABELS, ALLERGY_LEVEL_LABELS } from '@/lib/constants'
 import { getBabyAge, getTodayDateStr } from '@/lib/utils'
 import type { Baby } from '@/api/types'
 
@@ -150,16 +149,6 @@ interface BabyCardProps {
  * 宝宝信息卡片（磨砂玻璃效果，Hero 区内）
  */
 function BabyCard({ baby, stats, onNavigateRecords, onNavigateProfile }: BabyCardProps) {
-  // 获取第一个过敏原名称用于副标题展示
-  const firstAllergyLabel = baby.allergy_types?.length
-    ? (ALLERGY_TYPE_LABELS[baby.allergy_types[0]] ?? baby.allergy_types[0]) + '过敏'
-    : '过敏宝宝'
-
-  // 过敏程度标签
-  const levelLabel = baby.allergy_level
-    ? ALLERGY_LEVEL_LABELS[baby.allergy_level] ?? baby.allergy_level
-    : null
-
   return (
     <div className="mx-4 relative z-10 cursor-pointer" onClick={onNavigateProfile}>
       <div
@@ -202,24 +191,9 @@ function BabyCard({ baby, stats, onNavigateRecords, onNavigateProfile }: BabyCar
           <div className="flex-1 min-w-0">
             <div className="text-lg font-bold text-white tracking-[-0.3px]">{baby.name}</div>
             <div className="text-xs text-white/80 mt-0.5">
-              {firstAllergyLabel} · {getBabyAge(baby.birth_date)}
+              {getBabyAge(baby.birth_date)}
             </div>
           </div>
-
-          {/* 过敏程度徽章 */}
-          {levelLabel && (
-            <div
-              className="text-xs font-semibold text-white flex-shrink-0"
-              style={{
-                background: 'rgba(255,255,255,0.22)',
-                border: '1px solid rgba(255,255,255,0.4)',
-                borderRadius: 20,
-                padding: '4px 12px',
-              }}
-            >
-              {levelLabel}
-            </div>
-          )}
         </div>
 
         {/* 今日4格统计 */}
@@ -227,20 +201,31 @@ function BabyCard({ baby, stats, onNavigateRecords, onNavigateProfile }: BabyCar
           className="flex relative z-10 rounded-xl overflow-hidden"
           style={{ background: 'rgba(0,0,0,0.1)' }}
         >
-          {stats.map((stat, i) => (
-            <div
-              key={i}
-              className="flex-1 text-center py-2.5 cursor-pointer active:bg-white/10"
-              style={i < 3 ? { borderRight: '1px solid rgba(255,255,255,0.18)' } : {}}
-              onClick={(e) => { e.stopPropagation(); onNavigateRecords() }}
-            >
-              <div className="text-[20px] font-extrabold text-white leading-none tracking-[-0.5px]">
-                {stat.val}
-                <span className="text-[11px] font-semibold opacity-80">{stat.unit}</span>
+          {stats.map((stat, i) => {
+            const isEmpty = stat.val === '—'
+            return (
+              <div
+                key={i}
+                className="flex-1 text-center py-2.5 cursor-pointer active:bg-white/10"
+                style={i < 3 ? { borderRight: '1px solid rgba(255,255,255,0.18)' } : {}}
+                onClick={(e) => { e.stopPropagation(); onNavigateRecords() }}
+              >
+                <div
+                  className="leading-none tracking-[-0.5px]"
+                  style={isEmpty
+                    ? { fontSize: 16, fontWeight: 400, color: 'rgba(255,255,255,0.38)' }
+                    : { fontSize: 20, fontWeight: 800, color: '#fff' }
+                  }
+                >
+                  {stat.val}
+                  {!isEmpty && (
+                    <span className="text-[11px] font-semibold opacity-80">{stat.unit}</span>
+                  )}
+                </div>
+                <div className="text-[10px] mt-1" style={{ color: isEmpty ? 'rgba(255,255,255,0.38)' : 'rgba(255,255,255,0.65)' }}>{stat.label}</div>
               </div>
-              <div className="text-[10px] text-white/65 mt-1">{stat.label}</div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
     </div>
