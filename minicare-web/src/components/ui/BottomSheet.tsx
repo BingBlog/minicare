@@ -23,7 +23,7 @@ export interface BottomSheetProps {
   children: ReactNode
   /** 最大高度（vh 单位），默认 92 */
   maxHeightVh?: number
-  /** z-index，默认 50 */
+  /** z-index，默认 60（高于底部导航栏 z-50） */
   zIndex?: number
   /** 是否允许内容区域滚动，默认 true */
   scrollable?: boolean
@@ -42,7 +42,7 @@ export default function BottomSheet({
   onClose,
   children,
   maxHeightVh = 92,
-  zIndex = 50,
+  zIndex = 60,
   scrollable = true,
 }: BottomSheetProps) {
   if (!open) return null

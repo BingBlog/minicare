@@ -42,7 +42,7 @@ export default function FabSheet({ open, onClose }: FabSheetProps) {
   }
 
   return (
-    <BottomSheet open={open} onClose={onClose} zIndex={40}>
+    <BottomSheet open={open} onClose={onClose} zIndex={60}>
       {/* 弹层标题 */}
       <div className="text-center text-base font-bold text-[#4A3035] py-3">记录什么？</div>
 

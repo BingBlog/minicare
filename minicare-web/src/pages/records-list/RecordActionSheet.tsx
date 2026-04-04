@@ -70,7 +70,7 @@ export default function RecordActionSheet({
   // ── 主菜单视图 ────────────────────────────────────────────────
   if (view === 'menu') {
     return (
-      <BottomSheet open={open} onClose={onClose} zIndex={50}>
+      <BottomSheet open={open} onClose={onClose} zIndex={60}>
         {/* 编辑操作 */}
         <div
           className="flex items-center gap-3 px-5 py-4 cursor-pointer active:bg-gray-50 transition-colors"
@@ -101,7 +101,7 @@ export default function RecordActionSheet({
 
   // ── 二次确认视图 ──────────────────────────────────────────────
   return (
-    <BottomSheet open={open} onClose={onClose} zIndex={50}>
+    <BottomSheet open={open} onClose={onClose} zIndex={60}>
       {/* 提示文字 */}
       <div className="px-5 pt-5 pb-3 text-center">
         <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3"
