@@ -25,7 +25,13 @@ export type WsEvent =
  *
  * Socket.IO 命名空间: /ws
  */
-@WebSocketGateway({ namespace: '/ws', cors: { origin: '*' } })
+@WebSocketGateway({
+  namespace: '/ws',
+  cors: {
+    origin: process.env.CORS_ORIGINS?.split(',').map((s) => s.trim()) ?? false,
+    credentials: true,
+  },
+})
 export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;

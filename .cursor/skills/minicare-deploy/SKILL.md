@@ -14,33 +14,37 @@ description: minicare 项目构建发布操作手册。包含前端静态托管�
 
 ### 1.1 CloudBase 环境
 
-| 属性 | 值 |
-|------|-----|
-| 环境 ID | `minicare-cloud-6gqledlle0132cbe` |
-| Region | `ap-shanghai` |
+| 属性             | 值                                                                      |
+| ---------------- | ----------------------------------------------------------------------- |
+| 环境 ID          | `minicare-cloud-6gqledlle0132cbe`                                       |
+| Region           | `ap-shanghai`                                                           |
 | 静态托管访问地址 | `https://minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com/` |
 
 ### 1.2 前端参数（minicare-web）
 
-| 属性 | 值 |
-|------|-----|
-| 项目目录 | `/Users/bing/Desktop/工作区/minicare/minicare-web` |
-| 构建命令 | `npm run build:prod` |
-| 构建产物路径 | `/Users/bing/Desktop/工作区/minicare/minicare-web/dist` |
-| 静态托管 cloudPath | `/` |
-| 构建成功标志 | 输出 `built in X.XXs`，无 TypeScript error |
+| 属性               | staging                                                                         | production                                                              |
+| ------------------ | ------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| 构建命令           | `npm run build:staging`                                                         | `npm run build:prod`                                                    |
+| 构建产物路径       | `minicare-web/dist`                                                             | `minicare-web/dist`                                                     |
+| 静态托管 cloudPath | `/staging/`                                                                     | `/`                                                                     |
+| 访问地址           | `https://minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com/staging/` | `https://minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com/` |
+| VITE_AUTH_MODE     | `test`（固定验证码 123456）                                                     | `sms`（真实短信）                                                       |
+| 构建成功标志       | 输出 `built in X.XXs`，无 TypeScript error                                      | 同左                                                                    |
+
+> ✅ 使用 **Hash 路由**（`createHashRouter`），URL 形如 `https://xxx.tcloudbaseapp.com/staging/#/login`，
+> 路由路径在 `#` 之后，不受宿主路径 `/staging/` 影响，无需修改任何路由配置。
 
 ### 1.3 后端参数（minicare-server）
 
-| 属性 | 值 |
-|------|-----|
-| 项目目录 | `/Users/bing/Desktop/工作区/minicare/minicare-server` |
-| 构建命令 | `npm run build`（= `nest build`） |
-| 预检命令 | `bash scripts/deploy.sh` |
-| CloudRun 服务名 | `minicare-api` |
-| serverType | `container` |
-| 访问域名 | `https://minicare-api-240137-10-1253854169.sh.run.tcloudbase.com` |
-| 健康检查端点 | `GET /health` |
+| 属性            | 值                                                                |
+| --------------- | ----------------------------------------------------------------- |
+| 项目目录        | `/Users/bing/Desktop/工作区/minicare/minicare-server`             |
+| 构建命令        | `npm run build`（= `nest build`）                                 |
+| 预检命令        | `bash scripts/deploy.sh`                                          |
+| CloudRun 服务名 | `minicare-api`                                                    |
+| serverType      | `container`                                                       |
+| 访问域名        | `https://minicare-api-240137-10-1253854169.sh.run.tcloudbase.com` |
+| 健康检查端点    | `GET /health`                                                     |
 
 **完整 manageCloudRun serverConfig（可直接复制）**：
 
@@ -59,31 +63,37 @@ manageCloudRun(
     MaxNum: 5,
     Port: 3000,
     OpenAccessTypes: ['OA', 'PUBLIC', 'MINIAPP'],
-    EnvParams: "{\"NODE_ENV\":\"production\",\"TCB_ENV_ID\":\"minicare-cloud-6gqledlle0132cbe\",\"DB_HOST\":\"<DB_HOST>\",\"DB_PORT\":\"<DB_PORT>\",\"DB_NAME\":\"minicare-cloud-6gqledlle0132cbe\",\"DB_USER\":\"<DB_USER>\",\"DB_PASS\":\"<DB_PASS>\",\"JWT_SECRET\":\"<JWT_SECRET>\",\"AUTH_TEST_MODE\":\"true\"}"
+    EnvParams: "{\"NODE_ENV\":\"production\",\"TCB_ENV_ID\":\"minicare-cloud-6gqledlle0132cbe\",\"DB_HOST\":\"<DB_HOST>\",\"DB_PORT\":\"<DB_PORT>\",\"DB_NAME\":\"minicare-cloud-6gqledlle0132cbe\",\"DB_USER\":\"<DB_USER>\",\"DB_PASS\":\"<DB_PASS>\",\"JWT_SECRET\":\"<JWT_SECRET>\",\"AUTH_TEST_MODE\":\"<AUTH_TEST_MODE>\"}"
   }
 )
 ```
 
-> `AUTH_TEST_MODE=true`：固定验证码 `123456`，不发真实短信。正式上线前改为 `false`。
+> ⚠️ **`AUTH_TEST_MODE` 必须与前端构建目标严格对齐**：
+>
+> - 部署 **staging**（对应前端 `build:staging`）→ `AUTH_TEST_MODE=true`（固定验证码 `123456`）
+> - 部署 **production**（对应前端 `build:prod`）→ `AUTH_TEST_MODE=false`（真实短信）
+>
+> **两者不对齐会导致登录失败**（前端用真实短信 + 后端用固定验证码 = 400 错误）。
 
 ### 1.4 云函数参数
 
-| 属性 | 值 |
-|------|-----|
-| 函数名 | `keepalive-ping` |
-| 函数根目录 | `/Users/bing/Desktop/工作区/minicare/minicare-server/functions` |
-| handler | `index.main` |
-| 环境变量 | `CLOUDRUN_HEALTH_URL=https://minicare-api-240137-10-1253854169.sh.run.tcloudbase.com/health` |
-| 验证标志 | 调用后日志含 `status=200` |
+| 属性       | 值                                                                                           |
+| ---------- | -------------------------------------------------------------------------------------------- |
+| 函数名     | `keepalive-ping`                                                                             |
+| 函数根目录 | `/Users/bing/Desktop/工作区/minicare/minicare-server/functions`                              |
+| handler    | `index.main`                                                                                 |
+| 环境变量   | `CLOUDRUN_HEALTH_URL=https://minicare-api-240137-10-1253854169.sh.run.tcloudbase.com/health` |
+| 验证标志   | 调用后日志含 `status=200`                                                                    |
 
 ### 1.5 数据库迁移参数
 
-| 属性 | 值 |
-|------|-----|
+| 属性         | 值                                                    |
+| ------------ | ----------------------------------------------------- |
 | 迁移脚本路径 | `/Users/bing/Desktop/工作区/minicare/minicare-server` |
-| 迁移文件目录 | `minicare-server/migrations/` |
-| 开发库 | `minicare_dev` |
-| 生产库 | `minicare-cloud-6gqledlle0132cbe` |
+| 迁移文件目录 | `minicare-server/migrations/`                         |
+| 开发库       | `minicare_dev`                                        |
+| Staging 库   | `minicare_staging`                                    |
+| 生产库       | `minicare-cloud-6gqledlle0132cbe`                     |
 
 ---
 
@@ -91,10 +101,34 @@ manageCloudRun(
 
 **适用场景**：minicare-web 代码有变更，需要更新静态托管。
 
-### 步骤
+> 执行前确认目标环境：**staging** 还是 **production**？两者构建命令和上传路径不同。
+
+### 步骤（staging）
 
 ```bash
-# Step 1：构建生产版本
+# Step 1：构建 staging 版本
+cd /Users/bing/Desktop/工作区/minicare/minicare-web
+npm run build:staging
+```
+
+**成功判定**：输出 `built in X.XXs`，无 TypeScript 编译错误。
+
+```
+# Step 2：上传到 CloudBase 静态托管 /staging/ 路径
+uploadFiles(
+  localPath  = '/Users/bing/Desktop/工作区/minicare/minicare-web/dist',
+  cloudPath  = '/staging/'
+)
+```
+
+**成功判定**：所有文件的 `error` 字段均为 `null`。
+
+**验证**：访问 `https://minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com/staging/` 确认页面正常加载，显示「🔧 测试模式」提示条。
+
+### 步骤（production）
+
+```bash
+# Step 1：构建 production 版本
 cd /Users/bing/Desktop/工作区/minicare/minicare-web
 npm run build:prod
 ```
@@ -102,7 +136,7 @@ npm run build:prod
 **成功判定**：输出 `built in X.XXs`，无 TypeScript 编译错误。
 
 ```
-# Step 2：上传到 CloudBase 静态托管
+# Step 2：上传到 CloudBase 静态托管 / 根路径
 uploadFiles(
   localPath  = '/Users/bing/Desktop/工作区/minicare/minicare-web/dist',
   cloudPath  = '/'
@@ -111,16 +145,14 @@ uploadFiles(
 
 **成功判定**：所有文件的 `error` 字段均为 `null`。
 
-### 验证（必须执行）
-
-访问 `https://minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com/` 确认页面可正常加载。
+**验证**：访问 `https://minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com/` 确认页面正常加载，**无**「测试模式」提示条。
 
 ### 完成报告格式
 
-> ✅ 前端发布完成  
+> ✅ 前端发布完成（staging / production）
 > 构建产物：X 个文件，约 X MB  
 > 上传成功：X 个文件  
-> 访问地址：https://minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com/
+> 访问地址：[对应地址]
 
 ---
 
@@ -220,7 +252,7 @@ queryFunctions(action='listFunctionLogs', functionName='keepalive-ping', limit=5
 
 ## §5 SOP-D：数据库迁移流程（/deploy-db）
 
-**适用场景**：`migrations/` 目录下新增了 SQL 迁移文件，需要同步到开发库和生产库。
+**适用场景**：`migrations/` 目录下新增了 SQL 迁移文件，需要同步到三个库。
 
 ⚠️ **此操作不可逆，必须先执行 dry-run 预览，等待用户明确确认后才执行。**
 
@@ -232,7 +264,7 @@ cd /Users/bing/Desktop/工作区/minicare/minicare-server
 bash scripts/migrate.sh --dry-run --all-envs
 ```
 
-**展示**：列出待执行的迁移文件列表，告知用户将对开发库和生产库执行哪些变更。  
+**展示**：列出待执行的迁移文件列表，告知用户将对开发库、staging 库和生产库执行哪些变更。  
 **等待用户明确确认**（必须收到确认才执行 Step 2）。
 
 ```bash
@@ -240,20 +272,21 @@ bash scripts/migrate.sh --dry-run --all-envs
 bash scripts/migrate.sh --all-envs
 ```
 
-**成功判定**：输出「全部数据库迁移完成」，两个库均无报错。
+**成功判定**：输出「全部数据库迁移完成」，三个库均无报错。
 
 ```bash
 # Step 3：验证迁移版本
 bash scripts/migrate.sh --status
 ```
 
-**展示**：当前两个库的已执行迁移版本列表。
+**展示**：当前三个库的已执行迁移版本列表。
 
 ### 完成报告格式
 
 > ✅ 数据库迁移完成  
-> 开发库：已执行 001~NNN  
-> 生产库：已执行 001~NNN
+> 开发库（minicare_dev）：已执行 001~NNN  
+> Staging 库（minicare_staging）：已执行 001~NNN  
+> 生产库（minicare-cloud-xxx）：已执行 001~NNN
 
 ---
 
@@ -278,23 +311,25 @@ bash scripts/migrate.sh --status
 ### 完成报告格式
 
 > ✅ 全量发布完成  
-> 数据库迁移：✅ 开发库 + 生产库均已最新  
+> 数据库迁移：✅ dev + staging + 生产库均已最新  
 > 后端服务：✅ 版本号 X，/health OK  
 > 云函数：✅ keepalive-ping status=200  
-> 前端：✅ X 个文件已上传  
-> 访问地址：https://minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com/
+> 前端 staging：✅ X 个文件 → /staging/  
+> 前端 production：✅ X 个文件 → /  
+> Staging 地址：https://minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com/staging/  
+> Production 地址：https://minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com/
 
 ---
 
 ## §7 故障速查
 
-| 现象 | 根因 | 解决方法 |
-|------|------|---------|
-| 前端上传后页面未更新 | 浏览器缓存 | 强制刷新（Ctrl+Shift+R），或等待 CDN 刷新（最长 5 分钟） |
-| `dist/` 体积 > 5MB | `test/` 被编译进去 | 确认 `nest-cli.json` 的 `tsConfigPath` 指向 `tsconfig.build.json` |
-| `dist/test/` 目录存在 | tsconfig.build.json 的 exclude 失效 | 检查 `nest-cli.json` |
-| 部署后 `/health` 超时 30s | CloudRun 冷启动 | 重试一次；或检查 `DB_HOST` 是否使用了公网地址 |
-| `/health` 返回 `db.host_set=false` | EnvParams 未生效 | 重新执行 manageCloudRun，确认 EnvParams 字符串格式正确 |
-| 数据库连接超时（upstream-timecost ≈ 30000） | CloudRun 使用了内网地址 | 确认 DB_HOST=`sh-cynosdbmysql-grp-6a0nj6a8.sql.tencentcdb.com`，DB_PORT=`21002` |
-| 云函数调用返回 error | 函数代码错误或环境变量未配 | `queryFunctions(listFunctionLogs)` 查看错误日志 |
-| 迁移执行失败中断 | SQL 语法错误或字段冲突 | 修复 SQL 文件，重新执行；`schema_migrations` 表中未记录失败的版本，可安全重试 |
+| 现象                                        | 根因                                | 解决方法                                                                        |
+| ------------------------------------------- | ----------------------------------- | ------------------------------------------------------------------------------- |
+| 前端上传后页面未更新                        | 浏览器缓存                          | 强制刷新（Ctrl+Shift+R），或等待 CDN 刷新（最长 5 分钟）                        |
+| `dist/` 体积 > 5MB                          | `test/` 被编译进去                  | 确认 `nest-cli.json` 的 `tsConfigPath` 指向 `tsconfig.build.json`               |
+| `dist/test/` 目录存在                       | tsconfig.build.json 的 exclude 失效 | 检查 `nest-cli.json`                                                            |
+| 部署后 `/health` 超时 30s                   | CloudRun 冷启动                     | 重试一次；或检查 `DB_HOST` 是否使用了公网地址                                   |
+| `/health` 返回 `db.host_set=false`          | EnvParams 未生效                    | 重新执行 manageCloudRun，确认 EnvParams 字符串格式正确                          |
+| 数据库连接超时（upstream-timecost ≈ 30000） | CloudRun 使用了内网地址             | 确认 DB_HOST=`sh-cynosdbmysql-grp-6a0nj6a8.sql.tencentcdb.com`，DB_PORT=`21002` |
+| 云函数调用返回 error                        | 函数代码错误或环境变量未配          | `queryFunctions(listFunctionLogs)` 查看错误日志                                 |
+| 迁移执行失败中断                            | SQL 语法错误或字段冲突              | 修复 SQL 文件，重新执行；`schema_migrations` 表中未记录失败的版本，可安全重试   |
