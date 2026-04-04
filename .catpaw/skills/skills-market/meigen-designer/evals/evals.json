@@ -1,0 +1,23 @@
+{
+  "skill_name": "meigen-origin",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "帮我生成一张赛博朋克风格的城市夜景图片",
+      "expected_output": "助手应检查认证信息，若不存在则引导用户完成 misId 输入和大象 App 授权流程，最终调用生图 API 并返回图片",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "我想要一张水墨风格的山水画，有瀑布和松树",
+      "expected_output": "助手应读取已有的 token 和 misId，直接调用生图 API，将用户描述作为 prompt 传入，返回生成的图片 URL",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "重置美境认证，然后帮我生成一张可爱的柴犬图片",
+      "expected_output": "助手应先删除 meigen/mis_id 和 meigen/token 文件，然后重新引导用户完成认证流程，最后生成图片",
+      "files": []
+    }
+  ]
+}

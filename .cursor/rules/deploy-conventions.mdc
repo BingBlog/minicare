@@ -48,28 +48,14 @@ npm run deploy:check  # = bash scripts/deploy.sh --check
 
 **⚠ 部署不再使用 `tcb` CLI，而是使用 CatPaw 内置的 CloudBase MCP 工具。**
 
-```
-manageCloudRun(
-  action      = 'deploy',
-  serverName  = 'minicare-api',
-  targetPath  = '<绝对路径>/minicare/minicare-server',
-  serverType  = 'container'
-)
-```
-
-查看部署状态：
-```
-queryCloudRun(
-  action           = 'detail',
-  detailServerName = 'minicare-api'
-)
-```
+> 完整部署参数（targetPath、serverConfig、EnvParams 等）见
+> **`.catpaw/skills/minicare-deploy/SKILL.md` §1.3**，直接复制执行。
 
 ### 完整构建 + 部署流程
 
 1. **编译**：`npm run build` → 产出 `dist/`
 2. **预检**：`bash scripts/deploy.sh` → 清理残留 zip + 检查 `dist/` 大小
-3. **部署**：调用 `manageCloudRun(deploy)` MCP 工具上传并创建新版本（完整参数见 `cloudbase-conventions.mdc` § 4.1）
+3. **部署**：调用 `manageCloudRun(deploy)` MCP 工具（**完整参数见 deploy Skill §1.3**）
 4. **验证**：`queryCloudRun(detail)` 确认版本号更新 + `curl /health` 确认服务启动正常
 
 ---
@@ -161,21 +147,10 @@ NestJS 项目**必须**使用 `tsconfig.build.json` 而不是 `tsconfig.json` �
 
 ### 环境变量（通过 MCP 工具 serverConfig.EnvParams 传入）
 
-> 完整的带真实值的 `EnvParams` 字符串见 `cloudbase-conventions.mdc` § 4.1，直接复制使用。
+> 完整的带真实值的 `EnvParams` 字符串（含密码/JWT 等敏感信息）
+> 见 **`.catpaw/skills/minicare-deploy/SKILL.md` §1.3**，直接复制使用。
 
-```json
-{
-  "NODE_ENV":       "production",
-  "TCB_ENV_ID":     "minicare-cloud-6gqledlle0132cbe",
-  "AUTH_TEST_MODE": "true",
-  "DB_HOST":        "sh-cynosdbmysql-grp-6a0nj6a8.sql.tencentcdb.com",
-  "DB_PORT":        "21002",
-  "DB_NAME":        "minicare-cloud-6gqledlle0132cbe",
-  "DB_USER":        "bing",
-  "DB_PASS":        "Wb13227560988",
-  "JWT_SECRET":     "99c376c37f830320612fed8d4bf9b5d86a7e2461577656322ac32ab52f56da01"
-}
-```
+所需环境变量键名：`NODE_ENV`、`TCB_ENV_ID`、`AUTH_TEST_MODE`、`DB_HOST`、`DB_PORT`、`DB_NAME`、`DB_USER`、`DB_PASS`、`JWT_SECRET`
 
 > `AUTH_TEST_MODE=true`：固定验证码 `123456`，不发真实短信。正式上线前改为 `false`。
 > `DB_HOST` 使用公网域名而非内网 IP（CloudRun 未配置 VPC，内网地址不可达）。

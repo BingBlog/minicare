@@ -191,21 +191,14 @@ bash scripts/deploy.sh
 ```
 
 ```
-# Step 3：MCP 工具部署（直接复制执行，参数已填写完整）
+# Step 3：MCP 工具部署
+# ⚠️ 完整 manageCloudRun 参数（含 targetPath、EnvParams 等敏感信息）
+# 见 .catpaw/skills/minicare-deploy/SKILL.md §1.3，直接复制使用。
 manageCloudRun(
   action     = 'deploy',
   serverName = 'minicare-api',
-  targetPath = '/Users/bing/Desktop/工作区/minicare/minicare-server',
   serverType = 'container',
-  serverConfig = {
-    Cpu: 1,
-    Mem: 2,
-    MinNum: 0,
-    MaxNum: 5,
-    Port: 3000,
-    OpenAccessTypes: ['OA', 'PUBLIC', 'MINIAPP'],
-    EnvParams: "{\"NODE_ENV\":\"production\",\"TCB_ENV_ID\":\"minicare-cloud-6gqledlle0132cbe\",\"DB_HOST\":\"sh-cynosdbmysql-grp-6a0nj6a8.sql.tencentcdb.com\",\"DB_PORT\":\"21002\",\"DB_NAME\":\"minicare-cloud-6gqledlle0132cbe\",\"DB_USER\":\"bing\",\"DB_PASS\":\"Wb13227560988\",\"JWT_SECRET\":\"99c376c37f830320612fed8d4bf9b5d86a7e2461577656322ac32ab52f56da01\",\"AUTH_TEST_MODE\":\"true\"}"
-  }
+  ... （完整参数见 deploy Skill §1.3）
 )
 ```
 

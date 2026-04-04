@@ -1,1 +1,6 @@
 .DS_Store
+
+# 本地环境配置（含数据库密码、JWT 密钥等敏感信息），禁止提交
+# 模板见 minicare-server/.env.example
+.env.local
+*.env.local
