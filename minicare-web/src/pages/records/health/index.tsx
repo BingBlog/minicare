@@ -91,7 +91,7 @@ export default function HealthFormPage() {
   // 剂量：从第一个有剂量的预设用药中取（简化处理）
   const [medDose, setMedDose] = useState(() => {
     const med = (editRecord?.medications ?? []).find(
-      (m) => MED_CHIPS.includes(m.name) && m.dose
+      (m) => MED_CHIPS.includes(m.name) && m.dose,
     );
     return med?.dose ?? "";
   });
@@ -113,7 +113,9 @@ export default function HealthFormPage() {
     setSeverity((r.allergy_severity as Severity) ?? null);
     const names = (r.medications ?? []).map((m) => m.name);
     setSelectedMeds(new Set(names.filter((n) => MED_CHIPS.includes(n))));
-    const med = (r.medications ?? []).find((m) => MED_CHIPS.includes(m.name) && m.dose);
+    const med = (r.medications ?? []).find(
+      (m) => MED_CHIPS.includes(m.name) && m.dose,
+    );
     setMedDose(med?.dose ?? "");
     setSelectedSkin(new Set(r.skin_care ?? []));
     setNote(r.note ?? "");
@@ -122,16 +124,21 @@ export default function HealthFormPage() {
   /** 编辑模式下：进入页面时重新查询后端获取最新数据 */
   useEffect(() => {
     if (!isEditMode || !editRecord || !currentFamily) return;
-    recordsApi.health.getOne(currentFamily.id, editRecord.id)
-      .then((fresh) => { if (fresh) applyRecord(fresh); })
-      .catch(() => { /* 查询失败保留快照数据 */ })
+    recordsApi.health
+      .getOne(currentFamily.id, editRecord.id)
+      .then((fresh) => {
+        if (fresh) applyRecord(fresh);
+      })
+      .catch(() => {
+        /* 查询失败保留快照数据 */
+      })
       .finally(() => setLoadingRecord(false));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const toggleSymptom = (s: string) => {
     setSelectedSymptoms((prev) =>
-      prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s]
+      prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s],
     );
   };
   const toggleMed = (s: string) => {
@@ -168,17 +175,24 @@ export default function HealthFormPage() {
       }));
 
       const payload = {
-        record_time:      timeToISO(recordDate, recordTime),
-        temperature:      temp,
-        allergy_symptoms: selectedSymptoms.length > 0 ? selectedSymptoms : undefined,
-        allergy_severity: selectedSymptoms.length > 0 ? (severity ?? undefined) : undefined,
-        medications:      medicationsPayload.length > 0 ? medicationsPayload : undefined,
-        skin_care:        selectedSkin.size > 0 ? [...selectedSkin] : undefined,
-        note:             note || undefined,
+        record_time: timeToISO(recordDate, recordTime),
+        temperature: temp,
+        allergy_symptoms:
+          selectedSymptoms.length > 0 ? selectedSymptoms : undefined,
+        allergy_severity:
+          selectedSymptoms.length > 0 ? (severity ?? undefined) : undefined,
+        medications:
+          medicationsPayload.length > 0 ? medicationsPayload : undefined,
+        skin_care: selectedSkin.size > 0 ? [...selectedSkin] : undefined,
+        note: note || undefined,
       };
 
       if (isEditMode && editRecord) {
-        await recordsApi.health.update(currentFamily.id, editRecord.id, payload);
+        await recordsApi.health.update(
+          currentFamily.id,
+          editRecord.id,
+          payload,
+        );
         showToast("✓ 健康记录已更新");
       } else {
         await recordsApi.health.create(currentFamily.id, {
@@ -209,12 +223,21 @@ export default function HealthFormPage() {
   return (
     <div className="min-h-screen" style={{ background: "#FAF5F6" }}>
       {/* 导航栏 */}
-      <NavBar title={isEditMode ? "编辑健康记录" : "健康记录"} onBack={() => navigate(-1)} />
+      <NavBar
+        title={isEditMode ? "编辑健康记录" : "健康记录"}
+        onBack={() => navigate(-1)}
+      />
 
       {/* 编辑模式加载数据提示 */}
       {loadingRecord && (
         <div className="flex items-center justify-center gap-2 py-2 text-[12px] text-[#9A8090]">
-          <svg className="animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 14, height: 14 }}>
+          <svg
+            className="animate-spin"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            style={{ width: 14, height: 14 }}>
             <path d="M21 12a9 9 0 1 1-6.219-8.56" />
           </svg>
           正在加载最新数据…
