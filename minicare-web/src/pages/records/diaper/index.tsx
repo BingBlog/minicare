@@ -15,6 +15,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAppStore } from "@/lib/store";
 import { recordsApi } from "@/api";
 import type { DiaperRecord, DiaperType, PoopType, ButtCondition } from "@/api/types";
+import DatePicker from "@/components/DatePicker";
 import TimePicker from "@/components/TimePicker";
 
 import DiaperTypeSection from "./DiaperTypeSection";
@@ -23,13 +24,14 @@ import ButtConditionSection from "./ButtConditionSection";
 import {
   NavBar,
   SectionLabel,
-  TimeCard,
+  FormCard,
   NoteCard,
   SubmitBar,
   ToastMessage,
   nowTime,
   nowDate,
   timeToISO,
+  isoToLocalDate,
   useToastMsg,
 } from "../shared";
 
@@ -51,7 +53,10 @@ export default function DiaperFormPage() {
   const editRecord = location.state?.record as DiaperRecord | undefined;
   const isEditMode = Boolean(editRecord);
 
-  const [recordDate] = useState(nowDate());
+  const [recordDate, setRecordDate] = useState(() => {
+    if (editRecord?.record_time) return isoToLocalDate(editRecord.record_time);
+    return nowDate();
+  });
   const [recordTime, setRecordTime] = useState(() => {
     if (editRecord?.record_time) return isoToLocalTime(editRecord.record_time);
     return nowTime();
@@ -94,7 +99,10 @@ export default function DiaperFormPage() {
     recordsApi.diaper.getOne(currentFamily.id, editRecord.id)
       .then((fresh) => {
         if (!fresh) return;
-        if (fresh.record_time) setRecordTime(isoToLocalTime(fresh.record_time));
+        if (fresh.record_time) {
+          setRecordDate(isoToLocalDate(fresh.record_time));
+          setRecordTime(isoToLocalTime(fresh.record_time));
+        }
         if (fresh.diaper_type) setDiaperType(fresh.diaper_type as DiaperChip);
         if (fresh.diaper_count != null) setDiaperCount(fresh.diaper_count);
         setPoopType(fresh.poop_type ?? null);
@@ -187,13 +195,24 @@ export default function DiaperFormPage() {
       <div className="pb-32">
         {/* 记录时间 */}
         <SectionLabel label="记录时间" />
-        <TimeCard>
-          <TimePicker
-            value={recordTime}
-            onChange={setRecordTime}
-            label="记录时间"
-          />
-        </TimeCard>
+        <FormCard>
+          <div
+            className="px-4 py-3"
+            style={{ borderBottom: "0.5px solid #F5EEF0" }}>
+            <DatePicker
+              value={recordDate}
+              onChange={setRecordDate}
+              label="记录日期"
+            />
+          </div>
+          <div className="px-4 py-3">
+            <TimePicker
+              value={recordTime}
+              onChange={setRecordTime}
+              label="记录时间"
+            />
+          </div>
+        </FormCard>
 
         {/* 换尿布类型 + 今日次数 */}
         <DiaperTypeSection

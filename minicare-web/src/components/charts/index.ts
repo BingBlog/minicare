@@ -6,6 +6,7 @@ export { BarChart } from './BarChart'
 export { StackedBarChart } from './StackedBarChart'
 export { DonutChart } from './DonutChart'
 export { GrowthChart } from './GrowthChart'
+export { ScatterChart } from './ScatterChart'
 
 // 类型导出
 export type {
@@ -21,4 +22,6 @@ export type {
   GrowthDataPoint,
   PercentileCurve,
   GrowthChartProps,
+  ScatterChartPoint,
+  ScatterChartProps,
 } from './types'

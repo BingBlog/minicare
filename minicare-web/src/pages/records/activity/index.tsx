@@ -15,6 +15,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAppStore } from "@/lib/store";
 import { recordsApi } from "@/api";
 import type { ActivityRecord, ActivityIntensity } from "@/api/types";
+import DatePicker from "@/components/DatePicker";
 import TimePicker from "@/components/TimePicker";
 
 import ActivityTypeSection from "./ActivityTypeSection";
@@ -23,13 +24,13 @@ import {
   NavBar,
   SectionLabel,
   FormCard,
-  TimeCard,
   NoteCard,
   SubmitBar,
   ToastMessage,
   nowTime,
   nowDate,
   timeToISO,
+  isoToLocalDate,
   useToastMsg,
 } from "../shared";
 
@@ -51,7 +52,10 @@ export default function ActivityFormPage() {
   const editRecord = location.state?.record as ActivityRecord | undefined;
   const isEditMode = Boolean(editRecord);
 
-  const [recordDate] = useState(nowDate());
+  const [recordDate, setRecordDate] = useState(() => {
+    if (editRecord?.record_time) return isoToLocalDate(editRecord.record_time);
+    return nowDate();
+  });
   const [recordTime, setRecordTime] = useState(() => {
     if (editRecord?.record_time) return isoToLocalTime(editRecord.record_time);
     return nowTime();
@@ -73,7 +77,10 @@ export default function ActivityFormPage() {
     recordsApi.activity.getOne(currentFamily.id, editRecord.id)
       .then((fresh) => {
         if (!fresh) return;
-        if (fresh.record_time) setRecordTime(isoToLocalTime(fresh.record_time));
+        if (fresh.record_time) {
+          setRecordDate(isoToLocalDate(fresh.record_time));
+          setRecordTime(isoToLocalTime(fresh.record_time));
+        }
         if (fresh.activity_type) setActivityType(fresh.activity_type as ActivityType);
         if (fresh.intensity) setIntensity(fresh.intensity as ActivityIntensity);
         if (fresh.duration_min != null) setDurationMin(fresh.duration_min);
@@ -148,13 +155,24 @@ export default function ActivityFormPage() {
       <div className="pb-32">
         {/* 记录时间 */}
         <SectionLabel label="记录时间" />
-        <TimeCard>
-          <TimePicker
-            value={recordTime}
-            onChange={setRecordTime}
-            label="记录时间"
-          />
-        </TimeCard>
+        <FormCard>
+          <div
+            className="px-4 py-3"
+            style={{ borderBottom: "0.5px solid #F5EEF0" }}>
+            <DatePicker
+              value={recordDate}
+              onChange={setRecordDate}
+              label="记录日期"
+            />
+          </div>
+          <div className="px-4 py-3">
+            <TimePicker
+              value={recordTime}
+              onChange={setRecordTime}
+              label="记录时间"
+            />
+          </div>
+        </FormCard>
 
         {/* 活动类型 */}
         <ActivityTypeSection value={activityType} onChange={setActivityType} />

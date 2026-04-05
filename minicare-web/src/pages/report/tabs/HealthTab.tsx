@@ -1,9 +1,9 @@
 /**
  * 健康分析 Tab
- * 展示体温趋势、情绪/精神状态分布
+ * 展示体温与情绪散点分布、精神状态分布
  */
 import React from 'react'
-import { LineChart, DonutChart } from '@/components/charts'
+import { ScatterChart, DonutChart } from '@/components/charts'
 import type { DailyHealthData } from '@/api/report'
 import { MOOD_LABELS, SPIRIT_LABELS } from '@/lib/constants'
 
@@ -16,6 +16,25 @@ interface HealthTabProps {
 function formatDateLabel(dateStr: string): string {
   const [year, month, day] = dateStr.split('-')
   return `${parseInt(month)}/${parseInt(day)}`
+}
+
+/** 情绪在 Y 轴上的数值：越高越偏正面（视觉上更靠上） */
+const MOOD_Y: Record<string, number> = {
+  happy: 3,
+  neutral: 2,
+  fussy: 1,
+  crying: 0,
+}
+
+/** 体温越高散点越大（36～40.5°C 映射到半径约 3.5～11） */
+function tempToRadius(temp: number): number {
+  const clamped = Math.max(36, Math.min(40.5, temp))
+  return 3.5 + ((clamped - 36) / (40.5 - 36)) * 7.5
+}
+
+/** 烦躁、哭闹视为异常，散点更大 */
+function moodToRadius(mood: string): number {
+  return mood === 'fussy' || mood === 'crying' ? 9 : 4
 }
 
 export function HealthTab({ data, loading }: HealthTabProps) {
@@ -36,19 +55,33 @@ export function HealthTab({ data, loading }: HealthTabProps) {
     )
   }
 
-  // 体温数据（过滤掉 null）
-  const tempData = data.filter((d) => d.temperature !== null)
-  const tempChartData = tempData.map((d) => ({
-    label: formatDateLabel(d.date),
-    value: d.temperature!,
-  }))
+  const xLabels = data.map((d) => formatDateLabel(d.date))
+  const xSlotCount = data.length
 
-  // 计算体温统计
-  const temps = tempData.map((d) => d.temperature!)
-  const avgTemp = temps.length > 0 ? (temps.reduce((a, b) => a + b, 0) / temps.length).toFixed(1) : null
-  const maxTemp = temps.length > 0 ? Math.max(...temps).toFixed(1) : null
+  const tempPoints = data
+    .map((d, i) => ({ d, i }))
+    .filter(({ d }) => d.temperature !== null)
+    .map(({ d, i }) => ({
+      xSlot: i,
+      y: d.temperature!,
+      r: tempToRadius(d.temperature!),
+      color: '#F87098',
+    }))
 
-  // 统计情绪分布
+  const temps = data.filter((d) => d.temperature !== null).map((d) => d.temperature!)
+  const maxTemp = temps.length > 0 ? Math.max(...temps) : null
+
+  const moodPoints = data
+    .map((d, i) => ({ d, i }))
+    .filter(({ d }) => d.mood && MOOD_Y[d.mood] !== undefined)
+    .map(({ d, i }) => ({
+      xSlot: i,
+      y: MOOD_Y[d.mood!],
+      r: moodToRadius(d.mood!),
+      color: getMoodColor(d.mood!),
+    }))
+
+  // 统计情绪分布（数据洞察）
   const moodCounts: Record<string, number> = {}
   data.forEach((d) => {
     if (d.mood) {
@@ -74,58 +107,56 @@ export function HealthTab({ data, loading }: HealthTabProps) {
     color: getSpiritColor(key),
   }))
 
+  const moodYFormat = (v: number) => {
+    const map: Record<number, string> = {
+      0: MOOD_LABELS.crying,
+      1: MOOD_LABELS.fussy,
+      2: MOOD_LABELS.neutral,
+      3: MOOD_LABELS.happy,
+    }
+    return map[Math.round(v)] ?? ''
+  }
+
   return (
     <div className="space-y-6">
-      {/* 汇总指标卡 */}
-      <div className="grid grid-cols-2 gap-3">
-        <div className="bg-white rounded-xl p-3 shadow-sm">
-          <div className="text-xs text-gray-500 mb-1">平均体温</div>
-          <div className="text-lg font-semibold text-[#F87098]">
-            {avgTemp || '--'}<span className="text-xs font-normal text-gray-400 ml-0.5">°C</span>
-          </div>
-        </div>
-        <div className="bg-white rounded-xl p-3 shadow-sm">
-          <div className="text-xs text-gray-500 mb-1">最高体温</div>
-          <div className="text-lg font-semibold text-[#F5A962]">
-            {maxTemp || '--'}<span className="text-xs font-normal text-gray-400 ml-0.5">°C</span>
-          </div>
-        </div>
-      </div>
-
-      {/* 体温趋势图 */}
-      {tempChartData.length > 0 && (
+      {/* 体温散点 */}
+      {tempPoints.length > 0 && (
         <div className="bg-white rounded-xl p-4 shadow-sm">
-          <div className="text-sm font-medium text-gray-700 mb-3">体温变化</div>
-          <LineChart
-            data={tempChartData}
-            height={180}
-            colors={{ primary: '#F87098' }}
-            axis={{
-              yFormat: (v) => `${v}°C`,
-              yMin: 36,
-              yMax: 39,
-              xLabelInterval: Math.ceil(tempChartData.length / 5),
-            }}
+          <div className="text-sm font-medium text-gray-700 mb-3">体温</div>
+          <ScatterChart
+            points={tempPoints}
+            xSlotCount={xSlotCount}
+            xLabels={xLabels}
+            yMin={36}
+            yMax={39}
+            yFormat={(v) => `${v.toFixed(1)}°C`}
+            yTicks={4}
+            height={200}
+            xLabelInterval={Math.ceil(xSlotCount / 5)}
           />
           <div className="text-xs text-gray-400 mt-2">
-            正常体温范围：36.5°C - 37.5°C，超过 38°C 可能发热
+            圆点越大表示体温越高；正常约 36.5°C～37.5°C，超过 38°C 可能发热
           </div>
         </div>
       )}
 
-      {/* 情绪分布 */}
-      {moodData.length > 0 && (
+      {/* 情绪散点 */}
+      {moodPoints.length > 0 && (
         <div className="bg-white rounded-xl p-4 shadow-sm">
-          <div className="text-sm font-medium text-gray-700 mb-3">情绪分布</div>
-          <div className="flex justify-center">
-            <DonutChart
-              data={moodData}
-              size={140}
-              innerRadius={0.65}
-              showCenter
-              centerText="记录"
-              centerValue={`${data.length}天`}
-            />
+          <div className="text-sm font-medium text-gray-700 mb-3">情绪</div>
+          <ScatterChart
+            points={moodPoints}
+            xSlotCount={xSlotCount}
+            xLabels={xLabels}
+            yMin={0}
+            yMax={3}
+            yFormat={moodYFormat}
+            yTicks={3}
+            height={220}
+            xLabelInterval={Math.ceil(xSlotCount / 5)}
+          />
+          <div className="text-xs text-gray-400 mt-2">
+            纵轴为情绪倾向；圆点越大表示烦躁、哭闹等需关注状态
           </div>
         </div>
       )}
@@ -151,11 +182,11 @@ export function HealthTab({ data, loading }: HealthTabProps) {
       <div className="bg-gradient-to-r from-rose-50 to-pink-50 rounded-xl p-4">
         <div className="text-sm font-medium text-gray-700 mb-2">数据洞察</div>
         <div className="text-xs text-gray-600 space-y-1">
-          {avgTemp && (
-            <p>• 平均体温 {avgTemp}°C，{parseFloat(avgTemp) >= 36.5 && parseFloat(avgTemp) <= 37.5 ? '体温正常' : parseFloat(avgTemp) < 36.5 ? '体温偏低，注意保暖' : '体温偏高，注意观察'}</p>
+          {maxTemp !== null && maxTemp >= 38 && (
+            <p>• 期间有发热记录（最高 {maxTemp.toFixed(1)}°C），建议关注宝宝状态</p>
           )}
-          {maxTemp && parseFloat(maxTemp) >= 38 && (
-            <p>• 期间有发热记录（最高 {maxTemp}°C），建议关注宝宝状态</p>
+          {maxTemp !== null && maxTemp < 38 && temps.some((t) => t >= 37.5 && t < 38) && (
+            <p>• 部分时段体温偏高（37.5°C 以上），建议继续观察</p>
           )}
           {moodData.length > 0 && (
             <p>• 情绪方面：{moodData.sort((a, b) => b.value - a.value)[0]?.label || '--'} 出现最多</p>
@@ -169,10 +200,10 @@ export function HealthTab({ data, loading }: HealthTabProps) {
 /** 获取情绪对应的颜色 */
 function getMoodColor(mood: string): string {
   const colors: Record<string, string> = {
-    happy: '#6BCB77',     // 开心 - 绿色
-    calm: '#7EC8E3',      // 平静 - 蓝色
-    fussy: '#F5A962',     // 烦躁 - 橙色
-    crying: '#F05060',    // 哭闹 - 红色
+    happy: '#6BCB77',
+    neutral: '#7EC8E3',
+    fussy: '#F5A962',
+    crying: '#F05060',
   }
   return colors[mood] || '#9CA3AF'
 }
@@ -180,10 +211,10 @@ function getMoodColor(mood: string): string {
 /** 获取精神状态对应的颜色 */
 function getSpiritColor(spirit: string): string {
   const colors: Record<string, string> = {
-    active: '#6BCB77',    // 精神活跃 - 绿色
-    normal: '#7EC8E3',    // 精神正常 - 蓝色
-    tired: '#F5A962',     // 有点累 - 橙色
-    lethargic: '#F05060', // 萎靡 - 红色
+    active: '#6BCB77',
+    normal: '#7EC8E3',
+    tired: '#F5A962',
+    lethargic: '#F05060',
   }
   return colors[spirit] || '#9CA3AF'
 }

@@ -20,6 +20,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAppStore } from "@/lib/store";
 import { recordsApi } from "@/api";
 import type { FeedingRecord } from "@/api/types";
+import DatePicker from "@/components/DatePicker";
 import TimePicker from "@/components/TimePicker";
 
 import type { FeedTab, MilkType } from "./types";
@@ -31,13 +32,14 @@ import SupplementSection from "./SupplementSection";
 import FoodSection from "./FoodSection";
 import {
   NavBar,
-  TimeCard,
+  FormCard,
   NoteCard,
   SubmitBar,
   ToastMessage,
   nowTime,
   nowDate,
   timeToISO,
+  isoToLocalDate,
   useToastMsg,
 } from "../shared";
 
@@ -103,7 +105,10 @@ export default function FeedingFormPage() {
   });
 
   // ── 公共 ─────────────────────────────────────────────────────────
-  const [recordDate] = useState(nowDate());
+  const [recordDate, setRecordDate] = useState(() => {
+    if (editRecord?.record_time) return isoToLocalDate(editRecord.record_time);
+    return nowDate();
+  });
   const [recordTime, setRecordTime] = useState(() => {
     if (editRecord?.record_time) return isoToLocalTime(editRecord.record_time);
     return nowTime();
@@ -228,7 +233,10 @@ export default function FeedingFormPage() {
     recordsApi.feeding.getOne(currentFamily.id, editRecord.id)
       .then((fresh) => {
         if (!fresh) return;
-        if (fresh.record_time) setRecordTime(isoToLocalTime(fresh.record_time));
+        if (fresh.record_time) {
+          setRecordDate(isoToLocalDate(fresh.record_time));
+          setRecordTime(isoToLocalTime(fresh.record_time));
+        }
         // 根据 feed_type 切换 Tab 并回填对应字段
         const { tab: freshTab } = initFromRecord(fresh);
         setTab(freshTab);
@@ -452,14 +460,25 @@ export default function FeedingFormPage() {
         {/* Tab 切换 */}
         <TabSelector value={tab} onChange={setTab} />
 
-        {/* 喂养时间（所有 Tab 共用） */}
-        <TimeCard>
-          <TimePicker
-            value={recordTime}
-            onChange={setRecordTime}
-            label="喂养时间"
-          />
-        </TimeCard>
+        {/* 记录日期 + 喂养时间（所有 Tab 共用） */}
+        <FormCard>
+          <div
+            className="px-4 py-3"
+            style={{ borderBottom: "0.5px solid #F5EEF0" }}>
+            <DatePicker
+              value={recordDate}
+              onChange={setRecordDate}
+              label="记录日期"
+            />
+          </div>
+          <div className="px-4 py-3">
+            <TimePicker
+              value={recordTime}
+              onChange={setRecordTime}
+              label="喂养时间"
+            />
+          </div>
+        </FormCard>
 
         {/* 奶粉 Tab */}
         {tab === "formula" && (

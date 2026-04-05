@@ -2,7 +2,7 @@
  * records 表单页共享工具 / 基础组件
  *
  * 集中导出各表单页复用的：
- *  - 时间工具函数 (nowTime / nowDate / timeToISO)
+ *  - 时间工具函数 (nowTime / nowDate / timeToISO / isoToLocalDate)
  *  - 通用 SVG 图标 (IconArrowLeft)
  *  - 通用 UI 组件 (SectionLabel / FormCard / FormRow / Stepper / Toast / SubmitBar)
  */
@@ -27,6 +27,12 @@ export function timeToISO(dateStr: string, timeStr: string): string {
   // 全链路 CST：直接返回本地时间字符串，不转 UTC（不加 Z 后缀）
   // 后端 toMysqlDatetime() 用本地时间分量写入，数据库连接 timezone='+08:00' 保证一致
   return `${dateStr}T${timeStr}:00`;
+}
+
+/** 从 record_time ISO 字符串解析本地日历日 YYYY-MM-DD（用于补录/编辑回填日期） */
+export function isoToLocalDate(iso: string): string {
+  const d = new Date(iso);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
 // ─── 通用 Toast Hook ─────────────────────────────────────────────────

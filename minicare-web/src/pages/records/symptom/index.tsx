@@ -22,9 +22,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAppStore } from "@/lib/store";
 import { recordsApi } from "@/api";
 import type { SymptomRecord, MoodLevel, SpiritLevel } from "@/api/types";
+import DatePicker from "@/components/DatePicker";
 import TimePicker from "@/components/TimePicker";
 
-import { NavBar, SectionLabel, FormSection, SubmitBar, useToastMsg, ToastMessage, nowTime, nowDate, timeToISO } from "../shared";
+import { NavBar, SectionLabel, FormSection, SubmitBar, useToastMsg, ToastMessage, nowTime, nowDate, timeToISO, isoToLocalDate } from "../shared";
 import MoodSection from "./MoodSection";
 import SpiritSection from "./SpiritSection";
 
@@ -96,7 +97,10 @@ export default function SymptomFormPage() {
   const editRecord = location.state?.record as SymptomRecord | undefined;
   const isEditMode = Boolean(editRecord);
 
-  const [recordDate] = useState(nowDate());
+  const [recordDate, setRecordDate] = useState(() => {
+    if (editRecord?.record_time) return isoToLocalDate(editRecord.record_time);
+    return nowDate();
+  });
   const [recordTime, setRecordTime] = useState(() => {
     if (editRecord?.record_time) return isoToLocalTime(editRecord.record_time);
     return nowTime();
@@ -121,7 +125,10 @@ export default function SymptomFormPage() {
     recordsApi.symptom.getOne(currentFamily.id, editRecord.id)
       .then((fresh) => {
         if (!fresh) return;
-        if (fresh.record_time) setRecordTime(isoToLocalTime(fresh.record_time));
+        if (fresh.record_time) {
+          setRecordDate(isoToLocalDate(fresh.record_time));
+          setRecordTime(isoToLocalTime(fresh.record_time));
+        }
         if (fresh.mood) setMood(toFrontendMood(fresh.mood));
         if (fresh.spirit) setSpirit(toFrontendSpirit(fresh.spirit));
         setNote(fresh.note ?? '');
@@ -202,6 +209,15 @@ export default function SymptomFormPage() {
         {/* ── 记录时间 ── */}
         <SectionLabel label="记录时间" />
         <FormSection>
+          <div
+            className="px-4 py-3"
+            style={{ borderBottom: "0.5px solid #F5EEF0" }}>
+            <DatePicker
+              value={recordDate}
+              onChange={setRecordDate}
+              label="记录日期"
+            />
+          </div>
           <div className="px-4 py-3">
             <TimePicker value={recordTime} onChange={setRecordTime} label="记录时间" />
           </div>

@@ -147,6 +147,34 @@ export interface PercentileCurve {
   p97: number
 }
 
+/** 散点图数据点 */
+export interface ScatterChartPoint {
+  /** X 轴槽位索引 0 .. xSlotCount-1 */
+  xSlot: number
+  y: number
+  r: number
+  color: string
+}
+
+/** 散点图 Props */
+export interface ScatterChartProps {
+  points: ScatterChartPoint[]
+  /** 横轴总槽位数（通常为报告天数） */
+  xSlotCount: number
+  /** 每个槽位的 X 标签，长度与 xSlotCount 一致 */
+  xLabels: string[]
+  yMin: number
+  yMax: number
+  yFormat?: (value: number) => string
+  height?: number
+  width?: number
+  padding?: { top?: number; right?: number; bottom?: number; left?: number }
+  /** Y 轴方向网格分段数 */
+  yTicks?: number
+  xLabelInterval?: number
+  className?: string
+}
+
 /** 生长曲线 Props */
 export interface GrowthChartProps {
   /** 实际测量数据 */

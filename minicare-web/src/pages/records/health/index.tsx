@@ -21,6 +21,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAppStore } from "@/lib/store";
 import { recordsApi } from "@/api";
 import type { HealthRecord } from "@/api/types";
+import DatePicker from "@/components/DatePicker";
 import TimePicker from "@/components/TimePicker";
 
 import TemperatureSection from "./TemperatureSection";
@@ -29,13 +30,13 @@ import {
   NavBar,
   SectionLabel,
   FormCard,
-  TimeCard,
   NoteCard,
   SubmitBar,
   ToastMessage,
   nowTime,
   nowDate,
   timeToISO,
+  isoToLocalDate,
   useToastMsg,
 } from "../shared";
 
@@ -62,7 +63,10 @@ export default function HealthFormPage() {
   const editRecord = location.state?.record as HealthRecord | undefined;
   const isEditMode = Boolean(editRecord);
 
-  const [recordDate] = useState(nowDate());
+  const [recordDate, setRecordDate] = useState(() => {
+    if (editRecord?.record_time) return isoToLocalDate(editRecord.record_time);
+    return nowDate();
+  });
   const [recordTime, setRecordTime] = useState(() => {
     if (editRecord?.record_time) return isoToLocalTime(editRecord.record_time);
     return nowTime();
@@ -107,7 +111,10 @@ export default function HealthFormPage() {
 
   /** 用最新数据回填所有状态 */
   const applyRecord = useCallback((r: HealthRecord) => {
-    if (r.record_time) setRecordTime(isoToLocalTime(r.record_time));
+    if (r.record_time) {
+      setRecordDate(isoToLocalDate(r.record_time));
+      setRecordTime(isoToLocalTime(r.record_time));
+    }
     if (r.temperature != null) setTemperature(String(r.temperature));
     setSelectedSymptoms(r.allergy_symptoms ?? []);
     setSeverity((r.allergy_severity as Severity) ?? null);
@@ -247,13 +254,24 @@ export default function HealthFormPage() {
       <div className="pb-32">
         {/* 记录时间 */}
         <SectionLabel label="记录时间" />
-        <TimeCard>
-          <TimePicker
-            value={recordTime}
-            onChange={setRecordTime}
-            label="记录时间"
-          />
-        </TimeCard>
+        <FormCard>
+          <div
+            className="px-4 py-3"
+            style={{ borderBottom: "0.5px solid #F5EEF0" }}>
+            <DatePicker
+              value={recordDate}
+              onChange={setRecordDate}
+              label="记录日期"
+            />
+          </div>
+          <div className="px-4 py-3">
+            <TimePicker
+              value={recordTime}
+              onChange={setRecordTime}
+              label="记录时间"
+            />
+          </div>
+        </FormCard>
 
         {/* 体温 */}
         <TemperatureSection value={temperature} onChange={setTemperature} />
