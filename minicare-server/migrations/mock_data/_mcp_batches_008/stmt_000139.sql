@@ -1,0 +1,7 @@
+INSERT INTO `symptom_record` (`id`,`baby_id`,`recorded_by`,`record_time`,`symptoms`,`photo_ids`,`note`,`spirit`,`mood`) VALUES
+  ('ed4d5f76-be05-4a9e-827e-850523c144da', 'eacb2495-4387-4cf1-93a3-be11c444e618', 'b42b4c6f-5a57-413d-815a-af16e790f4a1', '2026-01-21 12:50:00', CAST('[{"type":6,"severity":2}]' AS JSON), NULL, '腹胀', 'tired', 'fussy'),
+  ('c29bbdc1-aa54-493e-989c-e823f398236e', 'eacb2495-4387-4cf1-93a3-be11c444e618', 'b42b4c6f-5a57-413d-815a-af16e790f4a1', '2026-01-29 17:57:00', CAST('[{"type":1,"severity":2}]' AS JSON), NULL, '皮疹（脸颊发红）', 'tired', 'fussy'),
+  ('c08de2db-c819-4afa-b315-8b343c98ca32', 'eacb2495-4387-4cf1-93a3-be11c444e618', 'fbcccfbd-a450-45d8-be43-e5770de80359', '2026-01-30 17:53:00', CAST('[{"type":4,"severity":3}]' AS JSON), NULL, '大便含黏液，腹胀明显', 'lethargic', 'crying'),
+  ('8f2a4a91-3884-47a4-91a3-32a2cab0c595', 'eacb2495-4387-4cf1-93a3-be11c444e618', 'fbcccfbd-a450-45d8-be43-e5770de80359', '2026-02-01 15:29:00', CAST('[{"type":4,"severity":3}]' AS JSON), NULL, '大便血丝，哭闹不止', 'lethargic', 'crying'),
+  ('b1177e1a-df7f-4da1-9ab4-518434d89cbb', 'eacb2495-4387-4cf1-93a3-be11c444e618', 'fbcccfbd-a450-45d8-be43-e5770de80359', '2026-02-06 17:46:00', CAST('[{"type":1,"severity":2}]' AS JSON), NULL, '皮肤红疹（湿疹样）', 'tired', 'fussy'),
+  ('087898a5-175f-4697-8efd-08c366188d13', 'eacb2495-4387-4cf1-93a3-be11c444e618', 'b42b4c6f-5a57-413d-815a-af16e790f4a1', '2026-02-10 16:16:00', CAST('[{"type":6,"severity":1}]' AS JSON), NULL, '轻微腹胀，换奶反应', 'normal', 'neutral');

@@ -10,6 +10,7 @@
  * 被引用：ReportPage.tsx
  */
 import React from 'react'
+import type { ReportSummary } from '@/api/report'
 
 // ── 各模块小尺寸图标（16×16，颜色与记录类型一致）────────────────
 
@@ -99,201 +100,260 @@ const IconWarn = () => (
 
 /** 统计格子数据 */
 interface StatItem {
-  /** 数值，可含逗号分隔（如"3,360"）或百分比（如"89%"） */
   val: string
-  /** 单位（如 ml、h、次），为空字符串时不展示 */
   unit: string
-  /** 指标名称（如"总奶量"） */
   name: string
 }
 
 /** 状态徽章 */
 interface BadgeItem {
-  /** 显示文字 */
   label: string
-  /**
-   * 徽章颜色类型
-   * "green"  - 绿色（正常/良好）
-   * "red"    - 红色（异常/警告）
-   * "yellow" - 黄色（提示/注意）
-   */
   type: 'green' | 'red' | 'yellow'
-  /** 是否显示警告三角图标（true 时前置 IconWarn） */
   warn?: boolean
 }
 
 /** 报告各模块节数据 */
 interface ReportSection {
-  /** 模块唯一标识，与记录类型对应 */
   key: string
-  /** 模块标签（如"饮食"） */
   label: string
-  /** 模块图标节点 */
   icon: React.ReactElement
-  /** 统计格子数据列表（最多 3 个，超出部分换行） */
   stats: StatItem[]
-  /** 模块备注文字 */
   note: string
-  /** 状态徽章列表 */
   badges: BadgeItem[]
 }
 
 /** 传给弹层的报告元数据 */
 export interface ReportData {
-  /** 报告标题（如"小宝 · 综合报告"） */
   title: string
-  /** 日期范围文字（如"2026年3月21日 · 7天 · 牛奶蛋白过敏（中度）"） */
   dateRange: string
 }
 
 /** FullReportModal 属性 */
 interface FullReportModalProps {
-  /** 是否显示弹层 */
   open: boolean
-  /** 报告元数据；为 null 时不渲染内容 */
   data: ReportData | null
-  /** 关闭弹层回调 */
+  /** 真实报告聚合数据（null 时展示默认描述） */
+  summary: ReportSummary | null
+  /** 数据是否正在加载中（显示加载动画） */
+  loading?: boolean
   onClose: () => void
-  /** 点击「分享给医生」回调 */
   onShare: () => void
-  /** 点击「保存 PDF」回调 */
   onSave: () => void
+}
+
+// ── 辅助格式化函数 ──────────────────────────────────────────────
+
+function fmtH(min: number): string {
+  return (min / 60).toFixed(1)
+}
+
+function mmToCm(mm: number | null): string {
+  return mm != null ? (mm / 10).toFixed(1) : '--'
+}
+
+function gToKg(g: number | null): string {
+  return g != null ? (g / 1000).toFixed(1) : '--'
 }
 
 /**
  * 完整报告详情弹层
  *
- * 采用全屏底部抽屉形式，蒙层点击可关闭。
- *
  * @example
  * <FullReportModal
  *   open={modalOpen}
  *   data={modalData}
+ *   summary={reportSummary}
  *   onClose={() => setModalOpen(false)}
  *   onShare={handleShare}
  *   onSave={handleSave}
  * />
  */
-export default function FullReportModal({ open, data, onClose, onShare, onSave }: FullReportModalProps) {
+export default function FullReportModal({ open, data, summary, onClose, onShare, onSave }: FullReportModalProps) {
   if (!open || !data) return null
 
-  // ── 报告各模块配置（模拟数据）──────────────────────────────────
-  // 实际项目中应由父组件或 hook 传入真实统计数据
+  const days = summary?.days ?? 7
+
+  // ── 构建各模块 sections ────────────────────────────────────────
   const sections: ReportSection[] = [
+    // 饮食
     {
       key: 'feeding',
       label: '饮食',
       icon: <IconMilk />,
-      stats: [
-        { val: '3,360', unit: 'ml', name: '总奶量'  },
-        { val: '480',   unit: 'ml', name: '日均奶量' },
-        { val: '21',    unit: '次', name: '喂养次数' },
-      ],
-      note: '当前阶段：氨基酸奶粉。辅食：南瓜泥观察期 D3（共5天），暂无异常反应。',
+      stats: summary
+        ? [
+            { val: summary.feeding.totalFormulaMl.toLocaleString(), unit: 'ml', name: '总奶量' },
+            { val: String(summary.feeding.avgDailyFormulaMl),        unit: 'ml', name: '日均奶量' },
+            { val: String(summary.feeding.totalFeedCount),           unit: '次', name: '喂养次数' },
+          ]
+        : [
+            { val: '--', unit: 'ml', name: '总奶量'  },
+            { val: '--', unit: 'ml', name: '日均奶量' },
+            { val: '--', unit: '次', name: '喂养次数' },
+          ],
+      note: summary
+        ? `母乳 ${summary.feeding.breastCount} 次 · 配方奶 ${summary.feeding.formulaCount} 次${summary.feeding.complementaryCount > 0 ? ` · 辅食 ${summary.feeding.complementaryCount} 次` : ''}。${summary.foodObservation.items.length > 0 ? `已引入辅食：${summary.foodObservation.items.map((f) => f.foodName).join('、')}。` : ''}`
+        : '暂无饮食数据。',
       badges: [],
     },
+
+    // 睡眠
     {
       key: 'sleep',
       label: '睡眠',
       icon: <IconMoon />,
-      stats: [
-        { val: '62.5', unit: 'h',  name: '总睡眠'  },
-        { val: '8.9',  unit: 'h',  name: '日均'    },
-        { val: '89%',  unit: '',   name: '质量良好' },
-      ],
-      note: '夜间睡眠平均连续 5.2h，小睡 2～3 次/天，整体趋势稳定。',
+      stats: summary
+        ? [
+            { val: fmtH(summary.sleep.totalMin),      unit: 'h',  name: '总睡眠'  },
+            { val: fmtH(summary.sleep.avgDailyMin),   unit: 'h',  name: '日均'    },
+            { val: String(summary.sleep.sessionCount), unit: '段', name: '睡眠段数' },
+          ]
+        : [
+            { val: '--', unit: 'h',  name: '总睡眠' },
+            { val: '--', unit: 'h',  name: '日均'   },
+            { val: '--', unit: '段', name: '睡眠段数' },
+          ],
+      note: summary
+        ? `${days}天共 ${fmtH(summary.sleep.totalMin)}h，平均每天 ${fmtH(summary.sleep.avgDailyMin)}h，共 ${summary.sleep.sessionCount} 段睡眠。`
+        : '暂无睡眠数据。',
       badges: [],
     },
+
+    // 活动
     {
       key: 'activity',
       label: '活动',
       icon: <IconActivity />,
-      stats: [
-        { val: '12', unit: '次', name: '活动记录' },
-        { val: '5',  unit: '次', name: '户外活动' },
-        { val: '3',  unit: '次', name: '爬行练习' },
-      ],
-      note: '本周抬头训练表现良好，户外活动无异常皮肤反应。',
+      stats: summary
+        ? [
+            { val: String(summary.activity.totalCount),     unit: '次', name: '活动记录' },
+            { val: String(summary.activity.outdoorCount),   unit: '次', name: '户外活动' },
+            { val: String(summary.activity.tummyTimeCount), unit: '次', name: '趴趴练习' },
+          ]
+        : [
+            { val: '--', unit: '次', name: '活动记录' },
+            { val: '--', unit: '次', name: '户外活动' },
+            { val: '--', unit: '次', name: '趴趴练习' },
+          ],
+      note: summary
+        ? `洗澡 ${summary.activity.bathCount} 次 · 户外 ${summary.activity.outdoorCount} 次 · 趴趴练习 ${summary.activity.tummyTimeCount} 次 · 玩耍 ${summary.activity.playCount} 次。`
+        : '暂无活动数据。',
       badges: [],
     },
+
+    // 尿布
     {
       key: 'diaper',
       label: '尿布',
       icon: <IconDroplets />,
-      stats: [
-        { val: '21',          unit: '次', name: '换尿布'  },
-        { val: '14',          unit: '次', name: '大便'    },
-        { val: 'Bristol 3-4', unit: '',   name: '大便性状' },
-      ],
-      // Bristol 粪便分类量表：1-7级，3-4级为正常软便；参考：https://en.wikipedia.org/wiki/Bristol_stool_scale
-      note: '大便性状以软便为主（Bristol 3-4级），颜色正常。本周未见血丝或黏液。',
+      stats: summary
+        ? [
+            { val: String(summary.diaper.totalCount),                         unit: '次', name: '换尿布'  },
+            { val: String(summary.diaper.dirtyCount + summary.diaper.mixedCount), unit: '次', name: '大便' },
+            { val: String(summary.diaper.wetCount),                           unit: '次', name: '小便'   },
+          ]
+        : [
+            { val: '--', unit: '次', name: '换尿布' },
+            { val: '--', unit: '次', name: '大便'   },
+            { val: '--', unit: '次', name: '小便'   },
+          ],
+      note: summary
+        ? `共换尿布 ${summary.diaper.totalCount} 次：湿尿布 ${summary.diaper.wetCount} 次、大便 ${summary.diaper.dirtyCount} 次、混合 ${summary.diaper.mixedCount} 次。`
+        : '暂无尿布数据。',
       badges: [],
     },
+
+    // 生长
     {
       key: 'growth',
       label: '生长',
       icon: <IconRuler />,
-      stats: [
-        { val: '68',  unit: 'cm', name: '身高' },
-        { val: '7.5', unit: 'kg', name: '体重' },
-        { val: '43',  unit: 'cm', name: '头围' },
-      ],
-      // WHO 百分位（Percentile）：P50 = 第50百分位 = 中位值，属正常范围
-      note: 'WHO 百分位：身高 P50、体重 P45、头围 P48，生长曲线趋势正常。',
+      stats: summary?.growth.latestWeightG
+        ? [
+            { val: mmToCm(summary.growth.latestHeightMm), unit: 'cm', name: '身高' },
+            { val: gToKg(summary.growth.latestWeightG),   unit: 'kg', name: '体重' },
+            { val: mmToCm(summary.growth.latestHeadMm),   unit: 'cm', name: '头围' },
+          ]
+        : [
+            { val: '--', unit: 'cm', name: '身高' },
+            { val: '--', unit: 'kg', name: '体重' },
+            { val: '--', unit: 'cm', name: '头围' },
+          ],
+      note: summary?.growth.latestDate
+        ? `最近测量（${summary.growth.latestDate}）：身高 ${mmToCm(summary.growth.latestHeightMm)}cm，体重 ${gToKg(summary.growth.latestWeightG)}kg，头围 ${mmToCm(summary.growth.latestHeadMm)}cm。`
+        : '暂无生长数据。',
       badges: [],
     },
+
+    // 健康
     {
       key: 'health',
       label: '健康',
       icon: <IconHeart />,
       stats: [],
-      note: '用药：益生菌（2次），维生素D（每日）。保湿护理坚持每日2次，皮肤状态稳定。',
-      badges: [
-        { label: '✓ 本周无皮疹',    type: 'green' },
-        { label: '✓ 无呕吐腹泻',    type: 'green' },
-        { label: '用药 2 次', type: 'yellow', warn: true },
-      ],
+      note: summary
+        ? `平均体温 ${summary.health.avgTemperature ?? '--'}℃，最高 ${summary.health.maxTemperature ?? '--'}℃。心情：开心 ${summary.health.moodHappyCount} 次 · 平静 ${summary.health.moodNeutralCount} 次 · 烦躁 ${summary.health.moodFussyCount} 次 · 哭闹 ${summary.health.moodCryingCount} 次。`
+        : '暂无健康数据。',
+      badges: summary
+        ? [
+            ...(summary.health.feverCount === 0
+              ? [{ label: '无发烧记录', type: 'green' as const }]
+              : [{ label: `发烧 ${summary.health.feverCount} 次`, type: 'yellow' as const, warn: true }]),
+            { label: `体温均值 ${summary.health.avgTemperature ?? '--'}℃`, type: 'green' as const },
+          ]
+        : [{ label: '暂无健康数据', type: 'yellow' as const }],
     },
+
+    // 医疗
     {
       key: 'medical',
       label: '医疗',
       icon: <IconStethoscope />,
       stats: [],
-      note: '距上次儿保检查 18 天。建议 3 个月龄时进行儿保随访。',
-      badges: [
-        { label: '✓ 本周无就诊', type: 'green' },
-      ],
+      note: summary
+        ? summary.medical.visitCount > 0
+          ? `本周期内就诊 ${summary.medical.visitCount} 次，最近就诊：${summary.medical.lastVisitDate ?? ''} ${summary.medical.lastHospital ?? ''}。`
+          : `本周期内无就诊记录。`
+        : '暂无医疗数据。',
+      badges: summary
+        ? summary.medical.visitCount === 0
+          ? [{ label: '本周无就诊', type: 'green' as const }]
+          : [{ label: `就诊 ${summary.medical.visitCount} 次`, type: 'yellow' as const, warn: true }]
+        : [],
     },
+
+    // 表现
     {
       key: 'symptom',
       label: '表现',
       icon: <IconSmile />,
       stats: [],
-      note: '本周记录心情 7 次，6 次评为"开心"，精神状态无异常波动。',
-      badges: [
-        { label: '✓ 心情良好率 86%', type: 'green' },
-        { label: '✓ 精神状态佳',     type: 'green' },
-      ],
+      note: summary
+        ? summary.symptom.count === 0
+          ? '本周期内无异常症状记录，宝宝状态良好。'
+          : `本周期内共记录症状 ${summary.symptom.count} 次。`
+        : '暂无表现数据。',
+      badges: summary
+        ? summary.symptom.count === 0
+          ? [
+              { label: '无异常症状', type: 'green' as const },
+              { label: `心情良好 ${summary.health.moodHappyCount + summary.health.moodNeutralCount} 次`, type: 'green' as const },
+            ]
+          : [{ label: `症状 ${summary.symptom.count} 次`, type: 'red' as const }]
+        : [],
     },
   ]
 
-  /**
-   * 根据徽章类型返回对应的背景/前景色
-   * green  - 绿色：正向指标
-   * red    - 红色：异常/警告
-   * yellow - 黄色：提示注意
-   */
   const badgeStyle = (type: string): React.CSSProperties => {
     if (type === 'green')  return { background: '#DCFCE7', color: '#166534' }
     if (type === 'red')    return { background: '#FFF0F4', color: '#F05060' }
-    return { background: '#FEF9C3', color: '#854D0E' } // yellow
+    return { background: '#FEF9C3', color: '#854D0E' }
   }
 
   return (
     <div
       className="fixed inset-0 z-[200] flex flex-col"
       style={{ background: 'rgba(0,0,0,0.5)' }}
-      // 点击蒙层关闭
       onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
     >
       <div
@@ -343,16 +403,15 @@ export default function FullReportModal({ open, data, onClose, onShare, onSave }
             <div
               key={sec.key}
               className="px-4 py-3.5"
-              // 非最后一节增加分割线
               style={si < sections.length - 1 ? { borderBottom: '.5px solid #F5F0F2' } : {}}
             >
-              {/* 节标题：图标 + 文字，字号 13，灰色 */}
+              {/* 节标题 */}
               <div className="flex items-center gap-1.5 mb-2.5 text-[13px] font-bold text-[#9A8090] tracking-[.5px]">
                 {sec.icon}
                 {sec.label}
               </div>
 
-              {/* 统计网格：最多3列（grid-cols 动态计算） */}
+              {/* 统计网格 */}
               {sec.stats.length > 0 && (
                 <div
                   className="grid mb-2"

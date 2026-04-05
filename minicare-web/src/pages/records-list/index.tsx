@@ -37,6 +37,89 @@ type RecordTypeKey = "feeding" | "sleep" | "diaper" | "activity" | "health" | "g
 /** 所有支持的记录类型 key */
 const ALL_TYPE_KEYS: RecordTypeKey[] = ["feeding", "sleep", "diaper", "activity", "health", "growth", "medical", "symptom"];
 
+/** 日内「按类型」排序时的类型顺序（与 ALL_TYPE_KEYS 一致） */
+const RECORD_LIST_TYPE_ORDER: RecordTypeKey[] = [...ALL_TYPE_KEYS];
+
+export type RecordsSortMode = "time" | "type";
+
+/** 同一日内的记录排序：默认按类型聚类后组内时间降序；可选严格按时间降序 */
+function sortDayItems(items: RecordItem[], mode: RecordsSortMode): RecordItem[] {
+  const copy = [...items];
+  if (mode === "time") {
+    copy.sort(
+      (a, b) => new Date(getRecordTime(b)).getTime() - new Date(getRecordTime(a)).getTime()
+    );
+    return copy;
+  }
+  const orderIdx = (t: string) => {
+    const i = RECORD_LIST_TYPE_ORDER.indexOf(t as RecordTypeKey);
+    return i === -1 ? 999 : i;
+  };
+  copy.sort((a, b) => {
+    const oa = orderIdx(getRecordType(a));
+    const ob = orderIdx(getRecordType(b));
+    if (oa !== ob) return oa - ob;
+    return new Date(getRecordTime(b)).getTime() - new Date(getRecordTime(a)).getTime();
+  });
+  return copy;
+}
+
+function RecordsSortModeBar({
+  mode,
+  onChange,
+}: {
+  mode: RecordsSortMode;
+  onChange: (m: RecordsSortMode) => void;
+}) {
+  const btn = (m: RecordsSortMode, label: string) => {
+    const active = mode === m;
+    return (
+      <button
+        type="button"
+        onClick={() => onChange(m)}
+        className="min-w-0 flex-1 border-none cursor-pointer transition-all active:scale-[0.98]"
+        style={{
+          height: 30,
+          padding: "0 12px",
+          borderRadius: 14,
+          fontSize: 12,
+          fontWeight: active ? 700 : 500,
+          border: "1.5px solid transparent",
+          background: active ? "linear-gradient(135deg, #F87098, #F9A8C0)" : "transparent",
+          color: active ? "#fff" : "#9A8090",
+          boxShadow: active ? "0 2px 8px rgba(248,112,152,0.22)" : "none",
+        }}
+      >
+        {label}
+      </button>
+    );
+  };
+
+  return (
+    <div
+      className="flex-shrink-0 flex justify-center px-4"
+      style={{
+        background: "#fff",
+        borderBottom: "1px solid #F5EFF2",
+        paddingTop: 4,
+        paddingBottom: 10,
+      }}
+    >
+      <div
+        className="flex w-full max-w-md items-center gap-0.5 p-0.5"
+        style={{
+          background: "#F8F2F5",
+          borderRadius: 16,
+          border: "1px solid #EDE6EA",
+        }}
+      >
+        {btn("type", "按类型")}
+        {btn("time", "按时间")}
+      </div>
+    </div>
+  );
+}
+
 // ── 筛选栏配置（不含「今天」，今天已提升为标题行独立按钮） ────────────────
 const FILTER_CHIPS: FilterChipOption[] = [
   { key: "all",      label: "全部" },
@@ -58,6 +141,8 @@ export default function RecordsPage() {
   const [records, setRecords] = useState<RecordItem[]>([]);
   const [activeFilter, setActiveFilter] = useState("all");
   const [todayOnly, setTodayOnly] = useState(false);
+  /** 默认按类型排列；可切换为按时间（日内严格时间线） */
+  const [sortMode, setSortMode] = useState<RecordsSortMode>("type");
   const [loading, setLoading] = useState(true);
 
   // 当前被操作的记录（用于 ActionSheet）
@@ -156,7 +241,7 @@ export default function RecordsPage() {
     dateKey: dk,
     dateLabel: getDateLabel(getRecordTime(items[0])),
     isToday: dk === todayKey,
-    items,
+    items: sortDayItems(items, sortMode),
   }));
 
   // ── 操作记录处理 ──────────────────────────────────────────────────────────
@@ -197,7 +282,7 @@ export default function RecordsPage() {
   };
 
   return (
-    <div className="min-h-full bg-bg flex flex-col">
+    <div className="h-full bg-bg flex flex-col">
       {/* ── 筛选栏 ── */}
       <FilterBar
         options={FILTER_CHIPS}
@@ -207,6 +292,8 @@ export default function RecordsPage() {
         todayOnly={todayOnly}
         onToggleToday={() => setTodayOnly((v) => !v)}
       />
+
+      <RecordsSortModeBar mode={sortMode} onChange={setSortMode} />
 
       {/* ── 记录列表 ── */}
       <div className="flex-1 overflow-y-auto pb-24">
@@ -219,7 +306,12 @@ export default function RecordsPage() {
         ) : (
           <>
             {grouped.map((group) => (
-              <RecordGroup key={group.dateKey} group={group} onRecordClick={handleRecordClick} />
+              <RecordGroup
+                key={group.dateKey}
+                group={group}
+                onRecordClick={handleRecordClick}
+                groupByType={sortMode === "type"}
+              />
             ))}
 
             {/* 底部提示文字 */}

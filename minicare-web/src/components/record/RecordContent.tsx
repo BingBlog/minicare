@@ -5,15 +5,13 @@
  *   - pages/home/TodayTimeline.tsx（首页今日时间线）
  *   - pages/records-list/RecordListItem.tsx（全部记录列表）
  *
- * 每种记录类型均会突出展示关键数值/状态：
- *   - 饮食：奶量 MetricChip / 母乳时长 / 辅食 FoodChip
- *   - 睡眠：时长 chip + 进行中动效
- *   - 尿布：类型彩色 Pill（含语义图标）
- *   - 活动：活动类型 Pill + 时长 MetricChip
- *   - 表现：情绪 / 精神 Pill
- *   - 健康：体温 MetricChip + 症状 Pill
- *   - 生长：身高 / 体重 / 头围 MetricChip
- *   - 医疗：就诊类型 Pill + 医院/诊断文字
+ * 新增 compact 模式：
+ *   - compact=false（默认）：完整展示（首页时间线等）
+ *   - compact=true：单行横排 primary + tags + meta（与 getRecordListCompactParts 一致）
+ * 列表页条目由 RecordListItem 组合：第一行 + getRecordSummary；第二行仅 note
+ *
+ * getRecordListCompactParts / getRecordSummary：
+ *   列表主行文案与右侧数值摘要
  */
 import {
   SLEEP_PERIOD_LABELS,
@@ -48,6 +46,7 @@ import {
   IconActivity,
 } from '@/components/ui/icons'
 import type { IconProps } from '@/components/ui/icons'
+import type { ReactNode } from 'react'
 
 // ── 奶粉类型 / 情绪 / 活动 映射 ───────────────────────────────────
 
@@ -100,6 +99,37 @@ export function MetricChip({ value, unit, active }: { value: string | number; un
       </span>
       {unit && (
         <span className="font-semibold" style={{ fontSize: 11, color: '#F87098', opacity: 0.8 }}>
+          {unit}
+        </span>
+      )}
+    </span>
+  )
+}
+
+/** 右侧摘要专用数值显示（字号稍小，适合列表右侧） */
+export function SummaryMetric({ value, unit, color = '#F87098', bg = '#FFF0F4', active }: {
+  value: string | number
+  unit?: string
+  color?: string
+  bg?: string
+  active?: boolean
+}) {
+  return (
+    <span
+      className="inline-flex items-baseline gap-px rounded-lg px-2 py-0.5 flex-shrink-0"
+      style={{
+        background: bg,
+        border: active ? `1px solid ${color}55` : undefined,
+      }}
+    >
+      <span
+        className="font-extrabold tabular-nums"
+        style={{ fontSize: 14, lineHeight: 1.25, color, letterSpacing: '-0.3px' }}
+      >
+        {value}
+      </span>
+      {unit && (
+        <span className="font-medium" style={{ fontSize: 10, color, opacity: 0.75 }}>
           {unit}
         </span>
       )}
@@ -188,7 +218,7 @@ export const PULSE_STYLE = `
   }
 `
 
-// ── 各记录类型内容渲染 ────────────────────────────────────────────
+// ── 各记录类型：完整内容渲染（默认模式） ────────────────────────
 
 function FeedingContent({ d }: { d: Record<string, unknown> }) {
   const feedType = d.feed_type as string | undefined
@@ -436,10 +466,313 @@ function MedicalContent({ d }: { d: Record<string, unknown> }) {
   )
 }
 
+// ── 列表页：主行文案拆分为 primary / tags / meta（备注不在此，由 RecordListItem 单独第二行） ──
+
+const LIST_TITLE_CLS = 'text-[15px] font-semibold leading-snug text-[#3D2B2E]'
+const LIST_META_CLS = 'text-[11px] leading-relaxed text-[#9A7E82]'
+
+/**
+ * 记录列表主行：标题、标签（Pill）、补充 meta 文案；与 getRecordSummary 搭配使用。
+ * 列表第二行仅展示用户备注 note，不在此返回。
+ */
+export function getRecordListCompactParts(
+  type: string,
+  detail: Record<string, unknown> | null | undefined
+): { primary: ReactNode; tags: ReactNode | null; meta: ReactNode | null } {
+  const d = detail ?? {}
+
+  switch (type) {
+    case 'feeding': {
+      const feedType = d.feed_type as string | undefined
+      const milkTypes = d.milk_types as string[] | undefined
+      const milkLabel =
+        milkTypes && milkTypes.length > 0
+          ? milkTypes.map((k) => MILK_TYPE_LABELS[k] ?? k).join('/')
+          : null
+      const food = d.complementary_food as string | undefined
+      const isSupp = food === '营养素'
+
+      let title = '饮食'
+      let meta: string | null = null
+
+      if (feedType === 'formula') {
+        title = '配方奶'
+        meta = milkLabel
+      } else if (feedType === 'breast') {
+        title = '母乳'
+        const side = d.breast_side === 'left' ? '左侧' : d.breast_side === 'right' ? '右侧' : '双侧'
+        meta = side
+      } else if (feedType === 'complementary') {
+        title = isSupp ? '营养素' : '辅食'
+        if (!isSupp && food) meta = food
+      }
+
+      return {
+        primary: <div className={`${LIST_TITLE_CLS} shrink-0 truncate`}>{title}</div>,
+        tags: null,
+        meta: meta ? <span className={`${LIST_META_CLS} truncate`}>{meta}</span> : null,
+      }
+    }
+
+    case 'sleep': {
+      const ongoing = d.status === 'ongoing'
+      const period = d.sleep_period as string | undefined
+      const periodLabel = period ? (SLEEP_PERIOD_LABELS[period] ?? period) : null
+
+      const primary = (
+        <div className="flex items-center gap-1.5 min-w-0 flex-wrap">
+          <span className={`${LIST_TITLE_CLS} truncate inline-flex items-center gap-1.5`}>
+            {ongoing && <LiveDot />}
+            {ongoing ? '睡眠中' : '睡眠'}
+          </span>
+          {ongoing && (
+            <Pill icon={IconClock} color="#F87098" bg="#FFF0F4">
+              进行中
+            </Pill>
+          )}
+        </div>
+      )
+
+      return {
+        primary,
+        tags: null,
+        meta: periodLabel ? <span className={`${LIST_META_CLS} truncate`}>{periodLabel}</span> : null,
+      }
+    }
+
+    case 'diaper': {
+      const diaperType = d.diaper_type as string | undefined
+      const poopType = d.poop_type as string | undefined
+      const hasPoop = diaperType === 'dirty' || diaperType === 'mixed'
+      const hasWet = diaperType === 'wet' || diaperType === 'mixed'
+      const isDry = diaperType === 'dry'
+      const poopLabel = poopType ? (POOP_TYPE_LABELS[poopType] ?? poopType) : '大便'
+
+      const tagNodes: ReactNode[] = []
+      if (isDry) tagNodes.push(<Pill key="dry" icon={IconLeaf} bg="#F5F5F5" color="#9A8090">干净</Pill>)
+      if (hasPoop) tagNodes.push(<Pill key="poop" icon={IconPoop} bg="#FFF8EC" color="#B07820">{poopLabel}</Pill>)
+      if (hasWet) tagNodes.push(<Pill key="wet" icon={IconDrop} bg="#E8F5FD" color="#2080B8">小便</Pill>)
+
+      return {
+        primary: <div className={`${LIST_TITLE_CLS} shrink-0`}>换尿布</div>,
+        tags:
+          tagNodes.length > 0 ? (
+            <div className="flex flex-wrap items-center gap-1">{tagNodes}</div>
+          ) : null,
+        meta: null,
+      }
+    }
+
+    case 'activity': {
+      const actType = d.activity_type as string | undefined
+      const actLabel = actType ? (ACTIVITY_TYPE_LABELS[actType] ?? actType) : null
+      const ActIcon = actType ? (ACTIVITY_ICON_MAP[actType] ?? IconActivity) : null
+
+      return {
+        primary: <div className={`${LIST_TITLE_CLS} shrink-0`}>活动</div>,
+        tags:
+          actLabel && ActIcon ? (
+            <div className="flex flex-wrap items-center gap-1">
+              <Pill icon={ActIcon} bg="#FFF0F4" color="#E85580">
+                {actLabel}
+              </Pill>
+            </div>
+          ) : null,
+        meta: null,
+      }
+    }
+
+    case 'symptom': {
+      const mood = d.mood as string | undefined
+      const spirit = d.spirit as string | undefined
+      const moodLabel = mood ? (MOOD_LABELS[mood] ?? mood) : null
+      const spiritLabel = spirit ? (SPIRIT_LABELS[spirit] ?? spirit) : null
+      const MoodIcon = mood ? (MOOD_ICON_MAP[mood] ?? IconFaceNeutral) : null
+
+      const tagNodes: ReactNode[] = []
+      if (moodLabel && MoodIcon) {
+        tagNodes.push(
+          <Pill key="mood" icon={MoodIcon} bg="#FFF0F4" color="#E85580">
+            {moodLabel}
+          </Pill>
+        )
+      }
+      if (spiritLabel) {
+        tagNodes.push(
+          <Pill key="spirit" icon={IconZap} bg="#FFF8E6" color="#C0922A">
+            {spiritLabel}
+          </Pill>
+        )
+      }
+
+      return {
+        primary: <div className={`${LIST_TITLE_CLS} shrink-0`}>表现记录</div>,
+        tags: tagNodes.length > 0 ? <div className="flex flex-wrap items-center gap-1">{tagNodes}</div> : null,
+        meta: null,
+      }
+    }
+
+    case 'health': {
+      const temp = d.temperature as number | undefined
+      const isFever = temp != null && temp >= 37.5
+      const meds = d.medications as Array<{ name: string }> | undefined
+      const hasAllergy = (d.allergy_symptoms as string[] | undefined)?.length
+
+      const tagNodes: ReactNode[] = []
+      if (isFever) {
+        tagNodes.push(
+          <Pill key="fever" icon={IconThermometer} bg="#FFF1F4" color="#F05070">
+            发热
+          </Pill>
+        )
+      }
+      if (hasAllergy) {
+        tagNodes.push(
+          <Pill key="allergy" icon={IconAlertTriangle} bg="#FFF1F4" color="#F05070">
+            过敏
+          </Pill>
+        )
+      }
+      if (meds && meds.length > 0) {
+        tagNodes.push(
+          <Pill key="med" icon={IconPill} bg="#F3F0FF" color="#9B8ED8">
+            {meds[0].name}
+          </Pill>
+        )
+      }
+
+      return {
+        primary: <div className={`${LIST_TITLE_CLS} shrink-0`}>健康记录</div>,
+        tags: tagNodes.length > 0 ? <div className="flex flex-wrap items-center gap-1">{tagNodes}</div> : null,
+        meta: null,
+      }
+    }
+
+    case 'growth': {
+      const hasH = d.height_mm != null
+      const hasW = d.weight_g != null
+      const hasHC = d.head_mm != null
+      const metrics = [hasH && '身高', hasW && '体重', hasHC && '头围'].filter(Boolean).join('·')
+
+      return {
+        primary: <div className={`${LIST_TITLE_CLS} truncate`}>生长记录</div>,
+        tags: null,
+        meta: metrics ? <span className={`${LIST_META_CLS} truncate`}>{metrics}</span> : null,
+      }
+    }
+
+    case 'medical': {
+      const visitType = d.visit_type as string | undefined
+      const hospital = d.hospital as string | undefined
+      const typeLabel = visitType ? (VISIT_TYPE_LABELS[visitType] ?? visitType) : '就诊'
+
+      return {
+        primary: <div className={`${LIST_TITLE_CLS} shrink-0`}>医疗</div>,
+        tags: (
+          <div className="flex flex-wrap items-center gap-1">
+            <Pill icon={IconHospital} bg="#F0F4FF" color="#5B9BD5">
+              {typeLabel}
+            </Pill>
+          </div>
+        ),
+        meta: hospital ? <span className={`${LIST_META_CLS} truncate`}>{hospital}</span> : null,
+      }
+    }
+
+    default: {
+      const cfg = RECORD_TYPE_CFG[type]
+      return {
+        primary: <div className={`${LIST_TITLE_CLS} truncate`}>{cfg?.label ?? type}</div>,
+        tags: null,
+        meta: null,
+      }
+    }
+  }
+}
+
+// ── getRecordSummary：提取右侧核心数值摘要 ───────────────────────
+
+/**
+ * 提取各记录类型的核心数值，返回右侧显示的摘要 JSX。
+ * 仅在列表页 compact 模式下使用。
+ */
+export function getRecordSummary(
+  type: string,
+  d: Record<string, unknown>
+): React.ReactNode | null {
+  switch (type) {
+    case 'feeding': {
+      const feedType = d.feed_type as string | undefined
+      if (feedType === 'formula') {
+        const ml = d.formula_ml as number | undefined
+        if (ml) return <SummaryMetric value={ml} unit="ml" />
+      }
+      if (feedType === 'breast') {
+        const dur = d.duration_min as number | undefined
+        if (dur) return <SummaryMetric value={fmtDuration(dur)} />
+      }
+      if (feedType === 'complementary') {
+        const amountG = d.amount_g as number | undefined
+        if (amountG) return <SummaryMetric value={amountG} unit="g" color="#B07820" bg="#FFF8E6" />
+      }
+      return null
+    }
+
+    case 'sleep': {
+      const ongoing = d.status === 'ongoing'
+      const durMin = d.duration_min as number | undefined
+      if (!durMin) return null
+      if (ongoing) {
+        return <SummaryMetric value={fmtDuration(durMin)} active color="#F87098" bg="#FFF0F4" />
+      }
+      return <SummaryMetric value={fmtDuration(durMin)} color="#C0922A" bg="#FFF8E6" />
+    }
+
+    case 'health': {
+      const temp = d.temperature as number | undefined
+      if (temp != null) {
+        const isFever = temp >= 37.5
+        return (
+          <SummaryMetric
+            value={temp}
+            unit="℃"
+            color={isFever ? '#F05070' : '#F87098'}
+            bg={isFever ? '#FFF1F4' : '#FFF0F4'}
+            active={isFever}
+          />
+        )
+      }
+      return null
+    }
+
+    case 'growth': {
+      const h  = d.height_mm != null ? (Number(d.height_mm) / 10).toFixed(1) : null
+      const w  = d.weight_g  != null ? (Number(d.weight_g) / 1000).toFixed(2) : null
+      if (h) return <SummaryMetric value={h} unit="cm" color="#9B8ED8" bg="#F3F0FF" />
+      if (w) return <SummaryMetric value={w} unit="kg" color="#9B8ED8" bg="#F3F0FF" />
+      return null
+    }
+
+    case 'activity': {
+      const durMin = d.duration_min as number | undefined
+      if (durMin) return <SummaryMetric value={fmtDuration(durMin)} color="#C0922A" bg="#FFF8E6" />
+      return null
+    }
+
+    case 'diaper':
+    case 'symptom':
+    case 'medical':
+    default:
+      return null
+  }
+}
+
 // ── 主分派组件（供外部直接使用） ─────────────────────────────────────────
 
 /**
  * 根据 type 字段分派渲染对应记录类型的内容
+ *
+ * @param compact  true = 仅标题/标签行（列表页用），false = 完整展示（首页时间线用）
  *
  * detail 来源兼容：
  *   - TodayRecord.detail（首页时间线）
@@ -447,15 +780,29 @@ function MedicalContent({ d }: { d: Record<string, unknown> }) {
  *
  * @example
  * <RecordContent type="feeding" detail={{ feed_type: 'formula', formula_ml: 120 }} />
+ * <RecordContent type="feeding" detail={...} compact />
  */
 export default function RecordContent({
   type,
   detail,
+  compact = false,
 }: {
   type: string
   detail?: Record<string, unknown> | null
+  compact?: boolean
 }) {
   const d: Record<string, unknown> = detail ?? {}
+
+  if (compact) {
+    const { primary, tags, meta } = getRecordListCompactParts(type, d)
+    return (
+      <div className="flex min-w-0 flex-wrap items-center gap-1.5">
+        {primary}
+        {tags}
+        {meta}
+      </div>
+    )
+  }
 
   switch (type) {
     case 'feeding':  return <FeedingContent  d={d} />

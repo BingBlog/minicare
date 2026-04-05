@@ -31,6 +31,20 @@ export { setToken, removeToken } from './http'
 export { authApi } from './auth'
 export { familyApi } from './family'
 export { babyApi } from './baby'
+export { reportApi } from './report'
+export type {
+  ReportSummary,
+  FeedingStats,
+  SleepStats,
+  DiaperStats,
+  ActivityStats,
+  GrowthStats,
+  HealthStats,
+  MedicalStats,
+  SymptomStats,
+  FoodObservationStats,
+  GetSummaryParams,
+} from './report'
 
 // Records 聚合对象（保持与旧版 recordsApi.xxx 一致的调用方式）
 import { feedingApi } from './records/feeding'

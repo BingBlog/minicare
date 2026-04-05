@@ -10,6 +10,7 @@ import { StorageModule } from './storage/storage.module';
 import { WebsocketModule } from './websocket/websocket.module';
 import { SchedulerModule } from './scheduler/scheduler.module';
 import { BabyFoodsModule } from './baby-foods/baby-foods.module';
+import { ReportModule } from './report/report.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { BabyFoodsModule } from './baby-foods/baby-foods.module';
     WebsocketModule,
     SchedulerModule,
     BabyFoodsModule,
+    ReportModule,
   ],
 })
 export class AppModule {}

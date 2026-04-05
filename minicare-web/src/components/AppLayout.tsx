@@ -254,8 +254,10 @@ export default function AppLayout() {
   return (
     <div className="flex flex-col h-screen max-w-[430px] mx-auto bg-bg overflow-x-hidden overflow-y-hidden">
       {/* 页面内容 */}
-      <div className="flex-1" style={{ paddingBottom: 56 }}>
-        <Outlet />
+      <div className="flex-1 overflow-y-auto" style={{ paddingBottom: 56 }}>
+        <div className="h-full">
+          <Outlet />
+        </div>
       </div>
 
       {/* ── 底部 Tab 栏 ── */}
@@ -311,7 +313,7 @@ export default function AppLayout() {
           </button>
         </div>
 
-        {/* Tab: 报告 */}
+        {/* Tab: 分析 */}
         <button
           type="button"
           onClick={() => navigate("/report")}
@@ -320,7 +322,7 @@ export default function AppLayout() {
           <span
             className="text-[10px] font-medium"
             style={{ color: isActive("/report") ? "#e8507a" : "#f0b8c8" }}>
-            报告
+            分析
           </span>
         </button>
 

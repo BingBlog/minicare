@@ -204,7 +204,7 @@ export default function HomePage() {
       />
 
       {/* ── 内容区（白色背景，含快捷宫格和时间线） ── */}
-      <div className="px-4 space-y-4 pt-3 pb-8">
+      <div className="px-4 space-y-4 pt-3 pb-28">
         <QuickActions onMoreClick={() => setFabOpen(true)} />
         <TodayTimeline records={todayRecords} onRecordClick={handleRecordClick} />
       </div>
