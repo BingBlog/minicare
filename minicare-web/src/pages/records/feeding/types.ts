@@ -19,16 +19,16 @@ export interface MilkTypeOption {
 export const milkTypeOptions: MilkTypeOption[] = [
   { key: "aa", label: "氨基酸奶粉", desc: "深度过敏 适用", color: "#F87098" },
   {
-    key: "eh_lactose",
-    label: "深度水解（含乳糖）",
-    desc: "转奶第2阶段",
-    color: "#9B8ED8",
-  },
-  {
     key: "eh_no_lactose",
     label: "深度水解（无乳糖）",
     desc: "乳糖不耐受",
     color: "#7B6EC8",
+  },
+  {
+    key: "eh_lactose",
+    label: "深度水解（含乳糖）",
+    desc: "转奶第2阶段",
+    color: "#9B8ED8",
   },
   { key: "ph", label: "适度水解奶粉", desc: "转奶第3阶段", color: "#DDB870" },
   { key: "std", label: "普通奶粉", desc: "免疫耐受后", color: "#4CAF82" },

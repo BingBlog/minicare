@@ -111,8 +111,12 @@ export interface DailyFeedingData {
   formulaMl: number
   /** 母乳次数 */
   breastCount: number
+  /** 配方奶喂养次数 */
+  formulaCount: number
   /** 辅食次数 */
   complementaryCount: number
+  /** 当日配方奶按奶粉类型拆分的毫升（后端有结构化字段时返回） */
+  formulaMlByMilkType?: Record<string, number>
 }
 
 /** 尿布模块逐日数据 */

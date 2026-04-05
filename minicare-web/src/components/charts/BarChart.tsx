@@ -13,7 +13,7 @@ const DEFAULT_COLORS = {
   quinary: '#6BCB77',
 }
 
-const DEFAULT_PADDING = { top: 20, right: 20, bottom: 40, left: 50 }
+const DEFAULT_PADDING = { top: 20, right: 10, bottom: 40, left: 50 }
 
 export function BarChart({
   data,
@@ -29,16 +29,17 @@ export function BarChart({
   className,
 }: BarChartProps) {
   const pad = { ...DEFAULT_PADDING, ...padding }
-  const chartWidth = width || 300
+  const chartWidth = width ?? 300
   const chartHeight = height
+  const fillContainer = width == null
   const innerWidth = chartWidth - pad.left - pad.right
   const innerHeight = chartHeight - pad.top - pad.bottom
 
   if (data.length === 0) {
     return (
       <div
-        className={`flex items-center justify-center bg-gray-50 rounded-lg ${className || ''}`}
-        style={{ width: chartWidth, height: chartHeight }}
+        className={`flex w-full min-w-0 items-center justify-center bg-gray-50 rounded-lg ${className || ''}`}
+        style={fillContainer ? { height: chartHeight } : { width: chartWidth, height: chartHeight }}
       >
         <span className="text-gray-400 text-sm">暂无数据</span>
       </div>
@@ -81,12 +82,14 @@ export function BarChart({
   })
 
   return (
-    <svg
-      width={chartWidth}
-      height={chartHeight}
-      className={className}
-      viewBox={`0 0 ${chartWidth} ${chartHeight}`}
-    >
+    <div className={`w-full min-w-0 ${className || ''}`}>
+      <svg
+        width={fillContainer ? '100%' : chartWidth}
+        height={chartHeight}
+        className="block"
+        viewBox={`0 0 ${chartWidth} ${chartHeight}`}
+        preserveAspectRatio={fillContainer ? 'none' : 'xMidYMid meet'}
+      >
       {/* 网格线 */}
       {axis.showGrid !== false && (
         <g className="grid-lines">
@@ -181,6 +184,7 @@ export function BarChart({
           )
         })}
       </g>
-    </svg>
+      </svg>
+    </div>
   )
 }

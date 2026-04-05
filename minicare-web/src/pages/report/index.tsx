@@ -38,6 +38,9 @@ const TIME_RANGES: Array<{ key: string; label: string; days: number }> = [
   { key: "7", label: "7天", days: 7 },
   { key: "14", label: "14天", days: 14 },
   { key: "30", label: "30天", days: 30 },
+  { key: "90", label: "近3个月", days: 90 },
+  { key: "180", label: "近半年", days: 180 },
+  { key: "365", label: "近一年", days: 365 },
   { key: "birth", label: "从出生", days: 0 }, // 特殊处理
 ];
 
@@ -75,6 +78,13 @@ function calcDateRange(
   return { startDate: fmt(start), endDate: fmt(now) };
 }
 
+/** 与 TIME_RANGES 中长周期选项对应的展示前缀 */
+const LONG_RANGE_LABEL: Record<string, string> = {
+  "90": "近3个月",
+  "180": "近半年",
+  "365": "近一年",
+};
+
 /**
  * 获取时间范围描述文本
  */
@@ -87,6 +97,11 @@ function getRangeText(rangeKey: string, birthDate?: string | null): string {
 
   if (rangeKey === "birth") {
     return `从出生 · ${fmtCN(startDate)}—${fmtCN(endDate)}`;
+  }
+
+  const longLabel = LONG_RANGE_LABEL[rangeKey];
+  if (longLabel) {
+    return `${longLabel} · ${fmtCN(startDate)}—${fmtCN(endDate)}`;
   }
 
   const days = parseInt(rangeKey, 10);

@@ -91,6 +91,8 @@ export interface StackedBarChartProps extends BaseChartProps {
   seriesOrder: string[]
   /** 系列颜色映射 */
   seriesColors: Record<string, string>
+  /** 图例展示名（不传则使用 series key） */
+  seriesLabels?: Record<string, string>
   /** 柱子宽度比例（0-1） */
   barWidth?: number
 }

@@ -13,7 +13,7 @@ const DEFAULT_COLORS = {
   quinary: '#6BCB77',
 }
 
-const DEFAULT_PADDING = { top: 20, right: 20, bottom: 40, left: 50 }
+const DEFAULT_PADDING = { top: 20, right: 10, bottom: 40, left: 50 }
 
 export function LineChart({
   data,
@@ -29,16 +29,17 @@ export function LineChart({
   className,
 }: LineChartProps) {
   const pad = { ...DEFAULT_PADDING, ...padding }
-  const chartWidth = width || 300
+  const chartWidth = width ?? 300
   const chartHeight = height
+  const fillContainer = width == null
   const innerWidth = chartWidth - pad.left - pad.right
   const innerHeight = chartHeight - pad.top - pad.bottom
 
   if (data.length === 0) {
     return (
       <div
-        className={`flex items-center justify-center bg-gray-50 rounded-lg ${className || ''}`}
-        style={{ width: chartWidth, height: chartHeight }}
+        className={`flex w-full min-w-0 items-center justify-center bg-gray-50 rounded-lg ${className || ''}`}
+        style={fillContainer ? { height: chartHeight } : { width: chartWidth, height: chartHeight }}
       >
         <span className="text-gray-400 text-sm">暂无数据</span>
       </div>
@@ -54,10 +55,10 @@ export function LineChart({
   // X 轴比例
   const xStep = innerWidth / Math.max(1, data.length - 1)
 
-  // Y 轴刻度
+  // Y 轴刻度（自上而下：最大值 → 最小值，与折线 y 坐标一致）
   const yTicks = 4
   const yTickValues = Array.from({ length: yTicks + 1 }, (_, i) => {
-    const value = yMin + (yRange * i) / yTicks
+    const value = yMax - (yRange * i) / yTicks
     return axis.yFormat ? axis.yFormat(value) : Math.round(value).toString()
   })
 
@@ -91,12 +92,14 @@ export function LineChart({
   const xLabelInterval = axis.xLabelInterval ?? Math.ceil(data.length / 6)
 
   return (
-    <svg
-      width={chartWidth}
-      height={chartHeight}
-      className={className}
-      viewBox={`0 0 ${chartWidth} ${chartHeight}`}
-    >
+    <div className={`w-full min-w-0 ${className || ''}`}>
+      <svg
+        width={fillContainer ? '100%' : chartWidth}
+        height={chartHeight}
+        className="block"
+        viewBox={`0 0 ${chartWidth} ${chartHeight}`}
+        preserveAspectRatio={fillContainer ? 'none' : 'xMidYMid meet'}
+      >
       {/* 网格线 */}
       {axis.showGrid !== false && (
         <g className="grid-lines">
@@ -207,6 +210,7 @@ export function LineChart({
           )
         })}
       </g>
-    </svg>
+      </svg>
+    </div>
   )
 }

@@ -5,7 +5,7 @@
 import React from 'react'
 import type { StackedBarChartProps, SeriesDataPoint } from './types'
 
-const DEFAULT_PADDING = { top: 20, right: 20, bottom: 40, left: 50 }
+const DEFAULT_PADDING = { top: 20, right: 10, bottom: 40, left: 50 }
 
 export function StackedBarChart({
   data,
@@ -14,22 +14,24 @@ export function StackedBarChart({
   padding = {},
   seriesOrder,
   seriesColors,
+  seriesLabels,
   axis = {},
   showLegend = true,
   barWidth = 0.6,
   className,
 }: StackedBarChartProps) {
   const pad = { ...DEFAULT_PADDING, ...padding }
-  const chartWidth = width || 300
+  const chartWidth = width ?? 300
   const chartHeight = height
+  const fillContainer = width == null
   const innerWidth = chartWidth - pad.left - pad.right
   const innerHeight = chartHeight - pad.top - pad.bottom
 
   if (data.length === 0) {
     return (
       <div
-        className={`flex items-center justify-center bg-gray-50 rounded-lg ${className || ''}`}
-        style={{ width: chartWidth, height: chartHeight }}
+        className={`flex w-full min-w-0 items-center justify-center bg-gray-50 rounded-lg ${className || ''}`}
+        style={fillContainer ? { height: chartHeight } : { width: chartWidth, height: chartHeight }}
       >
         <span className="text-gray-400 text-sm">暂无数据</span>
       </div>
@@ -40,13 +42,20 @@ export function StackedBarChart({
   const totals = data.map((d) =>
     seriesOrder.reduce((sum, key) => sum + (d.values[key] || 0), 0)
   )
-  const yMax = axis.yMax ?? (Math.max(...totals) * 1.2 || 10)
-
-  // Y 轴刻度
   const yTicks = 4
+
+  const maxTotal = Math.max(0, ...totals)
+  const rawYMax = maxTotal > 0 ? maxTotal * 1.2 : 10
+  // 未指定 yMax 时：取整并向上对齐到 yTicks 格，使刻度为整数（适合「次」等计数）
+  const yMax =
+    axis.yMax ??
+    Math.max(1, Math.ceil(rawYMax / yTicks) * yTicks)
+
+  // Y 轴刻度（自上而下：最大值 → 0，与柱形堆积比例一致）
   const yTickValues = Array.from({ length: yTicks + 1 }, (_, i) => {
-    const value = (yMax * i) / yTicks
-    return axis.yFormat ? axis.yFormat(value) : Math.round(value).toString()
+    const value = (yMax * (yTicks - i)) / yTicks
+    const rounded = Math.round(value * 1000) / 1000
+    return axis.yFormat ? axis.yFormat(rounded) : Math.round(rounded).toString()
   })
 
   // 柱子尺寸
@@ -86,11 +95,13 @@ export function StackedBarChart({
   })
 
   return (
-    <div className={className}>
+    <div className={`w-full min-w-0 ${className || ''}`}>
       <svg
-        width={chartWidth}
+        width={fillContainer ? '100%' : chartWidth}
         height={chartHeight}
+        className="block"
         viewBox={`0 0 ${chartWidth} ${chartHeight}`}
+        preserveAspectRatio={fillContainer ? 'none' : 'xMidYMid meet'}
       >
         {/* 网格线 */}
         {axis.showGrid !== false && (
@@ -182,7 +193,9 @@ export function StackedBarChart({
                 className="w-3 h-3 rounded-sm"
                 style={{ backgroundColor: seriesColors[key] || '#9CA3AF' }}
               />
-              <span className="text-xs text-gray-600">{key}</span>
+              <span className="text-xs text-gray-600">
+                {seriesLabels?.[key] ?? key}
+              </span>
             </div>
           ))}
         </div>

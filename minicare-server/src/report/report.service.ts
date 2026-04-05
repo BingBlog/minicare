@@ -111,7 +111,11 @@ export interface DailyFeedingData {
   date: string;
   formulaMl: number;
   breastCount: number;
+  /** 当日配方奶喂养次数（feed_type = 2 条数） */
+  formulaCount: number;
   complementaryCount: number;
+  /** 当日配方奶按奶粉类型拆分的毫升数（有结构化字段时才有；key 同 milk_types） */
+  formulaMlByMilkType?: Record<string, number>;
 }
 
 export interface DailyDiaperData {
@@ -145,6 +149,90 @@ export interface ChartData {
   sleep: { daily: DailySleepData[] };
   health: { daily: DailyHealthData[] };
   growth: { records: GrowthRecord[] };
+}
+
+function parseJsonField(val: unknown): unknown {
+  if (val == null) return null;
+  if (typeof val === 'string') {
+    try {
+      return JSON.parse(val);
+    } catch {
+      return null;
+    }
+  }
+  return val;
+}
+
+/**
+ * 将单条配方奶量按奶粉类型拆分：优先 milk_scoops 勺数比例，其次单类型全量，多类型无勺数则均分。
+ * 无 milk_types 时记入 unlabeled，便于与有标注数据区分。
+ */
+function splitFormulaMlByMilkTypes(
+  formulaMl: number,
+  milkTypesRaw: unknown,
+  milkScoopsRaw: unknown,
+): Record<string, number> {
+  const ml = Math.max(0, formulaMl);
+  if (ml <= 0) return {};
+
+  const milkTypes = parseJsonField(milkTypesRaw);
+  const scoopsRaw = parseJsonField(milkScoopsRaw);
+  const types = Array.isArray(milkTypes)
+    ? milkTypes.filter((t): t is string => typeof t === 'string' && t.length > 0)
+    : [];
+  const scoops =
+    scoopsRaw != null && typeof scoopsRaw === 'object' && !Array.isArray(scoopsRaw)
+      ? (scoopsRaw as Record<string, number>)
+      : null;
+
+  if (types.length === 0) {
+    return { unlabeled: ml };
+  }
+
+  if (scoops) {
+    let totalW = 0;
+    const weights: Record<string, number> = {};
+    for (const t of types) {
+      const w = scoops[t] != null ? Number(scoops[t]) : 0;
+      weights[t] = w;
+      if (w > 0) totalW += w;
+    }
+    if (totalW > 0) {
+      const out: Record<string, number> = {};
+      for (const t of types) {
+        const w = weights[t] ?? 0;
+        if (w <= 0) continue;
+        out[t] = Math.round(((ml * w) / totalW) * 10) / 10;
+      }
+      const sum = Object.values(out).reduce((a, b) => a + b, 0);
+      const drift = ml - sum;
+      if (Math.abs(drift) > 0.01) {
+        const adj =
+          types.find((t) => (out[t] ?? 0) > 0) ?? types[0];
+        out[adj] = Math.round(((out[adj] ?? 0) + drift) * 10) / 10;
+      }
+      return out;
+    }
+  }
+
+  if (types.length === 1) {
+    return { [types[0]]: ml };
+  }
+
+  const per = ml / types.length;
+  const out: Record<string, number> = {};
+  let allocated = 0;
+  types.forEach((t, i) => {
+    const v = i === types.length - 1 ? ml - allocated : Math.round(per * 10) / 10;
+    out[t] = v;
+    allocated += v;
+  });
+  return out;
+}
+
+function formatSqlDate(d: unknown): string {
+  if (d instanceof Date) return d.toISOString().slice(0, 10);
+  return String(d).slice(0, 10);
 }
 
 // ── 简单内存缓存（TTL 1小时）─────────────────────────────────────────
@@ -283,21 +371,51 @@ export class ReportService {
          DATE(record_time) AS day_date,
          SUM(CASE WHEN feed_type = 2 THEN COALESCE(formula_ml, 0) ELSE 0 END) AS formula_ml,
          COUNT(CASE WHEN feed_type = 1 THEN 1 END) AS breast_count,
+         COUNT(CASE WHEN feed_type = 2 THEN 1 END) AS formula_count,
          COUNT(CASE WHEN feed_type = 3 THEN 1 END) AS complementary_count
        FROM feeding_record
        WHERE baby_id = ? AND DATE(record_time) BETWEEN ? AND ?
        GROUP BY day_date ORDER BY day_date ASC`,
       [babyId, startDate, endDate],
     );
+
+    const [formulaRows] = await this.db.query<any[]>(
+      `SELECT DATE(record_time) AS day_date, formula_ml, milk_types, milk_scoops
+       FROM feeding_record
+       WHERE baby_id = ? AND feed_type = 2 AND DATE(record_time) BETWEEN ? AND ?
+       ORDER BY record_time ASC`,
+      [babyId, startDate, endDate],
+    );
+
+    const byDayMilk = new Map<string, Record<string, number>>();
+    for (const fr of formulaRows as any[]) {
+      const dayStr = formatSqlDate(fr.day_date);
+      const ml = Number(fr.formula_ml) || 0;
+      const parts = splitFormulaMlByMilkTypes(ml, fr.milk_types, fr.milk_scoops);
+      const cur = byDayMilk.get(dayStr) ?? {};
+      for (const [k, v] of Object.entries(parts)) {
+        cur[k] = (cur[k] ?? 0) + v;
+      }
+      byDayMilk.set(dayStr, cur);
+    }
+
     return {
-      daily: (rows as any[]).map((r) => ({
-        date: r.day_date instanceof Date
+      daily: (rows as any[]).map((r) => {
+        const dateStr = r.day_date instanceof Date
           ? r.day_date.toISOString().slice(0, 10)
-          : String(r.day_date),
-        formulaMl: Number(r.formula_ml) || 0,
-        breastCount: Number(r.breast_count) || 0,
-        complementaryCount: Number(r.complementary_count) || 0,
-      })),
+          : String(r.day_date).slice(0, 10);
+        const milkMap = byDayMilk.get(dateStr);
+        const hasMilkBreakdown =
+          milkMap != null && Object.keys(milkMap).length > 0;
+        return {
+          date: dateStr,
+          formulaMl: Number(r.formula_ml) || 0,
+          breastCount: Number(r.breast_count) || 0,
+          formulaCount: Number(r.formula_count) || 0,
+          complementaryCount: Number(r.complementary_count) || 0,
+          ...(hasMilkBreakdown ? { formulaMlByMilkType: milkMap } : {}),
+        };
+      }),
     };
   }
 
