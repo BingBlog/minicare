@@ -155,8 +155,6 @@ export function StackedBarChart({
                   width={actualBarWidth}
                   height={seg.height}
                   fill={seg.color}
-                  rx={j === bar.segments.length - 1 ? 4 : 0}
-                  ry={j === bar.segments.length - 1 ? 4 : 0}
                 />
               ))}
             </g>

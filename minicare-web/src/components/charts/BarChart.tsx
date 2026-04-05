@@ -25,7 +25,7 @@ export function BarChart({
   showDots = false,
   showValues = false,
   barWidth = 0.6,
-  rounded = true,
+  rounded = false,
   className,
 }: BarChartProps) {
   const pad = { ...DEFAULT_PADDING, ...padding }

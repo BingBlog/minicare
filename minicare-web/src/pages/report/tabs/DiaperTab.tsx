@@ -1,11 +1,19 @@
 /**
  * 尿布分析 Tab
- * 展示每日大小便次数趋势、大便性状分布
+ * 展示每日大便次数、每日尿布类型（堆积柱状）
  */
 import React from 'react'
-import { BarChart, DonutChart } from '@/components/charts'
+import { BarChart, StackedBarChart } from '@/components/charts'
 import type { DailyDiaperData } from '@/api/report'
-import { DIAPER_TYPE_LABELS, POOP_TYPE_LABELS } from '@/lib/constants'
+import { DIAPER_TYPE_LABELS } from '@/lib/constants'
+
+const DIAPER_STACK_KEYS = ['wet', 'dirty', 'mixed'] as const
+
+const DIAPER_STACK_COLORS: Record<(typeof DIAPER_STACK_KEYS)[number], string> = {
+  wet: '#7EC8E3',
+  dirty: '#F5A962',
+  mixed: '#9B8ED8',
+}
 
 interface DiaperTabProps {
   data: DailyDiaperData[] | null
@@ -49,12 +57,20 @@ export function DiaperTab({ data, loading }: DiaperTabProps) {
   const avgDirtyPerDay = (totalDirty / data.length).toFixed(1)
   const avgWetPerDay = (totalWet / data.length).toFixed(1)
 
-  // 环形图数据：尿布类型分布
-  const donutData = [
-    { label: '小便', value: totalWet, color: '#7EC8E3' },
-    { label: '大便', value: totalDirty, color: '#F5A962' },
-    { label: '混合', value: totalMixed, color: '#9B8ED8' },
-  ].filter((d) => d.value > 0)
+  const diaperStackedData = data.map((d) => ({
+    label: formatDateLabel(d.date),
+    values: {
+      wet: d.wetCount,
+      dirty: d.dirtyCount,
+      mixed: d.mixedCount,
+    },
+  }))
+
+  const seriesLabels = Object.fromEntries(
+    DIAPER_STACK_KEYS.map((k) => [k, DIAPER_TYPE_LABELS[k] ?? k]),
+  ) as Record<string, string>
+
+  const xInterval = Math.ceil(data.length / 5)
 
   return (
     <div className="space-y-6">
@@ -80,27 +96,27 @@ export function DiaperTab({ data, loading }: DiaperTabProps) {
           axis={{
             yFormat: (v) => `${v}`,
             yMax: Math.max(5, ...barChartData.map(d => d.value)),
-            xLabelInterval: Math.ceil(data.length / 5),
+            xLabelInterval: xInterval,
           }}
         />
       </div>
 
-      {/* 尿布类型分布 */}
-      {donutData.length > 0 && (
-        <div className="bg-white rounded-xl p-4 shadow-sm">
-          <div className="text-sm font-medium text-gray-700 mb-3">尿布类型分布</div>
-          <div className="flex justify-center">
-            <DonutChart
-              data={donutData}
-              size={140}
-              innerRadius={0.65}
-              showCenter
-              centerText="总计"
-              centerValue={`${totalWet + totalDirty + totalMixed}次`}
-            />
-          </div>
-        </div>
-      )}
+      {/* 每日尿布类型（堆积柱状，Y 轴为次数） */}
+      <div className="bg-white rounded-xl p-4 shadow-sm">
+        <div className="text-sm font-medium text-gray-700 mb-3">每日尿布类型</div>
+        <StackedBarChart
+          data={diaperStackedData}
+          height={200}
+          seriesOrder={[...DIAPER_STACK_KEYS]}
+          seriesColors={DIAPER_STACK_COLORS}
+          seriesLabels={seriesLabels}
+          axis={{
+            yFormat: (v) => `${Math.round(v)}次`,
+            xLabelInterval: xInterval,
+          }}
+          showLegend
+        />
+      </div>
 
       {/* 数据洞察 */}
       <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-4">

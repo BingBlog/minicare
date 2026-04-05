@@ -87,7 +87,7 @@ export interface BarChartProps extends BaseChartProps {
   data: DataPoint[]
   /** 柱子宽度比例（0-1） */
   barWidth?: number
-  /** 是否显示为圆角 */
+  /** 柱顶是否圆角（默认 false，与其它柱状图统一为直角） */
   rounded?: boolean
 }
 
