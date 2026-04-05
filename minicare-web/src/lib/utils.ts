@@ -155,6 +155,8 @@ export function getReportRangeText(key: string): string {
  */
 export function getRecordTime(rec: {
   record_time?: string
+  /** 今日时间线 API 使用 time 字段 */
+  time?: string
   startTime?: string
   start_time?: string
   record_date?: string
@@ -163,6 +165,7 @@ export function getRecordTime(rec: {
 }): string {
   return (
     rec.record_time ??
+    rec.time ??
     rec.startTime ??
     rec.start_time ??
     rec.record_date ??

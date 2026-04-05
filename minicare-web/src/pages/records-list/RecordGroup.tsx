@@ -36,7 +36,8 @@ interface RecordGroupProps {
   groupByType?: boolean
 }
 
-function RecordTypeSectionHeader({ typeKey, withTopBorder }: { typeKey: string; withTopBorder: boolean }) {
+/** 同日卡片内按类型分块时的小标题（首页今日时间线复用） */
+export function RecordTypeSectionHeader({ typeKey, withTopBorder }: { typeKey: string; withTopBorder: boolean }) {
   const label = RECORD_TYPE_CFG[typeKey]?.label ?? typeKey
   return (
     <div

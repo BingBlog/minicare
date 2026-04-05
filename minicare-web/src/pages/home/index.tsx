@@ -25,6 +25,8 @@ import SleepBanner from "./SleepBanner";
 import RecordActionSheet from "@/pages/records-list/RecordActionSheet";
 import { RECORD_ROUTES } from "@/lib/constants";
 import type { TodayRecord, SleepRecord } from "@/api/types";
+import type { RecordItem } from "@/api";
+import type { ActionRecord } from "@/pages/records-list/RecordActionSheet";
 import type { BabyStat } from "./HeroSection";
 
 // 支持删除的记录类型（与 recordsApi 的子模块 key 保持一致）
@@ -45,7 +47,7 @@ export default function HomePage() {
   const [ongoingSleep, setOngoingSleep] = useState<SleepRecord | null>(null);
 
   // 时间线记录操作弹层
-  const [selectedRecord, setSelectedRecord] = useState<TodayRecord | null>(null);
+  const [selectedRecord, setSelectedRecord] = useState<ActionRecord | null>(null);
   const [actionOpen, setActionOpen] = useState(false);
 
   const { showToast, ToastNode } = useToast();
@@ -148,25 +150,34 @@ export default function HomePage() {
 
   // ── 时间线操作处理 ────────────────────────────────────────────────────────
 
-  const handleRecordClick = (record: TodayRecord) => {
+  const handleRecordClick = (record: RecordItem) => {
     setSelectedRecord(record);
     setActionOpen(true);
   };
 
-  const handleEdit = (record: TodayRecord) => {
-    const route = RECORD_ROUTES[record.type];
+  const handleEdit = (record: ActionRecord) => {
+    const t = record.type;
+    if (!t) {
+      showToast("暂不支持编辑该类型记录");
+      return;
+    }
+    const route = RECORD_ROUTES[t];
     if (!route) {
       showToast("暂不支持编辑该类型记录");
       return;
     }
     // 跳转表单页，带上 record 数据（表单页通过 location.state.record 读取）
-    // TodayRecord 不包含完整字段，传递 id + type，表单页按需加载
-    navigate(route, { state: { record: { id: record.id, type: record.type } } });
+    navigate(route, { state: { record: { id: record.id, type: t } } });
   };
 
-  const handleDelete = async (record: TodayRecord) => {
+  const handleDelete = async (record: ActionRecord) => {
     if (!currentFamily) return;
-    const type = record.type as DeletableType;
+    const t = record.type;
+    if (!t) {
+      showToast("暂不支持删除该类型记录");
+      return;
+    }
+    const type = t as DeletableType;
     const api = deletableApis[type];
     if (!api?.remove) {
       showToast("暂不支持删除该类型记录");
@@ -217,8 +228,8 @@ export default function HomePage() {
         open={actionOpen}
         record={selectedRecord}
         onClose={() => setActionOpen(false)}
-        onEdit={(rec) => handleEdit(rec as TodayRecord)}
-        onDelete={(rec) => handleDelete(rec as TodayRecord)}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
       />
 
       {/* ── Toast 轻提示 ── */}

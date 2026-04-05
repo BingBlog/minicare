@@ -30,95 +30,15 @@ import {
 import type { RecordItem } from "@/api";
 import type { FilterChipOption } from "@/components/record/FilterChip";
 import type { ActionRecord } from "./RecordActionSheet";
+import RecordsSortModeBar from "@/components/record/RecordsSortModeBar";
+import {
+  ALL_TYPE_KEYS,
+  sortDayItems,
+  type RecordTypeKey,
+  type RecordsSortMode,
+} from "@/lib/records-sort";
 
-// ── 支持的记录类型（对应 API 模块名称） ────────────────────────────────────
-type RecordTypeKey = "feeding" | "sleep" | "diaper" | "activity" | "health" | "growth" | "medical" | "symptom";
-
-/** 所有支持的记录类型 key */
-const ALL_TYPE_KEYS: RecordTypeKey[] = ["feeding", "sleep", "diaper", "activity", "health", "growth", "medical", "symptom"];
-
-/** 日内「按类型」排序时的类型顺序（与 ALL_TYPE_KEYS 一致） */
-const RECORD_LIST_TYPE_ORDER: RecordTypeKey[] = [...ALL_TYPE_KEYS];
-
-export type RecordsSortMode = "time" | "type";
-
-/** 同一日内的记录排序：默认按类型聚类后组内时间降序；可选严格按时间降序 */
-function sortDayItems(items: RecordItem[], mode: RecordsSortMode): RecordItem[] {
-  const copy = [...items];
-  if (mode === "time") {
-    copy.sort(
-      (a, b) => new Date(getRecordTime(b)).getTime() - new Date(getRecordTime(a)).getTime()
-    );
-    return copy;
-  }
-  const orderIdx = (t: string) => {
-    const i = RECORD_LIST_TYPE_ORDER.indexOf(t as RecordTypeKey);
-    return i === -1 ? 999 : i;
-  };
-  copy.sort((a, b) => {
-    const oa = orderIdx(getRecordType(a));
-    const ob = orderIdx(getRecordType(b));
-    if (oa !== ob) return oa - ob;
-    return new Date(getRecordTime(b)).getTime() - new Date(getRecordTime(a)).getTime();
-  });
-  return copy;
-}
-
-function RecordsSortModeBar({
-  mode,
-  onChange,
-}: {
-  mode: RecordsSortMode;
-  onChange: (m: RecordsSortMode) => void;
-}) {
-  const btn = (m: RecordsSortMode, label: string) => {
-    const active = mode === m;
-    return (
-      <button
-        type="button"
-        onClick={() => onChange(m)}
-        className="min-w-0 flex-1 border-none cursor-pointer transition-all active:scale-[0.98]"
-        style={{
-          height: 30,
-          padding: "0 12px",
-          borderRadius: 14,
-          fontSize: 12,
-          fontWeight: active ? 700 : 500,
-          border: "1.5px solid transparent",
-          background: active ? "linear-gradient(135deg, #F87098, #F9A8C0)" : "transparent",
-          color: active ? "#fff" : "#9A8090",
-          boxShadow: active ? "0 2px 8px rgba(248,112,152,0.22)" : "none",
-        }}
-      >
-        {label}
-      </button>
-    );
-  };
-
-  return (
-    <div
-      className="flex-shrink-0 flex justify-center px-4"
-      style={{
-        background: "#fff",
-        borderBottom: "1px solid #F5EFF2",
-        paddingTop: 4,
-        paddingBottom: 10,
-      }}
-    >
-      <div
-        className="flex w-full max-w-md items-center gap-0.5 p-0.5"
-        style={{
-          background: "#F8F2F5",
-          borderRadius: 16,
-          border: "1px solid #EDE6EA",
-        }}
-      >
-        {btn("type", "按类型")}
-        {btn("time", "按时间")}
-      </div>
-    </div>
-  );
-}
+export type { RecordsSortMode } from "@/lib/records-sort";
 
 // ── 筛选栏配置（不含「今天」，今天已提升为标题行独立按钮） ────────────────
 const FILTER_CHIPS: FilterChipOption[] = [
