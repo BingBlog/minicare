@@ -128,6 +128,10 @@ export interface DailyDiaperData {
 export interface DailySleepData {
   date: string;
   totalMin: number;
+  /** 当日睡眠段数（按 start_time 所在日历日） */
+  sessionCount: number;
+  /** 落在 22:00–次日 06:00 的分钟数（按 start_time 所在日累加） */
+  nightSleepMin: number;
 }
 
 export interface DailyHealthData {
@@ -149,6 +153,27 @@ export interface ChartData {
   sleep: { daily: DailySleepData[] };
   health: { daily: DailyHealthData[] };
   growth: { records: GrowthRecord[] };
+}
+
+/** 与前端睡眠 Tab 一致：夜间窗口为当日 22:00 至次日 06:00（本地时区） */
+function minutesInNightWindow22to06(start: Date, end: Date): number {
+  if (!(start instanceof Date) || !(end instanceof Date) || end <= start) return 0;
+  let totalMs = 0;
+  const cursor = new Date(start);
+  cursor.setHours(0, 0, 0, 0);
+  const limit = new Date(end);
+  limit.setDate(limit.getDate() + 2);
+  for (let d = new Date(cursor); d < limit; d.setDate(d.getDate() + 1)) {
+    const winStart = new Date(d);
+    winStart.setHours(22, 0, 0, 0);
+    const winEnd = new Date(d);
+    winEnd.setDate(winEnd.getDate() + 1);
+    winEnd.setHours(6, 0, 0, 0);
+    const o0 = Math.max(start.getTime(), winStart.getTime());
+    const o1 = Math.min(end.getTime(), winEnd.getTime());
+    if (o1 > o0) totalMs += o1 - o0;
+  }
+  return Math.round(totalMs / 60000);
 }
 
 function parseJsonField(val: unknown): unknown {
@@ -456,21 +481,58 @@ export class ReportService {
   ): Promise<{ daily: DailySleepData[] }> {
     const [rows] = await this.db.query<any[]>(
       `SELECT
-         DATE(start_time) AS day_date,
-         SUM(duration_min) AS total_min
+         DATE_FORMAT(start_time, '%Y-%m-%d') AS day_date,
+         SUM(duration_min) AS total_min,
+         COUNT(*) AS session_count
        FROM sleep_record
        WHERE baby_id = ? AND status = 2
          AND DATE(start_time) BETWEEN ? AND ?
        GROUP BY day_date ORDER BY day_date ASC`,
       [babyId, startDate, endDate],
     );
+
+    const [detailRowsRaw] = await this.db.query(
+      `SELECT
+         DATE_FORMAT(start_time, '%Y-%m-%d') AS day_key,
+         start_time,
+         end_time
+       FROM sleep_record
+       WHERE baby_id = ? AND status = 2
+         AND DATE(start_time) BETWEEN ? AND ?
+       ORDER BY start_time ASC`,
+      [babyId, startDate, endDate],
+    );
+    const detailRows = detailRowsRaw as Array<{
+      day_key: string;
+      start_time: Date;
+      end_time: Date | null;
+    }>;
+
+    const nightByDay = new Map<string, number>();
+    for (const r of detailRows) {
+      const st = r.start_time instanceof Date ? r.start_time : new Date(r.start_time);
+      const en = r.end_time
+        ? r.end_time instanceof Date
+          ? r.end_time
+          : new Date(r.end_time)
+        : null;
+      if (!en || en <= st) continue;
+      const dayKey = String(r.day_key);
+      const night = minutesInNightWindow22to06(st, en);
+      if (night <= 0) continue;
+      nightByDay.set(dayKey, (nightByDay.get(dayKey) ?? 0) + night);
+    }
+
     return {
-      daily: (rows as any[]).map((r) => ({
-        date: r.day_date instanceof Date
-          ? r.day_date.toISOString().slice(0, 10)
-          : String(r.day_date),
-        totalMin: Number(r.total_min) || 0,
-      })),
+      daily: (rows as any[]).map((r) => {
+        const dateStr = String(r.day_date).slice(0, 10);
+        return {
+          date: dateStr,
+          totalMin: Number(r.total_min) || 0,
+          sessionCount: Number(r.session_count) || 0,
+          nightSleepMin: nightByDay.get(dateStr) ?? 0,
+        };
+      }),
     };
   }
 

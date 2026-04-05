@@ -23,6 +23,20 @@ const REFERENCE_LINE_COLOR = '#D1D5DB'
 const DATA_POINT_COLOR = '#F87098'
 
 // 测量类型配置
+/** 与 LineChart 一致：用三次贝塞尔在相邻点间平滑过渡 */
+function smoothPathFromPoints(points: { x: number; y: number }[]): string {
+  if (points.length === 0) return ''
+  if (points.length === 1) return `M ${points[0].x} ${points[0].y}`
+  return points
+    .map((p, i) => {
+      if (i === 0) return `M ${p.x} ${p.y}`
+      const prev = points[i - 1]
+      const cpx = (prev.x + p.x) / 2
+      return `C ${cpx} ${prev.y} ${cpx} ${p.y} ${p.x} ${p.y}`
+    })
+    .join(' ')
+}
+
 const MEASURE_CONFIG = {
   weight: {
     label: '体重',
@@ -276,24 +290,20 @@ export function GrowthChart({
     const percentileKeys: Array<'p3' | 'p15' | 'p50' | 'p85' | 'p97'> = ['p3', 'p15', 'p50', 'p85', 'p97']
 
     percentileKeys.forEach((key) => {
-      const pathPoints: string[] = []
+      const coords: { x: number; y: number }[] = []
       for (let m = 0; m <= maxAgeMonths; m += 1) {
         const point = percentiles.find((p) => p.ageMonths === m)
         if (point && point[gender]) {
           const val = point[gender]![key]
           const scaledVal = measureType === 'weight' ? val / 1000 : val / 10
-          if (pathPoints.length === 0) {
-            pathPoints.push(`M ${xScale(m)} ${yScale(scaledVal)}`)
-          } else {
-            pathPoints.push(`L ${xScale(m)} ${yScale(scaledVal)}`)
-          }
+          coords.push({ x: xScale(m), y: yScale(scaledVal) })
         }
       }
-      if (pathPoints.length > 1) {
+      if (coords.length > 1) {
         lines.push(
           <path
             key={`line-${key}`}
-            d={pathPoints.join(' ')}
+            d={smoothPathFromPoints(coords)}
             fill="none"
             stroke={REFERENCE_LINE_COLOR}
             strokeWidth={key === 'p50' ? 1.5 : 1}
@@ -310,7 +320,9 @@ export function GrowthChart({
   const renderDataPoints = () => {
     if (data.length === 0) return null
 
-    const validData = data.filter((d) => d.value > 0)
+    const validData = data
+      .filter((d) => d.value > 0)
+      .sort((a, b) => a.ageMonths - b.ageMonths)
     if (validData.length === 0) return null
 
     // 转换数据
@@ -320,10 +332,7 @@ export function GrowthChart({
       ...d,
     }))
 
-    // 绘制连线
-    const linePath = points
-      .map((p, i) => (i === 0 ? `M ${p.x} ${p.y}` : `L ${p.x} ${p.y}`))
-      .join(' ')
+    const linePath = smoothPathFromPoints(points.map((p) => ({ x: p.x, y: p.y })))
 
     return (
       <g className="data-series">

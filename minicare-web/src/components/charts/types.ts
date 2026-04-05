@@ -68,8 +68,15 @@ export interface BaseChartProps {
 
 /** 折线图 Props */
 export interface LineChartProps extends BaseChartProps {
-  data: DataPoint[]
-  /** 是否填充区域 */
+  /** 单系列数据（与 seriesData 二选一） */
+  data?: DataPoint[]
+  /** 多系列：每条与单系列相同 X 顺序；与 data 二选一 */
+  seriesData?: SeriesDataPoint[]
+  /** 多系列时必填：绘制顺序与颜色键 */
+  seriesOrder?: string[]
+  /** 多系列图例文案（默认用 series key） */
+  seriesLabels?: Record<string, string>
+  /** 是否填充区域（仅单系列，或多系列时只填充 seriesOrder 第一项） */
   fillArea?: boolean
   /** 是否显示平滑曲线 */
   smooth?: boolean
