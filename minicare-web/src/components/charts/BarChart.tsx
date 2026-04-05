@@ -4,6 +4,11 @@
  */
 import React from 'react'
 import type { BarChartProps, DataPoint } from './types'
+import {
+  CHART_X_LABEL_BOTTOM_PAD,
+  ChartRotatedXLabel,
+  chartDefaultXLabelInterval,
+} from './chartAxis'
 
 const DEFAULT_COLORS = {
   primary: '#F87098',
@@ -13,7 +18,7 @@ const DEFAULT_COLORS = {
   quinary: '#6BCB77',
 }
 
-const DEFAULT_PADDING = { top: 20, right: 10, bottom: 40, left: 50 }
+const DEFAULT_PADDING = { top: 20, right: 10, bottom: CHART_X_LABEL_BOTTOM_PAD, left: 50 }
 
 export function BarChart({
   data,
@@ -64,7 +69,7 @@ export function BarChart({
   })
 
   // X 轴标签间隔
-  const xLabelInterval = axis.xLabelInterval ?? Math.ceil(data.length / 6)
+  const xLabelInterval = axis.xLabelInterval ?? chartDefaultXLabelInterval(data.length)
 
   // 计算柱子位置和高度
   const bars = data.map((d, i) => {
@@ -171,16 +176,9 @@ export function BarChart({
           if (i % xLabelInterval !== 0 && i !== data.length - 1) return null
           const x = pad.left + i * barSpacing + barSpacing / 2
           return (
-            <text
-              key={i}
-              x={x}
-              y={chartHeight - pad.bottom + 20}
-              textAnchor="middle"
-              fill="#9CA3AF"
-              fontSize={11}
-            >
+            <ChartRotatedXLabel key={i} x={x} chartHeight={chartHeight} paddingBottom={pad.bottom}>
               {d.label}
-            </text>
+            </ChartRotatedXLabel>
           )
         })}
       </g>

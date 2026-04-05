@@ -119,7 +119,6 @@ export function SleepTab({ data, loading }: SleepTabProps) {
               const t = n.toFixed(1)
               return t.endsWith('.0') ? `${Math.round(n)}h` : `${t}h`
             },
-            xLabelInterval: Math.ceil(data.length / 5),
           }}
         />
       </div>

@@ -4,9 +4,11 @@
  */
 import React from 'react'
 import type { GrowthChartProps, GrowthDataPoint, PercentileCurve } from './types'
+import { ChartRotatedXLabel } from './chartAxis'
 
 const DEFAULT_HEIGHT = 280
-const DEFAULT_PADDING = { top: 30, right: 30, bottom: 50, left: 55 }
+/** 底部略大于通用值，为「月龄」标题与倾斜刻度留出空间 */
+const DEFAULT_PADDING = { top: 30, right: 30, bottom: 54, left: 55 }
 
 // 百分位区域颜色
 const PERCENTILE_COLORS = {
@@ -407,24 +409,17 @@ export function GrowthChart({
           </text>
         </g>
 
-        {/* X 轴标签 */}
+        {/* X 轴标签（月龄刻度，倾斜以与其它图表一致） */}
         <g className="x-axis-labels">
           {xTickMonths.map((m) => (
-            <text
-              key={m}
-              x={xScale(m)}
-              y={chartHeight - pad.bottom + 20}
-              textAnchor="middle"
-              fill="#9CA3AF"
-              fontSize={11}
-            >
+            <ChartRotatedXLabel key={m} x={xScale(m)} chartHeight={chartHeight} paddingBottom={pad.bottom}>
               {m}月
-            </text>
+            </ChartRotatedXLabel>
           ))}
           {/* X 轴标题 */}
           <text
             x={chartWidth / 2}
-            y={chartHeight - 10}
+            y={chartHeight - 4}
             textAnchor="middle"
             fill="#6B7280"
             fontSize={11}

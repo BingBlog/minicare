@@ -128,8 +128,6 @@ export function FeedingTab({ data, loading }: FeedingTabProps) {
   const avgComplementary =
     histDays > 0 ? Math.round(totalComplementaryHist / histDays) : null
 
-  const xInterval = Math.ceil(data.length / 5)
-
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-3 gap-3">
@@ -185,7 +183,6 @@ export function FeedingTab({ data, loading }: FeedingTabProps) {
           colors={{ primary: '#F87098' }}
           axis={{
             yFormat: (v) => `${Math.round(v)}ml`,
-            xLabelInterval: xInterval,
           }}
         />
       </div>
@@ -204,7 +201,6 @@ export function FeedingTab({ data, loading }: FeedingTabProps) {
             }}
             axis={{
               yFormat: (v) => `${Math.round(v)}次`,
-              xLabelInterval: xInterval,
             }}
             showLegend
           />
@@ -222,7 +218,6 @@ export function FeedingTab({ data, loading }: FeedingTabProps) {
             seriesLabels={milkSeries.seriesLabels}
             axis={{
               yFormat: (v) => `${Math.round(v)}ml`,
-              xLabelInterval: xInterval,
             }}
             showLegend
           />

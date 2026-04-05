@@ -70,8 +70,6 @@ export function DiaperTab({ data, loading }: DiaperTabProps) {
     DIAPER_STACK_KEYS.map((k) => [k, DIAPER_TYPE_LABELS[k] ?? k]),
   ) as Record<string, string>
 
-  const xInterval = Math.ceil(data.length / 5)
-
   return (
     <div className="space-y-6">
       {/* 汇总指标卡 */}
@@ -96,7 +94,6 @@ export function DiaperTab({ data, loading }: DiaperTabProps) {
           axis={{
             yFormat: (v) => `${v}`,
             yMax: Math.max(5, ...barChartData.map(d => d.value)),
-            xLabelInterval: xInterval,
           }}
         />
       </div>
@@ -112,7 +109,6 @@ export function DiaperTab({ data, loading }: DiaperTabProps) {
           seriesLabels={seriesLabels}
           axis={{
             yFormat: (v) => `${Math.round(v)}次`,
-            xLabelInterval: xInterval,
           }}
           showLegend
         />

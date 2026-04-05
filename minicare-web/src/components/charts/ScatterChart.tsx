@@ -3,8 +3,13 @@
  */
 import React from 'react'
 import type { ScatterChartProps } from './types'
+import {
+  CHART_X_LABEL_BOTTOM_PAD,
+  ChartRotatedXLabel,
+  chartDefaultXLabelInterval,
+} from './chartAxis'
 
-const DEFAULT_PADDING = { top: 16, right: 10, bottom: 36, left: 44 }
+const DEFAULT_PADDING = { top: 16, right: 10, bottom: CHART_X_LABEL_BOTTOM_PAD, left: 44 }
 
 export function ScatterChart({
   points,
@@ -29,7 +34,7 @@ export function ScatterChart({
   const yRange = yMax - yMin || 1
 
   const xLabelIntervalResolved =
-    xLabelInterval ?? Math.ceil(Math.max(1, xSlotCount) / 6)
+    xLabelInterval ?? chartDefaultXLabelInterval(Math.max(1, xSlotCount))
 
   const yTickValues = Array.from({ length: yTicks + 1 }, (_, i) => {
     const value = yMax - (yRange * i) / yTicks
@@ -118,16 +123,14 @@ export function ScatterChart({
           {xLabels.map((label, i) => {
             if (i % xLabelIntervalResolved !== 0 && i !== xSlotCount - 1) return null
             return (
-              <text
+              <ChartRotatedXLabel
                 key={i}
                 x={xPos(i)}
-                y={chartHeight - pad.bottom + 18}
-                textAnchor="middle"
-                fill="#9CA3AF"
-                fontSize={11}
+                chartHeight={chartHeight}
+                paddingBottom={pad.bottom}
               >
                 {label}
-              </text>
+              </ChartRotatedXLabel>
             )
           })}
         </g>

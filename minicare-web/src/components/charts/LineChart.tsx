@@ -5,6 +5,11 @@
  */
 import React from 'react'
 import type { LineChartProps, DataPoint, SeriesDataPoint } from './types'
+import {
+  CHART_X_LABEL_BOTTOM_PAD,
+  ChartRotatedXLabel,
+  chartDefaultXLabelInterval,
+} from './chartAxis'
 
 const DEFAULT_COLORS = {
   primary: '#F87098',
@@ -14,7 +19,7 @@ const DEFAULT_COLORS = {
   quinary: '#6BCB77',
 }
 
-const DEFAULT_PADDING = { top: 20, right: 10, bottom: 40, left: 50 }
+const DEFAULT_PADDING = { top: 20, right: 10, bottom: CHART_X_LABEL_BOTTOM_PAD, left: 50 }
 
 const SERIES_COLOR_KEYS = ['primary', 'secondary', 'tertiary', 'quaternary', 'quinary'] as const
 
@@ -115,7 +120,7 @@ export function LineChart({
     return axis.yFormat ? axis.yFormat(clean) : Math.round(clean).toString()
   })
 
-  const xLabelInterval = axis.xLabelInterval ?? Math.ceil(n / 6)
+  const xLabelInterval = axis.xLabelInterval ?? chartDefaultXLabelInterval(n)
 
   const seriesColorList = isMulti
     ? seriesOrder!.map((_, i) => {
@@ -303,16 +308,9 @@ export function LineChart({
             const x = pad.left + i * xStep
             const label = 'label' in d ? d.label : (d as DataPoint).label
             return (
-              <text
-                key={i}
-                x={x}
-                y={chartHeight - pad.bottom + 20}
-                textAnchor="middle"
-                fill="#9CA3AF"
-                fontSize={11}
-              >
+              <ChartRotatedXLabel key={i} x={x} chartHeight={chartHeight} paddingBottom={pad.bottom}>
                 {label}
-              </text>
+              </ChartRotatedXLabel>
             )
           })}
         </g>

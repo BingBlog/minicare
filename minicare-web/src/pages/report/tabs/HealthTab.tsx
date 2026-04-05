@@ -132,7 +132,6 @@ export function HealthTab({ data, loading }: HealthTabProps) {
             yFormat={(v) => `${v.toFixed(1)}°C`}
             yTicks={4}
             height={200}
-            xLabelInterval={Math.ceil(xSlotCount / 5)}
           />
           <div className="text-xs text-gray-400 mt-2">
             圆点越大表示体温越高；正常约 36.5°C～37.5°C，超过 38°C 可能发热
@@ -153,7 +152,6 @@ export function HealthTab({ data, loading }: HealthTabProps) {
             yFormat={moodYFormat}
             yTicks={3}
             height={220}
-            xLabelInterval={Math.ceil(xSlotCount / 5)}
           />
           <div className="text-xs text-gray-400 mt-2">
             纵轴为情绪倾向；圆点越大表示烦躁、哭闹等需关注状态
