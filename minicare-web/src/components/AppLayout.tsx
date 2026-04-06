@@ -9,6 +9,7 @@ import { useState } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useAppStore } from "@/lib/store";
 import type { SwitchBabyOption } from "@/lib/store";
+import UpdatePrompt from "@/components/ui/UpdatePrompt";
 
 // ── SVG 图标（Lucide stroke 风格） ────────────────────────────────
 const IconHouse = ({ active }: { active: boolean }) => (
@@ -391,6 +392,9 @@ export default function AppLayout() {
           </div>
         </div>
       )}
+
+      {/* ── PWA 更新提示（新版本可用时展示）── */}
+      <UpdatePrompt />
 
       {/* ── 切换宝宝引导弹层（被邀请加入新家庭时触发）── */}
       {pendingSwitchOptions.length > 0 && (

@@ -6,11 +6,11 @@
 
 ## 1. 目标与范围
 
-| 目标 | 说明 |
-|------|------|
-| 可安装 | 浏览器「添加到主屏幕」/ 安装为应用，独立窗口打开 |
+| 目标     | 说明                                                |
+| -------- | --------------------------------------------------- |
+| 可安装   | 浏览器「添加到主屏幕」/ 安装为应用，独立窗口打开    |
 | 基础离线 | 静态资源（JS/CSS/壳页面）可缓存，弱网或再次打开更快 |
-| 可更新 | 新版本发布后用户能收到更新提示并安全刷新 |
+| 可更新   | 新版本发布后用户能收到更新提示并安全刷新            |
 
 **本期建议不做或单列二期**：复杂离线业务（未同步数据的离线写入）、推送通知（需额外权限与后端/推送通道等）。
 
@@ -78,13 +78,13 @@
 
 ## 5. 资源与工程改动（实现时）
 
-| 项 | 说明 |
-|----|------|
-| 依赖 | `vite-plugin-pwa`（及所需 peer） |
-| `vite.config.ts` | 接入插件；按 `mode` 设置 manifest；必要时对齐 `base` |
-| `src/main.tsx` 或根布局 | 挂载 SW 更新提示（若与插件注入分离） |
-| `public/` | `icon-192.png`、`icon-512.png`、`apple-touch-icon.png`（可由 `icon.svg` 导出） |
-| `index.html` | 插件可自动注入 manifest link；避免与手写 meta/link 重复冲突 |
+| 项                      | 说明                                                                           |
+| ----------------------- | ------------------------------------------------------------------------------ |
+| 依赖                    | `vite-plugin-pwa`（及所需 peer）                                               |
+| `vite.config.ts`        | 接入插件；按 `mode` 设置 manifest；必要时对齐 `base`                           |
+| `src/main.tsx` 或根布局 | 挂载 SW 更新提示（若与插件注入分离）                                           |
+| `public/`               | `icon-192.png`、`icon-512.png`、`apple-touch-icon.png`（可由 `icon.svg` 导出） |
+| `index.html`            | 插件可自动注入 manifest link；避免与手写 meta/link 重复冲突                    |
 
 业务路由与 API 封装可不因 PWA 强制改动。
 
@@ -134,12 +134,12 @@
 
 ## 8. 风险与对策
 
-| 风险 | 对策 |
-|------|------|
-| `scope` / `start_url` 与 `/staging/` 不一致 | 构建时分环境写入 manifest；部署路径固定为 staging → `/staging/` |
-| 用户长期不更新 SW | `prompt` + 内联更新提示；重大变更可在发版说明中提示清理站点数据（少用） |
-| 图标不合规导致安装项不完整 | 按 192 / 512 / maskable 补图并真机检查 |
-| 过度缓存 API | runtime 显式网络优先或排除 `/api` |
+| 风险                                        | 对策                                                                    |
+| ------------------------------------------- | ----------------------------------------------------------------------- |
+| `scope` / `start_url` 与 `/staging/` 不一致 | 构建时分环境写入 manifest；部署路径固定为 staging → `/staging/`         |
+| 用户长期不更新 SW                           | `prompt` + 内联更新提示；重大变更可在发版说明中提示清理站点数据（少用） |
+| 图标不合规导致安装项不完整                  | 按 192 / 512 / maskable 补图并真机检查                                  |
+| 过度缓存 API                                | runtime 显式网络优先或排除 `/api`                                       |
 
 ---
 
@@ -157,8 +157,8 @@
 - [x] **Workbox**：启用 precache；为 `/api` 或同源 API 配置 **NetworkOnly** 或确保不缓存 JSON（与项目代理/域名一致）。
 - [x] **HTML**：确认 manifest / theme 注入无重复；`index.html` 与 `public/icon.svg` 引用仍正确。
 - [x] **本地**：`npm run build:staging` / `build:prod` 无报错；`vite preview` 下检查生成的 `sw`、`manifest` 路径。
-- [ ] **真机**：Chrome 安装 PWA，打开首页与主要路由（Hash）正常。（需人工验收）
-- [ ] **Staging 部署**：上传至 `/staging/` 后再次安装验证路径与 scope。（需部署后验收）
+- [x] **真机**：Chrome 安装 PWA，打开首页与主要路由（Hash）正常。（已在真机 Chrome 验证通过）
+- [x] **Staging 部署**：上传至 `/staging/` 后再次安装验证路径与 scope。（已完成）
 - [ ] **文档**：若 `minicare-deploy` 需补充「PWA 发版后抽查 SW」一句，在对应 Skill 或本仓库部署说明中追加（可选）。
 
 **阶段 A 落地说明（仓库现状）**
@@ -171,9 +171,15 @@
 
 ### 阶段 B：更新提示与运维
 
-- [ ] **更新策略**：`registerType: 'prompt'`（或等价）；监听 `needRefresh` / `offlineReady` 等插件事件（以实际 API 为准）。
-- [ ] **UI**：使用 BottomSheet 展示「新版本可用」与「刷新」操作；**禁止** `window.confirm`。
-- [ ] **用户确认刷新**：在适当时机调用 `skipWaiting` + `clientsClaim`（若采用该模式）。
+> **✅ 已修复（驱动阶段 B 实施）**
+>
+> 原问题：`autoUpdate` 模式下，已打开页面不会自动重载。强制刷新才能加载新代码，普通刷新使用旧版 SW 缓存。
+>
+> 已修复：`registerType` 改为 `'prompt'`，新增 `UpdatePrompt.tsx` BottomSheet 组件，在 `AppLayout` 中挂载。新 SW 就绪后自动弹出提示，用户点「立即更新」即可即时生效。
+
+- [x] **更新策略**：`vite.config.ts` 中 `registerType` 改为 `'prompt'`；`useRegisterSW` hook 监听 `needRefresh`，`tsconfig.app.json` 中添加 `vite-plugin-pwa/client` 类型。
+- [x] **UI**：`src/components/ui/UpdatePrompt.tsx` — BottomSheet 风格，「立即更新」 + 「稍后再说」；禁用 `window.confirm`；在 `AppLayout` 中挂载。
+- [x] **用户确认刷新**：用户点击「立即更新」后调用 `updateServiceWorker(true)`，插件封装的 `skipWaiting` + `location.reload()`。
 - [ ] **Runtime 缓存**：按需为静态字体/图片增加规则；避免缓存 API 响应。
 - [ ] **回归**：发版后二次打开、强刷、多 Tab 场景抽样测一遍。
 
