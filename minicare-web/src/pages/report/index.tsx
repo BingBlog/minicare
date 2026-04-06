@@ -26,10 +26,10 @@ type TabKey = "feeding" | "diaper" | "growth" | "sleep" | "health";
 
 // Tab 配置
 const TAB_CONFIG: Array<{ key: TabKey; label: string }> = [
-  { key: "feeding", label: "饮食" },
-  { key: "diaper", label: "尿布" },
   { key: "growth", label: "生长" },
+  { key: "feeding", label: "饮食" },
   { key: "sleep", label: "睡眠" },
+  { key: "diaper", label: "尿布" },
   { key: "health", label: "健康" },
 ];
 
@@ -38,19 +38,19 @@ const TIME_RANGES: Array<{ key: string; label: string; days: number }> = [
   { key: "7", label: "7天", days: 7 },
   { key: "14", label: "14天", days: 14 },
   { key: "30", label: "30天", days: 30 },
-  { key: "90", label: "近3个月", days: 90 },
-  { key: "180", label: "近半年", days: 180 },
-  { key: "365", label: "近一年", days: 365 },
-  { key: "birth", label: "从出生", days: 0 }, // 特殊处理
+  { key: "90", label: "90天", days: 90 },
+  { key: "180", label: "半年", days: 180 },
+  { key: "365", label: "一年", days: 365 },
+  // { key: "birth", label: "出生", days: 0 }, // 特殊处理
 ];
 
 // 各 Tab 默认时间范围
 const DEFAULT_RANGE_MAP: Record<TabKey, string> = {
   feeding: "30",
-  diaper: "14",
+  diaper: "30",
   growth: "birth",
-  sleep: "14",
-  health: "7",
+  sleep: "30",
+  health: "30",
 };
 
 /**

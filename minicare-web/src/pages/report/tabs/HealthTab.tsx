@@ -65,7 +65,7 @@ export function HealthTab({ data, loading }: HealthTabProps) {
       xSlot: i,
       y: d.temperature!,
       r: tempToRadius(d.temperature!),
-      color: '#F87098',
+      color: d.temperature! > 37.4 ? '#F05060' : '#A8D8A8',
     }))
 
   const temps = data.filter((d) => d.temperature !== null).map((d) => d.temperature!)
@@ -133,8 +133,15 @@ export function HealthTab({ data, loading }: HealthTabProps) {
             yTicks={4}
             height={200}
           />
-          <div className="text-xs text-gray-400 mt-2">
-            圆点越大表示体温越高；正常约 36.5°C～37.5°C，超过 38°C 可能发热
+          <div className="flex items-center gap-4 mt-2 text-xs text-gray-400">
+            <span className="flex items-center gap-1">
+              <span className="inline-block w-2 h-2 rounded-full" style={{ backgroundColor: '#A8D8A8' }}></span>
+              正常（≤37.4°C）
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="inline-block w-2 h-2 rounded-full" style={{ backgroundColor: '#F05060' }}></span>
+              偏高（&gt;37.4°C）
+            </span>
           </div>
         </div>
       )}
