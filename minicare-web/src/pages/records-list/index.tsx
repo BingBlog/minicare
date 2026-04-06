@@ -4,7 +4,7 @@
  *
  * 组件结构（已按职责拆分）：
  * ┌─ RecordsPage（路由级页面，负责数据获取 + 状态管理）
- * │  ├─ FilterBar（顶部横向筛选栏）          → @/components/record/FilterChip
+ * │  ├─ FilterBar（顶部单行筛选 + 更多下拉） → @/components/record/FilterChip
  * │  ├─ RecordGroup × N（按日期分组的记录组） → ./records-list/RecordGroup
  * │  │  └─ RecordListItem × N（单条记录）    → ./records-list/RecordListItem
  * │  ├─ RecordActionSheet（操作弹层）         → ./records-list/RecordActionSheet
@@ -21,11 +21,22 @@ import EmptyState from "@/components/ui/EmptyState";
 import { FilterBar } from "@/components/record/FilterChip";
 import RecordGroup from "./RecordGroup";
 import RecordActionSheet from "./RecordActionSheet";
-import { getRecordTime, getDateKey, getDateLabel, getRecordType } from "@/lib/utils";
+import {
+  getRecordTime,
+  getDateKey,
+  getDateLabel,
+  getRecordType,
+} from "@/lib/utils";
 import { RECORD_ROUTES } from "@/lib/constants";
 import {
-  IconMilk, IconMoon, IconDroplets, IconActivity,
-  IconHeart, IconSmile, IconRuler, IconStethoscope,
+  IconMilk,
+  IconMoon,
+  IconDroplets,
+  IconActivity,
+  IconHeart,
+  IconSmile,
+  IconRuler,
+  IconStethoscope,
 } from "@/components/ui/icons";
 import type { RecordItem } from "@/api";
 import type { FilterChipOption } from "@/components/record/FilterChip";
@@ -40,17 +51,51 @@ import {
 
 export type { RecordsSortMode } from "@/lib/records-sort";
 
-// ── 筛选栏配置（不含「今天」，今天已提升为标题行独立按钮） ────────────────
-const FILTER_CHIPS: FilterChipOption[] = [
-  { key: "all",      label: "全部" },
-  { key: "feeding",  label: "饮食",  icon: <IconMilk size={12} color="currentColor" /> },
-  { key: "sleep",    label: "睡眠",  icon: <IconMoon size={12} color="currentColor" /> },
-  { key: "activity", label: "活动",  icon: <IconActivity size={12} color="currentColor" /> },
-  { key: "diaper",   label: "尿布",  icon: <IconDroplets size={12} color="currentColor" /> },
-  { key: "health",   label: "健康",  icon: <IconHeart size={12} color="currentColor" /> },
-  { key: "symptom",  label: "表现",  icon: <IconSmile size={12} color="currentColor" /> },
-  { key: "growth",   label: "生长",  icon: <IconRuler size={12} color="currentColor" /> },
-  { key: "medical",  label: "医疗",  icon: <IconStethoscope size={12} color="currentColor" /> },
+// ── 筛选栏：主行 = 全部 + 饮食/尿布/生长/睡眠；其余在「更多」内 ─────────────
+const FILTER_PRIMARY: FilterChipOption[] = [
+  { key: "all", label: "全部" },
+  {
+    key: "feeding",
+    label: "饮食",
+    icon: <IconMilk size={12} color="currentColor" />,
+  },
+  {
+    key: "diaper",
+    label: "尿布",
+    icon: <IconDroplets size={12} color="currentColor" />,
+  },
+  {
+    key: "growth",
+    label: "生长",
+    icon: <IconRuler size={12} color="currentColor" />,
+  },
+];
+const FILTER_MORE: FilterChipOption[] = [
+  {
+    key: "sleep",
+    label: "睡眠",
+    icon: <IconMoon size={12} color="currentColor" />,
+  },
+  {
+    key: "activity",
+    label: "活动",
+    icon: <IconActivity size={12} color="currentColor" />,
+  },
+  {
+    key: "health",
+    label: "健康",
+    icon: <IconHeart size={12} color="currentColor" />,
+  },
+  {
+    key: "symptom",
+    label: "表现",
+    icon: <IconSmile size={12} color="currentColor" />,
+  },
+  {
+    key: "medical",
+    label: "医疗",
+    icon: <IconStethoscope size={12} color="currentColor" />,
+  },
 ];
 
 export default function RecordsPage() {
@@ -78,7 +123,11 @@ export default function RecordsPage() {
   const detailedApis = recordsApi as unknown as Record<
     RecordTypeKey,
     {
-      list: (familyId: string, babyId: string, params?: { limit?: number; offset?: number }) => Promise<RecordItem[]>;
+      list: (
+        familyId: string,
+        babyId: string,
+        params?: { limit?: number; offset?: number },
+      ) => Promise<RecordItem[]>;
       remove?: (familyId: string, id: string) => Promise<void>;
     }
   >;
@@ -97,9 +146,12 @@ export default function RecordsPage() {
         if (activeFilter === "all") {
           // 并发加载所有类型（使用 allSettled 避免某一类失败影响其他）
           const results = await Promise.allSettled(
-            ALL_TYPE_KEYS.map((t) =>
-              detailedApis[t]?.list(currentFamily.id, currentBaby!.id, { limit: 30 }) ?? Promise.resolve([])
-            )
+            ALL_TYPE_KEYS.map(
+              (t) =>
+                detailedApis[t]?.list(currentFamily.id, currentBaby!.id, {
+                  limit: 30,
+                }) ?? Promise.resolve([]),
+            ),
           );
           results.forEach((r) => {
             if (r.status === "fulfilled") allRecs = allRecs.concat(r.value);
@@ -108,19 +160,28 @@ export default function RecordsPage() {
           // 只加载指定类型（单类型 API 提高响应速度）
           const t = activeFilter as RecordTypeKey;
           if (detailedApis[t]) {
-            allRecs = await detailedApis[t].list(currentFamily.id, currentBaby!.id, { limit: 50 });
+            allRecs = await detailedApis[t].list(
+              currentFamily.id,
+              currentBaby!.id,
+              { limit: 50 },
+            );
           }
         }
 
         // 按时间降序（最新在前）
         allRecs.sort((a, b) => {
-          return new Date(getRecordTime(b)).getTime() - new Date(getRecordTime(a)).getTime();
+          return (
+            new Date(getRecordTime(b)).getTime() -
+            new Date(getRecordTime(a)).getTime()
+          );
         });
 
         // 「今天」时间过滤（由标题行切换按钮驱动，与类型筛选正交）
         if (todayOnly) {
           const todayKey = getDateKey(new Date().toISOString());
-          allRecs = allRecs.filter((r) => getDateKey(getRecordTime(r)) === todayKey);
+          allRecs = allRecs.filter(
+            (r) => getDateKey(getRecordTime(r)) === todayKey,
+          );
         }
 
         setRecords(allRecs);
@@ -157,11 +218,15 @@ export default function RecordsPage() {
     dateMap.get(dk)!.push(rec);
   }
 
+  /** 选中具体类型时固定按时间线展示；仅「全部」时使用顶栏排序切换 */
+  const effectiveSortMode: RecordsSortMode =
+    activeFilter === "all" ? sortMode : "time";
+
   const grouped = Array.from(dateMap.entries()).map(([dk, items]) => ({
     dateKey: dk,
     dateLabel: getDateLabel(getRecordTime(items[0])),
     isToday: dk === todayKey,
-    items: sortDayItems(items, sortMode),
+    items: sortDayItems(items, effectiveSortMode),
   }));
 
   // ── 操作记录处理 ──────────────────────────────────────────────────────────
@@ -205,7 +270,8 @@ export default function RecordsPage() {
     <div className="h-full bg-bg flex flex-col">
       {/* ── 筛选栏 ── */}
       <FilterBar
-        options={FILTER_CHIPS}
+        primaryOptions={FILTER_PRIMARY}
+        moreOptions={FILTER_MORE}
         activeKey={activeFilter}
         onChange={setActiveFilter}
         count={loading ? undefined : records.length}
@@ -213,7 +279,9 @@ export default function RecordsPage() {
         onToggleToday={() => setTodayOnly((v) => !v)}
       />
 
-      <RecordsSortModeBar mode={sortMode} onChange={setSortMode} />
+      {activeFilter === "all" && (
+        <RecordsSortModeBar mode={sortMode} onChange={setSortMode} />
+      )}
 
       {/* ── 记录列表 ── */}
       <div className="flex-1 overflow-y-auto pb-24">
@@ -222,7 +290,11 @@ export default function RecordsPage() {
             <InlineSpinner />
           </div>
         ) : records.length === 0 ? (
-          <EmptyState emoji="📋" title="暂无记录" subtitle={"点击底部 + 按钮开始记录\n宝宝的每一天"} />
+          <EmptyState
+            emoji="📋"
+            title="暂无记录"
+            subtitle={"点击底部 + 按钮开始记录\n宝宝的每一天"}
+          />
         ) : (
           <>
             {grouped.map((group) => (
@@ -230,12 +302,14 @@ export default function RecordsPage() {
                 key={group.dateKey}
                 group={group}
                 onRecordClick={handleRecordClick}
-                groupByType={sortMode === "type"}
+                groupByType={effectiveSortMode === "type"}
               />
             ))}
 
             {/* 底部提示文字 */}
-            <div className="text-center text-[11px] text-[#C0A8AD] py-3">点击记录卡片可编辑或删除</div>
+            <div className="text-center text-[11px] text-[#C0A8AD] py-3">
+              点击记录卡片可编辑或删除
+            </div>
             <div className="h-4" />
           </>
         )}

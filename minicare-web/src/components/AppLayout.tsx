@@ -254,7 +254,9 @@ export default function AppLayout() {
   return (
     <div className="flex flex-col h-screen max-w-[430px] mx-auto bg-bg overflow-x-hidden overflow-y-hidden">
       {/* 页面内容 */}
-      <div className="flex-1 overflow-y-auto" style={{ paddingBottom: 56 }}>
+      <div
+        className="flex-1 overflow-y-auto overflow-x-hidden"
+        style={{ paddingBottom: 56 }}>
         <div className="h-full">
           <Outlet />
         </div>

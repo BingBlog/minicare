@@ -129,6 +129,15 @@ export const IconChevronRight = ({ size = 16, color = '#C0A8AD', style, classNam
   </svg>
 )
 
+/** 下箭头（下拉、展开） */
+export const IconChevronDown = ({ size = 16, color = 'currentColor', style, className }: IconProps) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
+    strokeLinecap="round" strokeLinejoin="round"
+    style={{ width: size, height: size, flexShrink: 0, ...style }} className={className}>
+    <polyline points="6 9 12 15 18 9"/>
+  </svg>
+)
+
 /** 铅笔/编辑 */
 export const IconPencil = ({ size = 14, color = 'currentColor', style, className }: IconProps) => (
   <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
