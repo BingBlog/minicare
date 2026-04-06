@@ -649,15 +649,21 @@ export function getRecordListCompactParts(
     }
 
     case 'growth': {
-      const hasH = d.height_mm != null
-      const hasW = d.weight_g != null
-      const hasHC = d.head_mm != null
-      const metrics = [hasH && '身高', hasW && '体重', hasHC && '头围'].filter(Boolean).join('·')
+      const h  = d.height_mm != null ? (Number(d.height_mm) / 10).toFixed(1) : null
+      const w  = d.weight_g  != null ? (Number(d.weight_g) / 1000).toFixed(2) : null
+      const hc = d.head_mm   != null ? (Number(d.head_mm) / 10).toFixed(1) : null
+
+      const chips: React.ReactNode[] = []
+      if (h)  chips.push(<SummaryMetric key="h"  value={h}  unit="cm"    color="#9B8ED8" bg="#F3F0FF" />)
+      if (w)  chips.push(<SummaryMetric key="w"  value={w}  unit="kg"    color="#9B8ED8" bg="#F3F0FF" />)
+      if (hc) chips.push(<SummaryMetric key="hc" value={hc} unit="cm头围" color="#9B8ED8" bg="#F3F0FF" />)
 
       return {
-        primary: <div className={`${LIST_TITLE_CLS} truncate`}>生长记录</div>,
-        tags: null,
-        meta: metrics ? <span className={`${LIST_META_CLS} truncate`}>{metrics}</span> : null,
+        primary: <div className={`${LIST_TITLE_CLS} shrink-0`}>生长记录</div>,
+        tags: chips.length > 0 ? (
+          <div className="flex flex-wrap items-center gap-1">{chips}</div>
+        ) : null,
+        meta: null,
       }
     }
 
@@ -745,13 +751,8 @@ export function getRecordSummary(
       return null
     }
 
-    case 'growth': {
-      const h  = d.height_mm != null ? (Number(d.height_mm) / 10).toFixed(1) : null
-      const w  = d.weight_g  != null ? (Number(d.weight_g) / 1000).toFixed(2) : null
-      if (h) return <SummaryMetric value={h} unit="cm" color="#9B8ED8" bg="#F3F0FF" />
-      if (w) return <SummaryMetric value={w} unit="kg" color="#9B8ED8" bg="#F3F0FF" />
+    case 'growth':
       return null
-    }
 
     case 'activity': {
       const durMin = d.duration_min as number | undefined

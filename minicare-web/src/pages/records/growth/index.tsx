@@ -68,8 +68,24 @@ export default function GrowthFormPage() {
   });
 
   const [activeCard, setActiveCard] = useState<MeasureKey | null>(null);
-  const [orgChip, setOrgChip] = useState<string | null>("儿保门诊");
-  const [note, setNote] = useState(editRecord?.note ?? "");
+  // 编辑时从 note 中解析出机构前缀（格式："机构：XXX / 备注内容"）
+  const [orgChip, setOrgChip] = useState<string | null>(() => {
+    if (editRecord?.note) {
+      const match = editRecord.note.match(/^机构：([^/]+?)(?:\s*\/|$)/)
+      if (match) {
+        const org = match[1].trim()
+        if (ORG_OPTIONS.includes(org)) return org
+      }
+    }
+    return "儿保门诊"
+  });
+  const [note, setNote] = useState(() => {
+    if (editRecord?.note) {
+      // 去掉机构前缀，只保留用户输入的备注部分
+      return editRecord.note.replace(/^机构：[^/]+?\s*\/\s*/, '').trim()
+    }
+    return ""
+  });
   const [submitting, setSubmitting] = useState(false);
   const [loadingRecord, setLoadingRecord] = useState(isEditMode);
 
@@ -83,7 +99,17 @@ export default function GrowthFormPage() {
         if (fresh.height_mm != null) setHeight((fresh.height_mm / 10).toFixed(1));
         if (fresh.weight_g != null) setWeight((fresh.weight_g / 1000).toFixed(1));
         if (fresh.head_mm != null) setHead((fresh.head_mm / 10).toFixed(1));
-        if (fresh.note) setNote(fresh.note);
+        // 从 note 中解析机构前缀和用户备注
+        if (fresh.note != null) {
+          const match = fresh.note.match(/^机构：([^/]+?)(?:\s*\/\s*(.*))?$/);
+          if (match) {
+            const org = match[1].trim();
+            if (ORG_OPTIONS.includes(org)) setOrgChip(org);
+            setNote((match[2] ?? '').trim());
+          } else {
+            setNote(fresh.note);
+          }
+        }
       })
       .catch(() => { /* 查询失败保留快照数据 */ })
       .finally(() => setLoadingRecord(false));
