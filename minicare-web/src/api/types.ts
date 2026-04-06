@@ -219,6 +219,19 @@ export interface EndSleepDto {
 }
 
 /**
+ * 补录已完成睡眠（与进行中计时不冲突）
+ * 对应 POST /records/sleep/complete
+ */
+export interface CreateCompleteSleepDto {
+  baby_id: string
+  start_time: string
+  end_time: string
+  quality?: SleepQuality
+  sleep_period?: SleepPeriod
+  note?: string
+}
+
+/**
  * @deprecated 旧接口兼容，前端已改为 startSleep + endSleep 两步流程
  * 该类型保留供补录模式单次提交使用（后续可删除）
  */

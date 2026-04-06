@@ -124,22 +124,30 @@ export default function HomePage() {
     return acc;
   }, 0);
 
-  // 今日总睡眠：从 detail.duration_min 读取（已结束的睡眠才有值）
+  // 今日总睡眠：从 detail.duration_min 读取（已结束的睡眠才有值；ongoing 无时长不计入）
   const totalSleepMin = sleepRecs.reduce((acc, r) => {
     const d = (r.detail ?? {}) as Record<string, unknown>;
-    if (d.duration_min) return acc + Number(d.duration_min);
+    if (d.duration_min != null && d.duration_min !== "") {
+      const n = Number(d.duration_min);
+      if (!Number.isNaN(n)) return acc + n;
+    }
     return acc;
   }, 0);
-  // 无数据时 val="—" unit="" 统一空单位，语义更清晰
-  const sleepH = totalSleepMin >= 60 ? `${Math.floor(totalSleepMin / 60)}` : null;
+  /** 不足 1 小时用「分」；满 1 小时若有零头分钟则显示如 1h56m，避免只显示整小时丢掉余数 */
+  const sleepStat: BabyStat = (() => {
+    if (totalSleepMin <= 0) return { val: "—", unit: "", label: "今日睡眠" };
+    if (totalSleepMin < 60) return { val: `${totalSleepMin}`, unit: "分", label: "今日睡眠" };
+    const h = Math.floor(totalSleepMin / 60);
+    const m = totalSleepMin % 60;
+    if (m === 0) return { val: `${h}`, unit: "h", label: "今日睡眠" };
+    return { val: `${h}h${m}`, unit: "m", label: "今日睡眠" };
+  })();
 
   const babyStats: BabyStat[] = [
     feedingRecs.length > 0
       ? { val: totalMl > 0 ? totalMl : feedingRecs.length, unit: totalMl > 0 ? "ml" : "次", label: "今日奶量" }
       : { val: "—", unit: "", label: "今日奶量" },
-    sleepH !== null
-      ? { val: sleepH, unit: "h", label: "今日睡眠" }
-      : { val: "—", unit: "", label: "今日睡眠" },
+    sleepStat,
     diaperRecs.length > 0
       ? { val: diaperRecs.length, unit: "次", label: "换尿布" }
       : { val: "—", unit: "", label: "换尿布" },

@@ -4,7 +4,7 @@ import { SleepService } from './sleep.service';
 import { JwtGuard } from '../../auth/jwt.guard';
 import { FamilyMemberGuard } from '../../family/family-member.guard';
 import { RoleGuard } from '../../family/role.guard';
-import { StartSleepDto, EndSleepDto, UpdateSleepDto } from './dto/create-sleep.dto';
+import { StartSleepDto, EndSleepDto, UpdateSleepDto, CreateCompleteSleepDto } from './dto/create-sleep.dto';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { MinRole, FamilyRole } from '../../common/decorators/min-role.decorator';
 
@@ -20,6 +20,13 @@ export class SleepController {
   @ApiOperation({ summary: '开始睡眠计时' })
   start(@CurrentUser() userId: string, @Body() dto: StartSleepDto) {
     return this.sleepService.startSleep(userId, dto);
+  }
+
+  @Post('complete')
+  @MinRole(FamilyRole.MEMBER)
+  @ApiOperation({ summary: '补录已完成睡眠（单次写入，可与进行中计时并存）' })
+  createComplete(@CurrentUser() userId: string, @Body() dto: CreateCompleteSleepDto) {
+    return this.sleepService.createCompleteSleep(userId, dto);
   }
 
   @Patch(':id/end')

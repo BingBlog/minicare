@@ -9,7 +9,7 @@ import {
 import { Pool } from 'mysql2/promise';
 import { v4 as uuidv4 } from 'uuid';
 import { DATABASE_POOL } from '../../common/database/database.module';
-import { StartSleepDto, EndSleepDto, UpdateSleepDto } from './dto/create-sleep.dto';
+import { StartSleepDto, EndSleepDto, UpdateSleepDto, CreateCompleteSleepDto } from './dto/create-sleep.dto';
 import { toMysqlDatetime } from '../../common/utils/date.util';
 
 /**
@@ -91,6 +91,36 @@ export class SleepService {
     );
 
     return { id: sleepId, duration_min: durationMin, status: 'ended' };
+  }
+
+  /**
+   * 补录已完成睡眠：直接插入 status=ended，不与「进行中」记录冲突
+   */
+  async createCompleteSleep(userId: string, dto: CreateCompleteSleepDto) {
+    const startTime = new Date(dto.start_time);
+    const endTime = new Date(dto.end_time);
+    if (endTime <= startTime) {
+      throw new BadRequestException('结束时间不能早于或等于开始时间');
+    }
+    const durationMin = Math.round((endTime.getTime() - startTime.getTime()) / 60_000);
+    const id = uuidv4();
+    await this.db.execute(
+      `INSERT INTO sleep_record (id, baby_id, recorded_by, start_time, end_time, status, duration_min, quality, sleep_period, note)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        id,
+        dto.baby_id,
+        userId,
+        toMysqlDatetime(dto.start_time),
+        toMysqlDatetime(dto.end_time),
+        SLEEP_STATUS.ENDED,
+        durationMin,
+        dto.quality ?? null,
+        dto.sleep_period ?? null,
+        dto.note ?? null,
+      ],
+    );
+    return { id, duration_min: durationMin, status: 'ended' as const };
   }
 
   async findAll(babyId: string, limit = 20, offset = 0) {

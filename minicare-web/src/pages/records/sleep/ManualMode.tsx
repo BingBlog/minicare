@@ -9,32 +9,41 @@
 import DatePicker from "@/components/DatePicker";
 import TimePicker from "@/components/TimePicker";
 
-/** 计算两个 HH:mm 字符串之间的分钟差（跨午夜兼容） */
-function calcDurationMin(startTime: string, endTime: string): number {
-  const s = new Date(`2000-01-01T${startTime}:00`).getTime();
-  let e = new Date(`2000-01-01T${endTime}:00`).getTime();
-  if (e < s) e += 24 * 3600 * 1000; // 跨午夜
-  return Math.round((e - s) / 60000);
+/** 根据入睡日期+时间、醒来日期+时间计算时长（分钟） */
+function calcDurationMin(
+  startDate: string,
+  startTime: string,
+  endDate: string,
+  endTime: string,
+): number {
+  const startMs = new Date(`${startDate}T${startTime}:00`).getTime();
+  const endMs = new Date(`${endDate}T${endTime}:00`).getTime();
+  if (Number.isNaN(startMs) || Number.isNaN(endMs)) return 0;
+  return Math.round((endMs - startMs) / 60000);
 }
 
 interface Props {
-  recordDate: string;
+  startDate: string;
+  endDate: string;
   startTime: string;
   endTime: string;
-  onDateChange: (v: string) => void;
+  onStartDateChange: (v: string) => void;
+  onEndDateChange: (v: string) => void;
   onStartChange: (v: string) => void;
   onEndChange: (v: string) => void;
 }
 
 export default function ManualMode({
-  recordDate,
+  startDate,
+  endDate,
   startTime,
   endTime,
-  onDateChange,
+  onStartDateChange,
+  onEndDateChange,
   onStartChange,
   onEndChange,
 }: Props) {
-  const durationMin = calcDurationMin(startTime, endTime);
+  const durationMin = calcDurationMin(startDate, startTime, endDate, endTime);
 
   return (
     <>
@@ -48,14 +57,14 @@ export default function ManualMode({
         className="mx-4 mb-3 bg-white rounded-2xl overflow-hidden"
         style={{ boxShadow: "0 1px 6px rgba(200,100,120,0.08)" }}>
 
-        {/* 记录日期 */}
+        {/* 入睡日期 */}
         <div
           className="px-4 py-3"
           style={{ borderBottom: "0.5px solid #F5EEF0" }}>
           <DatePicker
-            value={recordDate}
-            onChange={onDateChange}
-            label="记录日期"
+            value={startDate}
+            onChange={onStartDateChange}
+            label="入睡日期"
           />
         </div>
 
@@ -67,6 +76,17 @@ export default function ManualMode({
             value={startTime}
             onChange={onStartChange}
             label="入睡时间"
+          />
+        </div>
+
+        {/* 醒来日期 */}
+        <div
+          className="px-4 py-3"
+          style={{ borderBottom: "0.5px solid #F5EEF0" }}>
+          <DatePicker
+            value={endDate}
+            onChange={onEndDateChange}
+            label="醒来日期"
           />
         </div>
 

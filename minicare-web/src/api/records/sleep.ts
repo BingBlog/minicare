@@ -20,6 +20,7 @@ import type {
   SleepRecord,
   StartSleepDto,
   EndSleepDto,
+  CreateCompleteSleepDto,
   UpdateSleepDto,
   PaginationParams,
   ListResult,
@@ -78,6 +79,21 @@ export const sleepApi = {
       `/api/family/${familyId}/records/sleep/${sleepId}/end`,
       {
         method: 'PATCH',
+        body: JSON.stringify(data),
+      },
+    ),
+
+  /**
+   * 补录已完成睡眠（单次写入 ended，可与进行中睡眠并存）
+   */
+  createComplete: (
+    familyId: string,
+    data: CreateCompleteSleepDto,
+  ): Promise<{ id: string; duration_min: number; status: 'ended' }> =>
+    request<{ id: string; duration_min: number; status: 'ended' }>(
+      `/api/family/${familyId}/records/sleep/complete`,
+      {
+        method: 'POST',
         body: JSON.stringify(data),
       },
     ),

@@ -54,6 +54,32 @@ export class EndSleepDto {
   @ApiPropertyOptional() @IsOptional() @IsString() note?: string;
 }
 
+/**
+ * 补录已完成睡眠（单次写入 ended，不占用「进行中」槽位）
+ * 用于存在 ongoing 计时时的历史补录，或前端直接提交起止时间
+ */
+export class CreateCompleteSleepDto {
+  @ApiProperty() @IsUUID() baby_id: string;
+
+  @ApiProperty({ description: '入睡时间（ISO 8601）' })
+  @IsDateString()
+  start_time: string;
+
+  @ApiProperty({ description: '醒来时间（ISO 8601）' })
+  @IsDateString()
+  end_time: string;
+
+  @ApiPropertyOptional({ enum: SleepQuality, description: '睡眠质量' })
+  @IsOptional() @IsEnum(SleepQuality)
+  quality?: SleepQuality;
+
+  @ApiPropertyOptional({ enum: SleepPeriod, description: '睡眠时段' })
+  @IsOptional() @IsEnum(SleepPeriod)
+  sleep_period?: SleepPeriod;
+
+  @ApiPropertyOptional() @IsOptional() @IsString() note?: string;
+}
+
 /** 更新睡眠记录 DTO（已结束的记录可修改时间、质量、时段、备注） */
 export class UpdateSleepDto {
   @ApiPropertyOptional() @IsOptional() @IsDateString() start_time?: string;

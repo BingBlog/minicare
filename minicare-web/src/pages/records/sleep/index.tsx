@@ -28,6 +28,7 @@ import { useAppStore } from "@/lib/store";
 import { recordsApi } from "@/api";
 import type { SleepRecord, SleepQuality } from "@/api/types";
 
+import { IconMoon, IconTrash } from "@/components/ui/icons";
 import TimerMode from "./TimerMode";
 import ManualMode from "./ManualMode";
 import QualitySection from "./QualitySection";
@@ -55,43 +56,29 @@ function dateToLocalISO(d: Date): string {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
 }
 
-/** 计算两个 HH:mm 字符串之间的分钟差（跨午夜兼容） */
-function calcDurationMin(startTime: string, endTime: string): number {
-  const s = new Date(`2000-01-01T${startTime}:00`).getTime();
-  let e = new Date(`2000-01-01T${endTime}:00`).getTime();
-  if (e < s) e += 24 * 3600 * 1000;
-  return Math.round((e - s) / 60000);
-}
-
-/**
- * 将一对 HH:mm 时间字符串（startTime / endTime）转为正确的 ISO 字符串对。
- *
- * 处理跨午夜情况：若 endTime < startTime，则 endDate = startDate + 1 天。
- *
- * 例：startDate="2026-04-02", startTime="22:34", endTime="07:48"
- *   → startISO = "2026-04-02T22:34:00"
- *   → endISO   = "2026-04-03T07:48:00"  ← 自动加了一天
- */
-function timePairToISO(
+/** 入睡/醒来分属两日时的本地时间串 → 后端 ISO 字段 */
+function buildLocalISOPair(
   startDateStr: string,
   startTime: string,
+  endDateStr: string,
   endTime: string,
 ): { startISO: string; endISO: string } {
-  const startISO = `${startDateStr}T${startTime}:00`;
+  return {
+    startISO: `${startDateStr}T${startTime}:00`,
+    endISO: `${endDateStr}T${endTime}:00`,
+  };
+}
 
-  const sMs = new Date(`2000-01-01T${startTime}:00`).getTime();
-  const eMs = new Date(`2000-01-01T${endTime}:00`).getTime();
-
-  if (eMs >= sMs) {
-    return { startISO, endISO: `${startDateStr}T${endTime}:00` };
-  }
-
-  // 跨午夜：end 日期 = start 日期 + 1
-  const startDate = new Date(`${startDateStr}T00:00:00`);
-  startDate.setDate(startDate.getDate() + 1);
-  const pad = (n: number) => String(n).padStart(2, "0");
-  const endDateStr = `${startDate.getFullYear()}-${pad(startDate.getMonth() + 1)}-${pad(startDate.getDate())}`;
-  return { startISO, endISO: `${endDateStr}T${endTime}:00` };
+function calcDurationMinFromRange(
+  startDateStr: string,
+  startTime: string,
+  endDateStr: string,
+  endTime: string,
+): number {
+  const startMs = new Date(`${startDateStr}T${startTime}:00`).getTime();
+  const endMs = new Date(`${endDateStr}T${endTime}:00`).getTime();
+  if (Number.isNaN(startMs) || Number.isNaN(endMs)) return 0;
+  return Math.round((endMs - startMs) / 60000);
 }
 
 /** 将秒数格式化为「X 分 Y 秒」或「X 秒」的可读文案 */
@@ -122,7 +109,9 @@ function ShortSleepDialog({ seconds, onKeepTiming, onSaveAnyway, loading }: Shor
         onClick={(e) => e.stopPropagation()}>
         {/* 标题区 */}
         <div className="px-5 pt-5 pb-3 text-center">
-          <div className="text-2xl mb-2">😴</div>
+          <div className="flex justify-center mb-2">
+            <IconMoon size={36} color="#9A8090" />
+          </div>
           <h3 className="text-[16px] font-bold text-[#4A3035]">睡眠时间太短</h3>
           <p className="mt-1.5 text-[13px] text-[#7A5A60] leading-relaxed">
             本次睡眠仅 <span className="font-semibold text-[#F87098]">{formatShortDuration(seconds)}</span>，
@@ -184,7 +173,9 @@ function CancelTimerDialog({ onKeep, onConfirm, loading }: CancelTimerDialogProp
         onClick={(e) => e.stopPropagation()}>
         {/* 标题区 */}
         <div className="px-5 pt-5 pb-3 text-center">
-          <div className="text-2xl mb-2">🗑️</div>
+          <div className="flex justify-center mb-2">
+            <IconTrash size={32} color="#9A8090" />
+          </div>
           <h3 className="text-[16px] font-bold text-[#4A3035]">取消本次计时？</h3>
           <p className="mt-1.5 text-[13px] text-[#7A5A60] leading-relaxed">
             已记录的时间将不会保存，此操作不可撤销。
@@ -481,9 +472,16 @@ export default function SleepFormPage() {
   };
 
   // ── 补录模式状态 ────────────────────────────────────────────────
-  const [recordDate, setRecordDate] = useState(() => {
+  const [startDate, setStartDate] = useState(() => {
     if (editRecord?.start_time) {
       const d = new Date(editRecord.start_time);
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    }
+    return nowDate();
+  });
+  const [endDate, setEndDate] = useState(() => {
+    if (editRecord?.end_time) {
+      const d = new Date(editRecord.end_time);
       return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
     }
     return nowDate();
@@ -504,7 +502,7 @@ export default function SleepFormPage() {
 
   // ── 公共状态 ───────────────────────────────────────────────────
   const [sleepQuality, setSleepQuality] = useState<SleepQuality>(
-    editRecord?.quality ?? "normal"
+    editRecord?.quality ?? "good"
   );
   const [note, setNote] = useState(editRecord?.note ?? "");
   const [submitting, setSubmitting] = useState(false);
@@ -519,11 +517,17 @@ export default function SleepFormPage() {
         if (fresh.start_time) {
           setStartTime(isoToLocalTime(fresh.start_time));
           const d = new Date(fresh.start_time);
-          setRecordDate(
+          setStartDate(
             `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`
           );
         }
-        if (fresh.end_time) setEndTime(isoToLocalTime(fresh.end_time));
+        if (fresh.end_time) {
+          setEndTime(isoToLocalTime(fresh.end_time));
+          const d = new Date(fresh.end_time);
+          setEndDate(
+            `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`
+          );
+        }
         if (fresh.quality) setSleepQuality(fresh.quality as SleepQuality);
         setNote(fresh.note ?? "");
       })
@@ -532,7 +536,7 @@ export default function SleepFormPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const durationMin = calcDurationMin(startTime, endTime);
+  const durationMin = calcDurationMinFromRange(startDate, startTime, endDate, endTime);
 
   // ── 补录/编辑模式提交 ──────────────────────────────────────────
   const handleSubmit = async () => {
@@ -549,7 +553,7 @@ export default function SleepFormPage() {
           setSubmitting(false);
           return;
         }
-        const { startISO, endISO } = timePairToISO(recordDate, startTime, endTime);
+        const { startISO, endISO } = buildLocalISOPair(startDate, startTime, endDate, endTime);
 
         await recordsApi.sleep.update(currentFamily.id, editRecord.id, {
           start_time: startISO,
@@ -569,13 +573,11 @@ export default function SleepFormPage() {
         setSubmitting(false);
         return;
       }
-      const { startISO, endISO } = timePairToISO(recordDate, startTime, endTime);
+      const { startISO, endISO } = buildLocalISOPair(startDate, startTime, endDate, endTime);
 
-      const { id: sleepId } = await recordsApi.sleep.startSleep(currentFamily.id, {
+      await recordsApi.sleep.createComplete(currentFamily.id, {
         baby_id: currentBaby.id,
         start_time: startISO,
-      });
-      await recordsApi.sleep.endSleep(currentFamily.id, sleepId, {
         end_time: endISO,
         quality: sleepQuality,
         note: note || undefined,
@@ -601,10 +603,6 @@ export default function SleepFormPage() {
     }
   };
 
-  // 计时模式下是否处于「进行中」或「已结束」状态
-  // 注意：弹窗打开时 timerRunning 为 false，需将两个弹窗状态也纳入，避免 Tab 闪现
-  const timerActive = timerRunning || timerStopped || shortSleepDialogOpen || cancelDialogOpen;
-
   return (
     <div className="min-h-screen" style={{ background: "#FAF5F6" }}>
       {/* 导航栏 */}
@@ -623,8 +621,8 @@ export default function SleepFormPage() {
         </div>
       )}
 
-      {/* 模式切换（编辑模式或计时进行中时隐藏） */}
-      {!isEditMode && !timerActive && (
+      {/* 模式切换（编辑模式隐藏；进行中时仍可切到补录） */}
+      {!isEditMode && (
         <div
           className="mx-4 mt-3 flex gap-0 rounded-2xl overflow-hidden p-[3px]"
           style={{ background: "#F0E8EA" }}>
@@ -670,10 +668,12 @@ export default function SleepFormPage() {
         {/* 补录模式 */}
         {mode === "manual" && (
           <ManualMode
-            recordDate={recordDate}
+            startDate={startDate}
+            endDate={endDate}
             startTime={startTime}
             endTime={endTime}
-            onDateChange={setRecordDate}
+            onStartDateChange={setStartDate}
+            onEndDateChange={setEndDate}
             onStartChange={setStartTime}
             onEndChange={setEndTime}
           />
