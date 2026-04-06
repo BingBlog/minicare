@@ -2,7 +2,7 @@
  * 生长分析 Tab
  * 展示体重/身高/头围生长曲线，叠加国家百分位标准
  */
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { GrowthChart } from '@/components/charts'
 import type { GrowthRecord } from '@/api/report'
 import type { GrowthStandardPoint } from '@/lib/growth-standards'
@@ -23,12 +23,25 @@ interface GrowthTabProps {
 
 type MeasureType = 'weight' | 'height' | 'head'
 
-/** 计算月龄 */
+const MS_PER_DAY = 86_400_000
+/** 平均每月天数（与儿保常用「日龄/30.44」一致，避免仅用年月导致同月多点 X 重合） */
+const DAYS_PER_MONTH = 365.25 / 12
+
+/** 计算精确月龄（可小数），用于生长曲线横轴定位 */
 function calculateAgeMonths(birthDate: string, recordDate: string): number {
-  const birth = new Date(birthDate)
-  const record = new Date(recordDate)
-  const months = (record.getFullYear() - birth.getFullYear()) * 12 + (record.getMonth() - birth.getMonth())
-  return Math.max(0, months)
+  // 兼容 "2025-12-25T16:00:00.000Z" 和 "2025-12-25" 两种格式，统一截取前 10 位
+  const birthStr = birthDate.slice(0, 10)
+  const recordStr = recordDate.slice(0, 10)
+  const birth = new Date(`${birthStr}T12:00:00`)
+  const record = new Date(`${recordStr}T12:00:00`)
+  if (Number.isNaN(birth.getTime()) || Number.isNaN(record.getTime())) return 0
+  const diffDays = (record.getTime() - birth.getTime()) / MS_PER_DAY
+  return Math.max(0, diffDays / DAYS_PER_MONTH)
+}
+
+function formatAgeMonthsForCard(ageMonths: number): string {
+  const n = Math.round(ageMonths * 10) / 10
+  return Number.isInteger(n) ? `${n}月龄` : `${n.toFixed(1)}月龄`
 }
 
 /** 格式化日期显示 */
@@ -79,6 +92,22 @@ function buildChartPercentiles(
 export function GrowthTab({ data, loading, babyGender, babyBirthDate }: GrowthTabProps) {
   const [activeMeasure, setActiveMeasure] = useState<MeasureType>('weight')
 
+  // 感知图表容器宽度，传给 GrowthChart 防止超出屏幕
+  const chartContainerRef = useRef<HTMLDivElement>(null)
+  const [chartContainerWidth, setChartContainerWidth] = useState<number>(0)
+  useEffect(() => {
+    const el = chartContainerRef.current
+    if (!el) return
+    const observer = new ResizeObserver((entries) => {
+      const width = entries[0]?.contentRect.width
+      if (width) setChartContainerWidth(Math.floor(width))
+    })
+    observer.observe(el)
+    // 立即读取一次初始宽度
+    setChartContainerWidth(Math.floor(el.getBoundingClientRect().width))
+    return () => observer.disconnect()
+  }, [])
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
@@ -99,10 +128,13 @@ export function GrowthTab({ data, loading, babyGender, babyBirthDate }: GrowthTa
   const gender = babyGender || 'male'
   const standards = getGrowthStandardsByGender(gender)
 
+  // 计算基准日期：优先用 babyBirthDate，没有则用数据中最早的记录日期（保证 X 轴可以正常展开）
+  const effectiveBirthDate = babyBirthDate ?? (data.length > 0 ? [...data].sort((a, b) => a.date.localeCompare(b.date))[0].date : null)
+
   // 计算每条记录的月龄
   const recordsWithAge = data.map((d) => ({
     ...d,
-    ageMonths: babyBirthDate ? calculateAgeMonths(babyBirthDate, d.date) : 0,
+    ageMonths: effectiveBirthDate ? calculateAgeMonths(effectiveBirthDate, d.date) : 0,
   }))
 
   // 获取最新一条有效记录
@@ -209,7 +241,9 @@ export function GrowthTab({ data, loading, babyGender, babyBirthDate }: GrowthTa
                 )}
                 <span className="text-sm font-normal text-gray-400 ml-1">{config.unit}</span>
               </div>
-              <div className="text-xs text-gray-400 mt-1">{formatDate(latestValid.date)} · {latestValid.ageMonths}月龄</div>
+              <div className="text-xs text-gray-400 mt-1">
+                {formatDate(latestValid.date)} · {formatAgeMonthsForCard(latestValid.ageMonths)}
+              </div>
             </div>
             {percentileLabel && (
               <div className="text-right">
@@ -223,15 +257,18 @@ export function GrowthTab({ data, loading, babyGender, babyBirthDate }: GrowthTa
       )}
 
       {/* 生长曲线图 */}
-      <div className="bg-white rounded-xl p-4 shadow-sm overflow-x-auto">
+      <div className="bg-white rounded-xl p-4 shadow-sm">
         <div className="text-sm font-medium text-gray-700 mb-3">{config.label}生长曲线</div>
-        <GrowthChart
-          data={chartData}
-          percentiles={chartPercentiles}
-          gender={gender}
-          measureType={activeMeasure}
-          height={260}
-        />
+        <div ref={chartContainerRef}>
+          <GrowthChart
+            data={chartData}
+            percentiles={chartPercentiles}
+            gender={gender}
+            measureType={activeMeasure}
+            height={260}
+            containerWidth={chartContainerWidth || undefined}
+          />
+        </div>
         <div className="text-xs text-gray-400 mt-2 text-center">
           曲线基于国家卫健委2023年版《中国7岁以下儿童生长发育参照标准》
         </div>

@@ -128,7 +128,7 @@ export interface DonutChartProps {
 
 /** 生长曲线数据点 */
 export interface GrowthDataPoint {
-  /** 月龄 */
+  /** 月龄（可为小数，按出生日精确计算） */
   ageMonths: number
   /** 测量日期 */
   date: string
@@ -191,6 +191,8 @@ export interface GrowthChartProps {
   measureType: 'weight' | 'height' | 'head'
   /** 图表高度 */
   height?: number
+  /** 容器宽度（px），传入后图表宽度不超过此值，防止超出屏幕 */
+  containerWidth?: number
   /** 自定义类名 */
   className?: string
 }
