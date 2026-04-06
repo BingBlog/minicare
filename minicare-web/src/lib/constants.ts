@@ -173,12 +173,13 @@ export const DIAPER_TYPE_LABELS: Record<string, string> = {
 
 /** 大便性状 */
 export const POOP_TYPE_LABELS: Record<string, string> = {
+  normal:       '正常',
   normal_soft:  '正常软便',
+  normal_form:  '正常成形',
   loose:        '稀便',
   watery:       '水样便',
   hard:         '干硬粒',
   bloody:       '血丝便',
-  normal_form:  '正常成形',
 }
 
 /** 活动类型 */

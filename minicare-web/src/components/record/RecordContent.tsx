@@ -326,6 +326,14 @@ function SleepContent({ d }: { d: Record<string, unknown> }) {
   )
 }
 
+// 尿布类型 → 中文标签（与表单页对齐）
+const DIAPER_CARD_LABELS: Record<string, string> = {
+  wet:   '嘘嘘',
+  dirty: '臭臭',
+  mixed: '臭臭＋嘘嘘',
+  dry:   '干净',
+}
+
 function DiaperContent({ d }: { d: Record<string, unknown> }) {
   const diaperType = d.diaper_type as string | undefined
   const poopType = d.poop_type as string | undefined
@@ -334,16 +342,18 @@ function DiaperContent({ d }: { d: Record<string, unknown> }) {
   const hasPoop = diaperType === 'dirty' || diaperType === 'mixed'
   const hasWet  = diaperType === 'wet'   || diaperType === 'mixed'
   const isDry   = diaperType === 'dry'
-
-  const poopLabel = poopType ? (POOP_TYPE_LABELS[poopType] ?? poopType) : '大便'
+  const typeLabel = diaperType ? (DIAPER_CARD_LABELS[diaperType] ?? diaperType) : null
+  const poopLabel = poopType ? (POOP_TYPE_LABELS[poopType] ?? poopType) : null
 
   return (
     <>
       <div className="text-sm font-medium" style={{ color: '#7a5a60' }}>换尿布</div>
       <div className="flex flex-wrap gap-1 mt-1">
-        {isDry   && <Pill icon={IconLeaf} bg="#F5F5F5" color="#9A8090">干净</Pill>}
-        {hasPoop && <Pill icon={IconPoop} bg="#FFF8EC" color="#B07820">{poopLabel}</Pill>}
-        {hasWet  && <Pill icon={IconDrop} bg="#E8F5FD" color="#2080B8">小便</Pill>}
+        {isDry   && <Pill icon={IconLeaf} bg="#F5F5F5" color="#9A8090">{typeLabel}</Pill>}
+        {hasPoop && <Pill icon={IconPoop} bg="#FFF8EC" color="#B07820">{typeLabel}</Pill>}
+        {hasWet  && !hasPoop && <Pill icon={IconDrop} bg="#E8F5FD" color="#2080B8">{typeLabel}</Pill>}
+        {hasWet  &&  hasPoop && <Pill icon={IconDrop} bg="#E8F5FD" color="#2080B8">嘘嘘</Pill>}
+        {poopLabel && hasPoop && <Pill bg="#FFF5EE" color="#C05020">{poopLabel}</Pill>}
         {diaperCount != null && diaperCount > 0 && (
           <Pill bg="#F5F0F2" color="#9A7E82">今日 {diaperCount} 次</Pill>
         )}
@@ -546,12 +556,14 @@ export function getRecordListCompactParts(
       const hasPoop = diaperType === 'dirty' || diaperType === 'mixed'
       const hasWet = diaperType === 'wet' || diaperType === 'mixed'
       const isDry = diaperType === 'dry'
-      const poopLabel = poopType ? (POOP_TYPE_LABELS[poopType] ?? poopType) : '大便'
+      const typeLabel = diaperType ? (DIAPER_CARD_LABELS[diaperType] ?? diaperType) : null
+      const poopLabel = poopType ? (POOP_TYPE_LABELS[poopType] ?? poopType) : null
 
       const tagNodes: ReactNode[] = []
-      if (isDry) tagNodes.push(<Pill key="dry" icon={IconLeaf} bg="#F5F5F5" color="#9A8090">干净</Pill>)
-      if (hasPoop) tagNodes.push(<Pill key="poop" icon={IconPoop} bg="#FFF8EC" color="#B07820">{poopLabel}</Pill>)
-      if (hasWet) tagNodes.push(<Pill key="wet" icon={IconDrop} bg="#E8F5FD" color="#2080B8">小便</Pill>)
+      if (isDry)  tagNodes.push(<Pill key="dry"  icon={IconLeaf} bg="#F5F5F5" color="#9A8090">{typeLabel}</Pill>)
+      if (hasPoop) tagNodes.push(<Pill key="dirty" icon={IconPoop} bg="#FFF8EC" color="#B07820">{hasPoop && !hasWet ? typeLabel : '臭臭'}</Pill>)
+      if (hasWet)  tagNodes.push(<Pill key="wet"  icon={IconDrop} bg="#E8F5FD" color="#2080B8">{hasWet && !hasPoop ? typeLabel : '嘘嘘'}</Pill>)
+      if (poopLabel && hasPoop) tagNodes.push(<Pill key="poop-type" bg="#FFF5EE" color="#C05020">{poopLabel}</Pill>)
 
       return {
         primary: <div className={`${LIST_TITLE_CLS} shrink-0`}>换尿布</div>,
