@@ -13,8 +13,17 @@
  * 结构化字段（Migration 005）：
  *  - allergy_symptoms: string[]  过敏症状列表
  *  - allergy_severity: string    过敏严重程度
- *  - medications: { name, dose }[] 用药列表
  *  - skin_care: string[]         护理项目列表
+ *
+ * 折叠交互：
+ *  - 体温：默认展开（最常用），可折叠
+ *  - 过敏表现：默认折叠，有数据或传 state.expandAllergy=true 时展开
+ *  - 保湿护理：默认折叠，有数据或传 state.expandSkin=true 时展开
+ *
+ * FAB 快捷入口：
+ *  - 「体温」入口传 state.expandTemp=true，进入后体温区块自动展开（与默认行为相同）
+ *
+ * 注意：用药/营养素记录已迁移至饮食记录「营养素」Tab，此页面不再包含该区块
  */
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -42,15 +51,72 @@ import {
 
 type Severity = "mild" | "moderate" | "severe";
 
-/** 用药 Chip 列表（固定预设） */
-const MED_CHIPS = ["维生素D", "铁剂", "益生菌", "钙剂"];
 /** 保湿护理 Chip 列表 */
 const SKIN_CHIPS = ["已做保湿", "涂抹面霜", "涂抹身体乳"];
+
+/** 过敏程度中文 */
+const SEVERITY_LABEL: Record<string, string> = {
+  mild: "轻度",
+  moderate: "中度",
+  severe: "重度",
+};
 
 /** 从 ISO 时间提取本地 HH:mm */
 function isoToLocalTime(iso: string): string {
   const d = new Date(iso);
   return `${d.getHours().toString().padStart(2, "0")}:${d.getMinutes().toString().padStart(2, "0")}`;
+}
+
+/** 折叠区块头部 — 可点击展开/收起 */
+function SectionHeader({
+  icon,
+  title,
+  badge,
+  open,
+  onToggle,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  /** 折叠态摘要徽章文字，空则不显示 */
+  badge?: string;
+  open: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      className="w-full flex items-center gap-2 px-4 pt-3.5 pb-3 text-left"
+      style={{ borderBottom: open ? "0.5px solid #F5EEF0" : "none" }}>
+      {icon}
+      <span className="text-[13px] font-bold text-[#7A5A60] flex-1">{title}</span>
+      {/* 折叠态摘要 badge */}
+      {!open && badge && (
+        <span
+          className="text-[11px] font-medium px-2 py-0.5 rounded-full mr-1"
+          style={{ background: "#FFF0F4", color: "#F87098" }}>
+          {badge}
+        </span>
+      )}
+      {/* 展开/收起箭头 */}
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#C0A8B0"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        style={{
+          width: 14,
+          height: 14,
+          transform: open ? "rotate(180deg)" : "rotate(0deg)",
+          transition: "transform 0.2s ease",
+          flexShrink: 0,
+        }}>
+        <polyline points="6 9 12 15 18 9" />
+      </svg>
+    </button>
+  );
 }
 
 export default function HealthFormPage() {
@@ -86,20 +152,6 @@ export default function HealthFormPage() {
     return (editRecord?.allergy_severity as Severity) ?? null;
   });
 
-  // 用药：预设 Chip 多选 + 剂量（从 medications 结构化字段回填）
-  // medications 可含非预设项目，预设 Chip 与自由输入分开处理
-  const [selectedMeds, setSelectedMeds] = useState<Set<string>>(() => {
-    const names = (editRecord?.medications ?? []).map((m) => m.name);
-    return new Set(names.filter((n) => MED_CHIPS.includes(n)));
-  });
-  // 剂量：从第一个有剂量的预设用药中取（简化处理）
-  const [medDose, setMedDose] = useState(() => {
-    const med = (editRecord?.medications ?? []).find(
-      (m) => MED_CHIPS.includes(m.name) && m.dose,
-    );
-    return med?.dose ?? "";
-  });
-
   // 保湿护理 Chip 多选（从 skin_care 结构化字段回填）
   const [selectedSkin, setSelectedSkin] = useState<Set<string>>(() => {
     return new Set(editRecord?.skin_care ?? []);
@@ -108,6 +160,20 @@ export default function HealthFormPage() {
   const [note, setNote] = useState(editRecord?.note ?? "");
   const [submitting, setSubmitting] = useState(false);
   const [loadingRecord, setLoadingRecord] = useState(isEditMode);
+
+  // ── 折叠状态 ─────────────────────────────────────────────────────
+  // 体温：始终默认展开（FAB 快捷入口传 state.expandTemp=true 时也展开）
+  const [tempOpen, setTempOpen] = useState(
+    () => location.state?.expandTemp ?? true,
+  );
+  // 过敏：编辑时有数据则展开，新建时默认折叠（FAB 可传 state.expandAllergy=true 展开）
+  const [allergyOpen, setAllergyOpen] = useState(
+    () => (editRecord?.allergy_symptoms?.length ?? 0) > 0 || location.state?.expandAllergy,
+  );
+  // 护理：编辑时有数据则展开，新建时默认折叠（FAB 可传 state.expandSkin=true 展开）
+  const [skinOpen, setSkinOpen] = useState(
+    () => (editRecord?.skin_care?.length ?? 0) > 0 || location.state?.expandSkin,
+  );
 
   /** 用最新数据回填所有状态 */
   const applyRecord = useCallback((r: HealthRecord) => {
@@ -118,14 +184,11 @@ export default function HealthFormPage() {
     if (r.temperature != null) setTemperature(String(r.temperature));
     setSelectedSymptoms(r.allergy_symptoms ?? []);
     setSeverity((r.allergy_severity as Severity) ?? null);
-    const names = (r.medications ?? []).map((m) => m.name);
-    setSelectedMeds(new Set(names.filter((n) => MED_CHIPS.includes(n))));
-    const med = (r.medications ?? []).find(
-      (m) => MED_CHIPS.includes(m.name) && m.dose,
-    );
-    setMedDose(med?.dose ?? "");
     setSelectedSkin(new Set(r.skin_care ?? []));
     setNote(r.note ?? "");
+    // 有数据时自动展开对应区块
+    if ((r.allergy_symptoms?.length ?? 0) > 0) setAllergyOpen(true);
+    if ((r.skin_care?.length ?? 0) > 0) setSkinOpen(true);
   }, []);
 
   /** 编辑模式下：进入页面时重新查询后端获取最新数据 */
@@ -148,13 +211,6 @@ export default function HealthFormPage() {
       prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s],
     );
   };
-  const toggleMed = (s: string) => {
-    setSelectedMeds((prev) => {
-      const n = new Set(prev);
-      n.has(s) ? n.delete(s) : n.add(s);
-      return n;
-    });
-  };
   const toggleSkin = (s: string) => {
     setSelectedSkin((prev) => {
       const n = new Set(prev);
@@ -175,12 +231,6 @@ export default function HealthFormPage() {
     }
     setSubmitting(true);
     try {
-      // 构建结构化用药列表（预设 Chip）
-      const medicationsPayload = [...selectedMeds].map((name) => ({
-        name,
-        dose: medDose || undefined,
-      }));
-
       const payload = {
         record_time: timeToISO(recordDate, recordTime),
         temperature: temp,
@@ -188,8 +238,6 @@ export default function HealthFormPage() {
           selectedSymptoms.length > 0 ? selectedSymptoms : undefined,
         allergy_severity:
           selectedSymptoms.length > 0 ? (severity ?? undefined) : undefined,
-        medications:
-          medicationsPayload.length > 0 ? medicationsPayload : undefined,
         skin_care: selectedSkin.size > 0 ? [...selectedSkin] : undefined,
         note: note || undefined,
       };
@@ -226,6 +274,20 @@ export default function HealthFormPage() {
       showToast("删除失败，请重试");
     }
   };
+
+  // ── 过敏区块折叠态摘要 ───────────────────────────────────────────
+  const allergyBadge = (() => {
+    if (selectedSymptoms.length === 0) return undefined;
+    const sevLabel = severity ? `· ${SEVERITY_LABEL[severity]}` : "";
+    return `${selectedSymptoms.length} 项${sevLabel}`;
+  })();
+
+  // ── 护理区块折叠态摘要 ───────────────────────────────────────────
+  const skinBadge =
+    selectedSkin.size > 0 ? `已选 ${selectedSkin.size} 项` : undefined;
+
+  // ── 体温区块折叠态摘要 ───────────────────────────────────────────
+  const tempBadge = temperature ? `${temperature} ℃` : undefined;
 
   return (
     <div className="min-h-screen" style={{ background: "#FAF5F6" }}>
@@ -273,114 +335,120 @@ export default function HealthFormPage() {
           </div>
         </FormCard>
 
-        {/* 体温 */}
-        <TemperatureSection value={temperature} onChange={setTemperature} />
-
-        {/* 过敏表现 */}
-        <AllergySection
-          selected={selectedSymptoms}
-          onToggle={toggleSymptom}
-          severity={severity}
-          onSeverityChange={setSeverity}
-          onPhotoClick={() => showToast("拍照功能（功能开发中）")}
-        />
-
-        {/* 用药记录 */}
+        {/* ── 体温（默认展开） ── */}
         <div
           className="mx-4 mb-3 bg-white rounded-2xl overflow-hidden"
           style={{ boxShadow: "0 1px 6px rgba(200,100,120,0.08)" }}>
-          <div
-            className="flex items-center gap-2 px-4 pt-3.5 pb-2"
-            style={{ borderBottom: "0.5px solid #F5EEF0" }}>
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#9B8ED8"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              style={{ width: 16, height: 16 }}>
-              <path d="M10 2v7.31" />
-              <path d="M14 9.3V1.99" />
-              <path d="M8.5 2h7" />
-              <path d="M14 9.3a6.5 6.5 0 1 1-4 0" />
-            </svg>
-            <span className="text-[13px] font-bold text-[#7A5A60]">
-              用药记录
-            </span>
-          </div>
-          <div className="flex flex-wrap gap-2 px-4 py-3">
-            {MED_CHIPS.map((med) => (
-              <button
-                key={med}
-                type="button"
-                onClick={() => toggleMed(med)}
-                className="px-3 py-1.5 rounded-full border text-[13px] font-medium transition-all"
-                style={{
-                  borderColor: selectedMeds.has(med) ? "#9B8ED8" : "#E5D8DA",
-                  background: selectedMeds.has(med) ? "#F3F0FF" : "#fff",
-                  color: selectedMeds.has(med) ? "#9B8ED8" : "#7A5A60",
-                }}>
-                {med}
-              </button>
-            ))}
-          </div>
-          {selectedMeds.size > 0 && (
-            <div
-              className="flex items-center px-4 pb-3"
-              style={{ borderTop: "0.5px solid #F5EEF0" }}>
-              <span className="text-[14px] text-[#7A5A60] flex-1 pt-3">
-                剂量
-              </span>
-              <input
-                type="text"
-                value={medDose}
-                onChange={(e) => setMedDose(e.target.value)}
-                placeholder="如：400IU"
-                className="w-32 text-right text-[14px] text-[#4A3035] pt-3 outline-none"
-                style={{ background: "transparent" }}
-              />
+          <SectionHeader
+            icon={
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#F0B8C8"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{ width: 16, height: 16 }}>
+                <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z" />
+              </svg>
+            }
+            title="体温（可选）"
+            badge={!tempOpen ? tempBadge : undefined}
+            open={tempOpen}
+            onToggle={() => setTempOpen((v) => !v)}
+          />
+          {tempOpen && (
+            <TemperatureSection value={temperature} onChange={setTemperature} />
+          )}
+        </div>
+
+        {/* ── 过敏表现（默认折叠） ── */}
+        <div
+          className="mx-4 mb-3 bg-white rounded-2xl overflow-hidden"
+          style={{ boxShadow: "0 1px 6px rgba(200,100,120,0.08)" }}>
+          <SectionHeader
+            icon={
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#F0A0B0"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{ width: 16, height: 16 }}>
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                <line x1="12" y1="9" x2="12" y2="13" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
+            }
+            title="过敏表现"
+            badge={allergyBadge}
+            open={allergyOpen}
+            onToggle={() => setAllergyOpen((v) => !v)}
+          />
+          {allergyOpen && (
+            <AllergySection
+              selected={selectedSymptoms}
+              onToggle={toggleSymptom}
+              severity={severity}
+              onSeverityChange={setSeverity}
+              onPhotoClick={() => showToast("拍照功能（功能开发中）")}
+            />
+          )}
+          {/* 折叠态 hint */}
+          {!allergyOpen && selectedSymptoms.length === 0 && (
+            <div className="px-4 pb-3 text-[12px] text-[#C0A8B0]">
+              无过敏表现则跳过
             </div>
           )}
         </div>
 
-        {/* 保湿护理 */}
+        {/* ── 保湿护理（默认折叠） ── */}
         <div
           className="mx-4 mb-3 bg-white rounded-2xl overflow-hidden"
           style={{ boxShadow: "0 1px 6px rgba(200,100,120,0.08)" }}>
-          <div
-            className="flex items-center gap-2 px-4 pt-3.5 pb-2"
-            style={{ borderBottom: "0.5px solid #F5EEF0" }}>
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#F0B8C8"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              style={{ width: 16, height: 16 }}>
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-            </svg>
-            <span className="text-[13px] font-bold text-[#7A5A60]">
-              保湿护理
-            </span>
-          </div>
-          <div className="flex flex-wrap gap-2 px-4 py-3">
-            {SKIN_CHIPS.map((chip) => (
-              <button
-                key={chip}
-                type="button"
-                onClick={() => toggleSkin(chip)}
-                className="px-3 py-1.5 rounded-full border text-[13px] font-medium transition-all"
-                style={{
-                  borderColor: selectedSkin.has(chip) ? "#F87098" : "#E5D8DA",
-                  background: selectedSkin.has(chip) ? "#FFF0F4" : "#fff",
-                  color: selectedSkin.has(chip) ? "#F87098" : "#7A5A60",
-                }}>
-                {chip}
-              </button>
-            ))}
-          </div>
+          <SectionHeader
+            icon={
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#F0B8C8"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{ width: 16, height: 16 }}>
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+              </svg>
+            }
+            title="保湿护理"
+            badge={skinBadge}
+            open={skinOpen}
+            onToggle={() => setSkinOpen((v) => !v)}
+          />
+          {skinOpen && (
+            <div className="flex flex-wrap gap-2 px-4 py-3">
+              {SKIN_CHIPS.map((chip) => (
+                <button
+                  key={chip}
+                  type="button"
+                  onClick={() => toggleSkin(chip)}
+                  className="px-3 py-1.5 rounded-full border text-[13px] font-medium transition-all"
+                  style={{
+                    borderColor: selectedSkin.has(chip) ? "#F87098" : "#E5D8DA",
+                    background: selectedSkin.has(chip) ? "#FFF0F4" : "#fff",
+                    color: selectedSkin.has(chip) ? "#F87098" : "#7A5A60",
+                  }}>
+                  {chip}
+                </button>
+              ))}
+            </div>
+          )}
+          {/* 折叠态 hint */}
+          {!skinOpen && selectedSkin.size === 0 && (
+            <div className="px-4 pb-3 text-[12px] text-[#C0A8B0]">
+              今日未做护理则跳过
+            </div>
+          )}
         </div>
 
         {/* 备注 */}

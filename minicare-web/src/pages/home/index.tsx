@@ -23,21 +23,43 @@ import TodayTimeline from "./TodayTimeline";
 import FabSheet from "./FabSheet";
 import SleepBanner from "./SleepBanner";
 import RecordActionSheet from "@/pages/records-list/RecordActionSheet";
-import { RECORD_ROUTES } from "@/lib/constants";
+import { RECORD_ROUTES, FAB_GROUPS } from "@/lib/constants";
+import { useQuickActionKeys } from "@/lib/useQuickActionKeys";
 import type { TodayRecord, SleepRecord } from "@/api/types";
 import type { RecordItem } from "@/api";
 import type { ActionRecord } from "@/pages/records-list/RecordActionSheet";
 import type { BabyStat } from "./HeroSection";
 
 // 支持删除的记录类型（与 recordsApi 的子模块 key 保持一致）
-type DeletableType = "feeding" | "sleep" | "diaper" | "activity" | "health" | "growth" | "medical" | "symptom";
+type DeletableType =
+  | "feeding"
+  | "sleep"
+  | "diaper"
+  | "activity"
+  | "health"
+  | "growth"
+  | "medical"
+  | "symptom";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const deletableApis = recordsApi as unknown as Record<DeletableType, { remove?: (familyId: string, id: string) => Promise<void> }>;
+const deletableApis = recordsApi as unknown as Record<
+  DeletableType,
+  { remove?: (familyId: string, id: string) => Promise<void> }
+>;
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const { currentFamily, currentBaby, setCurrentFamily, setCurrentBaby } = useAppStore();
+  const { currentFamily, currentBaby, setCurrentFamily, setCurrentBaby } =
+    useAppStore();
+
+  // 快捷区已用的 key（用于动态过滤 FAB 弹层）
+  const { keys: quickKeys } = useQuickActionKeys();
+
+  // 动态过滤首页「更多」弹层：排除已在快捷区的功能（§5.8.6）
+  const filteredFabGroups = FAB_GROUPS
+    .map((g) => ({ ...g, keys: g.keys.filter((k) => !quickKeys.includes(k)) }))
+    .filter((g) => g.keys.length > 0);
+  const filteredFabCount = filteredFabGroups.reduce((acc, g) => acc + g.keys.length, 0);
 
   const [todayRecords, setTodayRecords] = useState<TodayRecord[]>([]);
   const [loading, setLoading] = useState(true);
@@ -47,7 +69,9 @@ export default function HomePage() {
   const [ongoingSleep, setOngoingSleep] = useState<SleepRecord | null>(null);
 
   // 时间线记录操作弹层
-  const [selectedRecord, setSelectedRecord] = useState<ActionRecord | null>(null);
+  const [selectedRecord, setSelectedRecord] = useState<ActionRecord | null>(
+    null,
+  );
   const [actionOpen, setActionOpen] = useState(false);
 
   const { showToast, ToastNode } = useToast();
@@ -93,9 +117,12 @@ export default function HomePage() {
         // 3. 并发加载：今日记录 + 进行中睡眠
         await Promise.all([
           loadTodayRecords(family.id),
-          recordsApi.sleep.getOngoing(family.id, baby.id)
+          recordsApi.sleep
+            .getOngoing(family.id, baby.id)
             .then((rec) => setOngoingSleep(rec))
-            .catch(() => { /* 查询失败不影响主流程 */ }),
+            .catch(() => {
+              /* 查询失败不影响主流程 */
+            }),
         ]);
       } catch (err) {
         console.error("[HomePage] 加载失败", err);
@@ -120,7 +147,8 @@ export default function HomePage() {
   // 今日总奶量：从 detail.feed_type / detail.formula_ml 读取结构化字段
   const totalMl = feedingRecs.reduce((acc, r) => {
     const d = (r.detail ?? {}) as Record<string, unknown>;
-    if (d.feed_type === "formula" && d.formula_ml) return acc + Number(d.formula_ml);
+    if (d.feed_type === "formula" && d.formula_ml)
+      return acc + Number(d.formula_ml);
     return acc;
   }, 0);
 
@@ -136,7 +164,8 @@ export default function HomePage() {
   /** 不足 1 小时用「分」；满 1 小时若有零头分钟则显示如 1h56m，避免只显示整小时丢掉余数 */
   const sleepStat: BabyStat = (() => {
     if (totalSleepMin <= 0) return { val: "—", unit: "", label: "今日睡眠" };
-    if (totalSleepMin < 60) return { val: `${totalSleepMin}`, unit: "分", label: "今日睡眠" };
+    if (totalSleepMin < 60)
+      return { val: `${totalSleepMin}`, unit: "分", label: "今日睡眠" };
     const h = Math.floor(totalSleepMin / 60);
     const m = totalSleepMin % 60;
     if (m === 0) return { val: `${h}`, unit: "h", label: "今日睡眠" };
@@ -145,7 +174,11 @@ export default function HomePage() {
 
   const babyStats: BabyStat[] = [
     feedingRecs.length > 0
-      ? { val: totalMl > 0 ? totalMl : feedingRecs.length, unit: totalMl > 0 ? "ml" : "次", label: "今日奶量" }
+      ? {
+          val: totalMl > 0 ? totalMl : feedingRecs.length,
+          unit: totalMl > 0 ? "ml" : "次",
+          label: "今日奶量",
+        }
       : { val: "—", unit: "", label: "今日奶量" },
     sleepStat,
     diaperRecs.length > 0
@@ -224,12 +257,19 @@ export default function HomePage() {
 
       {/* ── 内容区（白色背景，含快捷宫格和时间线） ── */}
       <div className="px-4 space-y-4 pt-3 pb-28">
-        <QuickActions onMoreClick={() => setFabOpen(true)} />
-        <TodayTimeline records={todayRecords} onRecordClick={handleRecordClick} />
+        <QuickActions
+          onMoreClick={() => setFabOpen(true)}
+          todayRecords={todayRecords}
+          fabCount={filteredFabCount}
+        />
+        <TodayTimeline
+          records={todayRecords}
+          onRecordClick={handleRecordClick}
+        />
       </div>
 
-      {/* ── FAB 底部弹层 ── */}
-      <FabSheet open={fabOpen} onClose={() => setFabOpen(false)} />
+      {/* ── FAB 底部弹层（动态过滤，排除快捷区已有功能） ── */}
+      <FabSheet open={fabOpen} onClose={() => setFabOpen(false)} groups={filteredFabGroups.length > 0 ? filteredFabGroups : FAB_GROUPS} />
 
       {/* ── 时间线记录操作弹层 ── */}
       <RecordActionSheet

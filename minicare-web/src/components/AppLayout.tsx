@@ -10,6 +10,8 @@ import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useAppStore } from "@/lib/store";
 import type { SwitchBabyOption } from "@/lib/store";
 import UpdatePrompt from "@/components/ui/UpdatePrompt";
+import FabSheet from "@/pages/home/FabSheet";
+import { GLOBAL_FAB_GROUPS } from "@/lib/constants";
 
 // ── SVG 图标（Lucide stroke 风格） ────────────────────────────────
 const IconHouse = ({ active }: { active: boolean }) => (
@@ -68,165 +70,6 @@ const IconUserRound = ({ active }: { active: boolean }) => (
   </svg>
 );
 
-// ── FAB 菜单图标 ──────────────────────────────────────────────────
-const IconMilk = () => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="#e8709a"
-    strokeWidth="1.5"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    style={{ width: 20, height: 20 }}>
-    <path d="M8 2h8l1 6H7L8 2z" />
-    <path d="M7 8c0 0-1 1-1 4s1 10 6 10 6-7 6-10-1-4-1-4" />
-    <path d="M10 14s.5 1 2 1 2-1 2-1" />
-  </svg>
-);
-const IconMoon = () => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="#e8709a"
-    strokeWidth="1.5"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    style={{ width: 20, height: 20 }}>
-    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-  </svg>
-);
-const IconDroplets = () => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="#e8709a"
-    strokeWidth="1.5"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    style={{ width: 20, height: 20 }}>
-    <path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z" />
-    <path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97" />
-  </svg>
-);
-const IconActivity = () => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="#e8709a"
-    strokeWidth="1.5"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    style={{ width: 20, height: 20 }}>
-    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-  </svg>
-);
-const IconHeart = () => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="#e8709a"
-    strokeWidth="1.5"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    style={{ width: 20, height: 20 }}>
-    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-  </svg>
-);
-const IconSmile = () => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="#e8709a"
-    strokeWidth="1.5"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    style={{ width: 20, height: 20 }}>
-    <circle cx="12" cy="12" r="10" />
-    <path d="M8 13s1.5 2 4 2 4-2 4-2" />
-    <line x1="9" y1="9" x2="9.01" y2="9" />
-    <line x1="15" y1="9" x2="15.01" y2="9" />
-  </svg>
-);
-const IconRuler = () => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="#e8709a"
-    strokeWidth="1.5"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    style={{ width: 20, height: 20 }}>
-    <path d="M21.3 8.7 8.7 21.3c-1 1-2.5 1-3.4 0l-2.6-2.6c-1-1-1-2.5 0-3.4L15.3 2.7c1-1 2.5-1 3.4 0l2.6 2.6c1 1 1 2.5 0 3.4z" />
-    <line x1="7.5" y1="10.5" x2="9" y2="12" />
-    <line x1="10.5" y1="7.5" x2="12" y2="9" />
-    <line x1="13.5" y1="4.5" x2="15" y2="6" />
-  </svg>
-);
-const IconStethoscope = () => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="#e8709a"
-    strokeWidth="1.5"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    style={{ width: 20, height: 20 }}>
-    <path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3" />
-    <path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4" />
-    <circle cx="20" cy="10" r="2" />
-  </svg>
-);
-
-const fabMenuItems = [
-  {
-    key: "feeding",
-    label: "饮食记录",
-    sub: "喂奶 · 辅食 · 营养素",
-    icon: <IconMilk />,
-  },
-  {
-    key: "sleep",
-    label: "睡眠记录",
-    sub: "计时模式 · 补录模式",
-    icon: <IconMoon />,
-  },
-  {
-    key: "activity",
-    label: "活动",
-    sub: "爬走练习 · 视力活动 · 户外活动",
-    icon: <IconActivity />,
-  },
-  {
-    key: "diaper",
-    label: "尿布",
-    sub: "大便次数性状 · 小便次数",
-    icon: <IconDroplets />,
-  },
-  {
-    key: "health",
-    label: "健康",
-    sub: "过敏表现 · 用药 · 护理",
-    icon: <IconHeart />,
-  },
-  {
-    key: "symptom",
-    label: "表现",
-    sub: "心情状态 · 精神状态",
-    icon: <IconSmile />,
-  },
-  {
-    key: "growth",
-    label: "生长记录",
-    sub: "身高 · 体重 · 头围",
-    icon: <IconRuler />,
-  },
-  {
-    key: "medical",
-    label: "医疗记录",
-    sub: "儿保 · 过敏检查 · 就诊",
-    icon: <IconStethoscope />,
-  },
-];
 
 export default function AppLayout() {
   const navigate = useNavigate();
@@ -343,55 +186,12 @@ export default function AppLayout() {
         </button>
       </nav>
 
-      {/* ── FAB 底部弹层 ── */}
-      {fabOpen && (
-        <div
-          className="fixed inset-0 z-50 flex items-end"
-          style={{ background: "rgba(0,0,0,0.4)" }}
-          onClick={(e) => {
-            if (e.target === e.currentTarget) setFabOpen(false);
-          }}>
-          <div
-            className="w-full bg-white rounded-t-3xl overflow-hidden"
-            style={{
-              maxWidth: 430,
-              margin: "0 auto",
-              paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 8px)",
-            }}>
-            {/* 把手 */}
-            <div className="flex justify-center pt-3 pb-1">
-              <div className="w-10 h-1 rounded-full bg-gray-200" />
-            </div>
-            <div className="text-center text-base font-bold text-[#4A3035] py-3">
-              记录什么？
-            </div>
-            <div className="overflow-y-auto" style={{ maxHeight: "60vh" }}>
-              {fabMenuItems.map(({ key, label, sub, icon }) => (
-                <div
-                  key={key}
-                  className="flex items-center gap-3.5 px-5 py-3.5 cursor-pointer active:bg-[#FFF0F4] transition-colors"
-                  onClick={() => {
-                    setFabOpen(false);
-                    navigate(`/records/form/${key}`);
-                  }}>
-                  <div
-                    className="flex items-center justify-center rounded-xl flex-shrink-0"
-                    style={{ width: 42, height: 42, background: "#fff0f4" }}>
-                    {icon}
-                  </div>
-                  <div>
-                    <div className="text-base font-semibold text-[#4a3035]">
-                      {label}
-                    </div>
-                    <div className="text-xs text-[#9A8090] mt-0.5">{sub}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="h-2" />
-          </div>
-        </div>
-      )}
+      {/* ── FAB 底部弹层（完整版：4分组 11项）── */}
+      <FabSheet
+        open={fabOpen}
+        onClose={() => setFabOpen(false)}
+        groups={GLOBAL_FAB_GROUPS}
+      />
 
       {/* ── PWA 更新提示（新版本可用时展示）── */}
       <UpdatePrompt />

@@ -11,7 +11,7 @@ interface Tab {
 }
 
 const TABS: Tab[] = [
-  { key: "formula", label: "奶粉" },
+  { key: "formula", label: "配方奶" },
   { key: "breast", label: "母乳" },
   { key: "supplement", label: "营养素" },
   { key: "food", label: "辅食" },

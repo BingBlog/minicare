@@ -109,6 +109,16 @@ export const IconSmile = ({ size = 20, color = 'currentColor', style, className 
   </svg>
 )
 
+/** 营养素/胶囊 图标（Lucide pill 风格） */
+export const IconSupplementPill = ({ size = 20, color = 'currentColor', style, className }: IconProps) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5"
+    strokeLinecap="round" strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }} className={className}>
+    <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/>
+    <path d="M8.5 8.5 16 16"/>
+  </svg>
+)
+
 // ── 通用交互图标 ────────────────────────────────────────────────────────────
 
 /** 返回箭头（左） */
@@ -650,6 +660,31 @@ export const IconBean = ({ size = 14, color = 'currentColor', style, className }
     style={{ width: size, height: size, ...style }} className={className}>
     <path d="M10.5 22C6.5 22 3 18.5 3 14.5a7.5 7.5 0 0 1 7.5-7.5c2.5 0 4.5 1 6 2.5 1.5 1.5 2.5 3.5 2.5 5.5 0 3.5-3 6.5-6.5 7z"/>
     <path d="M13.5 2C17.5 2 21 5.5 21 9.5a7.5 7.5 0 0 1-7.5 7.5c-2.5 0-4.5-1-6-2.5"/>
+  </svg>
+)
+
+// ── 喂食子类图标 ──────────────────────────────────────────────────────────
+
+/** 母乳哺育 图标（胸部+弧线，语义简洁） */
+export const IconBreast = ({ size = 20, color = 'currentColor', style, className }: IconProps) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5"
+    strokeLinecap="round" strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }} className={className}>
+    <path d="M4 14c0-4.4 3.6-8 8-8s8 3.6 8 8v1a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-1z"/>
+    <path d="M9 14c0-1.7 1.3-3 3-3"/>
+    <circle cx="15.5" cy="17" r="1" fill={color} stroke="none"/>
+  </svg>
+)
+
+/** 辅食/碗勺 图标 */
+export const IconFood = ({ size = 20, color = 'currentColor', style, className }: IconProps) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5"
+    strokeLinecap="round" strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }} className={className}>
+    <path d="M3 11c0-3.9 4-7 9-7s9 3.1 9 7H3z"/>
+    <path d="M3 11v1a9 9 0 0 0 18 0v-1"/>
+    <line x1="12" y1="18" x2="12" y2="22"/>
+    <line x1="8" y1="22" x2="16" y2="22"/>
   </svg>
 )
 

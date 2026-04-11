@@ -23,14 +23,19 @@ export interface RecordTypeCfg {
 }
 
 export const RECORD_TYPE_CFG: Record<string, RecordTypeCfg> = {
-  feeding:  { label: '饮食', bg: '#FFF0F4', color: '#F0B8C8' },
-  sleep:    { label: '睡眠', bg: '#EDFCF7', color: '#4CAF82' },
-  diaper:   { label: '尿布', bg: '#E8F5E9', color: '#4CAF82' },
-  activity: { label: '活动', bg: '#FFF8E6', color: '#DDB870' },
-  health:   { label: '健康', bg: '#FFF0F4', color: '#E8507A' },
-  growth:   { label: '生长', bg: '#F3F0FF', color: '#9B8ED8' },
-  symptom:  { label: '表现', bg: '#FFF0F4', color: '#F0B8C8' },
-  medical:  { label: '医疗', bg: '#F0F4FF', color: '#5B9BD5' },
+  feeding:     { label: '饮食',   bg: '#FFF0F4', color: '#F0B8C8' },
+  formula:     { label: '配方奶', bg: '#FFF0F4', color: '#F87098' },
+  breast:      { label: '母乳',   bg: '#FFF5F8', color: '#E8507A' },
+  food:        { label: '辅食',   bg: '#FFF8E6', color: '#DDB870' },
+  sleep:       { label: '睡眠', bg: '#EDFCF7', color: '#4CAF82' },
+  diaper:      { label: '尿布', bg: '#E8F5E9', color: '#4CAF82' },
+  activity:    { label: '活动', bg: '#FFF8E6', color: '#DDB870' },
+  health:      { label: '健康', bg: '#FFF0F4', color: '#E8507A' },
+  temperature: { label: '体温', bg: '#FFF0F4', color: '#E8507A' },
+  growth:      { label: '生长', bg: '#F3F0FF', color: '#9B8ED8' },
+  symptom:     { label: '表现', bg: '#FFF0F4', color: '#F0B8C8' },
+  medical:     { label: '医疗', bg: '#F0F4FF', color: '#5B9BD5' },
+  supplement:  { label: '营养素', bg: '#F0F8FF', color: '#4A90D9' },
 }
 
 /**
@@ -38,38 +43,119 @@ export const RECORD_TYPE_CFG: Record<string, RecordTypeCfg> = {
  * key - 与 RECORD_TYPE_CFG 保持一致
  */
 export const RECORD_ROUTES: Record<string, string> = {
-  feeding:  '/records/form/feeding',
-  sleep:    '/records/form/sleep',
-  diaper:   '/records/form/diaper',
-  activity: '/records/form/activity',
-  growth:   '/records/form/growth',
-  health:   '/records/form/health',
-  medical:  '/records/form/medical',
-  symptom:  '/records/form/symptom',
+  feeding:     '/records/form/feeding',
+  formula:     '/records/form/feeding',
+  breast:      '/records/form/feeding',
+  food:        '/records/form/feeding',
+  sleep:       '/records/form/sleep',
+  diaper:      '/records/form/diaper',
+  activity:    '/records/form/activity',
+  growth:      '/records/form/growth',
+  health:      '/records/form/health',
+  temperature: '/records/form/health',
+  medical:     '/records/form/medical',
+  symptom:     '/records/form/symptom',
+  supplement:  '/records/form/feeding',
 }
 
 // ────────────────────────────────────────────────────────────────────────────
-// 快捷记录宫格配置（首页 4x2 宫格，按顺序展示）
+// 快捷记录分区配置（首页双区分层布局）
 // ────────────────────────────────────────────────────────────────────────────
-export const QUICK_ACTION_KEYS = [
-  'feeding', 'diaper', 'sleep', 'activity',
-  'growth', 'health', 'medical', 'symptom',
+
+/**
+ * A区：喂食核心卡片（3列大卡片，展示上次记录摘要）
+ * 超高频 · 行为记录 · 即时性极强
+ */
+export const QUICK_ACTION_A_KEYS = [
+  'formula', 'breast', 'food',
 ] as const
+
+/**
+ * B区：即时护理格子（4列小格子）
+ * 高频/偶发高紧迫 · 需要快速触达
+ */
+export const QUICK_ACTION_B_KEYS = [
+  'diaper', 'sleep', 'temperature', 'symptom',
+] as const
+
+/**
+ * FAB 弹层分组配置（C区：计划/存档类功能）
+ * 每组含 label（分组标题）和 keys（功能列表）
+ * 用于首页「更多」弹层（精简版，仅展示 C 区功能）
+ */
+export const FAB_GROUPS: { label: string; keys: string[] }[] = [
+  {
+    label: '日常补录',
+    keys: ['supplement', 'activity'],
+  },
+  {
+    label: '健康档案',
+    keys: ['health', 'growth', 'medical'],
+  },
+]
+
+/**
+ * 全局完整版分组配置（导航栏「+」弹层使用）
+ * 覆盖全部 4 个分组（喂食/日常护理/日常补录/健康档案），共 11 项
+ * 用户可通过导航栏「+」找到所有记录类型
+ */
+export const GLOBAL_FAB_GROUPS: { label: string; keys: string[] }[] = [
+  {
+    label: '喂食',
+    keys: ['formula', 'breast', 'food'],
+  },
+  {
+    label: '日常护理',
+    keys: ['diaper', 'sleep', 'temperature', 'symptom'],
+  },
+  {
+    label: '日常补录',
+    keys: ['supplement', 'activity'],
+  },
+  {
+    label: '健康档案',
+    keys: ['health', 'growth', 'medical'],
+  },
+]
+
+/**
+ * 全部可选的快捷入口 key（共 11 项，编辑模式下格子库展示范围）
+ */
+export const ALL_QUICK_ACTION_KEYS = [
+  'formula', 'breast', 'food',
+  'diaper', 'sleep', 'temperature', 'symptom',
+  'supplement', 'activity',
+  'health', 'growth', 'medical',
+] as const
+
+/**
+ * 月龄默认快捷入口配置（首次进入时根据宝宝月龄写入，共 7 个 key）
+ * 前 3 个 = A区（大卡片），后 4 个 = B区（格子）
+ */
+export const DEFAULT_QUICKACTION_KEYS_BY_AGE: Record<string, string[]> = {
+  '0-5m':  ['formula', 'breast', 'diaper',  'sleep', 'temperature', 'symptom', 'supplement'],
+  '6-11m': ['formula', 'breast', 'food',    'diaper', 'sleep', 'temperature', 'symptom'],
+  '12m+':  ['food',    'breast', 'formula', 'sleep', 'diaper', 'temperature', 'symptom'],
+}
 
 /**
  * FAB 底部弹层额外副标题
  * 描述每个记录模块的具体内容，用于新增记录引导
  */
 export const FAB_SUBTITLES: Record<string, string> = {
-  feeding:  '喂奶 · 辅食 · 营养素',
-  sleep:    '计时模式 · 补录模式',
-  activity: '爬走练习 · 视力活动 · 户外活动',
-  diaper:   '大便次数性状 · 小便次数',
-  health:   '过敏表现 · 用药 · 护理',
-  symptom:  '精神状态 · 心情状态',
-
-  growth:   '身高 · 体重 · 头围',
-  medical:  '儿保 · 过敏检查 · 就诊',
+  feeding:     '喂奶 · 辅食 · 营养素',
+  formula:     '奶量 · 奶粉类型 · 配比',
+  breast:      '哺乳侧 · 时长',
+  food:        '辅食种类 · 进食情况',
+  sleep:       '计时模式 · 补录模式',
+  activity:    '大运动 · 精细运动 · 户外活动',
+  diaper:      '大便次数性状 · 小便次数',
+  health:      '体温 · 过敏表现 · 护理',
+  temperature: '快速记录宝宝体温',
+  supplement:  '维生素D · 铁剂 · 益生菌 · 钙剂',
+  symptom:     '精神状态 · 心情状态',
+  growth:      '身高 · 体重 · 头围',
+  medical:     '儿保 · 过敏检查 · 就诊',
 }
 
 // ────────────────────────────────────────────────────────────────────────────

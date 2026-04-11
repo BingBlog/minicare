@@ -13,24 +13,30 @@
  */
 import {
   IconMilk, IconMoon, IconDroplets, IconActivity,
-  IconRuler, IconHeart, IconStethoscope, IconSmile,
+  IconRuler, IconHeart, IconStethoscope, IconSmile, IconSupplementPill, IconThermometer,
+  IconBreast, IconFood,
 } from '@/components/ui/icons'
 import { RECORD_TYPE_CFG } from '@/lib/constants'
 import type { IconProps } from '@/components/ui/icons'
 
 /** 支持的记录类型 key */
-export type RecordTypeKey = 'feeding' | 'sleep' | 'diaper' | 'activity' | 'health' | 'growth' | 'medical' | 'symptom'
+export type RecordTypeKey = 'feeding' | 'formula' | 'breast' | 'food' | 'sleep' | 'diaper' | 'activity' | 'health' | 'temperature' | 'growth' | 'medical' | 'symptom' | 'supplement'
 
 /** 图标渲染函数映射（类型 key → 图标函数组件） */
 const ICON_MAP: Record<RecordTypeKey, (props: IconProps) => React.ReactElement> = {
-  feeding:  IconMilk,
-  sleep:    IconMoon,
-  diaper:   IconDroplets,
-  activity: IconActivity,
-  growth:   IconRuler,
-  health:   IconHeart,
-  medical:  IconStethoscope,
-  symptom:  IconSmile,
+  feeding:     IconMilk,
+  formula:     IconMilk,
+  breast:      IconBreast,
+  food:        IconFood,
+  sleep:       IconMoon,
+  diaper:      IconDroplets,
+  activity:    IconActivity,
+  growth:      IconRuler,
+  health:      IconHeart,
+  temperature: IconThermometer,
+  medical:     IconStethoscope,
+  symptom:     IconSmile,
+  supplement:  IconSupplementPill,
 }
 
 /** RecordTypeIcon 属性 */

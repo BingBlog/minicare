@@ -5,8 +5,8 @@
  * API: POST /api/family/:familyId/records/feeding
  *
  * 子组件：
- *  - TabSelector      四 Tab 切换（奶粉 / 母乳 / 营养素 / 辅食）
- *  - FormulaSection   奶粉 Tab：类型多选 + 勺数配比 + 奶量
+ *  - TabSelector      四 Tab 切换（配方奶 / 母乳 / 营养素 / 辅食）
+ *  - FormulaSection   配方奶 Tab：奶量 + 上次配方摘要 + 类型多选 + 配比
  *  - BreastSection    母乳 Tab：哺乳侧 + 时长
  *  - SupplementSection 营养素 Tab：多项勾选 + 剂量输入
  *  - FoodSection      辅食 Tab：列表新增 / 删除
@@ -99,7 +99,10 @@ export default function FeedingFormPage() {
   const isEditMode = Boolean(editRecord);
 
   // ── Tab ─────────────────────────────────────────────────────────
+  // 优先读 location.state.tab（如从首页「营养素」快捷入口跳入时携带 tab: 'supplement'）
   const [tab, setTab] = useState<FeedTab>(() => {
+    const stateTab = location.state?.tab as FeedTab | undefined;
+    if (stateTab && !editRecord) return stateTab;
     if (!editRecord) return "formula";
     return initFromRecord(editRecord).tab;
   });
@@ -480,7 +483,7 @@ export default function FeedingFormPage() {
           </div>
         </FormCard>
 
-        {/* 奶粉 Tab */}
+        {/* 配方奶 Tab */}
         {tab === "formula" && (
           <FormulaSection
             selectedMilkTypes={selectedMilkTypes}
@@ -491,6 +494,7 @@ export default function FeedingFormPage() {
             onChangeFormulaMl={setFormulaMl}
             loadedFromLast={loadedFromLast}
             onResetToDefault={resetFormulaToDefault}
+            isEditMode={isEditMode}
           />
         )}
 
