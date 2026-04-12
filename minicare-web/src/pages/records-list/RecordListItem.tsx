@@ -5,7 +5,7 @@
  *
  *  ┌──────┬──────────┬───────────────────┬──────────┬────────┬────┐
  *  │ icon │  label   │  tags（Pill）      │ summary  │  time  │ >  │
- *  │ 36px │ w-[44px] │  flex-1 min-w-0   │ w-[68px] │w-[34px]│13px│
+ *  │ 36px │ w-[44px] │  flex-1 min-w-0   │ w-[72px] │w-[34px]│13px│
  *  └──────┴──────────┴───────────────────┴──────────┴────────┴────┘
  *
  * 间距：px-3（左右各12px），列间 gap-2（8px）
@@ -104,8 +104,8 @@ export default function RecordListItem({ record, showDivider, onClick }: RecordL
             }
           </div>
 
-          {/* 列 4：summary 数值，固定 w-[68px] 左对齐 */}
-          <div className="shrink-0 w-[68px] flex justify-start items-center">
+          {/* 列 4：summary 数值，固定 w-[72px] 左对齐 */}
+          <div className="shrink-0 w-[72px] flex justify-start items-center">
             {summary != null && (
               <div className="flex items-center max-w-full [&>*]:max-w-full [&_*]:truncate">
                 {summary}

@@ -153,6 +153,11 @@ export function SummaryMetric({
   bg?: string;
   active?: boolean;
 }) {
+  // 内容较长时（如 "1h 10m"）自动缩小字号，避免撑开列宽
+  const valueStr = String(value)
+  const totalLen = valueStr.length + (unit ? unit.length : 0)
+  const valueFontSize = totalLen > 5 ? 11 : 14
+  const unitFontSize = totalLen > 5 ? 9 : 10
   return (
     <span
       className="inline-flex items-baseline gap-px rounded-lg px-1.5 py-0.5 flex-shrink-0"
@@ -163,7 +168,7 @@ export function SummaryMetric({
       <span
         className="font-extrabold tabular-nums"
         style={{
-          fontSize: 14,
+          fontSize: valueFontSize,
           lineHeight: 1.25,
           color,
           letterSpacing: "-0.3px",
@@ -173,7 +178,7 @@ export function SummaryMetric({
       {unit && (
         <span
           className="font-medium"
-          style={{ fontSize: 10, color, opacity: 0.75 }}>
+          style={{ fontSize: unitFontSize, color, opacity: 0.75 }}>
           {unit}
         </span>
       )}
@@ -226,11 +231,14 @@ export function Pill({
   color?: string;
   bg?: string;
 }) {
+  // 文字超过 6 个字符时缩小字号，避免长标签撑开 tags 列
+  const text = typeof children === 'string' ? children : ''
+  const fontSize = text.length > 6 ? 10 : 12
   return (
     <span
       className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-bold whitespace-nowrap"
-      style={{ fontSize: 12, lineHeight: 1.3, color, background: bg }}>
-      {Icon && <Icon size={12} color={color} />}
+      style={{ fontSize, lineHeight: 1.3, color, background: bg }}>
+      {Icon && <Icon size={fontSize === 10 ? 10 : 12} color={color} />}
       {children}
     </span>
   );
