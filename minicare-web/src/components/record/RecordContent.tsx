@@ -501,9 +501,11 @@ export function getRecordListCompactParts(
           : null
       const food = d.complementary_food as string | undefined
       const isSupp = food === '营养素'
+      const suppItems = d.supplement_items as Array<{ label?: string; dose?: string; unit?: string }> | undefined
 
       let title = '饮食'
       let meta: string | null = null
+      const tagNodes: ReactNode[] = []
 
       if (feedType === 'formula') {
         title = '配方奶'
@@ -515,11 +517,21 @@ export function getRecordListCompactParts(
       } else if (feedType === 'complementary') {
         title = isSupp ? '营养素' : '辅食'
         if (!isSupp && food) meta = food
+        // 营养素记录：以 Tag 形式展示具体营养素名称
+        if (isSupp && suppItems && suppItems.length > 0) {
+          suppItems.forEach((item, i) => {
+            tagNodes.push(
+              <Pill key={i} icon={IconPill} bg="#F3F0FF" color="#9B8ED8">
+                {item.label}
+              </Pill>
+            )
+          })
+        }
       }
 
       return {
         primary: <div className={`${LIST_TITLE_CLS} shrink-0 truncate`}>{title}</div>,
-        tags: null,
+        tags: tagNodes.length > 0 ? <div className="flex flex-wrap items-center gap-1">{tagNodes}</div> : null,
         meta: meta ? <span className={`${LIST_META_CLS} truncate`}>{meta}</span> : null,
       }
     }

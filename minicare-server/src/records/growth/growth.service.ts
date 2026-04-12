@@ -16,22 +16,24 @@ export class GrowthService {
     // INSERT ... ON DUPLICATE KEY UPDATE：同一宝宝同一天重复提交时覆盖已有记录
     // uk_growth_baby_date (baby_id, record_date) 唯一索引触发 ON DUPLICATE 分支
     await this.db.execute(
-      `INSERT INTO growth_record (id, baby_id, recorded_by, record_date, weight_g, height_mm, head_mm, note)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      `INSERT INTO growth_record (id, baby_id, recorded_by, record_date, record_time, weight_g, height_mm, head_mm, note)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
        ON DUPLICATE KEY UPDATE
-         weight_g  = VALUES(weight_g),
-         height_mm = VALUES(height_mm),
-         head_mm   = VALUES(head_mm),
-         note      = VALUES(note)`,
+         record_time = VALUES(record_time),
+         weight_g    = VALUES(weight_g),
+         height_mm   = VALUES(height_mm),
+         head_mm     = VALUES(head_mm),
+         note        = VALUES(note)`,
       [
         id,
         dto.baby_id,
         userId,
         dateStr,
-        dto.weight_g  ?? null,
-        dto.height_mm ?? null,
-        dto.head_mm   ?? null,
-        dto.note      ?? null,
+        dto.record_time ?? null,
+        dto.weight_g    ?? null,
+        dto.height_mm   ?? null,
+        dto.head_mm     ?? null,
+        dto.note        ?? null,
       ],
     );
 
@@ -69,11 +71,12 @@ export class GrowthService {
     const setClauses: string[] = [];
     const values: any[] = [];
 
-    if (dto.record_date !== undefined) { setClauses.push('record_date = ?'); values.push(toMysqlDate(dto.record_date)); }
-    if (dto.weight_g   !== undefined) { setClauses.push('weight_g = ?');   values.push(dto.weight_g   ?? null); }
-    if (dto.height_mm  !== undefined) { setClauses.push('height_mm = ?');  values.push(dto.height_mm  ?? null); }
-    if (dto.head_mm    !== undefined) { setClauses.push('head_mm = ?');    values.push(dto.head_mm    ?? null); }
-    if (dto.note       !== undefined) { setClauses.push('note = ?');       values.push(dto.note       ?? null); }
+    if (dto.record_date !== undefined) { setClauses.push('record_date = ?');  values.push(toMysqlDate(dto.record_date)); }
+    if (dto.record_time !== undefined) { setClauses.push('record_time = ?');  values.push(dto.record_time ?? null); }
+    if (dto.weight_g    !== undefined) { setClauses.push('weight_g = ?');    values.push(dto.weight_g   ?? null); }
+    if (dto.height_mm   !== undefined) { setClauses.push('height_mm = ?');   values.push(dto.height_mm  ?? null); }
+    if (dto.head_mm     !== undefined) { setClauses.push('head_mm = ?');     values.push(dto.head_mm    ?? null); }
+    if (dto.note        !== undefined) { setClauses.push('note = ?');        values.push(dto.note       ?? null); }
 
     if (setClauses.length > 0) {
       values.push(id);

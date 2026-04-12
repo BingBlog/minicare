@@ -407,6 +407,8 @@ export interface HealthRecord extends RecordBase {
 export interface CreateGrowthDto {
   baby_id: string
   record_date: string       // YYYY-MM-DD（每日唯一索引）
+  /** 测量时间 HH:mm，不传则为 NULL */
+  record_time?: string
   /** 身高，毫米整数（前端 cm × 10 后传入），范围 300~1500 */
   height_mm?: number
   /** 体重，克整数（前端 kg × 1000 后传入），范围 500~30000 */
@@ -420,6 +422,8 @@ export type UpdateGrowthDto = Partial<Omit<CreateGrowthDto, 'baby_id'>>
 
 export interface GrowthRecord extends RecordBase {
   record_date: string
+  /** 测量时间 HH:mm（可能为 NULL） */
+  record_time?: string | null
   height_mm?: number | null
   weight_g?: number | null
   head_mm?: number | null

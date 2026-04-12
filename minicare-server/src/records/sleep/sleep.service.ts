@@ -64,15 +64,21 @@ export class SleepService {
       throw new NotFoundException('找不到进行中的睡眠记录');
     }
 
-    // mysql2 driver 已配置 timezone='+00:00'，DATETIME 字段直接以 UTC 返回 Date 对象
-    const startTime = new Date(rows[0].start_time);
-    const endTime   = new Date(dto.end_time);
+    const endTimeStr = toMysqlDatetime(dto.end_time);
 
-    if (endTime <= startTime) {
+    // 用 MySQL 的 TIMESTAMPDIFF 做差值，规避 Node.js 应用层时区解析歧义：
+    // CloudRun 容器运行在 UTC+0，而前端传入的是不带 Z 的本地时间串（北京时间），
+    // 若在 JS 层做 new Date() 相减会引入 8 小时偏差。
+    // 改为先写入 end_time，再由 MySQL 原地计算 TIMESTAMPDIFF（字段均为 CST，无时区问题）。
+    const [checkRows] = await this.db.execute<any[]>(
+      `SELECT TIMESTAMPDIFF(MINUTE, start_time, ?) AS diff FROM sleep_record WHERE id = ?`,
+      [endTimeStr, sleepId],
+    );
+    const durationMin = Number(checkRows[0]?.diff ?? 0);
+
+    if (durationMin <= 0) {
       throw new BadRequestException('结束时间不能早于开始时间');
     }
-
-    const durationMin = Math.round((endTime.getTime() - startTime.getTime()) / 60_000);
 
     await this.db.execute(
       `UPDATE sleep_record
@@ -82,7 +88,7 @@ export class SleepService {
            note         = COALESCE(?, note)
        WHERE id = ?`,
       [
-        toMysqlDatetime(dto.end_time), durationMin, SLEEP_STATUS.ENDED,
+        endTimeStr, durationMin, SLEEP_STATUS.ENDED,
         dto.quality      ?? null,
         dto.sleep_period ?? null,
         dto.note         ?? null,
@@ -97,12 +103,20 @@ export class SleepService {
    * 补录已完成睡眠：直接插入 status=ended，不与「进行中」记录冲突
    */
   async createCompleteSleep(userId: string, dto: CreateCompleteSleepDto) {
-    const startTime = new Date(dto.start_time);
-    const endTime = new Date(dto.end_time);
-    if (endTime <= startTime) {
+    const startStr = toMysqlDatetime(dto.start_time);
+    const endStr   = toMysqlDatetime(dto.end_time);
+
+    // 用 MySQL TIMESTAMPDIFF 计算时长，规避 JS 层在 UTC+0 容器上解析北京时间串的偏差
+    const [diffRows] = await this.db.execute<any[]>(
+      `SELECT TIMESTAMPDIFF(MINUTE, ?, ?) AS diff`,
+      [startStr, endStr],
+    );
+    const durationMin = Number(diffRows[0]?.diff ?? 0);
+
+    if (durationMin <= 0) {
       throw new BadRequestException('结束时间不能早于或等于开始时间');
     }
-    const durationMin = Math.round((endTime.getTime() - startTime.getTime()) / 60_000);
+
     const id = uuidv4();
     await this.db.execute(
       `INSERT INTO sleep_record (id, baby_id, recorded_by, start_time, end_time, status, duration_min, quality, sleep_period, note)
@@ -111,8 +125,8 @@ export class SleepService {
         id,
         dto.baby_id,
         userId,
-        toMysqlDatetime(dto.start_time),
-        toMysqlDatetime(dto.end_time),
+        startStr,
+        endStr,
         SLEEP_STATUS.ENDED,
         durationMin,
         dto.quality ?? null,
@@ -174,16 +188,35 @@ export class SleepService {
     if (dto.note         !== undefined) { setClauses.push('note = ?');         values.push(dto.note); }
 
     // 重新计算 duration_min（如果 start_time 或 end_time 有更新）
-    const newStart = dto.start_time ? new Date(dto.start_time) : new Date(rows[0].start_time);
-    const newEnd   = dto.end_time   ? new Date(dto.end_time)   : (rows[0].end_time ? new Date(rows[0].end_time) : null);
-    if (newEnd && newStart) {
-      if (newEnd <= newStart) {
+    // 用 MySQL TIMESTAMPDIFF 计算，规避 Node.js 应用层在 UTC+0 容器上解析北京时间串的偏差
+    const hasTimeChange = dto.start_time !== undefined || dto.end_time !== undefined;
+    const existingEndTime = rows[0].end_time; // DB 中已有 end_time（CST DATETIME 字符串）
+    const newStartStr = dto.start_time ? toMysqlDatetime(dto.start_time) : null;
+    const newEndStr   = dto.end_time   ? toMysqlDatetime(dto.end_time)   : null;
+
+    if (hasTimeChange && (newEndStr || existingEndTime)) {
+      // 确定用于计算的实际 start/end 字符串（均为 CST 本地时间）
+      const calcStartStr = newStartStr ?? null;   // null → SQL 用字段当前值
+      const calcEndStr   = newEndStr   ?? null;
+
+      // 构造 TIMESTAMPDIFF 查询（对新值或现有字段值做差）
+      const startExpr = calcStartStr ? '?' : 'start_time';
+      const endExpr   = calcEndStr   ? '?' : 'end_time';
+      const diffParams: any[] = [];
+      if (calcStartStr) diffParams.push(calcStartStr);
+      if (calcEndStr)   diffParams.push(calcEndStr);
+      diffParams.push(sleepId);
+
+      const [diffRows] = await this.db.execute<any[]>(
+        `SELECT TIMESTAMPDIFF(MINUTE, ${startExpr}, ${endExpr}) AS diff FROM sleep_record WHERE id = ?`,
+        diffParams,
+      );
+      const durationMin = Number(diffRows[0]?.diff ?? 0);
+      if (durationMin <= 0) {
         throw new UnprocessableEntityException(
-          `结束时间（${newEnd.toISOString()}）不能早于或等于开始时间（${newStart.toISOString()}），` +
-          '若为夜间跨午夜睡眠，请确保结束时间日期为次日',
+          '结束时间不能早于或等于开始时间，若为夜间跨午夜睡眠，请确保结束时间日期为次日',
         );
       }
-      const durationMin = Math.round((newEnd.getTime() - newStart.getTime()) / 60_000);
       setClauses.push('duration_min = ?');
       values.push(durationMin);
     }

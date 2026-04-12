@@ -1,18 +1,18 @@
 /**
  * PWA 更新提示组件
  *
- * 当 Service Worker 检测到新版本（进入 waiting 状态）时，
- * 展示底部 BottomSheet，引导用户点击「立即更新」。
+ * 核心问题：CloudBase CDN 对 sw.js 设置了 max-age=31536000（1年），
+ * 导致浏览器永远拿不到新的 sw.js，SW 更新链路完全失效。
  *
- * 实现原理：
- * - vite-plugin-pwa `registerType: 'prompt'` 模式下，新 SW 进入 waiting 时触发
- *   useRegisterSW 的 needRefresh 状态为 true
- * - 用户确认后调用 updateServiceWorker(true)，内部执行 skipWaiting + location.reload()
+ * 解决方案：
+ * 1. SW 注册时在 URL 上加 ?v=BUILD_TIME，每次构建不同，绕开 CDN 缓存
+ * 2. 轮询 version.json?t=时间戳（no-store），对比构建时间戳检测更新
+ * 3. 用户点「立即更新」时执行 location.reload()，强制从网络拉最新代码
  */
 
-import { useRegisterSW } from 'virtual:pwa-register/react'
+import { useEffect, useRef, useState } from 'react'
 
-/** 刷新/更新图标 */
+/** 刷新图标 */
 const IconRefresh = () => (
   <svg
     viewBox="0 0 24 24"
@@ -28,23 +28,86 @@ const IconRefresh = () => (
   </svg>
 )
 
-export default function UpdatePrompt() {
-  const {
-    needRefresh: [needRefresh, setNeedRefresh],
-    updateServiceWorker,
-  } = useRegisterSW({
-    onRegistered(r) {
-      // 可选：注册成功后打印日志
-      if (import.meta.env.DEV) {
-        console.log('[PWA] SW registered:', r)
-      }
-    },
-    onRegisterError(error) {
-      if (import.meta.env.DEV) {
-        console.error('[PWA] SW registration error:', error)
-      }
-    },
+/** 当前构建时间戳（由 vite.config.ts define 注入） */
+const BUILD_TIME = import.meta.env.VITE_BUILD_TIME as string | undefined
+
+/** 拉取服务器上的版本信息（?t= 随机参数绕开所有缓存） */
+async function fetchRemoteBuildTime(): Promise<string | null> {
+  try {
+    const res = await fetch(`version.json?t=${Date.now()}`, {
+      cache: 'no-store',
+    })
+    if (!res.ok) return null
+    const json = (await res.json()) as { buildTime?: string }
+    return json.buildTime ?? null
+  } catch {
+    return null
+  }
+}
+
+/** 手动注册 SW，URL 带 ?v=BUILD_TIME，每次构建不同，绕开 CDN 的1年强缓存 */
+function registerSW() {
+  // 开发模式不生成 sw.js（devOptions.enabled: false），跳过注册
+  if (import.meta.env.DEV) return
+  if (!('serviceWorker' in navigator)) return
+  const swUrl = BUILD_TIME ? `sw.js?v=${encodeURIComponent(BUILD_TIME)}` : 'sw.js'
+  navigator.serviceWorker.register(swUrl).catch((err) => {
+    console.error('[PWA] SW registration failed:', err)
   })
+}
+
+export default function UpdatePrompt() {
+  const [needRefresh, setNeedRefresh] = useState(false)
+  const checkingRef = useRef(false)
+  const registeredRef = useRef(false)
+
+  // ── 注册 SW ───────────────────────────────────────────────────────
+  useEffect(() => {
+    if (registeredRef.current) return
+    registeredRef.current = true
+    // 页面 load 完成后再注册，避免阻塞首屏
+    if (document.readyState === 'complete') {
+      registerSW()
+    } else {
+      window.addEventListener('load', registerSW, { once: true })
+    }
+  }, [])
+
+  // ── 版本轮询：绕开 CDN 对 sw.js 的强缓存，主动检测新版本 ──────────
+  const checkVersion = async () => {
+    if (import.meta.env.DEV) return // 开发模式不检查版本
+    if (checkingRef.current || needRefresh) return
+    if (!BUILD_TIME) return
+    checkingRef.current = true
+    try {
+      const remote = await fetchRemoteBuildTime()
+      if (remote && remote !== BUILD_TIME) {
+        setNeedRefresh(true)
+      }
+    } finally {
+      checkingRef.current = false
+    }
+  }
+
+  useEffect(() => {
+    // 页面加载后 3 秒首次检查
+    const initTimer = setTimeout(checkVersion, 3000)
+    // 每 5 分钟轮询
+    const pollTimer = setInterval(checkVersion, 5 * 60 * 1000)
+    // 切回 Tab / focus 时检查
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') checkVersion()
+    }
+    document.addEventListener('visibilitychange', onVisible)
+    window.addEventListener('focus', checkVersion)
+
+    return () => {
+      clearTimeout(initTimer)
+      clearInterval(pollTimer)
+      document.removeEventListener('visibilitychange', onVisible)
+      window.removeEventListener('focus', checkVersion)
+    }
+  }, [needRefresh]) // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!needRefresh) return null
 
@@ -89,7 +152,7 @@ export default function UpdatePrompt() {
         <div className="px-4 pt-3 flex flex-col gap-2.5">
           <button
             type="button"
-            onClick={() => updateServiceWorker(true)}
+            onClick={() => window.location.reload()}
             className="w-full py-3.5 text-white font-bold text-[15px] border-none cursor-pointer rounded-2xl transition-all active:scale-[0.97]"
             style={{ background: '#F87098' }}>
             立即更新

@@ -1,9 +1,8 @@
 /**
  * 饮食记录 - 营养素 Tab 内容
  *
- * 按分组展示：
- *  - 必吃（维生素D / 铁）
- *  - 看情况（钙 / DHA / 维生素AD / 锌 / 益生菌 / 维生素C）
+ * 统一展示所有营养素（不再区分必吃/看情况）：
+ *  - 维生素D、铁、钙、DHA、维生素AD、锌、益生菌、维生素C
  *  - 末尾附「其他」自由输入行，支持个性化营养素记录
  * 每行：勾选框 + 名称(+提示) + 剂量输入框 + 单位
  */
@@ -28,9 +27,6 @@ interface Props {
   otherUnit: string;
   onOtherUnitChange: (val: string) => void;
 }
-
-const mustItems = suppItems.filter((s) => s.group === "must");
-const optionalItems = suppItems.filter((s) => s.group === "optional");
 
 function SuppRow({
   s,
@@ -114,46 +110,16 @@ export default function SupplementSection({
 }: Props) {
   return (
     <>
-      {/* ── 必吃分组 ───────────────────────────────────────────── */}
-      <div className="px-4 mb-1 flex items-center gap-2">
+      {/* ── 营养素列表（统一显示，不再区分必吃/看情况） ─────── */}
+      <div className="px-4 mb-1">
         <span className="text-[12px] font-semibold text-[#9A8090]">
           营养素记录
         </span>
-        <span
-          className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full"
-          style={{ background: "#FFF0F3", color: "#F87098" }}>
-          必吃
-        </span>
       </div>
       <div
         className="mx-4 mb-3 bg-white rounded-2xl overflow-hidden"
         style={{ boxShadow: "0 1px 6px rgba(200,100,120,0.08)" }}>
-        {mustItems.map((s, idx) => (
-          <SuppRow
-            key={s.key}
-            s={s}
-            checked={!!checked[s.key]}
-            dose={dose[s.key] || ""}
-            isLast={idx === mustItems.length - 1}
-            onToggle={onToggle}
-            onDoseChange={onDoseChange}
-          />
-        ))}
-      </div>
-
-      {/* ── 看情况分组（含「其他」行） ───────────────────────── */}
-      <div className="px-4 mb-1 flex items-center gap-2">
-        <span
-          className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full"
-          style={{ background: "#F0F4FF", color: "#7B8ED8" }}>
-          看情况
-        </span>
-        <span className="text-[11px] text-[#B09098]">按需选择</span>
-      </div>
-      <div
-        className="mx-4 mb-3 bg-white rounded-2xl overflow-hidden"
-        style={{ boxShadow: "0 1px 6px rgba(200,100,120,0.08)" }}>
-        {optionalItems.map((s, idx) => (
+        {suppItems.map((s, idx) => (
           <SuppRow
             key={s.key}
             s={s}

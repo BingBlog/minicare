@@ -40,50 +40,6 @@ import {
   GLOBAL_FAB_GROUPS,
 } from "@/lib/constants";
 import { useQuickActionKeys } from "@/lib/useQuickActionKeys";
-import type { TodayRecord } from "@/api/types";
-
-// ── 时距格式化 ─────────────────────────────────────────────────────────────────
-function formatTimeAgo(isoStr: string): string {
-  const diff = Date.now() - new Date(isoStr).getTime();
-  const mins = Math.floor(diff / 60_000);
-  if (mins < 1) return "刚刚";
-  if (mins < 60) return `${mins}分钟前`;
-  const hours = Math.floor(mins / 60);
-  if (hours < 24) return `${hours}h前`;
-  const days = Math.floor(hours / 24);
-  if (days === 1) return "昨日";
-  return `${days}天前`;
-}
-
-// ── A区卡片摘要 ────────────────────────────────────────────────────────────────
-function getSummary(key: string, records: TodayRecord[]): string {
-  const typeRecords = records.filter((r) => {
-    if (key === "formula")
-      return r.type === "feeding" && (r.detail as Record<string, unknown>)?.feed_type === "formula";
-    if (key === "breast")
-      return r.type === "feeding" && (r.detail as Record<string, unknown>)?.feed_type === "breast";
-    if (key === "food")
-      return r.type === "feeding" && (r.detail as Record<string, unknown>)?.feed_type === "complementary";
-    return false;
-  });
-  if (typeRecords.length === 0) return "";
-  const latest = [...typeRecords].sort(
-    (a, b) => new Date(b.time).getTime() - new Date(a.time).getTime(),
-  )[0];
-  const d = (latest.detail ?? {}) as Record<string, unknown>;
-  const ago = formatTimeAgo(latest.time);
-  if (key === "formula") {
-    const ml = d.formula_ml ? `${d.formula_ml}ml` : "";
-    return ml ? `上次 ${ml} · ${ago}` : `上次 ${ago}`;
-  }
-  if (key === "breast") {
-    const side = d.breast_side === "left" ? "左侧" : d.breast_side === "right" ? "右侧" : "双侧";
-    const dur = d.duration_min ? `${d.duration_min}min` : "";
-    return [side, dur, ago].filter(Boolean).join(" · ");
-  }
-  if (key === "food") return `今日 ${typeRecords.length} 次 · 最近 ${ago}`;
-  return "";
-}
 
 // ── Tab 跳转参数 ───────────────────────────────────────────────────────────────
 const TAB_STATE: Record<string, string> = {
@@ -102,13 +58,25 @@ const EDIT_POOL_GROUPS = GLOBAL_FAB_GROUPS;
 interface SortableCardProps {
   id: string;
   cfg: { label: string; bg: string };
-  summary: string;
   canDelete: boolean;
   onRemove: () => void;
   isDraggingAny: boolean;
 }
-function SortableCard({ id, cfg, summary, canDelete, onRemove, isDraggingAny }: SortableCardProps) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
+function SortableCard({
+  id,
+  cfg,
+  canDelete,
+  onRemove,
+  isDraggingAny,
+}: SortableCardProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id });
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
@@ -120,12 +88,19 @@ function SortableCard({ id, cfg, summary, canDelete, onRemove, isDraggingAny }: 
       <div
         {...attributes}
         {...listeners}
-        className="flex flex-col items-start gap-1 rounded-xl px-2.5 py-2.5 cursor-grab active:cursor-grabbing text-left select-none"
-        style={{ background: cfg.bg, opacity: isDraggingAny && !isDragging ? 0.7 : 1 }}>
-        <RecordTypeIcon type={id} containerSize={36} iconSize={18} borderRadius={10} />
-        <span className="text-[13px] font-semibold text-[#4A3035] mt-0.5">{cfg.label}</span>
-        <span className="text-[11px] leading-tight text-[#C0A8AD]">
-          {summary || "点击开始记录"}
+        className="flex flex-col items-center gap-2 rounded-xl px-2 pt-3.5 pb-3 cursor-grab active:cursor-grabbing text-center select-none"
+        style={{
+          background: cfg.bg,
+          opacity: isDraggingAny && !isDragging ? 0.7 : 1,
+        }}>
+        <RecordTypeIcon
+          type={id}
+          containerSize={54}
+          iconSize={28}
+          borderRadius={16}
+        />
+        <span className="text-[13px] font-semibold text-[#4A3035]">
+          {cfg.label}
         </span>
       </div>
       {/* × 删除 */}
@@ -133,10 +108,18 @@ function SortableCard({ id, cfg, summary, canDelete, onRemove, isDraggingAny }: 
         <button
           type="button"
           onPointerDown={(e) => e.stopPropagation()}
-          onClick={(e) => { e.stopPropagation(); onRemove(); }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onRemove();
+          }}
           className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[#F05060] flex items-center justify-center shadow-sm z-10">
           <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-            <path d="M2.5 2.5l5 5M7.5 2.5l-5 5" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+            <path
+              d="M2.5 2.5l5 5M7.5 2.5l-5 5"
+              stroke="white"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
           </svg>
         </button>
       )}
@@ -154,8 +137,21 @@ interface SortableChipProps {
   onRemove: () => void;
   isDraggingAny: boolean;
 }
-function SortableChip({ id, cfg, canDelete, onRemove, isDraggingAny }: SortableChipProps) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
+function SortableChip({
+  id,
+  cfg,
+  canDelete,
+  onRemove,
+  isDraggingAny,
+}: SortableChipProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id });
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
@@ -167,19 +163,37 @@ function SortableChip({ id, cfg, canDelete, onRemove, isDraggingAny }: SortableC
         {...attributes}
         {...listeners}
         className="bg-white border border-gray-100 rounded-xl flex flex-col items-center gap-1.5 cursor-grab active:cursor-grabbing select-none"
-        style={{ padding: "12px 4px 10px", opacity: isDraggingAny && !isDragging ? 0.7 : 1 }}>
-        <RecordTypeIcon type={id} containerSize={44} iconSize={22} borderRadius={13} />
-        <span className="text-[12px] font-semibold text-[#4a3035]">{cfg.label}</span>
+        style={{
+          padding: "12px 4px 10px",
+          opacity: isDraggingAny && !isDragging ? 0.7 : 1,
+        }}>
+        <RecordTypeIcon
+          type={id}
+          containerSize={44}
+          iconSize={22}
+          borderRadius={13}
+        />
+        <span className="text-[12px] font-semibold text-[#4a3035]">
+          {cfg.label}
+        </span>
       </div>
       {/* × 删除 */}
       {canDelete && (
         <button
           type="button"
           onPointerDown={(e) => e.stopPropagation()}
-          onClick={(e) => { e.stopPropagation(); onRemove(); }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onRemove();
+          }}
           className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[#F05060] flex items-center justify-center shadow-sm z-10">
           <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-            <path d="M2.5 2.5l5 5M7.5 2.5l-5 5" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+            <path
+              d="M2.5 2.5l5 5M7.5 2.5l-5 5"
+              stroke="white"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
           </svg>
         </button>
       )}
@@ -200,10 +214,17 @@ function DragPreview({ id, isACard }: DragPreviewProps) {
   if (isACard) {
     return (
       <div
-        className="flex flex-col items-start gap-1 rounded-xl px-2.5 py-2.5 shadow-xl rotate-2 select-none"
+        className="flex flex-col items-center gap-2 rounded-xl px-2 pt-3.5 pb-3 shadow-xl rotate-2 select-none"
         style={{ background: cfg.bg, width: 100 }}>
-        <RecordTypeIcon type={id} containerSize={36} iconSize={18} borderRadius={10} />
-        <span className="text-[13px] font-semibold text-[#4A3035] mt-0.5">{cfg.label}</span>
+        <RecordTypeIcon
+          type={id}
+          containerSize={54}
+          iconSize={28}
+          borderRadius={16}
+        />
+        <span className="text-[13px] font-semibold text-[#4A3035]">
+          {cfg.label}
+        </span>
       </div>
     );
   }
@@ -211,8 +232,15 @@ function DragPreview({ id, isACard }: DragPreviewProps) {
     <div
       className="bg-white border border-gray-100 rounded-xl flex flex-col items-center gap-1.5 shadow-xl rotate-2 select-none"
       style={{ padding: "12px 4px 10px", width: 72 }}>
-      <RecordTypeIcon type={id} containerSize={44} iconSize={22} borderRadius={13} />
-      <span className="text-[12px] font-semibold text-[#4a3035]">{cfg.label}</span>
+      <RecordTypeIcon
+        type={id}
+        containerSize={44}
+        iconSize={22}
+        borderRadius={13}
+      />
+      <span className="text-[12px] font-semibold text-[#4a3035]">
+        {cfg.label}
+      </span>
     </div>
   );
 }
@@ -222,20 +250,24 @@ function DragPreview({ id, isACard }: DragPreviewProps) {
 // ─────────────────────────────────────────────────────────────────────────────
 interface QuickActionsProps {
   onMoreClick: () => void;
-  todayRecords?: TodayRecord[];
   fabCount?: number;
 }
 
 export default function QuickActions({
   onMoreClick,
-  todayRecords = [],
   fabCount = 5,
 }: QuickActionsProps) {
   const navigate = useNavigate();
   const {
-    aKeys, bKeys, isEditing,
-    startEditing, saveEditing, cancelEditing,
-    removeKey, addKey, reorderDraft,
+    aKeys,
+    bKeys,
+    isEditing,
+    startEditing,
+    saveEditing,
+    cancelEditing,
+    removeKey,
+    addKey,
+    reorderDraft,
   } = useQuickActionKeys();
 
   const [showHint, setShowHint] = useState(false);
@@ -249,13 +281,16 @@ export default function QuickActions({
     setShowHint(false);
   };
 
-  const handleNavigate = useCallback((key: string) => {
-    if (isEditing) return;
-    const path = RECORD_ROUTES[key];
-    const tabKey = TAB_STATE[key];
-    if (tabKey) navigate(path, { state: { tab: tabKey } });
-    else navigate(path);
-  }, [isEditing, navigate]);
+  const handleNavigate = useCallback(
+    (key: string) => {
+      if (isEditing) return;
+      const path = RECORD_ROUTES[key];
+      const tabKey = TAB_STATE[key];
+      if (tabKey) navigate(path, { state: { tab: tabKey } });
+      else navigate(path);
+    },
+    [isEditing, navigate],
+  );
 
   // ── 拖拽状态 ────────────────────────────────────────────────────────────────
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -266,25 +301,30 @@ export default function QuickActions({
   // activationConstraint 避免轻触被当成拖拽
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
-    useSensor(TouchSensor, { activationConstraint: { delay: 180, tolerance: 6 } }),
+    useSensor(TouchSensor, {
+      activationConstraint: { delay: 180, tolerance: 6 },
+    }),
   );
 
   const handleDragStart = useCallback((event: DragStartEvent) => {
     setActiveId(event.active.id as string);
   }, []);
 
-  const handleDragEnd = useCallback((event: DragEndEvent) => {
-    const { active, over } = event;
-    setActiveId(null);
-    if (!over || active.id === over.id) return;
-    const fromIdx = currentKeys.indexOf(active.id as string);
-    const toIdx = currentKeys.indexOf(over.id as string);
-    if (fromIdx !== -1 && toIdx !== -1) {
-      reorderDraft(fromIdx, toIdx);
-    }
-  // currentKeys 在每次 render 都是新数组，用 ref 保持 stable
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentKeys.join(','), reorderDraft]);
+  const handleDragEnd = useCallback(
+    (event: DragEndEvent) => {
+      const { active, over } = event;
+      setActiveId(null);
+      if (!over || active.id === over.id) return;
+      const fromIdx = currentKeys.indexOf(active.id as string);
+      const toIdx = currentKeys.indexOf(over.id as string);
+      if (fromIdx !== -1 && toIdx !== -1) {
+        reorderDraft(fromIdx, toIdx);
+      }
+      // currentKeys 在每次 render 都是新数组，用 ref 保持 stable
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },
+    [currentKeys.join(","), reorderDraft],
+  );
 
   // ── 格子库 ──────────────────────────────────────────────────────────────────
   const poolKeys = (ALL_QUICK_ACTION_KEYS as readonly string[]).filter(
@@ -301,8 +341,10 @@ export default function QuickActions({
   return (
     <div
       className="bg-white rounded-2xl overflow-hidden"
-      style={{ boxShadow: "0 2px 12px rgba(200,100,120,0.08), 0 1px 3px rgba(0,0,0,0.04)" }}>
-
+      style={{
+        boxShadow:
+          "0 2px 12px rgba(200,100,120,0.08), 0 1px 3px rgba(0,0,0,0.04)",
+      }}>
       {/* ── 标题行 ── */}
       <div className="flex items-center justify-between px-4 pt-3.5 pb-1.5">
         <span className="text-[11px] font-semibold text-[#9A8090] tracking-[0.8px] uppercase">
@@ -310,12 +352,24 @@ export default function QuickActions({
         </span>
         {isEditing ? (
           <div className="flex items-center gap-3">
-            <span className="text-xs text-[#9A8090] cursor-pointer active:opacity-70" onClick={cancelEditing}>取消</span>
-            <span className="text-xs text-primary font-semibold cursor-pointer active:opacity-70" onClick={saveEditing}>完成</span>
+            <span
+              className="text-xs text-[#9A8090] cursor-pointer active:opacity-70"
+              onClick={cancelEditing}>
+              取消
+            </span>
+            <span
+              className="text-xs text-primary font-semibold cursor-pointer active:opacity-70"
+              onClick={saveEditing}>
+              完成
+            </span>
           </div>
         ) : (
           <div className="flex items-center gap-3">
-            <span className="text-xs text-[#9A8090] cursor-pointer active:opacity-70" onClick={startEditing}>编辑</span>
+            <span
+              className="text-xs text-[#9A8090] cursor-pointer active:opacity-70"
+              onClick={startEditing}>
+              编辑
+            </span>
             <span
               className="text-xs text-primary font-medium cursor-pointer flex items-center gap-0.5 active:opacity-70"
               onClick={onMoreClick}>
@@ -335,21 +389,26 @@ export default function QuickActions({
             <div className="px-3 pt-1 pb-2">
               <div
                 className="grid gap-2"
-                style={{ gridTemplateColumns: `repeat(${Math.min(aKeys.length, 3)}, 1fr)` }}>
+                style={{
+                  gridTemplateColumns: `repeat(${Math.min(aKeys.length, 3)}, 1fr)`,
+                }}>
                 {aKeys.map((key) => {
                   const cfg = RECORD_TYPE_CFG[key];
-                  const summary = getSummary(key, todayRecords);
                   return (
                     <button
                       key={key}
                       type="button"
                       onClick={() => handleNavigate(key)}
-                      className="flex flex-col items-start gap-1 rounded-xl px-2.5 py-2.5 cursor-pointer transition-transform active:scale-95 text-left w-full"
+                      className="flex flex-col items-center gap-2 rounded-xl px-2 pt-3.5 pb-3 cursor-pointer transition-transform active:scale-95 text-center w-full"
                       style={{ background: cfg.bg }}>
-                      <RecordTypeIcon type={key} containerSize={36} iconSize={18} borderRadius={10} />
-                      <span className="text-[13px] font-semibold text-[#4A3035] mt-0.5">{cfg.label}</span>
-                      <span className="text-[11px] leading-tight" style={{ color: summary ? "#9A8090" : "#C0A8AD" }}>
-                        {summary || "点击开始记录"}
+                      <RecordTypeIcon
+                        type={key}
+                        containerSize={54}
+                        iconSize={28}
+                        borderRadius={16}
+                      />
+                      <span className="text-[13px] font-semibold text-[#4A3035]">
+                        {cfg.label}
                       </span>
                     </button>
                   );
@@ -368,7 +427,9 @@ export default function QuickActions({
             <div className="px-3 pt-2 pb-1">
               <div
                 className="grid gap-2"
-                style={{ gridTemplateColumns: `repeat(${Math.min(bKeys.length, 4)}, 1fr)` }}>
+                style={{
+                  gridTemplateColumns: `repeat(${Math.min(bKeys.length, 4)}, 1fr)`,
+                }}>
                 {bKeys.map((key) => {
                   const cfg = RECORD_TYPE_CFG[key];
                   return (
@@ -378,8 +439,15 @@ export default function QuickActions({
                       onClick={() => handleNavigate(key)}
                       className="bg-white border border-gray-100 rounded-xl flex flex-col items-center gap-1.5 cursor-pointer transition-transform active:scale-95"
                       style={{ padding: "12px 4px 10px" }}>
-                      <RecordTypeIcon type={key} containerSize={44} iconSize={22} borderRadius={13} />
-                      <span className="text-[12px] font-semibold text-[#4a3035]">{cfg.label}</span>
+                      <RecordTypeIcon
+                        type={key}
+                        containerSize={44}
+                        iconSize={22}
+                        borderRadius={13}
+                      />
+                      <span className="text-[12px] font-semibold text-[#4a3035]">
+                        {cfg.label}
+                      </span>
                     </button>
                   );
                 })}
@@ -408,19 +476,21 @@ export default function QuickActions({
 
             {/* A区（大卡片）可拖拽 */}
             {aKeys.length > 0 && (
-              <SortableContext items={currentKeys} strategy={rectSortingStrategy}>
+              <SortableContext
+                items={currentKeys}
+                strategy={rectSortingStrategy}>
                 <div
                   className="grid gap-2 mb-2"
-                  style={{ gridTemplateColumns: `repeat(${Math.min(aKeys.length, 3)}, 1fr)` }}>
+                  style={{
+                    gridTemplateColumns: `repeat(${Math.min(aKeys.length, 3)}, 1fr)`,
+                  }}>
                   {aKeys.map((key) => {
                     const cfg = RECORD_TYPE_CFG[key];
-                    const summary = getSummary(key, todayRecords);
                     return (
                       <SortableCard
                         key={key}
                         id={key}
                         cfg={cfg}
-                        summary={summary}
                         canDelete={canDelete}
                         onRemove={() => removeKey(key)}
                         isDraggingAny={activeId !== null}
@@ -438,10 +508,14 @@ export default function QuickActions({
 
             {/* B区（小格子）可拖拽 */}
             {bKeys.length > 0 && (
-              <SortableContext items={currentKeys} strategy={rectSortingStrategy}>
+              <SortableContext
+                items={currentKeys}
+                strategy={rectSortingStrategy}>
                 <div
                   className="grid gap-2"
-                  style={{ gridTemplateColumns: `repeat(${Math.min(bKeys.length, 4)}, 1fr)` }}>
+                  style={{
+                    gridTemplateColumns: `repeat(${Math.min(bKeys.length, 4)}, 1fr)`,
+                  }}>
                   {bKeys.map((key) => {
                     const cfg = RECORD_TYPE_CFG[key];
                     return (
@@ -462,7 +536,9 @@ export default function QuickActions({
 
           {/* 拖拽预览（跟随手指浮层） */}
           <DragOverlay dropAnimation={{ duration: 180, easing: "ease" }}>
-            {activeId ? <DragPreview id={activeId} isACard={activeIsCard} /> : null}
+            {activeId ? (
+              <DragPreview id={activeId} isACard={activeIsCard} />
+            ) : null}
           </DragOverlay>
         </DndContext>
       )}
@@ -476,15 +552,21 @@ export default function QuickActions({
               {canAdd ? "更多功能（点击添加）" : "已达上限（最多 7 个）"}
             </div>
             {poolKeys.length === 0 ? (
-              <div className="text-[12px] text-[#C0A8AD] text-center py-2">所有功能均已在快捷区</div>
+              <div className="text-[12px] text-[#C0A8AD] text-center py-2">
+                所有功能均已在快捷区
+              </div>
             ) : (
               <div className="space-y-2">
                 {EDIT_POOL_GROUPS.map((group) => {
-                  const groupPoolKeys = group.keys.filter((k) => poolKeys.includes(k));
+                  const groupPoolKeys = group.keys.filter((k) =>
+                    poolKeys.includes(k),
+                  );
                   if (groupPoolKeys.length === 0) return null;
                   return (
                     <div key={group.label}>
-                      <div className="text-[10px] text-[#C0A8AD] px-1 mb-1">{group.label}</div>
+                      <div className="text-[10px] text-[#C0A8AD] px-1 mb-1">
+                        {group.label}
+                      </div>
                       <div className="grid grid-cols-4 gap-2">
                         {groupPoolKeys.map((key) => {
                           const cfg = RECORD_TYPE_CFG[key];
@@ -496,12 +578,28 @@ export default function QuickActions({
                               onClick={() => addKey(key)}
                               className="relative bg-[#F9F5F7] border border-dashed border-[#DDD0D5] rounded-xl flex flex-col items-center gap-1.5 transition-transform active:scale-95 disabled:opacity-40"
                               style={{ padding: "10px 4px 8px" }}>
-                              <RecordTypeIcon type={key} containerSize={40} iconSize={20} borderRadius={12} />
-                              <span className="text-[11px] font-medium text-[#7A6070]">{cfg.label}</span>
+                              <RecordTypeIcon
+                                type={key}
+                                containerSize={40}
+                                iconSize={20}
+                                borderRadius={12}
+                              />
+                              <span className="text-[11px] font-medium text-[#7A6070]">
+                                {cfg.label}
+                              </span>
                               {canAdd && (
                                 <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-[#F87098] flex items-center justify-center shadow-sm">
-                                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
-                                    <path d="M4 1.5v5M1.5 4h5" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+                                  <svg
+                                    width="8"
+                                    height="8"
+                                    viewBox="0 0 8 8"
+                                    fill="none">
+                                    <path
+                                      d="M4 1.5v5M1.5 4h5"
+                                      stroke="white"
+                                      strokeWidth="1.5"
+                                      strokeLinecap="round"
+                                    />
                                   </svg>
                                 </span>
                               )}
@@ -523,7 +621,9 @@ export default function QuickActions({
         <div
           className="flex items-center justify-center gap-1 pb-3 pt-1 cursor-pointer active:opacity-70"
           onClick={handleHintClick}>
-          <span className="text-[11px] text-[#C0A8AD]">还有营养素、活动等 {fabCount} 项记录，点击</span>
+          <span className="text-[11px] text-[#C0A8AD]">
+            还有营养素、活动等 {fabCount} 项记录，点击
+          </span>
           <span className="text-[11px] font-semibold text-[#C0A8AD]">更多</span>
           <span className="text-[11px] text-[#C0A8AD]">查看 ›</span>
         </div>

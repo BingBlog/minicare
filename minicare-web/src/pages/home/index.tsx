@@ -22,6 +22,7 @@ import QuickActions from "./QuickActions";
 import TodayTimeline from "./TodayTimeline";
 import FabSheet from "./FabSheet";
 import SleepBanner from "./SleepBanner";
+import FeedingBanner from "./FeedingBanner";
 import RecordActionSheet from "@/pages/records-list/RecordActionSheet";
 import { RECORD_ROUTES, FAB_GROUPS } from "@/lib/constants";
 import { useQuickActionKeys } from "@/lib/useQuickActionKeys";
@@ -234,32 +235,48 @@ export default function HomePage() {
     }
   };
 
+  // ── 计算最近一次喂奶时间（formula / breast / complementary 均算）────────────
+  const lastFeedingTime = (() => {
+    const recs = todayRecords.filter((r) => r.type === "feeding");
+    if (recs.length === 0) return null;
+    return [...recs].sort(
+      (a, b) => new Date(b.time).getTime() - new Date(a.time).getTime(),
+    )[0].time;
+  })();
+
+  // ── 组合横幅（睡眠 + 喂奶，有就显示，无则不显示） ─────────────────────────
+  const hasBanners = !!(ongoingSleep || lastFeedingTime);
+  const bannersNode = hasBanners ? (
+    <div style={{ paddingBottom: 28 }}>
+      {ongoingSleep && currentFamily && (
+        <SleepBanner
+          familyId={currentFamily.id}
+          ongoingRecord={ongoingSleep}
+          onEnded={() => {
+            setOngoingSleep(null);
+            if (currentFamily) loadTodayRecords(currentFamily.id);
+          }}
+        />
+      )}
+      {lastFeedingTime && (
+        <FeedingBanner lastFeedingTime={lastFeedingTime} />
+      )}
+    </div>
+  ) : undefined;
+
   return (
     <div className="min-h-full bg-bg">
-      {/* ── 英雄区（渐变背景 + 宝宝卡片 + 可选睡眠横幅） ── */}
+      {/* ── 英雄区（渐变背景 + 宝宝卡片 + 状态横幅） ── */}
       <HeroSection
         currentBaby={currentBaby}
         stats={babyStats}
-        sleepBanner={
-          ongoingSleep && currentFamily ? (
-            <SleepBanner
-              familyId={currentFamily.id}
-              ongoingRecord={ongoingSleep}
-              onEnded={() => {
-                // 结束睡眠后：清除 banner + 刷新今日记录
-                setOngoingSleep(null);
-                if (currentFamily) loadTodayRecords(currentFamily.id);
-              }}
-            />
-          ) : undefined
-        }
+        banners={bannersNode}
       />
 
       {/* ── 内容区（白色背景，含快捷宫格和时间线） ── */}
       <div className="px-4 space-y-4 pt-3 pb-28">
         <QuickActions
           onMoreClick={() => setFabOpen(true)}
-          todayRecords={todayRecords}
           fabCount={filteredFabCount}
         />
         <TodayTimeline

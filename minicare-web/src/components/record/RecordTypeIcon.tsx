@@ -15,6 +15,8 @@ import {
   IconMilk, IconMoon, IconDroplets, IconActivity,
   IconRuler, IconHeart, IconStethoscope, IconSmile, IconSupplementPill, IconThermometer,
   IconBreast, IconFood,
+  // 新优化的图标
+  IconBottle, IconBreastfeeding, IconDiaper, IconBabyCrawl,
 } from '@/components/ui/icons'
 import { RECORD_TYPE_CFG } from '@/lib/constants'
 import type { IconProps } from '@/components/ui/icons'
@@ -24,18 +26,18 @@ export type RecordTypeKey = 'feeding' | 'formula' | 'breast' | 'food' | 'sleep' 
 
 /** 图标渲染函数映射（类型 key → 图标函数组件） */
 const ICON_MAP: Record<RecordTypeKey, (props: IconProps) => React.ReactElement> = {
-  feeding:     IconMilk,
-  formula:     IconMilk,
-  breast:      IconBreast,
+  feeding:     IconBottle,           // 配方奶（使用新优化的奶瓶图标）
+  formula:     IconBottle,           // 配方奶（新图标）
+  breast:      IconBreastfeeding,    // 母乳（新的妈妈抱宝宝图标）
   food:        IconFood,
   sleep:       IconMoon,
-  diaper:      IconDroplets,
-  activity:    IconActivity,
+  diaper:      IconDiaper,           // 尿布（新的展开尿布图标）
+  activity:    IconBabyCrawl,        // 活动（新的爬行宝宝图标）
   growth:      IconRuler,
   health:      IconHeart,
   temperature: IconThermometer,
   medical:     IconStethoscope,
-  symptom:     IconSmile,
+  symptom:     IconSmile,            // 暂保留原图标，后续可优化为 IconBabyMood
   supplement:  IconSupplementPill,
 }
 

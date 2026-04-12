@@ -31,20 +31,20 @@ interface HeroSectionProps {
   currentBaby: Baby | null
   /** 今日4格统计数据 */
   stats: BabyStat[]
-  /** 睡眠进行中横幅（由父组件按需传入） */
-  sleepBanner?: React.ReactNode
+  /** 状态横幅节点列表（睡眠、嗂奶等，由父组件按需传入） */
+  banners?: React.ReactNode
 }
 
 /**
  * 首页英雄区（渐变背景 + 宝宝卡片 + 可选睡眠横幅）
  */
-export default function HeroSection({ currentBaby, stats, sleepBanner }: HeroSectionProps) {
+export default function HeroSection({ currentBaby, stats, banners }: HeroSectionProps) {
   const navigate = useNavigate()
   const dateStr = getTodayDateStr()
 
   return (
     <div
-      className={`relative ${sleepBanner ? 'pb-0' : 'pb-7'}`}
+      className={`relative ${banners ? 'pb-0' : 'pb-7'}`}
       style={{ background: 'linear-gradient(180deg, #f87098 0%, #f9a8c0 100%)' }}
     >
       {/* 装饰圆（纯视觉，不影响交互） */}
@@ -122,8 +122,8 @@ export default function HeroSection({ currentBaby, stats, sleepBanner }: HeroSec
         />
       )}
 
-      {/* ── 睡眠进行中横幅（由父组件按需传入，位于 BabyCard 和圆角过渡之间） ── */}
-      {sleepBanner}
+      {/* ── 状态横幅列表（睡眠、嗂奶等，位于 BabyCard 和圆角过渡之间） ── */}
+      {banners}
 
       {/* 底部白色圆角过渡（遮住渐变背景，与内容区平滑衔接） */}
       <div

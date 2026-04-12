@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsDateString, IsNumber, IsOptional, IsString, IsUUID, Max, Min } from 'class-validator';
+import { IsDateString, IsNumber, IsOptional, IsString, IsUUID, Matches, Max, Min } from 'class-validator';
 
 /**
  * DDL: growth_record
@@ -15,6 +15,12 @@ export class CreateGrowthDto {
   @ApiProperty({ description: '测量日期（YYYY-MM-DD）' })
   @IsDateString()
   record_date: string;
+
+  @ApiPropertyOptional({ description: '测量时间（HH:mm），不传时记为 NULL' })
+  @IsOptional()
+  @IsString()
+  @Matches(/^\d{2}:\d{2}$/, { message: 'record_time 格式须为 HH:mm' })
+  record_time?: string;
 
   @ApiPropertyOptional({ description: '体重（克），如 8200' })
   @IsOptional()
@@ -45,6 +51,12 @@ export class UpdateGrowthDto {
   @IsOptional()
   @IsDateString()
   record_date?: string;
+
+  @ApiPropertyOptional({ description: '测量时间（HH:mm），不传时记为 NULL' })
+  @IsOptional()
+  @IsString()
+  @Matches(/^\d{2}:\d{2}$/, { message: 'record_time 格式须为 HH:mm' })
+  record_time?: string;
 
   @ApiPropertyOptional({ description: '体重（克），如 8200' })
   @IsOptional()

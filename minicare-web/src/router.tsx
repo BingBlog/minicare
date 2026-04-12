@@ -16,6 +16,9 @@ const OnboardingPage = lazy(() => import("./pages/onboarding"));
 const ReportPage = lazy(() => import("./pages/report"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 
+// 开发工具页面（无鉴权）
+const IconGalleryPage = lazy(() => import("./pages/dev/IconGallery"));
+
 // 记录表单页（带路径前缀 /records/xxx，Index Entry Pattern）
 const FeedingFormPage = lazy(() => import("./pages/records/feeding"));
 const SleepFormPage = lazy(() => import("./pages/records/sleep"));
@@ -97,6 +100,11 @@ export const router = createHashRouter([
   {
     path: "/records/form/medical",
     element: <AuthGuard>{S(MedicalFormPage)}</AuthGuard>,
+  },
+  // ── 开发工具页面（无鉴权） ───────────────────────────────────────────────
+  {
+    path: "/dev/icons",
+    element: S(IconGalleryPage),
   },
   {
     path: "*",

@@ -10,693 +10,1478 @@
  * 命名规约：Icon + 语义名称（大驼峰），避免使用形状描述（如 IconCircle）
  */
 
-import type { CSSProperties } from 'react'
+import type { CSSProperties } from "react";
 
 /** 所有图标共享的 props 接口 */
 export interface IconProps {
   /** 图标尺寸（正方形），默认 20 */
-  size?: number
+  size?: number;
   /** stroke 颜色，默认 currentColor */
-  color?: string
+  color?: string;
   /** 额外样式 */
-  style?: CSSProperties
+  style?: CSSProperties;
   /** 额外 className */
-  className?: string
+  className?: string;
 }
 
 // ── 快捷记录 / 记录类型图标 ───────────────────────────────────────────────
 
 /** 饮食/奶瓶 图标 */
-export const IconMilk = ({ size = 20, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M8 2h8l1 6H7L8 2z"/>
-    <path d="M7 8c0 0-1 1-1 4s1 10 6 10 6-7 6-10-1-4-1-4"/>
-    <path d="M10 14s.5 1 2 1 2-1 2-1"/>
+export const IconMilk = ({
+  size = 20,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M8 2h8l1 6H7L8 2z" />
+    <path d="M7 8c0 0-1 1-1 4s1 10 6 10 6-7 6-10-1-4-1-4" />
+    <path d="M10 14s.5 1 2 1 2-1 2-1" />
   </svg>
-)
+);
 
 /** 睡眠/月亮 图标 */
-export const IconMoon = ({ size = 20, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+export const IconMoon = ({
+  size = 20,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
   </svg>
-)
+);
 
 /** 尿布/水滴 图标 */
-export const IconDroplets = ({ size = 20, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/>
-    <path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"/>
+export const IconDroplets = ({
+  size = 20,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z" />
+    <path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97" />
   </svg>
-)
+);
 
 /** 活动/脉搏 图标 */
-export const IconActivity = ({ size = 20, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+export const IconActivity = ({
+  size = 20,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
   </svg>
-)
+);
 
 /** 生长/刻度尺 图标 */
-export const IconRuler = ({ size = 20, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M21.3 8.7 8.7 21.3c-1 1-2.5 1-3.4 0l-2.6-2.6c-1-1-1-2.5 0-3.4L15.3 2.7c1-1 2.5-1 3.4 0l2.6 2.6c1 1 1 2.5 0 3.4z"/>
-    <line x1="7.5" y1="10.5" x2="9" y2="12"/>
-    <line x1="10.5" y1="7.5" x2="12" y2="9"/>
-    <line x1="13.5" y1="4.5" x2="15" y2="6"/>
+export const IconRuler = ({
+  size = 20,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M21.3 8.7 8.7 21.3c-1 1-2.5 1-3.4 0l-2.6-2.6c-1-1-1-2.5 0-3.4L15.3 2.7c1-1 2.5-1 3.4 0l2.6 2.6c1 1 1 2.5 0 3.4z" />
+    <line x1="7.5" y1="10.5" x2="9" y2="12" />
+    <line x1="10.5" y1="7.5" x2="12" y2="9" />
+    <line x1="13.5" y1="4.5" x2="15" y2="6" />
   </svg>
-)
+);
 
 /** 健康/心形 图标 */
-export const IconHeart = ({ size = 20, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+export const IconHeart = ({
+  size = 20,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
   </svg>
-)
+);
 
 /** 医疗/听诊器 图标 */
-export const IconStethoscope = ({ size = 20, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3"/>
-    <path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4"/>
-    <circle cx="20" cy="10" r="2"/>
+export const IconStethoscope = ({
+  size = 20,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3" />
+    <path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4" />
+    <circle cx="20" cy="10" r="2" />
   </svg>
-)
+);
 
 /** 表现/笑脸 图标 */
-export const IconSmile = ({ size = 20, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <circle cx="12" cy="12" r="10"/>
-    <path d="M8 13s1.5 2 4 2 4-2 4-2"/>
-    <line x1="9" y1="9" x2="9.01" y2="9"/>
-    <line x1="15" y1="9" x2="15.01" y2="9"/>
+export const IconSmile = ({
+  size = 20,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M8 13s1.5 2 4 2 4-2 4-2" />
+    <line x1="9" y1="9" x2="9.01" y2="9" />
+    <line x1="15" y1="9" x2="15.01" y2="9" />
   </svg>
-)
+);
 
 /** 营养素/胶囊 图标（Lucide pill 风格） */
-export const IconSupplementPill = ({ size = 20, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/>
-    <path d="M8.5 8.5 16 16"/>
+export const IconSupplementPill = ({
+  size = 20,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z" />
+    <path d="M8.5 8.5 16 16" />
   </svg>
-)
+);
 
 // ── 通用交互图标 ────────────────────────────────────────────────────────────
 
 /** 返回箭头（左） */
-export const IconArrowLeft = ({ size = 20, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <polyline points="15 18 9 12 15 6"/>
+export const IconArrowLeft = ({
+  size = 20,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <polyline points="15 18 9 12 15 6" />
   </svg>
-)
+);
 
 /** 右箭头（列表条目导航） */
-export const IconChevronRight = ({ size = 16, color = '#C0A8AD', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, flexShrink: 0, ...style }} className={className}>
-    <polyline points="9 18 15 12 9 6"/>
+export const IconChevronRight = ({
+  size = 16,
+  color = "#C0A8AD",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, flexShrink: 0, ...style }}
+    className={className}>
+    <polyline points="9 18 15 12 9 6" />
   </svg>
-)
+);
 
 /** 下箭头（下拉、展开） */
-export const IconChevronDown = ({ size = 16, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, flexShrink: 0, ...style }} className={className}>
-    <polyline points="6 9 12 15 18 9"/>
+export const IconChevronDown = ({
+  size = 16,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, flexShrink: 0, ...style }}
+    className={className}>
+    <polyline points="6 9 12 15 18 9" />
   </svg>
-)
+);
 
 /** 铅笔/编辑 */
-export const IconPencil = ({ size = 14, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+export const IconPencil = ({
+  size = 14,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
   </svg>
-)
+);
 
 /** 加号/新增 */
-export const IconPlus = ({ size = 14, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <line x1="12" y1="5" x2="12" y2="19"/>
-    <line x1="5" y1="12" x2="19" y2="12"/>
+export const IconPlus = ({
+  size = 14,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <line x1="12" y1="5" x2="12" y2="19" />
+    <line x1="5" y1="12" x2="19" y2="12" />
   </svg>
-)
+);
 
 /** 关闭/X */
-export const IconClose = ({ size = 16, color = '#fff', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <line x1="18" y1="6" x2="6" y2="18"/>
-    <line x1="6" y1="6" x2="18" y2="18"/>
+export const IconClose = ({
+  size = 16,
+  color = "#fff",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <line x1="18" y1="6" x2="6" y2="18" />
+    <line x1="6" y1="6" x2="18" y2="18" />
   </svg>
-)
+);
 
 /** 复制 */
-export const IconCopy = ({ size = 15, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
-    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+export const IconCopy = ({
+  size = 15,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
   </svg>
-)
+);
 
 /** 垃圾桶/删除 */
-export const IconTrash = ({ size = 16, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <polyline points="3 6 5 6 21 6"/>
-    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+export const IconTrash = ({
+  size = 16,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <polyline points="3 6 5 6 21 6" />
+    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
   </svg>
-)
+);
 
 /** 退出登录 */
-export const IconLogOut = ({ size = 18, color = '#F05060', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-    <polyline points="16 17 21 12 16 7"/>
-    <line x1="21" y1="12" x2="9" y2="12"/>
+export const IconLogOut = ({
+  size = 18,
+  color = "#F05060",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+    <polyline points="16 17 21 12 16 7" />
+    <line x1="21" y1="12" x2="9" y2="12" />
   </svg>
-)
+);
 
 // ── 设置类图标 ─────────────────────────────────────────────────────────────
 
 /** 多用户/家庭成员 */
-export const IconUsers = ({ size = 18, color = '#F0B8C8', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-    <circle cx="9" cy="7" r="4"/>
-    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+export const IconUsers = ({
+  size = 18,
+  color = "#F0B8C8",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+    <circle cx="9" cy="7" r="4" />
+    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
   </svg>
-)
+);
 
 /** 单个用户头像 */
-export const IconUserSingle = ({ size = 20, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-    <circle cx="12" cy="7" r="4"/>
+export const IconUserSingle = ({
+  size = 20,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+    <circle cx="12" cy="7" r="4" />
   </svg>
-)
+);
 
 /** 分享/邀请 */
-export const IconShare = ({ size = 18, color = '#4CAF82', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <circle cx="18" cy="5" r="3"/>
-    <circle cx="6" cy="12" r="3"/>
-    <circle cx="18" cy="19" r="3"/>
-    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
-    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+export const IconShare = ({
+  size = 18,
+  color = "#4CAF82",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <circle cx="18" cy="5" r="3" />
+    <circle cx="6" cy="12" r="3" />
+    <circle cx="18" cy="19" r="3" />
+    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
   </svg>
-)
+);
 
 /** 手机/版本号 */
-export const IconPhone = ({ size = 18, color = '#F0B8C8', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
-    <line x1="12" y1="18" x2="12.01" y2="18"/>
+export const IconPhone = ({
+  size = 18,
+  color = "#F0B8C8",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+    <line x1="12" y1="18" x2="12.01" y2="18" />
   </svg>
-)
+);
 
 /** 文本/大字体 */
-export const IconTextSize = ({ size = 18, color = '#F0B8C8', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <polyline points="4 7 4 4 20 4 20 7"/>
-    <line x1="9" y1="20" x2="15" y2="20"/>
-    <line x1="12" y1="4" x2="12" y2="20"/>
+export const IconTextSize = ({
+  size = 18,
+  color = "#F0B8C8",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <polyline points="4 7 4 4 20 4 20 7" />
+    <line x1="9" y1="20" x2="15" y2="20" />
+    <line x1="12" y1="4" x2="12" y2="20" />
   </svg>
-)
+);
 
 /** 文件/文档 */
-export const IconFileText = ({ size = 18, color = '#9A8090', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-    <polyline points="14 2 14 8 20 8"/>
-    <line x1="16" y1="13" x2="8" y2="13"/>
-    <line x1="16" y1="17" x2="8" y2="17"/>
-    <polyline points="10 9 9 9 8 9"/>
+export const IconFileText = ({
+  size = 18,
+  color = "#9A8090",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+    <polyline points="14 2 14 8 20 8" />
+    <line x1="16" y1="13" x2="8" y2="13" />
+    <line x1="16" y1="17" x2="8" y2="17" />
+    <polyline points="10 9 9 9 8 9" />
   </svg>
-)
+);
 
 // ── 报告图标 ────────────────────────────────────────────────────────────────
 
 /** 柱状图 */
-export const IconBarChart2 = ({ size = 20, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <line x1="18" y1="20" x2="18" y2="10"/>
-    <line x1="12" y1="20" x2="12" y2="4"/>
-    <line x1="6"  y1="20" x2="6"  y2="14"/>
+export const IconBarChart2 = ({
+  size = 20,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <line x1="18" y1="20" x2="18" y2="10" />
+    <line x1="12" y1="20" x2="12" y2="4" />
+    <line x1="6" y1="20" x2="6" y2="14" />
   </svg>
-)
+);
 
 /** 趋势上升 */
-export const IconTrendingUp = ({ size = 20, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
-    <polyline points="17 6 23 6 23 12"/>
+export const IconTrendingUp = ({
+  size = 20,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+    <polyline points="17 6 23 6 23 12" />
   </svg>
-)
+);
 
 // ── 状态图标 ────────────────────────────────────────────────────────────────
 
 /** 加载旋转 */
-export const IconLoader = ({ size = 18, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, animation: 'spin 1s linear infinite', ...style }}
+export const IconLoader = ({
+  size = 18,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{
+      width: size,
+      height: size,
+      animation: "spin 1s linear infinite",
+      ...style,
+    }}
     className={className}>
-    <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+    <path d="M21 12a9 9 0 1 1-6.219-8.56" />
   </svg>
-)
+);
 
 /** 警告三角 */
-export const IconWarn = ({ size = 11, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-    <line x1="12" y1="9" x2="12" y2="13"/>
+export const IconWarn = ({
+  size = 11,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+    <line x1="12" y1="9" x2="12" y2="13" />
   </svg>
-)
+);
 
 /** 信息圆圈 */
-export const IconInfo = ({ size = 13, color = '#F87098', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <circle cx="12" cy="12" r="10"/>
-    <line x1="12" y1="8" x2="12" y2="12"/>
-    <line x1="12" y1="16" x2="12.01" y2="16"/>
+export const IconInfo = ({
+  size = 13,
+  color = "#F87098",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <circle cx="12" cy="12" r="10" />
+    <line x1="12" y1="8" x2="12" y2="12" />
+    <line x1="12" y1="16" x2="12.01" y2="16" />
   </svg>
-)
+);
 
 /** 铃铛/通知 */
-export const IconBell = ({ size = 14, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+export const IconBell = ({
+  size = 14,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
   </svg>
-)
+);
 
 /** 搜索 */
-export const IconSearch = ({ size = 14, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <circle cx="11" cy="11" r="8"/>
-    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+export const IconSearch = ({
+  size = 14,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <circle cx="11" cy="11" r="8" />
+    <line x1="21" y1="21" x2="16.65" y2="16.65" />
   </svg>
-)
+);
 
 /** 相机 */
-export const IconCamera = ({ size = 32, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-    <circle cx="12" cy="13" r="4"/>
+export const IconCamera = ({
+  size = 32,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+    <circle cx="12" cy="13" r="4" />
   </svg>
-)
+);
 
 // ── 时间线 Pill 语义图标 ─────────────────────────────────────────────────────
 
 /** 大便（树叶/自然） */
-export const IconPoop = ({ size = 12, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M12 2a5 5 0 0 1 5 5c0 1.5-.6 2.8-1.5 3.8A5 5 0 0 1 17 15a5 5 0 0 1-10 0 5 5 0 0 1 1.5-3.6A5 5 0 0 1 7 7a5 5 0 0 1 5-5z"/>
-    <path d="M9 20h6"/>
+export const IconPoop = ({
+  size = 12,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M12 2a5 5 0 0 1 5 5c0 1.5-.6 2.8-1.5 3.8A5 5 0 0 1 17 15a5 5 0 0 1-10 0 5 5 0 0 1 1.5-3.6A5 5 0 0 1 7 7a5 5 0 0 1 5-5z" />
+    <path d="M9 20h6" />
   </svg>
-)
+);
 
 /** 小便/水滴（简化） */
-export const IconDrop = ({ size = 12, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+export const IconDrop = ({
+  size = 12,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
   </svg>
-)
+);
 
 /** 干净/叶子 */
-export const IconLeaf = ({ size = 12, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M17 8C8 10 5.9 16.17 3.82 19.25c1.49.73 3.19 1.15 5 1.15 5.52 0 10-4.48 10-10 0-1.04-.16-2.04-.46-2.97A7.19 7.19 0 0 0 17 8z"/>
-    <path d="M17 8C8 10 5.9 16.17 3.82 19.25"/>
+export const IconLeaf = ({
+  size = 12,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M17 8C8 10 5.9 16.17 3.82 19.25c1.49.73 3.19 1.15 5 1.15 5.52 0 10-4.48 10-10 0-1.04-.16-2.04-.46-2.97A7.19 7.19 0 0 0 17 8z" />
+    <path d="M17 8C8 10 5.9 16.17 3.82 19.25" />
   </svg>
-)
+);
 
 /** 洗澡 */
-export const IconBath = ({ size = 12, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-1-.5C4.683 3 4 3.683 4 4.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/>
-    <line x1="10" y1="5" x2="8" y2="7"/>
-    <line x1="2" y1="12" x2="22" y2="12"/>
+export const IconBath = ({
+  size = 12,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-1-.5C4.683 3 4 3.683 4 4.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5" />
+    <line x1="10" y1="5" x2="8" y2="7" />
+    <line x1="2" y1="12" x2="22" y2="12" />
   </svg>
-)
+);
 
 /** 户外/太阳 */
-export const IconSun = ({ size = 12, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <circle cx="12" cy="12" r="5"/>
-    <line x1="12" y1="1" x2="12" y2="3"/>
-    <line x1="12" y1="21" x2="12" y2="23"/>
-    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-    <line x1="1" y1="12" x2="3" y2="12"/>
-    <line x1="21" y1="12" x2="23" y2="12"/>
-    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+export const IconSun = ({
+  size = 12,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <circle cx="12" cy="12" r="5" />
+    <line x1="12" y1="1" x2="12" y2="3" />
+    <line x1="12" y1="21" x2="12" y2="23" />
+    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+    <line x1="1" y1="12" x2="3" y2="12" />
+    <line x1="21" y1="12" x2="23" y2="12" />
+    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
   </svg>
-)
+);
 
 /** 玩耍/星形（玩具感） */
-export const IconPlay2 = ({ size = 12, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <polygon points="5 3 19 12 5 21 5 3"/>
+export const IconPlay2 = ({
+  size = 12,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <polygon points="5 3 19 12 5 21 5 3" />
   </svg>
-)
+);
 
 /** 俯趴/婴儿 */
-export const IconBaby = ({ size = 12, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <circle cx="12" cy="6" r="3"/>
-    <path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>
+export const IconBaby = ({
+  size = 12,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <circle cx="12" cy="6" r="3" />
+    <path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" />
   </svg>
-)
+);
 
 /** 跑步/活动（通用） */
-export const IconRun = ({ size = 12, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <circle cx="13" cy="4" r="1"/>
-    <path d="M7 21l4-4-2-4 4-4 2 2h4"/>
-    <path d="M15 9l-3-3-3 5"/>
-    <path d="M5 12l2-3"/>
+export const IconRun = ({
+  size = 12,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <circle cx="13" cy="4" r="1" />
+    <path d="M7 21l4-4-2-4 4-4 2 2h4" />
+    <path d="M15 9l-3-3-3 5" />
+    <path d="M5 12l2-3" />
   </svg>
-)
+);
 
 /** 开心/笑脸 */
-export const IconFaceHappy = ({ size = 12, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <circle cx="12" cy="12" r="10"/>
-    <path d="M8 13s1.5 2 4 2 4-2 4-2"/>
-    <line x1="9" y1="9" x2="9.01" y2="9"/>
-    <line x1="15" y1="9" x2="15.01" y2="9"/>
+export const IconFaceHappy = ({
+  size = 12,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M8 13s1.5 2 4 2 4-2 4-2" />
+    <line x1="9" y1="9" x2="9.01" y2="9" />
+    <line x1="15" y1="9" x2="15.01" y2="9" />
   </svg>
-)
+);
 
 /** 平静/中性脸 */
-export const IconFaceNeutral = ({ size = 12, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <circle cx="12" cy="12" r="10"/>
-    <line x1="8" y1="15" x2="16" y2="15"/>
-    <line x1="9" y1="9" x2="9.01" y2="9"/>
-    <line x1="15" y1="9" x2="15.01" y2="9"/>
+export const IconFaceNeutral = ({
+  size = 12,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <circle cx="12" cy="12" r="10" />
+    <line x1="8" y1="15" x2="16" y2="15" />
+    <line x1="9" y1="9" x2="9.01" y2="9" />
+    <line x1="15" y1="9" x2="15.01" y2="9" />
   </svg>
-)
+);
 
 /** 烦躁/皱眉 */
-export const IconFaceFussy = ({ size = 12, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <circle cx="12" cy="12" r="10"/>
-    <path d="M16 15s-1.5-2-4-2-4 2-4 2"/>
-    <line x1="9" y1="9" x2="9.01" y2="9"/>
-    <line x1="15" y1="9" x2="15.01" y2="9"/>
+export const IconFaceFussy = ({
+  size = 12,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M16 15s-1.5-2-4-2-4 2-4 2" />
+    <line x1="9" y1="9" x2="9.01" y2="9" />
+    <line x1="15" y1="9" x2="15.01" y2="9" />
   </svg>
-)
+);
 
 /** 哭闹/泪水 */
-export const IconFaceCrying = ({ size = 12, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <circle cx="12" cy="12" r="10"/>
-    <path d="M16 15s-1.5-2-4-2-4 2-4 2"/>
-    <path d="M9 9.5c0-.5-.5-1-1-1s-1 .5-1 1 .5 1 1 1 1-.5 1-1z" fill={color}/>
-    <path d="M16 9.5c0-.5-.5-1-1-1s-1 .5-1 1 .5 1 1 1 1-.5 1-1z" fill={color}/>
-    <path d="M8 13l-1 2"/>
-    <path d="M16 13l1 2"/>
+export const IconFaceCrying = ({
+  size = 12,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M16 15s-1.5-2-4-2-4 2-4 2" />
+    <path d="M9 9.5c0-.5-.5-1-1-1s-1 .5-1 1 .5 1 1 1 1-.5 1-1z" fill={color} />
+    <path d="M16 9.5c0-.5-.5-1-1-1s-1 .5-1 1 .5 1 1 1 1-.5 1-1z" fill={color} />
+    <path d="M8 13l-1 2" />
+    <path d="M16 13l1 2" />
   </svg>
-)
+);
 
 /** 医院/就诊 */
-export const IconHospital = ({ size = 12, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-    <polyline points="9 22 9 12 15 12 15 22"/>
-    <line x1="12" y1="7" x2="12" y2="11"/>
-    <line x1="10" y1="9" x2="14" y2="9"/>
+export const IconHospital = ({
+  size = 12,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+    <polyline points="9 22 9 12 15 12 15 22" />
+    <line x1="12" y1="7" x2="12" y2="11" />
+    <line x1="10" y1="9" x2="14" y2="9" />
   </svg>
-)
+);
 
 /** 体温计/温度 */
-export const IconThermometer = ({ size = 12, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/>
+export const IconThermometer = ({
+  size = 12,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z" />
   </svg>
-)
+);
 
 /** 药片/胶囊 */
-export const IconPill = ({ size = 12, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M10.5 20H4a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h3.93a2 2 0 0 1 1.66.9l.82 1.2a2 2 0 0 0 1.66.9H20a2 2 0 0 1 2 2v.5"/>
-    <path d="M18 21.3l3-3a2.12 2.12 0 0 0-3-3l-4.5 4.5a2.12 2.12 0 0 0 3 3z"/>
-    <line x1="15" y1="18" x2="18" y2="15"/>
+export const IconPill = ({
+  size = 12,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M10.5 20H4a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h3.93a2 2 0 0 1 1.66.9l.82 1.2a2 2 0 0 0 1.66.9H20a2 2 0 0 1 2 2v.5" />
+    <path d="M18 21.3l3-3a2.12 2.12 0 0 0-3-3l-4.5 4.5a2.12 2.12 0 0 0 3 3z" />
+    <line x1="15" y1="18" x2="18" y2="15" />
   </svg>
-)
+);
 
 /** 警告/过敏 */
-export const IconAlertTriangle = ({ size = 12, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-    <line x1="12" y1="9" x2="12" y2="13"/>
-    <line x1="12" y1="17" x2="12.01" y2="17"/>
+export const IconAlertTriangle = ({
+  size = 12,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+    <line x1="12" y1="9" x2="12" y2="13" />
+    <line x1="12" y1="17" x2="12.01" y2="17" />
   </svg>
-)
+);
 
 /** 精神活跃/闪电 */
-export const IconZap = ({ size = 12, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+export const IconZap = ({
+  size = 12,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
   </svg>
-)
+);
 
 /** 进行中/时钟 */
-export const IconClock = ({ size = 12, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <circle cx="12" cy="12" r="10"/>
-    <polyline points="12 6 12 12 16 14"/>
+export const IconClock = ({
+  size = 12,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <circle cx="12" cy="12" r="10" />
+    <polyline points="12 6 12 12 16 14" />
   </svg>
-)
+);
 
 // ── 医疗类型图标 ────────────────────────────────────────────────────────────
 
 /** 显微镜/过敏原检测 */
-export const IconMicroscope = ({ size = 14, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M6 18h8"/>
-    <path d="M3 22h18"/>
-    <path d="M14 22a7 7 0 1 0 0-14h-1"/>
-    <path d="M9 14h2"/>
-    <path d="M9 12a2 2 0 0 1-2-2V6h6v4a2 2 0 0 1-2 2z"/>
-    <path d="M12 6V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3"/>
+export const IconMicroscope = ({
+  size = 14,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M6 18h8" />
+    <path d="M3 22h18" />
+    <path d="M14 22a7 7 0 1 0 0-14h-1" />
+    <path d="M9 14h2" />
+    <path d="M9 12a2 2 0 0 1-2-2V6h6v4a2 2 0 0 1-2 2z" />
+    <path d="M12 6V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3" />
   </svg>
-)
+);
 
 /** 注射器/疫苗接种 */
-export const IconSyringe = ({ size = 14, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="m18 2 4 4"/>
-    <path d="m17 7 3-3"/>
-    <path d="M19 9 8.7 19.3c-1 1-2.5 1-3.4 0l-.6-.6c-1-1-1-2.5 0-3.4L15 5"/>
-    <path d="m9 11 4 4"/>
-    <path d="m5 19-3 3"/>
-    <path d="m14 4 6 6"/>
+export const IconSyringe = ({
+  size = 14,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="m18 2 4 4" />
+    <path d="m17 7 3-3" />
+    <path d="M19 9 8.7 19.3c-1 1-2.5 1-3.4 0l-.6-.6c-1-1-1-2.5 0-3.4L15 5" />
+    <path d="m9 11 4 4" />
+    <path d="m5 19-3 3" />
+    <path d="m14 4 6 6" />
   </svg>
-)
+);
 
 /** 血滴/血液检查 */
-export const IconBloodDrop = ({ size = 14, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
-    <path d="M12 12v4"/>
-    <path d="M10 14h4"/>
+export const IconBloodDrop = ({
+  size = 14,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
+    <path d="M12 12v4" />
+    <path d="M10 14h4" />
   </svg>
-)
+);
 
 // ── 辅食分类图标 ────────────────────────────────────────────────────────────
 
 /** 主食/米粒 */
-export const IconGrain = ({ size = 14, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M12 2a4 4 0 0 1 4 4c0 1.5-.7 2.8-1.8 3.6A4 4 0 0 1 16 13a4 4 0 0 1-8 0 4 4 0 0 1 1.8-3.4A4 4 0 0 1 8 6a4 4 0 0 1 4-4z"/>
-    <line x1="12" y1="17" x2="12" y2="22"/>
+export const IconGrain = ({
+  size = 14,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M12 2a4 4 0 0 1 4 4c0 1.5-.7 2.8-1.8 3.6A4 4 0 0 1 16 13a4 4 0 0 1-8 0 4 4 0 0 1 1.8-3.4A4 4 0 0 1 8 6a4 4 0 0 1 4-4z" />
+    <line x1="12" y1="17" x2="12" y2="22" />
   </svg>
-)
+);
 
 /** 蔬菜/叶子 */
-export const IconVegetable = ({ size = 14, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/>
-    <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+export const IconVegetable = ({
+  size = 14,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z" />
+    <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
   </svg>
-)
+);
 
 /** 水果/苹果 */
-export const IconFruit = ({ size = 14, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M12 20.94c1.5.05 5.37-4.02 5.5-8.57.13-4.35-2.77-7.8-6.27-7.36C7.73 5.46 5.37 9.35 5.5 13.37 5.63 17.4 9.5 20.89 12 20.94z"/>
-    <path d="M12 5V2"/>
-    <path d="M12 2c0 0 2-1 3-2"/>
+export const IconFruit = ({
+  size = 14,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M12 20.94c1.5.05 5.37-4.02 5.5-8.57.13-4.35-2.77-7.8-6.27-7.36C7.73 5.46 5.37 9.35 5.5 13.37 5.63 17.4 9.5 20.89 12 20.94z" />
+    <path d="M12 5V2" />
+    <path d="M12 2c0 0 2-1 3-2" />
   </svg>
-)
+);
 
 /** 肉蛋/鸡腿 */
-export const IconMeatEgg = ({ size = 14, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M15 11l-4.5 4.5a2.12 2.12 0 0 0 3 3L18 14"/>
-    <path d="M9.5 9.5c-.67-.67-1.5-1-2.5-1a4.5 4.5 0 0 0 0 9c1 0 1.83-.33 2.5-1"/>
-    <path d="M14.5 4.5c.67.67 1 1.5 1 2.5a4.5 4.5 0 0 1-9 0c0-1 .33-1.83 1-2.5"/>
+export const IconMeatEgg = ({
+  size = 14,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M15 11l-4.5 4.5a2.12 2.12 0 0 0 3 3L18 14" />
+    <path d="M9.5 9.5c-.67-.67-1.5-1-2.5-1a4.5 4.5 0 0 0 0 9c1 0 1.83-.33 2.5-1" />
+    <path d="M14.5 4.5c.67.67 1 1.5 1 2.5a4.5 4.5 0 0 1-9 0c0-1 .33-1.83 1-2.5" />
   </svg>
-)
+);
 
 /** 豆制品/豆子 */
-export const IconBean = ({ size = 14, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M10.5 22C6.5 22 3 18.5 3 14.5a7.5 7.5 0 0 1 7.5-7.5c2.5 0 4.5 1 6 2.5 1.5 1.5 2.5 3.5 2.5 5.5 0 3.5-3 6.5-6.5 7z"/>
-    <path d="M13.5 2C17.5 2 21 5.5 21 9.5a7.5 7.5 0 0 1-7.5 7.5c-2.5 0-4.5-1-6-2.5"/>
+export const IconBean = ({
+  size = 14,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M10.5 22C6.5 22 3 18.5 3 14.5a7.5 7.5 0 0 1 7.5-7.5c2.5 0 4.5 1 6 2.5 1.5 1.5 2.5 3.5 2.5 5.5 0 3.5-3 6.5-6.5 7z" />
+    <path d="M13.5 2C17.5 2 21 5.5 21 9.5a7.5 7.5 0 0 1-7.5 7.5c-2.5 0-4.5-1-6-2.5" />
   </svg>
-)
+);
 
 // ── 喂食子类图标 ──────────────────────────────────────────────────────────
 
 /** 母乳哺育 图标（胸部+弧线，语义简洁） */
-export const IconBreast = ({ size = 20, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M4 14c0-4.4 3.6-8 8-8s8 3.6 8 8v1a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-1z"/>
-    <path d="M9 14c0-1.7 1.3-3 3-3"/>
-    <circle cx="15.5" cy="17" r="1" fill={color} stroke="none"/>
+export const IconBreast = ({
+  size = 20,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M4 14c0-4.4 3.6-8 8-8s8 3.6 8 8v1a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-1z" />
+    <path d="M9 14c0-1.7 1.3-3 3-3" />
+    <circle cx="15.5" cy="17" r="1" fill={color} stroke="none" />
   </svg>
-)
+);
 
 /** 辅食/碗勺 图标 */
-export const IconFood = ({ size = 20, color = 'currentColor', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, ...style }} className={className}>
-    <path d="M3 11c0-3.9 4-7 9-7s9 3.1 9 7H3z"/>
-    <path d="M3 11v1a9 9 0 0 0 18 0v-1"/>
-    <line x1="12" y1="18" x2="12" y2="22"/>
-    <line x1="8" y1="22" x2="16" y2="22"/>
+export const IconFood = ({
+  size = 20,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M3 11c0-3.9 4-7 9-7s9 3.1 9 7H3z" />
+    <path d="M3 11v1a9 9 0 0 0 18 0v-1" />
+    <line x1="12" y1="18" x2="12" y2="22" />
+    <line x1="8" y1="22" x2="16" y2="22" />
   </svg>
-)
+);
 
 // ── 挥手图标（首页问候） ────────────────────────────────────────────────────
-export const IconWave = ({ size = 16, color = 'rgba(255,255,255,0.9)', style, className }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round"
-    style={{ width: size, height: size, verticalAlign: -3, display: 'inline', ...style }}
+export const IconWave = ({
+  size = 16,
+  color = "rgba(255,255,255,0.9)",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{
+      width: size,
+      height: size,
+      verticalAlign: -3,
+      display: "inline",
+      ...style,
+    }}
     className={className}>
-    <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/>
-    <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/>
-    <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/>
-    <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>
+    <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0" />
+    <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2" />
+    <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8" />
+    <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" />
   </svg>
-)
+);
+
+// ── 优化的喂食/活动图标（宝宝场景特定设计） ─────────────────────────────────────
+
+/**
+ * 配方奶瓶图标（参考标准婴儿奶瓶轮廓）
+ * 结构：锥形奶嘴 → 宽螺纹座（锯齿装饰）→ 宽圆胖瓶身（大圆底）→ 右侧内刻度线
+ */
+export const IconBottle = ({
+  size = 20,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    {/* 奶嘴尖：细圆锥形 */}
+    <path d="M10.8 1 C10.3 1.3 10 2 10 2.8 L14 2.8 C14 2 13.7 1.3 13.2 1 Q12 0.5 10.8 1 Z" />
+    {/* 螺纹座：宽扁矩形 */}
+    <rect x="8" y="2.8" width="8" height="2" rx="0.5" />
+    {/* 螺纹锯齿装饰：五段短横线 */}
+    <line x1="8.8" y1="3.7" x2="9.6" y2="3.7" strokeWidth="1" />
+    <line x1="10.4" y1="3.7" x2="11.2" y2="3.7" strokeWidth="1" />
+    <line x1="12" y1="3.7" x2="12.8" y2="3.7" strokeWidth="1" />
+    <line x1="13.6" y1="3.7" x2="14.4" y2="3.7" strokeWidth="1" />
+    {/* 颈部斜肩过渡 */}
+    <line x1="9" y1="4.8" x2="7.2" y2="6.5" />
+    <line x1="15" y1="4.8" x2="16.8" y2="6.5" />
+    {/* 瓶身：宽圆桶，底部大圆角 */}
+    <path d="M7.2 6.5 C5.5 6.5 5 7.5 5 9 L5 18.5 C5 20.4 6.6 22 8.5 22 L15.5 22 C17.4 22 19 20.4 19 18.5 L19 9 C19 7.5 18.5 6.5 16.8 6.5 Z" />
+    {/* 刻度线（瓶身右侧内壁） */}
+    <line x1="15" y1="11.5" x2="18" y2="11.5" strokeWidth="1.2" />
+    <line x1="15" y1="14.5" x2="18" y2="14.5" strokeWidth="1.2" />
+    <line x1="15" y1="17.5" x2="18" y2="17.5" strokeWidth="1.2" />
+  </svg>
+);
+
+/** 母乳哺育 图标 */
+export const IconBreastfeeding = ({
+  size = 20,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill={color}
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M11.925 22q-1.05 0-2.037-.225T8.1 21.2q-1.15-.5-1.875-1.212T5.5 18.4v-5.775q0-.775.588-1.425T7.6 10.05q.95-.5 2.088-.775T12 9t2.313.275t2.087.775t1.525 1.15t.575 1.425V18.4q0 .425-.188.825t-.537.75t-.812.663t-1.038.562q.025-.125.075-.7q0-1.45-1.025-2.475T12.5 17q-1.075 0-1.9.575T9.35 19.05q.8.2 1.463.275t1.162.075q.425 0 .688-.025T13 19.35v2.6q-.275.025-.537.038t-.538.012M15 16.5q.825 0 1.413-.587T17 14.5t-.587-1.412T15 12.5t-1.412.588T13 14.5t.588 1.413T15 16.5M12 8q1.25 0 2.125-.862T15 5q0-1.25-.875-2.125T12 2q-1.275 0-2.137.875T9 5q0 1.275.863 2.138T12 8" />
+  </svg>
+);
+
+/** 尿布 图标 */
+export const IconDiaper = ({
+  size = 20,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path d="M2 7.692c0-.643 0-.965.05-1.233a3 3 0 0 1 2.41-2.41C4.726 4 5.048 4 5.691 4h12.616c.643 0 .965 0 1.233.05a3 3 0 0 1 2.41 2.41c.049.267.049.589.049 1.232V10c0 5.523-4.477 10-10 10S2 15.523 2 10z" />
+    <path d="M18 8h4M2 8h4m8.5 11.5v-1a7 7 0 0 1 7-7m-12 8v-1a7 7 0 0 0-7-7" />
+  </svg>
+);
+
+/** 婴儿爬行 图标 */
+export const IconBabyCrawl = ({
+  size = 20,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 433.506 433.506"
+    fill={color}
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    <path
+      d="M76.888,302.386H25.938c0,0-25.938-0.039-25.938,39.483c1.234,25.526,21.148,29.605,24.7,29.605s103.744,0,103.744,0
+      s25.986,0.033,27.133-31.15c0.043-1.19,0.139-0.033,0.153-1.229c0.052-4.604,0-28.4,0-28.4c0.062-3.386,2.648-7.229,6.134-7.229
+      h81.233c1.195,0,2.229,0.966,2.338,2.151l19.188,43.399c7.158,17.748,21.076,30.772,44.328,22.405
+      c22.012-7.923,23.15-25.364,19.264-37.614l-47.713-144.633c-7.172-17.131-25.26-27.124-47.898-27.124h-48.578h-63.299
+      c-60.559,0-111.36,70.552-42.577,138.374C78.637,301.511,78.078,302.386,76.888,302.386z"
+    />
+    <circle cx="358.346" cy="134.649" r="75.161" />
+  </svg>
+);

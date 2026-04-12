@@ -95,7 +95,6 @@ export default function SleepBanner({ familyId, ongoingRecord, onEnded }: SleepB
       onClick={handleBannerClick}
       style={{
         marginTop: 12,
-        marginBottom: 28, // = hero::after 圆角高度，确保不被遮挡
         background: '#fff',
         borderRadius: 12,
         padding: '11px 14px',

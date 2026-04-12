@@ -15,7 +15,7 @@
  *
  * 编辑模式：通过 location.state.record 携带原始记录数据，回填表单，保存时调用 update API
  */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAppStore } from "@/lib/store";
 import { recordsApi } from "@/api";
@@ -181,6 +181,46 @@ export default function FeedingFormPage() {
     }));
   };
 
+  // ── 配方奶 Tab 配套状态：结束时间（默认 = 开始时间 + 10 分钟）──────────────
+  /** 将 HH:mm 加 n 分钟，返回新的 HH:mm（次日归零不溢出） */
+  const addMinutes = (hhmm: string, delta: number): string => {
+    const [h, m] = hhmm.split(':').map(Number);
+    const total = ((h * 60 + m + delta) % 1440 + 1440) % 1440;
+    return `${String(Math.floor(total / 60)).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}`;
+  };
+  /** 两个 HH:mm 之差（分钟，最小 0，跨天时 end < start 则 end + 1440） */
+  const timeDiffMinutes = (start: string, end: string): number => {
+    const [sh, sm] = start.split(':').map(Number);
+    const [eh, em] = end.split(':').map(Number);
+    let diff = (eh * 60 + em) - (sh * 60 + sm);
+    if (diff < 0) diff += 1440;
+    return diff;
+  };
+
+  const initFormulaEndTime = (() => {
+    if (editRecord?.feed_type === 'formula' && editRecord?.duration_min != null && editRecord.duration_min > 0) {
+      // 编辑时：从 record_time + duration_min 反推结束时间
+      const start = editRecord.record_time ? isoToLocalTime(editRecord.record_time) : nowTime();
+      return addMinutes(start, editRecord.duration_min);
+    }
+    return addMinutes(recordTime, 10);
+  })();
+
+  const [formulaEndTime, setFormulaEndTime] = useState<string>(initFormulaEndTime);
+  // 标记用户是否手动修改过结束时间（若未修改则随开始时间联动）
+  const endTimeUserSetRef = useRef(false);
+
+  useEffect(() => {
+    if (!endTimeUserSetRef.current) {
+      setFormulaEndTime(addMinutes(recordTime, 10));
+    }
+  }, [recordTime]);  // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleFormulaEndTimeChange = (v: string) => {
+    endTimeUserSetRef.current = true;
+    setFormulaEndTime(v);
+  };
+
   // ── 母乳 Tab 状态 ──────────────────────────────────────────────
   const [breastSide, setBreastSide] = useState<"left" | "right" | "both">(
     (editRecord?.breast_side as "left" | "right" | "both") ?? "left"
@@ -251,7 +291,13 @@ export default function FeedingFormPage() {
           setScoops((prev) => ({ ...prev, ...(fresh.milk_scoops as Record<MilkType, number>) }));
         }
         if (fresh.breast_side) setBreastSide(fresh.breast_side as 'left' | 'right' | 'both');
-        if (fresh.duration_min != null) setDurationMin(fresh.duration_min);
+        if (fresh.feed_type === 'formula' && fresh.duration_min != null && fresh.duration_min > 0) {
+          const freshStart = fresh.record_time ? isoToLocalTime(fresh.record_time) : recordTime;
+          setFormulaEndTime(addMinutes(freshStart, fresh.duration_min));
+          endTimeUserSetRef.current = true;
+        } else if (fresh.feed_type !== 'formula' && fresh.duration_min != null) {
+          setDurationMin(fresh.duration_min);
+        }
         if (fresh.supplement_items && fresh.supplement_items.length > 0) {
           const newChecked: Record<string, boolean> = {};
           const newDose: Record<string, string> = {};
@@ -330,6 +376,7 @@ export default function FeedingFormPage() {
           feed_type: "formula" as const,
           record_time: isoTime,
           formula_ml: formulaMl,
+          duration_min: (() => { const d = timeDiffMinutes(recordTime, formulaEndTime); return d > 0 ? d : undefined; })(),
           milk_types: activeMilkTypes.length > 0 ? activeMilkTypes : undefined,
           milk_scoops: activeMilkTypes.length > 0 ? activeScoops : undefined,
           note: note || undefined,
@@ -474,13 +521,24 @@ export default function FeedingFormPage() {
               label="记录日期"
             />
           </div>
-          <div className="px-4 py-3">
+          <div
+            className="px-4 py-3"
+            style={{ borderBottom: tab === 'formula' ? '0.5px solid #F5EEF0' : 'none' }}>
             <TimePicker
               value={recordTime}
               onChange={setRecordTime}
               label="喂养时间"
             />
           </div>
+          {tab === 'formula' && (
+            <div className="px-4 py-3">
+              <TimePicker
+                value={formulaEndTime}
+                onChange={handleFormulaEndTimeChange}
+                label="结束时间"
+              />
+            </div>
+          )}
         </FormCard>
 
         {/* 配方奶 Tab */}

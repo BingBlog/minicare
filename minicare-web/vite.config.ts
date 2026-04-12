@@ -2,6 +2,7 @@ import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 import path from 'path'
+import fs from 'fs'
 
 /** 与静态托管路径一致：生产 `/`，预发 `/staging/` */
 function normalizeAppBasePath(raw: string | undefined): string {
@@ -38,12 +39,25 @@ export default defineConfig(({ mode }) => {
   const appBasePath = normalizeAppBasePath(env.VITE_APP_BASE_PATH)
   const runtimeCaching = apiNetworkOnlyPatterns(env)
 
+  // 构建时间戳，用于版本检测（绕开 CDN 对 sw.js 的强缓存）
+  const buildTime = new Date().toISOString()
+
+  // 生成 public/version.json，部署后供客户端轮询比较
+  fs.writeFileSync(
+    path.resolve(__dirname, 'public/version.json'),
+    JSON.stringify({ buildTime }),
+  )
+
   return {
+    define: {
+      // 注入构建时间到前端代码，供 UpdatePrompt 比较
+      'import.meta.env.VITE_BUILD_TIME': JSON.stringify(buildTime),
+    },
     plugins: [
       react(),
       VitePWA({
         registerType: 'prompt',
-        injectRegister: 'auto',
+        injectRegister: null, // 手动注册，在代码里给 sw.js 加版本号参数绕开 CDN 缓存
         base: './',
         manifestFilename: 'manifest.webmanifest',
         includeAssets: ['icon.svg', 'apple-touch-icon.png'],
@@ -77,8 +91,28 @@ export default defineConfig(({ mode }) => {
           ],
         },
         workbox: {
-          globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
-          runtimeCaching,
+          // 只 precache 带 hash 的静态资源（JS/CSS/图片/字体）
+          globPatterns: ['**/*.{js,css,ico,png,svg,woff2}'],
+          // 明确排除 index.html，防止 generateSW 自动注入
+          globIgnores: ['**/index.html'],
+          // 禁用 SPA navigation fallback（它会把 index.html 加进 precache）
+          navigateFallback: null,
+          runtimeCaching: [
+            // index.html / 目录路径 — NetworkFirst
+            // 普通刷新优先请求网络，联网时始终拿到最新版本
+            {
+              urlPattern: ({ request }: { request: Request }) =>
+                request.mode === 'navigate',
+              handler: 'NetworkFirst' as const,
+              options: {
+                cacheName: 'html-cache',
+                networkTimeoutSeconds: 5,
+                expiration: { maxAgeSeconds: 60 * 60 * 24 },
+              },
+            },
+            // API 接口 — NetworkOnly（不缓存）
+            ...runtimeCaching,
+          ],
         },
         devOptions: {
           enabled: false,

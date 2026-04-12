@@ -355,7 +355,7 @@ export default function HealthFormPage() {
             title="体温（可选）"
             badge={!tempOpen ? tempBadge : undefined}
             open={tempOpen}
-            onToggle={() => setTempOpen((v) => !v)}
+            onToggle={() => setTempOpen((v: boolean) => !v)}
           />
           {tempOpen && (
             <TemperatureSection value={temperature} onChange={setTemperature} />
@@ -384,7 +384,7 @@ export default function HealthFormPage() {
             title="过敏表现"
             badge={allergyBadge}
             open={allergyOpen}
-            onToggle={() => setAllergyOpen((v) => !v)}
+            onToggle={() => setAllergyOpen((v: boolean) => !v)}
           />
           {allergyOpen && (
             <AllergySection
@@ -423,7 +423,7 @@ export default function HealthFormPage() {
             title="保湿护理"
             badge={skinBadge}
             open={skinOpen}
-            onToggle={() => setSkinOpen((v) => !v)}
+            onToggle={() => setSkinOpen((v: boolean) => !v)}
           />
           {skinOpen && (
             <div className="flex flex-wrap gap-2 px-4 py-3">

@@ -21,6 +21,7 @@ import { useAppStore } from "@/lib/store";
 import { recordsApi } from "@/api";
 import type { GrowthRecord } from "@/api/types";
 import DatePicker from "@/components/DatePicker";
+import TimePicker from "@/components/TimePicker";
 
 import MeasureCards from "./MeasureCards";
 import {
@@ -31,6 +32,7 @@ import {
   SubmitBar,
   ToastMessage,
   nowDate,
+  nowTime,
   useToastMsg,
 } from "../shared";
 
@@ -53,13 +55,19 @@ export default function GrowthFormPage() {
     return nowDate();
   });
 
+  const [recordTime, setRecordTime] = useState(() => {
+    if (editRecord?.record_time) return editRecord.record_time;
+    return nowTime();
+  });
+
   // 编辑时从 mm/g 反推回 cm/kg
+  // 身高/头围精度到 0.1 cm（存储单位 mm），体重精度到 0.01 kg（存储单位 g）
   const [height, setHeight] = useState(() => {
     if (editRecord?.height_mm != null) return (editRecord.height_mm / 10).toFixed(1);
     return "";
   });
   const [weight, setWeight] = useState(() => {
-    if (editRecord?.weight_g != null) return (editRecord.weight_g / 1000).toFixed(1);
+    if (editRecord?.weight_g != null) return (editRecord.weight_g / 1000).toFixed(2);
     return "";
   });
   const [head, setHead] = useState(() => {
@@ -96,8 +104,9 @@ export default function GrowthFormPage() {
       .then((fresh) => {
         if (!fresh) return;
         if (fresh.record_date) setRecordDate(fresh.record_date);
+        if (fresh.record_time) setRecordTime(fresh.record_time);
         if (fresh.height_mm != null) setHeight((fresh.height_mm / 10).toFixed(1));
-        if (fresh.weight_g != null) setWeight((fresh.weight_g / 1000).toFixed(1));
+        if (fresh.weight_g != null) setWeight((fresh.weight_g / 1000).toFixed(2));
         if (fresh.head_mm != null) setHead((fresh.head_mm / 10).toFixed(1));
         // 从 note 中解析机构前缀和用户备注
         if (fresh.note != null) {
@@ -148,6 +157,7 @@ export default function GrowthFormPage() {
 
       const payload = {
         record_date: recordDate,
+        record_time: recordTime || undefined,
         height_mm: heightMm,
         weight_g: weightG,
         head_mm: headMm,
@@ -220,11 +230,11 @@ export default function GrowthFormPage() {
         <FormCard>
           {(
             [
-              { key: "height" as const, label: "身高", unit: "cm", placeholder: "如 68.0" },
-              { key: "weight" as const, label: "体重", unit: "kg", placeholder: "如 7.5" },
-              { key: "head" as const, label: "头围", unit: "cm", placeholder: "如 43.0" },
+              { key: "height" as const, label: "身高", unit: "cm", placeholder: "如 68.0", decimals: 1 },
+              { key: "weight" as const, label: "体重", unit: "kg", placeholder: "如 7.28", decimals: 2 },
+              { key: "head" as const, label: "头围", unit: "cm", placeholder: "如 43.0", decimals: 1 },
             ] as const
-          ).map(({ key, label, unit, placeholder }, idx) => (
+          ).map(({ key, label, unit, placeholder, decimals }, idx) => (
             <div
               key={key}
               className="flex items-center px-4 py-3"
@@ -242,7 +252,7 @@ export default function GrowthFormPage() {
                 }}
                 onBlur={(e) => {
                   const n = parseFloat(e.target.value);
-                  if (!isNaN(n)) setterMap[key](n.toFixed(1));
+                  if (!isNaN(n)) setterMap[key](n.toFixed(decimals));
                 }}
                 placeholder={placeholder}
                 className="w-20 text-right text-[14px] font-semibold text-[#4A3035] bg-transparent outline-none"
@@ -258,6 +268,13 @@ export default function GrowthFormPage() {
               onChange={setRecordDate}
               label="测量日期"
               max={nowDate()}
+            />
+          </div>
+          <div className="px-4 py-3" style={{ borderTop: "0.5px solid #F5EEF0" }}>
+            <TimePicker
+              value={recordTime}
+              onChange={setRecordTime}
+              label="测量时间"
             />
           </div>
         </FormCard>
