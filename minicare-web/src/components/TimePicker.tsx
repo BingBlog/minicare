@@ -132,6 +132,7 @@ function useAndroidInertia(
         }
 
         const snapshot = pickerValRef.current
+        if (!snapshot) { rafRef.current = null; return }
         const currentVal = snapshot[col.name]
         const currentIdx = col.items.indexOf(currentVal)
         if (currentIdx === -1) { rafRef.current = null; return }
