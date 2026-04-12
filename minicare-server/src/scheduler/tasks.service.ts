@@ -21,14 +21,21 @@ export class TasksService {
   /**
    * 每 8 分钟执行一次 SELECT 1，防止 MySQL Serverless 自动暂停
    * 对应 INFRA R-2 风险（自动启停）的缓解措施
+   *
+   * 使用 getConnection() 显式获取连接以确保不复用已失效的缓存连接，
+   * 避免 CynosDB Serverless 服务端主动断连后出现 ETIMEDOUT。
    */
   @Cron('0 */8 * * * *')
   async keepDatabaseAlive() {
+    let conn: import('mysql2/promise').PoolConnection | null = null;
     try {
-      await this.db.execute('SELECT 1');
+      conn = await this.db.getConnection();
+      await conn.execute('SELECT 1');
       this.logger.debug('DB keepalive ping 成功');
     } catch (err: any) {
-      this.logger.warn('DB keepalive ping 失败:', err.message);
+      this.logger.warn(`DB keepalive ping 失败: ${err.message}`);
+    } finally {
+      conn?.release();
     }
   }
 

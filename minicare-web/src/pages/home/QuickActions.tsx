@@ -306,14 +306,27 @@ export default function QuickActions({
     }),
   );
 
+  const lockOverflow = useCallback(() => {
+    document.documentElement.style.overflowX = "hidden";
+    document.body.style.overflowX = "hidden";
+  }, []);
+
+  const unlockOverflow = useCallback(() => {
+    document.documentElement.style.overflowX = "";
+    document.body.style.overflowX = "";
+  }, []);
+
   const handleDragStart = useCallback((event: DragStartEvent) => {
     setActiveId(event.active.id as string);
-  }, []);
+    // DragOverlay 是 body Portal，拖出右边界会撑出横向滚动条，拖拽时锁住
+    lockOverflow();
+  }, [lockOverflow]);
 
   const handleDragEnd = useCallback(
     (event: DragEndEvent) => {
       const { active, over } = event;
       setActiveId(null);
+      unlockOverflow();
       if (!over || active.id === over.id) return;
       const fromIdx = currentKeys.indexOf(active.id as string);
       const toIdx = currentKeys.indexOf(over.id as string);
@@ -465,8 +478,13 @@ export default function QuickActions({
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
+          autoScroll={false}
           onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}>
+          onDragEnd={handleDragEnd}
+          onDragCancel={() => {
+            setActiveId(null);
+            unlockOverflow();
+          }}>
           <div className="px-3 pt-1 pb-2">
             {/* 数量提示 */}
             <div className="text-[10px] font-semibold text-[#C0A8AD] tracking-[0.5px] mb-2 px-1 flex items-center gap-1">

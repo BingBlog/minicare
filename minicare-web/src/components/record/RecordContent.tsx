@@ -24,6 +24,7 @@ import {
   RECORD_TYPE_CFG,
 } from '@/lib/constants'
 import { milkTypeOptions } from '@/pages/records/feeding/types'
+import { formatScoop } from '@/pages/records/feeding/scoopUtils'
 import {
   IconPoop,
   IconDrop,
@@ -50,9 +51,41 @@ import type { ReactNode } from 'react'
 
 // ── 奶粉类型 / 情绪 / 活动 映射 ───────────────────────────────────
 
+// 列表页展示用缩短名称（不影响表单页原有标签）
+const MILK_TYPE_SHORT: Record<string, string> = {
+  aa:            '氨基酸',
+  eh_no_lactose: '深(无糖)',
+  eh_lactose:    '深(含糖)',
+  ph:            '适度水解',
+  std:           '普通奶粉',
+}
+
 const MILK_TYPE_LABELS: Record<string, string> = Object.fromEntries(
   milkTypeOptions.map((o) => [o.key, o.label])
 )
+
+/**
+ * 生成配方奶列表页 meta 文本：「简短名称 勺数」格式
+ * 有勺数时：「深(无糖) ⅔ / 深(含糖) ⅓」
+ * 无勺数时：「深(无糖) / 深(含糖)」
+ */
+function buildFormulaMetaText(
+  milkTypes: string[],
+  milkScoops: Record<string, number> | null | undefined,
+): string {
+  if (milkTypes.length === 0) return ''
+
+  return milkTypes
+    .map((k) => {
+      const name = MILK_TYPE_SHORT[k] ?? MILK_TYPE_LABELS[k] ?? k
+      const scoop = milkScoops?.[k]
+      if (scoop != null && scoop > 0) {
+        return `${name} ${formatScoop(scoop)}`
+      }
+      return name
+    })
+    .join(' / ')
+}
 
 const MOOD_ICON_MAP: Record<string, (p: IconProps) => React.ReactElement> = {
   happy:   IconFaceHappy,
@@ -509,7 +542,13 @@ export function getRecordListCompactParts(
 
       if (feedType === 'formula') {
         title = '配方奶'
-        meta = milkLabel
+        // 列表页：简短名称 + 多类型时附加比例
+        const milkScoops = d.milk_scoops as Record<string, number> | null | undefined
+        const formulaMeta =
+          milkTypes && milkTypes.length > 0
+            ? buildFormulaMetaText(milkTypes, milkScoops)
+            : null
+        meta = formulaMeta
       } else if (feedType === 'breast') {
         title = '母乳'
         const side = d.breast_side === 'left' ? '左侧' : d.breast_side === 'right' ? '右侧' : '双侧'
@@ -521,7 +560,7 @@ export function getRecordListCompactParts(
         if (isSupp && suppItems && suppItems.length > 0) {
           suppItems.forEach((item, i) => {
             tagNodes.push(
-              <Pill key={i} icon={IconPill} bg="#F3F0FF" color="#9B8ED8">
+              <Pill key={i} bg="#F3F0FF" color="#9B8ED8">
                 {item.label}
               </Pill>
             )
@@ -572,9 +611,9 @@ export function getRecordListCompactParts(
       const poopLabel = poopType ? (POOP_TYPE_LABELS[poopType] ?? poopType) : null
 
       const tagNodes: ReactNode[] = []
-      if (isDry)  tagNodes.push(<Pill key="dry"  icon={IconLeaf} bg="#F5F5F5" color="#9A8090">{typeLabel}</Pill>)
-      if (hasPoop) tagNodes.push(<Pill key="dirty" icon={IconPoop} bg="#FFF8EC" color="#B07820">{hasPoop && !hasWet ? typeLabel : '臭臭'}</Pill>)
-      if (hasWet)  tagNodes.push(<Pill key="wet"  icon={IconDrop} bg="#E8F5FD" color="#2080B8">{hasWet && !hasPoop ? typeLabel : '嘘嘘'}</Pill>)
+      if (isDry)  tagNodes.push(<Pill key="dry"  bg="#F5F5F5" color="#9A8090">{typeLabel}</Pill>)
+      if (hasPoop) tagNodes.push(<Pill key="dirty" bg="#FFF8EC" color="#B07820">{hasPoop && !hasWet ? typeLabel : '臭臭'}</Pill>)
+      if (hasWet)  tagNodes.push(<Pill key="wet"  bg="#E8F5FD" color="#2080B8">{hasWet && !hasPoop ? typeLabel : '嘘嘘'}</Pill>)
       if (poopLabel && hasPoop) tagNodes.push(<Pill key="poop-type" bg="#FFF5EE" color="#C05020">{poopLabel}</Pill>)
 
       return {
@@ -590,14 +629,12 @@ export function getRecordListCompactParts(
     case 'activity': {
       const actType = d.activity_type as string | undefined
       const actLabel = actType ? (ACTIVITY_TYPE_LABELS[actType] ?? actType) : null
-      const ActIcon = actType ? (ACTIVITY_ICON_MAP[actType] ?? IconActivity) : null
-
       return {
         primary: <div className={`${LIST_TITLE_CLS} shrink-0`}>活动</div>,
         tags:
-          actLabel && ActIcon ? (
+          actLabel ? (
             <div className="flex flex-wrap items-center gap-1">
-              <Pill icon={ActIcon} bg="#FFF0F4" color="#E85580">
+              <Pill bg="#FFF0F4" color="#E85580">
                 {actLabel}
               </Pill>
             </div>
@@ -611,19 +648,17 @@ export function getRecordListCompactParts(
       const spirit = d.spirit as string | undefined
       const moodLabel = mood ? (MOOD_LABELS[mood] ?? mood) : null
       const spiritLabel = spirit ? (SPIRIT_LABELS[spirit] ?? spirit) : null
-      const MoodIcon = mood ? (MOOD_ICON_MAP[mood] ?? IconFaceNeutral) : null
-
       const tagNodes: ReactNode[] = []
-      if (moodLabel && MoodIcon) {
+      if (moodLabel) {
         tagNodes.push(
-          <Pill key="mood" icon={MoodIcon} bg="#FFF0F4" color="#E85580">
+          <Pill key="mood" bg="#FFF0F4" color="#E85580">
             {moodLabel}
           </Pill>
         )
       }
       if (spiritLabel) {
         tagNodes.push(
-          <Pill key="spirit" icon={IconZap} bg="#FFF8E6" color="#C0922A">
+          <Pill key="spirit" bg="#FFF8E6" color="#C0922A">
             {spiritLabel}
           </Pill>
         )
@@ -645,21 +680,21 @@ export function getRecordListCompactParts(
       const tagNodes: ReactNode[] = []
       if (isFever) {
         tagNodes.push(
-          <Pill key="fever" icon={IconThermometer} bg="#FFF1F4" color="#F05070">
+          <Pill key="fever" bg="#FFF1F4" color="#F05070">
             发热
           </Pill>
         )
       }
       if (hasAllergy) {
         tagNodes.push(
-          <Pill key="allergy" icon={IconAlertTriangle} bg="#FFF1F4" color="#F05070">
+          <Pill key="allergy" bg="#FFF1F4" color="#F05070">
             过敏
           </Pill>
         )
       }
       if (meds && meds.length > 0) {
         tagNodes.push(
-          <Pill key="med" icon={IconPill} bg="#F3F0FF" color="#9B8ED8">
+          <Pill key="med" bg="#F3F0FF" color="#9B8ED8">
             {meds[0].name}
           </Pill>
         )
@@ -700,7 +735,7 @@ export function getRecordListCompactParts(
         primary: <div className={`${LIST_TITLE_CLS} shrink-0`}>医疗</div>,
         tags: (
           <div className="flex flex-wrap items-center gap-1">
-            <Pill icon={IconHospital} bg="#F0F4FF" color="#5B9BD5">
+            <Pill bg="#F0F4FF" color="#5B9BD5">
               {typeLabel}
             </Pill>
           </div>

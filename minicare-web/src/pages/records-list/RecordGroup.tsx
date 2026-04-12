@@ -39,7 +39,7 @@ interface RecordGroupProps {
 /** 计算饮食类型的汇总信息 */
 function calcFeedingSummary(items: RecordItem[]): string[] {
   const badges: string[] = [];
-  const feedItems = items as FeedingRecord[];
+  const feedItems = items as unknown as FeedingRecord[];
 
   const breastCount = feedItems.filter((r) => r.feed_type === "breast").length;
   const formulaItems = feedItems.filter((r) => r.feed_type === "formula");
@@ -69,7 +69,7 @@ function calcFeedingSummary(items: RecordItem[]): string[] {
 /** 计算尿布类型的汇总信息 */
 function calcDiaperSummary(items: RecordItem[]): string[] {
   const badges: string[] = [];
-  const diaperItems = items as DiaperRecord[];
+  const diaperItems = items as unknown as DiaperRecord[];
 
   const wetCount = diaperItems.filter((r) => r.diaper_type === "wet").length;
   const dirtyCount = diaperItems.filter(
