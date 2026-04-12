@@ -1,9 +1,17 @@
 /**
  * RecordListItem 记录列表条目组件
  *
- * 统一布局（primary 始终为 null，所有类型均为 Tags-inline 模式）：
- *   行 1：图标 · [弱标题前缀 + Tags Pill]  ···  summary  时间  >
- *   行 2：note 备注（有时）
+ * 列表布局（固定列宽，纵向严格对齐）：
+ *
+ *  ┌──────┬──────────┬───────────────────┬──────────┬────────┬────┐
+ *  │ icon │  label   │  tags（Pill）      │ summary  │  time  │ >  │
+ *  │ 36px │ w-[44px] │  flex-1 min-w-0   │ w-[80px] │w-[38px]│13px│
+ *  └──────┴──────────┴───────────────────┴──────────┴────────┴────┘
+ *
+ * - label 列：固定宽，显示记录类型文字（配方奶 / 母乳 / 睡眠 / 换尿布…）
+ * - tags 列：flex-1，Pill flex-wrap；换行时所有行左边缘严格对齐 label 列右侧
+ * - summary / time / > 三列均 shrink-0 固定宽，纵向对齐；summary 左对齐
+ * - 行 2（有 note 时）：pl-[48px] 缩进对齐内容区左边
  *
  * 被引用：RecordGroup.tsx → RecordsPage.tsx
  */
@@ -13,13 +21,9 @@ import { formatTime, getRecordTime, getRecordType } from '@/lib/utils'
 import type { RecordItem } from '@/api'
 import { IconChevronRight } from '@/components/ui/icons'
 
-/** RecordListItem 属性 */
 interface RecordListItemProps {
-  /** 记录数据 */
   record: RecordItem
-  /** 是否显示顶部分隔线（非第一条时显示） */
   showDivider: boolean
-  /** 点击记录时的回调（用于显示操作菜单） */
   onClick: (record: RecordItem) => void
 }
 
@@ -27,18 +31,34 @@ function toDetail(record: RecordItem): Record<string, unknown> {
   return record as Record<string, unknown>
 }
 
+/**
+ * 从记录中推导出精确的图标 type key：
+ * - feeding 记录根据 feed_type / complementary_food 细分为 formula / breast / food / supplement
+ * - 其余类型直接使用 record.type
+ */
+function getIconType(record: RecordItem): string {
+  const base = getRecordType(record)
+  if (base !== 'feeding') return base
+  const detail = toDetail(record)
+  const feedType = detail.feed_type as string | undefined
+  if (feedType === 'formula') return 'formula'
+  if (feedType === 'breast') return 'breast'
+  if (feedType === 'complementary') {
+    const food = detail.complementary_food as string | undefined
+    return food === '营养素' ? 'supplement' : 'food'
+  }
+  return base
+}
+
 export default function RecordListItem({ record, showDivider, onClick }: RecordListItemProps) {
   const recType = getRecordType(record)
+  const iconType = getIconType(record)
   const time = getRecordTime(record)
   const detail = toDetail(record)
   const summary = getRecordSummary(recType, detail)
-  const { primary, tags, meta } = getRecordListCompactParts(recType, detail)
+  const { label, tags, meta } = getRecordListCompactParts(recType, detail)
   const note = record.note as string | undefined
 
-  // primary 为 null 时，tags 顶到行1同行展示
-  const tagsInline = primary == null
-  // 是否需要第二行（只有 primary 存在时才可能有独立的 tags 行）
-  const hasTagsRow = !tagsInline && !!(tags || meta)
   const hasNoteRow = !!note
 
   return (
@@ -49,65 +69,69 @@ export default function RecordListItem({ record, showDivider, onClick }: RecordL
         className="flex flex-col px-4 cursor-pointer active:bg-[#FFF9FA] transition-colors relative"
         style={{
           paddingTop: 12,
-          paddingBottom: (hasTagsRow || hasNoteRow) ? 10 : 12,
+          paddingBottom: hasNoteRow ? 10 : 12,
           ...(showDivider ? { borderTop: '.5px solid #F5F0F2' } : {}),
         }}
         onClick={() => onClick(record)}
       >
-        {/* 行 1：图标始终居中对齐本行 */}
+        {/* ── 主行：六列固定布局，纵向对齐 ── */}
         <div className="flex items-center gap-3">
-          <div className="flex-shrink-0">
-            <RecordTypeIcon type={recType} containerSize={36} iconSize={17} borderRadius={11} />
+
+          {/* 列 1：类型图标，固定 36px；feeding 子类型用精确 iconType */}
+          <div className="shrink-0">
+            <RecordTypeIcon type={iconType} containerSize={36} iconSize={17} borderRadius={11} />
           </div>
 
-          {/* 内容区：primary 模式 or tags-inline 模式 */}
+          {/* 列 2：标题文字，固定 w-[44px]，右侧留一点视觉间距 */}
+          <div className="shrink-0 w-[44px]">
+            {label && (
+              <span
+                className="text-[13px] font-medium leading-snug whitespace-nowrap"
+                style={{ color: '#B0A0A4' }}
+              >
+                {label}
+              </span>
+            )}
+          </div>
+
+          {/* 列 3：Tags，flex-1，换行时每行都从同一垂直线开始 */}
           <div className="flex-1 min-w-0">
-            {tagsInline
-              ? /* Tags 直接顶行（含可能的弱标题前缀） */
-                <div className="flex flex-wrap items-center gap-1 min-w-0">
-                  {tags}
-                  {meta}
-                </div>
-              : /* 强标题 */
-                primary
+            {(tags || meta)
+              ? <div className="flex flex-wrap gap-1">{tags}{meta}</div>
+              : null
             }
           </div>
 
-          {/* summary 数值 */}
-          {summary != null && (
-            <div className="flex max-w-[min(140px,45vw)] shrink-0 items-center justify-end [&>*]:max-w-full [&_*]:truncate">
-              {summary}
-            </div>
-          )}
+          {/* 列 4：summary 数值，固定 w-[80px] 左对齐 */}
+          <div className="shrink-0 w-[80px] flex justify-start items-center">
+            {summary != null && (
+              <div className="flex items-center max-w-full [&>*]:max-w-full [&_*]:truncate">
+                {summary}
+              </div>
+            )}
+          </div>
 
-          {/* 时间 */}
+          {/* 列 5：时间，固定 w-[38px] 右对齐 */}
           <span
-            className="shrink-0 text-[11px] font-medium tabular-nums leading-none whitespace-nowrap"
+            className="shrink-0 w-[38px] text-right text-[11px] font-medium tabular-nums leading-none whitespace-nowrap"
             style={{ color: '#9A7E82' }}
           >
             {formatTime(time)}
           </span>
 
+          {/* 列 6：箭头 */}
           <IconChevronRight size={13} color="#D4B8BE" className="shrink-0" />
         </div>
 
-        {/* 行 2：tags 独立行（仅 primary 存在时）+ note */}
-        {(hasTagsRow || hasNoteRow) && (
-          <div className="flex flex-col gap-1 mt-1.5 pl-[48px]">
-            {hasTagsRow && (
-              <div className="flex flex-wrap items-center gap-1">
-                {tags}
-                {meta}
-              </div>
-            )}
-            {hasNoteRow && (
-              <div
-                className="text-[11px] leading-snug line-clamp-2"
-                style={{ color: '#B0A0A4' }}
-              >
-                {note}
-              </div>
-            )}
+        {/* ── 行 2：note 备注（有时），缩进对齐内容区 ── */}
+        {hasNoteRow && (
+          <div className="mt-1.5 pl-[48px]">
+            <div
+              className="text-[11px] leading-snug line-clamp-2"
+              style={{ color: '#B0A0A4' }}
+            >
+              {note}
+            </div>
           </div>
         )}
       </div>
