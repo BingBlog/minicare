@@ -44,24 +44,24 @@ interface DatePickerProps {
   className?: string;
 }
 
-// ─── 实时倍速 + 惯性滑动 Hook ────────────────────────────────────────────────
+// ─── Android 惯性补偿 Hook ────────────────────────────────────────────────────
 //
-// 两层加速机制：
-//  1. 实时倍速（touchmove）：手指还在滑动时，以 SPEED_MULTIPLIER 倍的速率跳格，
-//     让选项表现得像手指移动了更长距离一样。用浮点累积避免小位移时的抖动。
-//  2. 惯性延续（touchend）：抬手时计算瞬时速度，用 rAF + 摩擦系数模拟继续滑行。
+// iOS WebKit 自带动量滚动，react-mobile-picker 在 iOS 上惯性体验已很好，无需介入。
+// Android Chrome 没有原生动量，抬手即停。此 hook 仅在 Android 上激活，补偿惯性延伸。
 //
 // 注意：columns/pickerVal 使用 ref 传入，保证每帧 rAF 里读到最新的动态选项列表
+// （DatePicker 的月/日列表会随年/月变化动态更新）
 
 interface InertiaColumn {
   name: string
   items: string[]
 }
 
-// 实时滑动倍速系数：手指移动 1px，选项移动 SPEED_MULTIPLIER px 的等效距离
-const SPEED_MULTIPLIER = 2.5
+const IS_IOS = /iphone|ipad|ipod/i.test(
+  typeof navigator !== 'undefined' ? navigator.userAgent : ''
+)
 
-function usePickerInertia(
+function useAndroidInertia(
   containerRef: React.RefObject<HTMLDivElement | null>,
   columnsRef: React.RefObject<InertiaColumn[]>,
   pickerValRef: React.RefObject<Record<string, string>>,
@@ -70,10 +70,7 @@ function usePickerInertia(
 ) {
   const lastMoveY = useRef(0)
   const lastMoveTime = useRef(0)
-  // 浮点累积偏移量（避免每个小 touchmove 都触发跳格）
-  const accFloat = useRef(0)
   const rafRef = useRef<number | null>(null)
-  // 当前操作的列（touchstart 时确定）
   const activeColRef = useRef<InertiaColumn | null>(null)
 
   const cancelInertia = useCallback(() => {
@@ -83,9 +80,9 @@ function usePickerInertia(
     }
   }, [])
 
-  const clampIndex = useCallback((items: string[], idx: number) => {
-    return Math.max(0, Math.min(items.length - 1, idx))
-  }, [])
+  const clampIndex = useCallback((items: string[], idx: number) =>
+    Math.max(0, Math.min(items.length - 1, idx))
+  , [])
 
   // 根据触点 X 位置识别操作的列（每次都从 ref 读最新列定义）
   const getColumnByX = useCallback((x: number, containerEl: HTMLDivElement): InertiaColumn | null => {
@@ -98,23 +95,10 @@ function usePickerInertia(
     return cols[Math.max(0, Math.min(cols.length - 1, colIdx))]
   }, [columnsRef])
 
-  // 核心跳格函数：给定当前列 + 浮点格数偏移，更新选中值；返回跳到的新索引
-  const shiftByFloat = useCallback((col: InertiaColumn, floatDelta: number): number => {
-    const snapshot = pickerValRef.current
-    if (!snapshot) return -1
-    // 每次从 ref 取最新列定义（月/日是动态的）
-    const latestCol = columnsRef.current?.find(c => c.name === col.name) ?? col
-    const currentVal = snapshot[latestCol.name]
-    const currentIdx = latestCol.items.indexOf(currentVal)
-    if (currentIdx === -1) return -1
-    const newIdx = clampIndex(latestCol.items, Math.round(currentIdx + floatDelta))
-    if (newIdx !== currentIdx) {
-      setPickerVal({ ...snapshot, [latestCol.name]: latestCol.items[newIdx] })
-    }
-    return newIdx
-  }, [columnsRef, pickerValRef, clampIndex, setPickerVal])
-
   useEffect(() => {
+    // iOS 上完全不介入，让 WebKit 原生惯性处理
+    if (IS_IOS) return
+
     const el = containerRef.current
     if (!el) return
 
@@ -124,63 +108,51 @@ function usePickerInertia(
       const x = e.touches[0].pageX
       lastMoveY.current = y
       lastMoveTime.current = Date.now()
-      accFloat.current = 0
       activeColRef.current = getColumnByX(x, el)
     }
 
     const onTouchMove = (e: TouchEvent) => {
-      const col = activeColRef.current
-      if (!col) return
-
-      const currentY = e.touches[0].pageY
-      const rawDelta = currentY - lastMoveY.current
-      lastMoveY.current = currentY
+      lastMoveY.current = e.touches[0].pageY
       lastMoveTime.current = Date.now()
-
-      // 额外的倍速位移换算为格数（库已处理原始 1:1 部分，我们只加增量）
-      const gridDelta = -(rawDelta * (SPEED_MULTIPLIER - 1)) / itemHeight
-      accFloat.current += gridDelta
-
-      if (Math.abs(accFloat.current) >= 0.5) {
-        const newIdx = shiftByFloat(col, accFloat.current)
-        const latestCol = columnsRef.current?.find(c => c.name === col.name) ?? col
-        if (newIdx === 0 || newIdx === latestCol.items.length - 1) {
-          accFloat.current = 0
-        } else {
-          accFloat.current = accFloat.current - Math.round(accFloat.current)
-        }
-      }
     }
 
     const onTouchEnd = (e: TouchEvent) => {
-      accFloat.current = 0
       const col = activeColRef.current
       if (!col) return
 
       const endY = e.changedTouches[0].pageY
       const endTime = Date.now()
-      // 用最近一次 move 的速度，更准确反映抬手瞬间意图
       const deltaY = endY - lastMoveY.current
       const deltaTime = endTime - lastMoveTime.current
 
-      if (deltaTime > 150 || deltaTime === 0) return
+      // 已经停住了（> 100ms 无移动），不加惯性
+      if (deltaTime > 100 || deltaTime === 0) return
       const velocityPxPerMs = deltaY / deltaTime
-      if (Math.abs(velocityPxPerMs) < 0.15) return
+      if (Math.abs(velocityPxPerMs) < 0.2) return
 
       const FRAME_MS = 16
-      let momentum = -(velocityPxPerMs * SPEED_MULTIPLIER * FRAME_MS) / itemHeight
-      const MAX_MOMENTUM = 12
+      let momentum = -(velocityPxPerMs * FRAME_MS) / itemHeight
+      const MAX_MOMENTUM = 8
       momentum = Math.max(-MAX_MOMENTUM, Math.min(MAX_MOMENTUM, momentum))
-      const FRICTION = 0.82
+      const FRICTION = 0.85
 
       const animate = () => {
         momentum *= FRICTION
-        if (Math.abs(momentum) < 0.05) { rafRef.current = null; return }
+        if (Math.abs(momentum) < 0.04) { rafRef.current = null; return }
 
-        const newIdx = shiftByFloat(col, momentum)
-        if (newIdx === -1) { rafRef.current = null; return }
-
+        const snapshot = pickerValRef.current
+        if (!snapshot) { rafRef.current = null; return }
+        // 每帧从 ref 取最新列定义（月/日是动态的）
         const latestCol = columnsRef.current?.find(c => c.name === col.name) ?? col
+        const currentVal = snapshot[latestCol.name]
+        const currentIdx = latestCol.items.indexOf(currentVal)
+        if (currentIdx === -1) { rafRef.current = null; return }
+
+        const newIdx = clampIndex(latestCol.items, Math.round(currentIdx + momentum))
+        if (newIdx !== currentIdx) {
+          setPickerVal({ ...snapshot, [latestCol.name]: latestCol.items[newIdx] })
+        }
+
         if (newIdx === 0 || newIdx === latestCol.items.length - 1) {
           rafRef.current = null
           return
@@ -189,24 +161,25 @@ function usePickerInertia(
         rafRef.current = requestAnimationFrame(animate)
       }
 
+      // 延迟一帧，等库完成 snap 后再接手
       rafRef.current = requestAnimationFrame(() => {
         rafRef.current = requestAnimationFrame(animate)
       })
     }
 
-    el.addEventListener('touchstart', onTouchStart, { capture: true, passive: true })
-    el.addEventListener('touchmove', onTouchMove, { capture: true, passive: true })
-    el.addEventListener('touchend', onTouchEnd, { capture: true, passive: true })
+    el.addEventListener('touchstart', onTouchStart, { capture: false, passive: true })
+    el.addEventListener('touchmove', onTouchMove, { capture: false, passive: true })
+    el.addEventListener('touchend', onTouchEnd, { capture: false, passive: true })
 
     return () => {
-      el.removeEventListener('touchstart', onTouchStart, { capture: true })
-      el.removeEventListener('touchmove', onTouchMove, { capture: true })
-      el.removeEventListener('touchend', onTouchEnd, { capture: true })
+      el.removeEventListener('touchstart', onTouchStart, { capture: false })
+      el.removeEventListener('touchmove', onTouchMove, { capture: false })
+      el.removeEventListener('touchend', onTouchEnd, { capture: false })
       cancelInertia()
     }
-  }, [containerRef, columnsRef, getColumnByX, clampIndex, cancelInertia, shiftByFloat, itemHeight])
+  }, [containerRef, columnsRef, getColumnByX, clampIndex, cancelInertia, setPickerVal, itemHeight])
 }
-// ────────────────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
 
 export default function DatePicker({
   value,
@@ -305,11 +278,11 @@ export default function DatePicker({
     { label: "昨天", date: offsetDay(-1) },
   ].filter((s) => s.date >= minDate && s.date <= maxDate);
 
-  // ── 惯性滑动 ──
+  // ── Android 惯性补偿 ──
   const pickerContainerRef = useRef<HTMLDivElement>(null);
   const ITEM_HEIGHT = 44;
 
-  // columns 和 pickerVal 用 ref 传递，保证 rAF 回调读到最新值
+  // columns/pickerVal 使用 ref 传递，保证 rAF 回调读到最新的动态列表
   const columnsRef = useRef<InertiaColumn[]>([]);
   const pickerValRef = useRef<Record<string, string>>(pickerVal);
 
@@ -321,7 +294,7 @@ export default function DatePicker({
   ];
   pickerValRef.current = pickerVal;
 
-  usePickerInertia(
+  useAndroidInertia(
     pickerContainerRef,
     columnsRef,
     pickerValRef,
@@ -432,7 +405,7 @@ export default function DatePicker({
                 <div className="flex-1 text-center">日</div>
               </div>
 
-              {/* ref 挂在 Picker 外层容器，用于惯性监听 */}
+              {/* Android 惯性补偿 ref */}
               <div ref={pickerContainerRef}>
                 <Picker
                   value={pickerVal}
