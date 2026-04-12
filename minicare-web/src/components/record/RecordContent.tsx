@@ -64,27 +64,13 @@ const MILK_TYPE_LABELS: Record<string, string> = Object.fromEntries(
   milkTypeOptions.map((o) => [o.key, o.label])
 )
 
-/**
- * 生成配方奶列表页 meta 文本：「简短名称 勺数」格式
- * 有勺数时：「深(无糖) ⅔ / 深(含糖) ⅓」
- * 无勺数时：「深(无糖) / 深(含糖)」
- */
-function buildFormulaMetaText(
-  milkTypes: string[],
-  milkScoops: Record<string, number> | null | undefined,
-): string {
-  if (milkTypes.length === 0) return ''
-
-  return milkTypes
-    .map((k) => {
-      const name = MILK_TYPE_SHORT[k] ?? MILK_TYPE_LABELS[k] ?? k
-      const scoop = milkScoops?.[k]
-      if (scoop != null && scoop > 0) {
-        return `${name} ${formatScoop(scoop)}`
-      }
-      return name
-    })
-    .join(' / ')
+/** 奶粉类型 Pill 颜色配置（复用 milkTypeOptions color，背景取 10% 透明度） */
+const MILK_TYPE_PILL_COLORS: Record<string, { color: string; bg: string }> = {
+  aa:            { color: '#F87098', bg: '#FFF0F4' },
+  eh_no_lactose: { color: '#9B8ED8', bg: '#F3F0FF' },
+  eh_lactose:    { color: '#9B8ED8', bg: '#F3F0FF' },
+  ph:            { color: '#C0922A', bg: '#FFF8E6' },
+  std:           { color: '#4CAF82', bg: '#EDFAF4' },
 }
 
 const MOOD_ICON_MAP: Record<string, (p: IconProps) => React.ReactElement> = {
@@ -207,9 +193,9 @@ export function Pill({
   return (
     <span
       className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-bold"
-      style={{ fontSize: 11, lineHeight: 1.3, color, background: bg }}
+      style={{ fontSize: 12, lineHeight: 1.3, color, background: bg }}
     >
-      {Icon && <Icon size={11} color={color} />}
+      {Icon && <Icon size={12} color={color} />}
       {children}
     </span>
   )
@@ -511,8 +497,15 @@ function MedicalContent({ d }: { d: Record<string, unknown> }) {
 
 // ── 列表页：主行文案拆分为 primary / tags / meta（备注不在此，由 RecordListItem 单独第二行） ──
 
-const LIST_TITLE_CLS = 'text-[15px] font-semibold leading-snug text-[#3D2B2E]'
-const LIST_META_CLS = 'text-[11px] leading-relaxed text-[#9A7E82]'
+/** 强标题：睡眠时段、活动类型等（标题即内容，保持显眼） */
+const LIST_TITLE_CLS = 'text-[13px] font-semibold leading-snug text-[#7A5A60]'
+/** 弱标题：配方奶/母乳/辅食/医疗/健康——类型辅助前缀，与 Tags 同行，颜色偏灰 */
+const LIST_WEAK_TITLE_CLS = 'text-[12px] font-medium leading-snug text-[#B0A0A4] shrink-0'
+
+/** 生成弱化标题节点（inline 与 Tags 并排） */
+function weakTitle(text: string): ReactNode {
+  return <span className={LIST_WEAK_TITLE_CLS}>{text}</span>
+}
 
 /**
  * 记录列表主行：标题、标签（Pill）、补充 meta 文案；与 getRecordSummary 搭配使用。
@@ -521,83 +514,115 @@ const LIST_META_CLS = 'text-[11px] leading-relaxed text-[#9A7E82]'
 export function getRecordListCompactParts(
   type: string,
   detail: Record<string, unknown> | null | undefined
-): { primary: ReactNode; tags: ReactNode | null; meta: ReactNode | null } {
+): { primary: ReactNode | null; tags: ReactNode | null; meta: ReactNode | null } {
   const d = detail ?? {}
 
   switch (type) {
     case 'feeding': {
       const feedType = d.feed_type as string | undefined
       const milkTypes = d.milk_types as string[] | undefined
-      const milkLabel =
-        milkTypes && milkTypes.length > 0
-          ? milkTypes.map((k) => MILK_TYPE_LABELS[k] ?? k).join('/')
-          : null
       const food = d.complementary_food as string | undefined
       const isSupp = food === '营养素'
       const suppItems = d.supplement_items as Array<{ label?: string; dose?: string; unit?: string }> | undefined
 
       let title = '饮食'
-      let meta: string | null = null
       const tagNodes: ReactNode[] = []
 
       if (feedType === 'formula') {
-        title = '配方奶'
-        // 列表页：简短名称 + 多类型时附加比例
+        // 每种奶粉类型生成独立彩色 Pill（含勺数，格式：「深(无糖) ⅔勺」）
         const milkScoops = d.milk_scoops as Record<string, number> | null | undefined
-        const formulaMeta =
-          milkTypes && milkTypes.length > 0
-            ? buildFormulaMetaText(milkTypes, milkScoops)
-            : null
-        meta = formulaMeta
-      } else if (feedType === 'breast') {
-        title = '母乳'
-        const side = d.breast_side === 'left' ? '左侧' : d.breast_side === 'right' ? '右侧' : '双侧'
-        meta = side
-      } else if (feedType === 'complementary') {
-        title = isSupp ? '营养素' : '辅食'
-        if (!isSupp && food) meta = food
-        // 营养素记录：以 Tag 形式展示具体营养素名称
-        if (isSupp && suppItems && suppItems.length > 0) {
-          suppItems.forEach((item, i) => {
-            tagNodes.push(
-              <Pill key={i} bg="#F3F0FF" color="#9B8ED8">
-                {item.label}
-              </Pill>
-            )
+        if (milkTypes && milkTypes.length > 0) {
+          milkTypes.forEach((k, i) => {
+            const name = MILK_TYPE_SHORT[k] ?? MILK_TYPE_LABELS[k] ?? k
+            const scoop = milkScoops?.[k]
+            const label = scoop != null && scoop > 0 ? `${name} ${formatScoop(scoop)}勺` : name
+            const { color, bg } = MILK_TYPE_PILL_COLORS[k] ?? { color: '#9A7E82', bg: '#F5F0F2' }
+            tagNodes.push(<Pill key={i} color={color} bg={bg}>{label}</Pill>)
           })
+        }
+        // 无奶粉类型数据时用弱标题 fallback
+        return {
+          primary: tagNodes.length === 0 ? weakTitle('配方奶') : null,
+          tags: tagNodes.length > 0 ? <div className="flex flex-wrap items-center gap-1">{weakTitle('配方奶')}{tagNodes}</div> : null,
+          meta: null,
+        }
+      } else if (feedType === 'breast') {
+        // 哺乳侧改为粉色 Pill（左乳/右乳/双侧）
+        const rawSide = d.breast_side as string | undefined
+        const sideLabel = rawSide === 'left' ? '左乳' : rawSide === 'right' ? '右乳' : '双侧'
+        tagNodes.push(<Pill key="side" color="#F87098" bg="#FFF0F4">{sideLabel}</Pill>)
+        return {
+          primary: null,
+          tags: <div className="flex flex-wrap items-center gap-1">{weakTitle('母乳')}{tagNodes}</div>,
+          meta: null,
+        }
+      } else if (feedType === 'complementary') {
+        if (isSupp && suppItems && suppItems.length > 0) {
+          // 营养素：省标题，直接展示各剂量 Pill
+          suppItems.forEach((item, i) => {
+            const label = item.dose ? `${item.label} ${item.dose}${item.unit ?? ''}` : (item.label ?? '')
+            tagNodes.push(<Pill key={i} bg="#F3F0FF" color="#9B8ED8">{label}</Pill>)
+          })
+          return {
+            primary: null,
+            tags: <div className="flex flex-wrap items-center gap-1">{tagNodes}</div>,
+            meta: null,
+          }
+        } else if (!isSupp && food) {
+          // 辅食：弱标题 + 食物名 Pill
+          tagNodes.push(<Pill key="food" bg="#FFF8E6" color="#B07820">{food}</Pill>)
+          return {
+            primary: null,
+            tags: <div className="flex flex-wrap items-center gap-1">{weakTitle('辅食')}{tagNodes}</div>,
+            meta: null,
+          }
         }
       }
 
+      // fallback：无具体信息时显示弱标题
       return {
-        primary: <div className={`${LIST_TITLE_CLS} shrink-0 truncate`}>{title}</div>,
-        tags: tagNodes.length > 0 ? <div className="flex flex-wrap items-center gap-1">{tagNodes}</div> : null,
-        meta: meta ? <span className={`${LIST_META_CLS} truncate`}>{meta}</span> : null,
+        primary: weakTitle(title),
+        tags: null,
+        meta: null,
       }
     }
 
     case 'sleep': {
       const ongoing = d.status === 'ongoing'
       const period = d.sleep_period as string | undefined
+      const quality = d.quality as string | undefined
+      // 时段升格为 primary，无时段时 fallback 「睡眠」
       const periodLabel = period ? (SLEEP_PERIOD_LABELS[period] ?? period) : null
+      const primaryTitle = periodLabel
+        ? (ongoing ? `${periodLabel}中` : periodLabel)
+        : (ongoing ? '睡眠中' : '睡眠')
 
-      const primary = (
-        <div className="flex items-center gap-1.5 min-w-0 flex-wrap">
-          <span className={`${LIST_TITLE_CLS} truncate inline-flex items-center gap-1.5`}>
-            {ongoing && <LiveDot />}
-            {ongoing ? '睡眠中' : '睡眠'}
-          </span>
-          {ongoing && (
-            <Pill icon={IconClock} color="#F87098" bg="#FFF0F4">
-              进行中
-            </Pill>
-          )}
-        </div>
+      // 睡眠质量 Pill
+      const QUALITY_PILL: Record<string, { label: string; color: string; bg: string }> = {
+        good:   { label: '质量好', color: '#4CAF82', bg: '#EDFAF4' },
+        normal: { label: '一般',   color: '#F0A020', bg: '#FFF3E0' },
+        poor:   { label: '较差',   color: '#F05060', bg: '#FFF0F0' },
+      }
+      const qualityCfg = quality ? QUALITY_PILL[quality] : null
+      const qualityNode = qualityCfg ? (
+        <Pill key="quality" color={qualityCfg.color} bg={qualityCfg.bg}>{qualityCfg.label}</Pill>
+      ) : null
+
+      // 睡眠：弱标题前缀（含进行中状态）+ 时段 Pill + 质量 Pill
+      const sleepPrefixText = ongoing ? `${primaryTitle}中` : primaryTitle
+      const tagNodes: ReactNode[] = []
+      tagNodes.push(
+        <span key="period" className={`${LIST_WEAK_TITLE_CLS} inline-flex items-center gap-1`}>
+          {ongoing && <LiveDot />}{sleepPrefixText}
+        </span>
       )
+      if (ongoing) tagNodes.push(<Pill key="ongoing" icon={IconClock} color="#F87098" bg="#FFF0F4">进行中</Pill>)
+      if (qualityNode) tagNodes.push(qualityNode)
 
       return {
-        primary,
-        tags: null,
-        meta: periodLabel ? <span className={`${LIST_META_CLS} truncate`}>{periodLabel}</span> : null,
+        primary: null,
+        tags: <div className="flex flex-wrap items-center gap-1">{tagNodes}</div>,
+        meta: null,
       }
     }
 
@@ -616,29 +641,27 @@ export function getRecordListCompactParts(
       if (hasWet)  tagNodes.push(<Pill key="wet"  bg="#E8F5FD" color="#2080B8">{hasWet && !hasPoop ? typeLabel : '嘘嘘'}</Pill>)
       if (poopLabel && hasPoop) tagNodes.push(<Pill key="poop-type" bg="#FFF5EE" color="#C05020">{poopLabel}</Pill>)
 
+      // 换尿布：完全省标题，Tags 直接顶行
       return {
-        primary: <div className={`${LIST_TITLE_CLS} shrink-0`}>换尿布</div>,
+        primary: null,
         tags:
           tagNodes.length > 0 ? (
             <div className="flex flex-wrap items-center gap-1">{tagNodes}</div>
-          ) : null,
+          ) : (
+            // 无任何 tag（极罕见）时兜底显示灰色文字
+            <span className={LIST_WEAK_TITLE_CLS}>换尿布</span>
+          ),
         meta: null,
       }
     }
 
     case 'activity': {
       const actType = d.activity_type as string | undefined
-      const actLabel = actType ? (ACTIVITY_TYPE_LABELS[actType] ?? actType) : null
+      // 活动类型改为弱标题，省 primary
+      const actLabel = actType ? (ACTIVITY_TYPE_LABELS[actType] ?? actType) : '活动'
       return {
-        primary: <div className={`${LIST_TITLE_CLS} shrink-0`}>活动</div>,
-        tags:
-          actLabel ? (
-            <div className="flex flex-wrap items-center gap-1">
-              <Pill bg="#FFF0F4" color="#E85580">
-                {actLabel}
-              </Pill>
-            </div>
-          ) : null,
+        primary: null,
+        tags: <div className="flex flex-wrap items-center gap-1"><span className={LIST_WEAK_TITLE_CLS}>{actLabel}</span></div>,
         meta: null,
       }
     }
@@ -664,9 +687,12 @@ export function getRecordListCompactParts(
         )
       }
 
+      // 表现记录：省标题，情绪+精神 Pill 直接顶行
       return {
-        primary: <div className={`${LIST_TITLE_CLS} shrink-0`}>表现记录</div>,
-        tags: tagNodes.length > 0 ? <div className="flex flex-wrap items-center gap-1">{tagNodes}</div> : null,
+        primary: null,
+        tags: tagNodes.length > 0
+          ? <div className="flex flex-wrap items-center gap-1">{tagNodes}</div>
+          : <span className={LIST_WEAK_TITLE_CLS}>表现记录</span>,
         meta: null,
       }
     }
@@ -700,9 +726,12 @@ export function getRecordListCompactParts(
         )
       }
 
+      // 健康记录：有 tags 时弱化标题，无 tags 时保留弱标题（如只有正常体温）
       return {
-        primary: <div className={`${LIST_TITLE_CLS} shrink-0`}>健康记录</div>,
-        tags: tagNodes.length > 0 ? <div className="flex flex-wrap items-center gap-1">{tagNodes}</div> : null,
+        primary: null,
+        tags: tagNodes.length > 0
+          ? <div className="flex flex-wrap items-center gap-1">{weakTitle('健康')}{tagNodes}</div>
+          : <span className={LIST_WEAK_TITLE_CLS}>健康记录</span>,
         meta: null,
       }
     }
@@ -717,11 +746,12 @@ export function getRecordListCompactParts(
       if (w)  chips.push(<SummaryMetric key="w"  value={w}  unit="kg"    color="#9B8ED8" bg="#F3F0FF" />)
       if (hc) chips.push(<SummaryMetric key="hc" value={hc} unit="cm头围" color="#9B8ED8" bg="#F3F0FF" />)
 
+      // 生长记录：省标题，数值 chip 直接顶行
       return {
-        primary: <div className={`${LIST_TITLE_CLS} shrink-0`}>生长记录</div>,
-        tags: chips.length > 0 ? (
-          <div className="flex flex-wrap items-center gap-1">{chips}</div>
-        ) : null,
+        primary: null,
+        tags: chips.length > 0
+          ? <div className="flex flex-wrap items-center gap-1">{chips}</div>
+          : <span className={LIST_WEAK_TITLE_CLS}>生长记录</span>,
         meta: null,
       }
     }
@@ -729,18 +759,28 @@ export function getRecordListCompactParts(
     case 'medical': {
       const visitType = d.visit_type as string | undefined
       const hospital = d.hospital as string | undefined
+      const diagnosis = d.diagnosis as string | undefined
       const typeLabel = visitType ? (VISIT_TYPE_LABELS[visitType] ?? visitType) : '就诊'
 
+      const tagNodes: ReactNode[] = [
+        <Pill key="type" bg="#F0F4FF" color="#5B9BD5">{typeLabel}</Pill>,
+      ]
+      // 医院名称改为淡蓝 Pill
+      if (hospital) tagNodes.push(
+        <Pill key="hospital" bg="#E6F0F8" color="#3B7FC0">{hospital}</Pill>
+      )
+      // 新增诊断结论 Pill
+      if (diagnosis) tagNodes.push(
+        <Pill key="diagnosis" bg="#F5F0F2" color="#8B7986">{diagnosis}</Pill>
+      )
+
+      // 医疗：弱化标题前缀 + 就诊类型/医院/诊断 Pill
       return {
-        primary: <div className={`${LIST_TITLE_CLS} shrink-0`}>医疗</div>,
+        primary: null,
         tags: (
-          <div className="flex flex-wrap items-center gap-1">
-            <Pill bg="#F0F4FF" color="#5B9BD5">
-              {typeLabel}
-            </Pill>
-          </div>
+          <div className="flex flex-wrap items-center gap-1">{weakTitle('医疗')}{tagNodes}</div>
         ),
-        meta: hospital ? <span className={`${LIST_META_CLS} truncate`}>{hospital}</span> : null,
+        meta: null,
       }
     }
 
