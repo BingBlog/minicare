@@ -155,7 +155,7 @@ export function SummaryMetric({
 }) {
   return (
     <span
-      className="inline-flex items-baseline gap-px rounded-lg px-2 py-0.5 flex-shrink-0"
+      className="inline-flex items-baseline gap-px rounded-lg px-1.5 py-0.5 flex-shrink-0"
       style={{
         background: bg,
         border: active ? `1px solid ${color}55` : undefined,
