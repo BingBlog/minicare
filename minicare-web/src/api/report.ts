@@ -113,8 +113,10 @@ export interface DailyFeedingData {
   breastCount: number
   /** 配方奶喂养次数 */
   formulaCount: number
-  /** 辅食次数 */
+  /** 辅食次数（不含营养素） */
   complementaryCount: number
+  /** 营养素次数（complementary_food = '营养素'） */
+  supplementCount: number
   /** 当日配方奶按奶粉类型拆分的毫升（后端有结构化字段时返回） */
   formulaMlByMilkType?: Record<string, number>
 }

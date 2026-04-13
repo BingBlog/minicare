@@ -113,7 +113,10 @@ export interface DailyFeedingData {
   breastCount: number;
   /** 当日配方奶喂养次数（feed_type = 2 条数） */
   formulaCount: number;
+  /** 辅食次数（feed_type=3 且 complementary_food != '营养素'） */
   complementaryCount: number;
+  /** 营养素次数（feed_type=3 且 complementary_food = '营养素'） */
+  supplementCount: number;
   /** 当日配方奶按奶粉类型拆分的毫升数（有结构化字段时才有；key 同 milk_types） */
   formulaMlByMilkType?: Record<string, number>;
 }
@@ -397,7 +400,8 @@ export class ReportService {
          SUM(CASE WHEN feed_type = 2 THEN COALESCE(formula_ml, 0) ELSE 0 END) AS formula_ml,
          COUNT(CASE WHEN feed_type = 1 THEN 1 END) AS breast_count,
          COUNT(CASE WHEN feed_type = 2 THEN 1 END) AS formula_count,
-         COUNT(CASE WHEN feed_type = 3 THEN 1 END) AS complementary_count
+         COUNT(CASE WHEN feed_type = 3 AND complementary_food != '营养素' THEN 1 END) AS complementary_count,
+         COUNT(CASE WHEN feed_type = 3 AND complementary_food = '营养素' THEN 1 END) AS supplement_count
        FROM feeding_record
        WHERE baby_id = ? AND DATE(record_time) BETWEEN ? AND ?
        GROUP BY day_date ORDER BY day_date ASC`,
@@ -438,6 +442,7 @@ export class ReportService {
           breastCount: Number(r.breast_count) || 0,
           formulaCount: Number(r.formula_count) || 0,
           complementaryCount: Number(r.complementary_count) || 0,
+          supplementCount: Number(r.supplement_count) || 0,
           ...(hasMilkBreakdown ? { formulaMlByMilkType: milkMap } : {}),
         };
       }),
@@ -601,7 +606,7 @@ export class ReportService {
          SUM(CASE WHEN feed_type = 2 THEN COALESCE(formula_ml, 0) ELSE 0 END) AS total_formula_ml,
          COUNT(CASE WHEN feed_type = 2 THEN 1 END)  AS formula_count,
          COUNT(CASE WHEN feed_type = 1 THEN 1 END)  AS breast_count,
-         COUNT(CASE WHEN feed_type = 3 THEN 1 END)  AS complementary_count,
+         COUNT(CASE WHEN feed_type = 3 AND complementary_food != '营养素' THEN 1 END)  AS complementary_count,
          COUNT(*)                                    AS total_count
        FROM feeding_record
        WHERE baby_id = ? AND DATE(record_time) BETWEEN ? AND ?`,

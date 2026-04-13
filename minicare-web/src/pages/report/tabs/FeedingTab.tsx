@@ -95,13 +95,15 @@ export function FeedingTab({ data, loading }: FeedingTabProps) {
       母乳: d.breastCount,
       配方奶: Math.round(d.formulaMl / 90),
       辅食: d.complementaryCount,
+      营养素: d.supplementCount ?? 0,
     },
   }));
 
   const hasBreast = data.some((d) => d.breastCount > 0);
   const hasFormula = data.some((d) => d.formulaMl > 0);
   const hasComplementary = data.some((d) => d.complementaryCount > 0);
-  const feedTypeVariety = [hasBreast, hasFormula, hasComplementary].filter(
+  const hasSupplement = data.some((d) => (d.supplementCount ?? 0) > 0);
+  const feedTypeVariety = [hasBreast, hasFormula, hasComplementary, hasSupplement].filter(
     Boolean,
   ).length;
   const showFeedTypeDistribution = feedTypeVariety >= 2;
@@ -206,11 +208,12 @@ export function FeedingTab({ data, loading }: FeedingTabProps) {
           <StackedBarChart
             data={stackedData}
             height={180}
-            seriesOrder={["母乳", "配方奶", "辅食"]}
+            seriesOrder={["母乳", "配方奶", "辅食", "营养素"]}
             seriesColors={{
               母乳: "#9B8ED8",
               配方奶: "#F87098",
               辅食: "#6BCB77",
+              营养素: "#F4A261",
             }}
             axis={{
               yFormat: (v) => `${Math.round(v)}次`,
