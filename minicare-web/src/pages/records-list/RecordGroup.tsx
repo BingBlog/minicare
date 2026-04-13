@@ -43,8 +43,13 @@ function calcFeedingSummary(items: RecordItem[]): string[] {
 
   const breastCount = feedItems.filter((r) => r.feed_type === "breast").length;
   const formulaItems = feedItems.filter((r) => r.feed_type === "formula");
+  // 辅食：complementary 且不是营养素
   const foodCount = feedItems.filter(
-    (r) => r.feed_type === "complementary",
+    (r) => r.feed_type === "complementary" && r.complementary_food !== "营养素",
+  ).length;
+  // 营养素：complementary 且 complementary_food === '营养素'
+  const supplementCount = feedItems.filter(
+    (r) => r.feed_type === "complementary" && r.complementary_food === "营养素",
   ).length;
 
   if (breastCount > 0) badges.push(`母乳 ${breastCount} 次`);
@@ -62,6 +67,7 @@ function calcFeedingSummary(items: RecordItem[]): string[] {
   }
 
   if (foodCount > 0) badges.push(`辅食 ${foodCount} 次`);
+  if (supplementCount > 0) badges.push(`营养素 ${supplementCount} 次`);
 
   return badges;
 }
