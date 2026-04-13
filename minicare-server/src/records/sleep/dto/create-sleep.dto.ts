@@ -2,9 +2,10 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsDateString, IsEnum, IsOptional, IsString, IsUUID } from 'class-validator';
 
 /**
- * DDL: sleep_record.status TINYINT 1=ongoing 2=ended
+ * DDL: sleep_record.status VARCHAR(10): ongoing=进行中 ended=已结束
  *      sleep_record.quality VARCHAR(10): good/normal/poor
  *      sleep_record.sleep_period VARCHAR(20): night/morning_nap/afternoon_nap/other
+ * （Migration 008: status TINYINT 1=ongoing/2=ended → VARCHAR）
  */
 
 export enum SleepQuality {

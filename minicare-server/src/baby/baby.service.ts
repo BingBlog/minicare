@@ -8,7 +8,6 @@ import { Pool } from 'mysql2/promise';
 import { v4 as uuidv4 } from 'uuid';
 import { DATABASE_POOL } from '../common/database/database.module';
 import { CreateBabyDto } from './dto/create-baby.dto';
-import { GENDER_TO_INT, GENDER_TO_STR } from '../app-config/app-config.data';
 
 @Injectable()
 export class BabyService {
@@ -43,7 +42,7 @@ export class BabyService {
         familyId,
         dto.name,
         dto.birth_date,
-        GENDER_TO_INT[dto.gender] ?? 0,
+        dto.gender ?? 'unknown',  // DDL: VARCHAR(10)，直接存字符串
         allergyTypesJson,
         dto.allergy_level ?? null,
         dto.birth_weight_g ?? null,
@@ -74,8 +73,10 @@ export class BabyService {
     if (typeof baby.allergy_types === 'string') {
       try { baby.allergy_types = JSON.parse(baby.allergy_types); } catch { baby.allergy_types = []; }
     }
-    // gender TINYINT → 字符串
-    baby.gender = GENDER_TO_STR[baby.gender] ?? 'unknown';
+    // gender 已是 VARCHAR，直接返回（兼容旧数据：数字字符串 fallback to 'unknown'）
+    if (!['male', 'female', 'unknown'].includes(baby.gender)) {
+      baby.gender = 'unknown';
+    }
     return baby;
   }
 
@@ -97,7 +98,9 @@ export class BabyService {
     if (typeof baby.allergy_types === 'string') {
       try { baby.allergy_types = JSON.parse(baby.allergy_types); } catch { baby.allergy_types = []; }
     }
-    baby.gender = GENDER_TO_STR[baby.gender] ?? 'unknown';
+    if (!['male', 'female', 'unknown'].includes(baby.gender)) {
+      baby.gender = 'unknown';
+    }
     return baby;
   }
 
@@ -110,7 +113,7 @@ export class BabyService {
 
     if (dto.name !== undefined)            { fields.push('name = ?');            values.push(dto.name); }
     if (dto.birth_date !== undefined)      { fields.push('birth_date = ?');      values.push(dto.birth_date); }
-    if (dto.gender !== undefined)          { fields.push('gender = ?');          values.push(GENDER_TO_INT[dto.gender] ?? 0); }
+    if (dto.gender !== undefined)          { fields.push('gender = ?');          values.push(dto.gender); } // 直接存 VARCHAR
     if (dto.allergy_types !== undefined)   { fields.push('allergy_types = ?');   values.push(JSON.stringify(dto.allergy_types)); }
     if (dto.allergy_level !== undefined)   { fields.push('allergy_level = ?');   values.push(dto.allergy_level); }
     if (dto.birth_weight_g !== undefined)  { fields.push('birth_weight_g = ?');  values.push(dto.birth_weight_g); }

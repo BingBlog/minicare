@@ -5,7 +5,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { FamilyRole, MIN_ROLE_KEY } from '../common/decorators/min-role.decorator';
+import { FamilyRole, MIN_ROLE_KEY, FAMILY_ROLE_WEIGHT } from '../common/decorators/min-role.decorator';
 import { FamilyContext } from './family-member.guard';
 
 /**
@@ -14,7 +14,8 @@ import { FamilyContext } from './family-member.guard';
  * 依赖 FamilyMemberGuard 已将 FamilyContext 注入 request.familyContext。
  * 读取路由装饰器 @MinRole(FamilyRole.MEMBER) 的元数据进行比较。
  *
- * 规则：role 值越小权限越高（OWNER=1 > MEMBER=2），与 DDL 保持一致
+ * DDL: family_member.role VARCHAR(10)  owner=创建者 member=普通成员
+ * （Migration 008: TINYINT → VARCHAR；权重仍为 owner(1) > member(2)）
  *
  * 使用方式（顺序不可颠倒）：
  * @UseGuards(JwtGuard, FamilyMemberGuard, RoleGuard)
@@ -36,8 +37,11 @@ export class RoleGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const familyCtx: FamilyContext = request.familyContext;
 
-    // role 数值越小权限越高，要求 OWNER(1) 则 role <= 1 才通过
-    if (familyCtx.role > minRole) {
+    const userWeight    = FAMILY_ROLE_WEIGHT[familyCtx.role] ?? 99;
+    const requiredWeight = FAMILY_ROLE_WEIGHT[minRole]       ?? 99;
+
+    // 权重越小权限越高，要求 OWNER(1) 则 userWeight <= 1 才通过
+    if (userWeight > requiredWeight) {
       throw new ForbiddenException('您的角色权限不足以执行此操作');
     }
 

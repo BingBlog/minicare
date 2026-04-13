@@ -40,17 +40,17 @@ export class TasksService {
   }
 
   /**
-   * 每 10 分钟检查超时睡眠记录（ongoing 超过 16 小时）
-   * 自动标记为 done，防止用户忘记结束计时导致数据异常
+   * 每 10 分钟检查超时睡眠记录（status='ongoing' 超过 16 小时）
+   * 自动标记为 'ended'，防止用户忘记结束计时导致数据异常
    */
   @Cron(CronExpression.EVERY_10_MINUTES)
   async checkSleepTimeout() {
     try {
       const [result] = await this.db.execute(
         `UPDATE sleep_record
-         SET status = 2, end_time = DATE_ADD(start_time, INTERVAL 16 HOUR),
+         SET status = 'ended', end_time = DATE_ADD(start_time, INTERVAL 16 HOUR),
              duration_min = 960, note = CONCAT(IFNULL(note, ''), ' [系统自动关闭: 超过16小时]')
-         WHERE status = 1
+         WHERE status = 'ongoing'
            AND start_time < DATE_SUB(NOW(), INTERVAL 16 HOUR)`,
       );
       const affected = (result as any).affectedRows;

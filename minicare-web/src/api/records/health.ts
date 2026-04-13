@@ -5,7 +5,7 @@
  * 字段说明：
  *   record_time:  ISO 8601 时间戳
  *   temperature:  体温（℃，如 37.5），正常范围 35～42
- *   mood:         情绪状态（DDL: 1=happy 2=neutral 3=fussy 4=crying，后端传/返字符串）
+ *   mood:         @deprecated Migration 008 已删除 health_record.mood，情绪统一由 symptom_record.mood 记录
  *   note:         过敏表现、用药、护理等附加信息（前端拼接后传入）
  */
 import { request } from '../http'

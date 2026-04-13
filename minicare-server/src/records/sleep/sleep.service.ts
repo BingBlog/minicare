@@ -13,17 +13,17 @@ import { StartSleepDto, EndSleepDto, UpdateSleepDto, CreateCompleteSleepDto } fr
 import { toMysqlDatetime } from '../../common/utils/date.util';
 
 /**
- * DDL: sleep_record.status TINYINT  1=ongoing  2=ended
- * 不存在 quality / sleep_period 字段
+ * DDL: sleep_record.status VARCHAR(10)  ongoing=进行中  ended=已结束
+ * （Migration 008: TINYINT 1=ongoing/2=ended → VARCHAR 'ongoing'/'ended'）
  */
-const SLEEP_STATUS = { ONGOING: 1, ENDED: 2 } as const;
+const SLEEP_STATUS = { ONGOING: 'ongoing', ENDED: 'ended' } as const;
 
 @Injectable()
 export class SleepService {
   constructor(@Inject(DATABASE_POOL) private readonly db: Pool) {}
 
   /**
-   * 开始计时（创建 status=1 的记录）
+   * 开始计时（创建 status='ongoing' 的记录）
    * 一个宝宝同时只能有一条 ongoing 睡眠记录
    */
   async startSleep(userId: string, dto: StartSleepDto) {
@@ -53,7 +53,7 @@ export class SleepService {
   }
 
   /**
-   * 结束计时（更新 status=2，计算 duration_min）
+   * 结束计时（更新 status='ended'，计算 duration_min）
    */
   async endSleep(sleepId: string, dto: EndSleepDto) {
     const [rows] = await this.db.execute<any[]>(
@@ -76,9 +76,11 @@ export class SleepService {
     );
     const durationMin = Number(checkRows[0]?.diff ?? 0);
 
-    if (durationMin <= 0) {
+    if (durationMin < 0) {
       throw new BadRequestException('结束时间不能早于开始时间');
     }
+    // TIMESTAMPDIFF(MINUTE,...) 对不足 1 分钟的间隔返回 0，按 1 分钟存储
+    const safeDurationMin = durationMin === 0 ? 1 : durationMin;
 
     await this.db.execute(
       `UPDATE sleep_record
@@ -88,7 +90,7 @@ export class SleepService {
            note         = COALESCE(?, note)
        WHERE id = ?`,
       [
-        endTimeStr, durationMin, SLEEP_STATUS.ENDED,
+        endTimeStr, safeDurationMin, SLEEP_STATUS.ENDED,
         dto.quality      ?? null,
         dto.sleep_period ?? null,
         dto.note         ?? null,
@@ -96,7 +98,7 @@ export class SleepService {
       ],
     );
 
-    return { id: sleepId, duration_min: durationMin, status: 'ended' };
+    return { id: sleepId, duration_min: safeDurationMin, status: 'ended' };
   }
 
   /**
@@ -113,9 +115,11 @@ export class SleepService {
     );
     const durationMin = Number(diffRows[0]?.diff ?? 0);
 
-    if (durationMin <= 0) {
-      throw new BadRequestException('结束时间不能早于或等于开始时间');
+    if (durationMin < 0) {
+      throw new BadRequestException('结束时间不能早于开始时间');
     }
+    // TIMESTAMPDIFF(MINUTE,...) 对不足 1 分钟的间隔返回 0，按 1 分钟存储
+    const safeDurationMin = durationMin === 0 ? 1 : durationMin;
 
     const id = uuidv4();
     await this.db.execute(
@@ -128,13 +132,13 @@ export class SleepService {
         startStr,
         endStr,
         SLEEP_STATUS.ENDED,
-        durationMin,
+        safeDurationMin,
         dto.quality ?? null,
         dto.sleep_period ?? null,
         dto.note ?? null,
       ],
     );
-    return { id, duration_min: durationMin, status: 'ended' as const };
+    return { id, duration_min: safeDurationMin, status: 'ended' as const };
   }
 
   async findAll(babyId: string, limit = 20, offset = 0) {
@@ -212,13 +216,15 @@ export class SleepService {
         diffParams,
       );
       const durationMin = Number(diffRows[0]?.diff ?? 0);
-      if (durationMin <= 0) {
+      if (durationMin < 0) {
         throw new UnprocessableEntityException(
-          '结束时间不能早于或等于开始时间，若为夜间跨午夜睡眠，请确保结束时间日期为次日',
+          '结束时间不能早于开始时间，若为夜间跨午夜睡眠，请确保结束时间日期为次日',
         );
       }
+      // TIMESTAMPDIFF(MINUTE,...) 对不足 1 分钟的间隔返回 0，按 1 分钟存储
+      const safeDurationMin = durationMin === 0 ? 1 : durationMin;
       setClauses.push('duration_min = ?');
-      values.push(durationMin);
+      values.push(safeDurationMin);
     }
 
     if (setClauses.length === 0) {

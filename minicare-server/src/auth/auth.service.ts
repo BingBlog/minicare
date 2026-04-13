@@ -143,7 +143,7 @@ export class AuthService {
 
   /**
    * 激活该手机号下所有 pending 邀请
-   * 将 invite_phone=phone、status=1 的记录更新为 user_id=userId、status=2
+   * 将 invite_phone=phone、status='pending' 的记录更新为 user_id=userId、status='active'
    *
    * 直接在 AuthService 中实现（避免循环依赖 AuthModule ↔ FamilyModule）
    *
@@ -152,7 +152,7 @@ export class AuthService {
   private async activatePendingInvites(userId: string, phone: string): Promise<string[]> {
     const [pending] = await this.db.execute<any[]>(
       `SELECT id, family_id FROM family_member
-       WHERE invite_phone = ? AND status = 1 AND user_id IS NULL`,
+       WHERE invite_phone = ? AND status = 'pending' AND user_id IS NULL`,
       [phone],
     );
 
@@ -160,8 +160,8 @@ export class AuthService {
 
     await this.db.execute(
       `UPDATE family_member
-       SET user_id = ?, status = 2, joined_at = NOW()
-       WHERE invite_phone = ? AND status = 1 AND user_id IS NULL`,
+       SET user_id = ?, status = 'active', joined_at = NOW()
+       WHERE invite_phone = ? AND status = 'pending' AND user_id IS NULL`,
       [userId, phone],
     );
 

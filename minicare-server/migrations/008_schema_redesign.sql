@@ -226,12 +226,12 @@ ALTER TABLE `diaper_record`
     COMMENT 'normal=正常软便 loose=稀便 watery=水样便 hard=干硬粒 bloody=血丝便';
 
 -- ------------------------------------------------------------
--- 4-2. growth_record：补 record_time 字段
+-- 4-2. growth_record：补 record_time 字段（已提前存在则跳过）
 -- ------------------------------------------------------------
+-- record_time 已在之前某次开发中手动添加，此处用条件添加保证幂等
 ALTER TABLE `growth_record`
-  ADD COLUMN `record_time` TIME NULL
-    COMMENT '测量时间（可选，如 09:30:00）'
-    AFTER `record_date`;
+  MODIFY COLUMN `record_time` TIME NULL
+    COMMENT '测量时间（可选，如 09:30:00）';
 
 -- ------------------------------------------------------------
 -- 4-3. health_record：删除重复的 mood 字段

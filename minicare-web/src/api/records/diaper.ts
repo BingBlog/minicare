@@ -3,10 +3,10 @@
  * 路由：/api/family/:familyId/records/diaper
  *
  * 字段说明：
- *   diaper_type:  尿布类型（DDL: 1=wet 2=dirty 3=mixed 4=dry）
+ *   diaper_type:  尿布类型（DDL: VARCHAR(10)—'wet' | 'dirty' | 'mixed'）
  *   record_time:  ISO 8601 时间戳
  *   color:        大便颜色（如 yellow/green/brown_yellow），dirty/mixed 类型时使用
- *   poop_type:    大便性状（normal_soft/loose/watery/hard/bloody/normal_form）
+ *   poop_type:    大便性状（DDL: VARCHAR(30)—normal/loose/watery/hard/bloody）
  *   diaper_count: 今日换尿布次数（0~20）
  *   note:         附加备注（可选）
  */

@@ -14,14 +14,6 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import {
-  FEED_TYPE_OPTIONS,
-  BREAST_SIDE_OPTIONS,
-  FEED_TYPE_TO_INT,
-  BREAST_SIDE_TO_INT,
-  INT_TO_FEED_TYPE,
-  INT_TO_BREAST_SIDE,
-} from '../../../app-config/app-config.data';
 
 /** 营养素明细条目 DTO */
 export class SupplementItemDto {
@@ -31,41 +23,27 @@ export class SupplementItemDto {
   @ApiPropertyOptional() @IsOptional() @IsString() unit?: string;
 }
 
-/** DDL: feed_type TINYINT 1=breast 2=formula 3=complementary */
+/**
+ * 喂养类型
+ * DDL: feeding_breast_record / feeding_formula_record / feeding_food_record / feeding_supplement_record
+ */
 export enum FeedType {
   BREAST        = 'breast',
   FORMULA       = 'formula',
   COMPLEMENTARY = 'complementary',
 }
 
-/** DDL: breast_side TINYINT 1=left 2=right 3=both */
+/** DDL: feeding_breast_record.breast_side VARCHAR(10) */
 export enum BreastSide {
   LEFT  = 'left',
   RIGHT = 'right',
   BOTH  = 'both',
 }
 
-// 整数映射常量（从权威数据源导入，不在此重复定义）
-export { FEED_TYPE_TO_INT, BREAST_SIDE_TO_INT, INT_TO_FEED_TYPE, INT_TO_BREAST_SIDE };
-
-// 确保 enum 与 app-config.data.ts 定义一致（运行时断言）
-const _feedTypeValues = FEED_TYPE_OPTIONS.map((o) => o.value);
-Object.values(FeedType).forEach((v) => {
-  if (!_feedTypeValues.includes(v as never)) {
-    throw new Error(`FeedType enum value "${v}" not found in app-config FEED_TYPE_OPTIONS`);
-  }
-});
-const _breastSideValues = BREAST_SIDE_OPTIONS.map((o) => o.value);
-Object.values(BreastSide).forEach((v) => {
-  if (!_breastSideValues.includes(v as never)) {
-    throw new Error(`BreastSide enum value "${v}" not found in app-config BREAST_SIDE_OPTIONS`);
-  }
-});
-
 export class CreateFeedingDto {
   @ApiProperty() @IsUUID() baby_id: string;
 
-  @ApiProperty({ enum: FeedType, description: 'DDL: 1=breast 2=formula 3=complementary' })
+  @ApiProperty({ enum: FeedType, description: 'breast=母乳 formula=配方奶 complementary=辅食/营养素' })
   @IsEnum(FeedType)
   feed_type: FeedType;
 
@@ -79,8 +57,8 @@ export class CreateFeedingDto {
   @IsEnum(BreastSide)
   breast_side?: BreastSide;
 
-  /** breast 专用：时长（分钟） */
-  @ApiPropertyOptional({ description: '母乳时长（分钟）' })
+  /** breast / formula 专用：时长（分钟） */
+  @ApiPropertyOptional({ description: '哺乳/喂养时长（分钟）' })
   @IsOptional()
   @IsNumber()
   @Min(0)
@@ -95,8 +73,8 @@ export class CreateFeedingDto {
   @Max(500)
   formula_ml?: number;
 
-  /** complementary 专用：食物名称 */
-  @ApiPropertyOptional({ description: '辅食名称（complementary 时使用）' })
+  /** complementary 专用：食物名称（多个用逗号/顿号分隔） */
+  @ApiPropertyOptional({ description: '辅食名称（complementary 时使用，多个用顿号分隔）' })
   @IsOptional()
   @IsString()
   @IsNotEmpty()

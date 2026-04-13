@@ -11,15 +11,15 @@ export const CONFIG_VERSION = '2026-04-13.1'; // 修改配置时同步更新
 // ============================================================
 
 export const FEED_TYPE_OPTIONS = [
-  { value: 'breast',        label: '母乳',   int: 1 },
-  { value: 'formula',       label: '配方奶', int: 2 },
-  { value: 'complementary', label: '辅食',   int: 3 },
+  { value: 'breast',        label: '母乳'   },
+  { value: 'formula',       label: '配方奶' },
+  { value: 'complementary', label: '辅食'   },
 ] as const;
 
 export const BREAST_SIDE_OPTIONS = [
-  { value: 'left',  label: '左侧', int: 1 },
-  { value: 'right', label: '右侧', int: 2 },
-  { value: 'both',  label: '双侧', int: 3 },
+  { value: 'left',  label: '左侧' },
+  { value: 'right', label: '右侧' },
+  { value: 'both',  label: '双侧' },
 ] as const;
 
 export const MILK_TYPE_OPTIONS = [
@@ -35,9 +35,9 @@ export const MILK_TYPE_OPTIONS = [
 // ============================================================
 
 export const DIAPER_TYPE_OPTIONS = [
-  { value: 'wet',   label: '嘘嘘',       int: 1 },
-  { value: 'dirty', label: '臭臭',       int: 2 },
-  { value: 'mixed', label: '臭臭＋嘘嘘', int: 3 },
+  { value: 'wet',   label: '嘘嘘'       },
+  { value: 'dirty', label: '臭臭'       },
+  { value: 'mixed', label: '臭臭＋嘘嘘' },
 ] as const;
 
 export const POOP_TYPE_OPTIONS = [
@@ -104,10 +104,10 @@ export const ACTIVITY_INTENSITY_OPTIONS = [
 // ============================================================
 
 export const MOOD_OPTIONS = [
-  { value: 'happy',   label: '愉悦满足',  int: 1 },
-  { value: 'neutral', label: '平静舒适',  int: 2 },
-  { value: 'fussy',   label: '烦躁不开心', int: 3 },
-  { value: 'crying',  label: '痛苦哭闹',  int: 4 },
+  { value: 'happy',   label: '愉悦满足'   },
+  { value: 'neutral', label: '平静舒适'   },
+  { value: 'fussy',   label: '烦躁不开心' },
+  { value: 'crying',  label: '痛苦哭闹'   },
 ] as const;
 
 export const SPIRIT_LEVEL_OPTIONS = [
@@ -158,9 +158,9 @@ export const ALLERGY_LEVEL_OPTIONS = [
 // ============================================================
 
 export const BABY_GENDER_OPTIONS = [
-  { value: 'male',    label: '男宝', int: 1 },
-  { value: 'female',  label: '女宝', int: 2 },
-  { value: 'unknown', label: '未知', int: 0 },
+  { value: 'male',    label: '男宝' },
+  { value: 'female',  label: '女宝' },
+  { value: 'unknown', label: '未知' },
 ] as const;
 
 // ============================================================
@@ -204,44 +204,6 @@ export const QUICK_ACTION_DEFAULTS = {
   '6-11': ['food', 'formula', 'breast', 'diaper', 'sleep', 'temperature'],
   '12+':  ['food', 'formula', 'diaper', 'sleep', 'activity', 'growth'],
 };
-
-// ============================================================
-// 整数映射辅助工具（供 DTO / Service 层使用）
-// ============================================================
-
-/** 从 options 数组生成 value -> int 映射表 */
-function buildValueToInt<T extends { value: string; int: number }>(
-  options: readonly T[],
-): Record<string, number> {
-  return Object.fromEntries(options.map((o) => [o.value, o.int]));
-}
-
-/** 从 options 数组生成 int -> value 映射表 */
-function buildIntToValue<T extends { value: string; int: number }>(
-  options: readonly T[],
-): Record<number, string> {
-  return Object.fromEntries(options.map((o) => [o.int, o.value]));
-}
-
-/** feed_type <-> TINYINT */
-export const FEED_TYPE_TO_INT  = buildValueToInt(FEED_TYPE_OPTIONS);
-export const INT_TO_FEED_TYPE  = buildIntToValue(FEED_TYPE_OPTIONS);
-
-/** breast_side <-> TINYINT */
-export const BREAST_SIDE_TO_INT = buildValueToInt(BREAST_SIDE_OPTIONS);
-export const INT_TO_BREAST_SIDE = buildIntToValue(BREAST_SIDE_OPTIONS);
-
-/** diaper_type <-> TINYINT */
-export const DIAPER_TYPE_TO_INT = buildValueToInt(DIAPER_TYPE_OPTIONS);
-export const INT_TO_DIAPER_TYPE = buildIntToValue(DIAPER_TYPE_OPTIONS);
-
-/** mood <-> TINYINT */
-export const MOOD_TO_INT  = buildValueToInt(MOOD_OPTIONS);
-export const INT_TO_MOOD  = buildIntToValue(MOOD_OPTIONS);
-
-/** baby gender <-> TINYINT */
-export const GENDER_TO_INT = buildValueToInt(BABY_GENDER_OPTIONS);
-export const GENDER_TO_STR = buildIntToValue(BABY_GENDER_OPTIONS);
 
 // ============================================================
 // build 方法（组装完整响应体）

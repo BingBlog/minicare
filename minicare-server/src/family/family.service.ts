@@ -15,7 +15,7 @@ export class FamilyService {
   constructor(@Inject(DATABASE_POOL) private readonly db: Pool) {}
 
   /**
-   * 创建家庭，创建者自动成为 OWNER（role=1）
+   * 创建家庭，创建者自动成为 OWNER（role='owner'）
    */
   async createFamily(userId: string, dto: CreateFamilyDto) {
     const conn = await this.db.getConnection();
@@ -32,9 +32,9 @@ export class FamilyService {
         [familyId, dto.name, inviteCode, userId],
       );
 
-      // 创建者加入家庭，role=1（owner），status=2（active）
+      // 创建者加入家庭，role='owner'，status='active'（Migration 008: TINYINT → VARCHAR）
       await conn.execute(
-        'INSERT INTO family_member (id, family_id, user_id, role, status) VALUES (?, ?, ?, 1, 2)',
+        "INSERT INTO family_member (id, family_id, user_id, role, status) VALUES (?, ?, ?, 'owner', 'active')",
         [memberId, familyId, userId],
       );
 
@@ -57,7 +57,7 @@ export class FamilyService {
       `SELECT fg.id, fg.name, fg.created_at, fm.role
        FROM family_group fg
        JOIN family_member fm ON fg.id = fm.family_id
-       WHERE fm.user_id = ? AND fm.status = 2
+       WHERE fm.user_id = ? AND fm.status = 'active'
        ORDER BY fg.created_at DESC`,
       [userId],
     );
@@ -66,8 +66,8 @@ export class FamilyService {
 
   /**
    * 获取家庭成员列表（active + pending 分开返回）
-   * - active 成员：status=2，展示昵称、手机号
-   * - pending 成员：status=1，展示 invite_phone（脱敏），无 user_id
+   * - active 成员：status='active'，展示昵称、手机号
+   * - pending 成员：status='pending'，展示 invite_phone（脱敏），无 user_id
    */
   async getMembers(familyId: string) {
     const [rows] = await this.db.execute<any[]>(
@@ -75,7 +75,7 @@ export class FamilyService {
               ua.id AS user_id, ua.nickname AS name, ua.avatar_url
        FROM family_member fm
        LEFT JOIN user_account ua ON fm.user_id = ua.id
-       WHERE fm.family_id = ? AND fm.status IN (1, 2)
+       WHERE fm.family_id = ? AND fm.status IN ('pending', 'active')
        ORDER BY fm.status ASC, fm.role ASC, fm.joined_at ASC`,
       [familyId],
     );
@@ -108,14 +108,14 @@ export class FamilyService {
       `SELECT fm.id, fm.status FROM family_member fm
        LEFT JOIN user_account ua ON fm.user_id = ua.id
        WHERE fm.family_id = ?
-         AND fm.status IN (1, 2)
+         AND fm.status IN ('pending', 'active')
          AND (fm.invite_phone = ? OR ua.phone = ?)`,
       [familyId, phone, phone],
     );
 
     if (existing.length > 0) {
       const status = existing[0].status;
-      if (status === 2) {
+      if (status === 'active') {
         throw new ConflictException('该成员已在家庭中');
       } else {
         throw new ConflictException('已邀请，等待对方登录接受');
@@ -126,7 +126,7 @@ export class FamilyService {
     const memberId = uuidv4();
     await this.db.execute(
       `INSERT INTO family_member (id, family_id, user_id, role, status, invite_phone, invited_by)
-       VALUES (?, ?, NULL, 2, 1, ?, ?)`,
+       VALUES (?, ?, NULL, 'member', 'pending', ?, ?)`,
       [memberId, familyId, phone, inviterId],
     );
 
@@ -137,7 +137,7 @@ export class FamilyService {
    * 激活该手机号下所有 pending 邀请
    *
    * 在用户登录/注册成功后调用。
-   * 将 invite_phone=phone、status=1 的记录更新为 user_id=userId、status=2。
+   * 将 invite_phone=phone、status='pending' 的记录更新为 user_id=userId、status='active'。
    *
    * @returns 被激活的家庭 ID 列表（供前端判断是否需要展示切换引导）
    */
@@ -145,7 +145,7 @@ export class FamilyService {
     // 查找待激活的 pending 记录
     const [pending] = await this.db.execute<any[]>(
       `SELECT id, family_id FROM family_member
-       WHERE invite_phone = ? AND status = 1 AND user_id IS NULL`,
+       WHERE invite_phone = ? AND status = 'pending' AND user_id IS NULL`,
       [phone],
     );
 
@@ -154,8 +154,8 @@ export class FamilyService {
     // 批量激活
     await this.db.execute(
       `UPDATE family_member
-       SET user_id = ?, status = 2, joined_at = NOW()
-       WHERE invite_phone = ? AND status = 1 AND user_id IS NULL`,
+       SET user_id = ?, status = 'active', joined_at = NOW()
+       WHERE invite_phone = ? AND status = 'pending' AND user_id IS NULL`,
       [userId, phone],
     );
 
@@ -179,7 +179,7 @@ export class FamilyService {
     const target = rows[0];
 
     // 不可移除创建者
-    if (target.role === 1) {
+    if (target.role === 'owner') {
       throw new ForbiddenException('不可移除家庭创建者');
     }
 
@@ -188,9 +188,9 @@ export class FamilyService {
       throw new ForbiddenException('不可移除自身');
     }
 
-    // 软删除（status=3 表示已离开）
+    // 软删除（status='left' 表示已离开）
     await this.db.execute(
-      'UPDATE family_member SET status = 3 WHERE id = ?',
+      "UPDATE family_member SET status = 'left' WHERE id = ?",
       [memberId],
     );
 
@@ -229,32 +229,48 @@ export class FamilyService {
     const today = new Date();
     const dateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
+    // feeding: 四张子表 UNION，各自携带类型标记和关键摘要
     const sql = `
       SELECT 'feeding' AS type, id, record_time AS time, note,
         JSON_OBJECT(
-          'feed_type',          CASE feed_type WHEN 1 THEN 'breast' WHEN 2 THEN 'formula' WHEN 3 THEN 'complementary' ELSE NULL END,
-          'formula_ml',         formula_ml,
-          'milk_types',         milk_types,
-          'milk_scoops',        milk_scoops,
-          'breast_side',        CASE breast_side WHEN 1 THEN 'left' WHEN 2 THEN 'right' WHEN 3 THEN 'both' ELSE NULL END,
-          'duration_min',       duration_min,
-          'complementary_food', complementary_food,
-          'supplement_items',   supplement_items
+          'feed_type',    'breast',
+          'breast_side',  breast_side,
+          'duration_min', duration_min
         ) AS detail
-      FROM feeding_record WHERE baby_id = ? AND DATE(record_time) = ?
+      FROM feeding_breast_record WHERE baby_id = ? AND DATE(record_time) = ?
+      UNION ALL
+      SELECT 'feeding' AS type, id, record_time AS time, note,
+        JSON_OBJECT(
+          'feed_type',  'formula',
+          'formula_ml', formula_ml
+        ) AS detail
+      FROM feeding_formula_record WHERE baby_id = ? AND DATE(record_time) = ?
+      UNION ALL
+      SELECT 'feeding' AS type, id, record_time AS time, note,
+        JSON_OBJECT(
+          'feed_type', 'complementary'
+        ) AS detail
+      FROM feeding_food_record WHERE baby_id = ? AND DATE(record_time) = ?
+      UNION ALL
+      SELECT 'feeding' AS type, id, record_time AS time, note,
+        JSON_OBJECT(
+          'feed_type',        'complementary',
+          'supplement_items', supplement_items
+        ) AS detail
+      FROM feeding_supplement_record WHERE baby_id = ? AND DATE(record_time) = ?
       UNION ALL
       SELECT 'sleep' AS type, id, start_time AS time, note,
         JSON_OBJECT(
-          'duration_min',  duration_min,
-          'sleep_period',  sleep_period,
-          'quality',       quality,
-          'status',        CASE status WHEN 1 THEN 'ongoing' ELSE 'ended' END
+          'duration_min', duration_min,
+          'sleep_period', sleep_period,
+          'quality',      quality,
+          'status',       status
         ) AS detail
       FROM sleep_record WHERE baby_id = ? AND DATE(start_time) = ?
       UNION ALL
       SELECT 'diaper' AS type, id, record_time AS time, note,
         JSON_OBJECT(
-          'diaper_type',  CASE diaper_type WHEN 1 THEN 'wet' WHEN 2 THEN 'dirty' WHEN 3 THEN 'mixed' WHEN 4 THEN 'dry' ELSE NULL END,
+          'diaper_type',  diaper_type,
           'poop_type',    poop_type,
           'diaper_count', diaper_count
         ) AS detail
@@ -262,7 +278,7 @@ export class FamilyService {
       UNION ALL
       SELECT 'activity' AS type, id, record_time AS time, note,
         JSON_OBJECT(
-          'activity_type', CASE activity_type WHEN 1 THEN 'bath' WHEN 2 THEN 'outdoor' WHEN 3 THEN 'play' WHEN 4 THEN 'tummy_time' WHEN 5 THEN 'other' ELSE NULL END,
+          'activity_type', activity_type,
           'duration_min',  duration_min,
           'intensity',     intensity
         ) AS detail
@@ -270,8 +286,7 @@ export class FamilyService {
       UNION ALL
       SELECT 'health' AS type, id, record_time AS time, note,
         JSON_OBJECT(
-          'temperature', temperature,
-          'mood',        CASE mood WHEN 1 THEN 'happy' WHEN 2 THEN 'neutral' WHEN 3 THEN 'fussy' WHEN 4 THEN 'crying' ELSE NULL END
+          'temperature', temperature
         ) AS detail
       FROM health_record WHERE baby_id = ? AND DATE(record_time) = ?
       UNION ALL
@@ -300,7 +315,10 @@ export class FamilyService {
     `;
 
     const params = [
-      babyId, dateStr,  // feeding
+      babyId, dateStr,  // feeding_breast_record
+      babyId, dateStr,  // feeding_formula_record
+      babyId, dateStr,  // feeding_food_record
+      babyId, dateStr,  // feeding_supplement_record
       babyId, dateStr,  // sleep
       babyId, dateStr,  // diaper
       babyId, dateStr,  // activity
@@ -318,8 +336,7 @@ export class FamilyService {
         const parsed = typeof row.detail === 'string' ? JSON.parse(row.detail) : row.detail;
         detail = {
           ...parsed,
-          milk_types:       this.tryParseJson(parsed.milk_types),
-          milk_scoops:      this.tryParseJson(parsed.milk_scoops),
+          // supplement_items 是 feeding_supplement_record 中的 JSON 列，MySQL 驱动可能以字符串返回
           supplement_items: this.tryParseJson(parsed.supplement_items),
         };
       }
@@ -360,7 +377,7 @@ export class FamilyService {
     }
 
     await this.db.execute(
-      'INSERT INTO family_member (id, family_id, user_id, role, status) VALUES (?, ?, ?, 2, 2)',
+      "INSERT INTO family_member (id, family_id, user_id, role, status) VALUES (?, ?, ?, 'member', 'active')",
       [uuidv4(), familyId, userId],
     );
 

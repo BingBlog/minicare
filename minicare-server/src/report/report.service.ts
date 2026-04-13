@@ -69,7 +69,7 @@ export interface FoodObservationStats {
   observingCount: number;
   safeCount: number;
   allergicCount: number;
-  items: Array<{ foodName: string; status: number; firstIntroAt: string }>;
+  items: Array<{ foodName: string; status: string; firstIntroAt: string }>;
 }
 
 export interface ReportSummary {
@@ -111,11 +111,11 @@ export interface DailyFeedingData {
   date: string;
   formulaMl: number;
   breastCount: number;
-  /** 当日配方奶喂养次数（feed_type = 2 条数） */
+  /** 当日配方奶喂养次数（feeding_formula_record 条数） */
   formulaCount: number;
-  /** 辅食次数（feed_type=3 且 complementary_food != '营养素'） */
+  /** 辅食次数（feeding_food_record 条数） */
   complementaryCount: number;
-  /** 营养素次数（feed_type=3 且 complementary_food = '营养素'） */
+  /** 营养素次数（feeding_supplement_record 条数） */
   supplementCount: number;
   /** 当日配方奶按奶粉类型拆分的毫升数（有结构化字段时才有；key 同 milk_types） */
   formulaMlByMilkType?: Record<string, number>;
@@ -140,7 +140,7 @@ export interface DailySleepData {
 export interface DailyHealthData {
   date: string;
   temperature: number | null;
-  /** 情绪：映射后的字符串枚举 happy/neutral/fussy/crying（null 表示当日无健康记录） */
+  /** 情绪：来自 symptom_record.mood，VARCHAR 枚举 happy/neutral/fussy/crying（null 表示当日无症状记录） */
   mood: string | null;
   /** 精神状态：来自 symptom_record.spirit（active/normal/tired/lethargic），null 表示当日无症状记录 */
   spirit: string | null;
@@ -339,25 +339,54 @@ export class ReportService {
     startDate: string,
     endDate: string,
   ): Promise<{ daily: DailyFeedingData[] }> {
+    // 从 4 张子表 UNION 后按日期聚合（Migration 008: 拆分为独立子表）
     const [rows] = await this.db.query<any[]>(
       `SELECT
-         DATE(record_time) AS day_date,
-         SUM(CASE WHEN feed_type = 2 THEN COALESCE(formula_ml, 0) ELSE 0 END) AS formula_ml,
-         COUNT(CASE WHEN feed_type = 1 THEN 1 END) AS breast_count,
-         COUNT(CASE WHEN feed_type = 2 THEN 1 END) AS formula_count,
-         COUNT(CASE WHEN feed_type = 3 AND complementary_food != '营养素' THEN 1 END) AS complementary_count,
-         COUNT(CASE WHEN feed_type = 3 AND complementary_food = '营养素' THEN 1 END) AS supplement_count
-       FROM feeding_record
-       WHERE baby_id = ? AND DATE(record_time) BETWEEN ? AND ?
+         day_date,
+         SUM(formula_ml)        AS formula_ml,
+         SUM(breast_count)      AS breast_count,
+         SUM(formula_count)     AS formula_count,
+         SUM(complementary_count) AS complementary_count,
+         SUM(supplement_count)  AS supplement_count
+       FROM (
+         SELECT DATE(record_time) AS day_date,
+                0 AS formula_ml, 1 AS breast_count, 0 AS formula_count,
+                0 AS complementary_count, 0 AS supplement_count
+           FROM feeding_breast_record
+           WHERE baby_id = ? AND DATE(record_time) BETWEEN ? AND ?
+         UNION ALL
+         SELECT DATE(record_time), COALESCE(formula_ml, 0), 0, 1, 0, 0
+           FROM feeding_formula_record
+           WHERE baby_id = ? AND DATE(record_time) BETWEEN ? AND ?
+         UNION ALL
+         SELECT DATE(record_time), 0, 0, 0, 1, 0
+           FROM feeding_food_record
+           WHERE baby_id = ? AND DATE(record_time) BETWEEN ? AND ?
+         UNION ALL
+         SELECT DATE(record_time), 0, 0, 0, 0, 1
+           FROM feeding_supplement_record
+           WHERE baby_id = ? AND DATE(record_time) BETWEEN ? AND ?
+       ) t
        GROUP BY day_date ORDER BY day_date ASC`,
-      [babyId, startDate, endDate],
+      [babyId, startDate, endDate,
+       babyId, startDate, endDate,
+       babyId, startDate, endDate,
+       babyId, startDate, endDate],
     );
 
+    // milk_types/milk_scoops 已拆分到 feeding_formula_mix 明细表
+    // 每条配方奶记录 JOIN 其配比行，聚合为 JSON 数组 / 对象供 splitFormulaMlByMilkTypes 使用
     const [formulaRows] = await this.db.query<any[]>(
-      `SELECT DATE(record_time) AS day_date, formula_ml, milk_types, milk_scoops
-       FROM feeding_record
-       WHERE baby_id = ? AND feed_type = 2 AND DATE(record_time) BETWEEN ? AND ?
-       ORDER BY record_time ASC`,
+      `SELECT
+         DATE(f.record_time)                              AS day_date,
+         f.formula_ml,
+         JSON_ARRAYAGG(m.milk_type)                       AS milk_types,
+         JSON_OBJECTAGG(m.milk_type, m.scoops)            AS milk_scoops
+       FROM feeding_formula_record f
+       LEFT JOIN feeding_formula_mix m ON m.record_id = f.id
+       WHERE f.baby_id = ? AND DATE(f.record_time) BETWEEN ? AND ?
+       GROUP BY f.id, f.record_time, f.formula_ml
+       ORDER BY f.record_time ASC`,
       [babyId, startDate, endDate],
     );
 
@@ -365,7 +394,11 @@ export class ReportService {
     for (const fr of formulaRows as any[]) {
       const dayStr = formatSqlDate(fr.day_date);
       const ml = Number(fr.formula_ml) || 0;
-      const parts = splitFormulaMlByMilkTypes(ml, fr.milk_types, fr.milk_scoops);
+      // milk_types: JSON_ARRAYAGG 返回数组（无配比行时为 [null]，需过滤）
+      const rawTypes = Array.isArray(fr.milk_types)
+        ? fr.milk_types.filter((t: unknown) => t != null)
+        : [];
+      const parts = splitFormulaMlByMilkTypes(ml, rawTypes.length ? rawTypes : null, fr.milk_scoops);
       const cur = byDayMilk.get(dayStr) ?? {};
       for (const [k, v] of Object.entries(parts)) {
         cur[k] = (cur[k] ?? 0) + v;
@@ -403,9 +436,9 @@ export class ReportService {
     const [rows] = await this.db.query<any[]>(
       `SELECT
          DATE(record_time) AS day_date,
-         COUNT(CASE WHEN diaper_type = 2 THEN 1 END) AS dirty_count,
-         COUNT(CASE WHEN diaper_type = 1 THEN 1 END) AS wet_count,
-         COUNT(CASE WHEN diaper_type = 3 THEN 1 END) AS mixed_count
+         COUNT(CASE WHEN diaper_type = 'dirty' THEN 1 END) AS dirty_count,
+         COUNT(CASE WHEN diaper_type = 'wet'   THEN 1 END) AS wet_count,
+         COUNT(CASE WHEN diaper_type = 'mixed' THEN 1 END) AS mixed_count
        FROM diaper_record
        WHERE baby_id = ? AND DATE(record_time) BETWEEN ? AND ?
        GROUP BY day_date ORDER BY day_date ASC`,
@@ -435,7 +468,7 @@ export class ReportService {
          SUM(duration_min) AS total_min,
          COUNT(*) AS session_count
        FROM sleep_record
-       WHERE baby_id = ? AND status = 2
+       WHERE baby_id = ? AND status = 'ended'
          AND DATE(start_time) BETWEEN ? AND ?
        GROUP BY day_date ORDER BY day_date ASC`,
       [babyId, startDate, endDate],
@@ -447,7 +480,7 @@ export class ReportService {
          start_time,
          end_time
        FROM sleep_record
-       WHERE baby_id = ? AND status = 2
+       WHERE baby_id = ? AND status = 'ended'
          AND DATE(start_time) BETWEEN ? AND ?
        ORDER BY start_time ASC`,
       [babyId, startDate, endDate],
@@ -492,40 +525,38 @@ export class ReportService {
     startDate: string,
     endDate: string,
   ): Promise<{ daily: DailyHealthData[] }> {
-    // mood 映射：TINYINT → string 枚举
-    const INT_TO_MOOD: Record<number, string> = { 1: 'happy', 2: 'neutral', 3: 'fussy', 4: 'crying' };
-
-    // 查询 health_record：每条记录返回（体温 + mood）
+    // 查询 health_record：每条记录返回体温（mood 已在 Migration 008 删除，统一由 symptom_record.mood 记录）
     const [healthRows] = await this.db.query<any[]>(
       `SELECT
          DATE(record_time) AS day_date,
-         temperature,
-         mood
+         temperature
        FROM health_record
        WHERE baby_id = ? AND DATE(record_time) BETWEEN ? AND ?
        ORDER BY record_time ASC`,
       [babyId, startDate, endDate],
     );
 
-    // 查询 symptom_record：每日取最新一条的 spirit
-    const [spiritRows] = await this.db.query<any[]>(
+    // 查询 symptom_record：每日取最新一条的 spirit 和 mood（均为 VARCHAR 枚举，无需整数映射）
+    const [symptomRows] = await this.db.query<any[]>(
       `SELECT
          DATE(record_time) AS day_date,
-         spirit
+         spirit,
+         mood
        FROM symptom_record
        WHERE baby_id = ? AND DATE(record_time) BETWEEN ? AND ?
-         AND spirit IS NOT NULL
        ORDER BY record_time ASC`,
       [babyId, startDate, endDate],
     );
 
-    // 按日期汇总 spirit（取当日最后一条，即 ORDER BY ASC 后最后覆盖）
+    // 按日期汇总 spirit / mood（取当日最后一条，即 ORDER BY ASC 后最后覆盖）
     const spiritByDay = new Map<string, string>();
-    for (const r of spiritRows as any[]) {
+    const moodByDay   = new Map<string, string>();
+    for (const r of symptomRows as any[]) {
       const day = r.day_date instanceof Date
         ? r.day_date.toISOString().slice(0, 10)
         : String(r.day_date).slice(0, 10);
       if (r.spirit) spiritByDay.set(day, String(r.spirit));
+      if (r.mood)   moodByDay.set(day,   String(r.mood));
     }
 
     return {
@@ -533,12 +564,11 @@ export class ReportService {
         const dateStr = r.day_date instanceof Date
           ? r.day_date.toISOString().slice(0, 10)
           : String(r.day_date).slice(0, 10);
-        const moodInt = r.mood != null ? Number(r.mood) : null;
         return {
-          date: dateStr,
+          date:        dateStr,
           temperature: r.temperature != null ? Number(r.temperature) : null,
-          mood: moodInt != null ? (INT_TO_MOOD[moodInt] ?? null) : null,
-          spirit: spiritByDay.get(dateStr) ?? null,
+          mood:        moodByDay.get(dateStr)   ?? null,
+          spirit:      spiritByDay.get(dateStr) ?? null,
         };
       }),
     };
@@ -570,31 +600,50 @@ export class ReportService {
   }
 
   // ── 喂养统计 ──────────────────────────────────────────────────────
+  // Migration 008: feeding_record 已拆分为 4 张子表，统计跨表 UNION 汇总
   private async getFeedingStats(
     babyId: string,
     startDate: string,
     endDate: string,
     days: number,
   ): Promise<FeedingStats> {
-    const [rows] = await this.db.query<any[]>(
-      `SELECT
-         SUM(CASE WHEN feed_type = 2 THEN COALESCE(formula_ml, 0) ELSE 0 END) AS total_formula_ml,
-         COUNT(CASE WHEN feed_type = 2 THEN 1 END)  AS formula_count,
-         COUNT(CASE WHEN feed_type = 1 THEN 1 END)  AS breast_count,
-         COUNT(CASE WHEN feed_type = 3 AND complementary_food != '营养素' THEN 1 END)  AS complementary_count,
-         COUNT(*)                                    AS total_count
-       FROM feeding_record
-       WHERE baby_id = ? AND DATE(record_time) BETWEEN ? AND ?`,
-      [babyId, startDate, endDate],
-    );
-    const r = rows[0] ?? {};
-    const totalFormulaMl = Number(r.total_formula_ml) || 0;
+    // 各子表独立计数 + 配方奶汇总
+    const [[breastRow], [formulaRow], [foodRow], [suppRow]] = await Promise.all([
+      this.db.query<any[]>(
+        `SELECT COUNT(*) AS cnt FROM feeding_breast_record
+         WHERE baby_id = ? AND DATE(record_time) BETWEEN ? AND ?`,
+        [babyId, startDate, endDate],
+      ),
+      this.db.query<any[]>(
+        `SELECT COUNT(*) AS cnt, SUM(COALESCE(formula_ml, 0)) AS total_ml
+         FROM feeding_formula_record
+         WHERE baby_id = ? AND DATE(record_time) BETWEEN ? AND ?`,
+        [babyId, startDate, endDate],
+      ),
+      this.db.query<any[]>(
+        `SELECT COUNT(*) AS cnt FROM feeding_food_record
+         WHERE baby_id = ? AND DATE(record_time) BETWEEN ? AND ?`,
+        [babyId, startDate, endDate],
+      ),
+      this.db.query<any[]>(
+        `SELECT COUNT(*) AS cnt FROM feeding_supplement_record
+         WHERE baby_id = ? AND DATE(record_time) BETWEEN ? AND ?`,
+        [babyId, startDate, endDate],
+      ),
+    ]);
 
-    // 每日奶量图表
+    const breastCount       = Number(breastRow[0]?.cnt)     || 0;
+    const formulaCount      = Number(formulaRow[0]?.cnt)    || 0;
+    const complementaryCount = Number(foodRow[0]?.cnt)      || 0;
+    const supplementCount   = Number(suppRow[0]?.cnt)       || 0;
+    const totalFormulaMl    = Number(formulaRow[0]?.total_ml) || 0;
+    const totalFeedCount    = breastCount + formulaCount + complementaryCount + supplementCount;
+
+    // 每日奶量图表（仅 feeding_formula_record）
     const [chartRows] = await this.db.query<any[]>(
       `SELECT DATE(record_time) AS day_date, SUM(COALESCE(formula_ml, 0)) AS ml
-       FROM feeding_record
-       WHERE baby_id = ? AND feed_type = 2 AND DATE(record_time) BETWEEN ? AND ?
+       FROM feeding_formula_record
+       WHERE baby_id = ? AND DATE(record_time) BETWEEN ? AND ?
        GROUP BY day_date ORDER BY day_date ASC`,
       [babyId, startDate, endDate],
     );
@@ -602,10 +651,10 @@ export class ReportService {
     return {
       totalFormulaMl,
       avgDailyFormulaMl: days > 0 ? Math.round(totalFormulaMl / days) : 0,
-      formulaCount: Number(r.formula_count) || 0,
-      breastCount: Number(r.breast_count) || 0,
-      complementaryCount: Number(r.complementary_count) || 0,
-      totalFeedCount: Number(r.total_count) || 0,
+      formulaCount,
+      breastCount,
+      complementaryCount,
+      totalFeedCount,
       dailyFormulaChart: (chartRows as any[]).map((cr) => ({
         date: cr.day_date instanceof Date
           ? cr.day_date.toISOString().slice(0, 10)
@@ -627,7 +676,7 @@ export class ReportService {
          SUM(duration_min)  AS total_min,
          COUNT(*)           AS session_count
        FROM sleep_record
-       WHERE baby_id = ? AND status = 2
+       WHERE baby_id = ? AND status = 'ended'
          AND DATE(start_time) BETWEEN ? AND ?`,
       [babyId, startDate, endDate],
     );
@@ -648,11 +697,11 @@ export class ReportService {
   ): Promise<DiaperStats> {
     const [rows] = await this.db.query<any[]>(
       `SELECT
-         COUNT(*)                                  AS total_count,
-         COUNT(CASE WHEN diaper_type = 1 THEN 1 END) AS wet_count,
-         COUNT(CASE WHEN diaper_type = 2 THEN 1 END) AS dirty_count,
-         COUNT(CASE WHEN diaper_type = 3 THEN 1 END) AS mixed_count,
-         COUNT(CASE WHEN diaper_type = 4 THEN 1 END) AS dry_count
+         COUNT(*)                                          AS total_count,
+         COUNT(CASE WHEN diaper_type = 'wet'   THEN 1 END) AS wet_count,
+         COUNT(CASE WHEN diaper_type = 'dirty' THEN 1 END) AS dirty_count,
+         COUNT(CASE WHEN diaper_type = 'mixed' THEN 1 END) AS mixed_count,
+         COUNT(CASE WHEN diaper_type = 'dry'   THEN 1 END) AS dry_count
        FROM diaper_record
        WHERE baby_id = ? AND DATE(record_time) BETWEEN ? AND ?`,
       [babyId, startDate, endDate],
@@ -675,12 +724,12 @@ export class ReportService {
   ): Promise<ActivityStats> {
     const [rows] = await this.db.query<any[]>(
       `SELECT
-         COUNT(*)                                        AS total_count,
-         COUNT(CASE WHEN activity_type = 1 THEN 1 END)  AS bath_count,
-         COUNT(CASE WHEN activity_type = 2 THEN 1 END)  AS outdoor_count,
-         COUNT(CASE WHEN activity_type = 3 THEN 1 END)  AS play_count,
-         COUNT(CASE WHEN activity_type = 4 THEN 1 END)  AS tummy_time_count,
-         COUNT(CASE WHEN activity_type = 5 THEN 1 END)  AS other_count
+         COUNT(*)                                                   AS total_count,
+         COUNT(CASE WHEN activity_type = 'bath'         THEN 1 END) AS bath_count,
+         COUNT(CASE WHEN activity_type = 'outdoor'      THEN 1 END) AS outdoor_count,
+         COUNT(CASE WHEN activity_type = 'play'         THEN 1 END) AS play_count,
+         COUNT(CASE WHEN activity_type = 'tummy_time'   THEN 1 END) AS tummy_time_count,
+         COUNT(CASE WHEN activity_type = 'other'        THEN 1 END) AS other_count
        FROM activity_record
        WHERE baby_id = ? AND DATE(record_time) BETWEEN ? AND ?`,
       [babyId, startDate, endDate],
@@ -742,35 +791,47 @@ export class ReportService {
   }
 
   // ── 健康统计 ──────────────────────────────────────────────────────
+  // Migration 008: health_record.mood 已删除，mood 统一由 symptom_record.mood 记录（VARCHAR 枚举）
   private async getHealthStats(
     babyId: string,
     startDate: string,
     endDate: string,
   ): Promise<HealthStats> {
-    const [rows] = await this.db.query<any[]>(
+    // 体温统计仍从 health_record 获取
+    const [healthRows] = await this.db.query<any[]>(
       `SELECT
          AVG(temperature)                              AS avg_temp,
          MAX(temperature)                              AS max_temp,
-         COUNT(CASE WHEN temperature > 37.5 THEN 1 END) AS fever_count,
-         COUNT(CASE WHEN mood = 1 THEN 1 END)          AS happy_count,
-         COUNT(CASE WHEN mood = 2 THEN 1 END)          AS neutral_count,
-         COUNT(CASE WHEN mood = 3 THEN 1 END)          AS fussy_count,
-         COUNT(CASE WHEN mood = 4 THEN 1 END)          AS crying_count
+         COUNT(CASE WHEN temperature > 37.5 THEN 1 END) AS fever_count
        FROM health_record
        WHERE baby_id = ? AND DATE(record_time) BETWEEN ? AND ?`,
       [babyId, startDate, endDate],
     );
-    const r = rows[0] ?? {};
-    const avgTemp = r.avg_temp != null ? Math.round(Number(r.avg_temp) * 10) / 10 : null;
-    const maxTemp = r.max_temp != null ? Math.round(Number(r.max_temp) * 10) / 10 : null;
+    const health = healthRows[0] ?? {};
+
+    // mood 统计从 symptom_record 获取（VARCHAR 枚举）
+    const [moodRows] = await this.db.query<any[]>(
+      `SELECT
+         COUNT(CASE WHEN mood = 'happy'   THEN 1 END) AS happy_count,
+         COUNT(CASE WHEN mood = 'neutral' THEN 1 END) AS neutral_count,
+         COUNT(CASE WHEN mood = 'fussy'   THEN 1 END) AS fussy_count,
+         COUNT(CASE WHEN mood = 'crying'  THEN 1 END) AS crying_count
+       FROM symptom_record
+       WHERE baby_id = ? AND DATE(record_time) BETWEEN ? AND ?`,
+      [babyId, startDate, endDate],
+    );
+    const mood = moodRows[0] ?? {};
+
+    const avgTemp = health.avg_temp != null ? Math.round(Number(health.avg_temp) * 10) / 10 : null;
+    const maxTemp = health.max_temp != null ? Math.round(Number(health.max_temp) * 10) / 10 : null;
     return {
       avgTemperature: avgTemp,
       maxTemperature: maxTemp,
-      moodHappyCount: Number(r.happy_count) || 0,
-      moodNeutralCount: Number(r.neutral_count) || 0,
-      moodFussyCount: Number(r.fussy_count) || 0,
-      moodCryingCount: Number(r.crying_count) || 0,
-      feverCount: Number(r.fever_count) || 0,
+      moodHappyCount: Number(mood.happy_count) || 0,
+      moodNeutralCount: Number(mood.neutral_count) || 0,
+      moodFussyCount: Number(mood.fussy_count) || 0,
+      moodCryingCount: Number(mood.crying_count) || 0,
+      feverCount: Number(health.fever_count) || 0,
     };
   }
 
@@ -825,15 +886,15 @@ export class ReportService {
     );
     const items = (rows as any[]).map((r) => ({
       foodName: r.food_name as string,
-      status: Number(r.status),
+      status: String(r.status ?? 'observing'),
       firstIntroAt: r.first_intro_at instanceof Date
         ? r.first_intro_at.toISOString().slice(0, 10)
         : String(r.first_intro_at),
     }));
     return {
-      observingCount: items.filter((i) => i.status === 1).length,
-      safeCount: items.filter((i) => i.status === 2).length,
-      allergicCount: items.filter((i) => i.status === 3).length,
+      observingCount: items.filter((i) => i.status === 'observing').length,
+      safeCount: items.filter((i) => i.status === 'safe').length,
+      allergicCount: items.filter((i) => i.status === 'allergic' || i.status === 'suspected').length,
       items,
     };
   }

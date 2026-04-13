@@ -1,16 +1,22 @@
 /**
- * 饮食记录 API
+ * 饮食记录 API（Migration 008: 拆分为 4 张独立子表）
  * 路由：/api/family/:familyId/records/feeding
  *
+ * 后端根据 feed_type 路由到对应子表：
+ *   feeding_breast_record     — breast（母乳哺乳）
+ *   feeding_formula_record    — formula（配方奶）
+ *   feeding_food_record       — complementary（辅食，无 supplement_items）
+ *   feeding_supplement_record — complementary（营养素，有 supplement_items）
+ *
  * 字段说明：
- *   feed_type:          喂养类型（DDL: 1=breast 2=formula 3=complementary）
+ *   feed_type:          喂养类型（'breast' | 'formula' | 'complementary'）
  *   record_time:        ISO 8601 时间戳
- *   breast_side:        母乳哺乳侧（DDL: 1=left 2=right 3=both），feed_type='breast' 时使用
+ *   breast_side:        母乳哺乳侧（VARCHAR: 'left' | 'right' | 'both'），feed_type='breast' 时使用
  *   duration_min:       母乳哺乳时长（分钟，范围 0~120）
  *   formula_ml:         奶粉喂养量（毫升，范围 0~500）
  *   milk_types:         奶粉类型列表，如 ["aa", "eh_no_lactose"]
  *   milk_scoops:        各类奶粉勺数映射，如 { "aa": 3, "eh_no_lactose": 0.33 }
- *   complementary_food: 辅食或营养素名称（多项逗号/顿号分隔）
+ *   complementary_food: 辅食名称（多项逗号/顿号分隔，辅食时使用）
  *   amount_g:           辅食克数（范围 0~500）
  *   supplement_items:   营养素明细列表，如 [{ key, label, dose, unit }]
  *   note:               附加备注（可选）

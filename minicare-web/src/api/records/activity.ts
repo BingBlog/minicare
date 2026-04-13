@@ -3,7 +3,7 @@
  * 路由：/api/family/:familyId/records/activity
  *
  * 字段说明：
- *   activity_type: 活动类型（DDL: 1=bath 2=outdoor 3=play 4=tummy_time 5=other）
+ *   activity_type: 活动类型（DDL: VARCHAR(20)—gross_motor/fine_motor/edu_play/outdoor/daily_care/other）
  *   record_time:   ISO 8601 时间戳
  *   duration_min:  活动时长（分钟）
  *   intensity:     活动强度（easy/medium/active）

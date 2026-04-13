@@ -2,7 +2,7 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Pool } from 'mysql2/promise';
 import { v4 as uuidv4 } from 'uuid';
 import { DATABASE_POOL } from '../../common/database/database.module';
-import { CreateHealthDto, UpdateHealthDto, MOOD_TO_INT, INT_TO_MOOD } from './dto/create-health.dto';
+import { CreateHealthDto, UpdateHealthDto } from './dto/create-health.dto';
 import { toMysqlDatetime } from '../../common/utils/date.util';
 
 function parseJson(val: unknown): unknown {
@@ -18,7 +18,7 @@ export class HealthService {
   private mapRow(r: any) {
     return {
       ...r,
-      mood:             r.mood != null ? (INT_TO_MOOD[r.mood] ?? r.mood) : null,
+      // mood 字段已从 health_record 中删除（Migration 008），无需映射
       allergy_symptoms: parseJson(r.allergy_symptoms) ?? [],
       medications:      parseJson(r.medications) ?? [],
       skin_care:        parseJson(r.skin_care) ?? [],
@@ -29,16 +29,15 @@ export class HealthService {
     const id = uuidv4();
     await this.db.execute(
       `INSERT INTO health_record
-         (id, baby_id, recorded_by, record_time, temperature, mood,
+         (id, baby_id, recorded_by, record_time, temperature,
           allergy_symptoms, allergy_severity, medications, skin_care, note)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         id,
         dto.baby_id,
         userId,
         toMysqlDatetime(dto.record_time),
         dto.temperature        ?? null,
-        dto.mood != null ? (MOOD_TO_INT[dto.mood] ?? null) : null,
         dto.allergy_symptoms?.length  ? JSON.stringify(dto.allergy_symptoms) : null,
         dto.allergy_severity           ?? null,
         dto.medications?.length        ? JSON.stringify(dto.medications)      : null,
@@ -53,7 +52,7 @@ export class HealthService {
     const safeLimit  = Math.max(1, Math.min(200, Math.floor(Number(limit)  || 20)));
     const safeOffset = Math.max(0, Math.floor(Number(offset) || 0));
     const [rows] = await this.db.query<any[]>(
-      `SELECT id, baby_id, recorded_by, record_time, temperature, mood,
+      `SELECT id, baby_id, recorded_by, record_time, temperature,
               allergy_symptoms, allergy_severity, medications, skin_care,
               note, created_at, updated_at
        FROM health_record
@@ -67,7 +66,7 @@ export class HealthService {
 
   async findOne(id: string) {
     const [rows] = await this.db.execute<any[]>(
-      `SELECT id, baby_id, recorded_by, record_time, temperature, mood,
+      `SELECT id, baby_id, recorded_by, record_time, temperature,
               allergy_symptoms, allergy_severity, medications, skin_care,
               note, created_at, updated_at
        FROM health_record WHERE id = ?`,
@@ -86,7 +85,6 @@ export class HealthService {
 
     if (dto.record_time       !== undefined) { setClauses.push('record_time = ?');       values.push(toMysqlDatetime(dto.record_time)); }
     if (dto.temperature       !== undefined) { setClauses.push('temperature = ?');       values.push(dto.temperature ?? null); }
-    if (dto.mood              !== undefined) { setClauses.push('mood = ?');              values.push(dto.mood != null ? (MOOD_TO_INT[dto.mood] ?? null) : null); }
     if (dto.allergy_symptoms  !== undefined) { setClauses.push('allergy_symptoms = ?');  values.push(dto.allergy_symptoms?.length ? JSON.stringify(dto.allergy_symptoms) : null); }
     if (dto.allergy_severity  !== undefined) { setClauses.push('allergy_severity = ?');  values.push(dto.allergy_severity ?? null); }
     if (dto.medications       !== undefined) { setClauses.push('medications = ?');       values.push(dto.medications?.length ? JSON.stringify(dto.medications) : null); }
@@ -99,7 +97,7 @@ export class HealthService {
     }
 
     const [updated] = await this.db.execute<any[]>(
-      `SELECT id, baby_id, recorded_by, record_time, temperature, mood,
+      `SELECT id, baby_id, recorded_by, record_time, temperature,
               allergy_symptoms, allergy_severity, medications, skin_care,
               note, created_at, updated_at
        FROM health_record WHERE id = ?`,

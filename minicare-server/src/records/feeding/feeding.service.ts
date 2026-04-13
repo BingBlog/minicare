@@ -5,10 +5,6 @@ import { DATABASE_POOL } from '../../common/database/database.module';
 import {
   CreateFeedingDto,
   UpdateFeedingDto,
-  FEED_TYPE_TO_INT,
-  BREAST_SIDE_TO_INT,
-  INT_TO_FEED_TYPE,
-  INT_TO_BREAST_SIDE,
 } from './dto/create-feeding.dto';
 import { toMysqlDatetime } from '../../common/utils/date.util';
 
@@ -21,13 +17,10 @@ function parseJson(val: unknown) {
 
 /**
  * 解析 supplement_items，兼容历史脏数据中可能出现的 [[...]] 双层嵌套。
- * class-transformer 在 transform:true + @IsArray() 无 @Type 时，有时会把
- * [{ key, ... }] 包裹成 [[{ key, ... }]]，此处展平一层以保证数据正确。
  */
 function parseSupplementItems(val: unknown): Array<{ key: string; label?: string; dose?: string; unit?: string }> | null {
   const parsed = parseJson(val);
   if (!Array.isArray(parsed)) return null;
-  // 如果第一个元素是数组，说明是双层嵌套，展平一层
   if (parsed.length > 0 && Array.isArray(parsed[0])) {
     return (parsed as unknown[][]).flat() as Array<{ key: string; label?: string; dose?: string; unit?: string }>;
   }
@@ -47,42 +40,145 @@ function flattenSupplementItems(items: unknown): unknown {
 export class FeedingService {
   constructor(@Inject(DATABASE_POOL) private readonly db: Pool) {}
 
+  // ============================================================
+  // CREATE
+  // ============================================================
+
   async create(userId: string, dto: CreateFeedingDto) {
     const id = uuidv4();
-    await this.db.execute(
-      `INSERT INTO feeding_record
-         (id, baby_id, recorded_by, record_time, feed_type,
-          breast_side, duration_min, formula_ml,
-          complementary_food, amount_g,
-          milk_types, milk_scoops, supplement_items, note)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [
-        id,
-        dto.baby_id,
-        userId,
-        toMysqlDatetime(dto.record_time),
-        FEED_TYPE_TO_INT[dto.feed_type] ?? 1,
-        dto.breast_side != null ? (BREAST_SIDE_TO_INT[dto.breast_side] ?? null) : null,
-        dto.duration_min          ?? null,
-        dto.formula_ml            ?? null,
-        dto.complementary_food    ?? null,
-        dto.amount_g              ?? null,
-        dto.milk_types       != null ? JSON.stringify(dto.milk_types)       : null,
-        dto.milk_scoops      != null ? JSON.stringify(dto.milk_scoops)      : null,
-        dto.supplement_items != null ? JSON.stringify(flattenSupplementItems(dto.supplement_items)) : null,
-        dto.note                  ?? null,
-      ],
-    );
-    return { id };
+
+    if (dto.feed_type === 'breast') {
+      await this.db.execute(
+        `INSERT INTO feeding_breast_record
+           (id, baby_id, recorded_by, record_time, breast_side, duration_min, note)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        [
+          id,
+          dto.baby_id,
+          userId,
+          toMysqlDatetime(dto.record_time),
+          dto.breast_side ?? null,
+          dto.duration_min ?? null,
+          dto.note ?? null,
+        ],
+      );
+      return { id };
+    }
+
+    if (dto.feed_type === 'formula') {
+      await this.db.execute(
+        `INSERT INTO feeding_formula_record
+           (id, baby_id, recorded_by, record_time, formula_ml, note)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+        [
+          id,
+          dto.baby_id,
+          userId,
+          toMysqlDatetime(dto.record_time),
+          dto.formula_ml ?? null,
+          dto.note ?? null,
+        ],
+      );
+      // 明细行：每种奶粉一行
+      if (dto.milk_types?.length && dto.milk_scoops) {
+        for (const milkType of dto.milk_types) {
+          const scoops = dto.milk_scoops[milkType];
+          if (scoops != null) {
+            await this.db.execute(
+              `INSERT INTO feeding_formula_mix (id, record_id, milk_type, scoops) VALUES (?, ?, ?, ?)`,
+              [uuidv4(), id, milkType, scoops],
+            );
+          }
+        }
+      }
+      return { id };
+    }
+
+    if (dto.feed_type === 'complementary') {
+      // 营养素：存到 feeding_supplement_record
+      if (dto.supplement_items?.length || dto.complementary_food === '营养素') {
+        const flatItems = flattenSupplementItems(dto.supplement_items ?? []);
+        await this.db.execute(
+          `INSERT INTO feeding_supplement_record
+             (id, baby_id, recorded_by, record_time, supplement_items, note)
+           VALUES (?, ?, ?, ?, ?, ?)`,
+          [
+            id,
+            dto.baby_id,
+            userId,
+            toMysqlDatetime(dto.record_time),
+            JSON.stringify(flatItems),
+            dto.note ?? null,
+          ],
+        );
+        return { id };
+      }
+
+      // 辅食：主表 + 明细行
+      await this.db.execute(
+        `INSERT INTO feeding_food_record
+           (id, baby_id, recorded_by, record_time, note)
+         VALUES (?, ?, ?, ?, ?)`,
+        [
+          id,
+          dto.baby_id,
+          userId,
+          toMysqlDatetime(dto.record_time),
+          dto.note ?? null,
+        ],
+      );
+      // 解析食物列表（兼容逗号/顿号分隔字符串）
+      const foodNames = dto.complementary_food
+        ? dto.complementary_food.split(/[,，、]/).map((s) => s.trim()).filter(Boolean)
+        : [];
+      for (const foodName of foodNames) {
+        await this.db.execute(
+          `INSERT INTO feeding_food_item (id, record_id, food_name, amount_g) VALUES (?, ?, ?, ?)`,
+          [uuidv4(), id, foodName, dto.amount_g ?? null],
+        );
+      }
+      return { id };
+    }
+
+    throw new Error(`Unsupported feed_type: ${dto.feed_type}`);
   }
 
-  private mapRow(r: any) {
+  // ============================================================
+  // READ
+  // ============================================================
+
+  private mapBreastRow(r: any) {
+    return { ...r, feed_type: 'breast' };
+  }
+
+  private mapFormulaRow(r: any, mixRows: any[]) {
+    const milk_types = mixRows.map((m) => m.milk_type);
+    const milk_scoops: Record<string, number> = {};
+    for (const m of mixRows) milk_scoops[m.milk_type] = Number(m.scoops);
     return {
       ...r,
-      feed_type:        INT_TO_FEED_TYPE[r.feed_type]   ?? r.feed_type,
-      breast_side:      r.breast_side != null ? (INT_TO_BREAST_SIDE[r.breast_side] ?? r.breast_side) : null,
-      milk_types:       parseJson(r.milk_types),
-      milk_scoops:      parseJson(r.milk_scoops),
+      feed_type: 'formula',
+      milk_types: milk_types.length > 0 ? milk_types : null,
+      milk_scoops: milk_types.length > 0 ? milk_scoops : null,
+    };
+  }
+
+  private mapFoodRow(r: any, itemRows: any[]) {
+    const foods = itemRows.map((i) => i.food_name);
+    return {
+      ...r,
+      feed_type: 'complementary',
+      complementary_food: foods.join('、'),
+      amount_g: itemRows[0]?.amount_g ?? null,
+      food_items: itemRows,
+    };
+  }
+
+  private mapSupplementRow(r: any) {
+    return {
+      ...r,
+      feed_type: 'complementary',
+      complementary_food: '营养素',
       supplement_items: parseSupplementItems(r.supplement_items),
     };
   }
@@ -90,54 +186,222 @@ export class FeedingService {
   async findAll(babyId: string, limit = 20, offset = 0) {
     const safeLimit  = Math.max(1, Math.min(200, Math.floor(Number(limit)  || 20)));
     const safeOffset = Math.max(0, Math.floor(Number(offset) || 0));
-    const [rows] = await this.db.query<any[]>(
-      `SELECT * FROM feeding_record WHERE baby_id = ? ORDER BY record_time DESC LIMIT ${safeLimit} OFFSET ${safeOffset}`,
+
+    // 合并四张表，按 record_time 倒序
+    const [breast] = await this.db.query<any[]>(
+      `SELECT id, baby_id, recorded_by, record_time, breast_side, duration_min, note, created_at, updated_at,
+              'breast' AS _src
+       FROM feeding_breast_record WHERE baby_id = ?`,
       [babyId],
     );
-    return rows.map((r) => this.mapRow(r));
+    const [formula] = await this.db.query<any[]>(
+      `SELECT id, baby_id, recorded_by, record_time, formula_ml, note, created_at, updated_at,
+              'formula' AS _src
+       FROM feeding_formula_record WHERE baby_id = ?`,
+      [babyId],
+    );
+    const [food] = await this.db.query<any[]>(
+      `SELECT id, baby_id, recorded_by, record_time, note, created_at, updated_at,
+              'food' AS _src
+       FROM feeding_food_record WHERE baby_id = ?`,
+      [babyId],
+    );
+    const [supplement] = await this.db.query<any[]>(
+      `SELECT id, baby_id, recorded_by, record_time, supplement_items, note, created_at, updated_at,
+              'supplement' AS _src
+       FROM feeding_supplement_record WHERE baby_id = ?`,
+      [babyId],
+    );
+
+    // 收集需要 JOIN 的 id
+    const formulaIds = formula.map((r) => r.id);
+    const foodIds    = food.map((r) => r.id);
+
+    const mixMap:  Record<string, any[]> = {};
+    const itemMap: Record<string, any[]> = {};
+
+    if (formulaIds.length > 0) {
+      const placeholders = formulaIds.map(() => '?').join(',');
+      const [mixes] = await this.db.query<any[]>(
+        `SELECT record_id, milk_type, scoops FROM feeding_formula_mix WHERE record_id IN (${placeholders})`,
+        formulaIds,
+      );
+      for (const m of mixes) {
+        if (!mixMap[m.record_id]) mixMap[m.record_id] = [];
+        mixMap[m.record_id].push(m);
+      }
+    }
+
+    if (foodIds.length > 0) {
+      const placeholders = foodIds.map(() => '?').join(',');
+      const [items] = await this.db.query<any[]>(
+        `SELECT record_id, food_name, amount_g FROM feeding_food_item WHERE record_id IN (${placeholders})`,
+        foodIds,
+      );
+      for (const i of items) {
+        if (!itemMap[i.record_id]) itemMap[i.record_id] = [];
+        itemMap[i.record_id].push(i);
+      }
+    }
+
+    const all = [
+      ...breast.map((r) => this.mapBreastRow(r)),
+      ...formula.map((r) => this.mapFormulaRow(r, mixMap[r.id] ?? [])),
+      ...food.map((r) => this.mapFoodRow(r, itemMap[r.id] ?? [])),
+      ...supplement.map((r) => this.mapSupplementRow(r)),
+    ];
+
+    // 排序 + 分页
+    all.sort((a, b) => {
+      const ta = new Date(a.record_time).getTime();
+      const tb = new Date(b.record_time).getTime();
+      return tb - ta;
+    });
+
+    return all.slice(safeOffset, safeOffset + safeLimit);
   }
 
   async findOne(id: string) {
-    const [rows] = await this.db.execute<any[]>(
-      'SELECT * FROM feeding_record WHERE id = ?', [id],
+    // 依次查各表，找到即返回
+    const [b] = await this.db.execute<any[]>(
+      'SELECT * FROM feeding_breast_record WHERE id = ?', [id],
     );
-    if (!rows[0]) return null;
-    return this.mapRow(rows[0]);
+    if (b[0]) return this.mapBreastRow(b[0]);
+
+    const [f] = await this.db.execute<any[]>(
+      'SELECT * FROM feeding_formula_record WHERE id = ?', [id],
+    );
+    if (f[0]) {
+      const [mixes] = await this.db.execute<any[]>(
+        'SELECT milk_type, scoops FROM feeding_formula_mix WHERE record_id = ?', [id],
+      );
+      return this.mapFormulaRow(f[0], mixes);
+    }
+
+    const [fo] = await this.db.execute<any[]>(
+      'SELECT * FROM feeding_food_record WHERE id = ?', [id],
+    );
+    if (fo[0]) {
+      const [items] = await this.db.execute<any[]>(
+        'SELECT food_name, amount_g FROM feeding_food_item WHERE record_id = ? ORDER BY id', [id],
+      );
+      return this.mapFoodRow(fo[0], items);
+    }
+
+    const [s] = await this.db.execute<any[]>(
+      'SELECT * FROM feeding_supplement_record WHERE id = ?', [id],
+    );
+    if (s[0]) return this.mapSupplementRow(s[0]);
+
+    return null;
   }
 
+  // ============================================================
+  // UPDATE
+  // ============================================================
+
   async update(id: string, dto: UpdateFeedingDto) {
-    const [rows] = await this.db.execute<any[]>(
-      'SELECT id FROM feeding_record WHERE id = ?', [id],
-    );
-    if (rows.length === 0) throw new NotFoundException('找不到该喂养记录');
+    // 先确定记录在哪张表
+    const record = await this.findOne(id);
+    if (!record) throw new NotFoundException('找不到该喂养记录');
 
-    const setClauses: string[] = [];
-    const values: any[] = [];
+    const feedType = record.feed_type as string;
 
-    if (dto.record_time        !== undefined) { setClauses.push('record_time = ?');        values.push(toMysqlDatetime(dto.record_time)); }
-    if (dto.feed_type          !== undefined) { setClauses.push('feed_type = ?');          values.push(FEED_TYPE_TO_INT[dto.feed_type] ?? 1); }
-    if (dto.breast_side        !== undefined) { setClauses.push('breast_side = ?');        values.push(dto.breast_side != null ? (BREAST_SIDE_TO_INT[dto.breast_side] ?? null) : null); }
-    if (dto.duration_min       !== undefined) { setClauses.push('duration_min = ?');       values.push(dto.duration_min); }
-    if (dto.formula_ml         !== undefined) { setClauses.push('formula_ml = ?');         values.push(dto.formula_ml); }
-    if (dto.complementary_food !== undefined) { setClauses.push('complementary_food = ?'); values.push(dto.complementary_food); }
-    if (dto.amount_g           !== undefined) { setClauses.push('amount_g = ?');           values.push(dto.amount_g); }
-    if (dto.milk_types         !== undefined) { setClauses.push('milk_types = ?');         values.push(JSON.stringify(dto.milk_types)); }
-    if (dto.milk_scoops        !== undefined) { setClauses.push('milk_scoops = ?');        values.push(JSON.stringify(dto.milk_scoops)); }
-    if (dto.supplement_items   !== undefined) { setClauses.push('supplement_items = ?');   values.push(JSON.stringify(flattenSupplementItems(dto.supplement_items))); }
-    if (dto.note               !== undefined) { setClauses.push('note = ?');               values.push(dto.note); }
+    if (feedType === 'breast') {
+      const setClauses: string[] = [];
+      const values: any[] = [];
+      if (dto.record_time  !== undefined) { setClauses.push('record_time = ?');  values.push(toMysqlDatetime(dto.record_time)); }
+      if (dto.breast_side  !== undefined) { setClauses.push('breast_side = ?');  values.push(dto.breast_side); }
+      if (dto.duration_min !== undefined) { setClauses.push('duration_min = ?'); values.push(dto.duration_min); }
+      if (dto.note         !== undefined) { setClauses.push('note = ?');         values.push(dto.note); }
+      if (setClauses.length > 0) {
+        values.push(id);
+        await this.db.execute(`UPDATE feeding_breast_record SET ${setClauses.join(', ')} WHERE id = ?`, values);
+      }
+      return this.findOne(id);
+    }
 
-    if (setClauses.length === 0) return this.findOne(id);
+    if (feedType === 'formula') {
+      const setClauses: string[] = [];
+      const values: any[] = [];
+      if (dto.record_time !== undefined) { setClauses.push('record_time = ?'); values.push(toMysqlDatetime(dto.record_time)); }
+      if (dto.formula_ml  !== undefined) { setClauses.push('formula_ml = ?');  values.push(dto.formula_ml); }
+      if (dto.note        !== undefined) { setClauses.push('note = ?');        values.push(dto.note); }
+      if (setClauses.length > 0) {
+        values.push(id);
+        await this.db.execute(`UPDATE feeding_formula_record SET ${setClauses.join(', ')} WHERE id = ?`, values);
+      }
+      // 更新配比明细（先删后写）
+      if (dto.milk_types !== undefined || dto.milk_scoops !== undefined) {
+        await this.db.execute('DELETE FROM feeding_formula_mix WHERE record_id = ?', [id]);
+        const milkTypes  = dto.milk_types  ?? record.milk_types  ?? [];
+        const milkScoops = dto.milk_scoops ?? record.milk_scoops ?? {};
+        for (const milkType of milkTypes) {
+          const scoops = milkScoops[milkType];
+          if (scoops != null) {
+            await this.db.execute(
+              'INSERT INTO feeding_formula_mix (id, record_id, milk_type, scoops) VALUES (?, ?, ?, ?)',
+              [uuidv4(), id, milkType, scoops],
+            );
+          }
+        }
+      }
+      return this.findOne(id);
+    }
 
-    values.push(id);
-    await this.db.execute(
-      `UPDATE feeding_record SET ${setClauses.join(', ')} WHERE id = ?`,
-      values,
-    );
+    if (feedType === 'complementary') {
+      // 营养素
+      if (record.complementary_food === '营养素') {
+        const setClauses: string[] = [];
+        const values: any[] = [];
+        if (dto.record_time      !== undefined) { setClauses.push('record_time = ?');      values.push(toMysqlDatetime(dto.record_time)); }
+        if (dto.supplement_items !== undefined) { setClauses.push('supplement_items = ?'); values.push(JSON.stringify(flattenSupplementItems(dto.supplement_items))); }
+        if (dto.note             !== undefined) { setClauses.push('note = ?');             values.push(dto.note); }
+        if (setClauses.length > 0) {
+          values.push(id);
+          await this.db.execute(`UPDATE feeding_supplement_record SET ${setClauses.join(', ')} WHERE id = ?`, values);
+        }
+        return this.findOne(id);
+      }
+
+      // 辅食
+      const setClauses: string[] = [];
+      const values: any[] = [];
+      if (dto.record_time !== undefined) { setClauses.push('record_time = ?'); values.push(toMysqlDatetime(dto.record_time)); }
+      if (dto.note        !== undefined) { setClauses.push('note = ?');        values.push(dto.note); }
+      if (setClauses.length > 0) {
+        values.push(id);
+        await this.db.execute(`UPDATE feeding_food_record SET ${setClauses.join(', ')} WHERE id = ?`, values);
+      }
+      // 更新食物明细（先删后写）
+      if (dto.complementary_food !== undefined || dto.amount_g !== undefined) {
+        await this.db.execute('DELETE FROM feeding_food_item WHERE record_id = ?', [id]);
+        const foodStr  = dto.complementary_food ?? record.complementary_food ?? '';
+        const foodNames = foodStr.split(/[,，、]/).map((s: string) => s.trim()).filter(Boolean);
+        const amountG  = dto.amount_g ?? null;
+        for (const foodName of foodNames) {
+          await this.db.execute(
+            'INSERT INTO feeding_food_item (id, record_id, food_name, amount_g) VALUES (?, ?, ?, ?)',
+            [uuidv4(), id, foodName, amountG],
+          );
+        }
+      }
+      return this.findOne(id);
+    }
+
     return this.findOne(id);
   }
 
+  // ============================================================
+  // DELETE
+  // ============================================================
+
   async remove(id: string) {
-    await this.db.execute('DELETE FROM feeding_record WHERE id = ?', [id]);
+    // 级联删除或各表尝试删除（formula_mix / food_item 由 ON DELETE CASCADE 自动删除）
+    await this.db.execute('DELETE FROM feeding_breast_record   WHERE id = ?', [id]);
+    await this.db.execute('DELETE FROM feeding_formula_record  WHERE id = ?', [id]);
+    await this.db.execute('DELETE FROM feeding_food_record     WHERE id = ?', [id]);
+    await this.db.execute('DELETE FROM feeding_supplement_record WHERE id = ?', [id]);
     return { id };
   }
 }

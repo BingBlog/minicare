@@ -11,7 +11,8 @@ import { DATABASE_POOL } from '../common/database/database.module';
 export interface FamilyContext {
   familyId: string;
   userId: string;
-  role: number;   // DDL: 1=owner, 2=member
+  /** DDL: family_member.role VARCHAR(10)  owner=创建者 member=普通成员 */
+  role: string;
   memberId: string;
 }
 
@@ -19,7 +20,8 @@ export interface FamilyContext {
  * FamilyMemberGuard — 验证当前用户是指定 family 的成员
  *
  * 从路由参数 :familyId 或请求 body 的 family_id 中读取 family_id，
- * 查询 family_member 表确认成员资格，并将 FamilyContext 注入 request.familyContext。
+ * 查询 family_member 表确认成员资格（status='active'），
+ * 并将 FamilyContext 注入 request.familyContext。
  *
  * 必须在 JwtGuard 之后执行（依赖 request.user.sub）。
  */
@@ -38,7 +40,7 @@ export class FamilyMemberGuard implements CanActivate {
     }
 
     const [rows] = await this.db.execute<any[]>(
-      'SELECT id, role FROM family_member WHERE family_id = ? AND user_id = ? AND status = 2',
+      "SELECT id, role FROM family_member WHERE family_id = ? AND user_id = ? AND status = 'active'",
       [familyId, userId],
     );
 
@@ -49,7 +51,7 @@ export class FamilyMemberGuard implements CanActivate {
     request.familyContext = {
       familyId,
       userId,
-      role: rows[0].role,
+      role: rows[0].role,   // VARCHAR: 'owner' | 'member'
       memberId: rows[0].id,
     } satisfies FamilyContext;
 

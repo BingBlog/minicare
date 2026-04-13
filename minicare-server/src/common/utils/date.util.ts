@@ -13,15 +13,35 @@
 /**
  * 将日期字符串/Date 对象格式化为 MySQL DATETIME 字符串（CST 本地时间）
  *
- * 输入：'2026-04-01T07:18:00'（视为本地时间）或 Date 对象
+ * 输入：'2026-04-01T07:18:00'（不带时区，视为北京时间）或 Date 对象
  * 输出：'2026-04-01 07:18:00'
  *
- * 注意：若输入带 Z 后缀（UTC），Node.js 进程时区会影响结果。
- *       前端统一不发送带 Z 的字符串，后端不会收到 UTC ISO 字符串。
+ * ⚠️ 重要：对于不带时区后缀的字符串（如 '2026-04-14T00:24:42'），
+ *    ES 规范在不同 V8 版本中行为不一致（有时按 UTC 解析，有时按本地时区），
+ *    因此使用 new Date() 会引入 8 小时偏差（UTC+8 环境下）。
+ *    解决方案：直接用正则提取字符串中的时间分量，完全绕过 Date 构造解析。
+ *
+ * 若输入为 Date 对象，则使用本地时间分量（与 DB timezone '+08:00' 保持一致）。
  */
 export function toMysqlDatetime(isoString: string | Date): string {
+  if (typeof isoString === 'string') {
+    // 直接从字符串提取分量，规避 new Date() 的时区解析歧义
+    // 支持格式：'2026-04-01T07:18:00'、'2026-04-01T07:18:00.000'、'2026-04-01 07:18:00'
+    const m = isoString.match(
+      /^(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2}):(\d{2})/,
+    );
+    if (m) {
+      return `${m[1]}-${m[2]}-${m[3]} ${m[4]}:${m[5]}:${m[6]}`;
+    }
+    // 兜底：仅有日期 'YYYY-MM-DD'
+    const d = isoString.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (d) {
+      return `${d[1]}-${d[2]}-${d[3]} 00:00:00`;
+    }
+  }
+
+  // Date 对象：使用本地时间分量，与 timezone: '+08:00' 的连接保持一致
   const date = typeof isoString === 'string' ? new Date(isoString) : isoString;
-  // 使用本地时间分量，与 timezone: '+08:00' 的连接保持一致
   const y  = date.getFullYear();
   const mo = String(date.getMonth() + 1).padStart(2, '0');
   const d  = String(date.getDate()).padStart(2, '0');
@@ -36,8 +56,15 @@ export function toMysqlDatetime(isoString: string | Date): string {
  *
  * 输入：'2026-04-01' 或 Date 对象
  * 输出：'2026-04-01'
+ *
+ * ⚠️ 同 toMysqlDatetime：对纯日期字符串 'YYYY-MM-DD' 直接提取分量，
+ *    避免 new Date('2026-04-01') 按 UTC 解析在 CST+8 下偏移到前一天。
  */
 export function toMysqlDate(isoString: string | Date): string {
+  if (typeof isoString === 'string') {
+    const m = isoString.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (m) return `${m[1]}-${m[2]}-${m[3]}`;
+  }
   const date = typeof isoString === 'string' ? new Date(isoString) : isoString;
   const y  = date.getFullYear();
   const mo = String(date.getMonth() + 1).padStart(2, '0');

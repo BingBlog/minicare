@@ -1,12 +1,9 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsDateString, IsEnum, IsInt, IsOptional, IsString, IsUUID, Max, Min } from 'class-validator';
-import {
-  DIAPER_TYPE_TO_INT,
-  INT_TO_DIAPER_TYPE,
-} from '../../../app-config/app-config.data';
+import { IsArray, IsDateString, IsEnum, IsInt, IsOptional, IsString, IsUUID, Max, Min } from 'class-validator';
 
 /**
- * DDL: diaper_record.diaper_type TINYINT  1=wet(嘘嘘) 2=dirty(臭臭) 3=mixed(臭臭+嘘嘘)
+ * DDL: diaper_record.diaper_type VARCHAR(10)
+ * wet=嘘嘘  dirty=臭臭  mixed=臭臭+嘘嘘
  */
 export enum DiaperType {
   WET   = 'wet',
@@ -16,10 +13,10 @@ export enum DiaperType {
 
 /**
  * 大便性状枚举
- * DDL: diaper_record.poop_type VARCHAR(30)
+ * DDL: diaper_record.poop_type VARCHAR(20)
  */
 export enum PoopType {
-  NORMAL = 'normal',   // 正常（含原 normal_soft / normal_form）
+  NORMAL = 'normal',   // 正常软便
   LOOSE  = 'loose',    // 稀便
   WATERY = 'watery',   // 水样便
   HARD   = 'hard',     // 干硬粒
@@ -39,13 +36,10 @@ export enum ButtCondition {
   OTHER        = 'other',         // 其他异常
 }
 
-// 整数映射常量（从权威数据源导入）
-export { DIAPER_TYPE_TO_INT, INT_TO_DIAPER_TYPE };
-
 export class CreateDiaperDto {
   @ApiProperty() @IsUUID() baby_id: string;
 
-  @ApiProperty({ enum: DiaperType, description: 'DDL: 1=wet 2=dirty 3=mixed' })
+  @ApiProperty({ enum: DiaperType, description: 'wet=嘘嘘 dirty=臭臭 mixed=臭臭+嘘嘘' })
   @IsEnum(DiaperType)
   diaper_type: DiaperType;
 
@@ -53,10 +47,15 @@ export class CreateDiaperDto {
   @IsDateString()
   record_time: string;
 
-  @ApiPropertyOptional({ description: '大便颜色（如 yellow/green/brown_yellow）' })
+  /**
+   * 大便颜色多选（dirty/mixed 时使用）
+   * DDL: stool_colors JSON 数组，如 ["yellow","brown_yellow"]
+   */
+  @ApiPropertyOptional({ description: '大便颜色多选（如 ["yellow","brown_yellow"]），dirty/mixed 时使用', type: [String] })
   @IsOptional()
-  @IsString()
-  color?: string;
+  @IsArray()
+  @IsString({ each: true })
+  stool_colors?: string[];
 
   @ApiPropertyOptional({ enum: PoopType, description: '大便性状（dirty/mixed 时使用）' })
   @IsOptional()
@@ -82,7 +81,7 @@ export class CreateDiaperDto {
 export class UpdateDiaperDto {
   @ApiPropertyOptional({ enum: DiaperType }) @IsOptional() @IsEnum(DiaperType) diaper_type?: DiaperType;
   @ApiPropertyOptional() @IsOptional() @IsDateString() record_time?: string;
-  @ApiPropertyOptional() @IsOptional() @IsString() color?: string;
+  @ApiPropertyOptional({ type: [String] }) @IsOptional() @IsArray() @IsString({ each: true }) stool_colors?: string[];
   @ApiPropertyOptional({ enum: PoopType }) @IsOptional() @IsEnum(PoopType) poop_type?: PoopType;
   @ApiPropertyOptional({ enum: ButtCondition }) @IsOptional() @IsEnum(ButtCondition) butt_condition?: ButtCondition;
   @ApiPropertyOptional() @IsOptional() @IsInt() @Min(0) @Max(20) diaper_count?: number;

@@ -46,18 +46,18 @@ export interface FamilyMember {
   id: string
   user_id: string | null
   /**
-   * DDL: family_member.role TINYINT
-   * 1 = owner（创建者，可邀请/移除成员、修改宝宝档案）
-   * 2 = member（普通成员，可查看和新增所有记录）
+   * DDL: family_member.role VARCHAR(20)（Migration 008: TINYINT → VARCHAR）
+   * 'owner'  — 创建者，可邀请/移除成员、修改宝宝档案
+   * 'member' — 普通成员，可查看和新增所有记录
    */
-  role: 1 | 2
+  role: 'owner' | 'member'
   /**
-   * DDL: family_member.status TINYINT
-   * 1 = pending（待接受：已发出手机号邀请，对方尚未登录激活）
-   * 2 = active（已激活：正式成员）
-   * 3 = left（已离开）
+   * DDL: family_member.status VARCHAR(20)（Migration 008: TINYINT → VARCHAR）
+   * 'pending' — 待接受：已发出手机号邀请，对方尚未登录激活
+   * 'active'  — 已激活：正式成员
+   * 'left'    — 已离开
    */
-  status?: 1 | 2 | 3
+  status?: 'pending' | 'active' | 'left'
   /** user.nickname aliased；pending 状态时可能为 null */
   name: string | null
   /** 手机号（脱敏），如 138****5678；active 成员来自 user_account，pending 来自 invite_phone */
@@ -125,8 +125,12 @@ export interface RecordBase {
 // ── Feeding ──────────────────────────────────────────────────────
 
 /**
- * DDL: feed_type TINYINT  1=breast 2=formula 3=complementary
- * 注：前端"营养素"Tab 实际使用 feed_type='complementary'，complementary_food='营养素'
+ * 喂养记录类型（Migration 008: 拆分为 4 张独立子表）
+ *   feeding_breast_record     — 母乳哺乳
+ *   feeding_formula_record    — 配方奶喂养
+ *   feeding_food_record       — 辅食
+ *   feeding_supplement_record — 营养素
+ * feed_type 字段由后端根据来源表展入
  */
 export type FeedType = 'breast' | 'formula' | 'complementary'
 export type BreastSide = 'left' | 'right' | 'both'
@@ -141,7 +145,7 @@ export interface SupplementItem {
 
 export interface CreateFeedingDto {
   baby_id: string
-  /** DDL: 1=breast 2=formula 3=complementary */
+  /** 喂养类型：breast=母乳 formula=配方奶 complementary=辅食/营养素 */
   feed_type: FeedType
   record_time: string       // ISO 8601
   /** 母乳哺乳侧，feed_type='breast' 时使用 */
@@ -175,7 +179,7 @@ export interface CreateFeedingDto {
 export type UpdateFeedingDto = Partial<Omit<CreateFeedingDto, 'baby_id'>>
 
 export interface FeedingRecord extends RecordBase {
-  /** DDL: 1=breast 2=formula 3=complementary（后端返回字符串） */
+  /** 后端根据来源表展入的喂养类型字符串 */
   feed_type: FeedType
   record_time: string
   breast_side?: BreastSide | null
@@ -256,8 +260,8 @@ export interface SleepRecord extends RecordBase {
   start_time: string
   end_time?: string | null  // null 表示进行中
   /**
-   * DDL: status TINYINT  1=ongoing 2=ended
-   * 后端返回字符串: 'ongoing' | 'ended'
+   * DDL: sleep_record.status VARCHAR(10)（Migration 008: TINYINT → VARCHAR）
+   * 'ongoing' = 进行中 | 'ended' = 已结束
    */
   status: 'ongoing' | 'ended'
   duration_min?: number | null
@@ -267,7 +271,7 @@ export interface SleepRecord extends RecordBase {
 
 // ── Diaper ───────────────────────────────────────────────────────
 
-/** DDL: diaper_type TINYINT  1=wet 2=dirty 3=mixed（已移除 4=dry） */
+/** DDL: diaper_record.diaper_type VARCHAR(10)（Migration 008: TINYINT → VARCHAR） */
 export type DiaperType = 'wet' | 'dirty' | 'mixed'
 
 /**
@@ -296,7 +300,7 @@ export type ButtCondition =
 
 export interface CreateDiaperDto {
   baby_id: string
-  /** DDL: 1=wet(嘘嘘) 2=dirty(臭臭) 3=mixed(臭臭+嘘嘘) */
+  /** DDL: VARCHAR(10)—‘wet’=嘘嘘 | ‘dirty’=臭臭 | ‘mixed’=臭臭+嘘嘘 */
   diaper_type: DiaperType
   record_time: string       // ISO 8601
   /** 大便颜色（如 yellow/green/brown），dirty/mixed 时使用 */
@@ -313,6 +317,7 @@ export interface CreateDiaperDto {
 export type UpdateDiaperDto = Partial<Omit<CreateDiaperDto, 'baby_id'>>
 
 export interface DiaperRecord extends RecordBase {
+  /** DDL: VARCHAR(10) */
   diaper_type: DiaperType
   record_time: string
   color?: string | null
@@ -353,9 +358,8 @@ export interface ActivityRecord extends RecordBase {
 // ── Health ───────────────────────────────────────────────────────
 
 /**
- * DDL: health_record.mood TINYINT
- * 1=happy 2=neutral 3=fussy 4=crying
- * 后端返回字符串
+ * 情绪状态（DDL: symptom_record.mood VARCHAR(20)）
+ * Migration 008: health_record.mood 字段已删除，情绪统一由 symptom_record 记录
  */
 export type MoodType = 'happy' | 'neutral' | 'fussy' | 'crying'
 
@@ -374,8 +378,8 @@ export interface CreateHealthDto {
   /** 体温（℃），正常范围 35~42，如 37.5 */
   temperature?: number
   /**
-   * 情绪状态（DDL: 1=happy 2=neutral 3=fussy 4=crying）
-   * 后端传字符串，自动映射到 TINYINT
+   * @deprecated Migration 008 已删除 health_record.mood，保留局部兼容，后端已忽略此字段
+   * 情绪统一由 symptom_record.mood 记录
    */
   mood?: MoodType
   /** 过敏症状列表，如 ["荨麻疹", "血便"] */
@@ -394,7 +398,7 @@ export type UpdateHealthDto = Partial<Omit<CreateHealthDto, 'baby_id'>>
 export interface HealthRecord extends RecordBase {
   record_time: string
   temperature?: number | null
-  /** DDL: 1=happy 2=neutral 3=fussy 4=crying（后端返回字符串） */
+  /** @deprecated Migration 008 已删除 health_record.mood，后端不再返回此字段 */
   mood?: MoodType | null
   allergy_symptoms?: string[] | null
   allergy_severity?: AllergySeverity | null
@@ -432,7 +436,7 @@ export interface GrowthRecord extends RecordBase {
 // ── Medical ──────────────────────────────────────────────────────
 
 /**
- * 就诊类型（前端展示枚举，存储到 medical_record.visit_type VARCHAR(20)）
+ * 就诊类型（DDL: medical_record.visit_type VARCHAR(20)）
  */
 export type VisitType =
   | 'checkup'       // 常规体检
@@ -541,14 +545,17 @@ export interface TodayRecord {
   /**
    * 各记录类型的关键摘要字段（由后端 JSON_OBJECT 生成）
    *
-   * feeding:  feed_type / formula_ml / milk_types / milk_scoops / breast_side / duration_min / complementary_food / supplement_items
-   * sleep:    duration_min / sleep_period / quality / status
-   * diaper:   diaper_type / poop_type / diaper_count
-   * activity: activity_type / duration_min / intensity
-   * health:   temperature / mood
-   * symptom:  spirit / mood
-   * growth:   height_mm / weight_g / head_mm
-   * medical:  hospital / diagnosis
+   * feeding(breast):     feed_type / breast_side / duration_min
+   * feeding(formula):    feed_type / formula_ml
+   * feeding(food):       feed_type
+   * feeding(supplement): feed_type / supplement_items
+   * sleep:               duration_min / sleep_period / quality / status
+   * diaper:              diaper_type / poop_type / diaper_count
+   * activity:            activity_type / duration_min / intensity
+   * health:              temperature（mood 已删除）
+   * symptom:             spirit / mood
+   * growth:              height_mm / weight_g / head_mm
+   * medical:             hospital / diagnosis
    */
   detail?: Record<string, unknown> | null
 }

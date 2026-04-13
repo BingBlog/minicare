@@ -2,11 +2,10 @@ import { request } from '@/api/http'
 
 // ── 类型定义 ──────────────────────────────────────────────────────
 
-/** 通用枚举项（value=存储值 label=中文标签 int=TINYINT映射） */
+/** 通用枚举项（value=存储值 label=中文标签） */
 export interface EnumOption {
   value: string
   label: string
-  int?: number
 }
 
 /** 奶粉类型（含 short 短标签，用于列表展示） */

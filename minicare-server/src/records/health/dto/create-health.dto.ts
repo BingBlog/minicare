@@ -1,24 +1,16 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsArray, IsDateString, IsEnum, IsNumber, IsOptional, IsString, IsUUID, Max, Min, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import {
-  MOOD_TO_INT,
-  INT_TO_MOOD,
-} from '../../../app-config/app-config.data';
 
 /**
- * DDL: health_record.mood TINYINT  1=happy 2=neutral 3=fussy 4=crying
- * DDL 字段：temperature DECIMAL(4,1)，record_time DATETIME
+ * DDL: health_record
+ *   temperature DECIMAL(4,1)
+ *   allergy_symptoms JSON
+ *   allergy_severity VARCHAR(10)
+ *   medications JSON
+ *   skin_care JSON
+ * 注：mood 字段已迁移至 symptom_record（Migration 008）
  */
-export enum Mood {
-  HAPPY   = 'happy',
-  NEUTRAL = 'neutral',
-  FUSSY   = 'fussy',
-  CRYING  = 'crying',
-}
-
-// 整数映射常量（从权威数据源导入）
-export { MOOD_TO_INT, INT_TO_MOOD };
 
 /** 过敏严重程度 */
 export enum AllergySeverity {
@@ -46,11 +38,6 @@ export class CreateHealthDto {
   @Min(35)
   @Max(42)
   temperature?: number;
-
-  @ApiPropertyOptional({ enum: Mood, description: 'DDL: 1=happy 2=neutral 3=fussy 4=crying' })
-  @IsOptional()
-  @IsEnum(Mood)
-  mood?: Mood;
 
   @ApiPropertyOptional({ description: '过敏症状列表，如 ["荨麻疹","血便"]', type: [String] })
   @IsOptional()
@@ -91,11 +78,6 @@ export class UpdateHealthDto {
   @Min(35)
   @Max(42)
   temperature?: number;
-
-  @ApiPropertyOptional({ enum: Mood })
-  @IsOptional()
-  @IsEnum(Mood)
-  mood?: Mood;
 
   @ApiPropertyOptional({ type: [String] })
   @IsOptional()
