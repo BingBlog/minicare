@@ -35,6 +35,12 @@ export function isoToLocalDate(iso: string): string {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
+/** 从 ISO 时间字符串提取本地 HH:mm（用于补录/编辑回填时间） */
+export function isoToLocalTime(iso: string): string {
+  const d = new Date(iso);
+  return `${d.getHours().toString().padStart(2, "0")}:${d.getMinutes().toString().padStart(2, "0")}`;
+}
+
 // ─── 通用 Toast Hook ─────────────────────────────────────────────────
 export function useToastMsg() {
   const [toast, setToast] = React.useState("");

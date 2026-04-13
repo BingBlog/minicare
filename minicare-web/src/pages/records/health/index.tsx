@@ -46,6 +46,7 @@ import {
   nowDate,
   timeToISO,
   isoToLocalDate,
+  isoToLocalTime,
   useToastMsg,
 } from "../shared";
 
@@ -60,12 +61,6 @@ const SEVERITY_LABEL: Record<string, string> = {
   moderate: "中度",
   severe: "重度",
 };
-
-/** 从 ISO 时间提取本地 HH:mm */
-function isoToLocalTime(iso: string): string {
-  const d = new Date(iso);
-  return `${d.getHours().toString().padStart(2, "0")}:${d.getMinutes().toString().padStart(2, "0")}`;
-}
 
 /** 折叠区块头部 — 可点击展开/收起 */
 function SectionHeader({

@@ -40,14 +40,9 @@ import {
   nowDate,
   timeToISO,
   isoToLocalDate,
+  isoToLocalTime,
   useToastMsg,
 } from "../shared";
-
-/** 从 ISO 时间提取本地 HH:mm */
-function isoToLocalTime(iso: string): string {
-  const d = new Date(iso);
-  return `${d.getHours().toString().padStart(2, "0")}:${d.getMinutes().toString().padStart(2, "0")}`;
-}
 
 // ── 上次奶粉配方 localStorage 持久化 ─────────────────────────────────
 const LAST_FORMULA_KEY_PREFIX = "minicare_last_formula_";

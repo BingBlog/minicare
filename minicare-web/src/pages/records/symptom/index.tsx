@@ -25,17 +25,11 @@ import type { SymptomRecord, MoodLevel, SpiritLevel } from "@/api/types";
 import DatePicker from "@/components/DatePicker";
 import TimePicker from "@/components/TimePicker";
 
-import { NavBar, SectionLabel, FormSection, SubmitBar, useToastMsg, ToastMessage, nowTime, nowDate, timeToISO, isoToLocalDate } from "../shared";
+import { NavBar, SectionLabel, FormSection, SubmitBar, useToastMsg, ToastMessage, nowTime, nowDate, timeToISO, isoToLocalDate, isoToLocalTime } from "../shared";
 import MoodSection from "./MoodSection";
 import SpiritSection from "./SpiritSection";
 
 const PRIMARY = "#F87098";
-
-/** 从 ISO 时间提取本地 HH:mm */
-function isoToLocalTime(iso: string): string {
-  const d = new Date(iso);
-  return `${d.getHours().toString().padStart(2, "0")}:${d.getMinutes().toString().padStart(2, "0")}`;
-}
 
 // ── Spirit 映射 ──────────────────────────────────────────────────
 // 前端三选项: good / fussy / lethargic

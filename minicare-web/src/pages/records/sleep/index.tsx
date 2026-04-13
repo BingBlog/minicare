@@ -39,16 +39,11 @@ import {
   ToastMessage,
   nowTime,
   nowDate,
+  isoToLocalTime,
   useToastMsg,
 } from "../shared";
 
 type SleepMode = "timer" | "manual";
-
-/** 从 ISO 时间提取本地 HH:mm */
-function isoToLocalTime(iso: string): string {
-  const d = new Date(iso);
-  return `${d.getHours().toString().padStart(2, "0")}:${d.getMinutes().toString().padStart(2, "0")}`;
-}
 
 /** Date 对象 → 本地时间字符串（不带 Z，如 '2026-04-01T07:18:00'），全链路 CST */
 function dateToLocalISO(d: Date): string {

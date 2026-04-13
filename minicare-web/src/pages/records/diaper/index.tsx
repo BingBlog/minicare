@@ -32,16 +32,11 @@ import {
   nowDate,
   timeToISO,
   isoToLocalDate,
+  isoToLocalTime,
   useToastMsg,
 } from "../shared";
 
 type DiaperChip = DiaperType;
-
-/** 从 ISO 时间提取本地 HH:mm */
-function isoToLocalTime(iso: string): string {
-  const d = new Date(iso);
-  return `${d.getHours().toString().padStart(2, "0")}:${d.getMinutes().toString().padStart(2, "0")}`;
-}
 
 export default function DiaperFormPage() {
   const navigate = useNavigate();
