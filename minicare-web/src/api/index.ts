@@ -27,6 +27,10 @@
 // ── HTTP 工具 ─────────────────────────────────────────────────────
 export { setToken, removeToken } from './http'
 
+// ── 应用配置 ─────────────────────────────────────────────────────
+export { fetchAppConfig } from './appConfig'
+export type { AppConfig, AppEnums, AppLimits, EnumOption, MilkTypeOption, SuppItem } from './appConfig'
+
 // ── 业务 API ─────────────────────────────────────────────────────
 export { authApi } from './auth'
 export { familyApi } from './family'

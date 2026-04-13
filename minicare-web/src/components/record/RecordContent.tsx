@@ -13,16 +13,8 @@
  * getRecordListCompactParts / getRecordSummary：
  *   列表主行文案与右侧数值摘要
  */
-import {
-  SLEEP_PERIOD_LABELS,
-  SLEEP_QUALITY_LABELS,
-  POOP_TYPE_LABELS,
-  ACTIVITY_TYPE_LABELS,
-  MOOD_LABELS,
-  SPIRIT_LABELS,
-  VISIT_TYPE_LABELS,
-  RECORD_TYPE_CFG,
-} from "@/lib/constants";
+import { RECORD_TYPE_CFG } from "@/lib/constants";
+import { useAppConfig } from "@/lib/useAppConfig";
 import { milkTypeOptions } from "@/pages/records/feeding/types";
 import { formatScoop } from "@/pages/records/feeding/scoopUtils";
 import {
@@ -384,17 +376,13 @@ function FeedingContent({ d }: { d: Record<string, unknown> }) {
   );
 }
 
-function SleepContent({ d }: { d: Record<string, unknown> }) {
+function SleepContent({ d, getLabel }: { d: Record<string, unknown>; getLabel: (k: string, v: string) => string }) {
   const ongoing = d.status === "ongoing";
   const durMin = d.duration_min as number | undefined;
   const period = d.sleep_period as string | undefined;
   const quality = d.quality as string | undefined;
-  const periodLabel = period
-    ? (SLEEP_PERIOD_LABELS[period] ?? period)
-    : undefined;
-  const qualityLabel = quality
-    ? (SLEEP_QUALITY_LABELS[quality] ?? quality)
-    : undefined;
+  const periodLabel = period ? getLabel('sleepPeriod', period) : undefined;
+  const qualityLabel = quality ? getLabel('sleepQuality', quality) : undefined;
 
   return (
     <>
@@ -433,7 +421,7 @@ const DIAPER_CARD_LABELS: Record<string, string> = {
   dry: "干净",
 };
 
-function DiaperContent({ d }: { d: Record<string, unknown> }) {
+function DiaperContent({ d, getLabel }: { d: Record<string, unknown>; getLabel: (k: string, v: string) => string }) {
   const diaperType = d.diaper_type as string | undefined;
   const poopType = d.poop_type as string | undefined;
   const diaperCount = d.diaper_count as number | undefined;
@@ -444,7 +432,7 @@ function DiaperContent({ d }: { d: Record<string, unknown> }) {
   const typeLabel = diaperType
     ? (DIAPER_CARD_LABELS[diaperType] ?? diaperType)
     : null;
-  const poopLabel = poopType ? (POOP_TYPE_LABELS[poopType] ?? poopType) : null;
+  const poopLabel = poopType ? getLabel('poopType', poopType) : null;
 
   return (
     <>
@@ -487,12 +475,10 @@ function DiaperContent({ d }: { d: Record<string, unknown> }) {
   );
 }
 
-function ActivityContent({ d }: { d: Record<string, unknown> }) {
+function ActivityContent({ d, getLabel }: { d: Record<string, unknown>; getLabel: (k: string, v: string) => string }) {
   const actType = d.activity_type as string | undefined;
   const durMin = d.duration_min as number | undefined;
-  const actLabel = actType
-    ? (ACTIVITY_TYPE_LABELS[actType] ?? actType)
-    : "活动";
+  const actLabel = actType ? getLabel('activityType', actType) : "活动";
   const ActIcon = actType
     ? (ACTIVITY_ICON_MAP[actType] ?? IconActivity)
     : IconActivity;
@@ -512,11 +498,11 @@ function ActivityContent({ d }: { d: Record<string, unknown> }) {
   );
 }
 
-function SymptomContent({ d }: { d: Record<string, unknown> }) {
+function SymptomContent({ d, getLabel }: { d: Record<string, unknown>; getLabel: (k: string, v: string) => string }) {
   const mood = d.mood as string | undefined;
   const spirit = d.spirit as string | undefined;
-  const moodLabel = mood ? (MOOD_LABELS[mood] ?? mood) : undefined;
-  const spiritLabel = spirit ? (SPIRIT_LABELS[spirit] ?? spirit) : undefined;
+  const moodLabel = mood ? getLabel('mood', mood) : undefined;
+  const spiritLabel = spirit ? getLabel('spiritLevel', spirit) : undefined;
   const MoodIcon = mood ? (MOOD_ICON_MAP[mood] ?? IconFaceNeutral) : undefined;
 
   return (
@@ -540,10 +526,10 @@ function SymptomContent({ d }: { d: Record<string, unknown> }) {
   );
 }
 
-function HealthContent({ d }: { d: Record<string, unknown> }) {
+function HealthContent({ d, getLabel }: { d: Record<string, unknown>; getLabel: (k: string, v: string) => string }) {
   const temp = d.temperature as number | undefined;
   const mood = d.mood as string | undefined;
-  const moodLabel = mood ? (MOOD_LABELS[mood] ?? mood) : undefined;
+  const moodLabel = mood ? getLabel('mood', mood) : undefined;
   const MoodIcon = mood ? (MOOD_ICON_MAP[mood] ?? IconFaceNeutral) : undefined;
   const allergySx = d.allergy_symptoms as string[] | undefined;
   const meds = d.medications as Array<{ name: string }> | undefined;
@@ -603,13 +589,11 @@ function GrowthContent({ d }: { d: Record<string, unknown> }) {
   );
 }
 
-function MedicalContent({ d }: { d: Record<string, unknown> }) {
+function MedicalContent({ d, getLabel }: { d: Record<string, unknown>; getLabel: (k: string, v: string) => string }) {
   const visitType = d.visit_type as string | undefined;
   const hospital = d.hospital as string | undefined;
   const diagnosis = d.diagnosis as string | undefined;
-  const typeLabel = visitType
-    ? (VISIT_TYPE_LABELS[visitType] ?? visitType)
-    : "就诊";
+  const typeLabel = visitType ? getLabel('visitType', visitType) : "就诊";
 
   return (
     <>
@@ -642,6 +626,7 @@ function MedicalContent({ d }: { d: Record<string, unknown> }) {
 export function getRecordListCompactParts(
   type: string,
   detail: Record<string, unknown> | null | undefined,
+  getLabel: (enumKey: string, value: string) => string = (_k, v) => v,
 ): {
   primary: ReactNode | null;
   label: string | null;
@@ -740,9 +725,7 @@ export function getRecordListCompactParts(
       const period = d.sleep_period as string | undefined;
       const quality = d.quality as string | undefined;
       // 时段升格为 primary，无时段时 fallback 「睡眠」
-      const periodLabel = period
-        ? (SLEEP_PERIOD_LABELS[period] ?? period)
-        : null;
+      const periodLabel = period ? getLabel('sleepPeriod', period) : null;
       const primaryTitle = periodLabel
         ? ongoing
           ? `${periodLabel}中`
@@ -795,9 +778,7 @@ export function getRecordListCompactParts(
       const typeLabel = diaperType
         ? (DIAPER_CARD_LABELS[diaperType] ?? diaperType)
         : null;
-      const poopLabel = poopType
-        ? (POOP_TYPE_LABELS[poopType] ?? poopType)
-        : null;
+      const poopLabel = poopType ? getLabel('poopType', poopType) : null;
 
       const tagNodes: ReactNode[] = [];
       if (isDry) tagNodes.push(<Pill key="dry">{typeLabel}</Pill>);
@@ -825,9 +806,7 @@ export function getRecordListCompactParts(
 
     case "activity": {
       const actType = d.activity_type as string | undefined;
-      const actLabel = actType
-        ? (ACTIVITY_TYPE_LABELS[actType] ?? actType)
-        : "活动";
+      const actLabel = actType ? getLabel('activityType', actType) : "活动";
       return {
         primary: null,
         label: actLabel,
@@ -839,8 +818,8 @@ export function getRecordListCompactParts(
     case "symptom": {
       const mood = d.mood as string | undefined;
       const spirit = d.spirit as string | undefined;
-      const moodLabel = mood ? (MOOD_LABELS[mood] ?? mood) : null;
-      const spiritLabel = spirit ? (SPIRIT_LABELS[spirit] ?? spirit) : null;
+      const moodLabel = mood ? getLabel('mood', mood) : null;
+      const spiritLabel = spirit ? getLabel('spiritLevel', spirit) : null;
       const tagNodes: ReactNode[] = [];
       if (moodLabel) {
         tagNodes.push(<Pill key="mood">{moodLabel}</Pill>);
@@ -937,9 +916,7 @@ export function getRecordListCompactParts(
       const visitType = d.visit_type as string | undefined;
       const hospital = d.hospital as string | undefined;
       const diagnosis = d.diagnosis as string | undefined;
-      const typeLabel = visitType
-        ? (VISIT_TYPE_LABELS[visitType] ?? visitType)
-        : "就诊";
+      const typeLabel = visitType ? getLabel('visitType', visitType) : "就诊";
 
       const tagNodes: ReactNode[] = [<Pill key="type">{typeLabel}</Pill>];
       if (hospital) tagNodes.push(<Pill key="hospital">{hospital}</Pill>);
@@ -1089,10 +1066,11 @@ export default function RecordContent({
   detail?: Record<string, unknown> | null;
   compact?: boolean;
 }) {
+  const { getLabel } = useAppConfig();
   const d: Record<string, unknown> = detail ?? {};
 
   if (compact) {
-    const { primary, tags, meta } = getRecordListCompactParts(type, d);
+    const { primary, tags, meta } = getRecordListCompactParts(type, d, getLabel);
     return (
       <div className="flex min-w-0 flex-wrap items-center gap-1.5">
         {primary}
@@ -1106,19 +1084,19 @@ export default function RecordContent({
     case "feeding":
       return <FeedingContent d={d} />;
     case "sleep":
-      return <SleepContent d={d} />;
+      return <SleepContent d={d} getLabel={getLabel} />;
     case "diaper":
-      return <DiaperContent d={d} />;
+      return <DiaperContent d={d} getLabel={getLabel} />;
     case "activity":
-      return <ActivityContent d={d} />;
+      return <ActivityContent d={d} getLabel={getLabel} />;
     case "symptom":
-      return <SymptomContent d={d} />;
+      return <SymptomContent d={d} getLabel={getLabel} />;
     case "health":
-      return <HealthContent d={d} />;
+      return <HealthContent d={d} getLabel={getLabel} />;
     case "growth":
       return <GrowthContent d={d} />;
     case "medical":
-      return <MedicalContent d={d} />;
+      return <MedicalContent d={d} getLabel={getLabel} />;
     default: {
       const cfg = RECORD_TYPE_CFG[type];
       return (

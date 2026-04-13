@@ -16,11 +16,8 @@
  */
 import DatePicker from '@/components/DatePicker'
 import type { AllergyLevel, AllergyType } from '@/api'
-import {
-  ALLERGY_TYPE_LABELS,
-  ALL_ALLERGY_TYPES,
-  ALLERGY_LEVEL_OPTIONS,
-} from '@/lib/constants'
+import { ALLERGY_LEVEL_OPTIONS } from '@/lib/constants'
+import { useAppConfig } from '@/lib/useAppConfig'
 
 function localDateStr(): string {
   const d = new Date();
@@ -92,6 +89,10 @@ export default function EditBabyModal({
   onCancel,
   onCdcHelp,
 }: EditBabyModalProps) {
+  const { getLabel, getOptions } = useAppConfig()
+  // 过敏原类型列表：优先从配置接口获取，回退为空数组（配置未加载时）
+  const allergyTypeValues = getOptions('allergyType').map((o) => o.value as AllergyType)
+
   if (!open) return null
 
   return (
@@ -192,7 +193,7 @@ export default function EditBabyModal({
             <div className="text-[12px] font-semibold text-[#9A8090] mb-2">过敏类型</div>
             {/* 多选 Tag 组（选中时粉底粉字，未选中白底灰字） */}
             <div className="flex flex-wrap gap-2">
-              {ALL_ALLERGY_TYPES.map((type) => (
+              {allergyTypeValues.map((type) => (
                 <div
                   key={type}
                   onClick={() => onToggleAllergyType(type)}
@@ -203,7 +204,7 @@ export default function EditBabyModal({
                       : { background: '#fff', color: '#9A8090', borderColor: '#E8E0E4' }
                   }
                 >
-                  {ALLERGY_TYPE_LABELS[type]}
+                  {getLabel('allergyType', type)}
                 </div>
               ))}
             </div>

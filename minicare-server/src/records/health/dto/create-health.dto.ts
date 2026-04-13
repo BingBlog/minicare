@@ -1,6 +1,10 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsArray, IsDateString, IsEnum, IsNumber, IsOptional, IsString, IsUUID, Max, Min, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
+import {
+  MOOD_TO_INT,
+  INT_TO_MOOD,
+} from '../../../app-config/app-config.data';
 
 /**
  * DDL: health_record.mood TINYINT  1=happy 2=neutral 3=fussy 4=crying
@@ -13,21 +17,8 @@ export enum Mood {
   CRYING  = 'crying',
 }
 
-/** mood → TINYINT 映射 */
-export const MOOD_TO_INT: Record<string, number> = {
-  happy:   1,
-  neutral: 2,
-  fussy:   3,
-  crying:  4,
-};
-
-/** TINYINT → mood 映射 */
-export const INT_TO_MOOD: Record<number, string> = {
-  1: 'happy',
-  2: 'neutral',
-  3: 'fussy',
-  4: 'crying',
-};
+// 整数映射常量（从权威数据源导入）
+export { MOOD_TO_INT, INT_TO_MOOD };
 
 /** 过敏严重程度 */
 export enum AllergySeverity {

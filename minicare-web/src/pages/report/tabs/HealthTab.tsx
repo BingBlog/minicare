@@ -5,7 +5,7 @@
 import React from 'react'
 import { ScatterChart, DonutChart } from '@/components/charts'
 import type { DailyHealthData } from '@/api/report'
-import { MOOD_LABELS, SPIRIT_LABELS } from '@/lib/constants'
+import { useAppConfig } from '@/lib/useAppConfig'
 
 interface HealthTabProps {
   data: DailyHealthData[] | null
@@ -38,6 +38,8 @@ function moodToRadius(mood: string): number {
 }
 
 export function HealthTab({ data, loading }: HealthTabProps) {
+  const { getLabel } = useAppConfig()
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
@@ -89,7 +91,7 @@ export function HealthTab({ data, loading }: HealthTabProps) {
     }
   })
   const moodData = Object.entries(moodCounts).map(([key, value]) => ({
-    label: MOOD_LABELS[key] || key,
+    label: getLabel('mood', key),
     value,
     color: getMoodColor(key),
   }))
@@ -102,17 +104,17 @@ export function HealthTab({ data, loading }: HealthTabProps) {
     }
   })
   const spiritData = Object.entries(spiritCounts).map(([key, value]) => ({
-    label: SPIRIT_LABELS[key] || key,
+    label: getLabel('spiritLevel', key),
     value,
     color: getSpiritColor(key),
   }))
 
   const moodYFormat = (v: number) => {
     const map: Record<number, string> = {
-      0: MOOD_LABELS.crying,
-      1: MOOD_LABELS.fussy,
-      2: MOOD_LABELS.neutral,
-      3: MOOD_LABELS.happy,
+      0: getLabel('mood', 'crying'),
+      1: getLabel('mood', 'fussy'),
+      2: getLabel('mood', 'neutral'),
+      3: getLabel('mood', 'happy'),
     }
     return map[Math.round(v)] ?? ''
   }

@@ -14,6 +14,14 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
+import {
+  FEED_TYPE_OPTIONS,
+  BREAST_SIDE_OPTIONS,
+  FEED_TYPE_TO_INT,
+  BREAST_SIDE_TO_INT,
+  INT_TO_FEED_TYPE,
+  INT_TO_BREAST_SIDE,
+} from '../../../app-config/app-config.data';
 
 /** 营养素明细条目 DTO */
 export class SupplementItemDto {
@@ -37,33 +45,22 @@ export enum BreastSide {
   BOTH  = 'both',
 }
 
-/** feed_type → TINYINT 映射 */
-export const FEED_TYPE_TO_INT: Record<string, number> = {
-  breast:        1,
-  formula:       2,
-  complementary: 3,
-};
+// 整数映射常量（从权威数据源导入，不在此重复定义）
+export { FEED_TYPE_TO_INT, BREAST_SIDE_TO_INT, INT_TO_FEED_TYPE, INT_TO_BREAST_SIDE };
 
-/** breast_side → TINYINT 映射 */
-export const BREAST_SIDE_TO_INT: Record<string, number> = {
-  left:  1,
-  right: 2,
-  both:  3,
-};
-
-/** TINYINT → feed_type 映射 */
-export const INT_TO_FEED_TYPE: Record<number, string> = {
-  1: 'breast',
-  2: 'formula',
-  3: 'complementary',
-};
-
-/** TINYINT → breast_side 映射 */
-export const INT_TO_BREAST_SIDE: Record<number, string> = {
-  1: 'left',
-  2: 'right',
-  3: 'both',
-};
+// 确保 enum 与 app-config.data.ts 定义一致（运行时断言）
+const _feedTypeValues = FEED_TYPE_OPTIONS.map((o) => o.value);
+Object.values(FeedType).forEach((v) => {
+  if (!_feedTypeValues.includes(v as never)) {
+    throw new Error(`FeedType enum value "${v}" not found in app-config FEED_TYPE_OPTIONS`);
+  }
+});
+const _breastSideValues = BREAST_SIDE_OPTIONS.map((o) => o.value);
+Object.values(BreastSide).forEach((v) => {
+  if (!_breastSideValues.includes(v as never)) {
+    throw new Error(`BreastSide enum value "${v}" not found in app-config BREAST_SIDE_OPTIONS`);
+  }
+});
 
 export class CreateFeedingDto {
   @ApiProperty() @IsUUID() baby_id: string;
@@ -114,7 +111,7 @@ export class CreateFeedingDto {
   amount_g?: number;
 
   /**
-   * formula 专用：奶粉类型列表（替代写入 note）
+   * formula 专用：奶粉类型列表
    * 如 ["aa", "eh_no_lactose"]
    */
   @ApiPropertyOptional({ description: '奶粉类型列表（formula 时使用）' })
@@ -123,7 +120,7 @@ export class CreateFeedingDto {
   milk_types?: string[];
 
   /**
-   * formula 专用：各类奶粉勺数映射（替代写入 note）
+   * formula 专用：各类奶粉勺数映射
    * 如 { "aa": 3, "eh_no_lactose": 0.33 }
    */
   @ApiPropertyOptional({ description: '奶粉勺数映射（formula 时使用）' })

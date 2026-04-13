@@ -162,31 +162,34 @@ export const FAB_SUBTITLES: Record<string, string> = {
 // 过敏相关标签
 // ────────────────────────────────────────────────────────────────────────────
 
-/** 过敏原类型 → 中文展示名 */
-export const ALLERGY_TYPE_LABELS: Record<AllergyType, string> = {
-  milk:      '牛奶蛋白',
-  egg:       '鸡蛋',
-  wheat:     '小麦/麸质',
-  peanut:    '花生',
-  tree_nut:  '坚果',
-  soy:       '大豆',
-  fish:      '鱼类',
-  shellfish: '贝类',
-  other:     '其他',
-}
+// 以下常量已迁移至后端统一配置接口（GET /api/config），由 useAppConfig().getLabel() 消费
+// 保留注释作为历史参考，不要在新代码中直接引用
 
-/** 过敏程度 → 中文展示名 */
-export const ALLERGY_LEVEL_LABELS: Record<AllergyLevel, string> = {
-  mild:     '轻度',
-  moderate: '中度',
-  severe:   '重度',
-  unknown:  '未知程度',
-}
+// /** 过敏原类型 → 中文展示名 */
+// export const ALLERGY_TYPE_LABELS: Record<AllergyType, string> = {
+//   milk:      '牛奶蛋白',
+//   egg:       '鸡蛋',
+//   wheat:     '小麦/麸质',
+//   peanut:    '花生',
+//   tree_nut:  '坚果',
+//   soy:       '大豆',
+//   fish:      '鱼类',
+//   shellfish: '贝类',
+//   other:     '其他',
+// }
 
-/** 全量过敏原类型列表（用于多选渲染） */
-export const ALL_ALLERGY_TYPES: AllergyType[] = [
-  'milk', 'egg', 'wheat', 'peanut', 'tree_nut', 'soy', 'fish', 'shellfish', 'other',
-]
+// /** 过敏程度 → 中文展示名 */
+// export const ALLERGY_LEVEL_LABELS: Record<AllergyLevel, string> = {
+//   mild:     '轻度',
+//   moderate: '中度',
+//   severe:   '重度',
+//   unknown:  '未知程度',
+// }
+
+// /** 全量过敏原类型列表（用于多选渲染） */
+// export const ALL_ALLERGY_TYPES: AllergyType[] = [
+//   'milk', 'egg', 'wheat', 'peanut', 'tree_nut', 'soy', 'fish', 'shellfish', 'other',
+// ]
 
 /** 过敏程度选项配置（含激活颜色） */
 export const ALLERGY_LEVEL_OPTIONS: { value: AllergyLevel; label: string; activeColor: string }[] = [
@@ -229,87 +232,91 @@ export const ROLE_ICON_COLOR: Record<number, string> = {
 }
 
 // ────────────────────────────────────────────────────────────────────────────
-// 时间线各记录类型枚举标签（统一收口，TodayTimeline / utils.ts 共用）
+// 时间线各记录类型枚举标签（已迁移至后端统一配置接口）
 // ────────────────────────────────────────────────────────────────────────────
+//
+// 以下所有枚举标签常量已迁移至后端 app-config.data.ts，
+// 通过 GET /api/config 接口下发，由前端 useAppConfig().getLabel(enumKey, value) 消费。
+// 保留注释作为历史参考，不要在新代码中直接引用这些常量。
 
 /** 奶粉类型 key → 中文名（由 milkTypeOptions 在 utils.ts 层派生，此处不重复定义） */
 
-/** 睡眠时段 */
-export const SLEEP_PERIOD_LABELS: Record<string, string> = {
-  night:         '夜觉',
-  morning_nap:   '上午觉',
-  afternoon_nap: '下午觉',
-  other:         '其他',
-}
+// /** 睡眠时段 */
+// export const SLEEP_PERIOD_LABELS: Record<string, string> = {
+//   night:         '夜觉',
+//   morning_nap:   '上午觉',
+//   afternoon_nap: '下午觉',
+//   other:         '其他',
+// }
 
-/** 睡眠质量 */
-export const SLEEP_QUALITY_LABELS: Record<string, string> = {
-  good:   '质量好',
-  normal: '一般',
-  poor:   '较差',
-}
+// /** 睡眠质量 */
+// export const SLEEP_QUALITY_LABELS: Record<string, string> = {
+//   good:   '质量好',
+//   normal: '一般',
+//   poor:   '较差',
+// }
 
-/** 尿布类型 */
-export const DIAPER_TYPE_LABELS: Record<string, string> = {
-  wet:   '小便',
-  dirty: '大便',
-  mixed: '混合',
-  dry:   '干净',
-}
+// /** 尿布类型 */
+// export const DIAPER_TYPE_LABELS: Record<string, string> = {
+//   wet:   '小便',
+//   dirty: '大便',
+//   mixed: '混合',
+//   dry:   '干净',
+// }
 
-/** 大便性状 */
-export const POOP_TYPE_LABELS: Record<string, string> = {
-  normal:       '正常',
-  normal_soft:  '正常软便',
-  normal_form:  '正常成形',
-  loose:        '稀便',
-  watery:       '水样便',
-  hard:         '干硬粒',
-  bloody:       '血丝便',
-}
+// /** 大便性状 */
+// export const POOP_TYPE_LABELS: Record<string, string> = {
+//   normal:       '正常',
+//   normal_soft:  '正常软便',
+//   normal_form:  '正常成形',
+//   loose:        '稀便',
+//   watery:       '水样便',
+//   hard:         '干硬粒',
+//   bloody:       '血丝便',
+// }
 
-/** 活动类型 */
-export const ACTIVITY_TYPE_LABELS: Record<string, string> = {
-  gross_motor: '大运动练习',
-  fine_motor:  '精细运动练习',
-  edu_play:    '亲子早教互动',
-  outdoor:     '户外活动',
-  daily_care:  '日常护理',
-  other:       '其他活动',
-}
+// /** 活动类型 */
+// export const ACTIVITY_TYPE_LABELS: Record<string, string> = {
+//   gross_motor: '大运动练习',
+//   fine_motor:  '精细运动练习',
+//   edu_play:    '亲子早教互动',
+//   outdoor:     '户外活动',
+//   daily_care:  '日常护理',
+//   other:       '其他活动',
+// }
 
-/** 活动强度 */
-export const ACTIVITY_INTENSITY_LABELS: Record<string, string> = {
-  easy:   '轻松',
-  medium: '适中',
-  active: '活跃',
-}
+// /** 活动强度 */
+// export const ACTIVITY_INTENSITY_LABELS: Record<string, string> = {
+//   easy:   '轻松',
+//   medium: '适中',
+//   active: '活跃',
+// }
 
-/** 情绪 */
-export const MOOD_LABELS: Record<string, string> = {
-  happy:   '愉悦满足',
-  neutral: '平静舒适',
-  fussy:   '烦躁不开心',
-  crying:  '痛苦哭闹',
-}
+// /** 情绪 */
+// export const MOOD_LABELS: Record<string, string> = {
+//   happy:   '愉悦满足',
+//   neutral: '平静舒适',
+//   fussy:   '烦躁不开心',
+//   crying:  '痛苦哭闹',
+// }
 
-/** 精神状态 */
-export const SPIRIT_LABELS: Record<string, string> = {
-  active:    '状态良好',
-  normal:    '状态良好',
-  tired:     '烦躁不安',
-  lethargic: '萎靡嗜睡',
-}
+// /** 精神状态 */
+// export const SPIRIT_LABELS: Record<string, string> = {
+//   active:    '状态良好',
+//   normal:    '状态良好',
+//   tired:     '烦躁不安',
+//   lethargic: '萎靡嗜睡',
+// }
 
-/** 就诊类型 */
-export const VISIT_TYPE_LABELS: Record<string, string> = {
-  checkup: '常规体检',
-  allergy: '过敏专科',
-  sick:    '生病就诊',
-  vaccine: '疫苗接种',
-  blood:   '血液检查',
-  other:   '就诊',
-}
+// /** 就诊类型 */
+// export const VISIT_TYPE_LABELS: Record<string, string> = {
+//   checkup: '常规体检',
+//   allergy: '过敏专科',
+//   sick:    '生病就诊',
+//   vaccine: '疫苗接种',
+//   blood:   '血液检查',
+//   other:   '就诊',
+// }
 
 // ────────────────────────────────────────────────────────────────────────────
 // 报告模块

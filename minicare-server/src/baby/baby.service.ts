@@ -8,19 +8,7 @@ import { Pool } from 'mysql2/promise';
 import { v4 as uuidv4 } from 'uuid';
 import { DATABASE_POOL } from '../common/database/database.module';
 import { CreateBabyDto } from './dto/create-baby.dto';
-
-/** gender 字符串 → TINYINT（DDL: 0=unknown 1=male 2=female） */
-const GENDER_TO_INT: Record<string, number> = {
-  unknown: 0,
-  male:    1,
-  female:  2,
-};
-/** gender TINYINT → 字符串 */
-const GENDER_TO_STR: Record<number, string> = {
-  0: 'unknown',
-  1: 'male',
-  2: 'female',
-};
+import { GENDER_TO_INT, GENDER_TO_STR } from '../app-config/app-config.data';
 
 @Injectable()
 export class BabyService {

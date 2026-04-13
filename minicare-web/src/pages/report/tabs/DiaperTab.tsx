@@ -5,7 +5,7 @@
 import React from 'react'
 import { BarChart, StackedBarChart } from '@/components/charts'
 import type { DailyDiaperData } from '@/api/report'
-import { DIAPER_TYPE_LABELS } from '@/lib/constants'
+import { useAppConfig } from '@/lib/useAppConfig'
 
 const DIAPER_STACK_KEYS = ['wet', 'dirty', 'mixed'] as const
 
@@ -27,6 +27,8 @@ function formatDateLabel(dateStr: string): string {
 }
 
 export function DiaperTab({ data, loading }: DiaperTabProps) {
+  const { getLabel } = useAppConfig()
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
@@ -67,7 +69,7 @@ export function DiaperTab({ data, loading }: DiaperTabProps) {
   }))
 
   const seriesLabels = Object.fromEntries(
-    DIAPER_STACK_KEYS.map((k) => [k, DIAPER_TYPE_LABELS[k] ?? k]),
+    DIAPER_STACK_KEYS.map((k) => [k, getLabel('diaperType', k)]),
   ) as Record<string, string>
 
   return (

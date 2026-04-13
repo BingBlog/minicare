@@ -12,6 +12,10 @@ import {
   MaxLength,
   Min,
 } from 'class-validator';
+import {
+  ALLERGY_TYPE_OPTIONS,
+  ALLERGY_LEVEL_OPTIONS,
+} from '../../app-config/app-config.data';
 
 export enum BabyGender {
   MALE    = 'male',
@@ -19,23 +23,17 @@ export enum BabyGender {
   UNKNOWN = 'unknown',
 }
 
-/** 八大高风险过敏原 + 其他 */
-export const ALLERGY_TYPES = [
-  'milk',       // 牛奶蛋白
-  'egg',        // 鸡蛋
-  'wheat',      // 小麦/麸质
-  'peanut',     // 花生
-  'tree_nut',   // 坚果
-  'soy',        // 大豆
-  'fish',       // 鱼类
-  'shellfish',  // 贝类
-  'other',      // 其他
-] as const;
+/** 八大高风险过敏原 + 其他（从权威数据源派生） */
+export const ALLERGY_TYPES = ALLERGY_TYPE_OPTIONS.map((o) => o.value) as unknown as readonly [
+  'milk', 'egg', 'wheat', 'peanut', 'tree_nut', 'soy', 'fish', 'shellfish', 'other'
+];
+export type AllergyType = (typeof ALLERGY_TYPE_OPTIONS)[number]['value'];
 
-export type AllergyType = (typeof ALLERGY_TYPES)[number];
-
-export const ALLERGY_LEVELS = ['mild', 'moderate', 'severe', 'unknown'] as const;
-export type AllergyLevel = (typeof ALLERGY_LEVELS)[number];
+/** 过敏程度（从权威数据源派生） */
+export const ALLERGY_LEVELS = ALLERGY_LEVEL_OPTIONS.map((o) => o.value) as unknown as readonly [
+  'mild', 'moderate', 'severe', 'unknown'
+];
+export type AllergyLevel = (typeof ALLERGY_LEVEL_OPTIONS)[number]['value'];
 
 export class CreateBabyDto {
   @ApiProperty({ example: '小宝', description: '宝宝昵称' })

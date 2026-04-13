@@ -7,7 +7,7 @@
  * 被引用：ProfilePage.tsx
  */
 import type { AllergyLevel, AllergyType } from "@/api";
-import { ALLERGY_TYPE_LABELS, ALLERGY_LEVEL_LABELS } from "@/lib/constants";
+import { useAppConfig } from "@/lib/useAppConfig";
 import { getBabyAge } from "@/lib/utils";
 
 // ── 宝宝头像 SVG（卡通小人，白色线条）────────────────────────────
@@ -76,6 +76,8 @@ export default function BabyHero({
   allergyLevel,
   onEdit,
 }: BabyHeroProps) {
+  const { getLabel } = useAppConfig()
+
   /** 显示的名称：优先宝宝名，回落用户昵称，最终回落"未设置昵称" */
   const displayName = babyName ?? userNickname ?? "未设置昵称";
 
@@ -86,7 +88,7 @@ export default function BabyHero({
   /** 过敏类型的中文标签拼接（如"牛奶蛋白、鸡蛋"），无数据时为 null */
   const allergyTypeText =
     allergyTypes && allergyTypes.length > 0
-      ? allergyTypes.map((t) => ALLERGY_TYPE_LABELS[t] ?? t).join("、")
+      ? allergyTypes.map((t) => getLabel('allergyType', t)).join("、")
       : null;
 
   return (

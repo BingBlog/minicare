@@ -1,9 +1,12 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsDateString, IsEnum, IsInt, IsOptional, IsString, IsUUID, Max, Min } from 'class-validator';
+import {
+  DIAPER_TYPE_TO_INT,
+  INT_TO_DIAPER_TYPE,
+} from '../../../app-config/app-config.data';
 
 /**
  * DDL: diaper_record.diaper_type TINYINT  1=wet(嘘嘘) 2=dirty(臭臭) 3=mixed(臭臭+嘘嘘)
- * 已移除 4=dry(未换)
  */
 export enum DiaperType {
   WET   = 'wet',
@@ -36,24 +39,13 @@ export enum ButtCondition {
   OTHER        = 'other',         // 其他异常
 }
 
-/** diaper_type → TINYINT 映射 */
-export const DIAPER_TYPE_TO_INT: Record<string, number> = {
-  wet:   1,
-  dirty: 2,
-  mixed: 3,
-};
-
-/** TINYINT → diaper_type 映射 */
-export const INT_TO_DIAPER_TYPE: Record<number, string> = {
-  1: 'wet',
-  2: 'dirty',
-  3: 'mixed',
-};
+// 整数映射常量（从权威数据源导入）
+export { DIAPER_TYPE_TO_INT, INT_TO_DIAPER_TYPE };
 
 export class CreateDiaperDto {
   @ApiProperty() @IsUUID() baby_id: string;
 
-  @ApiProperty({ enum: DiaperType, description: 'DDL: 1=wet 2=dirty 3=mixed 4=dry' })
+  @ApiProperty({ enum: DiaperType, description: 'DDL: 1=wet 2=dirty 3=mixed' })
   @IsEnum(DiaperType)
   diaper_type: DiaperType;
 
@@ -61,7 +53,7 @@ export class CreateDiaperDto {
   @IsDateString()
   record_time: string;
 
-  @ApiPropertyOptional({ description: '大便颜色（如 yellow/green/brown_yellow/green）' })
+  @ApiPropertyOptional({ description: '大便颜色（如 yellow/green/brown_yellow）' })
   @IsOptional()
   @IsString()
   color?: string;
