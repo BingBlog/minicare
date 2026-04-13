@@ -3,7 +3,8 @@
 > 来源：MVP-PRD.md §2.4.10、§3.2.9  
 > 功能 ID：P0-010  
 > 优先级：P0  
-> 最后同步：2026-07-05（**v2.3**：Tab「排泄」→「尿布」；各 Tab 差异化默认时间范围（生长从出生完整曲线、健康7天、尿布/睡眠14天、饮食30天）；去除「保存」按钮改为后端自动缓存；新增右上角「导出报告」；移除历史报告列表）
+> 最后同步：2026-04-13（**v2.4**：chart-data 拆分为 5 个按 Tab 独立接口；移除进程内内存缓存；修复健康模块 mood/spirit 类型错误）
+> 上一版：2026-07-05（**v2.3**：Tab「排泄」→「尿布」；各 Tab 差异化默认时间范围（生长从出生完整曲线、健康7天、尿布/睡眠14天、饮食30天）；去除「保存」按钮改为后端自动缓存；新增右上角「导出报告」；移除历史报告列表）
 
 ---
 
@@ -611,16 +612,180 @@ flowchart TD
 
 ## 十三、待办（实现顺序）
 
-1. **[ ] 调整宝宝生日 + 重新生成模拟数据**（Python 脚本，写入 SQL）
-2. **[ ] 后端新增 `/report/chart-data` 接口**（按日返回各模块数据，支持缓存层）
-3. **[ ] 后端实现缓存层**（记录写入时主动清除对应 babyId 缓存前缀，TTL 兜底 1 小时）
-4. **[ ] 前端重构分析页面**：`ReportPage` → `AnalysisPage`，各模块拆分子组件
-   - 各 Tab 差异化默认时间范围（饮食30天/尿布14天/生长从出生/睡眠14天/健康7天）
-   - 生长 Tab 时间选择器改为阶段选项（本月/3月/6月/从出生★）
-   - 切换 Tab 时自动重置时间范围为该 Tab 推荐默认值
-   - Tab 标签「排泄」→「尿布」
-   - 移除「保存」按钮和历史记录区域
-   - 页面右上角新增「导出报告」图标按钮（P0 先实现截图/分享）
-5. **[ ] 实现各图表组件**（自实现 SVG）
-6. **[ ] 内嵌生长参考数据集**（`src/lib/growth-standards.ts`）
-7. **[ ] 底部导航 Tab 文案改为「分析」**
+1. **[x] 调整宝宝生日 + 重新生成模拟数据**（Python 脚本，写入 SQL）
+2. **[x] 后端新增 `/report/chart-data` 接口**（按日返回各模块数据，含内存缓存层）
+3. **[x] 前端重构分析页面**：`ReportPage` → `AnalysisPage`，各模块拆分子组件
+4. **[x] 实现各图表组件**（自实现 SVG）
+5. **[x] 内嵌生长参考数据集**（`src/lib/growth-standards.ts`）
+6. **[x] 底部导航 Tab 文案改为「分析」**
+7. **[ ] chart-data 接口按 Tab 拆分 + 移除内存缓存**（见下方 §十四）
+
+---
+
+## 十四、技术优化方案：chart-data 接口按 Tab 拆分
+
+> 记录时间：2026-04-13
+
+### 14.1 问题诊断
+
+#### 问题一（P0）：缓存失效机制从未接入，数据实时性完全失效
+
+`report.service.ts` 中定义了 `invalidateChartCache(babyId)` 方法，设计意图是在记录写入/更新/删除时调用以清除缓存。但经过 grep 全库确认，**该方法在整个 `src/` 目录中没有任何调用方**，所有记录 Service（feeding、sleep、diaper、growth、health）的写操作均未接入缓存失效。
+
+后果：用户在「记录」Tab 新增或修改一条记录后，切到「分析」Tab，看到的仍然是最多 **1 小时前**的旧数据，直到缓存自然过期（TTL = 3600s）。
+
+#### 问题二（P0）：健康模块 mood / spirit 类型前后端不一致
+
+后端 `getDailyHealthData` 返回：
+- `mood`：`number | null`（数据库 TINYINT 1/2/3/4，未做枚举映射）
+- `spirit`：**字段不存在**（SQL 中根本未查询）
+
+前端 `HealthTab` 期望：
+- `mood`：`string | null`（如 `'happy'`/`'neutral'`/`'fussy'`/`'crying'`，用于 `MOOD_Y[d.mood]` 散点定位）
+- `spirit`：`string | null`（用于 `SPIRIT_LABELS[d.spirit]` 精神状态分布统计）
+
+后果：健康 Tab 所有情绪散点图数据错误（整数 key 永远匹配不到字符串映射），精神状态分布图始终为空。
+
+#### 问题三（P1）：各 Tab 时间范围不同，但接口用统一时间窗口查全量数据
+
+每次切换 Tab 或时间范围，前端发起 1 次 `GET /report/chart-data` 请求，后端**并行执行 7 个 SQL**（喂养 2 个 + 睡眠 2 个 + 尿布 1 个 + 健康 1 个 + 生长 1 个）。
+
+各 Tab 默认时间范围不同（饮食 30 天、生长从出生），但所有模块都用同一个时间窗口查询。切换到「生长」Tab 时，查询范围是「从出生至今」（可能 365 天+），触发的 7 个 SQL 全部使用该超长时间窗口，其中饮食/睡眠/尿布等数据根本不被生长 Tab 消费，造成大量无效计算。
+
+#### 问题四（P1）：进程内内存缓存在多实例部署下不可靠
+
+`MemoryCache` 基于 Node.js 进程内 `Map` 实现。CloudRun 存在多实例（MinNum=0、MaxNum≥2），请求被路由到不同实例时各实例缓存互相独立：
+
+- 实例 A 缓存了饮食数据
+- 用户在实例 B 写入新记录，B 的缓存被清除（即使 `invalidateChartCache` 被调用）
+- 下次请求命中实例 A，仍返回旧数据
+
+此外，缓存 key 包含 `startDate:endDate`，而 `endDate` 通常为今天的日期。每天第一次访问都是新 key，永远 cache miss，实际命中率极低。
+
+---
+
+### 14.2 优化思路
+
+**核心判断：拆分接口后，内存缓存的收益趋近于零，维护成本远大于收益，应当直接去除。**
+
+拆分后每个接口只执行 1~2 个 SQL，对家庭级数据量（几百到几千条记录），每次查询耗时在 10~50ms 内可接受，不需要缓存来掩盖性能问题。
+
+| 方向 | 说明 |
+|------|------|
+| 接口按 Tab 拆分 | 每个 Tab 对应独立接口，携带各自的时间参数，只查该 Tab 所需的数据 |
+| 去除内存缓存 | 删除 `MemoryCache` 类及相关 `chartCache` 逻辑，直接查库返回 |
+| 修复健康模块类型 | 后端补充 `spirit` 字段查询；`mood` 做 TINYINT → string 枚举映射后再返回 |
+
+---
+
+### 14.3 新接口设计
+
+**原接口（废弃）**：
+```
+GET /api/family/:familyId/report/chart-data?babyId=&startDate=&endDate=
+```
+
+**新接口（5 个，各自独立时间窗口）**：
+
+```
+GET /api/family/:familyId/report/chart-data/feeding?babyId=&startDate=&endDate=
+GET /api/family/:familyId/report/chart-data/diaper?babyId=&startDate=&endDate=
+GET /api/family/:familyId/report/chart-data/sleep?babyId=&startDate=&endDate=
+GET /api/family/:familyId/report/chart-data/health?babyId=&startDate=&endDate=
+GET /api/family/:familyId/report/chart-data/growth?babyId=&startDate=&endDate=
+```
+
+**各接口响应结构**：
+
+```jsonc
+// feeding
+{ "daily": [{ "date": "2026-04-01", "formulaMl": 720, "breastCount": 2, "formulaCount": 5, "complementaryCount": 1, "supplementCount": 0, "formulaMlByMilkType": { "氨基酸配方": 720 } }] }
+
+// diaper
+{ "daily": [{ "date": "2026-04-01", "wetCount": 6, "dirtyCount": 2, "mixedCount": 1 }] }
+
+// sleep
+{ "daily": [{ "date": "2026-04-01", "totalMin": 840, "sessionCount": 4, "nightSleepMin": 480 }] }
+
+// health  ← mood/spirit 改为 string
+{ "daily": [{ "date": "2026-04-01", "temperature": 37.2, "mood": "happy", "spirit": "active" }] }
+
+// growth
+{ "records": [{ "date": "2026-04-01", "weightG": 5600, "heightMm": 610, "headMm": 400 }] }
+```
+
+**健康模块 mood / spirit 映射表**（后端枚举，与现有 DTO 保持一致）：
+
+| DB TINYINT | string 枚举值 |
+|---|---|
+| mood = 1 | `'happy'` |
+| mood = 2 | `'neutral'` |
+| mood = 3 | `'fussy'` |
+| mood = 4 | `'crying'` |
+| spirit = 1 | `'active'` |
+| spirit = 2 | `'normal'` |
+| spirit = 3 | `'tired'` |
+| spirit = 4 | `'lethargic'` |
+
+> spirit 需在 `health_record` 表中确认字段名（当前 `getDailyHealthData` SQL 未查该字段）。
+
+---
+
+### 14.4 执行计划
+
+#### Task 1：后端 — 拆分 Controller 路由
+
+**文件**：`minicare-server/src/report/report.controller.ts`
+
+- 保留原 `GET /report/chart-data`（标记 `@deprecated`，兼容过渡期，下一版本删除）
+- 新增 5 个路由方法：`getChartFeeding` / `getChartDiaper` / `getChartSleep` / `getChartHealth` / `getChartGrowth`，路径为 `chart-data/:module`
+
+#### Task 2：后端 — 拆分 Service 方法 + 去除缓存
+
+**文件**：`minicare-server/src/report/report.service.ts`
+
+- 将 `getChartData()` 中的 5 个私有方法提升为 5 个 `public` 方法，直接返回，去掉 `chartCache.get/set`
+- 删除 `MemoryCache` 类
+- 删除 `chartCache` 实例属性
+- 删除 `invalidateChartCache()` 方法
+
+#### Task 3：后端 — 修复健康模块查询
+
+**文件**：`minicare-server/src/report/report.service.ts`，`getDailyHealthData()`
+
+- SQL 补充 `spirit` 字段
+- 返回前做 TINYINT → string 枚举映射（`mood`、`spirit`）
+- 更新 `DailyHealthData` interface 中 `mood` / `spirit` 类型为 `string | null`
+
+#### Task 4：前端 — API 层改为按 Tab 调用各自接口
+
+**文件**：`minicare-web/src/api/report.ts`
+
+- 新增 5 个方法：`getFeedingChartData` / `getDiaperChartData` / `getSleepChartData` / `getHealthChartData` / `getGrowthChartData`
+- 各方法只返回对应模块的数据类型
+
+#### Task 5：前端 — 分析页面改为按 Tab 独立请求
+
+**文件**：`minicare-web/src/pages/report/index.tsx`
+
+- 废弃统一的 `chartData: ChartData` 状态，改为 5 个独立状态：`feedingData` / `diaperData` / `sleepData` / `healthData` / `growthData`
+- `loadChartData` 仅请求当前激活 Tab 对应的接口，携带该 Tab 的时间范围
+- Tab 切换时清空该 Tab 的旧数据（设为 `null`），触发加载
+
+#### Task 6：前端 — 更新 HealthTab 类型引用
+
+**文件**：`minicare-web/src/pages/report/tabs/HealthTab.tsx`
+
+- `DailyHealthData.mood` 和 `spirit` 改为 `string | null`（与修复后的后端一致）
+- 确认 `MOOD_Y[d.mood]` 和 `SPIRIT_LABELS[d.spirit]` 映射正确
+
+---
+
+### 14.5 验收标准（AC）
+
+- [ ] 新增记录后，切换到对应分析 Tab，能立即看到更新后的数据（无延迟、无旧数据残留）
+- [ ] 切换 Tab 时，只发起该 Tab 对应的 1 个接口请求，不再触发全模块查询
+- [ ] 健康 Tab 情绪散点图正确渲染，精神状态分布图有数据
+- [ ] 生长 Tab 使用「从出生」时间范围，只查 growth 接口，不拉取 365 天的饮食/睡眠数据
+- [ ] 后端代码中 `MemoryCache` 类和 `chartCache`、`invalidateChartCache` 均已删除
+- [ ] 原 `GET /report/chart-data`（全量接口）标记废弃注释或直接删除

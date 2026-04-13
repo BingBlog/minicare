@@ -174,6 +174,11 @@ export interface ChartData {
   growth: { records: GrowthRecord[] }
 }
 
+// ── 工具类型 ───────────────────────────────────────────────────────
+
+/** 各 Tab 接口的通用参数（与 GetSummaryParams 一致） */
+export type ChartTabParams = GetSummaryParams
+
 // ── API 对象 ──────────────────────────────────────────────────────
 
 export const reportApi = {
@@ -192,10 +197,8 @@ export const reportApi = {
   },
 
   /**
-   * 获取图表逐日数据（支持后端缓存，1小时 TTL）
-   *
-   * @param familyId  家庭 ID
-   * @param params    必填参数：babyId / startDate / endDate
+   * 获取图表逐日数据（已废弃）— 请改用各 Tab 独立方法
+   * @deprecated 使用 getFeedingChartData / getDiaperChartData / getSleepChartData / getHealthChartData / getGrowthChartData
    */
   getChartData(familyId: string, params: GetSummaryParams): Promise<ChartData> {
     const qs = new URLSearchParams()
@@ -203,5 +206,52 @@ export const reportApi = {
     qs.set('startDate', params.startDate)
     qs.set('endDate', params.endDate)
     return request<ChartData>(`/api/family/${familyId}/report/chart-data?${qs.toString()}`)
+  },
+
+  // ── 按 Tab 拆分的独立接口 ─────────────────────────────────────────
+
+  /** 饮食 Tab：逐日喂养数据 */
+  getFeedingChartData(familyId: string, params: ChartTabParams): Promise<{ daily: DailyFeedingData[] }> {
+    const qs = new URLSearchParams()
+    qs.set('babyId', params.babyId)
+    qs.set('startDate', params.startDate)
+    qs.set('endDate', params.endDate)
+    return request<{ daily: DailyFeedingData[] }>(`/api/family/${familyId}/report/chart-data/feeding?${qs.toString()}`)
+  },
+
+  /** 尿布 Tab：逐日换尿布数据 */
+  getDiaperChartData(familyId: string, params: ChartTabParams): Promise<{ daily: DailyDiaperData[] }> {
+    const qs = new URLSearchParams()
+    qs.set('babyId', params.babyId)
+    qs.set('startDate', params.startDate)
+    qs.set('endDate', params.endDate)
+    return request<{ daily: DailyDiaperData[] }>(`/api/family/${familyId}/report/chart-data/diaper?${qs.toString()}`)
+  },
+
+  /** 睡眠 Tab：逐日睡眠数据 */
+  getSleepChartData(familyId: string, params: ChartTabParams): Promise<{ daily: DailySleepData[] }> {
+    const qs = new URLSearchParams()
+    qs.set('babyId', params.babyId)
+    qs.set('startDate', params.startDate)
+    qs.set('endDate', params.endDate)
+    return request<{ daily: DailySleepData[] }>(`/api/family/${familyId}/report/chart-data/sleep?${qs.toString()}`)
+  },
+
+  /** 健康 Tab：逐日体温/情绪/精神状态数据 */
+  getHealthChartData(familyId: string, params: ChartTabParams): Promise<{ daily: DailyHealthData[] }> {
+    const qs = new URLSearchParams()
+    qs.set('babyId', params.babyId)
+    qs.set('startDate', params.startDate)
+    qs.set('endDate', params.endDate)
+    return request<{ daily: DailyHealthData[] }>(`/api/family/${familyId}/report/chart-data/health?${qs.toString()}`)
+  },
+
+  /** 生长 Tab：生长记录全量（用于生长曲线） */
+  getGrowthChartData(familyId: string, params: ChartTabParams): Promise<{ records: GrowthRecord[] }> {
+    const qs = new URLSearchParams()
+    qs.set('babyId', params.babyId)
+    qs.set('startDate', params.startDate)
+    qs.set('endDate', params.endDate)
+    return request<{ records: GrowthRecord[] }>(`/api/family/${familyId}/report/chart-data/growth?${qs.toString()}`)
   },
 }

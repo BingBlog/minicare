@@ -18,7 +18,13 @@ import { useState, useCallback, useEffect, useMemo } from "react";
 import { useAppStore } from "@/lib/store";
 import { useToast } from "@/components/ui/Toast";
 import { reportApi } from "@/api/report";
-import type { ChartData } from "@/api/report";
+import type {
+  DailyFeedingData,
+  DailyDiaperData,
+  DailySleepData,
+  DailyHealthData,
+  GrowthRecord,
+} from "@/api/report";
 import { FeedingTab, DiaperTab, GrowthTab, SleepTab, HealthTab } from "./tabs";
 
 // Tab 类型定义
@@ -120,8 +126,12 @@ export default function AnalysisPage() {
   const [rangeMap, setRangeMap] =
     useState<Record<TabKey, string>>(DEFAULT_RANGE_MAP);
 
-  // 图表数据
-  const [chartData, setChartData] = useState<ChartData | null>(null);
+  // 各 Tab 独立的图表数据状态
+  const [feedingData, setFeedingData] = useState<DailyFeedingData[] | null>(null);
+  const [diaperData, setDiaperData] = useState<DailyDiaperData[] | null>(null);
+  const [sleepData, setSleepData] = useState<DailySleepData[] | null>(null);
+  const [healthData, setHealthData] = useState<DailyHealthData[] | null>(null);
+  const [growthData, setGrowthData] = useState<GrowthRecord[] | null>(null);
   const [loading, setLoading] = useState(false);
 
   const babyGender = currentBaby?.gender as "male" | "female" | null;
@@ -130,20 +140,42 @@ export default function AnalysisPage() {
   // 当前 Tab 的时间范围
   const currentRange = rangeMap[activeTab];
 
-  // 加载图表数据
+  // 加载当前 Tab 的数据（只请求该 Tab 对应的接口）
   const loadChartData = useCallback(async () => {
     if (!currentFamily?.id || !currentBaby?.id) return;
 
     setLoading(true);
     const { startDate, endDate } = calcDateRange(currentRange, babyBirthDate);
+    const params = { babyId: currentBaby.id, startDate, endDate };
 
     try {
-      const data = await reportApi.getChartData(currentFamily.id, {
-        babyId: currentBaby.id,
-        startDate,
-        endDate,
-      });
-      setChartData(data);
+      switch (activeTab) {
+        case "feeding": {
+          const res = await reportApi.getFeedingChartData(currentFamily.id, params);
+          setFeedingData(res.daily);
+          break;
+        }
+        case "diaper": {
+          const res = await reportApi.getDiaperChartData(currentFamily.id, params);
+          setDiaperData(res.daily);
+          break;
+        }
+        case "sleep": {
+          const res = await reportApi.getSleepChartData(currentFamily.id, params);
+          setSleepData(res.daily);
+          break;
+        }
+        case "health": {
+          const res = await reportApi.getHealthChartData(currentFamily.id, params);
+          setHealthData(res.daily);
+          break;
+        }
+        case "growth": {
+          const res = await reportApi.getGrowthChartData(currentFamily.id, params);
+          setGrowthData(res.records);
+          break;
+        }
+      }
     } catch (e) {
       console.error("[analysis] loadChartData error", e);
       showToast("数据加载失败，请重试");
@@ -151,6 +183,7 @@ export default function AnalysisPage() {
       setLoading(false);
     }
   }, [
+    activeTab,
     currentFamily?.id,
     currentBaby?.id,
     currentRange,
@@ -163,9 +196,17 @@ export default function AnalysisPage() {
     loadChartData();
   }, [loadChartData]);
 
-  // 切换 Tab
+  // 切换 Tab（同时清空目标 Tab 的旧数据，触发重新加载）
   const handleTabChange = useCallback((tab: TabKey) => {
     setActiveTab(tab);
+    // 清空目标 Tab 的数据，避免展示上一个时间范围的旧数据
+    switch (tab) {
+      case "feeding": setFeedingData(null); break;
+      case "diaper":  setDiaperData(null);  break;
+      case "sleep":   setSleepData(null);   break;
+      case "health":  setHealthData(null);  break;
+      case "growth":  setGrowthData(null);  break;
+    }
   }, []);
 
   // 切换时间范围
@@ -252,30 +293,30 @@ export default function AnalysisPage() {
       <div className="flex-1 overflow-y-auto pb-28 px-5 py-4">
         {activeTab === "feeding" && (
           <FeedingTab
-            data={chartData?.feeding?.daily ?? null}
+            data={feedingData}
             loading={loading}
           />
         )}
         {activeTab === "diaper" && (
           <DiaperTab
-            data={chartData?.diaper?.daily ?? null}
+            data={diaperData}
             loading={loading}
           />
         )}
         {activeTab === "growth" && (
           <GrowthTab
-            data={chartData?.growth?.records ?? null}
+            data={growthData}
             loading={loading}
             babyGender={babyGender}
             babyBirthDate={babyBirthDate ?? null}
           />
         )}
         {activeTab === "sleep" && (
-          <SleepTab data={chartData?.sleep?.daily ?? null} loading={loading} />
+          <SleepTab data={sleepData} loading={loading} />
         )}
         {activeTab === "health" && (
           <HealthTab
-            data={chartData?.health?.daily ?? null}
+            data={healthData}
             loading={loading}
           />
         )}

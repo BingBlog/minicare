@@ -80,11 +80,12 @@ export class ReportController {
   }
 
   /**
-   * 获取图表逐日数据（用于分析页绘图）
+   * 获取图表逐日数据（已废弃：请使用 /chart-data/:module 按 Tab 独立接口）
    * GET /api/family/:familyId/report/chart-data?babyId=&startDate=&endDate=
+   * @deprecated
    */
   @Get('chart-data')
-  @ApiOperation({ summary: '获取图表逐日数据（用于分析页）' })
+  @ApiOperation({ summary: '获取图表逐日数据（已废弃，使用 chart-data/:module）', deprecated: true })
   @ApiQuery({ name: 'babyId',    required: false })
   @ApiQuery({ name: 'startDate', required: false, description: 'YYYY-MM-DD' })
   @ApiQuery({ name: 'endDate',   required: false, description: 'YYYY-MM-DD' })
@@ -93,10 +94,110 @@ export class ReportController {
     @Query('babyId')    babyIdParam: string | undefined,
     @Query('startDate') startDateParam: string | undefined,
     @Query('endDate')   endDateParam: string | undefined,
-  ): Promise<ChartData & { fromCache: boolean }> {
+  ): Promise<ChartData> {
     const babyId = await this.resolveBabyId(familyId, babyIdParam);
     const { startDate, endDate } = this.resolveDateRange(startDateParam, endDateParam);
     return this.reportService.getChartData(babyId, startDate, endDate);
+  }
+
+  /**
+   * 饮食分析逐日数据
+   * GET /api/family/:familyId/report/chart-data/feeding?babyId=&startDate=&endDate=
+   */
+  @Get('chart-data/feeding')
+  @ApiOperation({ summary: '饮食分析逐日数据' })
+  @ApiQuery({ name: 'babyId',    required: false })
+  @ApiQuery({ name: 'startDate', required: false, description: 'YYYY-MM-DD' })
+  @ApiQuery({ name: 'endDate',   required: false, description: 'YYYY-MM-DD' })
+  async getChartFeeding(
+    @Param('familyId') familyId: string,
+    @Query('babyId')    babyIdParam: string | undefined,
+    @Query('startDate') startDateParam: string | undefined,
+    @Query('endDate')   endDateParam: string | undefined,
+  ) {
+    const babyId = await this.resolveBabyId(familyId, babyIdParam);
+    const { startDate, endDate } = this.resolveDateRange(startDateParam, endDateParam);
+    return this.reportService.getDailyFeedingData(babyId, startDate, endDate);
+  }
+
+  /**
+   * 尿布分析逐日数据
+   * GET /api/family/:familyId/report/chart-data/diaper?babyId=&startDate=&endDate=
+   */
+  @Get('chart-data/diaper')
+  @ApiOperation({ summary: '尿布分析逐日数据' })
+  @ApiQuery({ name: 'babyId',    required: false })
+  @ApiQuery({ name: 'startDate', required: false, description: 'YYYY-MM-DD' })
+  @ApiQuery({ name: 'endDate',   required: false, description: 'YYYY-MM-DD' })
+  async getChartDiaper(
+    @Param('familyId') familyId: string,
+    @Query('babyId')    babyIdParam: string | undefined,
+    @Query('startDate') startDateParam: string | undefined,
+    @Query('endDate')   endDateParam: string | undefined,
+  ) {
+    const babyId = await this.resolveBabyId(familyId, babyIdParam);
+    const { startDate, endDate } = this.resolveDateRange(startDateParam, endDateParam);
+    return this.reportService.getDailyDiaperData(babyId, startDate, endDate);
+  }
+
+  /**
+   * 睡眠分析逐日数据
+   * GET /api/family/:familyId/report/chart-data/sleep?babyId=&startDate=&endDate=
+   */
+  @Get('chart-data/sleep')
+  @ApiOperation({ summary: '睡眠分析逐日数据' })
+  @ApiQuery({ name: 'babyId',    required: false })
+  @ApiQuery({ name: 'startDate', required: false, description: 'YYYY-MM-DD' })
+  @ApiQuery({ name: 'endDate',   required: false, description: 'YYYY-MM-DD' })
+  async getChartSleep(
+    @Param('familyId') familyId: string,
+    @Query('babyId')    babyIdParam: string | undefined,
+    @Query('startDate') startDateParam: string | undefined,
+    @Query('endDate')   endDateParam: string | undefined,
+  ) {
+    const babyId = await this.resolveBabyId(familyId, babyIdParam);
+    const { startDate, endDate } = this.resolveDateRange(startDateParam, endDateParam);
+    return this.reportService.getDailySleepData(babyId, startDate, endDate);
+  }
+
+  /**
+   * 健康分析逐日数据（体温 + mood + spirit）
+   * GET /api/family/:familyId/report/chart-data/health?babyId=&startDate=&endDate=
+   */
+  @Get('chart-data/health')
+  @ApiOperation({ summary: '健康分析逐日数据（体温/情绪/精神状态）' })
+  @ApiQuery({ name: 'babyId',    required: false })
+  @ApiQuery({ name: 'startDate', required: false, description: 'YYYY-MM-DD' })
+  @ApiQuery({ name: 'endDate',   required: false, description: 'YYYY-MM-DD' })
+  async getChartHealth(
+    @Param('familyId') familyId: string,
+    @Query('babyId')    babyIdParam: string | undefined,
+    @Query('startDate') startDateParam: string | undefined,
+    @Query('endDate')   endDateParam: string | undefined,
+  ) {
+    const babyId = await this.resolveBabyId(familyId, babyIdParam);
+    const { startDate, endDate } = this.resolveDateRange(startDateParam, endDateParam);
+    return this.reportService.getDailyHealthData(babyId, startDate, endDate);
+  }
+
+  /**
+   * 生长发育全量记录（用于生长曲线）
+   * GET /api/family/:familyId/report/chart-data/growth?babyId=&startDate=&endDate=
+   */
+  @Get('chart-data/growth')
+  @ApiOperation({ summary: '生长发育记录（用于生长曲线）' })
+  @ApiQuery({ name: 'babyId',    required: false })
+  @ApiQuery({ name: 'startDate', required: false, description: 'YYYY-MM-DD' })
+  @ApiQuery({ name: 'endDate',   required: false, description: 'YYYY-MM-DD' })
+  async getChartGrowth(
+    @Param('familyId') familyId: string,
+    @Query('babyId')    babyIdParam: string | undefined,
+    @Query('startDate') startDateParam: string | undefined,
+    @Query('endDate')   endDateParam: string | undefined,
+  ) {
+    const babyId = await this.resolveBabyId(familyId, babyIdParam);
+    const { startDate, endDate } = this.resolveDateRange(startDateParam, endDateParam);
+    return this.reportService.getGrowthRecords(babyId, startDate, endDate);
   }
 
   /**

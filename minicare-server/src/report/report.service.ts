@@ -140,7 +140,10 @@ export interface DailySleepData {
 export interface DailyHealthData {
   date: string;
   temperature: number | null;
-  mood: number | null;
+  /** 情绪：映射后的字符串枚举 happy/neutral/fussy/crying（null 表示当日无健康记录） */
+  mood: string | null;
+  /** 精神状态：来自 symptom_record.spirit（active/normal/tired/lethargic），null 表示当日无症状记录 */
+  spirit: string | null;
 }
 
 export interface GrowthRecord {
@@ -263,57 +266,9 @@ function formatSqlDate(d: unknown): string {
   return String(d).slice(0, 10);
 }
 
-// ── 简单内存缓存（TTL 1小时）─────────────────────────────────────────
-interface CacheEntry<T> {
-  data: T;
-  expireAt: number;
-}
-
-class MemoryCache {
-  private store = new Map<string, CacheEntry<unknown>>();
-  private readonly ttlMs: number;
-
-  constructor(ttlMs = 60 * 60 * 1000) {
-    this.ttlMs = ttlMs;
-  }
-
-  get<T>(key: string): T | null {
-    const entry = this.store.get(key);
-    if (!entry) return null;
-    if (Date.now() > entry.expireAt) {
-      this.store.delete(key);
-      return null;
-    }
-    return entry.data as T;
-  }
-
-  set<T>(key: string, data: T): void {
-    this.store.set(key, { data, expireAt: Date.now() + this.ttlMs });
-  }
-
-  /** 删除指定前缀的所有缓存键 */
-  deleteByPrefix(prefix: string): void {
-    for (const key of this.store.keys()) {
-      if (key.startsWith(prefix)) {
-        this.store.delete(key);
-      }
-    }
-  }
-}
-
 @Injectable()
 export class ReportService {
   constructor(@Inject(DATABASE_POOL) private readonly db: Pool) {}
-
-  /** 图表数据缓存，key = `chart-data:${babyId}:${startDate}:${endDate}` */
-  private readonly chartCache = new MemoryCache(60 * 60 * 1000);
-
-  /**
-   * 清除某个宝宝的所有图表缓存（在记录写入/更新/删除时调用）
-   */
-  invalidateChartCache(babyId: string): void {
-    this.chartCache.deleteByPrefix(`chart-data:${babyId}:`);
-  }
 
   async getSummary(
     babyId: string,
@@ -360,21 +315,14 @@ export class ReportService {
   }
 
   /**
-   * 获取图表逐日数据（带缓存）
-   * GET /report/chart-data?babyId=&startDate=&endDate=
+   * 获取图表逐日数据（已废弃：请使用按 Tab 拆分的独立接口）
+   * @deprecated 使用 getDailyFeedingData / getDailyDiaperData / getDailySleepData / getDailyHealthData / getGrowthRecords
    */
   async getChartData(
     babyId: string,
     startDate: string,
     endDate: string,
-  ): Promise<ChartData & { fromCache: boolean }> {
-    const cacheKey = `chart-data:${babyId}:${startDate}:${endDate}`;
-    const cached = this.chartCache.get<ChartData>(cacheKey);
-    if (cached) {
-      return { ...cached, fromCache: true };
-    }
-
-    // 并行查询各模块逐日数据
+  ): Promise<ChartData> {
     const [feeding, diaper, sleep, health, growth] = await Promise.all([
       this.getDailyFeedingData(babyId, startDate, endDate),
       this.getDailyDiaperData(babyId, startDate, endDate),
@@ -382,14 +330,11 @@ export class ReportService {
       this.getDailyHealthData(babyId, startDate, endDate),
       this.getGrowthRecords(babyId, startDate, endDate),
     ]);
-
-    const result: ChartData = { feeding, diaper, sleep, health, growth };
-    this.chartCache.set(cacheKey, result);
-    return { ...result, fromCache: false };
+    return { feeding, diaper, sleep, health, growth };
   }
 
   // ── 喂养逐日统计 ───────────────────────────────────────────────
-  private async getDailyFeedingData(
+  async getDailyFeedingData(
     babyId: string,
     startDate: string,
     endDate: string,
@@ -450,7 +395,7 @@ export class ReportService {
   }
 
   // ── 尿布逐日统计 ───────────────────────────────────────────────
-  private async getDailyDiaperData(
+  async getDailyDiaperData(
     babyId: string,
     startDate: string,
     endDate: string,
@@ -479,7 +424,7 @@ export class ReportService {
   }
 
   // ── 睡眠逐日统计 ───────────────────────────────────────────────
-  private async getDailySleepData(
+  async getDailySleepData(
     babyId: string,
     startDate: string,
     endDate: string,
@@ -542,13 +487,16 @@ export class ReportService {
   }
 
   // ── 健康逐日数据 ───────────────────────────────────────────────
-  private async getDailyHealthData(
+  async getDailyHealthData(
     babyId: string,
     startDate: string,
     endDate: string,
   ): Promise<{ daily: DailyHealthData[] }> {
-    // 每条记录单独返回（体温/情绪）
-    const [rows] = await this.db.query<any[]>(
+    // mood 映射：TINYINT → string 枚举
+    const INT_TO_MOOD: Record<number, string> = { 1: 'happy', 2: 'neutral', 3: 'fussy', 4: 'crying' };
+
+    // 查询 health_record：每条记录返回（体温 + mood）
+    const [healthRows] = await this.db.query<any[]>(
       `SELECT
          DATE(record_time) AS day_date,
          temperature,
@@ -558,19 +506,46 @@ export class ReportService {
        ORDER BY record_time ASC`,
       [babyId, startDate, endDate],
     );
+
+    // 查询 symptom_record：每日取最新一条的 spirit
+    const [spiritRows] = await this.db.query<any[]>(
+      `SELECT
+         DATE(record_time) AS day_date,
+         spirit
+       FROM symptom_record
+       WHERE baby_id = ? AND DATE(record_time) BETWEEN ? AND ?
+         AND spirit IS NOT NULL
+       ORDER BY record_time ASC`,
+      [babyId, startDate, endDate],
+    );
+
+    // 按日期汇总 spirit（取当日最后一条，即 ORDER BY ASC 后最后覆盖）
+    const spiritByDay = new Map<string, string>();
+    for (const r of spiritRows as any[]) {
+      const day = r.day_date instanceof Date
+        ? r.day_date.toISOString().slice(0, 10)
+        : String(r.day_date).slice(0, 10);
+      if (r.spirit) spiritByDay.set(day, String(r.spirit));
+    }
+
     return {
-      daily: (rows as any[]).map((r) => ({
-        date: r.day_date instanceof Date
+      daily: (healthRows as any[]).map((r) => {
+        const dateStr = r.day_date instanceof Date
           ? r.day_date.toISOString().slice(0, 10)
-          : String(r.day_date),
-        temperature: r.temperature != null ? Number(r.temperature) : null,
-        mood: r.mood != null ? Number(r.mood) : null,
-      })),
+          : String(r.day_date).slice(0, 10);
+        const moodInt = r.mood != null ? Number(r.mood) : null;
+        return {
+          date: dateStr,
+          temperature: r.temperature != null ? Number(r.temperature) : null,
+          mood: moodInt != null ? (INT_TO_MOOD[moodInt] ?? null) : null,
+          spirit: spiritByDay.get(dateStr) ?? null,
+        };
+      }),
     };
   }
 
   // ── 生长记录全量（用于曲线） ────────────────────────────────────
-  private async getGrowthRecords(
+  async getGrowthRecords(
     babyId: string,
     startDate: string,
     endDate: string,
