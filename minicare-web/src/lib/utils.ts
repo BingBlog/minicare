@@ -163,8 +163,14 @@ export function getRecordTime(rec: {
   visit_date?: string
   created_at?: string
 }): string {
+  // record_time 可能是完整 ISO 字符串（含日期，如 "2026-04-12T08:32:00"）
+  // 也可能是 growth 记录的纯时间字符串（如 "08:32:00"）。
+  // 纯时间字符串不含 "-"，不能作为排序/分组依据，需要跳过，改用 record_date。
+  const rt = rec.record_time
+  const recordTimeValid = rt && rt.includes('-')
+
   return (
-    rec.record_time ??
+    (recordTimeValid ? rt : undefined) ??
     rec.time ??
     rec.startTime ??
     rec.start_time ??
@@ -172,6 +178,34 @@ export function getRecordTime(rec: {
     rec.visit_date ??
     rec.created_at
   ) ?? ''
+}
+
+/**
+ * 从 RecordItem 中提取用于列表展示的 HH:mm 时间字符串。
+ *
+ * 与 getRecordTime 的区别：
+ * - getRecordTime  → 返回可被 new Date() 正确解析的完整时间串，用于排序/分组
+ * - getDisplayTime → 返回 HH:mm，专用于 UI 展示
+ *
+ * growth 记录的 record_time 是纯时间串 "HH:mm:ss"，不含日期，
+ * 直接截取前 5 位即可；其余记录走 getRecordTime 再 formatTime。
+ */
+export function getDisplayTime(rec: {
+  record_time?: string
+  time?: string
+  startTime?: string
+  start_time?: string
+  record_date?: string
+  visit_date?: string
+  created_at?: string
+}): string {
+  const rt = rec.record_time
+  // 纯时间串（不含 "-"），直接取 HH:mm
+  if (rt && !rt.includes('-')) {
+    return rt.substring(0, 5)
+  }
+  // 其余情况走完整时间串再格式化
+  return formatTime(getRecordTime(rec))
 }
 
 /**

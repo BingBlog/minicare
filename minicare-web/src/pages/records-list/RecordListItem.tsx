@@ -19,7 +19,7 @@
  */
 import RecordTypeIcon from '@/components/record/RecordTypeIcon'
 import { getRecordSummary, getRecordListCompactParts, PULSE_STYLE } from '@/components/record/RecordContent'
-import { formatTime, getRecordTime, getRecordType } from '@/lib/utils'
+import { getDisplayTime, getRecordTime, getRecordType } from '@/lib/utils'
 import type { RecordItem } from '@/api'
 import { IconChevronRight } from '@/components/ui/icons'
 
@@ -55,7 +55,7 @@ function getIconType(record: RecordItem): string {
 export default function RecordListItem({ record, showDivider, onClick }: RecordListItemProps) {
   const recType = getRecordType(record)
   const iconType = getIconType(record)
-  const time = getRecordTime(record)
+  const displayTime = getDisplayTime(record)
   const detail = toDetail(record)
   const summary = getRecordSummary(recType, detail)
   const { label, tags, meta } = getRecordListCompactParts(recType, detail)
@@ -118,7 +118,7 @@ export default function RecordListItem({ record, showDivider, onClick }: RecordL
             className="shrink-0 w-[34px] text-right text-[11px] font-medium tabular-nums leading-none whitespace-nowrap"
             style={{ color: '#9A7E82' }}
           >
-            {formatTime(time)}
+            {displayTime}
           </span>
 
           {/* 列 6：箭头 */}
