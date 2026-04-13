@@ -324,10 +324,36 @@ function FeedingContent({ d }: { d: Record<string, unknown> }) {
     );
   }
 
+  // Migration 008: supplement 现在是独立的 feed_type，不再依赖 complementary_food==='营养素'
+  if (feedType === "supplement") {
+    const suppItems = d.supplement_items as
+      | Array<{ label?: string; dose?: string; unit?: string }>
+      | undefined;
+    return (
+      <>
+        <div className="text-sm font-medium" style={{ color: "#7a5a60" }}>
+          营养素
+        </div>
+        <div className="flex flex-wrap gap-1 mt-1">
+          {suppItems && suppItems.length > 0
+            ? suppItems.slice(0, 3).map((item, i) => (
+                <FoodChip key={i}>
+                  <IconPill size={10} color="#B07820" />
+                  {item.label}
+                  {item.dose}
+                  {item.unit}
+                </FoodChip>
+              ))
+            : null}
+        </div>
+      </>
+    );
+  }
+
   if (feedType === "complementary") {
     const food = d.complementary_food as string | undefined;
     const amountG = d.amount_g as number | undefined;
-    const isSupp = food === "营养素";
+    const isSupp = food === "营养素"; // 兼容旧数据
     const suppItems = d.supplement_items as
       | Array<{ label?: string; dose?: string; unit?: string }>
       | undefined;
@@ -684,9 +710,25 @@ export function getRecordListCompactParts(
           tags: <div className="flex flex-wrap gap-1">{tagNodes}</div>,
           meta: null,
         };
+      } else if (feedType === "supplement") {
+        // Migration 008: supplement 独立 feed_type
+        if (suppItems && suppItems.length > 0) {
+          suppItems.forEach((item, i) => {
+            const pillLabel = item.dose
+              ? `${item.label} ${item.dose}${item.unit ?? ""}`
+              : (item.label ?? "");
+            tagNodes.push(<Pill key={i}>{pillLabel}</Pill>);
+          });
+        }
+        return {
+          primary: null,
+          label: "营养素",
+          tags: tagNodes.length > 0 ? <div className="flex flex-wrap gap-1">{tagNodes}</div> : null,
+          meta: null,
+        };
       } else if (feedType === "complementary") {
         if (isSupp && suppItems && suppItems.length > 0) {
-          // 营养素：直接展示各剂量 Pill
+          // 兼容旧数据：complementary_food==='营养素'
           suppItems.forEach((item, i) => {
             const pillLabel = item.dose
               ? `${item.label} ${item.dose}${item.unit ?? ""}`
@@ -963,6 +1005,10 @@ export function getRecordSummary(
         const dur = d.duration_min as number | undefined;
         if (dur) return <SummaryMetric value={fmtDuration(dur)} />;
       }
+      if (feedType === "supplement") {
+        // 营养素：右侧 metric 无数字展示，返回 null
+        return null;
+      }
       if (feedType === "complementary") {
         const amountG = d.amount_g as number | undefined;
         if (amountG)
@@ -1069,8 +1115,11 @@ export default function RecordContent({
   const { getLabel } = useAppConfig();
   const d: Record<string, unknown> = detail ?? {};
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const getLabelAny = getLabel as any;
+
   if (compact) {
-    const { primary, tags, meta } = getRecordListCompactParts(type, d, getLabel);
+    const { primary, tags, meta } = getRecordListCompactParts(type, d, getLabelAny);
     return (
       <div className="flex min-w-0 flex-wrap items-center gap-1.5">
         {primary}
@@ -1084,19 +1133,19 @@ export default function RecordContent({
     case "feeding":
       return <FeedingContent d={d} />;
     case "sleep":
-      return <SleepContent d={d} getLabel={getLabel} />;
+      return <SleepContent d={d} getLabel={getLabelAny} />;
     case "diaper":
-      return <DiaperContent d={d} getLabel={getLabel} />;
+      return <DiaperContent d={d} getLabel={getLabelAny} />;
     case "activity":
-      return <ActivityContent d={d} getLabel={getLabel} />;
+      return <ActivityContent d={d} getLabel={getLabelAny} />;
     case "symptom":
-      return <SymptomContent d={d} getLabel={getLabel} />;
+      return <SymptomContent d={d} getLabel={getLabelAny} />;
     case "health":
-      return <HealthContent d={d} getLabel={getLabel} />;
+      return <HealthContent d={d} getLabel={getLabelAny} />;
     case "growth":
       return <GrowthContent d={d} />;
     case "medical":
-      return <MedicalContent d={d} getLabel={getLabel} />;
+      return <MedicalContent d={d} getLabel={getLabelAny} />;
     default: {
       const cfg = RECORD_TYPE_CFG[type];
       return (

@@ -254,7 +254,7 @@ export class FamilyService {
       UNION ALL
       SELECT 'feeding' AS type, id, record_time AS time, note,
         JSON_OBJECT(
-          'feed_type',        'complementary',
+          'feed_type',        'supplement',
           'supplement_items', supplement_items
         ) AS detail
       FROM feeding_supplement_record WHERE baby_id = ? AND DATE(record_time) = ?
@@ -334,11 +334,13 @@ export class FamilyService {
       let detail: Record<string, unknown> = {};
       if (row.detail) {
         const parsed = typeof row.detail === 'string' ? JSON.parse(row.detail) : row.detail;
-        detail = {
-          ...parsed,
-          // supplement_items 是 feeding_supplement_record 中的 JSON 列，MySQL 驱动可能以字符串返回
-          supplement_items: this.tryParseJson(parsed.supplement_items),
-        };
+        // supplement_items 是 feeding_supplement_record 中的 JSON 列，MySQL 驱动可能以字符串返回
+        // 仅当 parsed 里本身有该字段时才做 JSON 解析，避免其他类型记录多出 null 字段
+        if (Object.prototype.hasOwnProperty.call(parsed, 'supplement_items')) {
+          detail = { ...parsed, supplement_items: this.tryParseJson(parsed.supplement_items) };
+        } else {
+          detail = { ...parsed };
+        }
       }
       return { ...row, detail };
     });

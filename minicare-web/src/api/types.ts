@@ -132,7 +132,8 @@ export interface RecordBase {
  *   feeding_supplement_record — 营养素
  * feed_type 字段由后端根据来源表展入
  */
-export type FeedType = 'breast' | 'formula' | 'complementary'
+/** Migration 008: supplement 是独立子表的 feed_type，不再用 complementary+食物名区分 */
+export type FeedType = 'breast' | 'formula' | 'complementary' | 'supplement'
 export type BreastSide = 'left' | 'right' | 'both'
 
 /** 营养素条目 */
