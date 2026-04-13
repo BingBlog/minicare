@@ -33,8 +33,29 @@ import {
   ToastMessage,
   nowDate,
   nowTime,
+  isoToLocalDate,
   useToastMsg,
 } from "../shared";
+
+/**
+ * record_date 可能是 ISO 字符串（"2026-04-12T16:00:00.000Z"）或纯日期（"2026-04-12"）
+ * 统一转换为 YYYY-MM-DD 本地日期
+ */
+function toLocalDate(raw: string): string {
+  if (!raw) return nowDate();
+  // 含 T 或 Z → ISO 字符串，用 isoToLocalDate 解析本地分量
+  if (raw.includes('T') || raw.includes('Z')) return isoToLocalDate(raw);
+  // 已是 YYYY-MM-DD 格式，直接返回
+  return raw.slice(0, 10);
+}
+
+/**
+ * record_time 后端可能返回 "HH:mm:ss"，TimePicker 仅需 "HH:mm"
+ */
+function toHHmm(raw: string): string {
+  if (!raw) return nowTime();
+  return raw.slice(0, 5);
+}
 
 type MeasureKey = "height" | "weight" | "head";
 
@@ -51,12 +72,12 @@ export default function GrowthFormPage() {
   const isEditMode = Boolean(editRecord);
 
   const [recordDate, setRecordDate] = useState(() => {
-    if (editRecord?.record_date) return editRecord.record_date;
+    if (editRecord?.record_date) return toLocalDate(editRecord.record_date);
     return nowDate();
   });
 
   const [recordTime, setRecordTime] = useState(() => {
-    if (editRecord?.record_time) return editRecord.record_time;
+    if (editRecord?.record_time) return toHHmm(editRecord.record_time);
     return nowTime();
   });
 
@@ -103,8 +124,8 @@ export default function GrowthFormPage() {
     recordsApi.growth.getOne(currentFamily.id, editRecord.id)
       .then((fresh) => {
         if (!fresh) return;
-        if (fresh.record_date) setRecordDate(fresh.record_date);
-        if (fresh.record_time) setRecordTime(fresh.record_time);
+        if (fresh.record_date) setRecordDate(toLocalDate(fresh.record_date));
+        if (fresh.record_time) setRecordTime(toHHmm(fresh.record_time));
         if (fresh.height_mm != null) setHeight((fresh.height_mm / 10).toFixed(1));
         if (fresh.weight_g != null) setWeight((fresh.weight_g / 1000).toFixed(2));
         if (fresh.head_mm != null) setHead((fresh.head_mm / 10).toFixed(1));
