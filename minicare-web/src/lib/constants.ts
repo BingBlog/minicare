@@ -204,31 +204,30 @@ export const ALLERGY_LEVEL_OPTIONS: { value: AllergyLevel; label: string; active
 // ────────────────────────────────────────────────────────────────────────────
 
 /**
- * 角色 ID → 中文名称
- * 1 = owner（创建者，可邀请/移除成员）
- * 2 = member（成员，可查看和新增记录）
+ * 角色 → 中文名称
+ * Migration 008: family_member.role TINYINT → VARCHAR('owner' | 'member')
  */
-export const ROLE_TEXT: Record<number, string> = {
-  1: '创建者',
-  2: '成员',
+export const ROLE_TEXT: Record<string, string> = {
+  owner:  '创建者',
+  member: '成员',
 }
 
 /** 角色 → 头像背景渐变/颜色 */
-export const ROLE_AVATAR_STYLE: Record<number, React.CSSProperties> = {
-  1: { background: 'linear-gradient(135deg, #F9A8C0, #F87098)', boxShadow: '0 2px 8px rgba(248,112,152,.3)' },
-  2: { background: '#EEF6FF' },
+export const ROLE_AVATAR_STYLE: Record<string, React.CSSProperties> = {
+  owner:  { background: 'linear-gradient(135deg, #F9A8C0, #F87098)', boxShadow: '0 2px 8px rgba(248,112,152,.3)' },
+  member: { background: '#EEF6FF' },
 }
 
 /** 角色 → 徽章背景/前景色 */
-export const ROLE_BADGE_STYLE: Record<number, React.CSSProperties> = {
-  1: { background: '#FFF0F4', color: '#F87098' },
-  2: { background: '#EEF6FF', color: '#4A90D9' },
+export const ROLE_BADGE_STYLE: Record<string, React.CSSProperties> = {
+  owner:  { background: '#FFF0F4', color: '#F87098' },
+  member: { background: '#EEF6FF', color: '#4A90D9' },
 }
 
 /** 角色 → 头像图标 stroke 颜色 */
-export const ROLE_ICON_COLOR: Record<number, string> = {
-  1: '#fff',
-  2: '#4A90D9',
+export const ROLE_ICON_COLOR: Record<string, string> = {
+  owner:  '#fff',
+  member: '#4A90D9',
 }
 
 // ────────────────────────────────────────────────────────────────────────────

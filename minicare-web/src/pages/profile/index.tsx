@@ -163,7 +163,7 @@ export default function ProfilePage() {
   const [membersLoading, setMembersLoading] = useState(false);
 
   // 当前用户在家庭中的角色（用于控制邀请/移除权限）
-  const [currentUserRole, setCurrentUserRole] = useState<1 | 2>(2);
+  const [currentUserRole, setCurrentUserRole] = useState<'owner' | 'member'>('member');
 
   // ── 编辑弹层操作 ──────────────────────────────────────────────
 
@@ -244,7 +244,7 @@ export default function ProfilePage() {
 
       // 找到自身成员记录，拿到角色
       const selfMember = enriched.find((m) => m.is_self);
-      setCurrentUserRole((selfMember?.role as 1 | 2) ?? 2);
+      setCurrentUserRole((selfMember?.role as 'owner' | 'member') ?? 'member');
     } catch {
       showToast("加载成员列表失败");
     } finally {
@@ -258,7 +258,7 @@ export default function ProfilePage() {
     const enriched = list.map((m) => ({ ...m, is_self: m.user_id === user?.id }));
     setMembers(enriched);
     const selfMember = enriched.find((m) => m.is_self);
-    setCurrentUserRole((selfMember?.role as 1 | 2) ?? 2);
+    setCurrentUserRole((selfMember?.role as 'owner' | 'member') ?? 'member');
   };
 
   /** 按手机号邀请成员 */
@@ -311,7 +311,7 @@ export default function ProfilePage() {
   ];
 
   /** 家庭分组：家庭成员管理（合并邀请入口）*/
-  const activeCount = members.filter((m) => m.status === 2 || m.status === undefined).length;
+  const activeCount = members.filter((m) => m.status === 'active' || m.status === undefined).length;
   const familyRows: SettingsRow[] = [
     {
       id: "members",
@@ -481,7 +481,7 @@ export default function ProfilePage() {
         open={membersOpen}
         members={members}
         loading={membersLoading}
-        isOwner={currentUserRole === 1}
+        isOwner={currentUserRole === 'owner'}
         onInviteByPhone={handleInviteByPhone}
         onRemoveMember={handleRemoveMember}
         onClose={closeMembers}

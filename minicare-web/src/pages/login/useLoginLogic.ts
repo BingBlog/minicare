@@ -131,8 +131,15 @@ export function useLoginLogic() {
         await authApi.sendCode(phone)
       } else {
         const { data, error: sdkError } = await auth.signInWithOtp({ phone })
-        if (sdkError) throw new Error(sdkError.message || '发送失败，请重试')
-        if (data?.verifyOtp) setVerifyOtp(() => data.verifyOtp!)
+        // "用户已存在" 不是真正的错误，verifyOtp 仍然有效，可继续走验证流程
+        // 只有在 verifyOtp 不存在时才视为真正的发送失败
+        if (data?.verifyOtp) {
+          setVerifyOtp(() => data.verifyOtp!)
+        } else if (sdkError) {
+          throw new Error(sdkError.message || '发送失败，请重试')
+        } else {
+          throw new Error('发送失败，请重试')
+        }
       }
       setCodeSent(true)
       startCountdown()

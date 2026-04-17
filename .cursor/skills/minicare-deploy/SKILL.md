@@ -36,34 +36,48 @@ description: minicare 项目构建发布操作手册。包含前端静态托管�
 
 ### 1.3 后端参数（minicare-server）
 
-| 属性            | 值                                                                |
-| --------------- | ----------------------------------------------------------------- |
-| 项目目录        | `/Users/bing/Desktop/工作区/minicare/minicare-server`             |
-| 构建命令        | `npm run build`（= `nest build`）                                 |
-| 预检命令        | `bash scripts/deploy.sh`                                          |
-| CloudRun 服务名 | `minicare-api`                                                    |
-| serverType      | `container`                                                       |
-| 访问域名        | `https://minicare-api-240137-10-1253854169.sh.run.tcloudbase.com` |
-| 健康检查端点    | `GET /health`                                                     |
+| 属性            | staging                                                                           | production                                                                                  |
+| --------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| 项目目录        | `/Users/bing/Desktop/工作区/minicare/minicare-server`                             | 同左                                                                                        |
+| 构建命令        | `npm run build`（= `nest build`）                                                 | 同左                                                                                        |
+| 预检命令        | `bash scripts/deploy.sh`                                                          | 同左                                                                                        |
+| CloudRun 服务名 | `minicare-api`                                                                    | `minicare-api-production`                                                                   |
+| serverType      | `container`                                                                       | `container`                                                                                 |
+| 访问域名        | `https://minicare-api-240137-10-1253854169.sh.run.tcloudbase.com`                | `https://minicare-api-production-240137-10-1253854169.sh.run.tcloudbase.com`                |
+| DB_NAME         | `minicare_staging`                                                                | `minicare-cloud-6gqledlle0132cbe`                                                           |
+| AUTH_TEST_MODE  | `true`（固定验证码 123456）                                                       | `false`（真实短信）                                                                         |
+| 健康检查端点    | `GET /health`                                                                     | `GET /health`                                                                               |
 
 **完整 manageCloudRun serverConfig（可直接复制）**：
 
 > 以下 `EnvParams` 中的敏感值（`DB_HOST / DB_PORT / DB_USER / DB_PASS / JWT_SECRET`）需从 `minicare-server/.env.local` 读取后填入。
 
+**staging 部署（`minicare-api`）：**
 ```
 manageCloudRun(
   action     = 'deploy',
   serverName = 'minicare-api',
-  targetPath = '<minicare-server 绝对路径>',
+  targetPath = '/Users/bing/Desktop/工作区/minicare/minicare-server',
   serverType = 'container',
   serverConfig = {
-    Cpu: 1,
-    Mem: 2,
-    MinNum: 0,
-    MaxNum: 5,
-    Port: 3000,
+    Cpu: 0.5, Mem: 1, MinNum: 0, MaxNum: 5, Port: 3000,
     OpenAccessTypes: ['OA', 'PUBLIC', 'MINIAPP'],
-    EnvParams: "{\"NODE_ENV\":\"production\",\"TCB_ENV_ID\":\"minicare-cloud-6gqledlle0132cbe\",\"DB_HOST\":\"<DB_HOST>\",\"DB_PORT\":\"<DB_PORT>\",\"DB_NAME\":\"minicare-cloud-6gqledlle0132cbe\",\"DB_USER\":\"<DB_USER>\",\"DB_PASS\":\"<DB_PASS>\",\"JWT_SECRET\":\"<JWT_SECRET>\",\"AUTH_TEST_MODE\":\"<AUTH_TEST_MODE>\",\"CORS_ORIGINS\":\"https://minicare.top,https://minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com\"}"
+    EnvParams: "{\"NODE_ENV\":\"production\",\"TCB_ENV_ID\":\"minicare-cloud-6gqledlle0132cbe\",\"DB_HOST\":\"<DB_HOST>\",\"DB_PORT\":\"<DB_PORT>\",\"DB_NAME\":\"minicare_staging\",\"DB_USER\":\"<DB_USER>\",\"DB_PASS\":\"<DB_PASS>\",\"JWT_SECRET\":\"<JWT_SECRET>\",\"AUTH_TEST_MODE\":\"true\",\"CORS_ORIGINS\":\"https://minicare.top,https://minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com\"}"
+  }
+)
+```
+
+**production 部署（`minicare-api-production`）：**
+```
+manageCloudRun(
+  action     = 'deploy',
+  serverName = 'minicare-api-production',
+  targetPath = '/Users/bing/Desktop/工作区/minicare/minicare-server',
+  serverType = 'container',
+  serverConfig = {
+    Cpu: 0.5, Mem: 1, MinNum: 0, MaxNum: 5, Port: 3000,
+    OpenAccessTypes: ['OA', 'PUBLIC', 'MINIAPP'],
+    EnvParams: "{\"NODE_ENV\":\"production\",\"TCB_ENV_ID\":\"minicare-cloud-6gqledlle0132cbe\",\"DB_HOST\":\"<DB_HOST>\",\"DB_PORT\":\"<DB_PORT>\",\"DB_NAME\":\"minicare-cloud-6gqledlle0132cbe\",\"DB_USER\":\"<DB_USER>\",\"DB_PASS\":\"<DB_PASS>\",\"JWT_SECRET\":\"<JWT_SECRET>\",\"AUTH_TEST_MODE\":\"false\",\"CORS_ORIGINS\":\"https://minicare.top,https://minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com\"}"
   }
 )
 ```
@@ -82,7 +96,7 @@ manageCloudRun(
 | 函数名     | `keepalive-ping`                                                                             |
 | 函数根目录 | `/Users/bing/Desktop/工作区/minicare/minicare-server/functions`                              |
 | handler    | `index.main`                                                                                 |
-| 环境变量   | `CLOUDRUN_HEALTH_URL=https://minicare-api-240137-10-1253854169.sh.run.tcloudbase.com/health` |
+| 环境变量   | `CLOUDRUN_HEALTH_URL=https://minicare-api-production-240137-10-1253854169.sh.run.tcloudbase.com/health` |
 | 验证标志   | 调用后日志含 `status=200`                                                                    |
 
 ### 1.5 数据库迁移参数
@@ -192,8 +206,10 @@ queryCloudRun(action='detail', detailServerName='minicare-api')
 **成功判定**：`OnlineVersionInfos[0].VersionName` 比部署前 +1。
 
 ```bash
-# Step 4b：验证服务健康
+# Step 4b：验证服务健康（staging）
 curl https://minicare-api-240137-10-1253854169.sh.run.tcloudbase.com/health
+# Step 4b：验证服务健康（production）
+curl https://minicare-api-production-240137-10-1253854169.sh.run.tcloudbase.com/health
 ```
 
 **成功判定**：返回 `{"status":"ok","db":{"host_set":true,"pass_set":true,...}}`  
@@ -202,9 +218,9 @@ curl https://minicare-api-240137-10-1253854169.sh.run.tcloudbase.com/health
 
 ### 完成报告格式
 
-> ✅ 后端发布完成  
+> ✅ 后端发布完成（staging / production）  
 > 新版本号：X  
-> /health 响应：{"status":"ok","db":{...}}
+> /health 响应：{"status":"ok","db":{"name":"minicare_staging 或 minicare-cloud-..."}}
 
 ---
 
@@ -331,5 +347,6 @@ bash scripts/migrate.sh --status
 | 部署后 `/health` 超时 30s                   | CloudRun 冷启动                     | 重试一次；或检查 `DB_HOST` 是否使用了公网地址                                   |
 | `/health` 返回 `db.host_set=false`          | EnvParams 未生效                    | 重新执行 manageCloudRun，确认 EnvParams 字符串格式正确                          |
 | 数据库连接超时（upstream-timecost ≈ 30000） | CloudRun 使用了内网地址             | 确认 DB_HOST=`sh-cynosdbmysql-grp-6a0nj6a8.sql.tencentcdb.com`，DB_PORT=`21002` |
+| 生产前端登录失败（400/验证码错误）           | AUTH_TEST_MODE 未设为 false         | 确认 `minicare-api-production` 的 EnvParams 中 `AUTH_TEST_MODE=false`            |
 | 云函数调用返回 error                        | 函数代码错误或环境变量未配          | `queryFunctions(listFunctionLogs)` 查看错误日志                                 |
 | 迁移执行失败中断                            | SQL 语法错误或字段冲突              | 修复 SQL 文件，重新执行；`schema_migrations` 表中未记录失败的版本，可安全重试   |

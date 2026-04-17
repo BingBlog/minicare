@@ -9,13 +9,13 @@
  *   - 角色权限说明卡片
  *   - 关闭按钮
  *
- * 角色体系（role 字段）：
- *   1 = 创建者（owner）：可邀请/移除成员
- *   2 = 成员（member）：可查看和新增记录
+ * 角色体系（role 字段，Migration 008: VARCHAR）：
+ *   'owner'  = 创建者：可邀请/移除成员
+ *   'member' = 成员：可查看和新增记录
  *
- * 成员状态（status 字段）：
- *   1 = pending（待接受，对方尚未登录激活）
- *   2 = active（正式成员）
+ * 成员状态（status 字段，Migration 008: VARCHAR）：
+ *   'pending' = 待接受（对方尚未登录激活）
+ *   'active'  = 正式成员
  *
  * 被引用：ProfilePage.tsx
  */
@@ -276,9 +276,9 @@ export default function MembersModal({
 
   // ── 成员列表分组 ──────────────────────────────────────────────
   const activeMembers = members.filter(
-    (m) => m.status === 2 || m.status === undefined,
+    (m) => m.status === 'active' || m.status === undefined,
   );
-  const pendingMembers = members.filter((m) => m.status === 1);
+  const pendingMembers = members.filter((m) => m.status === 'pending');
 
   /** 关闭并重置表单 */
   const handleClose = () => {
@@ -460,7 +460,7 @@ export default function MembersModal({
               </div>
             ) : (
               activeMembers.map((member, i) => {
-                const role = member.role ?? 2;
+                const role = member.role ?? 'member';
                 const name = member.name ?? "未知用户";
                 const sub = member.is_self
                   ? `${member.phone ? member.phone + " · " : ""}本账号`
@@ -468,7 +468,7 @@ export default function MembersModal({
                     ? `${member.phone ? member.phone + " · " : ""}已加入 ${timeAgo(member.joined_at)}`
                     : (member.phone ?? "");
 
-                const canRemove = isOwner && role !== 1 && !member.is_self;
+                const canRemove = isOwner && role !== 'owner' && !member.is_self;
 
                 return (
                   <div
