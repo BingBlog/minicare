@@ -63,7 +63,9 @@ export class AuthService {
     let phone = '';
     try {
       const envId = process.env.TCB_ENV_ID!;
-      const apiUrl = `https://${envId}.api.tcloudbasegateway.com/v1/auth/users/me`;
+      // CloudBase JS SDK v2 颁发的 access_token 需通过以下地址验证
+      // 响应格式：{ sub, name, phone_number, user_id, ... }
+      const apiUrl = `https://${envId}.ap-shanghai.tcb-api.tencentcloudapi.com/auth/v1/user/me`;
       const resp = await fetch(apiUrl, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
@@ -73,14 +75,14 @@ export class AuthService {
         throw new UnauthorizedException('CloudBase Token 无效');
       }
       const data = await resp.json() as any;
-      const tcbUser = data?.data?.user ?? data?.user ?? data;
-      phone = tcbUser?.phone ?? tcbUser?.phone_number;
+      // 响应直接是用户对象，phone_number 格式为 "+86 13146989718"
+      phone = data?.phone_number ?? data?.phone;
       if (!phone) {
         console.error('[Auth] tcbLogin: 未获取到手机号', JSON.stringify(data));
         throw new BadRequestException('无法获取手机号，请确认已绑定手机号');
       }
-      // 去除区号前缀，如 +8613800000000 → 13800000000
-      phone = phone.replace(/^\+?86/, '');
+      // 去除区号前缀及空格，如 "+86 13146989718" → "13146989718"
+      phone = phone.replace(/^\+?86\s*/, '');
     } catch (err: any) {
       if (err instanceof UnauthorizedException || err instanceof BadRequestException) throw err;
       console.error('[Auth] tcbLogin error:', err);
