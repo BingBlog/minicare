@@ -3,6 +3,7 @@
  */
 import type { RecordItem } from '@/api'
 import { getRecordTime, getRecordType } from '@/lib/utils'
+import dayjs from 'dayjs'
 
 export type RecordTypeKey =
   | 'feeding'
@@ -36,7 +37,7 @@ export function sortDayItems(items: RecordItem[], mode: RecordsSortMode): Record
   const copy = [...items]
   if (mode === 'time') {
     copy.sort(
-      (a, b) => new Date(getRecordTime(b)).getTime() - new Date(getRecordTime(a)).getTime()
+      (a, b) => dayjs(getRecordTime(b)).diff(dayjs(getRecordTime(a)))
     )
     return copy
   }
@@ -48,7 +49,7 @@ export function sortDayItems(items: RecordItem[], mode: RecordsSortMode): Record
     const oa = orderIdx(getRecordType(a))
     const ob = orderIdx(getRecordType(b))
     if (oa !== ob) return oa - ob
-    return new Date(getRecordTime(b)).getTime() - new Date(getRecordTime(a)).getTime()
+    return dayjs(getRecordTime(b)).diff(dayjs(getRecordTime(a)))
   })
   return copy
 }
