@@ -6,16 +6,11 @@ import React from 'react'
 import { ScatterChart, DonutChart } from '@/components/charts'
 import type { DailyHealthData } from '@/api/report'
 import { useAppConfig } from '@/lib/useAppConfig'
+import { formatDateSlash } from '@/lib/utils'
 
 interface HealthTabProps {
   data: DailyHealthData[] | null
   loading: boolean
-}
-
-/** 格式化日期为简短标签（MM-DD -> M/D） */
-function formatDateLabel(dateStr: string): string {
-  const [year, month, day] = dateStr.split('-')
-  return `${parseInt(month)}/${parseInt(day)}`
 }
 
 /** 情绪在 Y 轴上的数值：越高越偏正面（视觉上更靠上） */
@@ -57,7 +52,7 @@ export function HealthTab({ data, loading }: HealthTabProps) {
     )
   }
 
-  const xLabels = data.map((d) => formatDateLabel(d.date))
+  const xLabels = data.map((d) => formatDateSlash(d.date))
   const xSlotCount = data.length
 
   const tempPoints = data

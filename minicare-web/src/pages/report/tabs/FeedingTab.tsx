@@ -7,6 +7,7 @@ import { LineChart, StackedBarChart } from "@/components/charts";
 import type { DailyFeedingData } from "@/api/report";
 import { milkTypeOptions } from "@/pages/records/feeding/types";
 import { nowDate } from "@/pages/records/shared";
+import { formatDateSlash } from "@/lib/utils";
 
 interface FeedingTabProps {
   data: DailyFeedingData[] | null;
@@ -15,12 +16,6 @@ interface FeedingTabProps {
 
 const UNLABELED_MILK_KEY = "unlabeled";
 
-
-/** 格式化日期为简短标签（MM-DD -> M/D） */
-function formatDateLabel(dateStr: string): string {
-  const [, month, day] = dateStr.split("-");
-  return `${parseInt(month ?? "0", 10)}/${parseInt(day ?? "0", 10)}`;
-}
 
 function milkTypeLabel(key: string): string {
   if (key === UNLABELED_MILK_KEY) return "未标注";
@@ -78,12 +73,12 @@ export function FeedingTab({ data, loading }: FeedingTabProps) {
   const histDays = hist.length;
 
   const lineChartData = data.map((d) => ({
-    label: formatDateLabel(d.date),
+    label: formatDateSlash(d.date),
     value: d.formulaMl,
   }));
 
   const stackedData = data.map((d) => ({
-    label: formatDateLabel(d.date),
+    label: formatDateSlash(d.date),
     values: {
       母乳: d.breastCount,
       配方奶: Math.round(d.formulaMl / 90),
@@ -106,7 +101,7 @@ export function FeedingTab({ data, loading }: FeedingTabProps) {
 
   const milkStackedData = showMilkTypeStacked
     ? data.map((d) => ({
-        label: formatDateLabel(d.date),
+        label: formatDateSlash(d.date),
         values: Object.fromEntries(
           milkSeries.order.map((k) => [k, d.formulaMlByMilkType?.[k] ?? 0]),
         ),

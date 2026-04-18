@@ -5,26 +5,11 @@
 import React from 'react'
 import { LineChart } from '@/components/charts'
 import type { DailySleepData } from '@/api/report'
+import { formatDateSlash, formatDurationMinutes } from '@/lib/utils'
 
 interface SleepTabProps {
   data: DailySleepData[] | null
   loading: boolean
-}
-
-/** 格式化日期为简短标签（MM-DD -> M/D） */
-function formatDateLabel(dateStr: string): string {
-  const [year, month, day] = dateStr.split('-')
-  return `${parseInt(month)}/${parseInt(day)}`
-}
-
-/** 格式化分钟为小时分钟 */
-function formatDuration(minutes: number): string {
-  const safe = Number.isFinite(minutes) ? minutes : 0
-  const hours = Math.floor(safe / 60)
-  const mins = Math.round(safe % 60)
-  if (hours === 0) return `${mins}分钟`
-  if (mins === 0) return `${hours}小时`
-  return `${hours}小时${mins}分钟`
 }
 
 /** 分钟转图表用小时（保留 1 位小数） */
@@ -51,7 +36,7 @@ export function SleepTab({ data, loading }: SleepTabProps) {
   }
 
   const seriesData = data.map((d) => ({
-    label: formatDateLabel(d.date),
+    label: formatDateSlash(d.date),
     values: {
       total: minToHoursChart(Number(d.totalMin) || 0),
       night: minToHoursChart(Number(d.nightSleepMin) || 0),
@@ -82,7 +67,7 @@ export function SleepTab({ data, loading }: SleepTabProps) {
       <div className="grid grid-cols-2 gap-3">
         <div className="bg-white rounded-xl p-3 shadow-sm">
           <div className="text-xs text-gray-500 mb-1">日均睡眠</div>
-          <div className="text-lg font-semibold text-[#9B8ED8]">{formatDuration(avgSleep)}</div>
+          <div className="text-lg font-semibold text-[#9B8ED8]">{formatDurationMinutes(avgSleep)}</div>
         </div>
         <div className="bg-white rounded-xl p-3 shadow-sm">
           <div className="text-xs text-gray-500 mb-1">日均睡眠次数</div>
@@ -127,7 +112,7 @@ export function SleepTab({ data, loading }: SleepTabProps) {
         <div className="text-sm font-medium text-gray-700 mb-2">数据洞察</div>
         <div className="text-xs text-gray-600 space-y-1">
           <p>
-            • 日均睡眠 {formatDuration(avgSleep)}，
+            • 日均睡眠 {formatDurationMinutes(avgSleep)}，
             {avgSleep >= 12 * 60
               ? '睡眠时间充足'
               : avgSleep >= 10 * 60
@@ -139,7 +124,7 @@ export function SleepTab({ data, loading }: SleepTabProps) {
             {nightPercent >= 60 ? '夜间睡眠比例良好' : '夜间睡眠较少，建议培养夜间睡眠习惯'}
           </p>
           <p>
-            • 日均睡眠 {avgSessions} 次，每次平均 {formatDuration(avgPerSessionMin)}
+            • 日均睡眠 {avgSessions} 次，每次平均 {formatDurationMinutes(avgPerSessionMin)}
           </p>
         </div>
       </div>

@@ -3,6 +3,8 @@
  * 展示体重/身高/头围的生长曲线，叠加国家标准百分位区域
  */
 import React from 'react'
+import dayjs from 'dayjs'
+import { formatAgeMonths } from '@/lib/utils'
 import {
   ComposedChart,
   Line,
@@ -94,15 +96,9 @@ function GrowthTooltip({ active, payload: typedPayload, measureType }: GrowthToo
 
   const displayValue = rawValue != null ? config.formatValue(rawValue) : String(actualEntry.value)
 
-  const formatAgeMonths = (m: number) => {
-    const n = Math.round(m * 10) / 10
-    return Number.isInteger(n) ? `${n}月龄` : `${n.toFixed(1)}月龄`
-  }
-
   const formatDate = (d: string) => {
     if (!d) return ''
-    const parts = d.slice(0, 10).split('-')
-    return `${parseInt(parts[1] ?? '0')}月${parseInt(parts[2] ?? '0')}日`
+    return dayjs(d).format('M月D日')
   }
 
   return (

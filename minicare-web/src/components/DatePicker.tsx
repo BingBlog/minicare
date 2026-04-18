@@ -26,9 +26,9 @@ function offsetDay(offset: number) {
 }
 function formatDisplay(dateStr: string): string {
   if (!dateStr) return "请选择日期";
-  const [y, m, d] = dateStr.split("-");
-  if (!y || !m || !d) return "请选择日期";
-  return `${y}年${parseInt(m)}月${parseInt(d)}日`;
+  const d = dayjs(dateStr);
+  if (!d.isValid()) return "请选择日期";
+  return d.format("YYYY年M月D日");
 }
 function pad2(n: number) {
   return n.toString().padStart(2, "0");

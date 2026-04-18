@@ -5,6 +5,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import dayjs from 'dayjs'
 import { GrowthChart } from '@/components/charts'
+import { formatDateCN, formatAgeMonths } from '@/lib/utils'
 import type { GrowthRecord } from '@/api/report'
 import type { GrowthStandardPoint } from '@/lib/growth-standards'
 import {
@@ -35,17 +36,6 @@ function calculateAgeMonths(birthDate: string, recordDate: string): number {
   if (!birth.isValid() || !record.isValid()) return 0
   const diffDays = record.diff(birth, 'day')
   return Math.max(0, diffDays / DAYS_PER_MONTH)
-}
-
-function formatAgeMonthsForCard(ageMonths: number): string {
-  const n = Math.round(ageMonths * 10) / 10
-  return Number.isInteger(n) ? `${n}月龄` : `${n.toFixed(1)}月龄`
-}
-
-/** 格式化日期显示 */
-function formatDate(dateStr: string): string {
-  const [year, month, day] = dateStr.split('-')
-  return `${parseInt(month)}月${parseInt(day)}日`
 }
 
 /** GrowthChart 百分位曲线：g / mm，与 GrowthChart 内部换算一致 */
@@ -240,7 +230,7 @@ export function GrowthTab({ data, loading, babyGender, babyBirthDate }: GrowthTa
                 <span className="text-sm font-normal text-gray-400 ml-1">{config.unit}</span>
               </div>
               <div className="text-xs text-gray-400 mt-1">
-                {formatDate(latestValid.date)} · {formatAgeMonthsForCard(latestValid.ageMonths)}
+                {formatDateCN(latestValid.date)} · {formatAgeMonths(latestValid.ageMonths)}
               </div>
             </div>
             {percentileLabel && (

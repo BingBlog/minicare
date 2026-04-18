@@ -6,6 +6,7 @@ import React from 'react'
 import { BarChart, StackedBarChart } from '@/components/charts'
 import type { DailyDiaperData } from '@/api/report'
 import { useAppConfig } from '@/lib/useAppConfig'
+import { formatDateSlash } from '@/lib/utils'
 
 const DIAPER_STACK_KEYS = ['wet', 'dirty', 'mixed'] as const
 
@@ -18,12 +19,6 @@ const DIAPER_STACK_COLORS: Record<(typeof DIAPER_STACK_KEYS)[number], string> = 
 interface DiaperTabProps {
   data: DailyDiaperData[] | null
   loading: boolean
-}
-
-/** 格式化日期为简短标签（MM-DD -> M/D） */
-function formatDateLabel(dateStr: string): string {
-  const [year, month, day] = dateStr.split('-')
-  return `${parseInt(month)}/${parseInt(day)}`
 }
 
 export function DiaperTab({ data, loading }: DiaperTabProps) {
@@ -48,7 +43,7 @@ export function DiaperTab({ data, loading }: DiaperTabProps) {
 
   // 柱状图数据：每日大便次数
   const barChartData = data.map((d) => ({
-    label: formatDateLabel(d.date),
+    label: formatDateSlash(d.date),
     value: d.dirtyCount,
   }))
 
@@ -60,7 +55,7 @@ export function DiaperTab({ data, loading }: DiaperTabProps) {
   const avgWetPerDay = (totalWet / data.length).toFixed(1)
 
   const diaperStackedData = data.map((d) => ({
-    label: formatDateLabel(d.date),
+    label: formatDateSlash(d.date),
     values: {
       wet: d.wetCount,
       dirty: d.dirtyCount,

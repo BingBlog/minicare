@@ -85,6 +85,58 @@ export function getTodayDateStr(): string {
   return `${today.month() + 1}月${today.date()}日 星期${weekday}`
 }
 
+/**
+ * 将 YYYY-MM-DD 日期格式化为 "M/D"（无补零），用于图表 X 轴标签
+ * 例："2026-03-05" → "3/5"
+ */
+export function formatDateSlash(dateStr: string): string {
+  if (!dateStr) return ''
+  return dayjs(dateStr).format('M/D')
+}
+
+/**
+ * 将 YYYY-MM-DD 日期格式化为 "M月D日"（无补零），用于简短中文日期显示
+ * 例："2026-03-05" → "3月5日"
+ */
+export function formatDateCN(dateStr: string): string {
+  if (!dateStr) return ''
+  return dayjs(dateStr).format('M月D日')
+}
+
+/**
+ * 将 YYYY-MM-DD 日期格式化为 "YYYY年M月D日"（无补零），用于完整中文日期显示
+ * 例："2026-03-05" → "2026年3月5日"
+ */
+export function formatFullDateCN(dateStr: string): string {
+  if (!dateStr) return ''
+  return dayjs(dateStr).format('YYYY年M月D日')
+}
+
+/**
+ * 将分钟数格式化为可读时长
+ * - 0 分钟：  "0分钟"
+ * - < 60 分钟：  "X分钟"
+ * - 整点：    "X小时"
+ * - 其他：    "X小时Y分钟"
+ */
+export function formatDurationMinutes(minutes: number): string {
+  const safe = Number.isFinite(minutes) ? Math.round(minutes) : 0
+  const hours = Math.floor(safe / 60)
+  const mins = safe % 60
+  if (hours === 0) return `${mins}分钟`
+  if (mins === 0) return `${hours}小时`
+  return `${hours}小时${mins}分钟`
+}
+
+/**
+ * 将小数月龄格式化为 "X月龄" 或 "X.X月龄"
+ * 例：3 → "3月龄"，3.5 → "3.5月龄"
+ */
+export function formatAgeMonths(ageMonths: number): string {
+  const n = Math.round(ageMonths * 10) / 10
+  return Number.isInteger(n) ? `${n}月龄` : `${n.toFixed(1)}月龄`
+}
+
 // ────────────────────────────────────────────────────────────────────────────
 // 宝宝年龄计算
 // ────────────────────────────────────────────────────────────────────────────
