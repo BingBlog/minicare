@@ -27,3 +27,14 @@ html, body, #root {
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
+
+/* 消除 Recharts 图表容器点击/focus 时的蓝色边框 */
+.recharts-wrapper,
+.recharts-wrapper *,
+.recharts-wrapper:focus,
+.recharts-wrapper *:focus,
+.recharts-surface,
+.recharts-surface:focus {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent;
+}

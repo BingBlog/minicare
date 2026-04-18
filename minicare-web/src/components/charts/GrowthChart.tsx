@@ -258,12 +258,16 @@ export function GrowthChart({
             label={{ value: config.unit, angle: -90, position: 'insideLeft', offset: 10, fontSize: 11, fill: '#6B7280' }}
           />
           {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-          <Tooltip content={(props: any) => <GrowthTooltip active={props.active} payload={props.payload} measureType={measureType} />} />
+          <Tooltip
+            content={(props: any) => <GrowthTooltip active={props.active} payload={props.payload} measureType={measureType} />}
+            cursor={{ stroke: '#D1C4E9', strokeWidth: 1, strokeDasharray: '4 3' }}
+          />
 
           {/* 百分位曲线（P3/P15/P85/P97 虚线，P50 实线） */}
           {(['p3', 'p15', 'p85', 'p97'] as const).map((key) => (
             <Line
               key={key}
+              type="monotone"
               dataKey={key}
               stroke={REFERENCE_LINE_COLOR}
               strokeWidth={PERCENTILE_CONFIG[key].strokeWidth}
@@ -277,6 +281,7 @@ export function GrowthChart({
             />
           ))}
           <Line
+            type="monotone"
             dataKey="p50"
             stroke="#9B8ED8"
             strokeWidth={PERCENTILE_CONFIG.p50.strokeWidth}
@@ -288,8 +293,9 @@ export function GrowthChart({
             tooltipType="none"
           />
 
-          {/* 实测数据线 */}
+          {/* 实测数据线：connectNulls=true 跨越无 actual 值的百分位采样点保持连线 */}
           <Line
+            type="monotone"
             dataKey="actual"
             stroke={DATA_POINT_COLOR}
             strokeWidth={2}
@@ -297,7 +303,7 @@ export function GrowthChart({
             strokeLinejoin="round"
             dot={{ r: 4, fill: DATA_POINT_COLOR, stroke: 'white', strokeWidth: 2 }}
             activeDot={{ r: 6, fill: DATA_POINT_COLOR, stroke: 'white', strokeWidth: 2 }}
-            connectNulls={false}
+            connectNulls
             isAnimationActive={false}
           />
         </ComposedChart>
