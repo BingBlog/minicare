@@ -3,6 +3,7 @@
  * 展示体重/身高/头围生长曲线，叠加国家百分位标准
  */
 import React, { useState, useRef, useEffect } from 'react'
+import dayjs from 'dayjs'
 import { GrowthChart } from '@/components/charts'
 import type { GrowthRecord } from '@/api/report'
 import type { GrowthStandardPoint } from '@/lib/growth-standards'
@@ -23,19 +24,16 @@ interface GrowthTabProps {
 
 type MeasureType = 'weight' | 'height' | 'head'
 
-const MS_PER_DAY = 86_400_000
 /** 平均每月天数（与儿保常用「日龄/30.44」一致，避免仅用年月导致同月多点 X 重合） */
 const DAYS_PER_MONTH = 365.25 / 12
 
 /** 计算精确月龄（可小数），用于生长曲线横轴定位 */
 function calculateAgeMonths(birthDate: string, recordDate: string): number {
   // 兼容 "2025-12-25T16:00:00.000Z" 和 "2025-12-25" 两种格式，统一截取前 10 位
-  const birthStr = birthDate.slice(0, 10)
-  const recordStr = recordDate.slice(0, 10)
-  const birth = new Date(`${birthStr}T12:00:00`)
-  const record = new Date(`${recordStr}T12:00:00`)
-  if (Number.isNaN(birth.getTime()) || Number.isNaN(record.getTime())) return 0
-  const diffDays = (record.getTime() - birth.getTime()) / MS_PER_DAY
+  const birth = dayjs(birthDate.slice(0, 10))
+  const record = dayjs(recordDate.slice(0, 10))
+  if (!birth.isValid() || !record.isValid()) return 0
+  const diffDays = record.diff(birth, 'day')
   return Math.max(0, diffDays / DAYS_PER_MONTH)
 }
 

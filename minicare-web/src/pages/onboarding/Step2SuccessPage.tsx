@@ -9,6 +9,7 @@
  */
 import { useNavigate } from "react-router-dom";
 import type { AllergyLevel } from "@/api";
+import { getBabyAge } from "@/lib/utils";
 
 const SEVERITY_LABELS: Record<AllergyLevel, string> = {
   mild: "轻度",
@@ -25,16 +26,6 @@ interface Props {
   allergyLevel: AllergyLevel | "";
 }
 
-function calcAge(birthDate: string): string {
-  if (!birthDate) return "";
-  const birth = new Date(birthDate);
-  const now = new Date();
-  const months =
-    (now.getFullYear() - birth.getFullYear()) * 12 +
-    (now.getMonth() - birth.getMonth());
-  return months > 0 ? `${months}个月` : "";
-}
-
 export default function Step2SuccessPage({
   babyName,
   gender,
@@ -43,7 +34,7 @@ export default function Step2SuccessPage({
 }: Props) {
   const navigate = useNavigate();
   const genderText = gender === "male" ? "男宝宝" : "女宝宝";
-  const ageText = calcAge(birthDate);
+  const ageText = birthDate ? getBabyAge(birthDate) : "";
 
   return (
     <div

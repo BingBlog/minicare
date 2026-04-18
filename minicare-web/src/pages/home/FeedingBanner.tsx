@@ -9,6 +9,7 @@
  */
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import dayjs from 'dayjs'
 
 /** 格式化距离描述：分钟 / 小时分钟 */
 function formatElapsed(mins: number): string {
@@ -28,7 +29,7 @@ export default function FeedingBanner({ lastFeedingTime }: FeedingBannerProps) {
 
   // 每分钟更新的距离分钟数
   const [elapsedMins, setElapsedMins] = useState(() => {
-    return Math.floor((Date.now() - new Date(lastFeedingTime).getTime()) / 60_000)
+    return dayjs().diff(dayjs(lastFeedingTime), 'minute')
   })
 
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
@@ -36,7 +37,7 @@ export default function FeedingBanner({ lastFeedingTime }: FeedingBannerProps) {
   useEffect(() => {
     // 每分钟更新一次
     intervalRef.current = setInterval(() => {
-      setElapsedMins(Math.floor((Date.now() - new Date(lastFeedingTime).getTime()) / 60_000))
+      setElapsedMins(dayjs().diff(dayjs(lastFeedingTime), 'minute'))
     }, 60_000)
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current)

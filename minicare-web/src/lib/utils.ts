@@ -1,20 +1,23 @@
 /**
  * 全局通用工具函数
  * 将各页面散落的重复逻辑统一收口到此处，供所有模块引用
+ *
+ * 时间处理统一使用 dayjs，通过本文件统一封装后对外暴露，
+ * 业务组件不应直接 import dayjs，而应 import 本文件中的工具函数。
  */
+import dayjs from 'dayjs'
 
 // ────────────────────────────────────────────────────────────────────────────
 // 日期 / 时间格式化
 // ────────────────────────────────────────────────────────────────────────────
 
 /**
- * 将 ISO 8601 字符串格式化为 HH:MM
+ * 将 ISO 8601 字符串格式化为 HH:mm（本地时间）
  * 例："2026-03-31T14:30:00.000Z" → "22:30"（北京时间 UTC+8）
  */
 export function formatTime(iso: string): string {
   if (!iso) return ''
-  const d = new Date(iso)
-  return `${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`
+  return dayjs(iso).format('HH:mm')
 }
 
 /**
@@ -25,12 +28,10 @@ export function formatTime(iso: string): string {
  */
 export function getDateLabel(iso: string): string {
   if (!iso) return ''
-  const d = new Date(iso)
-  const now = new Date()
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-  const target = new Date(d.getFullYear(), d.getMonth(), d.getDate())
-  const diff = Math.round((today.getTime() - target.getTime()) / (1000 * 60 * 60 * 24))
-  const base = `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`
+  const d = dayjs(iso)
+  const today = dayjs().startOf('day')
+  const diff = today.diff(d.startOf('day'), 'day')
+  const base = `${d.year()}年${d.month() + 1}月${d.date()}日`
   if (diff === 0) return `${base} · 今天`
   if (diff === 1) return `${base} · 昨天`
   return base
@@ -41,8 +42,8 @@ export function getDateLabel(iso: string): string {
  */
 export function getDateKey(iso: string): string {
   if (!iso) return ''
-  const d = new Date(iso)
-  return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
+  const d = dayjs(iso)
+  return `${d.year()}-${d.month() + 1}-${d.date()}`
 }
 
 /**
@@ -52,10 +53,11 @@ export function getDateKey(iso: string): string {
  * - >= 1天：   "X天前"
  */
 export function timeAgo(isoStr: string): string {
-  const diff = Date.now() - new Date(isoStr).getTime()
-  const days = Math.floor(diff / 86400000)
+  const now = dayjs()
+  const target = dayjs(isoStr)
+  const days = now.diff(target, 'day')
   if (days >= 1) return `${days}天前`
-  const hours = Math.floor(diff / 3600000)
+  const hours = now.diff(target, 'hour')
   if (hours >= 1) return `${hours}小时前`
   return '刚刚'
 }
@@ -67,7 +69,7 @@ export function timeAgo(isoStr: string): string {
  * - 18-23 点：晚上好
  */
 export function getGreeting(): string {
-  const h = new Date().getHours()
+  const h = dayjs().hour()
   if (h < 12) return '早上好'
   if (h < 18) return '下午好'
   return '晚上好'
@@ -78,9 +80,9 @@ export function getGreeting(): string {
  * 例：「3月31日 星期二」
  */
 export function getTodayDateStr(): string {
-  const today = new Date()
-  const weekday = ['日', '一', '二', '三', '四', '五', '六'][today.getDay()]
-  return `${today.getMonth() + 1}月${today.getDate()}日 星期${weekday}`
+  const today = dayjs()
+  const weekday = ['日', '一', '二', '三', '四', '五', '六'][today.day()]
+  return `${today.month() + 1}月${today.date()}日 星期${weekday}`
 }
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -94,17 +96,41 @@ export function getTodayDateStr(): string {
  * - >= 12个月：  "X岁Y个月"
  *
  * @param birthDate - YYYY-MM-DD 格式的出生日期
+ *
+ * 实现说明：
+ * dayjs.add(n, 'month') 内部与原生 setMonth 一样会发生月末溢出（1月31日+1月=3月3日），
+ * 因此仍需手动处理。具体策略：
+ *   1. 用日历月差得到候选 months
+ *   2. 将出生日锁定到目标月末（若该月无对应日），计算"满 months 个月"那天
+ *   3. 若今天还未到达满月日，months--
+ *   4. 剩余天数 = 今天 - 最近满月日（用 dayjs.diff('day') 计算，避免手动毫秒换算）
  */
 export function getBabyAge(birthDate: string): string {
-  const birth = new Date(birthDate)
-  const now = new Date()
-  const months =
-    (now.getFullYear() - birth.getFullYear()) * 12 +
-    (now.getMonth() - birth.getMonth())
-  const totalDays = Math.floor((now.getTime() - birth.getTime()) / (1000 * 60 * 60 * 24))
-  const days = totalDays % 30
+  const birth = dayjs(birthDate).startOf('day')
+  const now = dayjs().startOf('day')
+
+  // 先按日历月差计算候选月数
+  let months = now.diff(birth, 'month')
+
+  /**
+   * 计算"出生日期 + n 个月"，并处理月末溢出。
+   * dayjs.add(n, 'month') 对月末日期的处理与原生 setMonth 相同，
+   * 例：1月31日 + 3个月 → 4月30日（dayjs 自动处理为目标月最后一天），
+   * 所以直接使用 dayjs.add 即可，不需要额外处理。
+   */
+  const birthPlusMonths = birth.add(months, 'month')
+
+  // 若今天还没到"满月对应日"，说明当月尚未满，月数减一
+  if (now.isBefore(birthPlusMonths)) {
+    months--
+  }
+
+  const fullMonthDate = birth.add(months, 'month')
+  const remainDays = now.diff(fullMonthDate, 'day')
+  const totalDays = now.diff(birth, 'day')
+
   if (months < 1) return `${totalDays}天`
-  if (months < 12) return `${months}个月${days}天`
+  if (months < 12) return `${months}个月${remainDays}天`
   const years = Math.floor(months / 12)
   const remMonths = months % 12
   return `${years}岁${remMonths > 0 ? remMonths + '个月' : ''}`
@@ -120,11 +146,11 @@ export function getBabyAge(birthDate: string): string {
  * - "custom" → "自定义时间范围"
  */
 export function getReportRangeText(key: string): string {
-  const now = new Date()
-  const fmt = (d: Date) => `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`
   if (key === 'custom') return '自定义时间范围'
   const days = parseInt(key, 10)
-  const start = new Date(now.getTime() - (days - 1) * 24 * 60 * 60 * 1000)
+  const now = dayjs()
+  const start = now.subtract(days - 1, 'day')
+  const fmt = (d: dayjs.Dayjs) => `${d.year()}年${d.month() + 1}月${d.date()}日`
   return `${fmt(start)}—${fmt(now)}（${days}天）`
 }
 

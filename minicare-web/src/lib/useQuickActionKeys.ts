@@ -11,6 +11,7 @@
  * 存储格式: JSON.stringify(string[])，最多 7 个，最少 1 个
  */
 import { useState, useEffect, useCallback } from 'react'
+import dayjs from 'dayjs'
 import { DEFAULT_QUICKACTION_KEYS_BY_AGE } from './constants'
 import { useAppStore } from './store'
 
@@ -24,11 +25,7 @@ const STORAGE_KEY = 'quickaction_keys'
 /** 根据宝宝出生日期计算月龄段 */
 function getAgeGroup(birthDate: string | null | undefined): string {
   if (!birthDate) return '6-11m'
-  const birth = new Date(birthDate)
-  const now = new Date()
-  const months =
-    (now.getFullYear() - birth.getFullYear()) * 12 +
-    (now.getMonth() - birth.getMonth())
+  const months = dayjs().diff(dayjs(birthDate), 'month')
   if (months <= 5) return '0-5m'
   if (months <= 11) return '6-11m'
   return '12m+'

@@ -15,6 +15,7 @@
  *   - 健康：7天
  */
 import { useState, useCallback, useEffect, useMemo } from "react";
+import dayjs from "dayjs";
 import { useAppStore } from "@/lib/store";
 import { useToast } from "@/components/ui/Toast";
 import { reportApi } from "@/api/report";
@@ -66,22 +67,19 @@ function calcDateRange(
   rangeKey: string,
   birthDate?: string | null,
 ): { startDate: string; endDate: string } {
-  const now = new Date();
-  const fmt = (d: Date) => d.toISOString().slice(0, 10);
+  const now = dayjs();
+  const todayStr = now.format("YYYY-MM-DD");
 
   if (rangeKey === "birth" && birthDate) {
-    return { startDate: birthDate.slice(0, 10), endDate: fmt(now) };
+    return { startDate: birthDate.slice(0, 10), endDate: todayStr };
   }
 
   const days = parseInt(rangeKey, 10);
   if (isNaN(days) || days <= 0) {
-    // 默认 30 天
-    const start = new Date(now.getTime() - 29 * 24 * 60 * 60 * 1000);
-    return { startDate: fmt(start), endDate: fmt(now) };
+    return { startDate: now.subtract(29, "day").format("YYYY-MM-DD"), endDate: todayStr };
   }
 
-  const start = new Date(now.getTime() - (days - 1) * 24 * 60 * 60 * 1000);
-  return { startDate: fmt(start), endDate: fmt(now) };
+  return { startDate: now.subtract(days - 1, "day").format("YYYY-MM-DD"), endDate: todayStr };
 }
 
 /** 与 TIME_RANGES 中长周期选项对应的展示前缀 */

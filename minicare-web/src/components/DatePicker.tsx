@@ -15,15 +15,14 @@
  *   className? — 传给触发行外层 div
  */
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
+import dayjs from "dayjs";
 import Picker from "react-mobile-picker";
 
 function todayStr() {
-  return new Date().toISOString().split("T")[0];
+  return dayjs().format("YYYY-MM-DD");
 }
 function offsetDay(offset: number) {
-  const d = new Date();
-  d.setDate(d.getDate() + offset);
-  return d.toISOString().split("T")[0];
+  return dayjs().add(offset, "day").format("YYYY-MM-DD");
 }
 function formatDisplay(dateStr: string): string {
   if (!dateStr) return "请选择日期";
@@ -192,13 +191,7 @@ export default function DatePicker({
   const [open, setOpen] = useState(false);
 
   const maxDate = max ?? todayStr();
-  const minDate =
-    min ??
-    (() => {
-      const d = new Date();
-      d.setFullYear(d.getFullYear() - 3);
-      return d.toISOString().split("T")[0];
-    })();
+  const minDate = min ?? dayjs().subtract(3, "year").format("YYYY-MM-DD");
 
   // 解析日期字符串 → { year, month, day }
   const parse = (v: string) => {
@@ -230,7 +223,7 @@ export default function DatePicker({
     for (let m = mStart; m <= mEnd; m++) ms.push(pad2(m));
 
     // 日：当年当月的可用天数
-    const daysInMonth = new Date(curY, curM, 0).getDate();
+    const daysInMonth = dayjs(`${curY}-${pad2(curM)}`).daysInMonth();
     const dStart = curY === minY && curM === minM ? minD : 1;
     const dEnd = curY === maxY && curM === maxM ? maxD : daysInMonth;
     const ds: string[] = [];
@@ -246,7 +239,7 @@ export default function DatePicker({
     if (key === "year" || key === "month") {
       const y = parseInt(year);
       const m = parseInt(month);
-      const daysInM = new Date(y, m, 0).getDate();
+      const daysInM = dayjs(`${y}-${pad2(m)}`).daysInMonth();
       const d = parseInt(day);
       if (d > daysInM) day = pad2(daysInM);
     }
@@ -303,7 +296,7 @@ export default function DatePicker({
       const { year, month, day } = val as { year: string; month: string; day: string };
       const y = parseInt(year);
       const m = parseInt(month);
-      const daysInM = new Date(y, m, 0).getDate();
+      const daysInM = dayjs(`${y}-${pad2(m)}`).daysInMonth();
       const d = parseInt(day);
       const correctedDay = d > daysInM ? pad2(daysInM) : day;
       setPickerVal({ year, month, day: correctedDay });

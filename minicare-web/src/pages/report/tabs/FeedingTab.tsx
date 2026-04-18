@@ -6,6 +6,7 @@ import React, { useMemo } from "react";
 import { LineChart, StackedBarChart } from "@/components/charts";
 import type { DailyFeedingData } from "@/api/report";
 import { milkTypeOptions } from "@/pages/records/feeding/types";
+import { nowDate } from "@/pages/records/shared";
 
 interface FeedingTabProps {
   data: DailyFeedingData[] | null;
@@ -14,14 +15,6 @@ interface FeedingTabProps {
 
 const UNLABELED_MILK_KEY = "unlabeled";
 
-/** 本地日历今天 YYYY-MM-DD（与记录 date 字段对齐，用于日均排除当日） */
-function localTodayYMD(): string {
-  const n = new Date();
-  const y = n.getFullYear();
-  const m = String(n.getMonth() + 1).padStart(2, "0");
-  const day = String(n.getDate()).padStart(2, "0");
-  return `${y}-${m}-${day}`;
-}
 
 /** 格式化日期为简短标签（MM-DD -> M/D） */
 function formatDateLabel(dateStr: string): string {
@@ -79,7 +72,7 @@ export function FeedingTab({ data, loading }: FeedingTabProps) {
     );
   }
 
-  const todayYmd = localTodayYMD();
+  const todayYmd = nowDate();
   /** 日均统计用：不含当日，避免当天少量记录拉偏均值 */
   const hist = data.filter((d) => d.date !== todayYmd);
   const histDays = hist.length;

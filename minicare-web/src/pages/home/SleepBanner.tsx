@@ -13,18 +13,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { recordsApi } from '@/api'
 import type { SleepRecord, SleepPeriod } from '@/api/types'
-
-/** Date 对象 → 本地时间字符串（不带 Z，CST） */
-function dateToLocalISO(d: Date): string {
-  const pad = (n: number) => String(n).padStart(2, '0')
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`
-}
-
-/** 将 ongoing 记录的 start_time 格式化为 "HH:mm" */
-function formatStartTime(isoOrDatetime: string): string {
-  const d = new Date(isoOrDatetime)
-  return `${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`
-}
+import { dateToLocalISO, isoToLocalTime } from '@/pages/records/shared'
 
 /** 将秒数格式化为 "Xh Ym" 或 "Ym" */
 function formatElapsed(seconds: number): string {
@@ -86,7 +75,7 @@ export default function SleepBanner({ familyId, ongoingRecord, onEnded }: SleepB
     navigate('/records/form/sleep')
   }
 
-  const startTimeStr = formatStartTime(ongoingRecord.start_time)
+  const startTimeStr = isoToLocalTime(ongoingRecord.start_time)
   const elapsedStr = formatElapsed(elapsedSeconds)
 
   return (

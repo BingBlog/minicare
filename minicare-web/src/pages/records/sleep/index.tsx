@@ -32,6 +32,7 @@ import { IconMoon, IconTrash } from "@/components/ui/icons";
 import TimerMode from "./TimerMode";
 import ManualMode from "./ManualMode";
 import QualitySection from "./QualitySection";
+import dayjs from "dayjs";
 import {
   NavBar,
   NoteCard,
@@ -39,17 +40,13 @@ import {
   ToastMessage,
   nowTime,
   nowDate,
+  isoToLocalDate,
   isoToLocalTime,
+  dateToLocalISO,
   useToastMsg,
 } from "../shared";
 
 type SleepMode = "timer" | "manual";
-
-/** Date 对象 → 本地时间字符串（不带 Z，如 '2026-04-01T07:18:00'），全链路 CST */
-function dateToLocalISO(d: Date): string {
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-}
 
 /** 入睡/醒来分属两日时的本地时间串 → 后端 ISO 字段 */
 function buildLocalISOPair(
@@ -70,10 +67,10 @@ function calcDurationMinFromRange(
   endDateStr: string,
   endTime: string,
 ): number {
-  const startMs = new Date(`${startDateStr}T${startTime}:00`).getTime();
-  const endMs = new Date(`${endDateStr}T${endTime}:00`).getTime();
-  if (Number.isNaN(startMs) || Number.isNaN(endMs)) return 0;
-  return Math.round((endMs - startMs) / 60000);
+  const start = dayjs(`${startDateStr}T${startTime}:00`);
+  const end = dayjs(`${endDateStr}T${endTime}:00`);
+  if (!start.isValid() || !end.isValid()) return 0;
+  return Math.round(end.diff(start, 'minute', true));
 }
 
 /** 将秒数格式化为「X 分 Y 秒」或「X 秒」的可读文案 */
@@ -468,27 +465,16 @@ export default function SleepFormPage() {
 
   // ── 补录模式状态 ────────────────────────────────────────────────
   const [startDate, setStartDate] = useState(() => {
-    if (editRecord?.start_time) {
-      const d = new Date(editRecord.start_time);
-      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-    }
+    if (editRecord?.start_time) return isoToLocalDate(editRecord.start_time);
     return nowDate();
   });
   const [endDate, setEndDate] = useState(() => {
-    if (editRecord?.end_time) {
-      const d = new Date(editRecord.end_time);
-      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-    }
+    if (editRecord?.end_time) return isoToLocalDate(editRecord.end_time);
     return nowDate();
   });
   const [startTime, setStartTime] = useState(() => {
     if (editRecord?.start_time) return isoToLocalTime(editRecord.start_time);
-    const d = new Date();
-    d.setHours(d.getHours() - 1);
-    return `${d.getHours().toString().padStart(2, "0")}:${d
-      .getMinutes()
-      .toString()
-      .padStart(2, "0")}`;
+    return dayjs().subtract(1, 'hour').format('HH:mm');
   });
   const [endTime, setEndTime] = useState(() => {
     if (editRecord?.end_time) return isoToLocalTime(editRecord.end_time);
@@ -511,17 +497,11 @@ export default function SleepFormPage() {
         if (!fresh) return;
         if (fresh.start_time) {
           setStartTime(isoToLocalTime(fresh.start_time));
-          const d = new Date(fresh.start_time);
-          setStartDate(
-            `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`
-          );
+          setStartDate(isoToLocalDate(fresh.start_time));
         }
         if (fresh.end_time) {
           setEndTime(isoToLocalTime(fresh.end_time));
-          const d = new Date(fresh.end_time);
-          setEndDate(
-            `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`
-          );
+          setEndDate(isoToLocalDate(fresh.end_time));
         }
         if (fresh.quality) setSleepQuality(fresh.quality as SleepQuality);
         setNote(fresh.note ?? "");

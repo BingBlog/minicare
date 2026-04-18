@@ -8,37 +8,41 @@
  */
 
 import React from "react";
+import dayjs from "dayjs";
 
 // ─── 时间工具 ────────────────────────────────────────────────────────
+
+/** 当前本地时间，格式 HH:mm */
 export function nowTime(): string {
-  const d = new Date();
-  return `${d.getHours().toString().padStart(2, "0")}:${d
-    .getMinutes()
-    .toString()
-    .padStart(2, "0")}`;
+  return dayjs().format("HH:mm");
 }
 
+/** 当前本地日期，格式 YYYY-MM-DD */
 export function nowDate(): string {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  return dayjs().format("YYYY-MM-DD");
 }
 
+/**
+ * 本地日期 + 时间 → 本地 ISO 字符串（不带 Z，全链路 CST）
+ * 后端 toMysqlDatetime() 用本地时间分量写入，数据库连接 timezone='+08:00' 保证一致
+ */
 export function timeToISO(dateStr: string, timeStr: string): string {
-  // 全链路 CST：直接返回本地时间字符串，不转 UTC（不加 Z 后缀）
-  // 后端 toMysqlDatetime() 用本地时间分量写入，数据库连接 timezone='+08:00' 保证一致
   return `${dateStr}T${timeStr}:00`;
+}
+
+/** Date 对象 → 本地 ISO 字符串（不带 Z），用于提交 start_time / end_time */
+export function dateToLocalISO(d: Date): string {
+  return dayjs(d).format("YYYY-MM-DDTHH:mm:ss");
 }
 
 /** 从 record_time ISO 字符串解析本地日历日 YYYY-MM-DD（用于补录/编辑回填日期） */
 export function isoToLocalDate(iso: string): string {
-  const d = new Date(iso);
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  return dayjs(iso).format("YYYY-MM-DD");
 }
 
 /** 从 ISO 时间字符串提取本地 HH:mm（用于补录/编辑回填时间） */
 export function isoToLocalTime(iso: string): string {
-  const d = new Date(iso);
-  return `${d.getHours().toString().padStart(2, "0")}:${d.getMinutes().toString().padStart(2, "0")}`;
+  return dayjs(iso).format("HH:mm");
 }
 
 // ─── 通用 Toast Hook ─────────────────────────────────────────────────
