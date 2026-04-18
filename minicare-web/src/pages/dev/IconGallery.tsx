@@ -8,7 +8,7 @@ import { useState } from 'react'
 import {
   // 记录类型图标
   IconMilk, IconMoon, IconDroplets, IconActivity,
-  IconRuler, IconHeart, IconStethoscope, IconSmile, IconSupplementPill, IconThermometer,
+  IconBabyWeight, IconHeart, IconStethoscope, IconSmile, IconSupplementPill, IconThermometer,
   IconBreast, IconFood,
   // 新优化的图标
   IconBottle, IconBreastfeeding, IconDiaper, IconBabyCrawl,
@@ -45,7 +45,7 @@ const CURRENT_ICONS = {
     { name: 'Moon', comp: IconMoon, label: '睡眠' },
     { name: 'Droplets', comp: IconDroplets, label: '尿布' },
     { name: 'Activity', comp: IconActivity, label: '活动' },
-    { name: 'Ruler', comp: IconRuler, label: '生长' },
+    { name: 'BabyWeight', comp: IconBabyWeight, label: '生长' },
     { name: 'Heart', comp: IconHeart, label: '健康' },
     { name: 'Stethoscope', comp: IconStethoscope, label: '医疗' },
     { name: 'Smile', comp: IconSmile, label: '表现' },

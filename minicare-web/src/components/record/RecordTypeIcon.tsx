@@ -13,7 +13,7 @@
  */
 import {
   IconMilk, IconMoon, IconDroplets, IconActivity,
-  IconRuler, IconHeart, IconStethoscope, IconSmile, IconSupplementPill, IconThermometer,
+  IconBabyWeight, IconHeart, IconStethoscope, IconSmile, IconSupplementPill, IconThermometer,
   IconBreast, IconFood,
   // 新优化的图标
   IconBottle, IconBreastfeeding, IconDiaper, IconBabyCrawl,
@@ -33,7 +33,7 @@ const ICON_MAP: Record<RecordTypeKey, (props: IconProps) => React.ReactElement> 
   sleep:       IconMoon,
   diaper:      IconDiaper,           // 尿布（新的展开尿布图标）
   activity:    IconBabyCrawl,        // 活动（新的爬行宝宝图标）
-  growth:      IconRuler,
+  growth:      IconBabyWeight,
   health:      IconHeart,
   temperature: IconThermometer,
   medical:     IconStethoscope,
@@ -51,6 +51,11 @@ interface RecordTypeIconProps {
   iconSize?: number
   /** 圆角尺寸（px），默认 12（rounded-xl） */
   borderRadius?: number
+  /**
+   * 不渲染背景色容器，直接输出裸图标。
+   * 用于 B 区快捷格子——图标本身即主视觉，不需要底色方块。
+   */
+  noBackground?: boolean
 }
 
 /**
@@ -59,18 +64,32 @@ interface RecordTypeIconProps {
  * @example
  * <RecordTypeIcon type="feeding" containerSize={36} />
  * <RecordTypeIcon type="sleep" containerSize={42} iconSize={22} />
+ * <RecordTypeIcon type="sleep" containerSize={42} iconSize={42} noBackground />
  */
 export default function RecordTypeIcon({
   type,
   containerSize = 36,
   iconSize = 20,
   borderRadius = 12,
+  noBackground = false,
 }: RecordTypeIconProps) {
   // 从全局配置中获取视觉参数；不在配置中的 type 使用默认灰色
   const cfg = RECORD_TYPE_CFG[type] ?? { bg: '#F5F5F5', color: '#9A8090' }
 
   // 根据 type 选择对应图标，若没有匹配则回退到 activity 图标
   const IconComponent = ICON_MAP[type as RecordTypeKey] ?? IconActivity
+
+  // noBackground：裸图标模式，图标尺寸填满容器尺寸
+  if (noBackground) {
+    return (
+      <div
+        className="flex items-center justify-center flex-shrink-0"
+        style={{ width: containerSize, height: containerSize }}
+      >
+        <IconComponent size={iconSize} color={cfg.color} />
+      </div>
+    )
+  }
 
   return (
     <div

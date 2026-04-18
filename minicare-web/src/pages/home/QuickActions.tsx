@@ -39,7 +39,7 @@ import {
   ALL_QUICK_ACTION_KEYS,
   GLOBAL_FAB_GROUPS,
 } from "@/lib/constants";
-import { useQuickActionKeys } from "@/lib/useQuickActionKeys";
+import { useQuickActionKeys, MAX_QUICK_KEYS } from "@/lib/useQuickActionKeys";
 
 // ── Tab 跳转参数 ───────────────────────────────────────────────────────────────
 const TAB_STATE: Record<string, string> = {
@@ -88,18 +88,17 @@ function SortableCard({
       <div
         {...attributes}
         {...listeners}
-        className="flex flex-col items-center gap-2 rounded-xl px-2 pt-3.5 pb-3 cursor-grab active:cursor-grabbing text-center select-none"
+        className="flex flex-col items-center gap-1.5 cursor-grab active:cursor-grabbing text-center select-none py-1"
         style={{
-          background: cfg.bg,
           opacity: isDraggingAny && !isDragging ? 0.7 : 1,
         }}>
         <RecordTypeIcon
           type={id}
-          containerSize={54}
-          iconSize={28}
-          borderRadius={16}
+          containerSize={58}
+          iconSize={30}
+          borderRadius={18}
         />
-        <span className="text-[13px] font-semibold text-[#4A3035]">
+        <span className="text-[11px] font-medium text-[#9A8090]">
           {cfg.label}
         </span>
       </div>
@@ -162,18 +161,19 @@ function SortableChip({
       <div
         {...attributes}
         {...listeners}
-        className="bg-white border border-gray-100 rounded-xl flex flex-col items-center gap-1.5 cursor-grab active:cursor-grabbing select-none"
+        className="flex flex-col items-center gap-1.5 cursor-grab active:cursor-grabbing select-none"
         style={{
-          padding: "12px 4px 10px",
+          padding: "8px 4px 6px",
           opacity: isDraggingAny && !isDragging ? 0.7 : 1,
         }}>
         <RecordTypeIcon
           type={id}
-          containerSize={44}
-          iconSize={22}
-          borderRadius={13}
+          containerSize={58}
+          iconSize={30}
+          borderRadius={16}
+          noBackground
         />
-        <span className="text-[12px] font-semibold text-[#4a3035]">
+        <span className="text-[11px] font-medium text-[#9A8090]">
           {cfg.label}
         </span>
       </div>
@@ -214,15 +214,15 @@ function DragPreview({ id, isACard }: DragPreviewProps) {
   if (isACard) {
     return (
       <div
-        className="flex flex-col items-center gap-2 rounded-xl px-2 pt-3.5 pb-3 shadow-xl rotate-2 select-none"
-        style={{ background: cfg.bg, width: 100 }}>
+        className="flex flex-col items-center gap-1.5 py-1 shadow-xl rotate-2 select-none text-center"
+        style={{ width: 72 }}>
         <RecordTypeIcon
           type={id}
-          containerSize={54}
-          iconSize={28}
-          borderRadius={16}
+          containerSize={58}
+          iconSize={30}
+          borderRadius={18}
         />
-        <span className="text-[13px] font-semibold text-[#4A3035]">
+        <span className="text-[11px] font-medium text-[#9A8090]">
           {cfg.label}
         </span>
       </div>
@@ -230,15 +230,16 @@ function DragPreview({ id, isACard }: DragPreviewProps) {
   }
   return (
     <div
-      className="bg-white border border-gray-100 rounded-xl flex flex-col items-center gap-1.5 shadow-xl rotate-2 select-none"
-      style={{ padding: "12px 4px 10px", width: 72 }}>
+      className="flex flex-col items-center gap-1.5 shadow-xl rotate-2 select-none"
+      style={{ padding: "8px 4px 6px", width: 72 }}>
       <RecordTypeIcon
         type={id}
-        containerSize={44}
-        iconSize={22}
-        borderRadius={13}
+        containerSize={58}
+        iconSize={30}
+        borderRadius={16}
+        noBackground
       />
-      <span className="text-[12px] font-semibold text-[#4a3035]">
+      <span className="text-[11px] font-medium text-[#9A8090]">
         {cfg.label}
       </span>
     </div>
@@ -343,23 +344,18 @@ export default function QuickActions({
   const poolKeys = (ALL_QUICK_ACTION_KEYS as readonly string[]).filter(
     (k) => !currentKeys.includes(k),
   );
-  const canAdd = currentKeys.length < 7;
+  const canAdd = currentKeys.length < MAX_QUICK_KEYS;
 
   // ── 编辑态：统一混合网格（A+B 合并，可拖拽）────────────────────────────────
-  // A区 key（前3）→ 大卡片；B区 key（后续）→ 小格子
+  // A区 key（前4）→ 大卡片；B区 key（后续）→ 小格子
   // 为让两种尺寸在同一 grid 里并排，编辑模式统一使用「4列小格子」样式
   // A区大卡片退化为统一 4 列小格样式，降低复杂度
   const canDelete = currentKeys.length > 1;
 
   return (
-    <div
-      className="bg-white rounded-2xl overflow-hidden"
-      style={{
-        boxShadow:
-          "0 2px 12px rgba(200,100,120,0.08), 0 1px 3px rgba(0,0,0,0.04)",
-      }}>
+    <div>
       {/* ── 标题行 ── */}
-      <div className="flex items-center justify-between px-4 pt-3.5 pb-1.5">
+      <div className="flex items-center justify-between px-1 pt-0 pb-1.5">
         <span className="text-[11px] font-semibold text-[#9A8090] tracking-[0.8px] uppercase">
           快捷记录
         </span>
@@ -403,7 +399,7 @@ export default function QuickActions({
               <div
                 className="grid gap-2"
                 style={{
-                  gridTemplateColumns: `repeat(${Math.min(aKeys.length, 3)}, 1fr)`,
+                  gridTemplateColumns: `repeat(${Math.min(aKeys.length, 4)}, 1fr)`,
                 }}>
                 {aKeys.map((key) => {
                   const cfg = RECORD_TYPE_CFG[key];
@@ -412,15 +408,14 @@ export default function QuickActions({
                       key={key}
                       type="button"
                       onClick={() => handleNavigate(key)}
-                      className="flex flex-col items-center gap-2 rounded-xl px-2 pt-3.5 pb-3 cursor-pointer transition-transform active:scale-95 text-center w-full"
-                      style={{ background: cfg.bg }}>
+                      className="flex flex-col items-center gap-1.5 cursor-pointer transition-transform active:scale-95 text-center w-full">
                       <RecordTypeIcon
                         type={key}
-                        containerSize={54}
-                        iconSize={28}
-                        borderRadius={16}
+                        containerSize={58}
+                        iconSize={30}
+                        borderRadius={18}
                       />
-                      <span className="text-[13px] font-semibold text-[#4A3035]">
+                      <span className="text-[11px] font-medium text-[#9A8090]">
                         {cfg.label}
                       </span>
                     </button>
@@ -450,15 +445,16 @@ export default function QuickActions({
                       key={key}
                       type="button"
                       onClick={() => handleNavigate(key)}
-                      className="bg-white border border-gray-100 rounded-xl flex flex-col items-center gap-1.5 cursor-pointer transition-transform active:scale-95"
-                      style={{ padding: "12px 4px 10px" }}>
+                      className="flex flex-col items-center gap-1.5 cursor-pointer transition-transform active:scale-95"
+                      style={{ padding: "8px 4px 6px" }}>
                       <RecordTypeIcon
                         type={key}
-                        containerSize={44}
-                        iconSize={22}
-                        borderRadius={13}
+                        containerSize={58}
+                        iconSize={30}
+                        borderRadius={16}
+                        noBackground
                       />
-                      <span className="text-[12px] font-semibold text-[#4a3035]">
+                      <span className="text-[11px] font-medium text-[#9A8090]">
                         {cfg.label}
                       </span>
                     </button>
@@ -472,7 +468,7 @@ export default function QuickActions({
 
       {/* ══════════════════════════════════════════════════════════════════════
           编辑模式：A+B 统一网格，可拖拽排序
-          前3 = 大卡片样式，后续 = 小格子样式，两区在同一 DndContext 内
+          前4 = 大卡片样式，后续 = 小格子样式，两区在同一 DndContext 内
           ══════════════════════════════════════════════════════════════════════ */}
       {isEditing && (
         <DndContext
@@ -498,9 +494,9 @@ export default function QuickActions({
                 items={currentKeys}
                 strategy={rectSortingStrategy}>
                 <div
-                  className="grid gap-2 mb-2"
-                  style={{
-                    gridTemplateColumns: `repeat(${Math.min(aKeys.length, 3)}, 1fr)`,
+              className="grid gap-2 mb-2"
+              style={{
+                gridTemplateColumns: `repeat(${Math.min(aKeys.length, 4)}, 1fr)`,
                   }}>
                   {aKeys.map((key) => {
                     const cfg = RECORD_TYPE_CFG[key];
@@ -567,7 +563,7 @@ export default function QuickActions({
           <div className="mx-3 border-t border-[#F5F0F2]" />
           <div className="px-3 pt-2 pb-3">
             <div className="text-[10px] font-semibold text-[#C0A8AD] tracking-[0.5px] uppercase mb-1.5 px-1">
-              {canAdd ? "更多功能（点击添加）" : "已达上限（最多 7 个）"}
+              {canAdd ? "更多功能（点击添加）" : `已达上限（最多 ${MAX_QUICK_KEYS} 个）`}
             </div>
             {poolKeys.length === 0 ? (
               <div className="text-[12px] text-[#C0A8AD] text-center py-2">
