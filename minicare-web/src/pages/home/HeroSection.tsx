@@ -10,7 +10,7 @@
  */
 import { useNavigate } from 'react-router-dom'
 import { IconUserSingle } from '@/components/ui/icons'
-import { getBabyAge, getTodayDateStr } from '@/lib/utils'
+import { getBabyAge, getTodayDateStr, getGreeting } from '@/lib/utils'
 import type { Baby } from '@/api/types'
 
 // ── 今日统计格子配置 ─────────────────────────────────────────────────────────
@@ -232,13 +232,4 @@ function BabyCard({ baby, stats, onNavigateRecords, onNavigateProfile }: BabyCar
   )
 }
 
-// ────────────────────────────────────────────────────────────────────────────
-// 本地工具（避免重复引入）
-// ────────────────────────────────────────────────────────────────────────────
 
-function getGreeting(): string {
-  const h = new Date().getHours()
-  if (h < 12) return '早上好'
-  if (h < 18) return '下午好'
-  return '晚上好'
-}

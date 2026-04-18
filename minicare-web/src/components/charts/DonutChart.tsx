@@ -1,8 +1,9 @@
 /**
- * 环形图组件
+ * 环形图组件（Recharts 版）
  * 用于展示比例数据（如情绪分布、大便性状分布等）
  */
 import React from 'react'
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts'
 import type { DonutChartProps } from './types'
 
 export function DonutChart({
@@ -14,9 +15,6 @@ export function DonutChart({
   centerValue,
   className,
 }: DonutChartProps) {
-  const radius = size / 2
-  const innerR = radius * innerRadius
-
   if (data.length === 0) {
     return (
       <div
@@ -28,7 +26,6 @@ export function DonutChart({
     )
   }
 
-  // 计算总值
   const total = data.reduce((sum, d) => sum + d.value, 0)
   if (total === 0) {
     return (
@@ -41,137 +38,94 @@ export function DonutChart({
     )
   }
 
-  // 计算每段弧度
-  let currentAngle = -Math.PI / 2 // 从顶部开始
-  const segments = data.map((d) => {
-    const angle = (d.value / total) * Math.PI * 2
-    const segment = {
-      startAngle: currentAngle,
-      endAngle: currentAngle + angle,
-      color: d.color,
-      label: d.label,
-      value: d.value,
-      percentage: Math.round((d.value / total) * 100),
-    }
-    currentAngle += angle
-    return segment
-  })
+  const outerR = size / 2 - 2
+  const innerR = outerR * innerRadius
 
-  // 绘制弧线路径
-  const describeArc = (
-    cx: number,
-    cy: number,
-    outerR: number,
-    innerR: number,
-    startAngle: number,
-    endAngle: number
-  ) => {
-    // 处理完整圆（角度接近 2π）
-    const isFullCircle = Math.abs(endAngle - startAngle - Math.PI * 2) < 0.001
-    if (isFullCircle) {
-      // 绘制两个半圆
-      const x1Outer = cx + outerR * Math.cos(startAngle)
-      const y1Outer = cy + outerR * Math.sin(startAngle)
-      const x2Outer = cx + outerR * Math.cos(startAngle + Math.PI)
-      const y2Outer = cy + outerR * Math.sin(startAngle + Math.PI)
-      const x1Inner = cx + innerR * Math.cos(startAngle)
-      const y1Inner = cy + innerR * Math.sin(startAngle)
-
-      return `
-        M ${x1Outer} ${y1Outer}
-        A ${outerR} ${outerR} 0 0 1 ${x2Outer} ${y2Outer}
-        A ${outerR} ${outerR} 0 0 1 ${x1Outer} ${y1Outer}
-        Z
-        M ${x1Inner} ${y1Inner}
-        A ${innerR} ${innerR} 0 0 0 ${cx + innerR * Math.cos(startAngle + Math.PI)} ${cy + innerR * Math.sin(startAngle + Math.PI)}
-        A ${innerR} ${innerR} 0 0 0 ${x1Inner} ${y1Inner}
-        Z
-      `
-    }
-
-    const x1Outer = cx + outerR * Math.cos(startAngle)
-    const y1Outer = cy + outerR * Math.sin(startAngle)
-    const x2Outer = cx + outerR * Math.cos(endAngle)
-    const y2Outer = cy + outerR * Math.sin(endAngle)
-    const x1Inner = cx + innerR * Math.cos(endAngle)
-    const y1Inner = cy + innerR * Math.sin(endAngle)
-    const x2Inner = cx + innerR * Math.cos(startAngle)
-    const y2Inner = cy + innerR * Math.sin(startAngle)
-
-    const largeArc = endAngle - startAngle > Math.PI ? 1 : 0
-
-    return `
-      M ${x1Outer} ${y1Outer}
-      A ${outerR} ${outerR} 0 ${largeArc} 1 ${x2Outer} ${y2Outer}
-      L ${x1Inner} ${y1Inner}
-      A ${innerR} ${innerR} 0 ${largeArc} 0 ${x2Inner} ${y2Inner}
-      Z
-    `
+  // 自定义 Tooltip
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const CustomTooltip = ({ active, payload }: any) => {
+    if (!active || !payload?.length) return null
+    const entry = payload[0]
+    const pct = Math.round((entry.value / total) * 100)
+    return (
+      <div className="bg-white rounded-xl px-3 py-2 shadow-lg border border-gray-100 text-xs pointer-events-none">
+        <p className="font-semibold" style={{ color: entry.payload.color }}>
+          {entry.name}
+        </p>
+        <p className="text-gray-500">{pct}%</p>
+      </div>
+    )
   }
+
+  // 自定义中心标签（通过 SVG foreignObject 渲染，或直接在容器内叠加）
+  const centerX = size / 2
+  const centerY = size / 2
 
   return (
     <div className={className}>
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-        {/* 各段弧线 */}
-        {segments.map((seg, i) => (
-          <path
-            key={i}
-            d={describeArc(
-              radius,
-              radius,
-              radius - 2,
-              innerR,
-              seg.startAngle,
-              seg.endAngle
-            )}
-            fill={seg.color}
-          />
-        ))}
+      <div style={{ position: 'relative', width: size, height: size }}>
+        <PieChart width={size} height={size}>
+          <Pie
+            data={data}
+            cx={centerX}
+            cy={centerY}
+            innerRadius={innerR}
+            outerRadius={outerR}
+            dataKey="value"
+            startAngle={90}
+            endAngle={-270}
+            isAnimationActive={false}
+          >
+            {data.map((entry, i) => (
+              <Cell key={i} fill={entry.color} />
+            ))}
+          </Pie>
+          <Tooltip content={<CustomTooltip />} />
+        </PieChart>
 
-        {/* 中心文字 */}
+        {/* 中心文字叠加层 */}
         {showCenter && (
-          <text
-            x={radius}
-            y={radius - (centerValue ? 8 : 0)}
-            textAnchor="middle"
-            dominantBaseline="middle"
-            fill="#374151"
-            fontSize={12}
-            fontWeight={500}
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: size,
+              height: size,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              pointerEvents: 'none',
+            }}
           >
-            {centerText}
-          </text>
+            {centerText && (
+              <span style={{ fontSize: 12, fontWeight: 500, color: '#374151' }}>
+                {centerText}
+              </span>
+            )}
+            {centerValue && (
+              <span style={{ fontSize: 18, fontWeight: 600, color: '#F87098' }}>
+                {centerValue}
+              </span>
+            )}
+          </div>
         )}
-
-        {/* 中心数值 */}
-        {showCenter && centerValue && (
-          <text
-            x={radius}
-            y={radius + 12}
-            textAnchor="middle"
-            dominantBaseline="middle"
-            fill="#F87098"
-            fontSize={18}
-            fontWeight={600}
-          >
-            {centerValue}
-          </text>
-        )}
-      </svg>
+      </div>
 
       {/* 图例 */}
       <div className="flex flex-wrap gap-2 mt-2 justify-center">
-        {segments.map((seg, i) => (
-          <div key={i} className="flex items-center gap-1">
-            <span
-              className="w-2 h-2 rounded-full"
-              style={{ backgroundColor: seg.color }}
-            />
-            <span className="text-xs text-gray-600">
-              {seg.label} {seg.percentage}%
-            </span>
-          </div>
-        ))}
+        {data.map((d, i) => {
+          const pct = Math.round((d.value / total) * 100)
+          return (
+            <div key={i} className="flex items-center gap-1">
+              <span className="w-2 h-2 rounded-full" style={{ backgroundColor: d.color }} />
+              <span className="text-xs text-gray-600">
+                {d.label} {pct}%
+              </span>
+            </div>
+          )
+        })}
       </div>
     </div>
   )

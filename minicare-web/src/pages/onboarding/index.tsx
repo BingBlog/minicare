@@ -25,6 +25,7 @@ import BabyInfoForm from "./BabyInfoForm";
 import AllergySection from "./AllergySection";
 import OptionalFields from "./OptionalFields";
 import Step2SuccessPage from "./Step2SuccessPage";
+import { nowDate } from "@/pages/records/shared";
 
 type Step = 0 | 1 | 2;
 type AllergyLevelKey = AllergyLevel | "";
@@ -40,10 +41,7 @@ export default function OnboardingPage() {
   // 宝宝基础信息
   const [babyName, setBabyName] = useState("");
   const [gender, setGender] = useState<"male" | "female">("male");
-  const [birthDate, setBirthDate] = useState(() => {
-    const d = new Date();
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-  });
+  const [birthDate, setBirthDate] = useState(() => nowDate());
 
   // 过敏信息
   const [allergyLevel, setAllergyLevel] = useState<AllergyLevelKey>("unknown");

@@ -18,11 +18,7 @@ import DatePicker from '@/components/DatePicker'
 import type { AllergyLevel, AllergyType } from '@/api'
 import { ALLERGY_LEVEL_OPTIONS } from '@/lib/constants'
 import { useAppConfig } from '@/lib/useAppConfig'
-
-function localDateStr(): string {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-}
+import { nowDate } from '@/pages/records/shared'
 
 /** EditBabyModal 属性 */
 interface EditBabyModalProps {
@@ -153,7 +149,7 @@ export default function EditBabyModal({
               label="出生日期"
               value={birthDate}
               onChange={onBirthDateChange}
-              max={localDateStr()}
+              max={nowDate()}
               min="2010-01-01"
               className="flex-1"
             />

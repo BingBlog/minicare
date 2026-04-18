@@ -8,6 +8,7 @@
  */
 import DatePicker from "@/components/DatePicker";
 import TimePicker from "@/components/TimePicker";
+import dayjs from "dayjs";
 
 /** 根据入睡日期+时间、醒来日期+时间计算时长（分钟） */
 function calcDurationMin(
@@ -16,10 +17,10 @@ function calcDurationMin(
   endDate: string,
   endTime: string,
 ): number {
-  const startMs = new Date(`${startDate}T${startTime}:00`).getTime();
-  const endMs = new Date(`${endDate}T${endTime}:00`).getTime();
-  if (Number.isNaN(startMs) || Number.isNaN(endMs)) return 0;
-  return Math.round((endMs - startMs) / 60000);
+  const start = dayjs(`${startDate}T${startTime}:00`);
+  const end = dayjs(`${endDate}T${endTime}:00`);
+  if (!start.isValid() || !end.isValid()) return 0;
+  return Math.round(end.diff(start, 'minute', true));
 }
 
 interface Props {

@@ -3,6 +3,7 @@
  */
 
 import DatePicker from "@/components/DatePicker";
+import { nowDate } from "@/pages/records/shared";
 
 const IconBell = () => (
   <svg
@@ -17,11 +18,6 @@ const IconBell = () => (
     <path d="M13.73 21a2 2 0 0 1-3.46 0" />
   </svg>
 );
-
-function nowDate(): string {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-}
 
 interface Props {
   followUpDate: string;

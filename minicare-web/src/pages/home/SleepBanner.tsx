@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom'
 import { recordsApi } from '@/api'
 import type { SleepRecord, SleepPeriod } from '@/api/types'
 import { dateToLocalISO, isoToLocalTime } from '@/pages/records/shared'
+import dayjs from 'dayjs'
 
 /** 将秒数格式化为 "Xh Ym" 或 "Ym" */
 function formatElapsed(seconds: number): string {
@@ -35,8 +36,7 @@ export default function SleepBanner({ familyId, ongoingRecord, onEnded }: SleepB
 
   // 本地实时秒数（从 start_time 至今）
   const [elapsedSeconds, setElapsedSeconds] = useState(() => {
-    const start = new Date(ongoingRecord.start_time).getTime()
-    return Math.max(0, Math.floor((Date.now() - start) / 1000))
+    return Math.max(0, dayjs().diff(dayjs(ongoingRecord.start_time), 'second'))
   })
 
   const [ending, setEnding] = useState(false)

@@ -274,8 +274,8 @@ export default function SleepFormPage() {
 
     recordsApi.sleep.getOngoing(currentFamily.id, currentBaby.id).then((ongoing) => {
       if (!ongoing) return;
-      const start = new Date(ongoing.start_time);
-      const elapsedSeconds = Math.floor((Date.now() - start.getTime()) / 1000);
+      const start = dayjs(ongoing.start_time).toDate();
+      const elapsedSeconds = Math.max(0, dayjs().diff(dayjs(ongoing.start_time), 'second'));
       setTimerStartTime(start);
       setTimerSeconds(Math.max(0, elapsedSeconds));
       setOngoingId(ongoing.id);
@@ -314,9 +314,9 @@ export default function SleepFormPage() {
         try {
           const ongoing = await recordsApi.sleep.getOngoing(currentFamily.id, currentBaby.id);
           if (ongoing) {
-            const start = new Date(ongoing.start_time);
+            const start = dayjs(ongoing.start_time).toDate();
             setTimerStartTime(start);
-            setTimerSeconds(Math.max(0, Math.floor((Date.now() - start.getTime()) / 1000)));
+            setTimerSeconds(Math.max(0, dayjs().diff(dayjs(ongoing.start_time), 'second')));
             setOngoingId(ongoing.id);
             setTimerRunning(true);
             setTimerStopped(false);

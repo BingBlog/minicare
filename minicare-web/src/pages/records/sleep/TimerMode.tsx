@@ -14,6 +14,8 @@
  *  - onStop   → 父组件判断时长，短则弹窗，长则调用 endSleep API
  */
 
+import dayjs from "dayjs";
+
 /** 月亮图标（计时圆圈中心） */
 const IconMoon = () => (
   <svg
@@ -128,9 +130,7 @@ export default function TimerMode({
       {/* 开始时间提示 */}
       {startTime && (
         <span className="text-[13px] text-[#9A8090]">
-          开始于{" "}
-          {startTime.getHours().toString().padStart(2, "0")}:
-          {startTime.getMinutes().toString().padStart(2, "0")} 今天
+          开始于 {dayjs(startTime).format("HH:mm")} 今天
         </span>
       )}
 

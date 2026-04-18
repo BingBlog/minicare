@@ -3,11 +3,7 @@
  */
 
 import DatePicker from "@/components/DatePicker";
-
-function nowDate(): string {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-}
+import { nowDate } from "@/pages/records/shared";
 
 interface Props {
   visitDate: string;

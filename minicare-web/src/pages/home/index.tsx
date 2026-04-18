@@ -30,6 +30,7 @@ import type { TodayRecord, SleepRecord } from "@/api/types";
 import type { RecordItem } from "@/api";
 import type { ActionRecord } from "@/pages/records-list/RecordActionSheet";
 import type { BabyStat } from "./HeroSection";
+import dayjs from "dayjs";
 
 // 支持删除的记录类型（与 recordsApi 的子模块 key 保持一致）
 type DeletableType =
@@ -240,7 +241,7 @@ export default function HomePage() {
     const recs = todayRecords.filter((r) => r.type === "feeding");
     if (recs.length === 0) return null;
     return [...recs].sort(
-      (a, b) => new Date(b.time).getTime() - new Date(a.time).getTime(),
+      (a, b) => dayjs(b.time).diff(dayjs(a.time)),
     )[0].time;
   })();
 

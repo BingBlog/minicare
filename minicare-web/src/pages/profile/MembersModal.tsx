@@ -21,6 +21,7 @@
  */
 import { useState } from "react";
 import type { FamilyMember } from "@/api";
+import { timeAgo } from "@/lib/utils";
 import {
   ROLE_TEXT,
   ROLE_AVATAR_STYLE,
@@ -109,16 +110,6 @@ const IconAlertCircle = () => (
 function maskPhone(phone: string): string {
   if (!phone || phone.length < 7) return phone;
   return phone.slice(0, 3) + "****" + phone.slice(-4);
-}
-
-/** 时间格式化 */
-function timeAgo(isoStr: string): string {
-  const diff = Date.now() - new Date(isoStr).getTime();
-  const days = Math.floor(diff / 86400000);
-  if (days >= 1) return `${days}天前`;
-  const hours = Math.floor(diff / 3600000);
-  if (hours >= 1) return `${hours}小时前`;
-  return "刚刚";
 }
 
 /** 手机号格式校验 */

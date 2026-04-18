@@ -9,6 +9,7 @@
 import type { AllergyLevel, AllergyType } from "@/api";
 import { useAppConfig } from "@/lib/useAppConfig";
 import { getBabyAge } from "@/lib/utils";
+import dayjs from "dayjs";
 
 // ── 宝宝头像 SVG（卡通小人，白色线条）────────────────────────────
 
@@ -138,12 +139,7 @@ export default function BabyHero({
             {getBabyAge(birthDate)}
             {genderLabel && ` · ${genderLabel}`}
             {" · "}
-            {new Date(birthDate).toLocaleDateString("zh-CN", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-            出生
+            {dayjs(birthDate).format("YYYY年M月D日")}出生
           </div>
         ) : (
           <div className="text-[12px] mt-0.5" style={{ color: 'rgba(154,128,144,0.5)' }}>

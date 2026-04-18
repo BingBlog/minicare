@@ -12,7 +12,7 @@ import { useAppStore } from "@/lib/store";
 import { recordsApi } from "@/api";
 import type { MedicalRecord, VisitType } from "@/api/types";
 
-import { NavBar, SectionLabel, FormSection, SubmitBar, useToastMsg, ToastMessage } from "../shared";
+import { NavBar, SectionLabel, FormSection, SubmitBar, useToastMsg, ToastMessage, nowDate } from "../shared";
 import VisitTypeSection from "./VisitTypeSection";
 import BasicInfoSection from "./BasicInfoSection";
 import OCRSection from "./OCRSection";
@@ -36,11 +36,6 @@ const IconFileText = () => (
     <polyline points="10 9 9 9 8 9" />
   </svg>
 );
-
-function nowDate(): string {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-}
 
 export default function MedicalFormPage() {
   const navigate = useNavigate();

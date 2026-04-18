@@ -7,11 +7,7 @@
  *   - 性别（必填，男/女 圆角药丸切换）
  */
 import DatePicker from "@/components/DatePicker";
-
-function localDateStr(): string {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-}
+import { nowDate } from "@/pages/records/shared";
 
 interface Props {
   babyName: string;
@@ -111,7 +107,7 @@ export default function BabyInfoForm({
             label=""
             value={birthDate}
             onChange={onBirthDateChange}
-            max={localDateStr()}
+            max={nowDate()}
             min="2010-01-01"
             className="flex-1 justify-end"
           />

@@ -1,14 +1,19 @@
 /**
- * 柱状图组件
+ * 柱状图组件（Recharts 版）
  * 用于展示每日数据对比（如每日大便次数、每日睡眠时长等）
  */
 import React from 'react'
-import type { BarChartProps, DataPoint } from './types'
 import {
-  CHART_X_LABEL_BOTTOM_PAD,
-  ChartRotatedXLabel,
-  chartDefaultXLabelInterval,
-} from './chartAxis'
+  BarChart as RechartsBarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Cell,
+  ResponsiveContainer,
+} from 'recharts'
+import type { BarChartProps } from './types'
 
 const DEFAULT_COLORS = {
   primary: '#F87098',
@@ -18,171 +23,103 @@ const DEFAULT_COLORS = {
   quinary: '#6BCB77',
 }
 
-const DEFAULT_PADDING = { top: 20, right: 10, bottom: CHART_X_LABEL_BOTTOM_PAD, left: 50 }
-
 export function BarChart({
   data,
-  width,
   height = 200,
-  padding = {},
   colors = DEFAULT_COLORS,
   axis = {},
-  showDots = false,
   showValues = false,
   barWidth = 0.6,
   rounded = false,
   className,
 }: BarChartProps) {
-  const pad = { ...DEFAULT_PADDING, ...padding }
-  const chartWidth = width ?? 300
-  const chartHeight = height
-  const fillContainer = width == null
-  const innerWidth = chartWidth - pad.left - pad.right
-  const innerHeight = chartHeight - pad.top - pad.bottom
-
   if (data.length === 0) {
     return (
       <div
         className={`flex w-full min-w-0 items-center justify-center bg-gray-50 rounded-lg ${className || ''}`}
-        style={fillContainer ? { height: chartHeight } : { width: chartWidth, height: chartHeight }}
+        style={{ height }}
       >
         <span className="text-gray-400 text-sm">暂无数据</span>
       </div>
     )
   }
 
-  // 计算数据范围
   const values = data.map((d) => d.value)
   const yMin = axis.yMin ?? 0
   const yMax = axis.yMax ?? (Math.max(...values) * 1.2 || 10)
-  const yRange = yMax - yMin || 1
 
-  // 柱子尺寸
-  const barSpacing = innerWidth / data.length
-  const actualBarWidth = barSpacing * barWidth
+  const barColor = colors.primary ?? DEFAULT_COLORS.primary
 
-  // Y 轴刻度
-  const yTicks = 4
-  const yTickValues = Array.from({ length: yTicks + 1 }, (_, i) => {
-    const value = yMin + (yRange * i) / yTicks
-    return axis.yFormat ? axis.yFormat(value) : Math.round(value).toString()
-  })
+  const tickFormatter = axis.yFormat ? axis.yFormat : (v: number) => String(Math.round(v))
 
-  // X 轴标签间隔
-  const xLabelInterval = axis.xLabelInterval ?? chartDefaultXLabelInterval(data.length)
+  // 自定义 Tooltip
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (!active || !payload?.length) return null
+    const value = payload[0]?.value
+    return (
+      <div className="bg-white rounded-xl px-3 py-2 shadow-lg border border-gray-100 text-xs pointer-events-none">
+        <p className="text-gray-500 mb-0.5">{label}</p>
+        <p className="font-semibold" style={{ color: barColor }}>
+          {axis.yFormat ? axis.yFormat(value) : value}
+        </p>
+      </div>
+    )
+  }
 
-  // 计算柱子位置和高度
-  const bars = data.map((d, i) => {
-    const x = pad.left + i * barSpacing + (barSpacing - actualBarWidth) / 2
-    const barHeight = Math.max(2, ((d.value - yMin) / yRange) * innerHeight)
-    const y = pad.top + innerHeight - barHeight
-    return {
-      x,
-      y,
-      width: actualBarWidth,
-      height: barHeight,
-      label: d.label,
-      value: d.value,
-    }
-  })
+  // 自定义柱顶标签
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const renderLabel = (props: any) => {
+    const { x, y, width, value } = props
+    if (!showValues) return null
+    return (
+      <text
+        x={x + width / 2}
+        y={y - 4}
+        textAnchor="middle"
+        fill={barColor}
+        fontSize={10}
+        fontWeight={500}
+      >
+        {axis.yFormat ? axis.yFormat(value) : value}
+      </text>
+    )
+  }
 
   return (
     <div className={`w-full min-w-0 ${className || ''}`}>
-      <svg
-        width={fillContainer ? '100%' : chartWidth}
-        height={chartHeight}
-        className="block"
-        viewBox={`0 0 ${chartWidth} ${chartHeight}`}
-        preserveAspectRatio={fillContainer ? 'none' : 'xMidYMid meet'}
-      >
-      {/* 网格线 */}
-      {axis.showGrid !== false && (
-        <g className="grid-lines">
-          {yTickValues.map((_, i) => {
-            const y = pad.top + (i * innerHeight) / yTicks
-            return (
-              <line
-                key={i}
-                x1={pad.left}
-                y1={y}
-                x2={chartWidth - pad.right}
-                y2={y}
-                stroke="#E5E7EB"
-                strokeWidth={1}
-                strokeDasharray="4 2"
-              />
-            )
-          })}
-        </g>
-      )}
-
-      {/* Y 轴标签 */}
-      <g className="y-axis-labels">
-        {yTickValues.map((label, i) => {
-          const y = pad.top + (i * innerHeight) / yTicks
-          return (
-            <text
-              key={i}
-              x={pad.left - 8}
-              y={y + 4}
-              textAnchor="end"
-              fill="#9CA3AF"
-              fontSize={11}
-            >
-              {label}
-            </text>
-          )
-        })}
-      </g>
-
-      {/* 柱子 */}
-      <g className="bars">
-        {bars.map((bar, i) => (
-          <rect
-            key={i}
-            x={bar.x}
-            y={bar.y}
-            width={bar.width}
-            height={bar.height}
-            fill={colors.primary}
-            rx={rounded ? 4 : 0}
-            ry={rounded ? 4 : 0}
+      <ResponsiveContainer width="100%" height={height}>
+        <RechartsBarChart
+          data={data}
+          margin={{ top: 16, right: 10, bottom: 5, left: 10 }}
+          barCategoryGap={`${Math.round((1 - barWidth) * 100)}%`}
+        >
+          <CartesianGrid strokeDasharray="4 2" stroke="#E5E7EB" vertical={false} />
+          <XAxis
+            dataKey="label"
+            tick={{ fontSize: 11, fill: '#9CA3AF' }}
+            tickLine={false}
+            axisLine={false}
+            interval="preserveStartEnd"
           />
-        ))}
-      </g>
-
-      {/* 数值标签 */}
-      {showValues && (
-        <g className="value-labels">
-          {bars.map((bar, i) => (
-            <text
-              key={i}
-              x={bar.x + bar.width / 2}
-              y={bar.y - 6}
-              textAnchor="middle"
-              fill={colors.primary}
-              fontSize={10}
-              fontWeight={500}
-            >
-              {axis.yFormat ? axis.yFormat(bar.value) : bar.value}
-            </text>
-          ))}
-        </g>
-      )}
-
-      {/* X 轴标签 */}
-      <g className="x-axis-labels">
-        {data.map((d, i) => {
-          if (i % xLabelInterval !== 0 && i !== data.length - 1) return null
-          const x = pad.left + i * barSpacing + barSpacing / 2
-          return (
-            <ChartRotatedXLabel key={i} x={x} chartHeight={chartHeight} paddingBottom={pad.bottom}>
-              {d.label}
-            </ChartRotatedXLabel>
-          )
-        })}
-      </g>
-      </svg>
+          <YAxis
+            domain={[yMin, yMax]}
+            tick={{ fontSize: 11, fill: '#9CA3AF' }}
+            tickLine={false}
+            axisLine={false}
+            tickFormatter={tickFormatter}
+            width={44}
+          />
+          <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(248,112,152,0.06)' }} />
+          <Bar
+            dataKey="value"
+            fill={barColor}
+            radius={rounded ? [4, 4, 0, 0] : [0, 0, 0, 0]}
+            label={showValues ? renderLabel : undefined}
+            isAnimationActive={false}
+          />
+        </RechartsBarChart>
+      </ResponsiveContainer>
     </div>
   )
 }

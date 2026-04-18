@@ -1,15 +1,19 @@
 /**
- * 散点图：用于报告页体温、情绪等按日分布展示
+ * 散点图组件（Recharts 版）
+ * 用于报告页体温、情绪等按日分布展示
  */
 import React from 'react'
-import type { ScatterChartProps } from './types'
 import {
-  CHART_X_LABEL_BOTTOM_PAD,
-  ChartRotatedXLabel,
-  chartDefaultXLabelInterval,
-} from './chartAxis'
-
-const DEFAULT_PADDING = { top: 16, right: 10, bottom: CHART_X_LABEL_BOTTOM_PAD, left: 44 }
+  ScatterChart as RechartsScatterChart,
+  Scatter,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Cell,
+} from 'recharts'
+import type { ScatterChartProps } from './types'
 
 export function ScatterChart({
   points,
@@ -19,122 +23,110 @@ export function ScatterChart({
   yMax,
   yFormat,
   height = 200,
-  width,
-  padding = {},
   yTicks = 4,
   xLabelInterval,
   className,
 }: ScatterChartProps) {
-  const pad = { ...DEFAULT_PADDING, ...padding }
-  const chartHeight = height
-  const fillContainer = width == null
-  const chartWidth = width ?? 300
-  const innerWidth = chartWidth - pad.left - pad.right
-  const innerHeight = chartHeight - pad.top - pad.bottom
-  const yRange = yMax - yMin || 1
-
-  const xLabelIntervalResolved =
-    xLabelInterval ?? chartDefaultXLabelInterval(Math.max(1, xSlotCount))
-
-  const yTickValues = Array.from({ length: yTicks + 1 }, (_, i) => {
-    const value = yMax - (yRange * i) / yTicks
-    return yFormat ? yFormat(value) : Math.round(value * 100) / 100
-  })
-
   if (points.length === 0) {
     return (
       <div
         className={`flex w-full min-w-0 items-center justify-center bg-gray-50 rounded-lg ${className || ''}`}
-        style={fillContainer ? { height: chartHeight } : { width: chartWidth, height: chartHeight }}
+        style={{ height }}
       >
         <span className="text-gray-400 text-sm">暂无数据</span>
       </div>
     )
   }
 
-  const xPos = (slot: number) => {
-    if (xSlotCount <= 1) return pad.left + innerWidth / 2
-    return pad.left + (slot / (xSlotCount - 1)) * innerWidth
+  // Recharts 的 ScatterChart 需要数值型 X 轴，用 xSlot 0..xSlotCount-1 映射
+  // 将 ScatterChartPoint 转换为 recharts 所需格式（加上 y 值和颜色）
+  const chartData = points.map((p) => ({
+    x: p.xSlot,
+    y: p.y,
+    r: p.r,
+    color: p.color,
+  }))
+
+  // X 轴刻度：只显示部分 label
+  const interval = xLabelInterval ?? Math.max(1, Math.ceil(xSlotCount / 7))
+  const xTicks = xLabels
+    .map((_, i) => i)
+    .filter((i) => i % interval === 0 || i === xSlotCount - 1)
+
+  const xTickFormatter = (v: number) => xLabels[v] ?? ''
+
+  const yTickFormatter = yFormat ? yFormat : (v: number) => String(Math.round(v * 100) / 100)
+
+  // 自定义 Tooltip
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const CustomTooltip = ({ active, payload }: any) => {
+    if (!active || !payload?.length) return null
+    const pt = payload[0]?.payload
+    if (!pt) return null
+    return (
+      <div className="bg-white rounded-xl px-3 py-2 shadow-lg border border-gray-100 text-xs pointer-events-none">
+        <p className="text-gray-500 mb-0.5">{xLabels[pt.x] ?? pt.x}</p>
+        <p className="font-semibold" style={{ color: pt.color }}>
+          {yFormat ? yFormat(pt.y) : pt.y}
+        </p>
+      </div>
+    )
   }
 
-  const yPos = (y: number) =>
-    pad.top + innerHeight - ((y - yMin) / yRange) * innerHeight
+  // 自定义散点形状（根据 r 调整大小）
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const CustomDot = (props: any) => {
+    const { cx, cy, payload } = props
+    return (
+      <circle
+        cx={cx}
+        cy={cy}
+        r={payload.r}
+        fill={payload.color}
+        stroke="white"
+        strokeWidth={2}
+      />
+    )
+  }
 
   return (
     <div className={`w-full min-w-0 ${className || ''}`}>
-      <svg
-        width={fillContainer ? '100%' : chartWidth}
-        height={chartHeight}
-        className="block"
-        viewBox={`0 0 ${chartWidth} ${chartHeight}`}
-        preserveAspectRatio={fillContainer ? 'none' : 'xMidYMid meet'}
-      >
-        <g className="grid-lines">
-          {Array.from({ length: yTicks + 1 }, (_, i) => {
-            const y = pad.top + (i * innerHeight) / yTicks
-            return (
-              <line
-                key={i}
-                x1={pad.left}
-                y1={y}
-                x2={chartWidth - pad.right}
-                y2={y}
-                stroke="#E5E7EB"
-                strokeWidth={1}
-                strokeDasharray="4 2"
-              />
-            )
-          })}
-        </g>
-
-        <g className="y-axis-labels">
-          {yTickValues.map((label, i) => {
-            const y = pad.top + (i * innerHeight) / yTicks
-            return (
-              <text
-                key={i}
-                x={pad.left - 8}
-                y={y + 4}
-                textAnchor="end"
-                fill="#9CA3AF"
-                fontSize={11}
-              >
-                {label}
-              </text>
-            )
-          })}
-        </g>
-
-        <g className="scatter-points">
-          {points.map((p, i) => (
-            <circle
-              key={i}
-              cx={xPos(p.xSlot)}
-              cy={yPos(p.y)}
-              r={p.r}
-              fill={p.color}
-              stroke="white"
-              strokeWidth={2}
-            />
-          ))}
-        </g>
-
-        <g className="x-axis-labels">
-          {xLabels.map((label, i) => {
-            if (i % xLabelIntervalResolved !== 0 && i !== xSlotCount - 1) return null
-            return (
-              <ChartRotatedXLabel
-                key={i}
-                x={xPos(i)}
-                chartHeight={chartHeight}
-                paddingBottom={pad.bottom}
-              >
-                {label}
-              </ChartRotatedXLabel>
-            )
-          })}
-        </g>
-      </svg>
+      <ResponsiveContainer width="100%" height={height}>
+        <RechartsScatterChart margin={{ top: 10, right: 10, bottom: 5, left: 10 }}>
+          <CartesianGrid strokeDasharray="4 2" stroke="#E5E7EB" vertical={false} />
+          <XAxis
+            dataKey="x"
+            type="number"
+            domain={[-0.5, xSlotCount - 0.5]}
+            ticks={xTicks}
+            tickFormatter={xTickFormatter}
+            tick={{ fontSize: 11, fill: '#9CA3AF' }}
+            tickLine={false}
+            axisLine={false}
+          />
+          <YAxis
+            dataKey="y"
+            type="number"
+            domain={[yMin, yMax]}
+            tickCount={yTicks + 1}
+            tick={{ fontSize: 11, fill: '#9CA3AF' }}
+            tickLine={false}
+            axisLine={false}
+            tickFormatter={yTickFormatter}
+            width={44}
+          />
+          <Tooltip content={<CustomTooltip />} cursor={false} />
+          <Scatter
+            data={chartData}
+            shape={<CustomDot />}
+            isAnimationActive={false}
+          >
+            {chartData.map((entry, i) => (
+              <Cell key={i} fill={entry.color} />
+            ))}
+          </Scatter>
+        </RechartsScatterChart>
+      </ResponsiveContainer>
     </div>
   )
 }

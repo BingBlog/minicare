@@ -27,6 +27,8 @@ import {
   getDateLabel,
   getRecordType,
 } from "@/lib/utils";
+import dayjs from "dayjs";
+import { nowDate } from "@/pages/records/shared";
 import { RECORD_ROUTES } from "@/lib/constants";
 import {
   IconMilk,
@@ -169,16 +171,13 @@ export default function RecordsPage() {
         }
 
         // 按时间降序（最新在前）
-        allRecs.sort((a, b) => {
-          return (
-            new Date(getRecordTime(b)).getTime() -
-            new Date(getRecordTime(a)).getTime()
-          );
-        });
+        allRecs.sort((a, b) =>
+          dayjs(getRecordTime(b)).diff(dayjs(getRecordTime(a)))
+        );
 
         // 「今天」时间过滤（由标题行切换按钮驱动，与类型筛选正交）
         if (todayOnly) {
-          const todayKey = getDateKey(new Date().toISOString());
+          const todayKey = getDateKey(nowDate());
           allRecs = allRecs.filter(
             (r) => getDateKey(getRecordTime(r)) === todayKey,
           );
@@ -209,7 +208,7 @@ export default function RecordsPage() {
   }
 
   // ── 按日期分组 ────────────────────────────────────────────────────────────
-  const todayKey = getDateKey(new Date().toISOString());
+  const todayKey = getDateKey(nowDate());
   const dateMap = new Map<string, RecordItem[]>();
 
   for (const rec of records) {
