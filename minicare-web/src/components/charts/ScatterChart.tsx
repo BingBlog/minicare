@@ -11,9 +11,56 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Cell,
 } from 'recharts'
 import type { ScatterChartProps } from './types'
+
+// ─── 散点形状（模块级）────────────────────────────────────────────────────
+
+interface ScatterDotProps {
+  cx?: number
+  cy?: number
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  payload?: any
+}
+
+function ScatterDot({ cx = 0, cy = 0, payload }: ScatterDotProps) {
+  return (
+    <circle
+      cx={cx}
+      cy={cy}
+      r={payload?.r ?? 5}
+      fill={payload?.color ?? '#F87098'}
+      stroke="white"
+      strokeWidth={2}
+    />
+  )
+}
+
+// ─── Tooltip（模块级）────────────────────────────────────────────────────
+
+interface ScatterTooltipProps {
+  active?: boolean
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  payload?: any[]
+  xLabels: string[]
+  yFormat?: (v: number) => string
+}
+
+function ScatterTooltip({ active, payload, xLabels, yFormat }: ScatterTooltipProps) {
+  if (!active || !payload?.length) return null
+  const pt = payload[0]?.payload
+  if (!pt) return null
+  return (
+    <div className="bg-white rounded-xl px-3 py-2 shadow-lg border border-gray-100 text-xs pointer-events-none">
+      <p className="text-gray-500 mb-0.5">{xLabels[pt.x] ?? pt.x}</p>
+      <p className="font-semibold" style={{ color: pt.color }}>
+        {yFormat ? yFormat(pt.y) : pt.y}
+      </p>
+    </div>
+  )
+}
+
+// ─── 主组件 ───────────────────────────────────────────────────────────────
 
 export function ScatterChart({
   points,
@@ -39,7 +86,6 @@ export function ScatterChart({
   }
 
   // Recharts 的 ScatterChart 需要数值型 X 轴，用 xSlot 0..xSlotCount-1 映射
-  // 将 ScatterChartPoint 转换为 recharts 所需格式（加上 y 值和颜色）
   const chartData = points.map((p) => ({
     x: p.xSlot,
     y: p.y,
@@ -54,40 +100,12 @@ export function ScatterChart({
     .filter((i) => i % interval === 0 || i === xSlotCount - 1)
 
   const xTickFormatter = (v: number) => xLabels[v] ?? ''
-
   const yTickFormatter = yFormat ? yFormat : (v: number) => String(Math.round(v * 100) / 100)
 
-  // 自定义 Tooltip
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const CustomTooltip = ({ active, payload }: any) => {
-    if (!active || !payload?.length) return null
-    const pt = payload[0]?.payload
-    if (!pt) return null
-    return (
-      <div className="bg-white rounded-xl px-3 py-2 shadow-lg border border-gray-100 text-xs pointer-events-none">
-        <p className="text-gray-500 mb-0.5">{xLabels[pt.x] ?? pt.x}</p>
-        <p className="font-semibold" style={{ color: pt.color }}>
-          {yFormat ? yFormat(pt.y) : pt.y}
-        </p>
-      </div>
-    )
-  }
-
-  // 自定义散点形状（根据 r 调整大小）
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const CustomDot = (props: any) => {
-    const { cx, cy, payload } = props
-    return (
-      <circle
-        cx={cx}
-        cy={cy}
-        r={payload.r}
-        fill={payload.color}
-        stroke="white"
-        strokeWidth={2}
-      />
-    )
-  }
+  const tooltipContent = (props: any) => (
+    <ScatterTooltip {...props} xLabels={xLabels} yFormat={yFormat} />
+  )
 
   return (
     <div className={`w-full min-w-0 ${className || ''}`}>
@@ -115,16 +133,9 @@ export function ScatterChart({
             tickFormatter={yTickFormatter}
             width={44}
           />
-          <Tooltip content={<CustomTooltip />} cursor={false} />
-          <Scatter
-            data={chartData}
-            shape={<CustomDot />}
-            isAnimationActive={false}
-          >
-            {chartData.map((entry, i) => (
-              <Cell key={i} fill={entry.color} />
-            ))}
-          </Scatter>
+          <Tooltip content={tooltipContent} cursor={false} />
+          {/* Cell 不用于 ScatterChart（shape 已自定义颜色），直接删除 */}
+          <Scatter data={chartData} shape={<ScatterDot />} isAnimationActive={false} />
         </RechartsScatterChart>
       </ResponsiveContainer>
     </div>

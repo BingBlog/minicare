@@ -22,14 +22,14 @@ const REFERENCE_LINE_COLOR = '#C4B5D4'
 // 实际数据点颜色
 const DATA_POINT_COLOR = '#F87098'
 
-// 百分位线样式配置
+// 百分位线样式配置（p50 实线不传 strokeDasharray）
 const PERCENTILE_CONFIG: Record<
   string,
-  { strokeWidth: number; dasharray: string; labelColor: string }
+  { strokeWidth: number; dasharray?: string; labelColor: string }
 > = {
   p3:  { strokeWidth: 1,   dasharray: '3 3', labelColor: '#B0A0C8' },
   p15: { strokeWidth: 1,   dasharray: '3 3', labelColor: '#B0A0C8' },
-  p50: { strokeWidth: 1.5, dasharray: '',    labelColor: '#9B8ED8' },
+  p50: { strokeWidth: 1.5,                  labelColor: '#9B8ED8' },
   p85: { strokeWidth: 1,   dasharray: '3 3', labelColor: '#B0A0C8' },
   p97: { strokeWidth: 1,   dasharray: '3 3', labelColor: '#B0A0C8' },
 }
@@ -120,9 +120,8 @@ export function GrowthChart({
   gender,
   measureType,
   height = 280,
-  containerWidth,
   className,
-}: GrowthChartProps) {
+}: Omit<GrowthChartProps, 'containerWidth'>) {
   const config = MEASURE_CONFIG[measureType]
 
   // 按月龄排序实测数据

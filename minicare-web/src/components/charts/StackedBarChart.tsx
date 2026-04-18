@@ -15,6 +15,42 @@ import {
 } from 'recharts'
 import type { StackedBarChartProps } from './types'
 
+// ─── Tooltip 提升到模块级，避免在 render 内定义导致每次重新创建组件引发闪烁 ───
+
+interface StackedBarTooltipProps {
+  active?: boolean
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  payload?: any[]
+  label?: string
+  seriesLabels?: Record<string, string>
+  yFormat?: (v: number) => string
+}
+
+function StackedBarTooltip({
+  active,
+  payload,
+  label,
+  seriesLabels,
+  yFormat,
+}: StackedBarTooltipProps) {
+  if (!active || !payload?.length) return null
+  return (
+    <div className="bg-white rounded-xl px-3 py-2 shadow-lg border border-gray-100 text-xs pointer-events-none">
+      <p className="text-gray-500 mb-1">{label}</p>
+      {payload
+        .filter((entry: { value: number }) => entry.value > 0)
+        .map((entry: { dataKey: string; value: number; color: string }) => (
+          <p key={entry.dataKey} className="font-semibold" style={{ color: entry.color }}>
+            {seriesLabels?.[entry.dataKey] ?? entry.dataKey}：
+            {yFormat ? yFormat(entry.value) : entry.value}
+          </p>
+        ))}
+    </div>
+  )
+}
+
+// ─── 主组件 ───────────────────────────────────────────────────────────────
+
 export function StackedBarChart({
   data,
   height = 200,
@@ -55,24 +91,12 @@ export function StackedBarChart({
     ...Object.fromEntries(seriesOrder.map((key) => [key, d.values[key] ?? 0])),
   }))
 
-  // 自定义 Tooltip
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const CustomTooltip = ({ active, payload, label }: any) => {
-    if (!active || !payload?.length) return null
-    return (
-      <div className="bg-white rounded-xl px-3 py-2 shadow-lg border border-gray-100 text-xs pointer-events-none">
-        <p className="text-gray-500 mb-1">{label}</p>
-        {payload
-          .filter((entry: { value: number }) => entry.value > 0)
-          .map((entry: { dataKey: string; value: number; color: string }) => (
-            <p key={entry.dataKey} className="font-semibold" style={{ color: entry.color }}>
-              {seriesLabels?.[entry.dataKey] ?? entry.dataKey}：
-              {axis.yFormat ? axis.yFormat(entry.value) : entry.value}
-            </p>
-          ))}
-      </div>
-    )
-  }
+  const tooltipContent = (props: any) => (
+    <StackedBarTooltip {...props} seriesLabels={seriesLabels} yFormat={axis.yFormat} />
+  )
+
+  const lastKey = seriesOrder[seriesOrder.length - 1]
 
   return (
     <div className={`w-full min-w-0 ${className || ''}`}>
@@ -98,7 +122,7 @@ export function StackedBarChart({
             tickFormatter={tickFormatter}
             width={44}
           />
-          <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(248,112,152,0.06)' }} />
+          <Tooltip content={tooltipContent} cursor={{ fill: 'rgba(248,112,152,0.06)' }} />
           {seriesOrder.map((key) => (
             <Bar
               key={key}
@@ -107,6 +131,8 @@ export function StackedBarChart({
               fill={seriesColors[key] ?? '#9CA3AF'}
               isAnimationActive={false}
               name={seriesLabels?.[key] ?? key}
+              // 只给最顶层（最后一个系列）加圆角
+              radius={key === lastKey ? [4, 4, 0, 0] : undefined}
             />
           ))}
           {showLegend && (

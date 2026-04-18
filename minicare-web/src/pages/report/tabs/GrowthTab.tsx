@@ -2,7 +2,7 @@
  * 生长分析 Tab
  * 展示体重/身高/头围生长曲线，叠加国家百分位标准
  */
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState } from 'react'
 import dayjs from 'dayjs'
 import { GrowthChart } from '@/components/charts'
 import { formatDateCN, formatAgeMonths } from '@/lib/utils'
@@ -79,22 +79,6 @@ function buildChartPercentiles(
 
 export function GrowthTab({ data, loading, babyGender, babyBirthDate }: GrowthTabProps) {
   const [activeMeasure, setActiveMeasure] = useState<MeasureType>('weight')
-
-  // 感知图表容器宽度，传给 GrowthChart 防止超出屏幕
-  const chartContainerRef = useRef<HTMLDivElement>(null)
-  const [chartContainerWidth, setChartContainerWidth] = useState<number>(0)
-  useEffect(() => {
-    const el = chartContainerRef.current
-    if (!el) return
-    const observer = new ResizeObserver((entries) => {
-      const width = entries[0]?.contentRect.width
-      if (width) setChartContainerWidth(Math.floor(width))
-    })
-    observer.observe(el)
-    // 立即读取一次初始宽度
-    setChartContainerWidth(Math.floor(el.getBoundingClientRect().width))
-    return () => observer.disconnect()
-  }, [])
 
   if (loading) {
     return (
@@ -247,14 +231,13 @@ export function GrowthTab({ data, loading, babyGender, babyBirthDate }: GrowthTa
       {/* 生长曲线图 */}
       <div className="bg-white rounded-xl p-4 shadow-sm">
         <div className="text-sm font-medium text-gray-700 mb-3">{config.label}生长曲线</div>
-        <div ref={chartContainerRef}>
+        <div>
           <GrowthChart
             data={chartData}
             percentiles={chartPercentiles}
             gender={gender}
             measureType={activeMeasure}
             height={260}
-            containerWidth={chartContainerWidth || undefined}
           />
         </div>
         <div className="text-xs text-gray-400 mt-2 text-center">

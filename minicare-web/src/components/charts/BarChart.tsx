@@ -23,6 +23,59 @@ const DEFAULT_COLORS = {
   quinary: '#6BCB77',
 }
 
+// ─── Tooltip 提升到模块级，避免在 render 内定义导致每次重新创建组件引发闪烁 ───
+
+interface BarTooltipProps {
+  active?: boolean
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  payload?: any[]
+  label?: string
+  barColor: string
+  yFormat?: (v: number) => string
+}
+
+function BarTooltip({ active, payload, label, barColor, yFormat }: BarTooltipProps) {
+  if (!active || !payload?.length) return null
+  const value = payload[0]?.value
+  return (
+    <div className="bg-white rounded-xl px-3 py-2 shadow-lg border border-gray-100 text-xs pointer-events-none">
+      <p className="text-gray-500 mb-0.5">{label}</p>
+      <p className="font-semibold" style={{ color: barColor }}>
+        {yFormat ? yFormat(value) : value}
+      </p>
+    </div>
+  )
+}
+
+// ─── 柱顶标签（模块级，参数稳定）────────────────────────────────────────────
+
+interface BarLabelProps {
+  x?: number
+  y?: number
+  width?: number
+  value?: number
+  barColor: string
+  yFormat?: (v: number) => string
+}
+
+function BarLabel({ x = 0, y = 0, width = 0, value, barColor, yFormat }: BarLabelProps) {
+  if (value == null) return null
+  return (
+    <text
+      x={x + width / 2}
+      y={y - 4}
+      textAnchor="middle"
+      fill={barColor}
+      fontSize={10}
+      fontWeight={500}
+    >
+      {yFormat ? yFormat(value) : value}
+    </text>
+  )
+}
+
+// ─── 主组件 ───────────────────────────────────────────────────────────────
+
 export function BarChart({
   data,
   height = 200,
@@ -47,43 +100,18 @@ export function BarChart({
   const values = data.map((d) => d.value)
   const yMin = axis.yMin ?? 0
   const yMax = axis.yMax ?? (Math.max(...values) * 1.2 || 10)
-
   const barColor = colors.primary ?? DEFAULT_COLORS.primary
-
   const tickFormatter = axis.yFormat ? axis.yFormat : (v: number) => String(Math.round(v))
 
-  // 自定义 Tooltip
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const CustomTooltip = ({ active, payload, label }: any) => {
-    if (!active || !payload?.length) return null
-    const value = payload[0]?.value
-    return (
-      <div className="bg-white rounded-xl px-3 py-2 shadow-lg border border-gray-100 text-xs pointer-events-none">
-        <p className="text-gray-500 mb-0.5">{label}</p>
-        <p className="font-semibold" style={{ color: barColor }}>
-          {axis.yFormat ? axis.yFormat(value) : value}
-        </p>
-      </div>
-    )
-  }
+  const tooltipContent = (props: any) => (
+    <BarTooltip {...props} barColor={barColor} yFormat={axis.yFormat} />
+  )
 
-  // 自定义柱顶标签
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const renderLabel = (props: any) => {
-    const { x, y, width, value } = props
     if (!showValues) return null
-    return (
-      <text
-        x={x + width / 2}
-        y={y - 4}
-        textAnchor="middle"
-        fill={barColor}
-        fontSize={10}
-        fontWeight={500}
-      >
-        {axis.yFormat ? axis.yFormat(value) : value}
-      </text>
-    )
+    return <BarLabel {...props} barColor={barColor} yFormat={axis.yFormat} />
   }
 
   return (
@@ -110,11 +138,11 @@ export function BarChart({
             tickFormatter={tickFormatter}
             width={44}
           />
-          <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(248,112,152,0.06)' }} />
+          <Tooltip content={tooltipContent} cursor={{ fill: 'rgba(248,112,152,0.06)' }} />
           <Bar
             dataKey="value"
             fill={barColor}
-            radius={rounded ? [4, 4, 0, 0] : [0, 0, 0, 0]}
+            radius={rounded ? [4, 4, 0, 0] : undefined}
             label={showValues ? renderLabel : undefined}
             isAnimationActive={false}
           />

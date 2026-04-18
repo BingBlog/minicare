@@ -76,9 +76,9 @@ export function DonutChart({
             endAngle={-270}
             isAnimationActive={false}
           >
-            {data.map((entry, i) => (
-              <Cell key={i} fill={entry.color} />
-            ))}
+          {data.map((entry) => (
+            <Cell key={entry.label} fill={entry.color} />
+          ))}
           </Pie>
           <Tooltip content={<CustomTooltip />} />
         </PieChart>
@@ -115,10 +115,10 @@ export function DonutChart({
 
       {/* 图例 */}
       <div className="flex flex-wrap gap-2 mt-2 justify-center">
-        {data.map((d, i) => {
+        {data.map((d) => {
           const pct = Math.round((d.value / total) * 100)
           return (
-            <div key={i} className="flex items-center gap-1">
+            <div key={d.label} className="flex items-center gap-1">
               <span className="w-2 h-2 rounded-full" style={{ backgroundColor: d.color }} />
               <span className="text-xs text-gray-600">
                 {d.label} {pct}%
