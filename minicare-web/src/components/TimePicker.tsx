@@ -11,7 +11,7 @@
  *   label?   — 触发行左侧标签，默认 "时间"
  *   className? — 传给触发行外层 div
  */
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, type RefObject } from 'react'
 import Picker from 'react-mobile-picker'
 
 // 生成 00~23 小时数组
@@ -25,6 +25,29 @@ interface TimePickerProps {
   label?: string
   className?: string
 }
+
+// ─── iOS 滚动穿透锁定 Hook ───────────────────────────────────────────────────
+//
+// iOS WebKit 的 scroll chaining：弹层内触摸事件会「穿透」到背景页面，
+// 导致背景跟着滚动，同时拖慢 picker 自身的滑动响应。
+// 解决方案：在遮罩容器上注册 non-passive touchmove，调用 preventDefault 截断。
+// picker 列内部仍保留 react-mobile-picker 自己的原生 touch 逻辑。
+
+function useScrollLock(overlayRef: RefObject<HTMLDivElement | null>, open: boolean) {
+  useEffect(() => {
+    if (!open) return
+    const el = overlayRef.current
+    if (!el) return
+
+    // 无条件 preventDefault：阻止弹层内所有 touchmove 触发默认页面滚动，
+    // picker 库自身的 JS 事件处理器不受影响
+    const prevent = (e: TouchEvent) => { e.preventDefault() }
+
+    el.addEventListener('touchmove', prevent, { passive: false })
+    return () => el.removeEventListener('touchmove', prevent)
+  }, [overlayRef, open])
+}
+// ─────────────────────────────────────────────────────────────────────────────
 
 // ─── Android 惯性补偿 Hook ────────────────────────────────────────────────────
 //
@@ -203,6 +226,10 @@ export default function TimePicker({ value, onChange, label = '时间', classNam
     setOpen(false)
   }
 
+  // ── 滚动穿透锁 ──
+  const overlayRef = useRef<HTMLDivElement>(null)
+  useScrollLock(overlayRef, open)
+
   // ── Android 惯性补偿 ──
   const pickerContainerRef = useRef<HTMLDivElement>(null)
   const ITEM_HEIGHT = 44
@@ -244,6 +271,7 @@ export default function TimePicker({ value, onChange, label = '时间', classNam
       {/* 遮罩 + 底部弹层 */}
       {open && (
         <div
+          ref={overlayRef}
           className="fixed inset-0 z-50 flex flex-col justify-end"
           style={{ background: 'rgba(0,0,0,0.35)' }}
           onClick={handleCancel}
@@ -283,8 +311,8 @@ export default function TimePicker({ value, onChange, label = '时间', classNam
                 <div className="flex-1 text-center">分</div>
               </div>
 
-              {/* Android 惯性 ref */}
-              <div ref={pickerContainerRef}>
+              {/* Android 惯性 ref；data-picker-scroll 让 useScrollLock 放行 picker 内滑动 */}
+              <div ref={pickerContainerRef} data-picker-scroll>
                 <Picker
                   value={pickerVal}
                   onChange={handleChange}
