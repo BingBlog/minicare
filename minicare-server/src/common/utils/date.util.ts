@@ -71,3 +71,25 @@ export function toMysqlDate(isoString: string | Date): string {
   const d  = String(date.getDate()).padStart(2, '0');
   return `${y}-${mo}-${d}`;
 }
+
+/**
+ * 将 mysql2 查询结果中的日期列安全格式化为 YYYY-MM-DD 字符串。
+ *
+ * 适用于 mysql2 返回的 DATE / DATE_FORMAT 列：
+ *   - mysql2 会将 MySQL DATE 类型列解析为 JS Date，以 UTC 零点补零
+ *     （如 '2026-04-18' → 2026-04-18T00:00:00.000Z）。
+ *   - 若 Node.js 进程时区为 UTC+8，toISOString() 返回 '2026-04-17T16:00:00.000Z'，
+ *     slice(0,10) 得 '2026-04-17'，比实际日期少一天，导致图表 X 轴日期偏移。
+ *
+ * 正确做法：使用本地时间分量 getFullYear/getMonth/getDate，不受时区影响。
+ * 若列值已是字符串（如 DATE_FORMAT 结果），直接截取前 10 位即可。
+ */
+export function formatSqlDate(d: unknown): string {
+  if (d instanceof Date) {
+    const y   = d.getFullYear();
+    const m   = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  }
+  return String(d).slice(0, 10);
+}

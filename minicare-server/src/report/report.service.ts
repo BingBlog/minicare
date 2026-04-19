@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Pool } from 'mysql2/promise';
 import { DATABASE_POOL } from '../common/database/database.module';
+import { formatSqlDate } from '../common/utils/date.util';
 
 export interface FeedingStats {
   totalFormulaMl: number;
@@ -261,11 +262,6 @@ function splitFormulaMlByMilkTypes(
   return out;
 }
 
-function formatSqlDate(d: unknown): string {
-  if (d instanceof Date) return d.toISOString().slice(0, 10);
-  return String(d).slice(0, 10);
-}
-
 @Injectable()
 export class ReportService {
   constructor(@Inject(DATABASE_POOL) private readonly db: Pool) {}
@@ -408,9 +404,7 @@ export class ReportService {
 
     return {
       daily: (rows as any[]).map((r) => {
-        const dateStr = r.day_date instanceof Date
-          ? r.day_date.toISOString().slice(0, 10)
-          : String(r.day_date).slice(0, 10);
+        const dateStr = formatSqlDate(r.day_date);
         const milkMap = byDayMilk.get(dateStr);
         const hasMilkBreakdown =
           milkMap != null && Object.keys(milkMap).length > 0;
@@ -446,9 +440,7 @@ export class ReportService {
     );
     return {
       daily: (rows as any[]).map((r) => ({
-        date: r.day_date instanceof Date
-          ? r.day_date.toISOString().slice(0, 10)
-          : String(r.day_date),
+        date: formatSqlDate(r.day_date),
         dirtyCount: Number(r.dirty_count) || 0,
         wetCount: Number(r.wet_count) || 0,
         mixedCount: Number(r.mixed_count) || 0,
@@ -508,7 +500,7 @@ export class ReportService {
 
     return {
       daily: (rows as any[]).map((r) => {
-        const dateStr = String(r.day_date).slice(0, 10);
+        const dateStr = formatSqlDate(r.day_date);
         return {
           date: dateStr,
           totalMin: Number(r.total_min) || 0,
@@ -552,18 +544,14 @@ export class ReportService {
     const spiritByDay = new Map<string, string>();
     const moodByDay   = new Map<string, string>();
     for (const r of symptomRows as any[]) {
-      const day = r.day_date instanceof Date
-        ? r.day_date.toISOString().slice(0, 10)
-        : String(r.day_date).slice(0, 10);
+      const day = formatSqlDate(r.day_date);
       if (r.spirit) spiritByDay.set(day, String(r.spirit));
       if (r.mood)   moodByDay.set(day,   String(r.mood));
     }
 
     return {
       daily: (healthRows as any[]).map((r) => {
-        const dateStr = r.day_date instanceof Date
-          ? r.day_date.toISOString().slice(0, 10)
-          : String(r.day_date).slice(0, 10);
+        const dateStr = formatSqlDate(r.day_date);
         return {
           date:        dateStr,
           temperature: r.temperature != null ? Number(r.temperature) : null,
@@ -589,9 +577,7 @@ export class ReportService {
     );
     return {
       records: (rows as any[]).map((r) => ({
-        date: r.record_date instanceof Date
-          ? r.record_date.toISOString().slice(0, 10)
-          : String(r.record_date),
+        date: formatSqlDate(r.record_date),
         weightG: r.weight_g != null ? Number(r.weight_g) : null,
         heightMm: r.height_mm != null ? Number(r.height_mm) : null,
         headMm: r.head_mm != null ? Number(r.head_mm) : null,
@@ -656,9 +642,7 @@ export class ReportService {
       complementaryCount,
       totalFeedCount,
       dailyFormulaChart: (chartRows as any[]).map((cr) => ({
-        date: cr.day_date instanceof Date
-          ? cr.day_date.toISOString().slice(0, 10)
-          : String(cr.day_date),
+        date: formatSqlDate(cr.day_date),
         ml: Number(cr.ml) || 0,
       })),
     };
@@ -775,16 +759,12 @@ export class ReportService {
       latestHeightMm: latest ? Number(latest.height_mm) : null,
       latestHeadMm: latest ? Number(latest.head_mm) : null,
       latestDate: latest
-        ? (latest.record_date instanceof Date
-            ? latest.record_date.toISOString().slice(0, 10)
-            : String(latest.record_date))
+        ? formatSqlDate(latest.record_date)
         : null,
       weightTrend: (trendRows as any[])
         .reverse()
         .map((tr) => ({
-          date: tr.record_date instanceof Date
-            ? tr.record_date.toISOString().slice(0, 10)
-            : String(tr.record_date),
+          date: formatSqlDate(tr.record_date),
           weightG: Number(tr.weight_g) || 0,
         })),
     };
@@ -853,9 +833,7 @@ export class ReportService {
     return {
       visitCount: Number(r.visit_count) || 0,
       lastVisitDate: r.last_visit_date
-        ? (r.last_visit_date instanceof Date
-            ? r.last_visit_date.toISOString().slice(0, 10)
-            : String(r.last_visit_date))
+        ? formatSqlDate(r.last_visit_date)
         : null,
       lastHospital: r.last_hospital ?? null,
     };
@@ -887,9 +865,7 @@ export class ReportService {
     const items = (rows as any[]).map((r) => ({
       foodName: r.food_name as string,
       status: String(r.status ?? 'observing'),
-      firstIntroAt: r.first_intro_at instanceof Date
-        ? r.first_intro_at.toISOString().slice(0, 10)
-        : String(r.first_intro_at),
+      firstIntroAt: formatSqlDate(r.first_intro_at),
     }));
     return {
       observingCount: items.filter((i) => i.status === 'observing').length,
@@ -952,12 +928,8 @@ export class ReportService {
       familyId: r.family_id as string,
       babyId: r.baby_id as string,
       title: r.title as string,
-      startDate: r.start_date instanceof Date
-        ? r.start_date.toISOString().slice(0, 10)
-        : String(r.start_date),
-      endDate: r.end_date instanceof Date
-        ? r.end_date.toISOString().slice(0, 10)
-        : String(r.end_date),
+      startDate: formatSqlDate(r.start_date),
+      endDate: formatSqlDate(r.end_date),
       days: Number(r.days),
       createdAt: r.created_at instanceof Date
         ? r.created_at.toISOString()
@@ -984,12 +956,8 @@ export class ReportService {
       familyId: r.family_id as string,
       babyId: r.baby_id as string,
       title: r.title as string,
-      startDate: r.start_date instanceof Date
-        ? r.start_date.toISOString().slice(0, 10)
-        : String(r.start_date),
-      endDate: r.end_date instanceof Date
-        ? r.end_date.toISOString().slice(0, 10)
-        : String(r.end_date),
+      startDate: formatSqlDate(r.start_date),
+      endDate: formatSqlDate(r.end_date),
       days: Number(r.days),
       createdAt: r.created_at instanceof Date
         ? r.created_at.toISOString()
