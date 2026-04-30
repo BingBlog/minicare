@@ -89,30 +89,39 @@ export default function HomePage() {
   }, [])
 
   const stats = useMemo<BabyStat[]>(() => {
-    const feedingRecs = records.filter((r) => ['feeding', 'formula', 'breast', 'food'].includes(r.type))
+    const feedingRecs = records.filter((r) => r.type === 'feeding')
     const sleepRecs = records.filter((r) => r.type === 'sleep')
     const diaperRecs = records.filter((r) => r.type === 'diaper')
     const symptomRecs = records.filter((r) => r.type === 'symptom')
 
     const totalMl = feedingRecs.reduce((acc, r) => {
-      const ml = Number((r.detail as Record<string, unknown> | undefined)?.formula_ml ?? 0)
-      return Number.isFinite(ml) ? acc + ml : acc
+      const detail = (r.detail as Record<string, unknown> | undefined) ?? {}
+      if (detail.feed_type !== 'formula') return acc
+      const ml = Number(detail.formula_ml ?? 0)
+      return Number.isFinite(ml) && ml > 0 ? acc + ml : acc
     }, 0)
 
     const totalSleepMin = sleepRecs.reduce((acc, r) => {
-      const mins = Number((r.detail as Record<string, unknown> | undefined)?.duration_min ?? 0)
-      return Number.isFinite(mins) ? acc + mins : acc
+      const detail = (r.detail as Record<string, unknown> | undefined) ?? {}
+      const mins = Number(detail.duration_min ?? 0)
+      return Number.isFinite(mins) && mins > 0 ? acc + mins : acc
     }, 0)
 
-    const sleepStat: BabyStat =
-      totalSleepMin <= 0
-        ? { val: '—', unit: '', label: '今日睡眠' }
-        : totalSleepMin < 60
-          ? { val: `${totalSleepMin}`, unit: '分', label: '今日睡眠' }
-          : { val: `${Math.floor(totalSleepMin / 60)}`, unit: 'h', label: '今日睡眠' }
+    const sleepStat: BabyStat = (() => {
+      if (totalSleepMin <= 0) return { val: '—', unit: '', label: '今日睡眠' }
+      if (totalSleepMin < 60) return { val: `${totalSleepMin}`, unit: '分', label: '今日睡眠' }
+      const hour = Math.floor(totalSleepMin / 60)
+      const minute = totalSleepMin % 60
+      if (minute === 0) return { val: `${hour}`, unit: 'h', label: '今日睡眠' }
+      return { val: `${hour}h${minute}`, unit: 'm', label: '今日睡眠' }
+    })()
 
     return [
-      totalMl > 0 ? { val: totalMl, unit: 'ml', label: '今日奶量' } : { val: '—', unit: '', label: '今日奶量' },
+      feedingRecs.length > 0
+        ? totalMl > 0
+          ? { val: totalMl, unit: 'ml', label: '今日奶量' }
+          : { val: feedingRecs.length, unit: '次', label: '今日奶量' }
+        : { val: '—', unit: '', label: '今日奶量' },
       sleepStat,
       diaperRecs.length > 0
         ? { val: diaperRecs.length, unit: '次', label: '换尿布' }

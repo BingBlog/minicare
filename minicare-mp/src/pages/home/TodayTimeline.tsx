@@ -1,4 +1,5 @@
 import { View, Text, Image } from '@tarojs/components'
+import Taro from '@tarojs/taro'
 import { useMemo, useState } from 'react'
 import { formatTime } from '@/lib/utils'
 import { sortHomeDayItems, type RecordsSortMode } from '@/lib/recordsSort'
@@ -24,7 +25,9 @@ export default function TodayTimeline(props: TodayTimelineProps) {
     <View className='home-card'>
       <View className='home-card__head'>
         <Text className='home-card__title'>今日时间线</Text>
-        <Text className='home-card__hint'>全部 ›</Text>
+        <Text className='home-card__hint' onClick={() => Taro.navigateTo({ url: '/pages/records/index?target=%2Frecords' })}>
+          全部 ›
+        </Text>
       </View>
       {backendStatus ? <Text className='home-api-status'>{backendStatus}</Text> : null}
 
@@ -46,7 +49,9 @@ export default function TodayTimeline(props: TodayTimelineProps) {
       <View className='home-timeline'>
         {records.length === 0 && (
           <View className='home-empty'>
-            <View className='home-empty__icon'>记</View>
+            <View className='home-empty__icon home-empty__icon--image'>
+              <Image className='home-empty__icon-img' src={RECORD_TYPE_ICON_SRC.feeding} mode='aspectFit' />
+            </View>
             <Text className='home-empty__title'>今日尚无记录</Text>
             <Text className='home-empty__desc'>点击上方快捷按钮开始记录</Text>
           </View>
