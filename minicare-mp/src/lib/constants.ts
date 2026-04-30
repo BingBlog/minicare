@@ -67,3 +67,67 @@ export const FAB_SUBTITLES: Record<string, string> = {
   growth: '身高 · 体重 · 头围',
   medical: '儿保 · 过敏检查 · 就诊',
 }
+
+/** Home 页内记录入口的目标路由（与 web RECORD_ROUTES 对齐）。 */
+export const HOME_RECORD_ROUTES: Record<string, string> = {
+  formula: '/records/form/feeding?tab=formula',
+  breast: '/records/form/feeding?tab=breast',
+  food: '/records/form/feeding?tab=food',
+  supplement: '/records/form/feeding?tab=supplement',
+  sleep: '/records/form/sleep',
+  diaper: '/records/form/diaper',
+  activity: '/records/form/activity',
+  health: '/records/form/health',
+  temperature: '/records/form/health?expandTemp=true',
+  growth: '/records/form/growth',
+  medical: '/records/form/medical',
+  symptom: '/records/form/symptom',
+}
+
+export const SLEEP_PERIOD_LABELS: Record<string, string> = {
+  night: '夜觉',
+  morning_nap: '上午觉',
+  afternoon_nap: '下午觉',
+  other: '其他',
+}
+
+export const SLEEP_QUALITY_LABELS: Record<string, string> = {
+  good: '质量好',
+  normal: '一般',
+  poor: '较差',
+}
+
+export const POOP_TYPE_LABELS: Record<string, string> = {
+  normal: '正常软便',
+  loose: '稀便',
+  watery: '水样便',
+  constipated: '偏硬便',
+}
+
+export const ACTIVITY_TYPE_LABELS: Record<string, string> = {
+  bath: '洗澡',
+  outdoor: '户外活动',
+  play: '玩耍',
+  tummy_time: '俯趴练习',
+  other: '其他',
+}
+
+export const MOOD_LABELS: Record<string, string> = {
+  happy: '开心',
+  calm: '平静',
+  fussy: '烦躁',
+  crying: '哭闹',
+}
+
+export const SPIRIT_LABELS: Record<string, string> = {
+  active: '精神活跃',
+  normal: '精神正常',
+  tired: '有点累',
+  low: '萎靡',
+}
+
+export const VISIT_TYPE_LABELS: Record<string, string> = {
+  checkup: '常规体检',
+  allergy: '过敏专科',
+  sick: '生病就诊',
+}

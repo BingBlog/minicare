@@ -8,10 +8,12 @@ interface HeroSectionProps {
   dateText: string
   stats: BabyStat[]
   banners?: JSX.Element | null
+  onAvatarClick?: () => void
+  onStatsClick?: () => void
 }
 
 export default function HeroSection(props: HeroSectionProps) {
-  const { babyName, babyAgeText, greeting, dateText, stats, banners } = props
+  const { babyName, babyAgeText, greeting, dateText, stats, banners, onAvatarClick, onStatsClick } = props
 
   return (
     <View className='home-hero'>
@@ -23,7 +25,7 @@ export default function HeroSection(props: HeroSectionProps) {
           <Text className='home-hero__date'>{dateText}</Text>
           <Text className='home-hero__greeting'>{greeting}</Text>
         </View>
-        <View className='home-hero__avatar'>
+        <View className='home-hero__avatar' onClick={onAvatarClick}>
           <Text className='home-hero__avatar-text'>我</Text>
         </View>
       </View>
@@ -35,7 +37,7 @@ export default function HeroSection(props: HeroSectionProps) {
 
       <View className='home-stats'>
         {stats.map((item) => (
-          <View className='home-stats__item' key={item.label}>
+          <View className='home-stats__item' key={item.label} onClick={onStatsClick}>
             <View className='home-stats__value'>
               <Text>{item.val}</Text>
               <Text className='home-stats__unit'>{item.unit}</Text>

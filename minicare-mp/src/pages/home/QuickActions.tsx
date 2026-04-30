@@ -6,6 +6,7 @@ import { MAX_QUICK_KEYS, useQuickActionKeys } from '@/lib/useQuickActionKeys'
 interface QuickActionsProps {
   birthDate?: string | null
   onMoreClick: () => void
+  onAction?: (key: string) => void
   fabCount?: number
 }
 
@@ -23,7 +24,7 @@ function ActionIcon({ actionKey }: { actionKey: string }) {
   )
 }
 
-export default function QuickActions({ birthDate, onMoreClick, fabCount = 5 }: QuickActionsProps) {
+export default function QuickActions({ birthDate, onMoreClick, onAction, fabCount = 5 }: QuickActionsProps) {
   const {
     initialized,
     aKeys,
@@ -73,7 +74,7 @@ export default function QuickActions({ birthDate, onMoreClick, fabCount = 5 }: Q
               const cfg = RECORD_TYPE_CFG[key]
               if (!cfg) return null
               return (
-                <View className='home-quick-grid__item home-quick-grid__item--top' key={key}>
+                <View className='home-quick-grid__item home-quick-grid__item--top' key={key} onClick={() => onAction?.(key)}>
                   <ActionIcon actionKey={key} />
                   <Text className='home-quick-grid__text'>{cfg.label}</Text>
                 </View>
@@ -86,7 +87,7 @@ export default function QuickActions({ birthDate, onMoreClick, fabCount = 5 }: Q
               const cfg = RECORD_TYPE_CFG[key]
               if (!cfg) return null
               return (
-                <View className='home-quick-grid__item home-quick-grid__item--bottom' key={key}>
+                <View className='home-quick-grid__item home-quick-grid__item--bottom' key={key} onClick={() => onAction?.(key)}>
                   <ActionIcon actionKey={key} />
                   <Text className='home-quick-grid__text home-quick-grid__text--bottom'>{cfg.label}</Text>
                 </View>

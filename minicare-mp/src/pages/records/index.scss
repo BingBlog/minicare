@@ -1,0 +1,67 @@
+.records-page {
+  min-height: 100vh;
+  background: #fdf7f5;
+  padding: 40px 20px;
+}
+
+.records-page__title {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  color: #4a3035;
+}
+
+.records-page__desc {
+  display: block;
+  margin-top: 8px;
+  font-size: 13px;
+  color: #9a8090;
+}
+
+.records-page__panel {
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.records-page__hint {
+  display: block;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #7f6673;
+}
+
+.records-page__actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+}
+
+.records-page__btn {
+  flex: 1;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.records-page__btn--ghost {
+  border: 1px solid #e9dbe2;
+  background: #fff;
+}
+
+.records-page__btn--primary {
+  background: #f87098;
+}
+
+.records-page__btn-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.records-page__btn-text--ghost {
+  color: #8f7481;
+}
