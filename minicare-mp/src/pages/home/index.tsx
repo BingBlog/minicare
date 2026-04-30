@@ -2,6 +2,7 @@ import { View, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { useEffect, useMemo, useState } from 'react'
 import { babyApi, familyApi, fetchAppConfig, recordsApi, sleepApi } from '@/api'
+import type { OngoingSleepRecord } from '@/api/sleep'
 import { FAB_GROUPS, HOME_RECORD_ROUTES } from '@/lib/constants'
 import { getBabyAge, getGreeting, getTodayDateStr } from '@/lib/utils'
 import { useQuickActionKeys } from '@/lib/useQuickActionKeys'
@@ -22,9 +23,10 @@ export default function HomePage() {
   const [backendStatus, setBackendStatus] = useState('')
   const [fabOpen, setFabOpen] = useState(false)
   const [records, setRecords] = useState<HomeRecord[]>([])
-  const [ongoingSleepStart, setOngoingSleepStart] = useState<string | null>(null)
+  const [ongoingSleep, setOngoingSleep] = useState<OngoingSleepRecord | null>(null)
   const [actionOpen, setActionOpen] = useState(false)
   const [selectedRecord, setSelectedRecord] = useState<HomeRecord | null>(null)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
   const [babyName, setBabyName] = useState('宝宝')
   const [birthDate, setBirthDate] = useState('')
   const [familyId, setFamilyId] = useState('')
@@ -53,12 +55,12 @@ export default function HomePage() {
           recordsApi.today(familyId),
         ])
 
-        let ongoingStart: string | null = null
+        let ongoing: OngoingSleepRecord | null = null
         try {
-          const ongoing = await sleepApi.getOngoing(familyId, baby.id)
-          ongoingStart = ongoing?.start_time ?? null
+          const ongoingRec = await sleepApi.getOngoing(familyId, baby.id)
+          ongoing = ongoingRec ?? null
         } catch {
-          ongoingStart = null
+          ongoing = null
         }
 
         if (!cancelled) {
@@ -66,7 +68,7 @@ export default function HomePage() {
           setBabyName(baby.name || '宝宝')
           setBirthDate(baby.birth_date || '')
           setRecords(todayRecords.map(toHomeRecord))
-          setOngoingSleepStart(ongoingStart)
+          setOngoingSleep(ongoing)
           setBackendStatus('')
         }
       } catch (err) {
@@ -141,6 +143,15 @@ export default function HomePage() {
     .filter((r) => r.type === 'feeding')
     .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())[0]
 
+  const handleEndSleep = () => {
+    setOngoingSleep(null)
+    if (familyId) {
+      babyApi.get(familyId).then(() => {
+        recordsApi.today(familyId).then((recs) => setRecords(recs.map(toHomeRecord)))
+      }).catch(() => {})
+    }
+  }
+
   if (loading) {
     return (
       <View className='home-page'>
@@ -168,8 +179,25 @@ export default function HomePage() {
         onStatsClick={() => Taro.navigateTo({ url: '/pages/records/index?from=hero-stats' })}
         banners={
           <View className='home-banners'>
-            {ongoingSleepStart ? <SleepBanner startTime={ongoingSleepStart} /> : null}
-            {lastFeedingRecord ? <FeedingBanner lastFeedingTime={lastFeedingRecord.time} /> : null}
+            {ongoingSleep ? (
+              <SleepBanner
+                familyId={familyId}
+                recordId={ongoingSleep.id}
+                startTime={ongoingSleep.start_time}
+                sleepPeriod={ongoingSleep.sleep_period}
+                onEnded={handleEndSleep}
+                onBannerClick={() => Taro.navigateTo({ url: '/pages/records/index?target=%2Frecords%2Fform%2Fsleep' })}
+              />
+            ) : null}
+            {lastFeedingRecord ? (
+              <FeedingBanner
+                lastFeedingTime={lastFeedingRecord.time}
+                onRecordClick={() => {
+                  const route = HOME_RECORD_ROUTES.formula ?? '/records/form/feeding'
+                  Taro.navigateTo({ url: `/pages/records/index?target=${encodeURIComponent(route)}` })
+                }}
+              />
+            ) : null}
           </View>
         }
       />
@@ -211,6 +239,7 @@ export default function HomePage() {
       <RecordActionSheet
         open={actionOpen}
         record={selectedRecord}
+        deleting={deletingId === selectedRecord?.id}
         onClose={() => setActionOpen(false)}
         onEdit={(record) => {
           const route = HOME_RECORD_ROUTES[record.type] ?? '/records'
@@ -227,6 +256,7 @@ export default function HomePage() {
             deleting.type === 'formula' || deleting.type === 'breast' || deleting.type === 'food' || deleting.type === 'supplement'
               ? 'feeding'
               : deleting.type
+          setDeletingId(recordId)
           recordsApi
             .remove(familyId, apiType, recordId)
             .then(() => {
@@ -235,6 +265,9 @@ export default function HomePage() {
             })
             .catch((err) => {
               Taro.showToast({ title: err instanceof Error ? err.message : '删除失败', icon: 'none' })
+            })
+            .finally(() => {
+              setDeletingId(null)
             })
         }}
       />
