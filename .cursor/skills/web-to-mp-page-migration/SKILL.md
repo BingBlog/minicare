@@ -310,14 +310,39 @@ Evidence（必须留痕）：
 
 ## 文件组织规范（复用性与易读性）
 
-推荐结构（示意）：
+### 强制规则：MP 组件拆分必须与 Web 1:1 对应
 
+**MP 迁移页面中的子组件文件必须和 Web 同名、同职责、同接口——禁止将所有组件内联到一个 `index.tsx`。**
+
+这是硬性门禁，理由如下：
+
+1. **对比复核的前提**：文件粒度对比表要求逐文件对应，组件合并后无法定位差异来源
+2. **后续迁移的可复用性**：其他页面迁移时，同名组件可直接复用结构模板
+3. **维护一致性**：Web 侧修改某组件时，MP 侧可通过文件名直接定位对应文件
+
+```
+Web 结构                     MP 结构（必须一致）
+pages/feeding/              pages/records/feeding/
+├── index.tsx                ├── index.tsx          ← 页面编排（瘦）
+├── TabSelector.tsx           ├── TabSelector.tsx    ← 同名、同职责
+├── FormulaSection.tsx        ├── FormulaSection.tsx
+├── BreastSection.tsx         ├── BreastSection.tsx
+├── SupplementSection.tsx     ├── SupplementSection.tsx
+├── FoodSection.tsx           ├── FoodSection.tsx
+└── types.ts                  └── types.ts           ← L1 可直接复用
+```
+
+### 允许合并的情况
+- 仅当 Web 侧组件是**纯展示**且**少于 30 行**时，可合并到父组件
+- 工具函数（scoopUtils 等）统一放 `lib/`，不走组件文件
+
+### 推荐结构
 ```text
 pages/<page>/
 ├── index.tsx            # 页面编排与状态装配（瘦）
 ├── index.scss           # 页面样式入口
 ├── types.ts             # 页面内类型定义
-├── <Section>.tsx        # 展示组件（尽量无业务规则）
+├── <Section>.tsx        # 展示组件（与 Web 1:1 对应）
 └── <page>Records.ts     # 该页面业务规则（adapter/display rules）
 
 lib/
@@ -326,7 +351,7 @@ lib/
 └── utils.ts             # 通用工具函数
 ```
 
-组织原则：
+### 组织原则
 
 - 页面组件不承载大段业务判断
 - 规则函数可单测（纯函数优先）
@@ -343,6 +368,7 @@ lib/
 3. 仅对齐样式，不对齐业务字段语义
 4. 将“平台限制导致的改动”扩散到业务规则层
 5. 未经说明删除 Web 已有边界行为（空态/错误态/重试/鉴权失效）
+6. 将 Web 中的多个子组件合并/内联到 MP 的单一 `index.tsx`（详见 §文件组织规范 · 强制规则）
 
 ---
 

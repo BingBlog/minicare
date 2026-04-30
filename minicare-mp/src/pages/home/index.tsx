@@ -3,7 +3,7 @@ import Taro from '@tarojs/taro'
 import { useEffect, useMemo, useState } from 'react'
 import { babyApi, familyApi, fetchAppConfig, recordsApi, sleepApi } from '@/api'
 import type { OngoingSleepRecord } from '@/api/sleep'
-import { FAB_GROUPS, HOME_RECORD_ROUTES } from '@/lib/constants'
+import { FAB_GROUPS, HOME_RECORD_ROUTES, HOME_RECORD_MP_ROUTES } from '@/lib/constants'
 import { getBabyAge, getGreeting, getTodayDateStr } from '@/lib/utils'
 import { useQuickActionKeys } from '@/lib/useQuickActionKeys'
 import { getToken } from '@/api/http'
@@ -32,6 +32,26 @@ export default function HomePage() {
   const [familyId, setFamilyId] = useState('')
   const [loading, setLoading] = useState(true)
   const { keys: quickKeys } = useQuickActionKeys(birthDate)
+
+  /** 将 Web 路由解析为可直接跳转的 MP 路径。已迁移的页面直接跳转，未迁移的走分发器兜底。 */
+  const navigateToRecord = (target: string, recordId?: string) => {
+    const [path, query] = target.split('?')
+    const mpPage = HOME_RECORD_MP_ROUTES[path]
+    if (mpPage) {
+      // 已迁移页面：直接跳转
+      const parts: string[] = []
+      if (query) parts.push(query)
+      if (recordId) parts.push(`recordId=${encodeURIComponent(recordId)}`)
+      const qs = parts.length ? `?${parts.join('&')}` : ''
+      Taro.navigateTo({ url: `${mpPage}${qs}` })
+    } else {
+      // 未迁移页面：走分发器
+      const encoded = encodeURIComponent(target)
+      const parts: string[] = [`target=${encoded}`]
+      if (recordId) parts.push(`recordId=${encodeURIComponent(recordId)}`)
+      Taro.navigateTo({ url: `/pages/records/index?${parts.join('&')}` })
+    }
+  }
 
   useEffect(() => {
     let cancelled = false
@@ -186,15 +206,14 @@ export default function HomePage() {
                 startTime={ongoingSleep.start_time}
                 sleepPeriod={ongoingSleep.sleep_period}
                 onEnded={handleEndSleep}
-                onBannerClick={() => Taro.navigateTo({ url: '/pages/records/index?target=%2Frecords%2Fform%2Fsleep' })}
+                onBannerClick={() => navigateToRecord('/records/form/sleep')}
               />
             ) : null}
             {lastFeedingRecord ? (
               <FeedingBanner
                 lastFeedingTime={lastFeedingRecord.time}
                 onRecordClick={() => {
-                  const route = HOME_RECORD_ROUTES.formula ?? '/records/form/feeding'
-                  Taro.navigateTo({ url: `/pages/records/index?target=${encodeURIComponent(route)}` })
+                  navigateToRecord(HOME_RECORD_ROUTES.formula ?? '/records/form/feeding')
                 }}
               />
             ) : null}
@@ -208,7 +227,7 @@ export default function HomePage() {
           fabCount={filteredFabCount}
           onAction={(key) => {
             const route = HOME_RECORD_ROUTES[key] ?? '/records'
-            Taro.navigateTo({ url: `/pages/records/index?target=${encodeURIComponent(route)}` })
+            navigateToRecord(route)
           }}
         />
         <TodayTimeline
@@ -233,7 +252,7 @@ export default function HomePage() {
         groups={filteredFabGroups.length > 0 ? filteredFabGroups : FAB_GROUPS}
         onSelect={(key) => {
           const route = HOME_RECORD_ROUTES[key] ?? '/records'
-          Taro.navigateTo({ url: `/pages/records/index?target=${encodeURIComponent(route)}` })
+          navigateToRecord(route)
         }}
       />
       <RecordActionSheet
@@ -243,7 +262,7 @@ export default function HomePage() {
         onClose={() => setActionOpen(false)}
         onEdit={(record) => {
           const route = HOME_RECORD_ROUTES[record.type] ?? '/records'
-          Taro.navigateTo({ url: `/pages/records/index?target=${encodeURIComponent(route)}&recordId=${record.id}` })
+          navigateToRecord(route, record.id)
           setActionOpen(false)
         }}
         onDelete={(recordId) => {

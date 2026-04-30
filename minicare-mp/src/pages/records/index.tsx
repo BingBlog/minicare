@@ -5,6 +5,7 @@ import './index.scss'
 
 const MP_ROUTE_MAP: Record<string, string> = {
   '/records': '/pages/records/index',
+  '/records/form/feeding': '/pages/records/feeding/index',
   '/profile': '/pages/profile/index',
   '/home': '/pages/home/index',
 }

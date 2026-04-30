@@ -4,6 +4,7 @@ export default {
     'pages/home/index',
     'pages/login/index',
     'pages/records/index',
+    'pages/records/feeding/index',
     'pages/profile/index',
     'pages/index/index',
   ],

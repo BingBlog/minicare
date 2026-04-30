@@ -84,6 +84,15 @@ export const HOME_RECORD_ROUTES: Record<string, string> = {
   symptom: '/records/form/symptom',
 }
 
+/**
+ * 已迁移的 Web 路由 → MP 页面路径直接映射。
+ * 在此表中的路由将直接跳转到 MP 页面，不再经过 records 分发器中间页。
+ * 未在此表中的路由仍然走 /pages/records/index?target= 兜底。
+ */
+export const HOME_RECORD_MP_ROUTES: Record<string, string> = {
+  '/records/form/feeding': '/pages/records/feeding/index',
+}
+
 export const SLEEP_PERIOD_LABELS: Record<string, string> = {
   night: '夜觉',
   morning_nap: '上午觉',

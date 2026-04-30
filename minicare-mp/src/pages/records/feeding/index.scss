@@ -1,0 +1,776 @@
+.feed-page {
+  min-height: 100vh;
+  background: #faf5f6;
+  font-family: -apple-system, 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+}
+
+.feed-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 0;
+  color: #9a8090;
+  font-size: 14px;
+}
+
+/* ── 导航栏 ── */
+.feed-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: #faf5f6;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.feed-nav__back {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.feed-nav__back-arrow {
+  color: #4a3035;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.feed-nav__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #4a3035;
+}
+
+.feed-nav__delete-text {
+  color: #f05060;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.feed-nav__spacer {
+  width: 36px;
+}
+
+/* ── Body ── */
+.feed-body {
+  padding-bottom: 100px;
+}
+
+/* ── Tabs ── */
+.feed-tabs {
+  margin: 8px 12px 10px;
+  display: flex;
+  background: #f0e8ea;
+  border-radius: 16px;
+  padding: 3px;
+}
+
+.feed-tabs__item {
+  flex: 1;
+  text-align: center;
+  padding: 8px 0;
+  border-radius: 13px;
+  transition: all 0.15s;
+}
+
+.feed-tabs__item--active {
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.feed-tabs__label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #9a8090;
+}
+
+.feed-tabs__item--active .feed-tabs__label {
+  color: #f87098;
+}
+
+/* ── 卡片 ── */
+.feed-card {
+  margin: 0 12px 10px;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(200, 100, 120, 0.08);
+}
+
+/* ── 行 ── */
+.feed-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+}
+
+.feed-row--border {
+  border-bottom: 1px solid #f5eef0;
+}
+
+.feed-row__label {
+  color: #9a8090;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.feed-row__picker {
+  color: #4a3035;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ── 章节标签 ── */
+.feed-section-label {
+  padding: 0 14px 4px;
+  color: #9a8090;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ── 快捷 Chip ── */
+.feed-chips {
+  display: flex;
+  gap: 8px;
+  padding: 12px 14px 8px;
+}
+
+.feed-chip {
+  flex: 1;
+  text-align: center;
+  padding: 6px 0;
+  border-radius: 20px;
+  background: #f8f3f4;
+  border: 1px solid #e5d8da;
+}
+
+.feed-chip--active {
+  background: #fff0f4;
+  border-color: #f87098;
+}
+
+.feed-chip__text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #9a8090;
+}
+
+.feed-chip--active .feed-chip__text {
+  color: #f87098;
+}
+
+/* ── Stepper ── */
+.feed-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 8px 16px 12px;
+}
+
+.feed-stepper__btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #e5d8da;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+}
+
+.feed-stepper__btn-text {
+  color: #9a8090;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.feed-stepper__val {
+  font-size: 20px;
+  font-weight: 700;
+  color: #4a3035;
+  min-width: 40px;
+  text-align: center;
+}
+
+.feed-stepper__unit {
+  color: #9a8090;
+  font-size: 13px;
+}
+
+/* ── 上次配方卡片 ── */
+.feed-last-card {
+  margin: 0 12px 10px;
+  background: #fff8fa;
+  border: 1px solid #ffd6e2;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.feed-last-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+}
+
+.feed-last-card__star {
+  color: #f87098;
+  font-size: 14px;
+  margin-right: 6px;
+}
+
+.feed-last-card__title {
+  color: #c8607a;
+  font-size: 12px;
+  font-weight: 600;
+  flex: 1;
+}
+
+.feed-last-card__ops {
+  display: flex;
+  gap: 8px;
+}
+
+.feed-last-card__reset {
+  padding: 4px 10px;
+  border-radius: 10px;
+  background: #f0e8ea;
+}
+
+.feed-last-card__reset-text {
+  color: #9a8090;
+  font-size: 11px;
+}
+
+.feed-last-card__toggle {
+  padding: 4px 10px;
+  border-radius: 10px;
+  background: #fff0f4;
+  border: 1px solid #ffb8cc;
+}
+
+.feed-last-card__toggle--open {
+  background: #f87098;
+  border-color: #f87098;
+}
+
+.feed-last-card__toggle-text {
+  font-size: 11px;
+  font-weight: 600;
+  color: #f87098;
+}
+
+.feed-last-card__toggle--open .feed-last-card__toggle-text {
+  color: #fff;
+}
+
+.feed-last-card__summary {
+  padding: 0 14px 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+
+.feed-last-card__milk {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.feed-last-card__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.feed-last-card__milk-label {
+  font-size: 13px;
+}
+
+.feed-last-card__milk-scoop {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.feed-last-card__milk-unit {
+  font-size: 12px;
+  color: #9a8090;
+}
+
+.feed-last-card__ml {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.feed-last-card__ml-text {
+  font-size: 11px;
+  color: #b09098;
+}
+
+.feed-last-card__ml-val {
+  font-size: 15px;
+  font-weight: 700;
+  color: #f87098;
+}
+
+.feed-last-card__ml-unit {
+  font-size: 12px;
+  color: #9a8090;
+}
+
+.feed-last-card__empty {
+  color: #9a8090;
+  font-size: 13px;
+}
+
+/* ── 奶粉类型多选 ── */
+.feed-milk-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 12px;
+}
+
+.feed-milk-opt {
+  position: relative;
+  border: 1px solid #e5d8da;
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.feed-milk-opt--full {
+  grid-column: span 2;
+}
+
+.feed-milk-opt__inner {
+  padding-right: 28px;
+}
+
+.feed-milk-opt__name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #4a3035;
+  display: block;
+}
+
+.feed-milk-opt__desc {
+  font-size: 11px;
+  color: #9a8090;
+  display: block;
+  margin-top: 2px;
+}
+
+.feed-milk-opt__check {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid #d0c0c4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+}
+
+.feed-milk-opt__check--on {
+  border-color: transparent;
+}
+
+.feed-milk-opt__check-mark {
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+/* ── 配比列表 ── */
+.feed-ratio-list {
+  padding: 12px 12px 8px;
+}
+
+.feed-ratio-item {
+  background: #faf5f6;
+  border: 1px solid #f0e8ea;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 8px;
+}
+
+.feed-ratio-item__head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.feed-ratio-item__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.feed-ratio-item__name {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.feed-ratio-tip {
+  margin: 0 12px 12px;
+  padding: 8px 10px;
+  background: #fff0f4;
+  border-radius: 8px;
+}
+
+.feed-ratio-tip__text {
+  font-size: 11px;
+  color: #7a5a60;
+  line-height: 1.5;
+}
+
+/* ── ScoopInput ── */
+.scoop-input {
+  margin-top: 8px;
+}
+
+.scoop-input__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.scoop-input__btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid #e5d8da;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+}
+
+.scoop-input__btn-text {
+  color: #9a8090;
+  font-size: 15px;
+}
+
+.scoop-input__btn-text--disabled {
+  opacity: 0.3;
+}
+
+.scoop-input__val {
+  font-size: 18px;
+  font-weight: 700;
+  color: #4a3035;
+  min-width: 28px;
+  text-align: center;
+}
+
+.scoop-input__unit {
+  font-size: 12px;
+  color: #9a8090;
+}
+
+.scoop-input__preview {
+  font-size: 11px;
+  margin-left: auto;
+}
+
+.scoop-input__frac-row {
+  display: flex;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.scoop-input__frac {
+  flex: 1;
+  text-align: center;
+  padding: 4px 0;
+  border-radius: 8px;
+  border: 1px solid #e5d8da;
+  background: #f8f3f4;
+}
+
+.scoop-input__frac-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #9a8090;
+}
+
+.scoop-input__frac--active .scoop-input__frac-text {
+  color: inherit;
+}
+
+/* ── 母乳侧 ── */
+.feed-side-grid {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+}
+
+.feed-side-opt {
+  flex: 1;
+  text-align: center;
+  padding: 14px 0;
+  border-radius: 12px;
+  border: 1px solid #e5d8da;
+  background: #fff;
+}
+
+.feed-side-opt--active {
+  background: #fff0f4;
+  border-color: #f87098;
+}
+
+.feed-side-opt__label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #4a3035;
+}
+
+.feed-side-opt--active .feed-side-opt__label {
+  color: #f87098;
+}
+
+/* ── 营养素 ── */
+.feed-supp-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-bottom: 1px solid #f5eef0;
+}
+
+.feed-supp-row__check {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 2px solid #d0c0c4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: #fff;
+}
+
+.feed-supp-row__check--on {
+  background: #f87098;
+  border-color: #f87098;
+}
+
+.feed-supp-row__check-mark {
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.feed-supp-row__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.feed-supp-row__name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #4a3035;
+  display: block;
+}
+
+.feed-supp-row__hint {
+  font-size: 11px;
+  color: #b09098;
+  display: block;
+  margin-top: 2px;
+}
+
+.feed-supp-row__input {
+  width: 64px;
+  height: 32px;
+  text-align: center;
+  font-size: 13px;
+  background: #faf5f6;
+  border: 1px solid #e5d8da;
+  border-radius: 8px;
+  color: #4a3035;
+  flex-shrink: 0;
+}
+
+.feed-supp-row__unit {
+  font-size: 12px;
+  color: #9a8090;
+  width: 32px;
+}
+
+.feed-supp-other {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+}
+
+.feed-supp-other__badge {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  background: #f5eef0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c09098;
+  font-size: 10px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.feed-supp-other__name {
+  flex: 1;
+  height: 32px;
+  font-size: 13px;
+  background: #faf5f6;
+  border: 1px solid #e5d8da;
+  border-radius: 8px;
+  padding: 0 8px;
+  color: #4a3035;
+}
+
+.feed-supp-other__dose {
+  width: 56px;
+  height: 32px;
+  text-align: center;
+  font-size: 13px;
+  background: #faf5f6;
+  border: 1px solid #e5d8da;
+  border-radius: 8px;
+  color: #4a3035;
+  flex-shrink: 0;
+}
+
+.feed-supp-other__unit {
+  width: 40px;
+  height: 32px;
+  text-align: center;
+  font-size: 12px;
+  background: #faf5f6;
+  border: 1px solid #e5d8da;
+  border-radius: 8px;
+  color: #9a8090;
+  flex-shrink: 0;
+}
+
+/* ── 辅食 ── */
+.feed-food-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 14px;
+}
+
+.feed-food-chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  background: #ffe8ee;
+  border-radius: 20px;
+}
+
+.feed-food-chip__text {
+  font-size: 13px;
+  font-weight: 500;
+  color: #c0305a;
+}
+
+.feed-food-chip__del {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #f87098;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feed-food-chip__del-text {
+  color: #fff;
+  font-size: 11px;
+  line-height: 1;
+}
+
+.feed-food-input-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+}
+
+.feed-food-input {
+  flex: 1;
+  height: 36px;
+  font-size: 13px;
+  color: #4a3035;
+}
+
+.feed-food-add {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f87098;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.feed-food-add__text {
+  color: #fff;
+  font-size: 22px;
+  line-height: 1;
+}
+
+/* ── 备注 ── */
+.feed-note-input {
+  height: 44px;
+  font-size: 13px;
+  color: #4a3035;
+  padding: 0 14px;
+}
+
+/* ── 提交栏 ── */
+.feed-submit {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px 16px 28px;
+  background: #faf5f6;
+  z-index: 20;
+}
+
+.feed-submit__btn {
+  background: linear-gradient(90deg, #f87098, #f9a8c0);
+  border-radius: 14px;
+  padding: 14px 0;
+  text-align: center;
+}
+
+.feed-submit__btn--loading {
+  opacity: 0.6;
+}
+
+.feed-submit__text {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+}

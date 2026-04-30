@@ -5,7 +5,7 @@ function resolveApiBaseUrl(): string {
   if (typeof process !== 'undefined' && process?.env?.TARO_APP_API_BASE_URL) {
     return process.env.TARO_APP_API_BASE_URL
   }
-  return 'http://127.0.0.1:3001'
+  return 'http://localhost:3001'
 }
 
 const API_BASE_URL = resolveApiBaseUrl()
@@ -53,10 +53,20 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
     if (errMsg.includes('timeout')) {
       throw new Error(`请求超时（>${timeoutMs}ms）：请确认本地后端已启动并可访问 ${API_BASE_URL}`)
     }
-    if (errMsg.includes('fail')) {
+    if (errMsg.includes('fail') || errMsg.includes('abort')) {
       throw new Error(`网络请求失败：${errMsg}`)
     }
-    throw err
+    // wx.request 底层异常（如 Failed to fetch）——给出可操作的诊断信息
+    const nativeMsg = err instanceof Error ? err.message : String(err)
+    throw new Error(
+      `网络请求失败（无法连接 ${API_BASE_URL}）：\n` +
+      `${nativeMsg}\n` +
+      `排障：\n` +
+      `  1. 确认后端已启动（npm run start:dev）\n` +
+      `  2. 真机调试请将 localhost 改为本机局域网IP\n` +
+      `  3. 微信开发者工具 → 详情 → 本地设置 → 勾选「不校验合法域名」\n` +
+      `  4. 基础库版本过高可降级至 3.x（详情 → 本地设置）`,
+    )
   }
 
   if (res.statusCode < 200 || res.statusCode >= 300) {
