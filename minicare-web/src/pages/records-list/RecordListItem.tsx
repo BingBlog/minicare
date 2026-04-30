@@ -3,17 +3,17 @@
  *
  * 列表布局（固定列宽，纵向严格对齐）：
  *
- *  ┌──────┬──────────┬───────────────────┬──────────┬────────┬────┐
- *  │ icon │  label   │  tags（Pill）      │ summary  │  time  │ >  │
- *  │ 36px │ w-[44px] │  flex-1 min-w-0   │ w-[72px] │w-[34px]│13px│
- *  └──────┴──────────┴───────────────────┴──────────┴────────┴────┘
+ *  ┌────────┬──────┬──────────┬───────────────────┬──────────┬────┐
+ *  │  time  │ icon │  label   │  tags（Pill）      │ summary  │ >  │
+ *  │w-[34px]│ 36px │ w-[44px] │  flex-1 min-w-0   │ w-[72px] │13px│
+ *  └────────┴──────┴──────────┴───────────────────┴──────────┴────┘
  *
- * 间距：px-3（左右各12px），列间 gap-2（8px）
+ * 间距：px-3（左右各12px），全局列间 gap-2（8px），time→icon 额外 mr-1（4px）
  *
  * - label 列：固定宽，显示记录类型文字（配方奶 / 母乳 / 睡眠 / 换尿布…）
  * - tags 列：flex-1，Pill flex-wrap；换行时所有行左边缘严格对齐 label 列右侧
- * - summary / time / > 三列均 shrink-0 固定宽，纵向对齐；summary 左对齐
- * - 行 2（有 note 时）：pl-[48px] 缩进对齐内容区左边
+ * - time / summary / > 三列均 shrink-0 固定宽，纵向对齐；summary 左对齐
+ * - 行 2（有 note 时）：pl-[86px] 缩进对齐内容区左边
  *
  * 被引用：RecordGroup.tsx → RecordsPage.tsx
  */
@@ -79,12 +79,20 @@ export default function RecordListItem({ record, showDivider, onClick }: RecordL
         {/* ── 主行：六列固定布局，纵向对齐 ── */}
         <div className="flex items-center gap-2">
 
-          {/* 列 1：类型图标，固定 36px；feeding 子类型用精确 iconType */}
+          {/* 列 1：时间，固定 w-[34px] 左对齐（放在最前） */}
+          <span
+            className="shrink-0 w-[34px] mr-1 text-left text-[12px] font-semibold tabular-nums leading-none whitespace-nowrap"
+            style={{ color: '#8D6F75' }}
+          >
+            {displayTime}
+          </span>
+
+          {/* 列 2：类型图标，固定 36px；feeding 子类型用精确 iconType */}
           <div className="shrink-0">
             <RecordTypeIcon type={iconType} containerSize={36} iconSize={17} borderRadius={11} />
           </div>
 
-          {/* 列 2：标题文字，固定 w-[44px]，右侧留一点视觉间距 */}
+          {/* 列 3：标题文字，固定 w-[44px]，右侧留一点视觉间距 */}
           <div className="shrink-0 w-[44px]">
             {label && (
               <span
@@ -96,7 +104,7 @@ export default function RecordListItem({ record, showDivider, onClick }: RecordL
             )}
           </div>
 
-          {/* 列 3：Tags，flex-1，换行时每行都从同一垂直线开始 */}
+          {/* 列 4：Tags，flex-1，换行时每行都从同一垂直线开始 */}
           <div className="flex-1 min-w-0">
             {(tags || meta)
               ? <div className="flex flex-wrap gap-1">{tags}{meta}</div>
@@ -104,7 +112,7 @@ export default function RecordListItem({ record, showDivider, onClick }: RecordL
             }
           </div>
 
-          {/* 列 4：summary 数值，固定 w-[72px] 左对齐 */}
+          {/* 列 5：summary 数值，固定 w-[72px] 左对齐 */}
           <div className="shrink-0 w-[72px] flex justify-start items-center">
             {summary != null && (
               <div className="flex items-center max-w-full [&>*]:max-w-full [&_*]:truncate">
@@ -113,21 +121,13 @@ export default function RecordListItem({ record, showDivider, onClick }: RecordL
             )}
           </div>
 
-          {/* 列 5：时间，固定 w-[34px] 右对齐 */}
-          <span
-            className="shrink-0 w-[34px] text-right text-[11px] font-medium tabular-nums leading-none whitespace-nowrap"
-            style={{ color: '#9A7E82' }}
-          >
-            {displayTime}
-          </span>
-
           {/* 列 6：箭头 */}
           <IconChevronRight size={13} color="#D4B8BE" className="shrink-0" />
         </div>
 
         {/* ── 行 2：note 备注（有时），缩进对齐内容区 ── */}
         {hasNoteRow && (
-          <div className="mt-1.5 pl-[42px]">
+          <div className="mt-1.5 pl-[86px]">
             <div
               className="text-[11px] leading-snug line-clamp-2"
               style={{ color: '#B0A0A4' }}
