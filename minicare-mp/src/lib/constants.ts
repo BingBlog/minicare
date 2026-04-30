@@ -91,6 +91,7 @@ export const HOME_RECORD_ROUTES: Record<string, string> = {
  */
 export const HOME_RECORD_MP_ROUTES: Record<string, string> = {
   '/records/form/feeding': '/pages/records/feeding/index',
+  '/records/form/diaper': '/pages/records/diaper/index',
 }
 
 export const SLEEP_PERIOD_LABELS: Record<string, string> = {

@@ -1,0 +1,288 @@
+.diaper-page {
+  min-height: 100vh;
+  background: #faf5f6;
+  font-family: -apple-system, 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+}
+
+.diaper-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 0;
+  color: #9a8090;
+  font-size: 14px;
+}
+
+/* ── 导航栏 ── */
+.diaper-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: #faf5f6;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.diaper-nav__back {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.diaper-nav__back-arrow {
+  color: #4a3035;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.diaper-nav__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #4a3035;
+}
+
+.diaper-nav__delete-text {
+  color: #f05060;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.diaper-nav__spacer {
+  width: 36px;
+}
+
+/* ── Body ── */
+.diaper-body {
+  padding-bottom: 100px;
+}
+
+/* ── 章节标签 ── */
+.diaper-section-label {
+  padding: 0 14px 4px;
+  color: #9a8090;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ── 卡片 ── */
+.diaper-card {
+  margin: 0 12px 10px;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(200, 100, 120, 0.08);
+}
+
+.diaper-card__head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 14px 10px;
+  border-bottom: 1px solid #f5eef0;
+}
+
+.diaper-card__head-icon {
+  color: #4caf82;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.diaper-card__head-title {
+  color: #7a5a60;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.diaper-card__head-optional {
+  color: #c0adb2;
+  font-size: 11px;
+  margin-left: auto;
+}
+
+/* ── 时间行 ── */
+.diaper-time-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+}
+
+.diaper-time-row--border {
+  border-bottom: 1px solid #f5eef0;
+}
+
+.diaper-time-row__label {
+  color: #9a8090;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.diaper-time-row__picker {
+  color: #4a3035;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ── 类型选择 ── */
+.diaper-type-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  padding: 12px;
+}
+
+.diaper-type-opt {
+  flex: 1;
+  text-align: center;
+  padding: 16px 8px;
+  border-radius: 14px;
+  border: 2px solid #ede4e6;
+  background: #fafafa;
+}
+
+.diaper-type-opt--active {
+  border-width: 2px;
+}
+
+.diaper-type-opt__label {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* ── 次数 ── */
+.diaper-count {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-top: 1px solid #f5eef0;
+}
+
+.diaper-count__label {
+  color: #9a8090;
+  font-size: 13px;
+}
+
+.diaper-count__controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.diaper-count__btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid #e5d8da;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.diaper-count__btn-text {
+  color: #9a8090;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.diaper-count__val {
+  font-size: 18px;
+  font-weight: 700;
+  color: #4a3035;
+  min-width: 24px;
+  text-align: center;
+}
+
+/* ── Tag Chip ── */
+.diaper-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 14px;
+}
+
+.diaper-tags--inline {
+  padding: 0;
+  display: inline-flex;
+}
+
+.diaper-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 11px 6px 11px;
+  border-radius: 20px;
+  border: 1px solid #e5d8da;
+  background: #f8f4f5;
+}
+
+.diaper-tag__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.diaper-tag__label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #9a8090;
+}
+
+/* ── 颜色行 ── */
+.diaper-color-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px 12px;
+  border-top: 1px solid #f5eef0;
+}
+
+.diaper-color-row__label {
+  color: #b8a0a8;
+  font-size: 12px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+/* ── 备注 ── */
+.diaper-note {
+  height: 44px;
+  font-size: 13px;
+  color: #4a3035;
+  padding: 0 14px;
+}
+
+/* ── 提交 ── */
+.diaper-submit {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px 16px 28px;
+  background: #faf5f6;
+  z-index: 20;
+}
+
+.diaper-submit__btn {
+  background: linear-gradient(90deg, #4CAF82, #7ACCA0);
+  border-radius: 14px;
+  padding: 14px 0;
+  text-align: center;
+}
+
+.diaper-submit__btn--loading {
+  opacity: 0.6;
+}
+
+.diaper-submit__text {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+}

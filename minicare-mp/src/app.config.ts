@@ -5,6 +5,7 @@ export default {
     'pages/login/index',
     'pages/records/index',
     'pages/records/feeding/index',
+    'pages/records/diaper/index',
     'pages/profile/index',
     'pages/index/index',
   ],
