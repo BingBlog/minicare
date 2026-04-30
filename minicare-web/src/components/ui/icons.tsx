@@ -48,7 +48,7 @@ export const IconMilk = ({
   </svg>
 );
 
-/** 睡眠/月亮 图标 */
+/** 睡眠/月亮 图标（拟人：小嘴 + ZZZ 鼾声） */
 export const IconMoon = ({
   size = 20,
   color = "currentColor",
@@ -59,12 +59,34 @@ export const IconMoon = ({
     viewBox="0 0 24 24"
     fill="none"
     stroke={color}
-    strokeWidth="1.5"
+    strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
     style={{ width: size, height: size, ...style }}
     className={className}>
-    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+    {/* 月牙主体 */}
+    <path
+      d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+      fill={color}
+      fillOpacity="0.25"
+    />
+    {/* 鼻子：月牙亮面中部，小圆点 */}
+    <circle cx="9.5" cy="12.5" r="0.7" fill={color} stroke="none" />
+    {/* 嘴：鼻子下方微笑弧 */}
+    <path
+      d="M8 14.5 Q9.5 16 11 14.5"
+      stroke={color}
+      strokeWidth="1.3"
+      fill="none"
+      strokeLinecap="round"
+    />
+    {/* ZZZ：从月牙右上角阶梯飘起 */}
+    {/* 小 z */}
+    <path d="M15 9.5 L16.2 9.5 L15 8.2 L16.2 8.2" stroke={color} strokeWidth="1" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+    {/* 中 z */}
+    <path d="M16.5 7.8 L18 7.8 L16.5 6.2 L18 6.2" stroke={color} strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+    {/* 大 Z */}
+    <path d="M18.2 6 L20 6 L18.2 4 L20 4" stroke={color} strokeWidth="1.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
@@ -109,7 +131,7 @@ export const IconActivity = ({
   </svg>
 );
 
-/** 生长/刻度尺 图标 */
+/** 生长/直尺 图标 */
 export const IconRuler = ({
   size = 20,
   color = "currentColor",
@@ -143,12 +165,16 @@ export const IconHeart = ({
     viewBox="0 0 24 24"
     fill="none"
     stroke={color}
-    strokeWidth="1.5"
+    strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
     style={{ width: size, height: size, ...style }}
     className={className}>
-    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+    <path
+      d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+      fill={color}
+      fillOpacity="0.22"
+    />
   </svg>
 );
 
@@ -163,14 +189,14 @@ export const IconStethoscope = ({
     viewBox="0 0 24 24"
     fill="none"
     stroke={color}
-    strokeWidth="1.5"
+    strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
     style={{ width: size, height: size, ...style }}
     className={className}>
     <path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3" />
     <path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4" />
-    <circle cx="20" cy="10" r="2" />
+    <circle cx="20" cy="10" r="2" fill={color} fillOpacity="0.3" />
   </svg>
 );
 
@@ -185,19 +211,23 @@ export const IconSmile = ({
     viewBox="0 0 24 24"
     fill="none"
     stroke={color}
-    strokeWidth="1.5"
+    strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
     style={{ width: size, height: size, ...style }}
     className={className}>
-    <circle cx="12" cy="12" r="10" />
-    <path d="M8 13s1.5 2 4 2 4-2 4-2" />
-    <line x1="9" y1="9" x2="9.01" y2="9" />
-    <line x1="15" y1="9" x2="15.01" y2="9" />
+    <circle cx="12" cy="12" r="10" fill={color} fillOpacity="0.15" />
+    <path d="M8 13s1.5 2 4 2 4-2 4-2" strokeWidth="2.2" />
+    {/* 眼睛：填充圆点，更有表情感 */}
+    <circle cx="9" cy="9.5" r="1.2" fill={color} stroke="none" />
+    <circle cx="15" cy="9.5" r="1.2" fill={color} stroke="none" />
   </svg>
 );
 
-/** 营养素/胶囊 图标（Lucide pill 风格） */
+/**
+ * 营养素/维生素 图标
+ * 水滴形轮廓（维生素 AD 滴剂造型）+ 内嵌字母 "AD"
+ */
 export const IconSupplementPill = ({
   size = 20,
   color = "currentColor",
@@ -208,13 +238,35 @@ export const IconSupplementPill = ({
     viewBox="0 0 24 24"
     fill="none"
     stroke={color}
-    strokeWidth="1.5"
+    strokeWidth="1.8"
     strokeLinecap="round"
     strokeLinejoin="round"
     style={{ width: size, height: size, ...style }}
     className={className}>
-    <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z" />
-    <path d="M8.5 8.5 16 16" />
+    {/* 水滴形轮廓：顶部尖，底部圆 */}
+    <path
+      d="M12 2 C12 2 5 10 5 15 a7 7 0 0 0 14 0 C19 10 12 2 12 2 Z"
+      fill={color}
+      fillOpacity="0.18"
+      stroke={color}
+      strokeWidth="1.8"
+    />
+    {/* 字母 A：上移到 y=10.5~16，居中于水滴肚子（圆心 y≈15） */}
+    {/* A: x=8~11.5, 顶点(9.75,10.5) */}
+    <path
+      d="M8 16 L9.75 10.5 L11.5 16"
+      stroke={color}
+      strokeWidth="1.4"
+      fill="none"
+    />
+    <line x1="8.6" y1="14.2" x2="10.9" y2="14.2" stroke={color} strokeWidth="1.2" />
+    {/* D: x=12.5~16, 竖线+右弧，同步上移 */}
+    <path
+      d="M12.5 10.5 L12.5 16 C12.5 16 16 16 16 13.25 C16 10.5 12.5 10.5 12.5 10.5 Z"
+      stroke={color}
+      strokeWidth="1.4"
+      fill="none"
+    />
   </svg>
 );
 
@@ -1034,6 +1086,11 @@ export const IconThermometer = ({
     style={{ width: size, height: size, ...style }}
     className={className}>
     <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z" />
+    {/* 底部水银球：填充实心 */}
+    <circle cx="11.5" cy="18.5" r="2.8" fill={color} fillOpacity="0.9" stroke="none" />
+    {/* 管内液柱：从球顶向上延伸 */}
+    <line x1="11.5" y1="15.7" x2="11.5" y2="9"
+      stroke={color} strokeWidth="2.2" strokeLinecap="round" strokeOpacity="0.6" />
   </svg>
 );
 
@@ -1340,12 +1397,18 @@ export const IconFood = ({
     viewBox="0 0 24 24"
     fill="none"
     stroke={color}
-    strokeWidth="1.5"
+    strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
     style={{ width: size, height: size, ...style }}
     className={className}>
-    <path d="M3 11c0-3.9 4-7 9-7s9 3.1 9 7H3z" />
+    {/* 碗上半部分，填充 */}
+    <path
+      d="M3 11c0-3.9 4-7 9-7s9 3.1 9 7H3z"
+      fill={color}
+      fillOpacity="0.2"
+    />
+    {/* 碗体下沿 */}
     <path d="M3 11v1a9 9 0 0 0 18 0v-1" />
     <line x1="12" y1="18" x2="12" y2="22" />
     <line x1="8" y1="22" x2="16" y2="22" />
@@ -1397,29 +1460,42 @@ export const IconBottle = ({
     viewBox="0 0 24 24"
     fill="none"
     stroke={color}
-    strokeWidth="1.5"
+    strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
     style={{ width: size, height: size, ...style }}
     className={className}>
-    {/* 奶嘴尖：细圆锥形 */}
-    <path d="M10.8 1 C10.3 1.3 10 2 10 2.8 L14 2.8 C14 2 13.7 1.3 13.2 1 Q12 0.5 10.8 1 Z" />
-    {/* 螺纹座：宽扁矩形 */}
-    <rect x="8" y="2.8" width="8" height="2" rx="0.5" />
-    {/* 螺纹锯齿装饰：五段短横线 */}
-    <line x1="8.8" y1="3.7" x2="9.6" y2="3.7" strokeWidth="1" />
-    <line x1="10.4" y1="3.7" x2="11.2" y2="3.7" strokeWidth="1" />
-    <line x1="12" y1="3.7" x2="12.8" y2="3.7" strokeWidth="1" />
-    <line x1="13.6" y1="3.7" x2="14.4" y2="3.7" strokeWidth="1" />
-    {/* 颈部斜肩过渡 */}
-    <line x1="9" y1="4.8" x2="7.2" y2="6.5" />
-    <line x1="15" y1="4.8" x2="16.8" y2="6.5" />
-    {/* 瓶身：宽圆桶，底部大圆角 */}
-    <path d="M7.2 6.5 C5.5 6.5 5 7.5 5 9 L5 18.5 C5 20.4 6.6 22 8.5 22 L15.5 22 C17.4 22 19 20.4 19 18.5 L19 9 C19 7.5 18.5 6.5 16.8 6.5 Z" />
-    {/* 刻度线（瓶身右侧内壁） */}
-    <line x1="15" y1="11.5" x2="18" y2="11.5" strokeWidth="1.2" />
-    <line x1="15" y1="14.5" x2="18" y2="14.5" strokeWidth="1.2" />
-    <line x1="15" y1="17.5" x2="18" y2="17.5" strokeWidth="1.2" />
+    {/* 奶嘴尖：紧凑小圆锥，实心 */}
+    <path
+      d="M11 1 C10.5 1.3 10.2 2 10.2 2.6 L13.8 2.6 C13.8 2 13.5 1.3 13 1 Q12 0.5 11 1 Z"
+      fill={color}
+      stroke="none"
+    />
+    {/* 螺纹座：实心块 */}
+    <rect x="9" y="2.6" width="6" height="1.8" rx="0.5" fill={color} stroke="none" />
+    {/* 颈部斜肩：拉长到 y=4.4~8，给颈部足够空间 */}
+    <line x1="9.5" y1="4.4" x2="7.5" y2="8" strokeWidth="2" />
+    <line x1="14.5" y1="4.4" x2="16.5" y2="8" strokeWidth="2" />
+    {/* 瓶身：整体下移与颈部衔接 */}
+    <path
+      d="M7.5 8
+         C5.5 8.6 5.5 10.5 6 12
+         L6 20
+         C6 21.9 7.4 23.5 9 23.5
+         L15 23.5
+         C16.6 23.5 18 21.9 18 20
+         L18 12
+         C18.5 10.5 18.5 8.6 16.5 8
+         Z"
+      fill={color}
+      fillOpacity="0.15"
+      stroke={color}
+      strokeWidth="2"
+    />
+    {/* 刻度线（右侧内壁）*/}
+    <line x1="14" y1="12.5" x2="17.5" y2="12.5" strokeWidth="1.4" />
+    <line x1="14" y1="15.5" x2="17.5" y2="15.5" strokeWidth="1.4" />
+    <line x1="14" y1="18.5" x2="17.5" y2="18.5" strokeWidth="1.4" />
   </svg>
 );
 
@@ -1457,12 +1533,19 @@ export const IconDiaper = ({
     strokeLinejoin="round"
     style={{ width: size, height: size, ...style }}
     className={className}>
-    <path d="M2 7.692c0-.643 0-.965.05-1.233a3 3 0 0 1 2.41-2.41C4.726 4 5.048 4 5.691 4h12.616c.643 0 .965 0 1.233.05a3 3 0 0 1 2.41 2.41c.049.267.049.589.049 1.232V10c0 5.523-4.477 10-10 10S2 15.523 2 10z" />
-    <path d="M18 8h4M2 8h4m8.5 11.5v-1a7 7 0 0 1 7-7m-12 8v-1a7 7 0 0 0-7-7" />
+    <path
+      d="M2 7.692c0-.643 0-.965.05-1.233a3 3 0 0 1 2.41-2.41C4.726 4 5.048 4 5.691 4h12.616c.643 0 .965 0 1.233.05a3 3 0 0 1 2.41 2.41c.049.267.049.589.049 1.232V10c0 5.523-4.477 10-10 10S2 15.523 2 10z"
+      fill={color}
+      fillOpacity="0.18"
+    />
+    <path d="M18 8h4M2 8h4m8.5 11.5v-1a7 7 0 0 1 7-7m-12 8v-1a7 7 0 0 0-7-7" strokeWidth="2.2" />
   </svg>
 );
 
-/** 婴儿爬行 图标 */
+/**
+ * 婴儿爬行 图标（标准 24×24 坐标系重绘）
+ * 头部圆形 + 爬行身体轮廓，填充风格
+ */
 export const IconBabyCrawl = ({
   size = 20,
   color = "currentColor",
@@ -1471,17 +1554,73 @@ export const IconBabyCrawl = ({
 }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 433.506 433.506"
+    viewBox="0 0 24 24"
     fill={color}
     style={{ width: size, height: size, ...style }}
     className={className}>
-    <path
-      d="M76.888,302.386H25.938c0,0-25.938-0.039-25.938,39.483c1.234,25.526,21.148,29.605,24.7,29.605s103.744,0,103.744,0
-      s25.986,0.033,27.133-31.15c0.043-1.19,0.139-0.033,0.153-1.229c0.052-4.604,0-28.4,0-28.4c0.062-3.386,2.648-7.229,6.134-7.229
-      h81.233c1.195,0,2.229,0.966,2.338,2.151l19.188,43.399c7.158,17.748,21.076,30.772,44.328,22.405
-      c22.012-7.923,23.15-25.364,19.264-37.614l-47.713-144.633c-7.172-17.131-25.26-27.124-47.898-27.124h-48.578h-63.299
-      c-60.559,0-111.36,70.552-42.577,138.374C78.637,301.511,78.078,302.386,76.888,302.386z"
-    />
-    <circle cx="358.346" cy="134.649" r="75.161" />
+    {/* 头部 */}
+    <circle cx="17.5" cy="4.5" r="2.8" />
+    {/* 身体：趴伏爬行姿态 */}
+    <path d="M14.5 7.5 C12.5 7 10 7.5 8.5 9 L5.5 11.5 C4.5 12.3 4 13.5 4.5 14.5 C5 15.5 6.2 15.8 7.2 15.3 L9 14.2 L9.5 16.5 C9.8 17.8 11 18.5 12.2 18.2 C13.4 17.9 14 16.7 13.8 15.5 L13 12.5 L15.5 11 C17 10.2 17.8 8.5 17 7.2 C16.5 6.5 15.5 6.8 14.5 7.5 Z" />
+    {/* 左腿 */}
+    <path d="M7 14 L4 17.5 C3.5 18.2 3.8 19.2 4.5 19.5 C5.2 19.8 6.2 19.5 6.5 18.8 L9.2 15 Z" />
+    {/* 右腿 */}
+    <path d="M13 15.5 L12 19.5 C11.8 20.3 12.3 21.1 13.1 21.3 C13.9 21.5 14.7 21 14.9 20.2 L16 16 Z" />
+  </svg>
+);
+
+/** 婴儿体重秤 图标 */
+export const IconBabyScale = ({
+  size = 20,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill={color}
+    stroke="none"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    {/* 婴儿：身体（圆润的横躺姿势） */}
+    <ellipse cx="12" cy="6.5" rx="7" ry="3.2" />
+    {/* 婴儿：头部（右侧凸出的圆） */}
+    <circle cx="18.2" cy="6.2" r="2.4" />
+    {/* 婴儿：小手臂（左侧向上弯的短弧） */}
+    <ellipse cx="6.5" cy="4.8" rx="1.8" ry="1.0" transform="rotate(-30 6.5 4.8)" />
+    {/* 秤盘：宽扁的椭圆形托盘 */}
+    <ellipse cx="12" cy="13.5" rx="9.5" ry="2.2" />
+    {/* 秤柱：连接秤盘和底座的短柱 */}
+    <rect x="10.2" y="15.5" width="3.6" height="1.8" rx="0.4" />
+    {/* 底座：宽矩形，两端略宽 */}
+    <rect x="4" y="17.3" width="16" height="3.2" rx="1.6" />
+    {/* 底座显示面板（中间凹槽） */}
+    <rect x="9" y="18.2" width="6" height="1.4" rx="0.7" fill="white" fillOpacity="0.35" />
+  </svg>
+);
+
+/** 宝宝体重秤（婴儿+秤盘） 图标 */
+export const IconBabyWeight = ({
+  size = 20,
+  color = "currentColor",
+  style,
+  className,
+}: IconProps) => (
+  <svg
+    viewBox="0 0 1000 1000"
+    fill={color}
+    stroke="none"
+    style={{ width: size, height: size, ...style }}
+    className={className}>
+    {/* 婴儿头部 */}
+    <path d="M70 280 A100 100 0 0 1 300 280 A100 100 0 0 1 70 280" />
+    {/* 婴儿身体与四肢 */}
+    <path d="M280 280 Q320 180 420 200 Q480 220 460 300 Q440 360 360 380 L640 380 Q560 320 580 220 Q600 160 700 140 Q860 100 920 160 Q960 220 900 280 Q860 320 820 280 Q780 240 800 260 Q840 300 820 380 L660 380 Q680 320 640 260 Q600 200 560 240 L520 360 L480 360 L440 240 Q400 200 380 260 Q360 320 340 380 L280 380 Z" />
+    {/* 秤的托盘 */}
+    <path d="M30 470 Q20 450 50 440 L950 440 Q980 450 970 470 Q960 500 930 530 Q880 560 120 560 Q70 530 40 500 Q20 480 30 470 Z" />
+    {/* 秤的底座 */}
+    <path d="M170 610 L830 610 Q880 660 900 750 Q910 820 850 860 L150 860 Q90 820 100 750 Q120 660 170 610 Z" />
+    {/* 底座镂空 */}
+    <path d="M390 700 L610 700 Q640 700 640 730 Q640 760 610 760 L390 760 Q360 760 360 730 Q360 700 390 700 Z" fill="white" />
   </svg>
 );

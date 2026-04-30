@@ -8,17 +8,21 @@
  *  - 暴露编辑模式（添加/删除格子）
  *
  * localStorage key: 'quickaction_keys'
- * 存储格式: JSON.stringify(string[])，最多 7 个，最少 1 个
+* 存储格式: JSON.stringify(string[]),最多 MAX_KEYS 个，最少 1 个
  */
 import { useState, useEffect, useCallback } from 'react'
 import dayjs from 'dayjs'
 import { DEFAULT_QUICKACTION_KEYS_BY_AGE } from './constants'
 import { useAppStore } from './store'
 
-/** 最多 7 个快捷格子（A区 3 + B区 4） */
-const MAX_KEYS = 7
+/** 最多 N 个快捷格子（A区 4 + B区 4） */
+export const MAX_QUICK_KEYS = 8
 /** A区最多展示前 N 个 */
-const A_ZONE_SIZE = 3
+export const QUICK_A_ZONE_SIZE = 4
+
+// 内部别名，保持 hook 内部不变
+const MAX_KEYS = MAX_QUICK_KEYS
+const A_ZONE_SIZE = QUICK_A_ZONE_SIZE
 
 const STORAGE_KEY = 'quickaction_keys'
 
@@ -32,7 +36,7 @@ function getAgeGroup(birthDate: string | null | undefined): string {
 }
 
 export interface QuickActionKeysState {
-  /** 当前快捷入口 key 列表（有序，前3 = A区，后n = B区） */
+  /** 当前快捷入口 key 列表（有序，前4 = A区，后n = B区） */
   keys: string[]
   /** A区 keys（前 A_ZONE_SIZE 个） */
   aKeys: string[]

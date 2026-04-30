@@ -10,6 +10,7 @@
  * 被引用：ReportPage.tsx
  */
 import React from 'react'
+import { IconBabyWeight } from '@/components/ui/icons'
 import type { ReportSummary } from '@/api/report'
 
 // ── 各模块小尺寸图标（16×16，颜色与记录类型一致）────────────────
@@ -44,11 +45,8 @@ const IconDroplets = () => (
 )
 
 /** 生长图标（绿色 #4CAF82） */
-const IconRuler = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="#4CAF82" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 16, height: 16, flexShrink: 0 }}>
-    <path d="M21.3 8.7 8.7 21.3c-1 1-2.5 1-3.4 0l-2.6-2.6c-1-1-1-2.5 0-3.4L15.3 2.7c1-1 2.5-1 3.4 0l2.6 2.6c1 1 1 2.5 0 3.4z" />
-    <line x1="7.5" y1="10.5" x2="9" y2="12" />
-  </svg>
+const IconGrowthLocal = () => (
+  <IconBabyWeight size={16} color="#4CAF82" style={{ flexShrink: 0 }} />
 )
 
 /** 健康图标（粉红色 #F87098） */
@@ -267,7 +265,7 @@ export default function FullReportModal({ open, data, summary, onClose, onShare,
     {
       key: 'growth',
       label: '生长',
-      icon: <IconRuler />,
+      icon: <IconGrowthLocal />,
       stats: summary?.growth.latestWeightG
         ? [
             { val: mmToCm(summary.growth.latestHeightMm), unit: 'cm', name: '身高' },

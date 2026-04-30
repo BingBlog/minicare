@@ -37,7 +37,7 @@ import {
   IconActivity,
   IconHeart,
   IconSmile,
-  IconRuler,
+  IconBabyWeight,
   IconStethoscope,
 } from "@/components/ui/icons";
 import type { RecordItem } from "@/api";
@@ -69,7 +69,7 @@ const FILTER_PRIMARY: FilterChipOption[] = [
   {
     key: "growth",
     label: "生长",
-    icon: <IconRuler size={12} color="currentColor" />,
+    icon: <IconBabyWeight size={12} color="currentColor" />,
   },
 ];
 const FILTER_MORE: FilterChipOption[] = [

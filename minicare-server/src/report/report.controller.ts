@@ -16,14 +16,14 @@ import { RoleGuard } from '../family/role.guard';
 import { ReportService } from './report.service';
 import { BabyService } from '../baby/baby.service';
 import type { ReportSummary, ChartData } from './report.service';
+import { formatSqlDate } from '../common/utils/date.util';
 
 /** 默认时间范围：最近7天 */
 function defaultRange(): { startDate: string; endDate: string } {
   const end = new Date();
   const start = new Date();
   start.setDate(end.getDate() - 6);
-  const fmt = (d: Date) => d.toISOString().slice(0, 10);
-  return { startDate: fmt(start), endDate: fmt(end) };
+  return { startDate: formatSqlDate(start), endDate: formatSqlDate(end) };
 }
 
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
