@@ -77,7 +77,7 @@ manageCloudRun(
   serverConfig = {
     Cpu: 0.5, Mem: 1, MinNum: 0, MaxNum: 5, Port: 3000,
     OpenAccessTypes: ['OA', 'PUBLIC', 'MINIAPP'],
-    EnvParams: "{\"NODE_ENV\":\"production\",\"TCB_ENV_ID\":\"minicare-cloud-6gqledlle0132cbe\",\"DB_HOST\":\"<DB_HOST>\",\"DB_PORT\":\"<DB_PORT>\",\"DB_NAME\":\"minicare-cloud-6gqledlle0132cbe\",\"DB_USER\":\"<DB_USER>\",\"DB_PASS\":\"<DB_PASS>\",\"JWT_SECRET\":\"<JWT_SECRET>\",\"AUTH_TEST_MODE\":\"false\",\"CORS_ORIGINS\":\"https://minicare.top,https://minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com\"}"
+    EnvParams: "{\"NODE_ENV\":\"production\",\"TCB_ENV_ID\":\"minicare-cloud-6gqledlle0132cbe\",\"DB_HOST\":\"<DB_HOST>\",\"DB_PORT\":\"<DB_PORT>\",\"DB_NAME\":\"minicare-cloud-6gqledlle0132cbe\",\"DB_USER\":\"<DB_USER>\",\"DB_PASS\":\"<DB_PASS>\",\"JWT_SECRET\":\"<JWT_SECRET>\",\"AUTH_TEST_MODE\":\"false\",\"CORS_ORIGINS\":\"https://minicare.top,http://www.minicare.top,https://www.minicare.top,https://minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com\"}"
   }
 )
 ```

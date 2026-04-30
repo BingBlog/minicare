@@ -372,6 +372,8 @@ export class ReportService {
 
     // milk_types/milk_scoops 已拆分到 feeding_formula_mix 明细表
     // 每条配方奶记录 JOIN 其配比行，聚合为 JSON 数组 / 对象供 splitFormulaMlByMilkTypes 使用
+    // 注意：使用 INNER JOIN + 子查询过滤，避免 LEFT JOIN 时 m.milk_type=NULL
+    // 导致 JSON_OBJECTAGG key 为 NULL 在 CynosDB 上报 Error 3158
     const [formulaRows] = await this.db.query<any[]>(
       `SELECT
          DATE(f.record_time)                              AS day_date,
@@ -379,8 +381,9 @@ export class ReportService {
          JSON_ARRAYAGG(m.milk_type)                       AS milk_types,
          JSON_OBJECTAGG(m.milk_type, m.scoops)            AS milk_scoops
        FROM feeding_formula_record f
-       LEFT JOIN feeding_formula_mix m ON m.record_id = f.id
+       INNER JOIN feeding_formula_mix m ON m.record_id = f.id
        WHERE f.baby_id = ? AND DATE(f.record_time) BETWEEN ? AND ?
+         AND m.milk_type IS NOT NULL
        GROUP BY f.id, f.record_time, f.formula_ml
        ORDER BY f.record_time ASC`,
       [babyId, startDate, endDate],
