@@ -1,11 +1,12 @@
 import { View, Text, Image } from '@tarojs/components'
-import Taro from '@tarojs/taro'
 import { RECORD_TYPE_ICON_SRC } from '@/assets/icons/recordTypeIcons'
 import { ALL_QUICK_ACTION_KEYS, GLOBAL_FAB_GROUPS, RECORD_TYPE_CFG } from '@/lib/constants'
-import { useQuickActionKeys } from '@/lib/useQuickActionKeys'
+import { MAX_QUICK_KEYS, useQuickActionKeys } from '@/lib/useQuickActionKeys'
 
 interface QuickActionsProps {
   birthDate?: string | null
+  onMoreClick: () => void
+  fabCount?: number
 }
 
 function ActionIcon({ actionKey }: { actionKey: string }) {
@@ -22,7 +23,7 @@ function ActionIcon({ actionKey }: { actionKey: string }) {
   )
 }
 
-export default function QuickActions({ birthDate }: QuickActionsProps) {
+export default function QuickActions({ birthDate, onMoreClick, fabCount = 5 }: QuickActionsProps) {
   const {
     initialized,
     aKeys,
@@ -38,7 +39,7 @@ export default function QuickActions({ birthDate }: QuickActionsProps) {
 
   const currentKeys = [...aKeys, ...bKeys]
   const poolKeys = (ALL_QUICK_ACTION_KEYS as readonly string[]).filter((key) => !currentKeys.includes(key))
-  const canAdd = currentKeys.length < 7
+  const canAdd = currentKeys.length < MAX_QUICK_KEYS
 
   if (!initialized) return null
 
@@ -60,12 +61,7 @@ export default function QuickActions({ birthDate }: QuickActionsProps) {
             <Text className='home-card__mute' onClick={startEditing}>
               编辑
             </Text>
-            <Text
-              className='home-card__hint'
-              onClick={() => Taro.showToast({ title: '更多记录开发中', icon: 'none' })}
-            >
-              更多 ›
-            </Text>
+            <Text className='home-card__hint' onClick={onMoreClick}>更多 ({fabCount}) ›</Text>
           </View>
         )}
       </View>
@@ -102,7 +98,7 @@ export default function QuickActions({ birthDate }: QuickActionsProps) {
 
       {isEditing && (
         <View className='home-edit'>
-          <Text className='home-edit__tip'>已添加（{currentKeys.length}/7），可左右调整顺序</Text>
+          <Text className='home-edit__tip'>已添加（{currentKeys.length}/{MAX_QUICK_KEYS}），可左右调整顺序</Text>
           <View className='home-edit__grid'>
             {currentKeys.map((key, idx) => {
               const cfg = RECORD_TYPE_CFG[key]
@@ -128,7 +124,9 @@ export default function QuickActions({ birthDate }: QuickActionsProps) {
           </View>
 
           <View className='home-edit__pool'>
-            <Text className='home-edit__pool-title'>{canAdd ? '更多功能（点击添加）' : '已达上限（最多7个）'}</Text>
+            <Text className='home-edit__pool-title'>
+              {canAdd ? '更多功能（点击添加）' : `已达上限（最多${MAX_QUICK_KEYS}个）`}
+            </Text>
             {GLOBAL_FAB_GROUPS.map((group) => {
               const keys = group.keys.filter((key) => poolKeys.includes(key))
               if (keys.length === 0) return null

@@ -7,10 +7,11 @@ interface HeroSectionProps {
   greeting: string
   dateText: string
   stats: BabyStat[]
+  banners?: JSX.Element | null
 }
 
 export default function HeroSection(props: HeroSectionProps) {
-  const { babyName, babyAgeText, greeting, dateText, stats } = props
+  const { babyName, babyAgeText, greeting, dateText, stats, banners } = props
 
   return (
     <View className='home-hero'>
@@ -43,6 +44,7 @@ export default function HeroSection(props: HeroSectionProps) {
           </View>
         ))}
       </View>
+      {banners}
       <View className='home-hero__bottom-mask' />
     </View>
   )

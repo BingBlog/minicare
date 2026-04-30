@@ -1,9 +1,16 @@
 export type HomeRecordType =
+  | 'formula'
+  | 'breast'
+  | 'food'
   | 'feeding'
   | 'sleep'
   | 'diaper'
   | 'activity'
   | 'health'
+  | 'temperature'
+  | 'growth'
+  | 'medical'
+  | 'supplement'
   | 'symptom'
 
 export interface HomeRecord {

@@ -4,8 +4,11 @@ import dayjs from 'dayjs'
 import { DEFAULT_QUICKACTION_KEYS_BY_AGE } from './constants'
 
 const STORAGE_KEY = 'quickaction_keys'
-const MAX_KEYS = 7
-const A_ZONE_SIZE = 3
+export const MAX_QUICK_KEYS = 8
+export const QUICK_A_ZONE_SIZE = 4
+
+const MAX_KEYS = MAX_QUICK_KEYS
+const A_ZONE_SIZE = QUICK_A_ZONE_SIZE
 
 function getAgeGroup(birthDate?: string | null): string {
   if (!birthDate) return '6-11m'
