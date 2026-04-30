@@ -6,9 +6,9 @@
   "scripts": {
     "build": "nest build",
     "start": "node dist/main",
-    "start:dev": "NODE_ENV=development nest start --watch",
+    "start:dev": "PORT=${PORT:-3001} NODE_ENV=development nest start --watch",
     "start:prod": "NODE_ENV=production node dist/main",
-    "start:debug": "NODE_ENV=development nest start --debug --watch",
+    "start:debug": "PORT=${PORT:-3001} NODE_ENV=development nest start --debug --watch",
     "lint": "eslint \"{src,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:cov": "jest --coverage",

@@ -69,6 +69,7 @@ minicare/docs/
 | [tech/INFRA-ops-monitoring.md](tech/INFRA-ops-monitoring.md) | **运维监控体系总方案**（流量、稳定性告警、CLS、架构/流程、计划与风险） |
 | [tech/INFRA-cls-logging.md](tech/INFRA-cls-logging.md) | **CLS 日志接入**（云托管 → CLS、NestJS 结构化日志建议、索引与成本） |
 | [tech/INFRA-env-config.md](tech/INFRA-env-config.md) | **开发环境配置方案**（dev / staging / prod 三套环境、认证流程、部署脚本） |
+| [tech/MINIAPP-migration-plan.md](tech/MINIAPP-migration-plan.md) | `minicare-web` 转微信小程序（Taro）迁移方案（分阶段实施与风险对策） |
 | [tech/DB-01-overview.md](tech/DB-01-overview.md) | ER 图 · 本地/远程存储策略 · 数据库选型 |
 | [tech/DB-02-schema.md](tech/DB-02-schema.md) | 完整建表 DDL · 字段变更汇总 |
 | [tech/DB-03-mock-data.md](tech/DB-03-mock-data.md) | Mock 数据 · 用户故事演练 · 字段覆盖检查 |

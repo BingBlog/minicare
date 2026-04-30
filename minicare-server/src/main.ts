@@ -12,6 +12,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
+  const port = Number(process.env.PORT ?? 3000);
+
   const app = await NestFactory.create(AppModule, {
     logger: ['error', 'warn', 'log'],
   });
@@ -52,7 +54,7 @@ async function bootstrap() {
       .build();
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api-docs', app, document);
-    console.log('[minicare] Swagger: http://localhost:3000/api-docs');
+    console.log(`[minicare] Swagger: http://localhost:${port}/api-docs`);
   }
 
   // ── /health 端点（CloudRun 健康检查 + curl 验证）────────────
@@ -81,7 +83,6 @@ async function bootstrap() {
   });
 
   // ── 启动监听（CloudRun 会注入 PORT）──────────────────────────
-  const port = process.env.PORT ?? 3000;
   await app.listen(port, '0.0.0.0');
   console.log(`[minicare] Server running on port ${port}`);
 }

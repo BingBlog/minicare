@@ -1,0 +1,2 @@
+export { fetchAppConfig } from './appConfig'
+
