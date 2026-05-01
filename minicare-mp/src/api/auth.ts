@@ -1,4 +1,4 @@
-import { request, setToken } from './http'
+import { request, setToken, setUser } from './http'
 
 interface User {
   id: string
@@ -32,5 +32,6 @@ export const authApi = {
 export async function loginByCode(phone: string, code: string): Promise<AuthResult> {
   const res = await authApi.verifyCode(phone, code)
   setToken(res.token)
+  setUser(res.user)
   return res
 }

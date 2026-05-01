@@ -22,6 +22,25 @@ export function removeToken(): void {
   Taro.removeStorageSync('minicare_token')
 }
 
+const USER_KEY = 'minicare_user'
+
+export function getUser(): { id: string; phone: string; nickname: string } | null {
+  try {
+    const raw = Taro.getStorageSync(USER_KEY)
+    return raw || null
+  } catch {
+    return null
+  }
+}
+
+export function setUser(user: { id: string; phone: string; nickname: string }): void {
+  Taro.setStorageSync(USER_KEY, user)
+}
+
+export function removeUser(): void {
+  Taro.removeStorageSync(USER_KEY)
+}
+
 interface RequestOptions {
   method?: 'GET' | 'POST' | 'PATCH' | 'DELETE'
   auth?: boolean

@@ -1,6 +1,17 @@
 import type { HomeRecord } from '@/pages/home/types'
+import type { RecordItem } from '@/api/types'
+import { getRecordTime } from './utils'
 
 export type RecordsSortMode = 'time' | 'type'
+
+export type RecordTypeKey =
+  | 'feeding' | 'sleep' | 'diaper' | 'activity'
+  | 'health' | 'growth' | 'medical' | 'symptom'
+
+/** 与 Web ALL_TYPE_KEYS 完全一致 */
+export const ALL_TYPE_KEYS: RecordTypeKey[] = [
+  'feeding', 'sleep', 'diaper', 'activity', 'health', 'growth', 'medical', 'symptom',
+]
 
 /** 与 Web 记录列表保持一致的类型分组顺序。 */
 export const RECORD_LIST_TYPE_ORDER: string[] = [
@@ -13,6 +24,27 @@ export const RECORD_LIST_TYPE_ORDER: string[] = [
   'medical',
   'symptom',
 ]
+
+/** 通用日内排序（与 Web sortDayItems 完全一致） */
+export function sortDayItems(items: RecordItem[], mode: RecordsSortMode): RecordItem[] {
+  const next = [...items]
+  if (mode === 'time') {
+    next.sort((a, b) => new Date(getRecordTime(b)).getTime() - new Date(getRecordTime(a)).getTime())
+    return next
+  }
+
+  next.sort((a, b) => {
+    const ta = (a.type ?? '') as string
+    const tb = (b.type ?? '') as string
+    const ia = RECORD_LIST_TYPE_ORDER.indexOf(ta)
+    const ib = RECORD_LIST_TYPE_ORDER.indexOf(tb)
+    const oa = ia === -1 ? 999 : ia
+    const ob = ib === -1 ? 999 : ib
+    if (oa !== ob) return oa - ob
+    return new Date(getRecordTime(b)).getTime() - new Date(getRecordTime(a)).getTime()
+  })
+  return next
+}
 
 export function sortHomeDayItems(items: HomeRecord[], mode: RecordsSortMode): HomeRecord[] {
   const next = [...items]

@@ -1,0 +1,426 @@
+.sleep-page {
+  min-height: 100vh;
+  background: #faf5f6;
+  font-family: -apple-system, 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+}
+
+.sleep-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 0;
+  color: #9a8090;
+  font-size: 14px;
+}
+
+/* ── 导航栏 ── */
+.sleep-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: #faf5f6;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.sleep-nav__back {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.sleep-nav__back-arrow {
+  color: #4a3035;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.sleep-nav__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #4a3035;
+}
+
+.sleep-nav__delete-text {
+  color: #f05060;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.sleep-nav__spacer {
+  width: 36px;
+}
+
+/* ── Body ── */
+.sleep-body {
+  padding-bottom: 100px;
+}
+
+/* ── 模式切换 ── */
+.sleep-mode-switch {
+  margin: 8px 12px 10px;
+  display: flex;
+  background: #f0e8ea;
+  border-radius: 16px;
+  padding: 3px;
+}
+
+.sleep-mode-switch__item {
+  flex: 1;
+  text-align: center;
+  padding: 9px 0;
+  border-radius: 13px;
+  transition: all 0.15s;
+}
+
+.sleep-mode-switch__item--active {
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.sleep-mode-switch__label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #9a8090;
+}
+
+.sleep-mode-switch__item--active .sleep-mode-switch__label {
+  color: #4a3035;
+}
+
+/* ── 卡片 ── */
+.sleep-card {
+  margin: 0 12px 10px;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(200, 100, 120, 0.08);
+}
+
+/* ── 行 ── */
+.sleep-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+}
+
+.sleep-row--border {
+  border-bottom: 1px solid #f5eef0;
+}
+
+.sleep-row__label {
+  color: #9a8090;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.sleep-row__picker {
+  color: #4a3035;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.sleep-row__value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #4a3035;
+}
+
+/* ── 章节标签 ── */
+.sleep-section-label {
+  padding: 0 14px 4px;
+  color: #9a8090;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ── 备注 ── */
+.sleep-note-input {
+  height: 44px;
+  font-size: 13px;
+  color: #4a3035;
+  padding: 0 14px;
+}
+
+/* ── 提交栏 ── */
+.sleep-submit {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px 16px 28px;
+  background: #faf5f6;
+  z-index: 20;
+}
+
+.sleep-submit__btn {
+  background: #4caf82;
+  border-radius: 14px;
+  padding: 14px 0;
+  text-align: center;
+  box-shadow: 0 4px 14px rgba(76, 175, 130, 0.35);
+}
+
+.sleep-submit__btn--loading {
+  opacity: 0.6;
+  background: #a8d8b0;
+  box-shadow: none;
+}
+
+.sleep-submit__text {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* ── 计时器 ── */
+.sleep-timer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 0 16px;
+  gap: 16px;
+}
+
+.sleep-timer__ring {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sleep-timer__ring--running {
+  box-shadow: 0 4px 20px rgba(76, 175, 130, 0.3);
+}
+
+.sleep-timer__inner {
+  width: 148px;
+  height: 148px;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.sleep-timer__moon {
+  margin-bottom: 2px;
+}
+
+.sleep-timer__moon-shape {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #4caf82;
+  box-shadow: inset 6px -2px 0 0 #fff;
+}
+
+.sleep-timer__time {
+  font-size: 32px;
+  font-weight: 800;
+  color: #4a3035;
+  line-height: 1;
+}
+
+.sleep-timer__status {
+  font-size: 12px;
+  color: #9a8090;
+  font-weight: 500;
+}
+
+.sleep-timer__start-hint {
+  font-size: 13px;
+  color: #9a8090;
+}
+
+.sleep-timer__btn-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.sleep-timer__btn {
+  width: 176px;
+  padding: 16px 0;
+  border-radius: 16px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sleep-timer__btn--start {
+  background: #4caf82;
+  box-shadow: 0 4px 14px rgba(76, 175, 130, 0.4);
+}
+
+.sleep-timer__btn--resume {
+  background: #4caf82;
+  box-shadow: 0 4px 14px rgba(76, 175, 130, 0.4);
+}
+
+.sleep-timer__btn--stop {
+  background: #f87098;
+  box-shadow: 0 4px 14px rgba(248, 112, 152, 0.35);
+}
+
+.sleep-timer__btn--loading {
+  opacity: 0.6;
+  box-shadow: none;
+}
+
+.sleep-timer__btn-text {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.sleep-timer__cancel-link {
+  color: #c4a8b0;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.sleep-timer__saved {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sleep-timer__saved-check {
+  color: #4caf82;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.sleep-timer__saved-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #4caf82;
+}
+
+/* ── 睡眠质量选择 ── */
+.sleep-quality-grid {
+  display: flex;
+  gap: 10px;
+  padding: 12px 16px;
+}
+
+.sleep-quality-opt {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 0;
+  border-radius: 12px;
+  border: 1px solid #e5d8da;
+  transition: all 0.15s;
+}
+
+.sleep-quality-opt__emoji {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sleep-quality-opt__label {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* ── 弹窗 ── */
+.sleep-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.sleep-dialog {
+  width: 100%;
+  max-width: 375px;
+  margin: 0 16px 24px;
+  background: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+}
+
+.sleep-dialog__body {
+  padding: 20px 16px 12px;
+  text-align: center;
+}
+
+.sleep-dialog__moon-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.sleep-dialog__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #4a3035;
+  display: block;
+}
+
+.sleep-dialog__desc {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #7a5a60;
+  line-height: 1.5;
+  display: block;
+}
+
+.sleep-dialog__actions {
+  display: flex;
+  border-top: 1px solid #f5eef0;
+}
+
+.sleep-dialog__btn {
+  flex: 1;
+  padding: 16px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sleep-dialog__btn--secondary {
+  border-right: 1px solid #f5eef0;
+}
+
+.sleep-dialog__btn-text {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.sleep-dialog__btn-text--secondary {
+  color: #9a8090;
+}
+
+.sleep-dialog__btn-text--primary {
+  color: #f87098;
+}
+
+.sleep-dialog__btn-text--danger {
+  color: #f05060;
+}

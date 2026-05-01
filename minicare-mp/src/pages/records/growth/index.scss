@@ -1,0 +1,328 @@
+.growth-page {
+  min-height: 100vh;
+  background: #faf5f6;
+  font-family: -apple-system, 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+}
+
+.growth-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 0;
+  color: #9a8090;
+  font-size: 14px;
+}
+
+/* ── 导航栏 ── */
+.growth-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: #faf5f6;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.growth-nav__back {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.growth-nav__back-arrow {
+  color: #4a3035;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.growth-nav__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #4a3035;
+}
+
+.growth-nav__delete-text {
+  color: #f05060;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.growth-nav__spacer {
+  width: 36px;
+}
+
+/* ── Body ── */
+.growth-body {
+  padding-bottom: 120px;
+}
+
+/* ── 章节标签 ── */
+.growth-section-label {
+  padding: 0 14px 4px;
+  color: #9a8090;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.growth-section-sub {
+  color: #9a8090;
+  font-size: 11px;
+  font-weight: 400;
+}
+
+/* ── 测量预览卡片（MeasureCards） ── */
+.growth-cards {
+  display: flex;
+  gap: 10px;
+  padding: 0 12px 12px;
+}
+
+.growth-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px 8px;
+  border-radius: 16px;
+  border: 2px solid transparent;
+  text-align: center;
+  box-shadow: 0 1px 6px rgba(200, 100, 120, 0.08);
+}
+
+.growth-card__icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  margin-bottom: 6px;
+}
+
+.growth-cards__icon {
+  width: 22px;
+  height: 22px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.growth-cards__icon-bar {
+  width: 3px;
+  height: 18px;
+  border-radius: 1.5px;
+}
+
+.growth-cards__icon-circle {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border-width: 2.5px;
+  border-style: solid;
+}
+
+.growth-card__value {
+  font-size: 22px;
+  font-weight: 800;
+  color: #4a3035;
+  line-height: 1;
+}
+
+.growth-card__unit {
+  font-size: 12px;
+  font-weight: 500;
+  color: #9a8090;
+  margin-top: 2px;
+}
+
+.growth-card__label {
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+/* ── 卡片容器 ── */
+.growth-card-box {
+  margin: 0 12px 10px;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(200, 100, 120, 0.08);
+}
+
+/* ── 表单行 ── */
+.growth-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+}
+
+.growth-row--border {
+  border-bottom: 1px solid #f5eef0;
+}
+
+.growth-row--border-top {
+  border-top: 1px solid #f5eef0;
+}
+
+.growth-row__label {
+  color: #7a5a60;
+  font-size: 14px;
+  flex-shrink: 0;
+  margin-right: 12px;
+}
+
+.growth-row__input-group {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+}
+
+.growth-row__input {
+  width: 80px;
+  height: 32px;
+  text-align: right;
+  font-size: 14px;
+  font-weight: 600;
+  color: #4a3035;
+}
+
+.growth-row__unit {
+  font-size: 13px;
+  color: #9a8090;
+  margin-left: 4px;
+  width: 24px;
+}
+
+.growth-row__picker {
+  color: #4a3035;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ── 机构 Chip ── */
+.growth-org-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 14px;
+}
+
+.growth-org-chip {
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid #e5d8da;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  color: #7a5a60;
+}
+
+.growth-org-chip--active {
+  background: #fff0f4;
+  border-color: #f87098;
+  color: #f87098;
+}
+
+/* ── 拍照上传占位 ── */
+.growth-photo-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  width: 100%;
+}
+
+.growth-photo-btn__icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  border: 2px dashed #f0b8c8;
+  background: #fff0f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.growth-photo-btn__icon-text {
+  font-size: 24px;
+  color: #f0b8c8;
+  line-height: 1;
+}
+
+.growth-photo-btn__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #7a5a60;
+  display: block;
+}
+
+.growth-photo-btn__desc {
+  font-size: 12px;
+  color: #9a8090;
+  margin-top: 2px;
+  display: block;
+}
+
+/* ── 备注 ── */
+.growth-note-input {
+  height: 44px;
+  font-size: 13px;
+  color: #4a3035;
+  padding: 0 14px;
+}
+
+/* ── 提示文字 ── */
+.growth-hint {
+  margin: 0 16px;
+  font-size: 11px;
+  color: #9a8090;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* ── 刷新加载条 ── */
+.growth-refreshing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 0;
+  font-size: 12px;
+  color: #9a8090;
+}
+
+/* ── 提交栏 ── */
+.growth-submit {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px 16px 28px;
+  background: #faf5f6;
+  z-index: 20;
+}
+
+.growth-submit__btn {
+  background: #9b8ed8;
+  border-radius: 14px;
+  padding: 14px 0;
+  text-align: center;
+}
+
+.growth-submit__btn--loading {
+  opacity: 0.6;
+}
+
+.growth-submit__text {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+}

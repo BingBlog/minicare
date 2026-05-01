@@ -263,6 +263,66 @@ Evidence（必须留痕）：
 
 ---
 
+## 路由注册强制门禁（MP 必做，3 处同步注册）
+
+**每创建一个新的 MP 页面，必须在以下 3 个位置同步注册路由。漏任何一处都会导致导航失败或回退到中间分发页。**
+
+### 1. `src/app.config.ts` — Taro 框架页面注册
+
+```ts
+pages: [
+  // ...
+  'pages/records/<page>/index',  // 新增
+]
+```
+
+注册后 Taro 编译器才会将这个页面纳入构建。缺失则页面不可访问。
+
+### 2. `src/lib/constants.ts` → `HOME_RECORD_MP_ROUTES` — 首页直达映射
+
+```ts
+export const HOME_RECORD_MP_ROUTES: Record<string, string> = {
+  // ...
+  '/records/form/<key>': '/pages/records/<page>/index',  // 新增
+}
+```
+
+`HOME_RECORD_ROUTES[key]` 产生 Web 路径（如 `/records/form/sleep`），`HOME_RECORD_MP_ROUTES` 将其映射到 MP 真实路径。首页 `navigateToRecord()` 优先查此表，命中则直接跳转；缺失则回退到 `/pages/records/index?target=...` 分发器。
+
+### 3. `src/pages/records/index.tsx` → `MP_ROUTE_MAP` — 分发器降级映射
+
+```ts
+const MP_ROUTE_MAP: Record<string, string> = {
+  // ...
+  '/records/form/<key>': '/pages/records/<page>/index',  // 新增
+}
+```
+
+当 `HOME_RECORD_MP_ROUTES` 缺失导致路由进入分发器时，此表作为二次解析。两表都缺失则分发器展示「目标页面尚未迁移」降级 UI。
+
+### 路由流转链路
+
+```
+首页 QuickAction/FabSheet
+  → HOME_RECORD_ROUTES[key]              // e.g. '/records/form/sleep'
+  → HOME_RECORD_MP_ROUTES[path]          // 查表 1：直接跳转 MP 页面 ✓
+     ↓ 缺失
+  → /pages/records/index?target=...      // 进入分发器
+  → MP_ROUTE_MAP[targetPath]             // 查表 2：分发跳转 ✓
+     ↓ 缺失
+  → 「目标页面尚未迁移」降级 UI          // 阻塞
+```
+
+### 验证清单
+
+- [ ] `app.config.ts` pages 数组已包含新页面
+- [ ] `HOME_RECORD_MP_ROUTES` 已包含 Web 路径 → MP 路径映射
+- [ ] `MP_ROUTE_MAP` 已包含 Web 路径 → MP 路径映射
+- [ ] 首页快捷操作点击能直接进入页面（不经分发器）
+- [ ] 分发器 `target=<Web路径>` 也能正确跳转
+
+---
+
 ## Web→MP 必须完全复用规则清单
 
 以下项必须保持与 Web 一致，不允许语义偏移：

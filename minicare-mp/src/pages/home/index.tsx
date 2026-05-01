@@ -15,6 +15,7 @@ import TodayTimeline from './TodayTimeline'
 import SleepBanner from './SleepBanner'
 import FeedingBanner from './FeedingBanner'
 import RecordActionSheet from './RecordActionSheet'
+import TabBar from '@/components/TabBar/TabBar'
 import type { BabyStat, HomeRecord } from './types'
 import { toHomeRecord } from './homeRecords'
 import './index.scss'
@@ -195,7 +196,7 @@ export default function HomePage() {
         greeting={getGreeting()}
         dateText={getTodayDateStr()}
         stats={stats}
-        onAvatarClick={() => Taro.navigateTo({ url: '/pages/profile/index' })}
+        onAvatarClick={() => Taro.switchTab({ url: '/pages/profile/index' })}
         onStatsClick={() => Taro.navigateTo({ url: '/pages/records/index?from=hero-stats' })}
         banners={
           <View className='home-banners'>
@@ -239,13 +240,11 @@ export default function HomePage() {
           }}
         />
       </View>
-      <View className='home-tabbar'>
-        <Text className='home-tabbar__item is-active'>首页</Text>
-        <Text className='home-tabbar__item'>记录</Text>
-        <View className='home-tabbar__fab' onClick={() => setFabOpen(true)}>+</View>
-        <Text className='home-tabbar__item'>分析</Text>
-        <Text className='home-tabbar__item'>我的</Text>
-      </View>
+      <TabBar
+        activeTab='home'
+        showFab
+        onFabClick={() => setFabOpen(true)}
+      />
       <FabSheet
         open={fabOpen}
         onClose={() => setFabOpen(false)}

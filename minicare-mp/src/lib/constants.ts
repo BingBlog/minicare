@@ -90,8 +90,11 @@ export const HOME_RECORD_ROUTES: Record<string, string> = {
  * 未在此表中的路由仍然走 /pages/records/index?target= 兜底。
  */
 export const HOME_RECORD_MP_ROUTES: Record<string, string> = {
+  '/records': '/pages/records/list/index',
   '/records/form/feeding': '/pages/records/feeding/index',
   '/records/form/diaper': '/pages/records/diaper/index',
+  '/records/form/sleep': '/pages/records/sleep/index',
+  '/records/form/growth': '/pages/records/growth/index',
 }
 
 export const SLEEP_PERIOD_LABELS: Record<string, string> = {
@@ -102,7 +105,7 @@ export const SLEEP_PERIOD_LABELS: Record<string, string> = {
 }
 
 export const SLEEP_QUALITY_LABELS: Record<string, string> = {
-  good: '质量好',
+  good: '良好',
   normal: '一般',
   poor: '较差',
 }
@@ -140,4 +143,48 @@ export const VISIT_TYPE_LABELS: Record<string, string> = {
   checkup: '常规体检',
   allergy: '过敏专科',
   sick: '生病就诊',
+}
+
+/** 过敏程度选项配置（含激活颜色） */
+export const ALLERGY_LEVEL_OPTIONS: { value: string; label: string; activeColor: string }[] = [
+  { value: 'mild',     label: '轻度', activeColor: '#4CAF82' },
+  { value: 'moderate', label: '中度', activeColor: '#DDB870' },
+  { value: 'severe',   label: '重度', activeColor: '#F05060' },
+  { value: 'unknown',  label: '未知', activeColor: '#9A8090' },
+]
+
+/** 角色 -> 中文名称 */
+export const ROLE_TEXT: Record<string, string> = {
+  owner:  '创建者',
+  member: '成员',
+}
+
+/** 角色 -> 头像背景颜色 */
+export const ROLE_AVATAR_BG: Record<string, string> = {
+  owner:  'linear-gradient(135deg, #F9A8C0, #F87098)',
+  member: '#EEF6FF',
+}
+
+/** 角色 -> 头像盒子阴影（仅 owner） */
+export const ROLE_AVATAR_SHADOW: Record<string, string> = {
+  owner:  '0 2px 8px rgba(248,112,152,.3)',
+  member: '',
+}
+
+/** 角色 -> 徽章背景色 */
+export const ROLE_BADGE_BG: Record<string, string> = {
+  owner:  '#FFF0F4',
+  member: '#EEF6FF',
+}
+
+/** 角色 -> 徽章文字色 */
+export const ROLE_BADGE_COLOR: Record<string, string> = {
+  owner:  '#F87098',
+  member: '#4A90D9',
+}
+
+/** 角色 -> 头像图标 stroke 颜色 */
+export const ROLE_ICON_COLOR: Record<string, string> = {
+  owner:  '#fff',
+  member: '#4A90D9',
 }

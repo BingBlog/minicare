@@ -4,8 +4,11 @@ import Taro, { useLoad } from '@tarojs/taro'
 import './index.scss'
 
 const MP_ROUTE_MAP: Record<string, string> = {
-  '/records': '/pages/records/index',
+  '/records': '/pages/records/list/index',
   '/records/form/feeding': '/pages/records/feeding/index',
+  '/records/form/diaper': '/pages/records/diaper/index',
+  '/records/form/sleep': '/pages/records/sleep/index',
+  '/records/form/growth': '/pages/records/growth/index',
   '/profile': '/pages/profile/index',
   '/home': '/pages/home/index',
 }
