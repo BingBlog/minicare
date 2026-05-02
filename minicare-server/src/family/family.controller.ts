@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -46,9 +47,16 @@ export class FamilyController {
 
   @Get(':familyId/members')
   @UseGuards(FamilyMemberGuard, RoleGuard)
-  @ApiOperation({ summary: '获取家庭成员列表（含 pending 状态）' })
-  getMembers(@Param('familyId') familyId: string) {
-    return this.familyService.getMembers(familyId);
+  @ApiOperation({ summary: '获取家庭成员列表（含 pending 状态 + 当前用户角色）' })
+  async getMembers(
+    @Param('familyId') familyId: string,
+    @Req() req: any,
+  ) {
+    const members = await this.familyService.getMembers(familyId);
+    return {
+      members,
+      currentUserRole: req.familyContext?.role ?? 'member',
+    };
   }
 
   /**

@@ -13,7 +13,6 @@ import { Fragment } from 'react'
 import RecordListItem from './RecordListItem'
 import { getRecordType } from '@/lib/utils'
 import { RECORD_TYPE_CFG } from '@/lib/constants'
-import { getTimelineRecordDisplay } from '@/pages/home/homeRecords'
 import type { RecordItem } from '@/api/types'
 
 /** 单日分组数据 */
@@ -30,7 +29,7 @@ interface RecordGroupProps {
   groupByType?: boolean
 }
 
-/** 计算饮食类型的汇总信息 */
+/** 计算饮食类型的汇总信息（与 Web calcFeedingSummary 一致） */
 function calcFeedingSummary(items: RecordItem[]): string[] {
   const badges: string[] = []
   const breastCount = items.filter((r) => r.feed_type === 'breast').length
@@ -38,8 +37,9 @@ function calcFeedingSummary(items: RecordItem[]): string[] {
   const foodCount = items.filter(
     (r) => r.feed_type === 'complementary' && r.complementary_food !== '营养素',
   ).length
+  // 营养素：兼容旧数据（complementary + 营养素）和新数据（feed_type=supplement）
   const supplementCount = items.filter(
-    (r) => r.feed_type === 'complementary' && r.complementary_food === '营养素',
+    (r) => r.feed_type === 'supplement' || (r.feed_type === 'complementary' && r.complementary_food === '营养素'),
   ).length
 
   if (breastCount > 0) badges.push(`母乳 ${breastCount} 次`)

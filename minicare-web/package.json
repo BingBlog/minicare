@@ -8,7 +8,7 @@
     "build:staging": "tsc -b && vite build --mode staging",
     "build:prod": "tsc -b && vite build --mode production",
     "build": "npm run build:staging",
-    "generate-pwa-icons": "node scripts/generate-pwa-icons.mjs",
+    "generanmte-pwa-icons": "node scripts/generate-pwa-icons.mjs",
     "preview": "vite preview",
     "preview:staging": "node scripts/preview-staging.mjs",
     "deploy": "npm run build:staging && tcb hosting deploy dist -e minicare-cloud-6gqledlle0132cbe"

@@ -1,5 +1,6 @@
 import { View, Text } from '@tarojs/components'
 import Taro, { useLoad } from '@tarojs/taro'
+import { getStatusBarHeight } from '@/lib/safeArea'
 
 import './index.scss'
 
@@ -9,9 +10,18 @@ const MP_ROUTE_MAP: Record<string, string> = {
   '/records/form/diaper': '/pages/records/diaper/index',
   '/records/form/sleep': '/pages/records/sleep/index',
   '/records/form/growth': '/pages/records/growth/index',
+  '/records/form/health': '/pages/records/health/index',
   '/profile': '/pages/profile/index',
   '/home': '/pages/home/index',
 }
+
+/** tabBar 页面集合 — navigateTo 无法跳转到 tabBar 页面，必须用 switchTab */
+const TAB_BAR_PAGES = new Set([
+  '/pages/home/index',
+  '/pages/records/list/index',
+  '/pages/report/index',
+  '/pages/profile/index',
+])
 
 function safeDecode(value?: string): string {
   if (!value) return ''
@@ -46,6 +56,13 @@ export default function RecordsPage() {
 
   const dispatchToTarget = () => {
     if (!canDispatch || !mappedPage) return
+
+    // tabBar 页面必须用 switchTab（不支持 query 参数，但 tabBar 页面本身不需要）
+    if (TAB_BAR_PAGES.has(mappedPage)) {
+      Taro.switchTab({ url: mappedPage })
+      return
+    }
+
     const queryParts: string[] = []
     if (targetQuery) queryParts.push(targetQuery)
     if (recordId) queryParts.push(`recordId=${encodeURIComponent(recordId)}`)
@@ -60,7 +77,7 @@ export default function RecordsPage() {
   })
 
   return (
-    <View className='records-page'>
+    <View className='records-page' style={{ paddingTop: `${getStatusBarHeight() + 40}px` }}>
       <Text className='records-page__title'>{isTargetValid ? '记录页（部分迁移）' : '无效跳转目标'}</Text>
       <Text className='records-page__desc'>目标路由：{target}</Text>
       {recordId ? <Text className='records-page__desc'>编辑记录ID：{recordId}</Text> : null}

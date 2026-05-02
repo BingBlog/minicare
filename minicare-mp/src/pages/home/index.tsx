@@ -1,16 +1,15 @@
 import { View, Text } from '@tarojs/components'
-import Taro from '@tarojs/taro'
-import { useEffect, useMemo, useState } from 'react'
-import { babyApi, familyApi, fetchAppConfig, recordsApi, sleepApi } from '@/api'
+import Taro, { useDidShow } from '@tarojs/taro'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { authApi, babyApi, familyApi, fetchAppConfig, recordsApi, sleepApi } from '@/api'
 import type { OngoingSleepRecord } from '@/api/sleep'
-import { FAB_GROUPS, HOME_RECORD_ROUTES, HOME_RECORD_MP_ROUTES } from '@/lib/constants'
+import { HOME_RECORD_ROUTES, HOME_RECORD_MP_ROUTES } from '@/lib/constants'
+import { getStatusBarHeight } from '@/lib/safeArea'
 import { getBabyAge, getGreeting, getTodayDateStr } from '@/lib/utils'
-import { useQuickActionKeys } from '@/lib/useQuickActionKeys'
 import { getToken } from '@/api/http'
 
 import HeroSection from './HeroSection'
 import QuickActions from './QuickActions'
-import FabSheet from './FabSheet'
 import TodayTimeline from './TodayTimeline'
 import SleepBanner from './SleepBanner'
 import FeedingBanner from './FeedingBanner'
@@ -22,7 +21,6 @@ import './index.scss'
 
 export default function HomePage() {
   const [backendStatus, setBackendStatus] = useState('')
-  const [fabOpen, setFabOpen] = useState(false)
   const [records, setRecords] = useState<HomeRecord[]>([])
   const [ongoingSleep, setOngoingSleep] = useState<OngoingSleepRecord | null>(null)
   const [actionOpen, setActionOpen] = useState(false)
@@ -32,7 +30,6 @@ export default function HomePage() {
   const [birthDate, setBirthDate] = useState('')
   const [familyId, setFamilyId] = useState('')
   const [loading, setLoading] = useState(true)
-  const { keys: quickKeys } = useQuickActionKeys(birthDate)
 
   /** 将 Web 路由解析为可直接跳转的 MP 路径。已迁移的页面直接跳转，未迁移的走分发器兜底。 */
   const navigateToRecord = (target: string, recordId?: string) => {
@@ -54,6 +51,29 @@ export default function HomePage() {
     }
   }
 
+  /** 刷新今日记录 & 进行中睡眠（页面从子页面返回时复用） */
+  const refreshTodayRecords = useCallback(async (fid: string) => {
+    try {
+      const [baby, todayRecords] = await Promise.all([
+        babyApi.get(fid),
+        recordsApi.today(fid),
+      ])
+      let ongoing: OngoingSleepRecord | null = null
+      try {
+        const ongoingRec = await sleepApi.getOngoing(fid, baby.id)
+        ongoing = ongoingRec ?? null
+      } catch {
+        ongoing = null
+      }
+      setBabyName(baby.name || '宝宝')
+      setBirthDate(baby.birth_date || '')
+      setRecords(todayRecords.map(toHomeRecord))
+      setOngoingSleep(ongoing)
+    } catch {
+      // 静默失败，保留已有数据
+    }
+  }, [])
+
   useEffect(() => {
     let cancelled = false
     const loadHomeData = async () => {
@@ -63,6 +83,9 @@ export default function HomePage() {
         return
       }
       try {
+        // 先验证 token 在当前后端环境是否有效（防止跨环境 token 残留）
+        await authApi.checkToken()
+
         await fetchAppConfig()
         const families = await familyApi.getMine()
         if (!families.length) {
@@ -70,22 +93,22 @@ export default function HomePage() {
           return
         }
 
-        const familyId = families[0].id
+        const fid = families[0].id
         const [baby, todayRecords] = await Promise.all([
-          babyApi.get(familyId),
-          recordsApi.today(familyId),
+          babyApi.get(fid),
+          recordsApi.today(fid),
         ])
 
         let ongoing: OngoingSleepRecord | null = null
         try {
-          const ongoingRec = await sleepApi.getOngoing(familyId, baby.id)
+          const ongoingRec = await sleepApi.getOngoing(fid, baby.id)
           ongoing = ongoingRec ?? null
         } catch {
           ongoing = null
         }
 
         if (!cancelled) {
-          setFamilyId(familyId)
+          setFamilyId(fid)
           setBabyName(baby.name || '宝宝')
           setBirthDate(baby.birth_date || '')
           setRecords(todayRecords.map(toHomeRecord))
@@ -110,6 +133,13 @@ export default function HomePage() {
       cancelled = true
     }
   }, [])
+
+  // 从子页面返回时自动刷新今日记录
+  useDidShow(() => {
+    if (familyId) {
+      refreshTodayRecords(familyId)
+    }
+  })
 
   const stats = useMemo<BabyStat[]>(() => {
     const feedingRecs = records.filter((r) => r.type === 'feeding')
@@ -155,10 +185,6 @@ export default function HomePage() {
     ]
   }, [records])
 
-  const filteredFabGroups = FAB_GROUPS
-    .map((g) => ({ ...g, keys: g.keys.filter((k) => !quickKeys.includes(k)) }))
-    .filter((g) => g.keys.length > 0)
-  const filteredFabCount = filteredFabGroups.reduce((acc, g) => acc + g.keys.length, 0)
 
   const lastFeedingRecord = [...records]
     .filter((r) => r.type === 'feeding')
@@ -175,7 +201,7 @@ export default function HomePage() {
 
   if (loading) {
     return (
-      <View className='home-page'>
+      <View className='home-page home-page--safe' style={{ paddingTop: `${getStatusBarHeight()}px` }}>
         <View className='home-content'>
           <View className='home-card'>
             <View className='home-empty'>
@@ -196,8 +222,7 @@ export default function HomePage() {
         greeting={getGreeting()}
         dateText={getTodayDateStr()}
         stats={stats}
-        onAvatarClick={() => Taro.switchTab({ url: '/pages/profile/index' })}
-        onStatsClick={() => Taro.navigateTo({ url: '/pages/records/index?from=hero-stats' })}
+        onStatsClick={() => Taro.switchTab({ url: '/pages/records/list/index' })}
         banners={
           <View className='home-banners'>
             {ongoingSleep ? (
@@ -224,8 +249,7 @@ export default function HomePage() {
       <View className='home-content'>
         <QuickActions
           birthDate={birthDate}
-          onMoreClick={() => setFabOpen(true)}
-          fabCount={filteredFabCount}
+          onMoreClick={() => Taro.eventCenter.trigger('tabbar:openFab')}
           onAction={(key) => {
             const route = HOME_RECORD_ROUTES[key] ?? '/records'
             navigateToRecord(route)
@@ -240,28 +264,22 @@ export default function HomePage() {
           }}
         />
       </View>
-      <TabBar
-        activeTab='home'
-        showFab
-        onFabClick={() => setFabOpen(true)}
-      />
-      <FabSheet
-        open={fabOpen}
-        onClose={() => setFabOpen(false)}
-        groups={filteredFabGroups.length > 0 ? filteredFabGroups : FAB_GROUPS}
-        onSelect={(key) => {
-          const route = HOME_RECORD_ROUTES[key] ?? '/records'
-          navigateToRecord(route)
-        }}
-      />
+      <TabBar activeTab='home' />
       <RecordActionSheet
         open={actionOpen}
         record={selectedRecord}
         deleting={deletingId === selectedRecord?.id}
         onClose={() => setActionOpen(false)}
         onEdit={(record) => {
-          const route = HOME_RECORD_ROUTES[record.type] ?? '/records'
-          navigateToRecord(route, record.id)
+          // feeding 类型需要根据 detail.feed_type 确定子类型路由
+          let routeKey = record.type as string
+          if (routeKey === 'feeding' && record.detail?.feed_type) {
+            routeKey = record.detail.feed_type as string
+          }
+          const route = HOME_RECORD_ROUTES[routeKey]
+          if (route) {
+            navigateToRecord(route, record.id)
+          }
           setActionOpen(false)
         }}
         onDelete={(recordId) => {

@@ -233,18 +233,17 @@ export default function ProfilePage() {
     setMembersOpen(true);
     setMembersLoading(true);
     try {
-      const list = await familyApi.getMembers(currentFamily.id);
+      const res = await familyApi.getMembers(currentFamily.id);
 
-      // 用当前登录用户 ID 标记 is_self，并同时得出角色
-      const enriched = list.map((m) => ({
+      // 用当前登录用户 ID 标记 is_self
+      const enriched = res.members.map((m) => ({
         ...m,
         is_self: m.user_id === user?.id,
       }));
       setMembers(enriched);
 
-      // 找到自身成员记录，拿到角色
-      const selfMember = enriched.find((m) => m.is_self);
-      setCurrentUserRole((selfMember?.role as 'owner' | 'member') ?? 'member');
+      // 直接使用服务端返回的角色
+      setCurrentUserRole(res.currentUserRole);
     } catch {
       showToast("加载成员列表失败");
     } finally {
@@ -254,11 +253,10 @@ export default function ProfilePage() {
 
   /** 刷新成员列表（enrich is_self + 更新角色） */
   const refreshMembers = async (familyId: string) => {
-    const list = await familyApi.getMembers(familyId);
-    const enriched = list.map((m) => ({ ...m, is_self: m.user_id === user?.id }));
+    const res = await familyApi.getMembers(familyId);
+    const enriched = res.members.map((m) => ({ ...m, is_self: m.user_id === user?.id }));
     setMembers(enriched);
-    const selfMember = enriched.find((m) => m.is_self);
-    setCurrentUserRole((selfMember?.role as 'owner' | 'member') ?? 'member');
+    setCurrentUserRole(res.currentUserRole);
   };
 
   /** 按手机号邀请成员 */

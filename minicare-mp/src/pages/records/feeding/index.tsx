@@ -16,6 +16,7 @@ import Taro, { useLoad } from '@tarojs/taro'
 import { useEffect, useRef, useState } from 'react'
 import dayjs from 'dayjs'
 import { babyApi, familyApi, recordsApi } from '@/api'
+import { getStatusBarHeight } from '@/lib/safeArea'
 import type { FeedTab, MilkType } from './types'
 import { milkTypeOptions, suppItems } from './types'
 import TabSelector from './TabSelector'
@@ -302,7 +303,7 @@ export default function FeedingFormPage() {
   return (
     <View className='feed-page'>
       {/* 导航栏 */}
-      <View className='feed-nav'>
+      <View className='feed-nav' style={{ paddingTop: `${getStatusBarHeight() + 10}px` }}>
         <View className='feed-nav__back' onClick={() => Taro.navigateBack()}>
           <Text className='feed-nav__back-arrow'>{'<'}</Text>
         </View>

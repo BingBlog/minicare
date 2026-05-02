@@ -1,14 +1,12 @@
 import Taro from '@tarojs/taro'
 
-function resolveApiBaseUrl(): string {
-  // 小程序运行时没有 Node 的 process 全局，需要先判空再读取。
-  if (typeof process !== 'undefined' && process?.env?.TARO_APP_API_BASE_URL) {
-    return process.env.TARO_APP_API_BASE_URL
-  }
-  return 'http://localhost:3001'
-}
-
-const API_BASE_URL = resolveApiBaseUrl()
+// Taro 编译时会将 process.env.TARO_APP_* 替换为字面量字符串，
+// 小程序运行时无 process 全局，不可用运行时判断。
+// 各环境 .env 文件中配置：
+//   .env.development  → http://127.0.0.1:3001
+//   .env.staging      → staging CloudRun URL
+//   .env.production   → production CloudRun URL
+const API_BASE_URL = process.env.TARO_APP_API_BASE_URL || 'http://localhost:3001'
 
 export function getToken(): string | null {
   return Taro.getStorageSync('minicare_token') || null
@@ -86,6 +84,14 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
       `  3. 微信开发者工具 → 详情 → 本地设置 → 勾选「不校验合法域名」\n` +
       `  4. 基础库版本过高可降级至 3.x（详情 → 本地设置）`,
     )
+  }
+
+  // 401 token 失效 → 清除本地凭证并跳转登录页
+  if (res.statusCode === 401) {
+    removeToken()
+    removeUser()
+    Taro.reLaunch({ url: '/pages/login/index' })
+    throw new Error('登录已过期，请重新登录')
   }
 
   if (res.statusCode < 200 || res.statusCode >= 300) {

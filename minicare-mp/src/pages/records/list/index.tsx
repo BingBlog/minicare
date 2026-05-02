@@ -14,9 +14,10 @@
  * │  └─ RecordActionSheet（编辑/删除弹层）
  */
 import { View, Text } from '@tarojs/components'
-import Taro from '@tarojs/taro'
-import { useEffect, useState } from 'react'
+import Taro, { useDidShow } from '@tarojs/taro'
+import { useEffect, useRef, useState } from 'react'
 import { familyApi, babyApi, recordsApi } from '@/api'
+import { getStatusBarHeight } from '@/lib/safeArea'
 import { getToken } from '@/api/http'
 import TabBar from '@/components/TabBar/TabBar'
 import {
@@ -51,16 +52,13 @@ const FILTER_MORE: { key: string; label: string }[] = [
   { key: 'medical', label: '医疗' },
 ]
 
-/** 记录类型 → MP 表单页路由 */
+/** 记录类型 → MP 表单页路由（仅已迁移的独立页面，不经过中间分发页） */
 const RECORD_FORM_MP_ROUTES: Record<string, string> = {
   feeding: '/pages/records/feeding/index',
-  sleep: '/pages/records/index?target=%2Frecords%2Fform%2Fsleep',
+  sleep: '/pages/records/sleep/index',
   diaper: '/pages/records/diaper/index',
-  activity: '/pages/records/index?target=%2Frecords%2Fform%2Factivity',
-  health: '/pages/records/index?target=%2Frecords%2Fform%2Fhealth',
   growth: '/pages/records/growth/index',
-  medical: '/pages/records/index?target=%2Frecords%2Fform%2Fmedical',
-  symptom: '/pages/records/index?target=%2Frecords%2Fform%2Fsymptom',
+  health: '/pages/records/health/index',
 }
 
 /** 记录子类型 → 已迁移 MP 表单页路由（用于已迁移的 feeding 等类型） */
@@ -92,45 +90,46 @@ export default function RecordsListPage() {
   const [baby, setBaby] = useState<Baby | null>(null)
   const [records, setRecords] = useState<RecordItem[]>([])
   const [activeFilter, setActiveFilter] = useState('all')
-  const [todayOnly, setTodayOnly] = useState(false)
   const [sortMode, setSortMode] = useState<RecordsSortMode>('type')
   const [loading, setLoading] = useState(true)
   const [showMore, setShowMore] = useState(false)
   const [selectedRecord, setSelectedRecord] = useState<RecordItem | null>(null)
   const [actionOpen, setActionOpen] = useState(false)
 
-  // 初始化加载 family + baby
-  useEffect(() => {
-    let cancelled = false
+  // 初始化加载 family + baby（useDidShow 保证 tabBar 切换回来时也能刷新）
+  const cancelRef = useRef(false)
+  useDidShow(() => {
+    cancelRef.current = false
     async function init() {
       const token = getToken()
       if (!token) {
         Taro.reLaunch({ url: '/pages/login/index' })
         return
       }
+      setLoading(true)
       try {
         const families = await familyApi.getMine()
         if (!families.length) {
-          if (!cancelled) setLoading(false)
+          if (!cancelRef.current) { setFamily(null); setBaby(null); setLoading(false) }
           return
         }
         const fam = families[0]
-        const babies = await babyApi.get(fam.id)
-        if (!babies.length) {
-          if (!cancelled) { setFamily(fam); setLoading(false) }
+        const baby = await babyApi.get(fam.id)
+        if (!baby || !baby.id) {
+          if (!cancelRef.current) { setFamily(fam); setBaby(null); setLoading(false) }
           return
         }
-        if (!cancelled) {
+        if (!cancelRef.current) {
           setFamily(fam)
-          setBaby(babies[0])
+          setBaby(baby)
         }
       } catch {
-        if (!cancelled) setLoading(false)
+        if (!cancelRef.current) setLoading(false)
       }
     }
     init()
-    return () => { cancelled = true }
-  }, [])
+    return () => { cancelRef.current = true }
+  })
 
   // 加载记录（依赖 family / baby / activeFilter / todayOnly）
   useEffect(() => {
@@ -168,14 +167,6 @@ export default function RecordsListPage() {
             new Date(getRecordTime(a)).getTime(),
         )
 
-        // 今天过滤
-        if (todayOnly) {
-          const todayKey = getDateKey(new Date().toISOString())
-          allRecs = allRecs.filter(
-            (r) => getDateKey(getRecordTime(r)) === todayKey,
-          )
-        }
-
         if (!cancelled) setRecords(allRecs as RecordItem[])
       } catch {
         if (!cancelled) setRecords([])
@@ -185,7 +176,7 @@ export default function RecordsListPage() {
     }
     load()
     return () => { cancelled = true }
-  }, [family, baby, activeFilter, todayOnly])
+  }, [family, baby, activeFilter])
 
   // ── 按日期分组 ──
   const todayKey = getDateKey(new Date().toISOString())
@@ -238,37 +229,45 @@ export default function RecordsListPage() {
     }
   }
 
-  // ── 无家庭/宝宝 ──
+  // ── 加载中 / 无家庭宝宝 ──
+  const safeAreaStyle = { paddingTop: `${getStatusBarHeight()}px` }
+
+  if (loading && !family) {
+    return (
+      <View className='records-list-page' style={safeAreaStyle}>
+        <View className='records-status'>
+          <Text className='records-status__title'>加载中...</Text>
+        </View>
+        <TabBar activeTab='records' />
+      </View>
+    )
+  }
+
   if (!family || !baby) {
     return (
-      <View className='records-list-page'>
+      <View className='records-list-page' style={safeAreaStyle}>
         <View className='records-status'>
           <View className='records-status__icon'>
-            <Text>&#128106;</Text>
+            <Text>--</Text>
           </View>
           <Text className='records-status__title'>请先创建家庭和添加宝宝</Text>
         </View>
+        <TabBar activeTab='records' />
       </View>
     )
   }
 
   return (
-    <View className='records-list-page'>
+    <View className='records-list-page' style={safeAreaStyle}>
       {/* ── 筛选栏 ── */}
       <View className='records-filter'>
-        {/* 标题行 + 今天切换 */}
+        {/* 标题行 */}
         <View className='records-filter__head'>
-          <Text className='records-filter__title'>
-            宝宝记录{!loading ? ` · 共 ${records.length} 条` : ''}
-          </Text>
-          <View
-            className={`records-filter__today-toggle ${todayOnly ? 'records-filter__today-toggle--active' : ''}`}
-            onClick={() => setTodayOnly((v) => !v)}
-          >
-            <View className='records-filter__today-toggle_icon'>
-              {todayOnly && <Text style={{ fontSize: 8, color: '#fff' }}>&#10003;</Text>}
-            </View>
-            <Text>今天</Text>
+          <View className='records-filter__title-wrap'>
+            <Text className='records-filter__title'>宝宝记录</Text>
+            {!loading && (
+              <Text className='records-filter__count'>共 {records.length} 条</Text>
+            )}
           </View>
         </View>
 
@@ -306,21 +305,23 @@ export default function RecordsListPage() {
         )}
       </View>
 
-      {/* ── 排序切换（仅「全部」时显示） ── */}
+      {/* ── 排序切换 Segmented Control（仅「全部」时显示） ── */}
       {activeFilter === 'all' && (
         <View className='records-sort'>
-          <Text
-            className={`records-sort__item ${sortMode === 'type' ? 'records-sort__item--active' : ''}`}
-            onClick={() => setSortMode('type')}
-          >
-            按类型
-          </Text>
-          <Text
-            className={`records-sort__item ${sortMode === 'time' ? 'records-sort__item--active' : ''}`}
-            onClick={() => setSortMode('time')}
-          >
-            按时间
-          </Text>
+          <View className='records-sort__track'>
+            <Text
+              className={`records-sort__item ${sortMode === 'type' ? 'records-sort__item--active' : ''}`}
+              onClick={() => setSortMode('type')}
+            >
+              按类型
+            </Text>
+            <Text
+              className={`records-sort__item ${sortMode === 'time' ? 'records-sort__item--active' : ''}`}
+              onClick={() => setSortMode('time')}
+            >
+              按时间
+            </Text>
+          </View>
         </View>
       )}
 
@@ -333,7 +334,7 @@ export default function RecordsListPage() {
         ) : records.length === 0 ? (
           <View className='records-status'>
             <View className='records-status__icon'>
-              <Text>&#128203;</Text>
+              <Text>--</Text>
             </View>
             <Text className='records-status__title'>暂无记录</Text>
             <Text className='records-status__subtitle'>{'点击底部 + 按钮开始记录\n宝宝的每一天'}</Text>

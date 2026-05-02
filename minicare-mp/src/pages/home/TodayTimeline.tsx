@@ -25,7 +25,7 @@ export default function TodayTimeline(props: TodayTimelineProps) {
     <View className='home-card'>
       <View className='home-card__head'>
         <Text className='home-card__title'>今日时间线</Text>
-        <Text className='home-card__hint' onClick={() => Taro.navigateTo({ url: '/pages/records/index?target=%2Frecords' })}>
+        <Text className='home-card__hint' onClick={() => Taro.switchTab({ url: '/pages/records/list/index' })}>
           全部 ›
         </Text>
       </View>

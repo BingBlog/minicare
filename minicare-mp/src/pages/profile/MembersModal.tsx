@@ -1,4 +1,4 @@
-import { View, Text, Input } from '@tarojs/components'
+import { View, Text, Input, Image } from '@tarojs/components'
 import { useState } from 'react'
 import type { FamilyMember } from '@/api'
 import { timeAgo } from '@/lib/utils'
@@ -20,48 +20,33 @@ function isValidPhone(phone: string): boolean {
   return /^1[3-9]\d{9}$/.test(phone)
 }
 
-const IconUserSingle = ({ color = 'currentColor' }: { color?: string }) => (
-  <svg viewBox='0 0 24 24' fill='none' stroke={color} strokeWidth='2'
-    strokeLinecap='round' strokeLinejoin='round' style={{ width: 20, height: 20 }}>
-    <path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2' />
-    <circle cx='12' cy='7' r='4' />
-  </svg>
+// ── 小程序兼容的 SVG data URI 图标（使用 encodeURIComponent，无需 btoa）───
+
+function svgDataUri(svg: string): string {
+  return `data:image/svg+xml,${encodeURIComponent(svg)}`
+}
+
+/** 生成用户头像图标的 data URI */
+function userIconSrc(color: string): string {
+  return svgDataUri(
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
+  )
+}
+
+const ICON_PLUS = svgDataUri(
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23F87098" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
 )
 
-const IconPlus = () => (
-  <svg viewBox='0 0 24 24' fill='none' stroke='currentColor'
-    strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'
-    style={{ width: 14, height: 14 }}>
-    <line x1='12' y1='5' x2='12' y2='19' />
-    <line x1='5' y1='12' x2='19' y2='12' />
-  </svg>
+const ICON_X = svgDataUri(
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23F05060" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
 )
 
-const IconX = () => (
-  <svg viewBox='0 0 24 24' fill='none' stroke='currentColor'
-    strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round'
-    style={{ width: 13, height: 13 }}>
-    <line x1='18' y1='6' x2='6' y2='18' />
-    <line x1='6' y1='6' x2='18' y2='18' />
-  </svg>
+const ICON_SPINNER = svgDataUri(
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%239A8090" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>',
 )
 
-const IconSpinner = () => (
-  <svg viewBox='0 0 24 24' fill='none' stroke='currentColor'
-    strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'
-    style={{ width: 18, height: 18, animation: 'spin 1s linear infinite' }}>
-    <path d='M21 12a9 9 0 1 1-6.219-8.56' />
-  </svg>
-)
-
-const IconAlertCircle = () => (
-  <svg viewBox='0 0 24 24' fill='none' stroke='#F05060'
-    strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round'
-    style={{ width: 36, height: 36 }}>
-    <circle cx='12' cy='12' r='10' />
-    <line x1='12' y1='8' x2='12' y2='12' />
-    <line x1='12' y1='16' x2='12.01' y2='16' />
-  </svg>
+const ICON_ALERT = svgDataUri(
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23F05060" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
 )
 
 interface MembersModalProps {
@@ -191,7 +176,7 @@ export default function MembersModal({
                   setInvitePhone('')
                 }}
               >
-                <IconPlus />
+                <Image src={ICON_PLUS} style={{ width: 14, height: 14 }} />
                 <Text>邀请成员</Text>
               </View>
             )}
@@ -219,7 +204,9 @@ export default function MembersModal({
                   className={`members-invite-form__send${invitePhone.length === 11 && !inviteSubmitting ? ' members-invite-form__send--ready' : ''}`}
                   onClick={invitePhone.length === 11 && !inviteSubmitting ? handleInviteSubmit : undefined}
                 >
-                  {inviteSubmitting ? <IconSpinner /> : '发送'}
+                  {inviteSubmitting ? (
+                    <Image src={ICON_SPINNER} className='members-icon-spin' style={{ width: 18, height: 18 }} />
+                  ) : '发送'}
                 </View>
               </View>
               {inviteError && (
@@ -239,7 +226,7 @@ export default function MembersModal({
           <View className='members-card'>
             {loading ? (
               <View className='members-loading'>
-                <IconSpinner />
+                <Image src={ICON_SPINNER} className='members-icon-spin' style={{ width: 18, height: 18 }} />
                 <Text>加载中...</Text>
               </View>
             ) : activeMembers.length === 0 ? (
@@ -271,7 +258,7 @@ export default function MembersModal({
                         ...(ROLE_AVATAR_SHADOW[role] ? { boxShadow: ROLE_AVATAR_SHADOW[role] } : {}),
                       }}
                     >
-                      <IconUserSingle color={ROLE_ICON_COLOR[role]} />
+                      <Image src={userIconSrc(ROLE_ICON_COLOR[role])} style={{ width: 20, height: 20 }} />
                     </View>
 
                     {/* 名字 + 副标题 */}
@@ -299,7 +286,7 @@ export default function MembersModal({
                         className='members-row__remove'
                         onClick={() => openConfirm(member, false)}
                       >
-                        <IconX />
+                        <Image src={ICON_X} style={{ width: 13, height: 13 }} />
                       </View>
                     )}
                   </View>
@@ -328,7 +315,7 @@ export default function MembersModal({
                       className={`members-row${i > 0 ? ' members-row--bordered' : ''}`}
                     >
                       <View className='members-row__avatar' style={{ background: '#F5F0F2' }}>
-                        <IconUserSingle color='#C0A8AD' />
+                        <Image src={userIconSrc('#C0A8AD')} style={{ width: 20, height: 20 }} />
                       </View>
                       <View className='members-row__info'>
                         <Text className='members-row__name'>{displayPhone}</Text>
@@ -348,7 +335,7 @@ export default function MembersModal({
                           style={{ background: '#F5F0F2', color: '#9A8090' }}
                           onClick={() => openConfirm(member, true)}
                         >
-                          <IconX />
+                          <Image src={ICON_X} style={{ width: 13, height: 13 }} />
                         </View>
                       )}
                     </View>
@@ -391,7 +378,7 @@ export default function MembersModal({
 
             <View className='members-confirm-body'>
               <View className='members-confirm-icon'>
-                <IconAlertCircle />
+                <Image src={ICON_ALERT} style={{ width: 36, height: 36 }} />
               </View>
               <Text className='members-confirm-title'>
                 {confirm.isPending
@@ -410,7 +397,9 @@ export default function MembersModal({
                 className={`members-confirm-btn members-confirm-btn--danger${confirmLoading ? ' members-confirm-btn--disabled' : ''}`}
                 onClick={confirmLoading ? undefined : handleConfirm}
               >
-                {confirmLoading ? <IconSpinner /> : confirm.isPending ? '撤销邀请' : '移除成员'}
+                {confirmLoading ? (
+                  <Image src={ICON_SPINNER} className='members-icon-spin' style={{ width: 18, height: 18 }} />
+                ) : confirm.isPending ? '撤销邀请' : '移除成员'}
               </View>
               <View
                 className='members-confirm-btn members-confirm-btn--secondary'
@@ -422,9 +411,6 @@ export default function MembersModal({
           </View>
         </View>
       )}
-
-      {/* spin 动画 */}
-      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </>
   )
 }

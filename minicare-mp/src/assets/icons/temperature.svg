@@ -1,3 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#E8507A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/>
+  <!-- 底部水银球：填充实心 -->
+  <circle cx="11.5" cy="18.5" r="2.8" fill="#E8507A" fill-opacity="0.9" stroke="none"/>
+  <!-- 管内液柱：从球顶向上延伸 -->
+  <line x1="11.5" y1="15.7" x2="11.5" y2="9" stroke="#E8507A" stroke-width="2.2" stroke-linecap="round" stroke-opacity="0.6"/>
 </svg>

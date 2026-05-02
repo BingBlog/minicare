@@ -1,0 +1,46 @@
+.navbar {
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.navbar__status-bar {
+  // 状态栏高度由 JS 内联样式动态设置
+}
+
+.navbar__content {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 16px;
+  position: relative;
+}
+
+.navbar__back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+.navbar__back-icon {
+  width: 10px;
+  height: 10px;
+  border-left: 2px solid #4a3035;
+  border-bottom: 2px solid #4a3035;
+  transform: rotate(45deg);
+  margin-left: 4px;
+}
+
+.navbar__title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 17px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 60%;
+}

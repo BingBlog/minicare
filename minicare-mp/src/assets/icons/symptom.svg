@@ -1,6 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#F0B8C8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-  <circle cx="12" cy="12" r="10"/>
-  <path d="M8 13s1.5 2 4 2 4-2 4-2"/>
-  <line x1="9" y1="9" x2="9.01" y2="9"/>
-  <line x1="15" y1="9" x2="15.01" y2="9"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#F0B8C8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="10" fill="#F0B8C8" fill-opacity="0.15"/>
+  <path d="M8 13s1.5 2 4 2 4-2 4-2" stroke-width="2.2"/>
+  <!-- 眼睛：填充圆点，更有表情感 -->
+  <circle cx="9" cy="9.5" r="1.2" fill="#F0B8C8" stroke="none"/>
+  <circle cx="15" cy="9.5" r="1.2" fill="#F0B8C8" stroke="none"/>
 </svg>

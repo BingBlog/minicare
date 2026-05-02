@@ -13,6 +13,11 @@
 import { request } from './http'
 import type { Family, FamilyMember } from './types'
 
+export interface GetMembersResponse {
+  members: FamilyMember[]
+  currentUserRole: 'owner' | 'member'
+}
+
 export const familyApi = {
   /**
    * 获取我的家庭列表
@@ -33,9 +38,20 @@ export const familyApi = {
    * 获取家庭成员列表
    * 返回 active（status=2）+ pending（status=1）两类成员
    * pending 成员无 name/user_id，展示 invite_phone
+   *
+   * 兼容服务端新旧两种返回格式：
+   *   旧：FamilyMember[]（服务端未部署时）
+   *   新：{ members: FamilyMember[], currentUserRole: 'owner' | 'member' }
    */
-  getMembers: (familyId: string) =>
-    request<FamilyMember[]>(`/api/family/${familyId}/members`),
+  getMembers: async (familyId: string): Promise<GetMembersResponse> => {
+    const raw = await request<GetMembersResponse | FamilyMember[]>(
+      `/api/family/${familyId}/members`,
+    )
+    if (Array.isArray(raw)) {
+      return { members: raw, currentUserRole: 'member' }
+    }
+    return raw
+  },
 
   /**
    * 按手机号邀请家庭成员（替代邀请码流程）

@@ -28,6 +28,7 @@ import Taro, { useLoad } from '@tarojs/taro'
 import { useState, useEffect, useRef } from 'react'
 import dayjs from 'dayjs'
 import { babyApi, familyApi, recordsApi } from '@/api'
+import { getStatusBarHeight } from '@/lib/safeArea'
 import type { SleepRecord, SleepQuality } from '@/api/sleep'
 import TimerMode from './TimerMode'
 import ManualMode from './ManualMode'
@@ -462,7 +463,7 @@ export default function SleepFormPage() {
   return (
     <View className='sleep-page'>
       {/* 导航栏 */}
-      <View className='sleep-nav'>
+      <View className='sleep-nav' style={{ paddingTop: `${getStatusBarHeight() + 10}px` }}>
         <View className='sleep-nav__back' onClick={() => Taro.navigateBack()}>
           <Text className='sleep-nav__back-arrow'>{'<'}</Text>
         </View>

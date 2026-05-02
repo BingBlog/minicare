@@ -43,7 +43,7 @@ description: minicare 项目构建发布操作手册。包含前端静态托管�
 | 预检命令        | `bash scripts/deploy.sh`                                                          | 同左                                                                                        |
 | CloudRun 服务名 | `minicare-api`                                                                    | `minicare-api-production`                                                                   |
 | serverType      | `container`                                                                       | `container`                                                                                 |
-| 访问域名        | `https://minicare-api-240137-10-1253854169.sh.run.tcloudbase.com`                | `https://minicare-api-production-240137-10-1253854169.sh.run.tcloudbase.com`                |
+| 访问域名        | `https://minicare-api-240137-10-1253854169.sh.run.tcloudbase.com`                | `https://www.minicare.top`                |
 | DB_NAME         | `minicare_staging`                                                                | `minicare-cloud-6gqledlle0132cbe`                                                           |
 | AUTH_TEST_MODE  | `true`（固定验证码 123456）                                                       | `false`（真实短信）                                                                         |
 | 健康检查端点    | `GET /health`                                                                     | `GET /health`                                                                               |
@@ -96,7 +96,7 @@ manageCloudRun(
 | 函数名     | `keepalive-ping`                                                                             |
 | 函数根目录 | `/Users/bing/Desktop/工作区/minicare/minicare-server/functions`                              |
 | handler    | `index.main`                                                                                 |
-| 环境变量   | `CLOUDRUN_HEALTH_URL=https://minicare-api-production-240137-10-1253854169.sh.run.tcloudbase.com/health` |
+| 环境变量   | `CLOUDRUN_HEALTH_URL=https://www.minicare.top/health` |
 | 验证标志   | 调用后日志含 `status=200`                                                                    |
 
 ### 1.5 数据库迁移参数
@@ -209,7 +209,7 @@ queryCloudRun(action='detail', detailServerName='minicare-api')
 # Step 4b：验证服务健康（staging）
 curl https://minicare-api-240137-10-1253854169.sh.run.tcloudbase.com/health
 # Step 4b：验证服务健康（production）
-curl https://minicare-api-production-240137-10-1253854169.sh.run.tcloudbase.com/health
+curl https://www.minicare.top/health
 ```
 
 **成功判定**：返回 `{"status":"ok","db":{"host_set":true,"pass_set":true,...}}`  

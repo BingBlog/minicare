@@ -6,7 +6,8 @@
  *
  * 被引用：ProfilePage.tsx
  */
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import { useLocation } from 'react-router-dom'
 import { useAppStore } from '@/lib/store'
 import { recordsApi } from '@/api'
 
@@ -30,16 +31,20 @@ interface StatItem {
  */
 export default function BabyStats() {
   const { currentFamily, currentBaby } = useAppStore()
+  const location = useLocation()
 
   // 从最近一条 growth 记录中取出的数值（单位：mm/g）
   const [heightMm, setHeightMm] = useState<number | null>(null)
   const [weightG, setWeightG] = useState<number | null>(null)
   const [headMm, setHeadMm] = useState<number | null>(null)
 
-  useEffect(() => {
-    if (!currentFamily || !currentBaby) return
+  const familyId = currentFamily?.id
+  const babyId = currentBaby?.id
+
+  const fetchLatestGrowth = useCallback(() => {
+    if (!familyId || !babyId) return
     recordsApi.growth
-      .list(currentFamily.id, currentBaby.id, { limit: 1, offset: 0 })
+      .list(familyId, babyId, { limit: 1, offset: 0 })
       .then((records) => {
         const latest = records[0]
         if (!latest) return
@@ -50,7 +55,13 @@ export default function BabyStats() {
       .catch(() => {
         // 加载失败时保持"—"占位，不影响页面展示
       })
-  }, [currentFamily, currentBaby])
+  }, [familyId, babyId])
+
+  // 每次进入 profile 页面时重新请求最新生长数据
+  // 依赖 location.key 确保路由切换（包括从其他页面返回）时都会刷新
+  useEffect(() => {
+    fetchLatestGrowth()
+  }, [fetchLatestGrowth, location.key])
 
   /**
    * 将可能为 null/undefined 的数值格式化为字符串

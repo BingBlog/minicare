@@ -1,0 +1,503 @@
+/* 健康记录表单页 — 样式 */
+
+.health-page {
+  min-height: 100vh;
+  background: #FAF5F6;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── 导航栏 ── */
+.health-nav {
+  background: #fff;
+  border-bottom: 0.5px solid #F5EEF0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.health-nav__content {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 16px;
+  position: relative;
+}
+
+.health-nav__back {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.health-nav__back-icon {
+  font-size: 22px;
+  color: #7A5A60;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.health-nav__title {
+  flex: 1;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #3A2428;
+}
+
+
+.health-nav__placeholder {
+  width: 32px;
+}
+
+/* ── 加载态 ── */
+.health-loading {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.health-loading__text {
+  font-size: 14px;
+  color: #9A8090;
+}
+
+/* ── 表单主体 ── */
+.health-body {
+  flex: 1;
+  padding-bottom: 100px;
+}
+
+/* ── 节标签 ── */
+.health-section-label {
+  padding: 16px 18px 8px;
+  font-size: 12px;
+  color: #9A8090;
+  font-weight: 500;
+}
+
+/* ── 白底卡片 ── */
+.health-card {
+  margin: 0 16px 12px;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(200, 100, 120, 0.08);
+}
+
+.health-card__row {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+}
+
+.health-card__row--border {
+  border-bottom: 0.5px solid #F5EEF0;
+}
+
+.health-card__label {
+  font-size: 14px;
+  color: #7A5A60;
+  flex: 1;
+}
+
+.health-card__picker {
+  display: flex;
+  align-items: center;
+}
+
+.health-card__picker-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #4A3035;
+}
+
+/* ── 可折叠卡片 ── */
+.health-collapse-card {
+  margin: 0 16px 12px;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(200, 100, 120, 0.08);
+}
+
+.health-collapse-card__header {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  gap: 8px;
+}
+
+.health-collapse-card__icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.health-collapse-card__title {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 700;
+  color: #7A5A60;
+}
+
+.health-collapse-card__badge {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 99px;
+  background: #FFF0F4;
+  color: #F87098;
+  margin-right: 4px;
+}
+
+.health-collapse-card__arrow {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.health-collapse-card__arrow--open {
+  transform: rotate(180deg);
+}
+
+.health-collapse-card__hint {
+  padding: 0 16px 12px;
+  font-size: 12px;
+  color: #C0A8B0;
+}
+
+/* ── 体温步进器 ── */
+.health-temp {
+  padding: 0 16px 12px;
+  border-top: 0.5px solid #F5EEF0;
+}
+
+.health-temp__row {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+}
+
+.health-temp__label {
+  flex: 1;
+  font-size: 14px;
+  color: #7A5A60;
+}
+
+.health-temp__stepper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.health-temp__btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid #E5D8DA;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.health-temp__btn-text {
+  font-size: 16px;
+  color: #9A8090;
+  line-height: 1;
+}
+
+.health-temp__value-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  min-width: 50px;
+  justify-content: center;
+}
+
+.health-temp__value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #4A3035;
+}
+
+.health-temp__unit {
+  font-size: 13px;
+  color: #9A8090;
+}
+
+.health-temp__clear {
+  font-size: 11px;
+  color: #C0A8B0;
+  margin-left: 4px;
+}
+
+.health-temp__warning {
+  margin-top: 4px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: #FFF0F4;
+}
+
+.health-temp__warning-text {
+  font-size: 12px;
+  color: #F05060;
+}
+
+/* ── 过敏表现 ── */
+.health-allergy {
+  border-top: 0.5px solid #F5EEF0;
+}
+
+.health-allergy__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 12px;
+}
+
+.health-allergy__item {
+  padding: 10px 8px;
+  border-radius: 12px;
+  border: 1.5px solid #E5D8DA;
+  background: #fff;
+  text-align: center;
+  transition: all 0.15s ease;
+}
+
+.health-allergy__item--active {
+  border-color: #F05060;
+  background: #FEF0F0;
+}
+
+.health-allergy__item-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: #7A5A60;
+}
+
+.health-allergy__item--active .health-allergy__item-text {
+  color: #F05060;
+}
+
+.health-allergy__extra {
+  padding: 0 16px 12px;
+}
+
+.health-allergy__extra-label {
+  font-size: 12px;
+  color: #9A8090;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.health-allergy__severity {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.health-allergy__severity-btn {
+  flex: 1;
+  padding: 10px 0;
+  border-radius: 12px;
+  border: 1.5px solid #E5D8DA;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.health-allergy__photo-row {
+  display: flex;
+  gap: 10px;
+}
+
+.health-allergy__photo-placeholder {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  border: 2px dashed #F0B8C8;
+  background: #FFF0F4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.health-allergy__photo-add {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  border: 2px dashed #E5D8DA;
+  background: #F8F3F4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.health-allergy__photo-icon {
+  font-size: 28px;
+  color: #C0A8B0;
+  font-weight: 300;
+  line-height: 1;
+}
+
+/* ── 保湿护理 ── */
+.health-skin {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 16px;
+  border-top: 0.5px solid #F5EEF0;
+}
+
+.health-skin__chip {
+  padding: 6px 12px;
+  border-radius: 99px;
+  border: 1.5px solid #E5D8DA;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  color: #7A5A60;
+  transition: all 0.15s ease;
+}
+
+.health-skin__chip--active {
+  border-color: #F87098;
+  background: #FFF0F4;
+  color: #F87098;
+}
+
+/* ── 备注 ── */
+.health-note__input {
+  width: 100%;
+  min-height: 60px;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #4A3035;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+
+/* ── 底部提交栏 ── */
+.health-submit {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px 16px;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  background: #fff;
+  border-top: 0.5px solid #F5EEF0;
+  z-index: 100;
+}
+
+.health-submit__inner {
+  display: flex;
+  gap: 12px;
+}
+
+.health-submit__btn {
+  height: 48px;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.health-submit__btn--primary {
+  flex: 1;
+  background: linear-gradient(135deg, #F87098, #F9A8C0);
+  box-shadow: 0 4px 12px rgba(248, 112, 152, 0.3);
+}
+
+.health-submit__btn--delete {
+  width: 80px;
+  background: #F5F0F2;
+}
+
+.health-submit__btn--disabled {
+  opacity: 0.6;
+}
+
+.health-submit__btn-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.health-submit__btn-text--delete {
+  color: #F05060;
+}
+
+/* ── 删除确认底部 Sheet ── */
+.health-sheet-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.health-sheet {
+  width: 100%;
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+  padding: 12px 20px;
+  padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  text-align: center;
+}
+
+.health-sheet__handle {
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background: #E5D8DA;
+  margin: 0 auto 16px;
+}
+
+.health-sheet__title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #4A3035;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.health-sheet__desc {
+  font-size: 12px;
+  color: #9A8090;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.health-sheet__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.health-sheet__btn {
+  height: 48px;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.health-sheet__btn--cancel {
+  background: #F5F0F2;
+  color: #7A5A60;
+}
+
+.health-sheet__btn--danger {
+  background: #F05060;
+  color: #fff;
+}

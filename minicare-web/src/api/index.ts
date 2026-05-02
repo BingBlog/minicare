@@ -34,6 +34,7 @@ export type { AppConfig, AppEnums, AppLimits, EnumOption, MilkTypeOption, SuppIt
 // ── 业务 API ─────────────────────────────────────────────────────
 export { authApi } from './auth'
 export { familyApi } from './family'
+export type { GetMembersResponse } from './family'
 export { babyApi } from './baby'
 export { reportApi } from './report'
 export type {

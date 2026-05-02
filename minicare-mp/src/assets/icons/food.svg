@@ -1,5 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#DDB870" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M3 11c0-3.9 4-7 9-7s9 3.1 9 7H3z"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#DDB870" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- 碗上半部分，填充 -->
+  <path d="M3 11c0-3.9 4-7 9-7s9 3.1 9 7H3z" fill="#DDB870" fill-opacity="0.2"/>
+  <!-- 碗体下沿 -->
   <path d="M3 11v1a9 9 0 0 0 18 0v-1"/>
   <line x1="12" y1="18" x2="12" y2="22"/>
   <line x1="8" y1="22" x2="16" y2="22"/>

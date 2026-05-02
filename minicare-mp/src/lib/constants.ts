@@ -95,6 +95,7 @@ export const HOME_RECORD_MP_ROUTES: Record<string, string> = {
   '/records/form/diaper': '/pages/records/diaper/index',
   '/records/form/sleep': '/pages/records/sleep/index',
   '/records/form/growth': '/pages/records/growth/index',
+  '/records/form/health': '/pages/records/health/index',
 }
 
 export const SLEEP_PERIOD_LABELS: Record<string, string> = {

@@ -1,4 +1,5 @@
 import { View, Text } from '@tarojs/components'
+import { getStatusBarHeight } from '@/lib/safeArea'
 import type { BabyStat } from './types'
 
 interface HeroSectionProps {
@@ -8,15 +9,14 @@ interface HeroSectionProps {
   dateText: string
   stats: BabyStat[]
   banners?: JSX.Element | null
-  onAvatarClick?: () => void
   onStatsClick?: () => void
 }
 
 export default function HeroSection(props: HeroSectionProps) {
-  const { babyName, babyAgeText, greeting, dateText, stats, banners, onAvatarClick, onStatsClick } = props
+  const { babyName, babyAgeText, greeting, dateText, stats, banners, onStatsClick } = props
 
   return (
-    <View className='home-hero'>
+    <View className='home-hero' style={{ paddingTop: `${getStatusBarHeight() + 8}px` }}>
       <View className='home-hero__decor home-hero__decor--big' />
       <View className='home-hero__decor home-hero__decor--small' />
 
@@ -24,9 +24,6 @@ export default function HeroSection(props: HeroSectionProps) {
         <View>
           <Text className='home-hero__date'>{dateText}</Text>
           <Text className='home-hero__greeting'>{greeting}</Text>
-        </View>
-        <View className='home-hero__avatar' onClick={onAvatarClick}>
-          <Text className='home-hero__avatar-text'>我</Text>
         </View>
       </View>
 

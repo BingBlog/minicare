@@ -3,15 +3,16 @@ export default {
   pages: [
     'pages/home/index',
     'pages/login/index',
+    'pages/onboarding/index',
     'pages/records/index',
     'pages/records/list/index',
     'pages/records/feeding/index',
     'pages/records/diaper/index',
     'pages/records/sleep/index',
     'pages/records/growth/index',
+    'pages/records/health/index',
     'pages/profile/index',
     'pages/report/index',
-    'pages/report/chart-test',
     'pages/index/index',
   ],
   window: {
@@ -19,6 +20,7 @@ export default {
     navigationBarBackgroundColor: '#fff',
     navigationBarTitleText: '敏宝日记',
     navigationBarTextStyle: 'black',
+    navigationStyle: 'custom',
   },
   tabBar: {
     custom: true,

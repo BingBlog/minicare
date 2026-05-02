@@ -9,7 +9,7 @@
 }
 
 .profile-page__header {
-  padding: 48px 20px 0;
+  padding: 12px 20px 0;
   background: #fdf7f5;
   flex-shrink: 0;
 }
@@ -283,7 +283,7 @@
 .edit-baby-overlay {
   position: fixed;
   inset: 0;
-  z-index: 50;
+  z-index: 1000;
   display: flex;
   align-items: flex-end;
   background: rgba(0, 0, 0, 0.45);
@@ -508,7 +508,7 @@
 .members-overlay {
   position: fixed;
   inset: 0;
-  z-index: 50;
+  z-index: 1000;
   display: flex;
   align-items: flex-end;
   background: rgba(0, 0, 0, 0.45);
@@ -740,12 +740,22 @@
   }
 }
 
+.members-icon-spin {
+  animation: members-spin 1s linear infinite;
+}
+
+@keyframes members-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 // ── Members Confirm Sheet (nested overlay) ────────────────────────
 
 .members-confirm-overlay {
   position: fixed;
   inset: 0;
-  z-index: 70;
+  z-index: 1100;
   display: flex;
   align-items: flex-end;
   background: rgba(0, 0, 0, 0.5);
@@ -838,7 +848,7 @@
 .logout-overlay {
   position: fixed;
   inset: 0;
-  z-index: 50;
+  z-index: 1000;
   display: flex;
   align-items: flex-end;
   background: rgba(0, 0, 0, 0.45);

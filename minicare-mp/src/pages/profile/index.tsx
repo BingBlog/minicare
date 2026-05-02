@@ -25,6 +25,7 @@ import type { SettingsRow } from './types'
 import EditBabyModal from './EditBabyModal'
 import MembersModal from './MembersModal'
 import TabBar from '@/components/TabBar/TabBar'
+import { getStatusBarHeight } from '@/lib/safeArea'
 
 import './index.scss'
 
@@ -49,7 +50,6 @@ export default function ProfilePage() {
   const [editAllergyLevel, setEditAllergyLevel] = useState<AllergyLevel>('unknown')
 
   // ── 退出登录确认 ──────────────────────────────────────────────
-  const [logoutOpen, setLogoutOpen] = useState(false)
 
   // ── 家庭成员弹层 ──────────────────────────────────────────────
   const [membersOpen, setMembersOpen] = useState(false)
@@ -179,14 +179,13 @@ export default function ProfilePage() {
     setMembersOpen(true)
     setMembersLoading(true)
     try {
-      const list = await familyApi.getMembers(currentFamily.id)
-      const enriched = list.map((m) => ({
+      const res = await familyApi.getMembers(currentFamily.id)
+      const enriched = res.members.map((m) => ({
         ...m,
         is_self: m.user_id === user?.id,
       }))
       setMembers(enriched)
-      const selfMember = enriched.find((m) => m.is_self)
-      setCurrentUserRole((selfMember?.role as 'owner' | 'member') ?? 'member')
+      setCurrentUserRole(res.currentUserRole)
     } catch {
       showToast('加载成员列表失败')
     } finally {
@@ -195,11 +194,10 @@ export default function ProfilePage() {
   }
 
   const refreshMembers = async (familyId: string) => {
-    const list = await familyApi.getMembers(familyId)
-    const enriched = list.map((m) => ({ ...m, is_self: m.user_id === user?.id }))
+    const res = await familyApi.getMembers(familyId)
+    const enriched = res.members.map((m) => ({ ...m, is_self: m.user_id === user?.id }))
     setMembers(enriched)
-    const selfMember = enriched.find((m) => m.is_self)
-    setCurrentUserRole((selfMember?.role as 'owner' | 'member') ?? 'member')
+    setCurrentUserRole(res.currentUserRole)
   }
 
   const handleInviteByPhone = async (phone: string) => {
@@ -218,13 +216,19 @@ export default function ProfilePage() {
 
   // ── 退出登录 ──────────────────────────────────────────────────
   const handleLogout = () => {
-    setLogoutOpen(true)
-  }
-
-  const confirmLogout = () => {
-    setLogoutOpen(false)
-    removeToken()
-    Taro.reLaunch({ url: '/pages/login/index' })
+    Taro.showModal({
+      title: '退出登录',
+      content: '退出后需要重新登录才能访问宝宝数据，确定退出吗？',
+      confirmText: '确定退出',
+      confirmColor: '#F05060',
+      cancelText: '取消',
+      success: (res) => {
+        if (res.confirm) {
+          removeToken()
+          Taro.reLaunch({ url: '/pages/login/index' })
+        }
+      },
+    })
   }
 
   // ── SettingsGroup 数据 ────────────────────────────────────────
@@ -271,7 +275,7 @@ export default function ProfilePage() {
   return (
     <View className='profile-page'>
       {/* 页面标题 */}
-      <View className='profile-page__header'>
+      <View className='profile-page__header' style={{ paddingTop: `${getStatusBarHeight() + 12}px` }}>
         <Text className='profile-page__title'>我的</Text>
       </View>
 
@@ -335,45 +339,6 @@ export default function ProfilePage() {
         onCdcHelp={() => showToast('跳转 CDC 评分标准页面')}
       />
 
-      {/* 退出登录确认弹层 */}
-      {logoutOpen && (
-        <View className='logout-overlay' onClick={() => setLogoutOpen(false)}>
-          <View
-            className='logout-sheet'
-            onClick={(e) => { e.stopPropagation() }}
-          >
-            <View className='logout-icon-wrap'>
-              <svg
-                viewBox='0 0 24 24' fill='none' stroke='#F05060'
-                strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'
-                style={{ width: 28, height: 28 }}
-              >
-                <path d='M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4' />
-                <polyline points='16 17 21 12 16 7' />
-                <line x1='21' y1='12' x2='9' y2='12' />
-              </svg>
-            </View>
-            <Text className='logout-title'>退出登录</Text>
-            <Text className='logout-desc'>
-              退出后需要重新登录才能{'\n'}访问宝宝数据，确定退出吗？
-            </Text>
-            <View className='logout-actions'>
-              <View
-                className='logout-action logout-action--cancel'
-                onClick={() => setLogoutOpen(false)}
-              >
-                取消
-              </View>
-              <View
-                className='logout-action logout-action--confirm'
-                onClick={confirmLogout}
-              >
-                确定退出
-              </View>
-            </View>
-          </View>
-        </View>
-      )}
 
       {/* 家庭成员管理弹层 */}
       <MembersModal
@@ -385,9 +350,6 @@ export default function ProfilePage() {
         onRemoveMember={handleRemoveMember}
         onClose={() => setMembersOpen(false)}
       />
-
-      {/* spin 关键帧 */}
-      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
 
       {/* 底部导航栏 */}
       <TabBar activeTab='profile' />

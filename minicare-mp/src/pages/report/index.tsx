@@ -17,6 +17,7 @@ import { SleepTab } from './tabs/SleepTab'
 import { HealthTab } from './tabs/HealthTab'
 import { TabKey, TAB_CONFIG, TIME_RANGES, DEFAULT_RANGE_MAP, LONG_RANGE_LABEL } from './types'
 import TabBar from '@/components/TabBar/TabBar'
+import { getStatusBarHeight } from '@/lib/safeArea'
 
 function calcDateRange(rangeKey: string, birthDate?: string | null) {
   const now = dayjs()
@@ -46,7 +47,7 @@ function getRangeText(rangeKey: string, birthDate?: string | null) {
 
 const S = {
   page: { minHeight: '100vh', background: '#FFF8FA', display: 'flex', flexDirection: 'column' as const },
-  headerWrap: { padding: '36px 20px 0', flexShrink: 0 },
+  headerWrap: { paddingTop: `${getStatusBarHeight() + 12}px`, paddingLeft: 20, paddingRight: 20, flexShrink: 0 },
   headerRow: { display: 'flex', alignItems: 'center', justifyContent: 'space-between' },
   title: { fontSize: 22, fontWeight: 800, color: '#4A3035', letterSpacing: -0.5 },
   exportBtn: { fontSize: 13, color: '#F87098', fontWeight: 500 },
@@ -54,7 +55,7 @@ const S = {
   tabWrap: { padding: '12px 20px', flexShrink: 0, borderBottom: '0.5px solid #F5F0F2' },
   rangeWrap: { padding: '12px 20px', flexShrink: 0 },
   rangeText: { fontSize: 12, color: '#C0A8AD', marginTop: 6 },
-  scrollArea: { flex: 1, padding: '16px 20px 100px' },
+  contentArea: { padding: '16px 20px 100px' },
 }
 
 export default function ReportPage() {
@@ -176,14 +177,14 @@ export default function ReportPage() {
         <Text style={S.rangeText}>{getRangeText(currentRange, babyBirthDate)}</Text>
       </View>
 
-      {/* 内容区 */}
-      <ScrollView scrollY style={S.scrollArea}>
+      {/* 内容区 — 使用普通 View，依赖页面原生滚动（Canvas 原生组件无法跟随 ScrollView 滚动）*/}
+      <View style={S.contentArea}>
         {activeTab === 'feeding' && <FeedingTab data={feedingData} loading={loading} />}
         {activeTab === 'diaper' && <DiaperTab data={diaperData} loading={loading} />}
         {activeTab === 'growth' && <GrowthTab data={growthData} loading={loading} babyGender={babyGender} babyBirthDate={babyBirthDate} />}
         {activeTab === 'sleep' && <SleepTab data={sleepData} loading={loading} />}
         {activeTab === 'health' && <HealthTab data={healthData} loading={loading} />}
-      </ScrollView>
+      </View>
 
       <TabBar activeTab='report' />
     </View>

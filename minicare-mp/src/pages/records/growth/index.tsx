@@ -12,6 +12,7 @@ import Taro, { useLoad } from '@tarojs/taro'
 import { useState } from 'react'
 import dayjs from 'dayjs'
 import { babyApi, familyApi, recordsApi } from '@/api'
+import { getStatusBarHeight } from '@/lib/safeArea'
 import MeasureCards, { MeasureKey } from './MeasureCards'
 import './index.scss'
 
@@ -226,7 +227,7 @@ export default function GrowthFormPage() {
   return (
     <View className='growth-page'>
       {/* 导航栏 */}
-      <View className='growth-nav'>
+      <View className='growth-nav' style={{ paddingTop: `${getStatusBarHeight() + 10}px` }}>
         <View className='growth-nav__back' onClick={() => Taro.navigateBack()}>
           <Text className='growth-nav__back-arrow'>{'<'}</Text>
         </View>

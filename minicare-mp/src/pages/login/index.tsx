@@ -1,8 +1,16 @@
+/**
+ * 登录页
+ *
+ * AUTH_MODE（编译时由 TARO_APP_AUTH_MODE 注入）：
+ *   test → 后端固定验证码 123456，不发真实短信
+ *   sms  → CloudBase JS SDK 发真实短信 → 验证后调后端 tcb-login 换 JWT
+ */
 import { View, Text, Input, Button } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import { useEffect, useState } from 'react'
-import { authApi, loginByCode } from '@/api'
+import { useEffect, useRef, useState } from 'react'
+import { sendVerificationCode, loginByCode, IS_TEST_MODE } from '@/api/auth'
 import { getToken } from '@/api/http'
+import { getStatusBarHeight } from '@/lib/safeArea'
 
 import './index.scss'
 
@@ -12,6 +20,9 @@ export default function LoginPage() {
   const [countdown, setCountdown] = useState(0)
   const [loadingSend, setLoadingSend] = useState(false)
   const [loadingLogin, setLoadingLogin] = useState(false)
+
+  // SMS 模式下保存 verifyOtp 回调，供登录时使用
+  const verifyOtpRef = useRef<((params: { token: string }) => Promise<unknown>) | undefined>()
 
   useEffect(() => {
     const token = getToken()
@@ -40,8 +51,12 @@ export default function LoginPage() {
     }
     setLoadingSend(true)
     try {
-      await authApi.sendCode(phone)
-      Taro.showToast({ title: '验证码已发送（测试码 123456）', icon: 'none' })
+      const { verifyOtp } = await sendVerificationCode(phone)
+      verifyOtpRef.current = verifyOtp
+      const toastMsg = IS_TEST_MODE
+        ? '验证码已发送（测试码 123456）'
+        : '验证码已发送'
+      Taro.showToast({ title: toastMsg, icon: 'none' })
       startCountdown()
     } catch (err) {
       Taro.showToast({ title: err instanceof Error ? err.message : '发送失败', icon: 'none' })
@@ -61,9 +76,15 @@ export default function LoginPage() {
     }
     setLoadingLogin(true)
     try {
-      await loginByCode(phone, code)
+      const result = await loginByCode(phone, code, verifyOtpRef.current)
       Taro.showToast({ title: '登录成功', icon: 'success' })
-      Taro.reLaunch({ url: '/pages/home/index' })
+      // 新用户且无已激活家庭 → 引导创建宝宝档案
+      const hasFamily = result.activatedFamilyIds && result.activatedFamilyIds.length > 0
+      if (result.isNewUser && !hasFamily) {
+        Taro.reLaunch({ url: '/pages/onboarding/index' })
+      } else {
+        Taro.reLaunch({ url: '/pages/home/index' })
+      }
     } catch (err) {
       Taro.showToast({ title: err instanceof Error ? err.message : '登录失败', icon: 'none' })
     } finally {
@@ -72,10 +93,12 @@ export default function LoginPage() {
   }
 
   return (
-    <View className='login-page'>
+    <View className='login-page' style={{ paddingTop: `${getStatusBarHeight() + 24}px` }}>
       <View className='login-card'>
         <Text className='login-title'>敏宝日记登录</Text>
-        <Text className='login-subtitle'>开发模式：验证码固定 123456</Text>
+        {IS_TEST_MODE && (
+          <Text className='login-subtitle'>开发模式：验证码固定 123456</Text>
+        )}
 
         <View className='login-field'>
           <Input

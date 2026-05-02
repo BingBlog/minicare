@@ -9,6 +9,7 @@ import Taro, { useLoad } from '@tarojs/taro'
 import { useState } from 'react'
 import dayjs from 'dayjs'
 import { babyApi, familyApi, recordsApi } from '@/api'
+import { getStatusBarHeight } from '@/lib/safeArea'
 import DiaperTypeSection from './DiaperTypeSection'
 import PoopSection from './PoopSection'
 import ButtConditionSection from './ButtConditionSection'
@@ -170,7 +171,7 @@ export default function DiaperFormPage() {
   return (
     <View className='diaper-page'>
       {/* 导航栏 */}
-      <View className='diaper-nav'>
+      <View className='diaper-nav' style={{ paddingTop: `${getStatusBarHeight() + 10}px` }}>
         <View className='diaper-nav__back' onClick={() => Taro.navigateBack()}>
           <Text className='diaper-nav__back-arrow'>{'<'}</Text>
         </View>

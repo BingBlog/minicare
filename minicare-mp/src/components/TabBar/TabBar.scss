@@ -1,8 +1,12 @@
-.tabbar {
+.tabbar-container {
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 100;
+}
+
+.tabbar {
   height: 70px;
   padding-bottom: calc(env(safe-area-inset-bottom, 0px));
   background: #fff;
@@ -11,7 +15,6 @@
   grid-template-columns: repeat(5, 1fr);
   align-items: center;
   text-align: center;
-  z-index: 20;
 }
 
 .tabbar__item {
@@ -43,13 +46,99 @@
   box-shadow: 0 4px 12px rgba(248, 112, 152, 0.35);
 }
 
-.tabbar__fab--dimmed {
-  background: rgba(248, 112, 152, 0.4);
-  box-shadow: none;
-}
-
 .tabbar__fab-text {
   font-size: 28px;
   line-height: 1;
   color: #fff;
+}
+
+/* ===== FabSheet 弹层（全局通用） ===== */
+.fab-mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(40, 24, 28, 0.28);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+}
+
+.fab-sheet {
+  width: 100%;
+  background: #fff;
+  border-radius: 22px 22px 0 0;
+  padding: 10px 0 18px;
+  max-height: 78vh;
+  overflow-y: auto;
+}
+
+.fab-sheet__title {
+  display: block;
+  text-align: center;
+  color: #4a3035;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 4px 0 2px;
+}
+
+.fab-sheet__group {
+  display: block;
+  padding: 12px 20px 6px;
+  font-size: 10px;
+  color: #9a8090;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.fab-sheet__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+}
+
+.fab-sheet__icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.fab-sheet__icon-img {
+  width: 20px;
+  height: 20px;
+}
+
+.fab-sheet__text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.fab-sheet__label {
+  color: #4a3035;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.fab-sheet__sub {
+  margin-top: 2px;
+  color: #9a8090;
+  font-size: 12px;
+}
+
+.fab-sheet__arrow {
+  color: #c0a8ad;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.fab-sheet__line {
+  height: 1px;
+  margin: 0 20px;
+  background: #f5f0f2;
 }

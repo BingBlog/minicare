@@ -76,36 +76,115 @@ export function GrowthTab({ data, loading, babyGender, babyBirthDate }: GrowthTa
         value: activeMeasure === 'weight' ? d.weightG! : activeMeasure === 'height' ? d.heightMm! : d.headMm!,
       }))
 
-    const maxAge = Math.max(1, ...filtered.map(d => d.ageMonths))
     const pc: Record<string, string> = { P3: '#D0D0D0', P15: '#B0B0B0', P50: '#F87098', P85: '#B0B0B0', P97: '#D0D0D0' }
     const pw: Record<string, number> = { P3: 1, P15: 1, P50: 2, P85: 1, P97: 1 }
+
+    // 单位换算：Y轴以用户友好的 kg/cm 为单位展示（对齐 Web 端）
+    const scaleValue = (v: number) => {
+      if (activeMeasure === 'weight') return v / 1000   // g → kg
+      return v / 10                                     // mm → cm
+    }
+
     const getP = (pt: GrowthStandardPoint, key: string) => {
       const k = key.toLowerCase()
       if (activeMeasure === 'weight') {
         const m: Record<string, number> = { p3: pt.weightP3, p15: pt.weightP15, p50: pt.weightP50, p85: pt.weightP85, p97: pt.weightP97 }
-        return (m[k] ?? 0) * 1000
+        return m[k] ?? 0  // 标准数据本身就是 kg
       }
       if (activeMeasure === 'height') {
         const m: Record<string, number> = { p3: pt.heightP3, p15: pt.heightP15, p50: pt.heightP50, p85: pt.heightP85, p97: pt.heightP97 }
-        return (m[k] ?? 0) * 10
+        return m[k] ?? 0  // 标准数据本身就是 cm
       }
       const m: Record<string, number> = { p3: pt.headP3, p15: pt.headP15, p50: pt.headP50, p85: pt.headP85, p97: pt.headP97 }
-      return (m[k] ?? 0) * 10
+      return m[k] ?? 0  // 标准数据本身就是 cm
     }
+
+    // X轴范围计算（对齐 Web 端逻辑：局部放大 + 智能范围）
+    const stdMaxMonth = standards.length > 0 ? Math.max(...standards.map(s => s.month)) : 36
+    const dataMinMonth = filtered.length > 0 ? Math.min(...filtered.map(d => d.ageMonths)) : 0
+    const dataMaxMonth = filtered.length > 0 ? Math.max(...filtered.map(d => d.ageMonths)) : 0
+    const dataSpan = dataMaxMonth - dataMinMonth
+
+    let xMin = 0
+    let xMax = Math.min(stdMaxMonth, Math.max(6, Math.ceil(dataMaxMonth) + 1))
+
+    if (filtered.length >= 2 && dataSpan < 1.5) {
+      // 数据跨度很小（<1.5月），zoom in 到数据附近
+      let lo = Math.max(0, dataMinMonth - 0.4)
+      let hi = Math.min(stdMaxMonth, dataMaxMonth + 0.4)
+      if (hi - lo < 2) {
+        const mid = (dataMinMonth + dataMaxMonth) / 2
+        lo = Math.max(0, mid - 1)
+        hi = Math.min(stdMaxMonth, mid + 1)
+      }
+      xMin = lo
+      xMax = hi
+    } else if (filtered.length === 1 || dataSpan === 0) {
+      // 仅单点数据，居中显示
+      const mid = dataMaxMonth
+      xMin = Math.max(0, mid - 0.85)
+      xMax = Math.min(stdMaxMonth, mid + 0.85)
+    }
+
+    // 只取可视范围内的标准数据点构建百分位线（对齐 Web 端）
+    const visibleStandards = standards.filter(s => s.month >= Math.floor(xMin) && s.month <= Math.ceil(xMax))
     const ps = ['P3', 'P15', 'P50', 'P85', 'P97'].map(pk => ({
       name: pk, type: 'line' as const,
-      data: standards.map(pt => [pt.month, getP(pt, pk)]),
+      data: visibleStandards.map(pt => [pt.month, getP(pt, pk)]),
       symbol: 'none' as const,
       lineStyle: { color: pc[pk], width: pw[pk] },
       silent: true as const,
     }))
+
+    // Y轴范围计算（对齐 Web 端逻辑：动态范围 + 8% padding）
+    const allYValues: number[] = []
+    filtered.forEach(d => allYValues.push(scaleValue(d.value)))
+    visibleStandards.forEach(pt => {
+      allYValues.push(getP(pt, 'P3'))
+      allYValues.push(getP(pt, 'P97'))
+    })
+    const positiveY = allYValues.filter(v => v > 0)
+    const rawYMin = positiveY.length > 0 ? Math.min(...positiveY) : 2
+    const rawYMax = positiveY.length > 0 ? Math.max(...positiveY) : 16
+    const yPad = (rawYMax - rawYMin) * 0.08 || rawYMin * 0.08
+    const yMin = Math.max(0, Math.floor((rawYMin - yPad) * 10) / 10)
+    const yMax = Math.ceil((rawYMax + yPad) * 10) / 10
+
     return {
       tooltip: { trigger: 'axis' as const, confine: true },
-      legend: { data: ['P3', 'P15', 'P50', 'P85', 'P97', '\u5b9d\u5b9d'], bottom: 0, textStyle: { fontSize: 10 }, selected: { P3: false, P15: false, P85: false, P97: false } },
-      grid: { left: 50, right: 16, top: 16, bottom: 36 },
-      xAxis: { type: 'value' as const, name: '\u6708\u9f84', min: 0, max: Math.max(maxAge * 1.1, 6), nameTextStyle: { fontSize: 10, color: '#C0A8AD' }, axisLabel: { fontSize: 10, color: '#C0A8AD' }, splitLine: { lineStyle: { color: '#F5F0F2' } } },
-      yAxis: { type: 'value' as const, axisLabel: { fontSize: 10, color: '#C0A8AD' }, splitLine: { lineStyle: { color: '#F5F0F2' } } },
-      series: [...ps, { name: '\u5b9d\u5b9d', type: 'scatter' as const, data: filtered.map(d => [d.ageMonths, d.value]), symbolSize: 8, itemStyle: { color: '#F87098', borderColor: '#fff', borderWidth: 2 }, z: 10 }],
+      legend: { data: ['P50', '\u5b9d\u5b9d', 'P3', 'P15', 'P85', 'P97'], bottom: 0, textStyle: { fontSize: 9 }, itemWidth: 16, itemHeight: 8, itemGap: 8 },
+      grid: { left: 50, right: 16, top: 16, bottom: 52 },
+      xAxis: {
+        type: 'value' as const,
+        name: '\u6708\u9f84',
+        min: xMin,
+        max: xMax,
+        nameTextStyle: { fontSize: 10, color: '#C0A8AD' },
+        axisLabel: {
+          fontSize: 10,
+          color: '#C0A8AD',
+          formatter: (v: number) => {
+            const n = Math.round(v * 10) / 10
+            if (Number.isInteger(n)) return `${n}\u6708`
+            return `${n.toFixed(1)}\u6708`
+          },
+        },
+        splitLine: { lineStyle: { color: '#F5F0F2' } },
+      },
+      yAxis: {
+        type: 'value' as const,
+        name: measureConfig[activeMeasure].unit,
+        nameTextStyle: { fontSize: 10, color: '#6B7280' },
+        min: yMin,
+        max: yMax,
+        axisLabel: {
+          fontSize: 10,
+          color: '#C0A8AD',
+          formatter: (v: number) => v.toFixed(1),
+        },
+        splitLine: { lineStyle: { color: '#F5F0F2' } },
+      },
+      series: [...ps, { name: '\u5b9d\u5b9d', type: 'scatter' as const, data: filtered.map(d => [d.ageMonths, scaleValue(d.value)]), symbolSize: 8, itemStyle: { color: '#F87098', borderColor: '#fff', borderWidth: 2 }, z: 10 }],
     }
   }, [data, babyGender, babyBirthDate, activeMeasure])
 

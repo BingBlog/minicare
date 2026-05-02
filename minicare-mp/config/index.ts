@@ -24,7 +24,12 @@ export default defineConfig<'webpack5'>(async (merge) => {
       options: {},
     },
     framework: 'react',
-    compiler: 'webpack5',
+    compiler: {
+      type: 'webpack5',
+      prebundle: {
+        exclude: ['echarts', 'echarts/core', 'echarts/charts', 'echarts/components', 'echarts/renderers', '@cloudbase/js-sdk'],
+      },
+    },
     cache: {
       enable: false,
     },
@@ -44,6 +49,9 @@ export default defineConfig<'webpack5'>(async (merge) => {
       },
       webpackChain(chain) {
         chain.resolve.plugin('tsconfig-paths').use(TsconfigPathsPlugin)
+        // 让 babel-loader 也编译包含 ES2020+ 语法的 node_modules 包
+        // @cloudbase SDK 和 bson 发布时未降级 ?./?? 语法
+        chain.module.rule('script').include.add(/[\\/]node_modules[\\/](@cloudbase|bson)[\\/]/)
       },
     },
     h5: {
