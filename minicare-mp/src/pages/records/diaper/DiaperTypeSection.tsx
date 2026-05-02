@@ -25,7 +25,6 @@ export default function DiaperTypeSection({ selected, onSelect, count, onCountCh
   return (
     <View className='diaper-card'>
       <View className='diaper-card__head'>
-        <Text className='diaper-card__head-icon'>diaper</Text>
         <Text className='diaper-card__head-title'>换尿布</Text>
       </View>
 

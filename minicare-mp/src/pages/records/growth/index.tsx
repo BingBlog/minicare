@@ -3,9 +3,6 @@
  *
  * 与 Web pages/records/growth/index.tsx 保持业务逻辑对齐。
  * 差异：路由/Taro 组件/存储方案按平台适配。
- *
- * 子组件拆分与 Web 1:1 对应：
- *  - MeasureCards  顶部 3 格数据预览卡片
  */
 import { View, Text, Input, Picker, Textarea } from '@tarojs/components'
 import Taro, { useLoad } from '@tarojs/taro'
@@ -13,8 +10,9 @@ import { useState } from 'react'
 import dayjs from 'dayjs'
 import { babyApi, familyApi, recordsApi } from '@/api'
 import { getStatusBarHeight } from '@/lib/safeArea'
-import MeasureCards, { MeasureKey } from './MeasureCards'
 import './index.scss'
+
+type MeasureKey = 'height' | 'weight' | 'head'
 
 // ---------------------------------------------------------------------------
 // 时间工具
@@ -56,7 +54,6 @@ export default function GrowthFormPage() {
   const [height, setHeight] = useState('')
   const [weight, setWeight] = useState('')
   const [head, setHead] = useState('')
-  const [activeCard, setActiveCard] = useState<MeasureKey | null>(null)
   const [orgChip, setOrgChip] = useState<string | null>('儿保门诊')
   const [note, setNote] = useState('')
 
@@ -129,7 +126,6 @@ export default function GrowthFormPage() {
     if (key === 'height') setHeight(filtered)
     if (key === 'weight') setWeight(filtered)
     if (key === 'head') setHead(filtered)
-    setActiveCard(key)
   }
 
   const handleMeasureBlur = (key: MeasureKey, raw: string) => {
@@ -249,18 +245,6 @@ export default function GrowthFormPage() {
       )}
 
       <View className='growth-body'>
-        {/* 测量数据预览卡片 */}
-        <View className='growth-section-label'>
-          <Text>本次测量数据</Text>
-        </View>
-        <MeasureCards
-          height={height}
-          weight={weight}
-          head={head}
-          activeCard={activeCard}
-          onActivate={setActiveCard}
-        />
-
         {/* 填写数值 */}
         <View className='growth-section-label'>
           <Text>填写数值</Text>

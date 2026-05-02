@@ -347,11 +347,30 @@
 
 /* ── 保湿护理 ── */
 .health-skin {
+  padding: 12px 16px;
+  border-top: 0.5px solid #F5EEF0;
+}
+
+.health-skin__group {
+  margin-bottom: 12px;
+}
+
+.health-skin__group:last-child {
+  margin-bottom: 0;
+}
+
+.health-skin__group-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: #9A8090;
+  margin-bottom: 8px;
+}
+
+.health-skin__chips {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  padding: 12px 16px;
-  border-top: 0.5px solid #F5EEF0;
 }
 
 .health-skin__chip {

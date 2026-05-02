@@ -32,8 +32,11 @@ function nowDate(): string { return dayjs().format('YYYY-MM-DD') }
 function isoToLocalDate(iso: string): string { return dayjs(iso).format('YYYY-MM-DD') }
 function isoToLocalTime(iso: string): string { return dayjs(iso).format('HH:mm') }
 
-/** 保湿护理 Chip 列表（与 Web SKIN_CHIPS 完全一致） */
-const SKIN_CHIPS = ['已做保湿', '涂抹面霜', '涂抹身体乳']
+/** 保湿护理分组 Chip 列表（与 Web SKIN_GROUPS 完全一致） */
+const SKIN_GROUPS: { label: string; chips: string[] }[] = [
+  { label: '面部保湿', chips: ['涂抹面霜', '涂抹润肤露', '涂抹保湿喷雾'] },
+  { label: '身体保湿', chips: ['涂抹身体乳', '涂抹润肤油', '涂抹护臀霜'] },
+]
 
 // ── SVG 图标 Data URI（避免小程序中内联 SVG 兼容性问题）──
 /** 温度计图标 (stroke #F0B8C8) */
@@ -331,13 +334,20 @@ export default function HealthFormPage() {
           </View>
           {skinOpen ? (
             <View className='health-skin'>
-              {SKIN_CHIPS.map((chip) => (
-                <View
-                  key={chip}
-                  className={`health-skin__chip ${selectedSkin.has(chip) ? 'health-skin__chip--active' : ''}`}
-                  onClick={() => toggleSkin(chip)}
-                >
-                  <Text>{chip}</Text>
+              {SKIN_GROUPS.map((group) => (
+                <View key={group.label} className='health-skin__group'>
+                  <Text className='health-skin__group-label'>{group.label}</Text>
+                  <View className='health-skin__chips'>
+                    {group.chips.map((chip) => (
+                      <View
+                        key={chip}
+                        className={`health-skin__chip ${selectedSkin.has(chip) ? 'health-skin__chip--active' : ''}`}
+                        onClick={() => toggleSkin(chip)}
+                      >
+                        <Text>{chip}</Text>
+                      </View>
+                    ))}
+                  </View>
                 </View>
               ))}
             </View>

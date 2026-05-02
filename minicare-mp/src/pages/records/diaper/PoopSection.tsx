@@ -48,7 +48,6 @@ export default function PoopSection({ poopType, onPoopTypeChange, colorSelected,
   return (
     <View className='diaper-card'>
       <View className='diaper-card__head'>
-        <Text className='diaper-card__head-icon'>!</Text>
         <Text className='diaper-card__head-title'>大便性状</Text>
         <Text className='diaper-card__head-optional'>可不选</Text>
       </View>

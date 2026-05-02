@@ -27,7 +27,6 @@ export default function ButtConditionSection({ value, onChange }: Props) {
   return (
     <View className='diaper-card'>
       <View className='diaper-card__head'>
-        <Text className='diaper-card__head-icon'>v</Text>
         <Text className='diaper-card__head-title'>屁屁状态</Text>
         <Text className='diaper-card__head-optional'>可不选</Text>
       </View>

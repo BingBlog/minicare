@@ -95,7 +95,7 @@ export default function DiaperFormPage() {
     if (rec.diaper_count != null) setDiaperCount(rec.diaper_count as number)
     setPoopType((rec.poop_type as string | null) ?? null)
     setButtCondition((rec.butt_condition as ButtCondition | null) ?? null)
-    if (rec.color) setColorSelected(new Set((rec.color as string).split(',').map((c) => c.trim()).filter(Boolean)))
+    if (rec.stool_colors) setColorSelected(new Set(rec.stool_colors as string[]))
     if (rec.note) setNote(rec.note as string)
   }
 
@@ -119,12 +119,12 @@ export default function DiaperFormPage() {
     if (!familyId || !babyId) { Taro.showToast({ title: '请先完成宝宝建档', icon: 'none' }); return }
     setSubmitting(true)
     try {
-      const colorStr = colorSelected.size > 0 ? [...colorSelected].join(',') : undefined
+      const stoolColors = colorSelected.size > 0 ? [...colorSelected] : undefined
       const payload = {
         baby_id: babyId,
         diaper_type: diaperType,
         record_time: hhmmToIso(recordDate, recordTime),
-        color: colorStr,
+        stool_colors: stoolColors,
         poop_type: (showPoop && poopType ? poopType : undefined) ?? undefined,
         butt_condition: buttCondition ?? undefined,
         diaper_count: diaperCount !== 1 ? diaperCount : undefined,

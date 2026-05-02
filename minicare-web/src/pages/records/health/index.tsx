@@ -52,8 +52,11 @@ import {
 
 type Severity = "mild" | "moderate" | "severe";
 
-/** 保湿护理 Chip 列表 */
-const SKIN_CHIPS = ["已做保湿", "涂抹面霜", "涂抹身体乳"];
+/** 保湿护理分组 Chip 列表 */
+const SKIN_GROUPS: { label: string; chips: string[] }[] = [
+  { label: "面部保湿", chips: ["涂抹面霜", "涂抹润肤露", "涂抹保湿喷雾"] },
+  { label: "身体保湿", chips: ["涂抹身体乳", "涂抹润肤油", "涂抹护臀霜"] },
+];
 
 /** 过敏程度中文 */
 const SEVERITY_LABEL: Record<string, string> = {
@@ -421,20 +424,29 @@ export default function HealthFormPage() {
             onToggle={() => setSkinOpen((v: boolean) => !v)}
           />
           {skinOpen && (
-            <div className="flex flex-wrap gap-2 px-4 py-3">
-              {SKIN_CHIPS.map((chip) => (
-                <button
-                  key={chip}
-                  type="button"
-                  onClick={() => toggleSkin(chip)}
-                  className="px-3 py-1.5 rounded-full border text-[13px] font-medium transition-all"
-                  style={{
-                    borderColor: selectedSkin.has(chip) ? "#F87098" : "#E5D8DA",
-                    background: selectedSkin.has(chip) ? "#FFF0F4" : "#fff",
-                    color: selectedSkin.has(chip) ? "#F87098" : "#7A5A60",
-                  }}>
-                  {chip}
-                </button>
+            <div className="px-4 py-3">
+              {SKIN_GROUPS.map((group) => (
+                <div key={group.label} className="mb-3 last:mb-0">
+                  <div className="text-[12px] font-medium text-[#9A8090] mb-2">
+                    {group.label}
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {group.chips.map((chip) => (
+                      <button
+                        key={chip}
+                        type="button"
+                        onClick={() => toggleSkin(chip)}
+                        className="px-3 py-1.5 rounded-full border text-[13px] font-medium transition-all"
+                        style={{
+                          borderColor: selectedSkin.has(chip) ? "#F87098" : "#E5D8DA",
+                          background: selectedSkin.has(chip) ? "#FFF0F4" : "#fff",
+                          color: selectedSkin.has(chip) ? "#F87098" : "#7A5A60",
+                        }}>
+                        {chip}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
           )}
