@@ -1,12 +1,17 @@
 ---
-description: minicare-web 前端编码规范。涵盖图标使用和枚举标签管理两条核心规则。在编写或修改任何 React 组件（.tsx 文件）时自动生效。
+description: minicare 前端编码规范。涵盖图标使用、枚举标签管理、弹层规则。适用于 minicare-web（维护模式）和 minicare-mp（主平台）。
 globs:
   - "minicare-web/src/**/*.tsx"
   - "minicare-web/src/**/*.ts"
+  - "minicare-mp/src/**/*.tsx"
+  - "minicare-mp/src/**/*.ts"
 alwaysApply: true
 ---
 
-# minicare-web 前端编码规范
+# minicare 前端编码规范
+
+> **平台定位**：`minicare-mp`（微信小程序）为主发布平台，`minicare-web` 已进入维护模式（保持可访问但不再主动开发新功能）。
+> 以下规则同时适用于两个前端项目。
 
 ## 规则一：禁止使用 Emoji，必须使用 Icon 替代
 

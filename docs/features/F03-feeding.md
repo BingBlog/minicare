@@ -1,13 +1,21 @@
 # F03 · 饮食记录
 
-> 来源：MVP-PRD.md §2.4.2、§3.2.1  
 > 功能 ID：P0-002  
 > 优先级：P0  
-> 最后同步：2026-03-29
+> 状态：**已完成** ✅  
+> 最后更新：2026-05-03（对齐 4 表拆分实现 + 小程序端）
+>
+> **数据模型变更（Migration 008）**：原单表 `feeding_record` 已拆分为 4 张独立表：
+> - `feeding_breast_record` — 母乳喂养
+> - `feeding_formula_record` + `feeding_formula_mix` — 配方奶（含奶粉配比明细）
+> - `feeding_food_record` + `feeding_food_item` — 辅食（含食物明细）
+> - `feeding_supplement_record` — 营养素补充（supplement_items JSON）
+>
+> 每种喂养类型独立成表，避免大量 NULL 列，查询更高效。
 
 ## 功能描述
 
-记录敏宝的转奶过程、奶量、营养素补充和辅食添加情况。
+记录敏宝的转奶过程、奶量、营养素补充和辅食添加情况。小程序端通过 4 个 Tab 页签对应 4 种喂养类型，每次记录保存到对应的独立表中。
 
 ## 表单设计（Tab 页签）
 

@@ -1,7 +1,6 @@
 # 系统技术架构文档
 
-> 来源：MVP-PRD.md §5 · 技术选型评审
-> 最后同步：2026-03-29（v3：补充 React+Vite 前端架构 + Node.js 框架选型 + 完整架构图）
+> 最后更新：2026-05-03（MVP 已发布，小程序为主平台）
 
 ---
 
@@ -9,855 +8,332 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                          minicare 系统架构（v3）                             │
+│                    minicare 系统架构（已发布 MVP）                            │
 │                                                                             │
 │  ┌─────────────────────────────────────────────────────────────────────┐    │
 │  │                     客户端层（Client Layer）                         │    │
 │  │                                                                     │    │
-│  │  ┌──────────────────────┐  ┌──────────────────┐  ┌──────────────┐  │    │
-│  │  │   Web H5（主力）      │  │  iOS（Swift）    │  │Android(Kotlin│  │    │
-│  │  │  React 18 + Vite 5   │  │  SwiftUI         │  │  Jetpack     │  │    │
-│  │  │  TanStack Router     │  │  Core Data       │  │  Compose     │  │    │
-│  │  │  Zustand + RQ        │  │  URLSession       │  │  Room + OkHttp│ │    │
-│  │  │  @cloudbase/js-sdk   │  │  Starscream(WS)  │  │  Coil        │  │    │
-│  │  └──────────┬───────────┘  └────────┬─────────┘  └──────┬───────┘  │    │
-│  └─────────────┼──────────────────────┼─────────────────── ┼──────────┘    │
-│                │                      │                     │               │
-│                │ HTTPS REST API + WebSocket (JWT Bearer)    │               │
-│  ──────────────┼──────────────────────┼─────────────────── ┼──────────     │
-│                ▼                      ▼                     ▼               │
+│  │  ┌──────────────────────────┐  ┌──────────────────────────────┐    │    │
+│  │  │  微信小程序（主平台）      │  │   Web H5（维护模式）          │    │    │
+│  │  │  Taro 4.2 + React 18     │  │   React 18 + Vite 6          │    │    │
+│  │  │  ECharts 6 (截图模式)     │  │   Tailwind + Hash Router     │    │    │
+│  │  │  @cloudbase/js-sdk (auth) │  │   PWA (service worker)       │    │    │
+│  │  │  自定义 TabBar + FAB      │  │                              │    │    │
+│  │  └──────────┬───────────────┘  └──────────────┬───────────────┘    │    │
+│  └─────────────┼─────────────────────────────────┼────────────────────┘    │
+│                │                                  │                         │
+│                │ HTTPS REST API (JWT Bearer)      │                         │
+│  ──────────────┼──────────────────────────────────┼────────────────────     │
+│                ▼                                  ▼                         │
 │  ┌─────────────────────────────────────────────────────────────────────┐    │
-│  │            腾讯云 CloudBase（云开发）minicare-cloud-xxx              │    │
+│  │            腾讯云 CloudBase · minicare-cloud-xxx                     │    │
 │  │                                                                     │    │
 │  │  ┌──────────────────────────────────────────────────────────────┐  │    │
 │  │  │                CloudRun · minicare-api                       │  │    │
-│  │  │           Node.js 20 · NestJS · TypeScript                   │  │    │
+│  │  │           Node.js 20 · NestJS v10 · TypeScript               │  │    │
 │  │  │                                                              │  │    │
-│  │  │  /auth        /family      /baby        /records             │  │    │
-│  │  │  /storage     /ws          /health      /__health            │  │    │
+│  │  │  /api/auth     /api/family    /api/baby    /api/records/*    │  │    │
+│  │  │  /api/config   /api/report    /api/storage /health           │  │    │
 │  │  │                                                              │  │    │
-│  │  │  中间件：JWT验证 · 家庭权限 · 限流 · 请求日志                  │  │    │
+│  │  │  Guards: JWT → FamilyMember → Role(@MinRole)                 │  │    │
 │  │  └──────┬──────────┬─────────────┬────────────────────────┘   │    │
 │  │         │          │             │                             │    │
 │  │  ┌──────▼──┐ ┌─────▼──────┐ ┌───▼──────────────────────────┐ │    │
 │  │  │  MySQL  │ │  云存储+CDN │ │      CloudBase Auth           │ │    │
-│  │  │ 13张表  │ │ 照片/头像   │ │   手机号 SMS OTP 登录          │ │    │
-│  │  │  (主库) │ │  PDF报告    │ │   JWT Token 颁发               │ │    │
+│  │  │ ~18张表 │ │ 照片/头像   │ │   手机号 SMS OTP 登录          │ │    │
+│  │  │ CynosDB │ │             │ │   → 后端颁发自定义 JWT         │ │    │
 │  │  └─────────┘ └────────────┘ └──────────────────────────────┘ │    │
-│  │                                                               │    │
-│  │  ┌──────────────────────┐  ┌───────────────────────────────┐ │    │
-│  │  │  云函数（定时任务）    │  │     静态托管 · Web H5 CDN      │ │    │
-│  │  │  sleep-timeout-check │  │     dist/ → tcloudbaseapp.com  │ │    │
-│  │  │  food-obs-reminder   │  │     自定义域名 + HTTPS          │ │    │
-│  │  └──────────────────────┘  └───────────────────────────────┘ │    │
 │  └─────────────────────────────────────────────────────────────────┘    │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 二、Web 前端技术选型（React + Vite）
+## 二、小程序前端架构（Taro · 主平台）
 
 ### 2.1 核心技术栈
 
-| 层级 | 选型 | 版本 | 理由 |
+| 层级 | 选型 | 版本 | 说明 |
 |------|------|------|------|
-| **框架** | **React** | 18.x | 组件生态最丰富；CloudBase js-sdk 官方示例均基于 React；团队熟悉度高 |
-| **构建工具** | **Vite** | 5.x | CloudBase web-development SKILL 明确推荐；HMR 极快；构建产物兼容静态托管 |
-| **路由** | **TanStack Router** | 1.x | 类型安全路由；支持 Hash 模式（静态托管无需服务端配置）；比 React Router v6 更健壮 |
-| **状态管理** | **Zustand** | 4.x | 轻量；无 Provider 嵌套地狱；适合 Cloud-first 无本地数据库方案 |
-| **服务端状态** | **TanStack Query** | 5.x | 自动缓存 + 失效策略；与 CloudRun REST API 天然契合 |
-| **UI 组件** | **Radix UI + Tailwind CSS** | latest | 无障碍支持；高度可定制；与 minicare 设计系统匹配 |
-| **CloudBase SDK** | **@cloudbase/js-sdk** | 2.x | 官方 SDK；支持 Auth (SMS OTP)、MySQL、云存储、CloudRun 调用 |
-| **HTTP 客户端** | **原生 fetch + TanStack Query** | — | CloudBase CloudRun 调用通过 `app.callContainer()` 或直接 fetch |
-| **WebSocket** | **原生 WebSocket API** | — | 连接 CloudRun WebSocket 端点，接收家庭实时推送 |
-| **图表** | **Recharts** | 2.x | 生长曲线图；轻量；React 专属 |
-| **表单** | **React Hook Form + Zod** | latest | 高性能表单；类型安全校验；减少 re-render |
+| **跨端框架** | Taro | 4.2.0 | 目标平台为微信小程序（weapp） |
+| **UI 框架** | React | 18.x | 函数组件 + Hooks |
+| **语言** | TypeScript | 5.4+ | 全量类型覆盖 |
+| **构建工具** | Webpack 5 | — | Taro 内置，配合 tsconfig-paths |
+| **样式** | Sass | — | 不启用 pxtransform，直接使用 px |
+| **图表** | ECharts | 6.x | 按需引入 Line/Bar/Scatter/Pie，Canvas 截图模式 |
+| **认证 SDK** | @cloudbase/js-sdk | — | 仅引入 auth 模块，减少 ~600KB 体积 |
+| **日期处理** | dayjs | — | 轻量时间格式化 |
 
-### 2.2 CloudBase 对 React + Vite 的支持确认
-
-| 支持项 | 状态 | 说明 |
-|--------|------|------|
-| `@cloudbase/js-sdk` npm 安装 | ✅ 完全支持 | `npm install @cloudbase/js-sdk`，ES Module 格式，Vite 原生支持 |
-| Vite 构建产物部署静态托管 | ✅ 完全支持 | `vite build` → `dist/` 目录 → `cloudbase hosting deploy ./dist` |
-| Hash 路由（`#/`）兼容性 | ✅ 完全支持 | 静态托管无需 rewrite 配置，推荐使用 Hash 模式 |
-| Tree-shaking 优化 | ✅ 支持 | SDK 支持按需引入，Vite + Rollup 自动 tree-shake |
-| TypeScript 类型定义 | ✅ 支持 | `@cloudbase/js-sdk` 内置 `.d.ts` 类型文件 |
-| 环境变量注入 | ✅ 支持 | Vite `import.meta.env.VITE_TCB_ENV_ID` → 构建时替换 |
-| HMR 开发体验 | ✅ 无影响 | SDK 初始化为同步操作，不影响 Vite HMR |
-| 生产构建压缩 | ✅ 支持 | Vite 默认 esbuild + Rollup；SDK 约 +80KB gzip |
-
-> **关键约束**：`cloudbase.init()` 必须同步调用（不能 `async import`），在 `src/lib/cloudbase.ts` 中单例初始化，全局共享。
-
-### 2.3 前端项目结构
+### 2.2 项目结构
 
 ```
-minicare-web/
+minicare-mp/
+├── config/                  # Taro 构建配置
+├── project.config.json      # 微信小程序配置（appid: wxac792556967d5838）
 ├── src/
-│   ├── lib/
-│   │   └── cloudbase.ts          # CloudBase SDK 单例初始化
-│   ├── api/
-│   │   ├── auth.ts               # 认证 API（SMS OTP 登录）
-│   │   ├── family.ts             # 家庭管理 API
-│   │   ├── baby.ts               # 宝宝档案 API
-│   │   ├── records/
-│   │   │   ├── feeding.ts
-│   │   │   ├── sleep.ts
-│   │   │   ├── diaper.ts
-│   │   │   ├── health.ts
-│   │   │   ├── symptom.ts
-│   │   │   ├── activity.ts
-│   │   │   ├── growth.ts
-│   │   │   └── medical.ts
-│   │   └── storage.ts            # 文件上传 URL 获取
-│   ├── stores/
-│   │   ├── auth.ts               # 认证状态（Zustand）
-│   │   ├── family.ts             # 家庭/成员状态（Zustand）
-│   │   └── websocket.ts          # WS 连接状态（Zustand）
-│   ├── hooks/
-│   │   ├── useRecords.ts         # TanStack Query hooks
-│   │   ├── useFamily.ts
-│   │   └── useWebSocket.ts       # WebSocket 实时推送 hook
-│   ├── pages/
-│   │   ├── login/
-│   │   ├── home/
-│   │   ├── records/              # 各记录类型页面
-│   │   ├── profile/
-│   │   └── report/
-│   ├── components/               # 共享 UI 组件
-│   └── main.tsx                  # 应用入口
-├── vite.config.ts
-├── tailwind.config.ts
-├── tsconfig.json
-└── package.json
+│   ├── app.config.ts        # 页面路由 + 自定义 TabBar + 分包配置
+│   ├── app.tsx              # 应用入口
+│   ├── api/                 # API 层
+│   │   ├── http.ts          # 统一 HTTP 封装（Taro.request + JWT + 401 处理）
+│   │   ├── auth.ts          # 认证 API
+│   │   ├── family.ts        # 家庭管理 API
+│   │   ├── baby.ts          # 宝宝档案 API
+│   │   ├── records.ts       # 8 类记录 CRUD
+│   │   ├── sleep.ts         # 睡眠特殊流程（计时开始/结束/补录）
+│   │   ├── report.ts        # 报告图表数据
+│   │   └── appConfig.ts     # 全局枚举配置
+│   ├── assets/icons/        # SVG 图标资源
+│   ├── components/          # 全局共享组件
+│   │   ├── TabBar/          # 自定义底部导航
+│   │   ├── FabSheet/        # FAB 弹层（全类型记录入口）
+│   │   ├── EcChart/         # ECharts 图表（截图模式）
+│   │   ├── NavBar/          # 自定义导航栏
+│   │   └── LoginGuide/      # 未登录引导
+│   ├── lib/                 # 工具库
+│   │   ├── constants.ts     # 枚举标签（所有类型集中定义）
+│   │   ├── utils.ts         # 通用工具函数
+│   │   ├── cloudbase.ts     # CloudBase SDK 初始化（仅 auth）
+│   │   ├── echarts.ts       # ECharts 按需引入配置
+│   │   ├── growth-standards.ts  # 中国 2023 版儿童生长参照标准
+│   │   ├── useAppConfig.ts  # 全局配置 Hook（带缓存）
+│   │   └── useQuickActionKeys.ts  # 月龄动态快捷操作
+│   └── pages/               # 页面
+│       ├── home/            # 首页（今日概览）
+│       ├── records/list/    # 记录列表
+│       ├── report/          # 数据分析
+│       └── profile/         # 我的
 ```
 
-### 2.4 CloudBase SDK 初始化规范
+### 2.3 关键架构决策
 
-```typescript
-// src/lib/cloudbase.ts — 全项目唯一入口
-import cloudbase from '@cloudbase/js-sdk'
+**分包加载**：主包仅含 4 个 TabBar 页面 + 一个 index 分发器。登录、引导、隐私政策、8 种记录表单全部放在 subPackages 中，首次加载体积最小化。
 
-// ⚠️ 必须同步初始化，不能 async import，不能 lazy init
-export const app = cloudbase.init({
-  env: import.meta.env.VITE_TCB_ENV_ID,  // 构建时注入
-  region: 'ap-shanghai',
-  auth: { detectSessionInUrl: true },
-})
+**ECharts 截图模式**：Canvas 在屏幕外区域渲染完成后截图为 Image 组件展示。彻底解决微信小程序 Canvas 层级覆盖问题和滚动延迟问题。
 
-export const auth = app.auth
-```
+**自定义 TabBar**：使用微信小程序 `custom: true` 配置 + React 组件实现。中间设有 FAB 浮动按钮，点击弹出 FabSheet 展示全类型记录快捷入口。
 
-### 2.5 认证流程（手机号 SMS OTP）
+**双认证模式**：开发环境使用 test 模式（固定验证码 123456 直接登录），生产环境使用 CloudBase SMS OTP 发送真实短信 + 后端 JWT 换发。
+
+**游客预览**：未登录用户可查看首页功能布局，点击任何记录操作时通过 LoginGuide 组件引导登录。
+
+**全局配置缓存**：`/api/config` 返回的枚举选项缓存到 Taro Storage，设置过期时间，避免每次进入页面重复请求。
+
+### 2.4 认证流程
 
 ```
-用户输入手机号
+小程序启动 → 检查本地 Storage 中的 JWT Token
+     ↓ (无 Token 或已过期)
+展示游客模式首页（可浏览，不可操作）
+     ↓ (用户点击需要登录的操作)
+跳转登录页 → 用户输入手机号
      ↓
-auth.signInWithOtp({ phone: '138xxxx' })
+调用后端 POST /api/auth/send-code（生产环境触发 CloudBase SMS）
      ↓
-用户收到短信验证码
+用户输入验证码
      ↓
-data.verifyOtp({ token: '123456' })
+调用后端 POST /api/auth/verify-code
+     ↓ (test 模式固定 123456 / sms 模式调 CloudBase 验证)
+后端验证通过 → 查/创 user_account → 颁发 JWT (30天有效)
      ↓
-登录成功 → auth.getSession() 获取 access_token
-     ↓
-所有 API 请求自动携带 Bearer Token
-（app.callContainer 自动注入，手动 fetch 需手动附加）
+小程序存储 Token 到 Storage → 后续请求自动携带 Bearer Token
+     ↓ (401 响应)
+清除 Token → 重新跳转登录页
 ```
 
 ---
 
-## 三、后端技术选型（Node.js · NestJS）
+## 三、后端架构（NestJS）
 
-> **选型结论：NestJS v10**（更新于 2026-03-29）
-> 初版评估基于"MVP 阶段轻量优先"选定 Fastify；经「后续沿用」维度重新评估，NestJS 在
-> minicare 的权限模型复杂度和长期演进路径上更具优势。详见下方深度评估。
+### 3.1 核心技术栈
 
-### 3.1 框架深度对比（minicare 视角）
+| 层级 | 选型 | 版本 |
+|------|------|------|
+| **框架** | NestJS | 10.x |
+| **语言** | TypeScript | 5.6+ (Node.js 20) |
+| **数据库驱动** | mysql2/promise | 3.x（直连，无 ORM） |
+| **数据库** | CynosDB Serverless | MySQL 兼容 |
+| **认证** | passport-jwt | — |
+| **实时通信** | Socket.IO (@nestjs/websockets) | — |
+| **定时任务** | @nestjs/schedule | — |
+| **API 文档** | @nestjs/swagger | 非生产环境 |
+| **CloudBase SDK** | @cloudbase/node-sdk | SMS 验证 |
 
-#### 基础性能数据
-
-| 框架 | 性能（req/s） | 冷启动时间 | MinNum=1 时差异 |
-|------|------------|---------|----------------|
-| Express | ~50k | ~150ms | 冷启动差距消失 |
-| **Fastify** | ~80k | ~200ms | 冷启动差距消失 |
-| **NestJS** | ~45k | ~800ms~1.5s | **冷启动差距消失** |
-| Hono | ~100k | ~100ms | 冷启动差距消失 |
-
-> ⚠️ **关键前提**：minicare 设置 `MinNum=1`（约 ¥10-20/月），CloudRun 常驻热实例，**冷启动差距完全消除**。
-> minicare MVP 日活 < 1000，真实瓶颈在 MySQL 查询，不在框架层吞吐，性能数字对本项目无实质意义。
-
-#### minicare 场景专项评估
-
-| 维度 | Fastify | NestJS | minicare 影响分析 |
-|------|---------|--------|-----------------|
-| **多层权限复用** | ⚠️ 每路由手动 `addHook` 组合 | ✅ Guards 装饰器，声明一次全局复用 | **关键差异**：minicare 每个 API 需 4 层校验（JWT→family成员→role→baby归属），50+ 路由若每条手动组合将产生大量样板代码 |
-| **横切关注点表达** | ⚠️ 需自建约定（plugin 注册顺序） | ✅ Module/Guard/Interceptor/Pipe 明确分层 | minicare 有日志、限流、权限、响应格式等横切需求，NestJS 内置最佳实践 |
-| **WebSocket 支持** | ✅ `@fastify/websocket`，路由级 | ✅ `@nestjs/websockets` Gateway，内置 namespace/room | minicare WS 按 `family_id` 分组广播，Gateway 的 room 抽象更贴合业务语义 |
-| **定时任务** | ❌ 需引入 `node-cron` 自行管理 | ✅ `@nestjs/schedule` + `@Cron()` 装饰器 | 睡眠超时检查、辅食观察期提醒若内置到主服务，NestJS 开箱即用 |
-| **API 文档** | ⚠️ `fastify-swagger` 需手动写 JSON Schema | ✅ `@nestjs/swagger` + DTO 装饰器自动生成 OpenAPI | iOS/Android 开发者联调依赖 Swagger，NestJS 大幅降低文档维护成本 |
-| **单元测试** | ⚠️ 无官方 Test Module，需手动 mock | ✅ `@nestjs/testing` 内置 IoC mock | 后续补充测试覆盖率时，NestJS 体验优势显著 |
-| **可维护性（新人上手）** | ⚠️ 自由度高，需自建代码约定 | ✅ 强制分层约定，新成员 30 分钟内理解结构 | minicare 后续可能有 iOS/Android 开发者偶尔修改后端，强约定降低跨端沟通成本 |
-| **类型安全 / DTO** | ✅ JSON Schema + ajv | ✅ class-validator + class-transformer | NestJS DTO 可与前端 Zod schema 对应，形成完整类型链 |
-| **学习曲线** | ✅ 低，类 Express 思维 | ⚠️ 中，需理解 Module/Provider/Decorator | 有 Angular 或 Spring 背景可零成本迁移；纯 JS 背景约需 1-2 天熟悉 |
-| **CloudRun 兼容性** | ✅ | ✅ | 两者均为标准 HTTP Server，监听 `PORT` 环境变量，无差异 |
-
-#### minicare 权限模型：两框架的实现对比
-
-minicare 每个业务 API 都需要以下 4 层校验，这是两个框架差距最大的地方：
-
-```typescript
-// ── Fastify 写法 ──────────────────────────────────────────────
-// 每条路由必须手动组合，50+ 路由会产生大量重复样板
-fastify.get('/records/feeding', {
-  preHandler: [
-    verifyJWT,           // ① JWT → user_id
-    loadFamilyMember,    // ② 查 family_member 确认成员资格
-    checkRole('viewer'), // ③ role >= 查看者
-    checkBabyAccess,     // ④ baby_id 属于该 family
-  ],
-  schema: { querystring: FeedingQuerySchema },
-}, async (req, reply) => { /* ... */ })
-
-// ── NestJS 写法 ───────────────────────────────────────────────
-// 权限逻辑集中声明，Controller 级或方法级一次生效，不重复
-@Controller('records/feeding')
-@UseGuards(JwtGuard, FamilyMemberGuard, BabyAccessGuard)
-export class FeedingController {
-
-  @Get()
-  @MinRole(Role.VIEWER)   // 自定义装饰器，声明最低角色
-  findAll(@CurrentFamily() family: FamilyContext) {
-    return this.feedingService.findAll(family)
-  }
-
-  @Post()
-  @MinRole(Role.EDITOR)   // 写操作需要编辑者角色
-  create(@Body() dto: CreateFeedingDto, @CurrentFamily() family: FamilyContext) {
-    return this.feedingService.create(dto, family)
-  }
-}
-```
-
-#### 演进路径对比
+### 3.2 模块结构
 
 ```
-minicare 后端的合理演进（1年视角）：
-
-MVP                    v1.1                  v2.0
-────────────────────────────────────────────────────────
-13张表 CRUD           + PDF 导出服务         + AI 分析接口
-WebSocket 推送        + 推送通知服务         + 多宝宝数据隔离
-SMS OTP 登录          + 微信登录             + 数据迁移 API
-
-Fastify 的问题：
-  - 每新增一个模块，需手动建立文件夹约定
-  - 权限 Hook 如果没有严格约定，容易被新人遗漏
-  - 定时任务/推送通知需要引入额外依赖并自行集成
-
-NestJS 的优势：
-  - Module 边界天然隔离各业务域（FeedingModule/SleepModule）
-  - 新增 PDF 导出 → 只需新建 ReportModule，注入已有 Service
-  - @nestjs/schedule 直接支持定时任务
-  - @nestjs/swagger 自动维护 API 文档
+minicare-server/src/
+├── main.ts                      # 应用入口，监听 PORT，全局 /api 前缀
+├── app.module.ts                # 根模块
+├── auth/                        # 认证模块（send-code / verify-code / tcb-login / me）
+├── family/                      # 家庭模块（CRUD + 手机号邀请成员）
+├── baby/                        # 宝宝档案模块
+├── records/                     # 记录模块（8 个子模块）
+│   ├── feeding/                 # 喂养（4 子类型：breast/formula/food/supplement）
+│   ├── sleep/                   # 睡眠（含计时状态机：start/end/ongoing/complete）
+│   ├── diaper/                  # 尿布
+│   ├── health/                  # 健康（体温/过敏表现）
+│   ├── symptom/                 # 表现（精神状态/心情）
+│   ├── activity/                # 活动
+│   ├── growth/                  # 生长
+│   └── medical/                 # 医疗
+├── baby-foods/                  # 辅食食物库
+├── storage/                     # 文件上传（CloudBase 对象存储）
+├── websocket/                   # 实时事件推送
+├── scheduler/                   # 定时任务
+├── report/                      # 数据报告
+└── app-config/                  # 应用配置（静态枚举数据端点）
 ```
 
-### 3.2 选型决策：NestJS v10
-
-**选用 NestJS 的核心理由（minicare 场景专属）**：
-
-1. **权限模型的表达效率**：minicare 有 3 层角色 × 13张表 × CRUD 的权限校验矩阵，NestJS Guards 让这套逻辑声明一次复用全局，Fastify 需要在每条路由手动组合，50+ 路由后可维护性大幅下降
-
-2. **`MinNum=1` 消除唯一劣势**：CloudRun 设置最小 1 实例（月增约 ¥15），NestJS 冷启动劣势完全消失，性能差异在 minicare 流量规模下无感知
-
-3. **长期演进有路线图**：NestJS 的 Module 分层天然支撑后续的 AI 分析、PDF 报告、推送通知等复杂业务模块，无需重构架构
-
-4. **移动端联调的 Swagger 需求**：`@nestjs/swagger` 从 DTO 自动生成 OpenAPI，iOS/Android 开发者可直接使用，Fastify 需要手动维护
-
-**何时应该选 Fastify**（minicare 不符合这些条件）：
-- CloudRun `MinNum=0`，对冷启动毫秒级有要求（serverless 场景）
-- 后端极简，API < 20 个，1 人永久维护
-- 团队明确抵制装饰器语法
-
-### 3.3 后端项目结构（NestJS）
+### 3.3 三层鉴权 Guard 链
 
 ```
-minicare-server/
-├── src/
-│   ├── main.ts                       # NestJS 应用入口，监听 process.env.PORT
-│   ├── app.module.ts                 # 根模块，汇总所有业务 Module
-│   │
-│   ├── auth/                         # 认证模块
-│   │   ├── auth.module.ts
-│   │   ├── auth.controller.ts        # POST /auth/send-code, /auth/verify-code
-│   │   ├── auth.service.ts
-│   │   ├── jwt.guard.ts              # ① JWT 验证 Guard
-│   │   ├── jwt.strategy.ts
-│   │   └── dto/
-│   │       ├── send-code.dto.ts
-│   │       └── verify-code.dto.ts
-│   │
-│   ├── family/                       # 家庭模块
-│   │   ├── family.module.ts
-│   │   ├── family.controller.ts
-│   │   ├── family.service.ts
-│   │   ├── family-member.guard.ts    # ② family 成员资格 Guard
-│   │   ├── role.guard.ts             # ③ 角色权限 Guard
-│   │   ├── role.decorator.ts         # @MinRole() 自定义装饰器
-│   │   └── dto/
-│   │
-│   ├── baby/                         # 宝宝档案模块
-│   │   ├── baby.module.ts
-│   │   ├── baby.controller.ts
-│   │   ├── baby.service.ts
-│   │   └── dto/
-│   │
-│   ├── records/                      # 业务记录模块（8类）
-│   │   ├── records.module.ts
-│   │   ├── feeding/
-│   │   │   ├── feeding.controller.ts
-│   │   │   ├── feeding.service.ts
-│   │   │   └── dto/
-│   │   ├── sleep/                    # 含计时状态机
-│   │   ├── diaper/
-│   │   ├── health/
-│   │   ├── symptom/
-│   │   ├── activity/
-│   │   ├── growth/                   # 含 WHO 百分位计算
-│   │   └── medical/                  # 含 OCR 触发
-│   │
-│   ├── storage/                      # 文件存储模块
-│   │   ├── storage.module.ts
-│   │   ├── storage.controller.ts     # GET /storage/upload-url
-│   │   └── storage.service.ts
-│   │
-│   ├── websocket/                    # 实时推送模块
-│   │   ├── websocket.module.ts
-│   │   ├── events.gateway.ts         # @WebSocketGateway() 按 family_id 分组
-│   │   └── ws-manager.service.ts
-│   │
-│   ├── scheduler/                    # 定时任务模块
-│   │   ├── scheduler.module.ts
-│   │   └── tasks.service.ts          # @Cron() 睡眠超时检查、辅食提醒
-│   │
-│   └── common/                       # 公共模块
-│       ├── database/
-│       │   └── database.module.ts    # mysql2 连接池 Provider
-│       ├── cloudbase/
-│       │   └── cloudbase.module.ts   # @cloudbase/node-sdk Provider
-│       ├── decorators/
-│       │   └── current-family.decorator.ts
-│       └── interceptors/
-│           └── response-format.interceptor.ts
-│
-├── Dockerfile                        # CloudRun 容器构建（node:20-alpine）
-├── nest-cli.json
-├── tsconfig.json
-└── package.json
+请求进入
+  ↓
+① JwtGuard: Authorization: Bearer <token> → 验签 + 查库确认用户存在 → 注入 req.user
+  ↓
+② FamilyMemberGuard: 从路由参数 :familyId 读取 → 查 family_member 确认 active 成员 → 注入 FamilyContext
+  ↓
+③ RoleGuard + @MinRole(): 比对 FamilyContext.role 与路由声明的最低角色要求（owner > member）
+  ↓
+Controller 方法执行
 ```
 
-### 3.4 关键服务设计（NestJS 实现模式）
+### 3.4 API 端点模式
 
-#### Auth 流程（自建 JWT，不依赖 CloudBase Auth Token 验证）
+全局前缀 `/api`，健康检查 `/health`（无前缀）。Swagger 文档在非生产环境可访问 `/api-docs`。
 
-```
-客户端 POST /auth/send-code { phone }
-  → 调用 CloudBase Auth API 发送 SMS 验证码
-  → 返回 { success: true }
+记录类端点格式：`/api/family/:familyId/records/:type`，支持标准 CRUD（POST / GET / GET:id / PATCH:id / DELETE:id）。
 
-客户端 POST /auth/verify-code { phone, code }
-  → 调用 CloudBase Auth API 验证 OTP
-  → 查/创 user_account 记录
-  → 颁发 JWT { user_id, exp: 30d } 签名存入 HTTP-Only Cookie + Response Body
-  → 返回 { token, user }
-```
-
-#### WebSocket 实时推送（NestJS Gateway）
-
-```typescript
-// websocket/events.gateway.ts
-@WebSocketGateway({ namespace: '/ws' })
-export class EventsGateway {
-  // 按 family_id 分组管理连接
-  private rooms = new Map<string, Set<Socket>>()
-
-  @SubscribeMessage('join_family')
-  handleJoin(@ConnectedSocket() client: Socket, @MessageBody() { familyId }: JoinDto) {
-    client.join(`family:${familyId}`)   // Socket.IO room，自动管理生命周期
-  }
-
-  // 被业务 Service 调用（写入 MySQL 后广播）
-  broadcast(familyId: string, event: WsEvent) {
-    this.server.to(`family:${familyId}`).emit('record_change', event)
-  }
-}
-
-// 消息类型（前后端共享 DTO）
-type WsEvent =
-  | { type: 'record:created'; table: string; data: Record<string, unknown> }
-  | { type: 'record:updated'; table: string; data: Record<string, unknown> }
-  | { type: 'member:joined'; member: FamilyMember }
-```
-
-### 3.4 关键环境变量
-
-| 变量名 | 说明 | 示例 |
-|--------|------|------|
-| `PORT` | CloudRun 注入（不可修改） | `3000` |
-| `TCB_ENV_ID` | CloudBase 环境 ID | `minicare-cloud-xxx` |
-| `DB_HOST` | MySQL 内网地址 | `10.x.x.x` |
-| `DB_PORT` | MySQL 端口 | `3306` |
-| `DB_NAME` | 数据库名 | `minicare-cloud-xxx` |
-| `DB_USER` | 数据库用户名 | — |
-| `DB_PASS` | 数据库密码 ⛔勿提交 Git | — |
-| `JWT_SECRET` | JWT 签名密钥（≥32位随机）⛔勿提交 Git | — |
-| `TCB_SECRET_ID` | 腾讯云 API 密钥（OCR 调用） | — |
-| `TCB_SECRET_KEY` | 腾讯云 API 密钥 ⛔勿提交 Git | — |
+API 直接返回原始数据（无全局 response wrapper），列表返回 `T[]`。
 
 ---
 
-## 四、数据库架构（CloudBase MySQL）
-
-> 详细 DDL 见 `docs/tech/DB-02-schema.md`
+## 四、数据库架构（CloudBase MySQL / CynosDB）
 
 ### 4.1 表层级依赖
 
 ```
 Layer 0 · 账户层
-└── user_account              全局唯一用户（手机号注册）
+└── user_account                   全局唯一用户（手机号注册）
 
 Layer 1 · 家庭层
-├── family_group              家庭群组
-└── family_member             成员 + 角色权限（0=创建者 1=编辑者 2=查看者）
+├── family_group                   家庭群组
+└── family_member                  成员关系（role: owner/member, status: pending/active/left）
 
 Layer 2 · 宝宝层
-└── baby_profile              宝宝档案（MVP: 每家庭限 1 个）
+└── baby_profile                   宝宝档案（MVP: 每家庭限 1 个）
 
 Layer 3 · 业务记录层（均含 baby_id + recorded_by）
-├── feeding_record            饮食（奶粉/母乳/营养素/辅食）
-├── symptom_record            表现记录（皮疹/呕吐/腹泻等）
-├── growth_record             生长数据（含 WHO 百分位）
-├── sleep_record              睡眠（含计时状态机）
-├── activity_record           活动
-├── diaper_record             尿布
-├── health_record             健康（体温/情绪）
-└── medical_record            医疗（含 OCR）
+├── feeding_breast_record          母乳喂养
+├── feeding_formula_record         配方奶喂养
+│   └── feeding_formula_mix        奶粉配比明细
+├── feeding_food_record            辅食喂养
+│   └── feeding_food_item          食物明细
+├── feeding_supplement_record      营养素补充（supplement_items JSON）
+├── sleep_record                   睡眠（含计时状态机）
+├── diaper_record                  尿布
+├── activity_record                活动
+├── health_record                  健康
+├── symptom_record                 表现
+├── growth_record                  生长
+└── medical_record                 医疗
 
 Layer 4 · 衍生逻辑层
-└── food_observation          辅食新食物观察期状态机
+└── food_observation               辅食新食物观察期（4 态状态机：observing/safe/suspected/allergic）
 
-共 13 张表
+共 ~18 张表
 ```
 
-### 4.2 数据流向图
+### 4.2 设计要点
+
+所有主键 CHAR(36) UUID。枚举字段使用 VARCHAR 存储（如 gender、role、status 等，已从 TINYINT 迁移）。时区固定 UTC+8。
+
+喂养记录采用 4 表拆分设计（Migration 008），每种喂养类型独立成表，避免大量 NULL 列，查询更高效。
+
+### 4.3 数据流向
 
 ```mermaid
 sequenceDiagram
-    participant C as 客户端（Web/iOS/Android）
-    participant API as CloudRun API<br/>（Fastify）
-    participant DB as MySQL
-    participant WS as WebSocket Manager
-    participant F as 家庭其他成员
+    participant C as 微信小程序
+    participant API as CloudRun API<br/>（NestJS）
+    participant DB as CynosDB MySQL
+    participant WS as WebSocket
 
-    C->>API: POST /records/feeding (Bearer Token)
-    API->>API: JWT 验证 + 权限检查
-    API->>DB: INSERT INTO feeding_record
+    C->>API: POST /api/family/:id/records/feeding (Bearer JWT)
+    API->>API: JwtGuard → FamilyMemberGuard → RoleGuard
+    API->>DB: INSERT INTO feeding_formula_record
     DB-->>API: OK (record_id)
     API->>WS: broadcast(family_id, record:created)
-    WS->>F: {"type":"record:created","table":"feeding_record","data":{...}}
+    WS->>C: 实时推送给家庭其他在线成员
     API-->>C: 201 { id, ...record }
-    C->>C: 更新本地缓存 + 刷新 UI
 ```
 
 ---
 
-## 五、完整系统架构图（分层视角）
+## 五、部署架构
 
-```mermaid
-graph TB
-    subgraph CLIENT["客户端层"]
-        direction LR
-        WEB["Web H5<br/>React 18 + Vite 5<br/>TanStack Router<br/>Zustand + TanStack Query<br/>@cloudbase/js-sdk"]
-        IOS["iOS<br/>SwiftUI<br/>Core Data + SQLite<br/>URLSession + Starscream"]
-        AND["Android<br/>Jetpack Compose<br/>Room + SQLite<br/>OkHttp/Retrofit + Coil"]
-    end
+### 5.1 环境规划
 
-    subgraph TCB["腾讯云 CloudBase · minicare-cloud-xxx"]
-        direction TB
+| 环境 | 用途 | 配置方式 |
+|------|------|---------|
+| **开发** | 本地调试 | Server: `.env.local` 连远程 CynosDB；MP: `npm run dev:weapp` |
+| **生产** | 正式用户 | Server: CloudRun EnvParams；MP: 微信审核后发布 |
 
-        subgraph HOSTING["静态网站托管"]
-            CDN_WEB["Web H5 CDN<br/>dist/ → tcloudbaseapp.com<br/>自定义域名 + HTTPS + ICP"]
-        end
+### 5.2 部署流程
 
-        subgraph CLOUDRUN["CloudRun · minicare-api（Fastify Node.js 20）"]
-            direction LR
-            AUTH_ROUTE["/auth<br/>SMS OTP + JWT"]
-            FAMILY_ROUTE["/family<br/>家庭管理"]
-            BABY_ROUTE["/baby<br/>宝宝档案"]
-            RECORDS_ROUTE["/records/*<br/>8类业务记录"]
-            STORAGE_ROUTE["/storage<br/>预签名上传URL"]
-            WS_ROUTE["/ws<br/>WebSocket推送"]
-        end
+**后端（CloudRun）**：
+1. `cd minicare-server && npm run build`
+2. `bash scripts/deploy.sh`（预检查）
+3. CloudBase MCP `manageCloudRun(action='deploy', ...)` 部署
+4. 验证：`queryCloudRun(detail)` + `curl /health`
 
-        subgraph DATABASE["CloudBase MySQL（13张表）"]
-            USER_T["user_account"]
-            FAMILY_T["family_group<br/>family_member"]
-            BABY_T["baby_profile"]
-            RECORD_T["8张业务记录表<br/>+ food_observation"]
-        end
+**小程序（微信平台）**：
+1. `cd minicare-mp && npm run build:weapp`
+2. 微信开发者工具上传代码
+3. 提交审核 → 审核通过后发布
 
-        subgraph SERVICES["周边服务"]
-            CB_AUTH["CloudBase Auth<br/>手机号 SMS OTP"]
-            STORAGE["云存储 + CDN<br/>照片/头像/PDF"]
-            FUNC["云函数<br/>sleep超时检查<br/>辅食提醒"]
-            OCR["腾讯云 OCR<br/>医疗记录文字提取"]
-        end
-    end
+### 5.3 CloudRun 资源配置
 
-    %% 客户端 → 静态托管
-    WEB -.->|"部署到"| CDN_WEB
-
-    %% 客户端 → CloudRun
-    WEB -->|"HTTPS REST + WS<br/>Bearer JWT"| CLOUDRUN
-    IOS -->|"HTTPS REST + WS<br/>Bearer JWT"| CLOUDRUN
-    AND -->|"HTTPS REST + WS<br/>Bearer JWT"| CLOUDRUN
-
-    %% CloudRun → MySQL
-    CLOUDRUN -->|"mysql2/promise<br/>内网直连"| DATABASE
-
-    %% CloudRun → 周边服务
-    AUTH_ROUTE --> CB_AUTH
-    STORAGE_ROUTE --> STORAGE
-    WS_ROUTE -.->|"广播事件"| CLIENT
-    RECORDS_ROUTE --> FUNC
-    RECORDS_ROUTE --> OCR
-
-    %% 样式
-    classDef client fill:#e8f4fd,stroke:#2196F3,color:#1a1a1a
-    classDef hosting fill:#f3e8fd,stroke:#9C27B0,color:#1a1a1a
-    classDef api fill:#e8fdf0,stroke:#4CAF50,color:#1a1a1a
-    classDef db fill:#fdf8e8,stroke:#FF9800,color:#1a1a1a
-    classDef service fill:#fde8e8,stroke:#F44336,color:#1a1a1a
-
-    class WEB,IOS,AND client
-    class CDN_WEB hosting
-    class AUTH_ROUTE,FAMILY_ROUTE,BABY_ROUTE,RECORDS_ROUTE,STORAGE_ROUTE,WS_ROUTE api
-    class USER_T,FAMILY_T,BABY_T,RECORD_T db
-    class CB_AUTH,STORAGE,FUNC,OCR service
-```
+| 参数 | MVP 阶段 |
+|------|---------|
+| CPU | 0.25 vCPU |
+| 内存 | 512 MB |
+| 最小实例数 | 1（避免冷启动） |
+| 最大实例数 | 5 |
+| 并发请求/实例 | 80 |
 
 ---
 
-## 六、技术选型对比与决策摘要
-
-### 6.1 前端框架最终决策
-
-```
-React 18 + Vite 5  ✅ 选用
-────────────────────────────────────────────────────────────────
-优势：
-  ✅ CloudBase @cloudbase/js-sdk 完整 React 示例支持
-  ✅ Vite + Hash Router 完美兼容 CloudBase 静态托管（无需服务端配置）
-  ✅ 生态最丰富：Recharts 生长曲线、React Hook Form、Radix UI
-  ✅ TypeScript 原生支持，与后端类型共享成本低
-  ✅ Vite 构建速度极快，开发体验优秀
-
-约束：
-  ⚠️ @cloudbase/js-sdk 必须同步初始化（不影响 Vite HMR）
-  ⚠️ 使用 Hash Router（#/路由），非 History 模式
-```
-
-### 6.2 后端框架最终决策
-
-```
-Fastify v4 + TypeScript  ✅ 选用（替代 Express）
-────────────────────────────────────────────────────────────────
-优势：
-  ✅ 性能比 Express 快 60%（req/s），CloudRun 单实例更高吞吐
-  ✅ 内置 JSON Schema 校验（ajv），减少手写验证代码
-  ✅ @fastify/websocket 官方 WS 插件，与路由深度集成
-  ✅ TypeScript 优先设计，类型安全贯穿全栈
-  ✅ 冷启动更快（比 NestJS 轻量得多），对 MinNum=0 友好
-
-对比排除：
-  ❌ NestJS：过重，装饰器风格增加学习成本，MVP 阶段不适合
-  ❌ Express：弱类型，WS 集成繁琐，性能略低
-  ❌ Hono：生态尚不成熟，CloudRun 部署案例少
-```
-
-### 6.3 全栈技术栈一览
-
-| 层级 | 技术 | 版本 |
-|------|------|------|
-| **前端框架** | React | 18.x |
-| **构建工具** | Vite | 5.x |
-| **前端路由** | TanStack Router | 1.x（Hash 模式） |
-| **状态管理** | Zustand | 4.x |
-| **服务端状态** | TanStack Query | 5.x |
-| **UI 组件库** | Radix UI + Tailwind CSS | latest |
-| **前端图表** | Recharts | 2.x |
-| **表单校验** | React Hook Form + Zod | latest |
-| **后端框架** | Fastify | 4.x |
-| **后端语言** | TypeScript | 5.x（Node.js 20） |
-| **数据库驱动** | mysql2/promise | 3.x |
-| **数据库** | CloudBase MySQL | — |
-| **CloudBase SDK（前端）** | @cloudbase/js-sdk | 2.x |
-| **CloudBase SDK（后端）** | @cloudbase/node-sdk | 3.x |
-| **WebSocket** | @fastify/websocket | 8.x |
-| **容器部署** | CloudRun（Dockerfile） | Node 20 Alpine |
-| **静态托管** | CloudBase 静态托管 + CDN | — |
-| **认证** | CloudBase Auth（SMS OTP）+ JWT | — |
-| **文件存储** | CloudBase 云存储 + CDN | — |
-| **OCR** | 腾讯云 OCR API | — |
-
----
-
-## 七、数据表关系图（ER Diagram）
-
-> **权威来源**：字段定义以 `minicare-server/migrations/001_init_schema.sql` 为准，`baby_profile` 另有 `002_baby_allergy_fields.sql` 增量字段。完整 DDL 请直接阅读 migration 文件。
-
-```mermaid
-erDiagram
-    user_account {
-        CHAR36 id PK "UUID"
-        VARCHAR20 phone "手机号（唯一）"
-        VARCHAR50 nickname "用户昵称"
-        VARCHAR500 avatar_url
-        DATETIME created_at
-        DATETIME updated_at
-    }
-    family_group {
-        CHAR36 id PK "UUID"
-        VARCHAR50 name "家庭名称"
-        VARCHAR16 invite_code "邀请码（NOT NULL）"
-        CHAR36 created_by FK "→ user_account.id"
-        DATETIME created_at
-        DATETIME updated_at
-    }
-    family_member {
-        CHAR36 id PK "UUID"
-        CHAR36 family_id FK "→ family_group.id"
-        CHAR36 user_id FK "→ user_account.id（待接受时 NULL）"
-        TINYINT role "1=owner 2=member"
-        VARCHAR20 invite_phone
-        TINYINT status "1=pending 2=active 3=left"
-        CHAR36 invited_by FK "→ user_account.id"
-        DATETIME joined_at
-        DATETIME created_at
-        DATETIME updated_at
-    }
-    baby_profile {
-        CHAR36 id PK "UUID"
-        CHAR36 family_id FK "→ family_group.id（每家庭唯一）"
-        VARCHAR50 name "宝宝姓名"
-        TINYINT gender "0=unknown 1=male 2=female"
-        DATE birth_date
-        VARCHAR500 avatar_url
-        CHAR36 created_by FK "→ user_account.id"
-        DATETIME created_at
-        DATETIME updated_at
-    }
-    feeding_record {
-        CHAR36 id PK "UUID"
-        CHAR36 baby_id FK "→ baby_profile.id"
-        CHAR36 recorded_by FK "→ user_account.id"
-        DATETIME record_time
-        TINYINT feed_type "1=breast 2=formula 3=complementary"
-        TINYINT breast_side "1=left 2=right 3=both"
-        SMALLINT duration_min
-        SMALLINT formula_ml
-        VARCHAR100 complementary_food
-        SMALLINT amount_g
-        DATETIME created_at
-        DATETIME updated_at
-    }
-    sleep_record {
-        CHAR36 id PK "UUID"
-        CHAR36 baby_id FK "→ baby_profile.id"
-        CHAR36 recorded_by FK "→ user_account.id"
-        DATETIME start_time
-        DATETIME end_time "NULL=进行中"
-        SMALLINT duration_min
-        TINYINT status "1=ongoing 2=ended"
-        DATETIME created_at
-        DATETIME updated_at
-    }
-    diaper_record {
-        CHAR36 id PK "UUID"
-        CHAR36 baby_id FK "→ baby_profile.id"
-        CHAR36 recorded_by FK "→ user_account.id"
-        DATETIME record_time
-        TINYINT diaper_type "1=wet 2=dirty 3=mixed 4=dry"
-        VARCHAR20 color
-        DATETIME created_at
-        DATETIME updated_at
-    }
-    health_record {
-        CHAR36 id PK "UUID"
-        CHAR36 baby_id FK "→ baby_profile.id"
-        CHAR36 recorded_by FK "→ user_account.id"
-        DATETIME record_time
-        DECIMAL41 temperature "体温（℃）"
-        TINYINT mood "1=happy 2=neutral 3=fussy 4=crying"
-        DATETIME created_at
-        DATETIME updated_at
-    }
-    symptom_record {
-        CHAR36 id PK "UUID"
-        CHAR36 baby_id FK "→ baby_profile.id"
-        CHAR36 recorded_by FK "→ user_account.id"
-        DATETIME record_time
-        JSON symptoms "症状列表 [{type, severity}]"
-        JSON photo_ids "照片 fileID 列表"
-        DATETIME created_at
-        DATETIME updated_at
-    }
-    activity_record {
-        CHAR36 id PK "UUID"
-        CHAR36 baby_id FK "→ baby_profile.id"
-        CHAR36 recorded_by FK "→ user_account.id"
-        DATETIME record_time
-        TINYINT activity_type "1=bath 2=outdoor 3=play 4=tummy_time 5=other"
-        SMALLINT duration_min
-        DATETIME created_at
-        DATETIME updated_at
-    }
-    growth_record {
-        CHAR36 id PK "UUID"
-        CHAR36 baby_id FK "→ baby_profile.id（每天唯一）"
-        CHAR36 recorded_by FK "→ user_account.id"
-        DATE record_date
-        INT weight_g "体重（克）"
-        INT height_mm "身高（毫米）"
-        INT head_mm "头围（毫米）"
-        DATETIME created_at
-        DATETIME updated_at
-    }
-    medical_record {
-        CHAR36 id PK "UUID"
-        CHAR36 baby_id FK "→ baby_profile.id"
-        CHAR36 recorded_by FK "→ user_account.id"
-        DATE visit_date
-        VARCHAR100 hospital "就诊机构"
-        TEXT diagnosis
-        JSON medications "用药列表 [{name, dose}]"
-        JSON photo_ids "照片 fileID 列表"
-        DATETIME created_at
-        DATETIME updated_at
-    }
-    food_observation {
-        CHAR36 id PK "UUID"
-        CHAR36 baby_id FK "→ baby_profile.id（每种食物唯一）"
-        VARCHAR100 food_name "食物名称"
-        DATE first_intro_at "首次引入日期"
-        TINYINT status "1=observing 2=safe 3=allergic"
-        TEXT reaction_note
-        DATETIME created_at
-        DATETIME updated_at
-    }
-
-    user_account ||--o{ family_member : "加入"
-    family_group ||--o{ family_member : "包含"
-    family_group ||--o{ baby_profile : "拥有"
-    user_account ||--o{ feeding_record : "创建"
-    user_account ||--o{ sleep_record : "创建"
-    user_account ||--o{ diaper_record : "创建"
-    user_account ||--o{ health_record : "创建"
-    user_account ||--o{ symptom_record : "创建"
-    user_account ||--o{ activity_record : "创建"
-    user_account ||--o{ growth_record : "创建"
-    user_account ||--o{ medical_record : "创建"
-    baby_profile ||--o{ feeding_record : "属于"
-    baby_profile ||--o{ sleep_record : "属于"
-    baby_profile ||--o{ diaper_record : "属于"
-    baby_profile ||--o{ health_record : "属于"
-    baby_profile ||--o{ symptom_record : "属于"
-    baby_profile ||--o{ activity_record : "属于"
-    baby_profile ||--o{ growth_record : "属于"
-    baby_profile ||--o{ medical_record : "属于"
-    baby_profile ||--o{ food_observation : "属于"
-```
-
----
-
-## 八、部署架构与 CI/CD
-
-### 8.1 环境规划
-
-| 环境 | CloudBase 环境 | 用途 |
-|------|---------------|------|
-| **开发** | 本地 + `.env.local` | 本地 `vite dev` + Fastify 本地调试 |
-| **测试** | `minicare-dev-xxx`（可选） | PR 合并前验证 |
-| **生产** | `minicare-cloud-xxx` | 正式用户访问 |
-
-### 8.2 部署流程
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                      CI/CD 流水线（GitHub Actions）              │
-│                                                                 │
-│  Push to main                                                   │
-│       ↓                                                         │
-│  ┌─────────────────────────────────────────────────────────┐    │
-│  │  Job 1: 后端部署（minicare-server）                      │    │
-│  │  1. npm ci + tsc build                                  │    │
-│  │  2. Docker build (node:20-alpine)                       │    │
-│  │  3. cloudbase run deploy minicare-api                   │    │
-│  └─────────────────────────────────────────────────────────┘    │
-│       ↓ 后端部署成功                                             │
-│  ┌─────────────────────────────────────────────────────────┐    │
-│  │  Job 2: 前端部署（minicare-web）                         │    │
-│  │  1. npm ci                                              │    │
-│  │  2. VITE_API_BASE_URL=$CLOUDRUN_URL vite build          │    │
-│  │  3. cloudbase hosting deploy ./dist                     │    │
-│  └─────────────────────────────────────────────────────────┘    │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-### 8.3 CloudRun 资源配置
-
-| 参数 | MVP 阶段 | 规模化后 |
-|------|---------|---------|
-| CPU | 0.25 vCPU | 0.5~1 vCPU |
-| 内存 | 512 MB | 1~2 GB |
-| 最小实例数 | 1（避免冷启动） | 2（高可用） |
-| 最大实例数 | 5 | 20 |
-| 并发请求/实例 | 80 | 200 |
-
----
-
-## 九、安全设计
+## 六、安全设计
 
 | 威胁 | 防护措施 |
 |------|---------|
-| 未授权访问数据 | JWT 中间件校验；family_member 权限校验；用户只能访问自己家庭的数据 |
-| SQL 注入 | 全程使用 mysql2 参数化查询（Prepared Statements） |
-| 短信轰炸 | `/auth/send-code` 限流：同手机号 60s 内只能发 1 次；IP 维度 10次/分钟 |
-| JWT 泄露 | Token 有效期 30 天；敏感操作二次校验；HTTP-Only Cookie（Web 端） |
-| 越权访问 | `permission.ts` 中间件：查询 family_member 确认 user_id + family_id 匹配 |
-| 文件上传恶意文件 | 预签名 URL 限定 MIME 类型（image/*）和大小（≤10MB） |
-| 敏感数据泄露 | DB_PASS / JWT_SECRET 仅存 CloudRun 环境变量，禁止提交 Git |
+| 未授权访问 | JWT Guard + FamilyMember Guard + Role Guard 三层鉴权 |
+| SQL 注入 | mysql2 参数化查询（Prepared Statements） |
+| 短信轰炸 | `/api/auth/send-code` 限流：同手机号 60s 内 1 次 |
+| JWT 泄露 | Token 30 天有效期；401 自动失效跳转登录 |
+| 越权访问 | FamilyMemberGuard 确认 user_id + family_id 匹配 |
+| 文件上传 | 预签名 URL 限定 MIME 类型和大小 |
+| 敏感数据 | DB_PASS / JWT_SECRET 仅存 CloudRun 环境变量 |
 
 ---
 
-## 十、架构升级要点（相较原设计）
+## 七、技术选型决策摘要
 
-| 维度 | 原设计 | 新设计（v3） |
-|------|--------|-------------|
-| 前端框架 | 纯 HTML/CSS（ui-draft） | **React 18 + Vite 5** |
-| 前端路由 | 无 | **TanStack Router（Hash 模式）** |
-| 前端状态 | 无 | **Zustand + TanStack Query** |
-| 后端框架 | Express（计划中） | **Fastify v4**（性能+类型安全） |
-| WebSocket | 计划中 | **@fastify/websocket + ws-manager** |
-| 数据存储 | 仅本地 SQLite | **云端 MySQL（唯一写入源）** |
-| 照片存储 | 本地路径 | **CloudBase 云存储 + CDN URL** |
-| 主键类型 | INTEGER 自增 | **CHAR(36) UUID** |
-| 多人协作 | ❌ | **✅ WebSocket 实时广播** |
-| 无网行为 | 正常使用 | **提示无网络，禁止提交** |
-| 离线队列 | N/A | **已移除（无需 sync_log）** |
+### 为什么选 NestJS（而非 Fastify/Express）
+
+核心原因是 minicare 的多层权限模型（3 层 Guard × 多表 × CRUD）。NestJS 的 Guards + 装饰器让权限逻辑声明一次复用全局，而 Fastify 需要在每条路由手动组合 preHandler。结合 CloudRun `MinNum=1` 消除冷启动劣势，NestJS 是最优选。
+
+### 为什么选小程序（而非原生 APP / Web PWA）
+
+微信小程序的优势：零安装门槛（适合祖辈用户）、微信生态内分享传播（家庭协作核心场景）、扫码即用。Taro 框架提供跨端扩展能力，未来可低成本覆盖支付宝/抖音小程序。
+
+### 为什么选 ECharts 截图模式（而非 Canvas 直接渲染）
+
+微信小程序 Canvas 存在固有的层级问题（原生组件覆盖在所有 Web 组件之上）和滚动同步延迟。截图模式将 Canvas 渲染移至屏幕外完成后转为 Image，彻底回避这些平台限制。
 
 ---
 
 *→ 完整建表 DDL 见 `docs/tech/DB-02-schema.md`*
 *→ 基础设施搭建执行清单见 `docs/tech/INFRA-cloudbase.md`*
-*→ Mock 数据与用户故事演练见 `docs/tech/DB-03-mock-data.md`*
+*→ 小程序开发规范见 `.cursor/rules/miniapp-development.mdc`*

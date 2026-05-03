@@ -1,10 +1,14 @@
 # DB-04 · 数据库设计问题分析与重构计划
 
+> ⚠️ **[已实施 · IMPLEMENTED]** 本分析已通过 `008_schema_redesign.sql` 落地实施。
+> 重构内容：feeding_record 拆分为 4 表、TINYINT 枚举迁移为 VARCHAR、索引优化等。
+> 当前数据库 Schema 以 migration 008 为准，详见 `DB-01-overview.md`。
+
 > 撰写日期：2026-04-13（更新：按未上线最佳实践全量重写）  
 > 角色：资深 DBA（结合业务 PRD + 前端交互逻辑 + 当前 DDL 全量分析）  
 > 覆盖 migration：001 ~ 007  
 > 前提：**开发验证阶段，未正式上线，无历史数据迁移约束，按长远最佳实践设计**  
-> 状态：**待评审，通过后以 `008_schema_redesign.sql` 直接重建**
+> 状态：**已实施** — 通过 `008_schema_redesign.sql` 于 2026-04-15 完成重建
 
 ---
 

@@ -1,10 +1,16 @@
 # F11 · 数据分析（原：统计报告）
 
-> 来源：MVP-PRD.md §2.4.10、§3.2.9  
 > 功能 ID：P0-010  
 > 优先级：P0  
-> 最后同步：2026-04-13（**v2.4**：chart-data 拆分为 5 个按 Tab 独立接口；移除进程内内存缓存；修复健康模块 mood/spirit 类型错误）
-> 上一版：2026-07-05（**v2.3**：Tab「排泄」→「尿布」；各 Tab 差异化默认时间范围（生长从出生完整曲线、健康7天、尿布/睡眠14天、饮食30天）；去除「保存」按钮改为后端自动缓存；新增右上角「导出报告」；移除历史报告列表）
+> 状态：**已完成** ✅  
+> 最后更新：2026-05-03（补充小程序 ECharts 截图模式实现说明）
+>
+> **小程序图表实现**：使用 ECharts 6 + Canvas 截图模式。Canvas 在屏幕外区域渲染完成后
+> 截图为 Image 组件展示，彻底解决微信小程序 Canvas 层级覆盖问题和滚动延迟问题。
+> 按需引入 Line/Bar/Scatter/Pie + Grid/Tooltip/Legend/Dataset，控制包体积。
+>
+> **API 设计**：chart-data 已拆分为 5 个独立端点 `/api/family/:id/report/chart-data/:category`，
+> category 为 feeding/diaper/sleep/health/growth，按 Tab 独立请求。
 
 ---
 

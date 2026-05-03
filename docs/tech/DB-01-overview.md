@@ -5,8 +5,9 @@
 > - [DB-02-schema.md](DB-02-schema.md) — 完整建表 DDL（含新增字段）  
 > - [DB-03-mock-data.md](DB-03-mock-data.md) — Mock 数据 · 用户故事演练  
 >
-> 最后同步：2026-03-29（存储策略 v2：联网写入优先，简化同步机制）
-> 云平台：**腾讯云 CloudBase（已确定，替代 Supabase）**
+> 最后更新：2026-05-03（MVP 已发布，Schema 对齐 Migration 008：feeding 4 表拆分 + VARCHAR 枚举迁移）
+> 云平台：**腾讯云 CloudBase**
+> 主平台：**微信小程序（Taro 4.2）**
 
 ---
 
@@ -36,9 +37,9 @@ erDiagram
         CHAR36 id PK "UUID"
         CHAR36 family_id FK "→ family_group.id"
         CHAR36 user_id FK "→ user_account.id（待接受时 NULL）"
-        TINYINT role "1=owner 2=member"
+        VARCHAR20 role "owner / member"
         VARCHAR20 invite_phone "被邀请手机号"
-        TINYINT status "1=pending 2=active 3=left"
+        VARCHAR20 status "pending / active / left"
         CHAR36 invited_by FK "→ user_account.id"
         DATETIME joined_at
         DATETIME created_at
@@ -49,25 +50,70 @@ erDiagram
         CHAR36 id PK "UUID"
         CHAR36 family_id FK "→ family_group.id（每家庭唯一）"
         VARCHAR50 name "宝宝姓名"
-        TINYINT gender "0=unknown 1=male 2=female"
+        VARCHAR20 gender "unknown / male / female"
         DATE birth_date
         VARCHAR500 avatar_url
+        JSON allergies "过敏原列表"
         CHAR36 created_by FK "→ user_account.id"
         DATETIME created_at
         DATETIME updated_at
     }
 
-    feeding_record {
+    feeding_breast_record {
         CHAR36 id PK "UUID"
         CHAR36 baby_id FK "→ baby_profile.id"
         CHAR36 recorded_by FK "→ user_account.id"
         DATETIME record_time
-        TINYINT feed_type "1=breast 2=formula 3=complementary"
-        TINYINT breast_side "1=left 2=right 3=both"
-        SMALLINT duration_min "母乳时长（分钟）"
-        SMALLINT formula_ml "奶粉量（ml）"
-        VARCHAR100 complementary_food "辅食名称"
-        SMALLINT amount_g "辅食克数"
+        VARCHAR side "left/right/both"
+        SMALLINT duration_min "时长（分钟）"
+        TEXT note
+        DATETIME created_at
+        DATETIME updated_at
+    }
+
+    feeding_formula_record {
+        CHAR36 id PK "UUID"
+        CHAR36 baby_id FK "→ baby_profile.id"
+        CHAR36 recorded_by FK "→ user_account.id"
+        DATETIME record_time
+        SMALLINT amount_ml "总量（ml）"
+        TEXT note
+        DATETIME created_at
+        DATETIME updated_at
+    }
+
+    feeding_formula_mix {
+        CHAR36 id PK "UUID"
+        CHAR36 feeding_id FK "→ feeding_formula_record.id"
+        VARCHAR100 brand "奶粉品牌"
+        SMALLINT scoops "勺数"
+        INT order_index "配比顺序"
+    }
+
+    feeding_food_record {
+        CHAR36 id PK "UUID"
+        CHAR36 baby_id FK "→ baby_profile.id"
+        CHAR36 recorded_by FK "→ user_account.id"
+        DATETIME record_time
+        TEXT note
+        DATETIME created_at
+        DATETIME updated_at
+    }
+
+    feeding_food_item {
+        CHAR36 id PK "UUID"
+        CHAR36 feeding_id FK "→ feeding_food_record.id"
+        VARCHAR100 food_name "食物名称"
+        SMALLINT amount_g "克数"
+        INT order_index
+    }
+
+    feeding_supplement_record {
+        CHAR36 id PK "UUID"
+        CHAR36 baby_id FK "→ baby_profile.id"
+        CHAR36 recorded_by FK "→ user_account.id"
+        DATETIME record_time
+        JSON supplement_items "营养素列表 [{name, dose, unit}]"
         TEXT note
         DATETIME created_at
         DATETIME updated_at
@@ -175,7 +221,10 @@ erDiagram
     user_account ||--o{ family_member : "作为成员加入"
     family_group ||--o{ family_member : "包含成员"
     family_group ||--o{ baby_profile : "拥有宝宝"
-    user_account ||--o{ feeding_record : "创建"
+    user_account ||--o{ feeding_breast_record : "创建"
+    user_account ||--o{ feeding_formula_record : "创建"
+    user_account ||--o{ feeding_food_record : "创建"
+    user_account ||--o{ feeding_supplement_record : "创建"
     user_account ||--o{ symptom_record : "创建"
     user_account ||--o{ growth_record : "创建"
     user_account ||--o{ sleep_record : "创建"
@@ -183,7 +232,12 @@ erDiagram
     user_account ||--o{ diaper_record : "创建"
     user_account ||--o{ health_record : "创建"
     user_account ||--o{ medical_record : "创建"
-    baby_profile ||--o{ feeding_record : "属于"
+    baby_profile ||--o{ feeding_breast_record : "属于"
+    baby_profile ||--o{ feeding_formula_record : "属于"
+    baby_profile ||--o{ feeding_food_record : "属于"
+    baby_profile ||--o{ feeding_supplement_record : "属于"
+    feeding_formula_record ||--o{ feeding_formula_mix : "配比明细"
+    feeding_food_record ||--o{ feeding_food_item : "食物明细"
     baby_profile ||--o{ symptom_record : "属于"
     baby_profile ||--o{ growth_record : "属于"
     baby_profile ||--o{ sleep_record : "属于"
@@ -194,7 +248,9 @@ erDiagram
     baby_profile ||--o{ food_observation : "属于"
 ```
 
-> **注**：字段以 `minicare-server/migrations/001_init_schema.sql` 为权威，`baby_profile` 另有 `002_baby_allergy_fields.sql` 增量字段。`sync_log` 表已移除（联网写入优先）。
+> **注**：权威来源为 `minicare-server/migrations/` 目录下的 migration 文件（001-008）。
+> Migration 008 完成了 feeding_record 拆分为 4 张独立表 + 枚举字段从 TINYINT 迁移为 VARCHAR。
+> `sync_log` 表已移除（联网写入优先）。
 
 ### 表层级依赖说明
 
@@ -210,19 +266,24 @@ Layer 2 · 宝宝层
 └── baby_profile              宝宝档案（MVP 每家庭限 1 个）
 
 Layer 3 · 业务记录层（均含 baby_id + recorded_by）
-├── feeding_record            饮食记录（奶粉/母乳/营养素/辅食）
-├── symptom_record            表现记录（皮疹/呕吐/腹泻等）
+├── feeding_breast_record     母乳喂养
+├── feeding_formula_record    配方奶喂养
+│   └── feeding_formula_mix   奶粉配比明细
+├── feeding_food_record       辅食喂养
+│   └── feeding_food_item     食物明细
+├── feeding_supplement_record  营养素补充（supplement_items JSON）
+├── symptom_record            表现记录
 ├── growth_record             生长数据（身高/体重/头围）
-├── sleep_record              睡眠记录（计时/补录）
+├── sleep_record              睡眠记录（含计时状态机）
 ├── activity_record           活动记录
 ├── diaper_record             尿布记录
-├── health_record             健康记录（体温/情绪）
-└── medical_record            医疗记录（OCR）
+├── health_record             健康记录（体温/过敏表现）
+└── medical_record            医疗记录
 
 Layer 4 · 衍生逻辑层
-└── food_observation          辅食新食物观察期状态机
+└── food_observation          辅食新食物观察期（4 态：observing/safe/suspected/allergic）
 
-❌ sync_log 表已移除（v2 联网写入优先，无需离线队列）
+共 ~18 张表（含明细表）
 ```
 
 ---
@@ -354,11 +415,10 @@ Layer 4 · 衍生逻辑层
 
 | 平台 | 方案 | 理由 |
 |------|------|------|
-| **iOS** | **Core Data + SQLite** | Apple 官方 ORM；与 iCloud 备份深度集成；SQLite 文件随 iCloud Backup 自动备份 |
-| **Android** | **Room + SQLite** | Google Jetpack 官方 ORM；类型安全；支持 LiveData/Flow 响应式查询 |
-| **Web H5** | **无本地数据库** | 所有数据实时从云端请求；图片依赖浏览器 HTTP 缓存；简化架构，无需 IndexedDB |
+| **微信小程序**（主平台） | **Taro Storage（轻量缓存）** | 缓存全局配置、当日记录摘要；所有写入直接走云端 API |
+| **Web H5**（维护模式） | **无本地数据库** | 所有数据实时从云端请求；图片依赖浏览器 HTTP 缓存 |
 
-iOS 和 Android 两端共用同一套数据模型设计（字段名、类型、枚举值一致），通过统一 REST API 与云端同步。详细缓存表设计见 [DB-02-schema.md](DB-02-schema.md)「客户端缓存表」章节。
+> iOS / Android 原生客户端已从 MVP 规划中移除，小程序作为唯一客户端平台。
 
 ### 3.2 云端数据库选型
 
@@ -423,10 +483,10 @@ iOS 和 Android 两端共用同一套数据模型设计（字段名、类型、�
     ┌──────┴──────────────────────────────────────────────┐
     │                   客户端                             │
     │                                                     │
-    │  iOS (Swift)           Android (Kotlin)   Web H5    │
-    │  Core Data + SQLite    Room + SQLite      无本地DB   │
-    │  URLSession（HTTP）    OkHttp/Retrofit    @cloudbase │
-    │  + Starscream（WS）    + OkHttp WS        /js-sdk    │
+    │  微信小程序（主平台）              Web H5（维护模式） │
+    │  Taro 4.2 + React 18              React 18 + Vite 6 │
+    │  Taro.request（HTTP）              fetch + Bearer     │
+    │  @cloudbase/js-sdk（Auth）         @cloudbase/js-sdk  │
     └──────────────────────────────────────────────────── ┘
 ```
 
@@ -451,6 +511,7 @@ iOS 和 Android 两端共用同一套数据模型设计（字段名、类型、�
 
 ---
 
-*→ 完整建表 DDL 见 `minicare-server/migrations/001_init_schema.sql`（初始表结构）及 `002_baby_allergy_fields.sql`（baby_profile 增量字段）*  
-*→ Schema 说明与 TINYINT 枚举映射见 [DB-02-schema.md](DB-02-schema.md)*  
-*→ Mock 数据与用户故事演练见 [DB-03-mock-data.md](DB-03-mock-data.md)*
+*→ 完整建表 DDL 见 `minicare-server/migrations/` 目录（001-008，含 feeding 拆分与枚举迁移）*  
+*→ Schema 说明见 [DB-02-schema.md](DB-02-schema.md)*  
+*→ Mock 数据与用户故事演练见 [DB-03-mock-data.md](DB-03-mock-data.md)*  
+*→ Schema 重构分析（已完成）见 [DB-04-refactor-analysis.md](DB-04-refactor-analysis.md)*
