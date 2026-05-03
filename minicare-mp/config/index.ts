@@ -27,7 +27,7 @@ export default defineConfig<'webpack5'>(async (merge) => {
     compiler: {
       type: 'webpack5',
       prebundle: {
-        exclude: ['echarts', 'echarts/core', 'echarts/charts', 'echarts/components', 'echarts/renderers', '@cloudbase/js-sdk'],
+        exclude: ['echarts', 'echarts/core', 'echarts/charts', 'echarts/components', 'echarts/renderers', '@cloudbase/app', '@cloudbase/auth'],
       },
     },
     cache: {

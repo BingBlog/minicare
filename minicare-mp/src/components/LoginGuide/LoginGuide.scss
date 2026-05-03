@@ -1,0 +1,43 @@
+.login-guide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+}
+
+.login-guide__icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #fff0f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.login-guide__title {
+  color: #4a3035;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.login-guide__desc {
+  color: #9a8090;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.login-guide__btn {
+  margin-top: 20px;
+  background: linear-gradient(180deg, #f87098, #f9a8c0);
+  border-radius: 24px;
+  padding: 10px 40px;
+}
+
+.login-guide__btn-text {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+}

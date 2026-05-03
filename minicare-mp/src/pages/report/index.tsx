@@ -15,9 +15,11 @@ import { DiaperTab } from './tabs/DiaperTab'
 import { GrowthTab } from './tabs/GrowthTab'
 import { SleepTab } from './tabs/SleepTab'
 import { HealthTab } from './tabs/HealthTab'
+import GuestReport from './GuestReport'
 import { TabKey, TAB_CONFIG, TIME_RANGES, DEFAULT_RANGE_MAP, LONG_RANGE_LABEL } from './types'
 import TabBar from '@/components/TabBar/TabBar'
 import { getStatusBarHeight } from '@/lib/safeArea'
+import { getToken } from '@/api/http'
 
 function calcDateRange(rangeKey: string, birthDate?: string | null) {
   const now = dayjs()
@@ -73,10 +75,17 @@ export default function ReportPage() {
   const [healthData, setHealthData] = useState<DailyHealthData[] | null>(null)
   const [growthData, setGrowthData] = useState<GrowthRecord[] | null>(null)
   const [loading, setLoading] = useState(false)
+  const [isGuest, setIsGuest] = useState(false)
 
   const currentRange = rangeMap[activeTab]
 
   useDidShow(() => {
+    const token = getToken()
+    if (!token) {
+      setIsGuest(true)
+      return
+    }
+    setIsGuest(false)
     familyApi.getMine().then(families => {
       if (!families.length) return
       const fid = families[0].id
@@ -122,6 +131,21 @@ export default function ReportPage() {
     setRangeMap(prev => ({ ...prev, [activeTab]: rangeKey }))
     if (familyId && babyId) loadTabData(familyId, babyId, rangeKey, activeTab, babyBirthDate)
   }, [activeTab, familyId, babyId, babyBirthDate, loadTabData])
+
+  if (isGuest) {
+    return (
+      <View style={S.page}>
+        <View style={S.headerWrap}>
+          <View style={S.headerRow}>
+            <Text style={S.title}>分析</Text>
+          </View>
+          <Text style={S.subtitle}>数据洞察</Text>
+        </View>
+        <GuestReport />
+        <TabBar activeTab='report' />
+      </View>
+    )
+  }
 
   return (
     <View style={S.page}>

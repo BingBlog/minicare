@@ -11,7 +11,7 @@
  *   - EditBabyModal  编辑宝宝档案底部弹层
  *   - MembersModal   家庭成员管理弹层
  */
-import { View, Text } from '@tarojs/components'
+import { View, Text, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { useState, useEffect, useCallback } from 'react'
 import { babyApi, familyApi, fetchAppConfig } from '@/api'
@@ -24,10 +24,16 @@ import SettingsGroup from './SettingsGroup'
 import type { SettingsRow } from './types'
 import EditBabyModal from './EditBabyModal'
 import MembersModal from './MembersModal'
+import ContactModal from './ContactModal'
 import TabBar from '@/components/TabBar/TabBar'
+import LoginGuide from '@/components/LoginGuide/LoginGuide'
 import { getStatusBarHeight } from '@/lib/safeArea'
 
 import './index.scss'
+
+const ICON_LOGOUT = `data:image/svg+xml,${encodeURIComponent(
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#F05060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>`
+)}`
 
 function showToast(title: string) {
   Taro.showToast({ title, icon: 'none', duration: 2000 })
@@ -57,13 +63,22 @@ export default function ProfilePage() {
   const [membersLoading, setMembersLoading] = useState(false)
   const [currentUserRole, setCurrentUserRole] = useState<'owner' | 'member'>('member')
 
+  // 是否未登录（游客模式）
+  const [isGuest, setIsGuest] = useState(false)
+
+  // ── 联系我们弹层 ──────────────────────────────────────────────
+  const [contactOpen, setContactOpen] = useState(false)
+
   // ── 初始数据加载 ──────────────────────────────────────────────
   useEffect(() => {
     let cancelled = false
     const init = async () => {
       const token = getToken()
       if (!token) {
-        Taro.reLaunch({ url: '/pages/login/index' })
+        if (!cancelled) {
+          setIsGuest(true)
+          setLoading(false)
+        }
         return
       }
 
@@ -268,9 +283,67 @@ export default function ProfilePage() {
       icon: 'fileText',
       iconBg: '#F5F5F5',
       label: '隐私政策',
-      onClick: () => showToast('隐私政策与用户协议'),
+      onClick: () => Taro.navigateTo({ url: '/pages/privacy/index?tab=privacy' }),
+    },
+    {
+      id: 'terms',
+      type: 'arrow',
+      icon: 'fileText',
+      iconBg: '#F5F5F5',
+      label: '用户服务协议',
+      onClick: () => Taro.navigateTo({ url: '/pages/privacy/index?tab=terms' }),
+    },
+    {
+      id: 'contact',
+      type: 'arrow',
+      icon: 'mail',
+      iconBg: '#FFF0F4',
+      label: '联系我们',
+      onClick: () => setContactOpen(true),
     },
   ]
+
+  // 游客模式
+  if (isGuest) {
+    return (
+      <View className='profile-page'>
+        <View className='profile-page__header' style={{ paddingTop: `${getStatusBarHeight() + 12}px` }}>
+          <Text className='profile-page__title'>我的</Text>
+        </View>
+        <View className='profile-page__body'>
+          <LoginGuide title='登录后查看' desc='登录后可管理宝宝档案、家庭成员和个人设置' />
+          <SettingsGroup title='关于' rows={[
+            {
+              id: 'privacy',
+              type: 'arrow',
+              icon: 'fileText',
+              iconBg: '#F5F5F5',
+              label: '隐私政策',
+              onClick: () => Taro.navigateTo({ url: '/pages/privacy/index?tab=privacy' }),
+            },
+            {
+              id: 'terms',
+              type: 'arrow',
+              icon: 'fileText',
+              iconBg: '#F5F5F5',
+              label: '用户服务协议',
+              onClick: () => Taro.navigateTo({ url: '/pages/privacy/index?tab=terms' }),
+            },
+            {
+              id: 'contact',
+              type: 'arrow',
+              icon: 'mail',
+              iconBg: '#FFF0F4',
+              label: '联系我们',
+              onClick: () => setContactOpen(true),
+            },
+          ]} />
+          <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
+        </View>
+        <TabBar activeTab='profile' />
+      </View>
+    )
+  }
 
   return (
     <View className='profile-page'>
@@ -304,15 +377,7 @@ export default function ProfilePage() {
         {/* 退出登录按钮 */}
         <View className='profile-page__logout-wrap'>
           <View className='profile-page__logout-btn' onClick={handleLogout}>
-            <svg
-              viewBox='0 0 24 24' fill='none' stroke='#F05060'
-              strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'
-              style={{ width: 18, height: 18 }}
-            >
-              <path d='M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4' />
-              <polyline points='16 17 21 12 16 7' />
-              <line x1='21' y1='12' x2='9' y2='12' />
-            </svg>
+            <Image src={ICON_LOGOUT} style={{ width: '18px', height: '18px' }} />
             退出登录
           </View>
         </View>
@@ -350,6 +415,9 @@ export default function ProfilePage() {
         onRemoveMember={handleRemoveMember}
         onClose={() => setMembersOpen(false)}
       />
+
+      {/* 联系我们弹层 */}
+      <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
 
       {/* 底部导航栏 */}
       <TabBar activeTab='profile' />

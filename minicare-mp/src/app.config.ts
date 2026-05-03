@@ -2,18 +2,56 @@
 export default {
   pages: [
     'pages/home/index',
-    'pages/login/index',
-    'pages/onboarding/index',
-    'pages/records/index',
     'pages/records/list/index',
-    'pages/records/feeding/index',
-    'pages/records/diaper/index',
-    'pages/records/sleep/index',
-    'pages/records/growth/index',
-    'pages/records/health/index',
-    'pages/profile/index',
     'pages/report/index',
+    'pages/profile/index',
     'pages/index/index',
+  ],
+  subPackages: [
+    {
+      root: 'pages/login',
+      pages: ['index'],
+    },
+    {
+      root: 'pages/onboarding',
+      pages: ['index'],
+    },
+    {
+      root: 'pages/privacy',
+      pages: ['index'],
+    },
+    {
+      root: 'pages/records/feeding',
+      pages: ['index'],
+    },
+    {
+      root: 'pages/records/diaper',
+      pages: ['index'],
+    },
+    {
+      root: 'pages/records/sleep',
+      pages: ['index'],
+    },
+    {
+      root: 'pages/records/growth',
+      pages: ['index'],
+    },
+    {
+      root: 'pages/records/health',
+      pages: ['index'],
+    },
+    {
+      root: 'pages/records/medical',
+      pages: ['index'],
+    },
+    {
+      root: 'pages/records/activity',
+      pages: ['index'],
+    },
+    {
+      root: 'pages/records/symptom',
+      pages: ['index'],
+    },
   ],
   window: {
     backgroundTextStyle: 'light',

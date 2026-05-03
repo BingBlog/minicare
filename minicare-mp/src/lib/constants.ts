@@ -96,6 +96,9 @@ export const HOME_RECORD_MP_ROUTES: Record<string, string> = {
   '/records/form/sleep': '/pages/records/sleep/index',
   '/records/form/growth': '/pages/records/growth/index',
   '/records/form/health': '/pages/records/health/index',
+  '/records/form/medical': '/pages/records/medical/index',
+  '/records/form/activity': '/pages/records/activity/index',
+  '/records/form/symptom': '/pages/records/symptom/index',
 }
 
 export const SLEEP_PERIOD_LABELS: Record<string, string> = {
@@ -141,9 +144,12 @@ export const SPIRIT_LABELS: Record<string, string> = {
 }
 
 export const VISIT_TYPE_LABELS: Record<string, string> = {
-  checkup: '常规体检',
-  allergy: '过敏专科',
-  sick: '生病就诊',
+  checkup: '儿保检查',
+  allergy: '过敏原检测',
+  sick: '就诊记录',
+  vaccine: '疫苗接种',
+  blood: '血液检查',
+  other: '其他检查',
 }
 
 /** 过敏程度选项配置（含激活颜色） */

@@ -11,6 +11,9 @@ const MP_ROUTE_MAP: Record<string, string> = {
   '/records/form/sleep': '/pages/records/sleep/index',
   '/records/form/growth': '/pages/records/growth/index',
   '/records/form/health': '/pages/records/health/index',
+  '/records/form/medical': '/pages/records/medical/index',
+  '/records/form/activity': '/pages/records/activity/index',
+  '/records/form/symptom': '/pages/records/symptom/index',
   '/profile': '/pages/profile/index',
   '/home': '/pages/home/index',
 }

@@ -10,6 +10,7 @@ import { getToken } from '@/api/http'
 
 import HeroSection from './HeroSection'
 import QuickActions from './QuickActions'
+import GuestQuickActions from './GuestQuickActions'
 import TodayTimeline from './TodayTimeline'
 import SleepBanner from './SleepBanner'
 import FeedingBanner from './FeedingBanner'
@@ -74,12 +75,18 @@ export default function HomePage() {
     }
   }, [])
 
+  // 是否处于游客模式（未登录）
+  const [isGuest, setIsGuest] = useState(false)
+
   useEffect(() => {
     let cancelled = false
     const loadHomeData = async () => {
       const token = getToken()
       if (!token) {
-        Taro.reLaunch({ url: '/pages/login/index' })
+        if (!cancelled) {
+          setIsGuest(true)
+          setLoading(false)
+        }
         return
       }
       try {
@@ -210,6 +217,47 @@ export default function HomePage() {
             </View>
           </View>
         </View>
+      </View>
+    )
+  }
+
+  // ── 游客模式：未登录时展示功能预览，引导用户自行登录 ──
+  if (isGuest) {
+    return (
+      <View className='home-page'>
+        <View className='home-hero' style={{ paddingTop: `${getStatusBarHeight() + 8}px` }}>
+          <View className='home-hero__decor home-hero__decor--big' />
+          <View className='home-hero__decor home-hero__decor--small' />
+          <View className='home-hero__head'>
+            <View>
+              <Text className='home-hero__date'>{getTodayDateStr()}</Text>
+              <Text className='home-hero__greeting'>{getGreeting()}</Text>
+            </View>
+          </View>
+          <View className='home-baby-card home-baby-card--guest'>
+            <Text className='home-baby-card__name'>敏宝日记</Text>
+            <Text className='home-baby-card__sub'>专为过敏宝宝家庭打造的成长记录工具</Text>
+          </View>
+          <View className='home-hero__bottom-mask' />
+        </View>
+
+        <View className='home-content'>
+          {/* 快捷记录（与登录后同款网格，点击时引导登录） */}
+          <GuestQuickActions />
+
+          {/* 登录引导 */}
+          <View className='home-guest-login'>
+            <Text className='home-guest-login__title'>登录后即可开始记录</Text>
+            <Text className='home-guest-login__desc'>使用手机号登录，随时随地记录宝宝的成长点滴</Text>
+            <View
+              className='home-guest-login__btn'
+              onClick={() => Taro.navigateTo({ url: '/pages/login/index' })}
+            >
+              <Text className='home-guest-login__btn-text'>立即登录</Text>
+            </View>
+          </View>
+        </View>
+        <TabBar activeTab='home' />
       </View>
     )
   }

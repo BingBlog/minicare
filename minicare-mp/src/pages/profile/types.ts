@@ -1,6 +1,6 @@
 import type { AllergyType, AllergyLevel } from '@/api'
 
-export type SettingsRowIcon = 'font' | 'users' | 'phone' | 'heart' | 'fileText'
+export type SettingsRowIcon = 'font' | 'users' | 'phone' | 'heart' | 'fileText' | 'mail'
 
 export interface SettingsRowBase {
   id: string

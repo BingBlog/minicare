@@ -1,0 +1,468 @@
+/* 活动记录表单页 — 样式（与 Web activity 页面视觉对齐） */
+
+.activity-page {
+  min-height: 100vh;
+  background: #FAF5F6;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── 导航栏 ── */
+.activity-nav {
+  background: #fff;
+  border-bottom: 0.5px solid #F5EEF0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.activity-nav__content {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 16px;
+  position: relative;
+}
+
+.activity-nav__back {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.activity-nav__back-icon {
+  font-size: 22px;
+  color: #7A5A60;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.activity-nav__title {
+  flex: 1;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #3A2428;
+}
+
+.activity-nav__placeholder {
+  width: 32px;
+}
+
+/* ── 加载态 ── */
+.activity-loading {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.activity-loading__text {
+  font-size: 14px;
+  color: #9A8090;
+}
+
+/* ── 表单主体 ── */
+.activity-body {
+  flex: 1;
+  padding-bottom: 100px;
+}
+
+/* ── 节标签 ── */
+.activity-section-label {
+  padding: 16px 18px 8px;
+  font-size: 12px;
+  color: #9A8090;
+  font-weight: 500;
+}
+
+/* ── 白底卡片 ── */
+.activity-card {
+  margin: 0 16px 12px;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(200, 100, 120, 0.08);
+}
+
+.activity-card__row {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+}
+
+.activity-card__row--border {
+  border-bottom: 0.5px solid #F5EEF0;
+}
+
+.activity-card__label {
+  font-size: 14px;
+  color: #7A5A60;
+  flex: 1;
+}
+
+.activity-card__picker {
+  display: flex;
+  align-items: center;
+}
+
+.activity-card__picker-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #4A3035;
+}
+
+/* ── 活动类型卡片 ── */
+.activity-type-card {
+  margin: 0 16px 12px;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(200, 100, 120, 0.08);
+}
+
+.activity-type-card__header {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px 8px;
+  gap: 8px;
+  border-bottom: 0.5px solid #F5EEF0;
+}
+
+.activity-type-card__header-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.activity-type-card__header-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #B09098;
+}
+
+.activity-type-card__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 12px;
+}
+
+.activity-type-card__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 4px;
+  border-radius: 12px;
+  border: 1.5px solid #E5D8DA;
+  background: #fff;
+  transition: all 0.15s ease;
+}
+
+.activity-type-card__item--active {
+  /* border-color & background set via inline style */
+}
+
+.activity-type-card__item-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.activity-type-card__item-svg {
+  width: 18px;
+  height: 18px;
+}
+
+.activity-type-card__item-label {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.activity-type-card__item-sub {
+  font-size: 11px;
+  line-height: 1.2;
+  text-align: center;
+}
+
+/* ── 活动时长卡片 ── */
+.activity-duration-card {
+  margin: 0 16px 12px;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(200, 100, 120, 0.08);
+}
+
+.activity-duration-card__header {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px 8px;
+  gap: 8px;
+  border-bottom: 0.5px solid #F5EEF0;
+}
+
+.activity-duration-card__header-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.activity-duration-card__header-text {
+  font-size: 13px;
+  font-weight: 700;
+  color: #7A5A60;
+}
+
+.activity-duration-card__body {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+}
+
+.activity-duration-card__btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid #E5D8DA;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+}
+
+.activity-duration-card__btn-text {
+  font-size: 18px;
+  color: #9A8090;
+  line-height: 1;
+}
+
+.activity-duration-card__value-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.activity-duration-card__value {
+  font-size: 28px;
+  font-weight: 800;
+  color: #4A3035;
+}
+
+.activity-duration-card__unit {
+  font-size: 12px;
+  color: #9A8090;
+  margin-top: 2px;
+}
+
+/* ── 活动强度卡片 ── */
+.activity-intensity-card {
+  margin: 0 16px 12px;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(200, 100, 120, 0.08);
+}
+
+.activity-intensity-card__header {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px 8px;
+  gap: 8px;
+  border-bottom: 0.5px solid #F5EEF0;
+}
+
+.activity-intensity-card__header-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.activity-intensity-card__header-text {
+  font-size: 13px;
+  font-weight: 700;
+  color: #7A5A60;
+}
+
+.activity-intensity-card__options {
+  display: flex;
+  gap: 10px;
+  padding: 12px 16px;
+}
+
+.activity-intensity-card__btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 0;
+  border-radius: 12px;
+  border: 1.5px solid #E5D8DA;
+  background: #fff;
+  transition: all 0.15s ease;
+}
+
+.activity-intensity-card__btn--active {
+  /* border-color & background set via inline style */
+}
+
+.activity-intensity-card__btn-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.activity-intensity-card__btn-svg {
+  width: 18px;
+  height: 18px;
+}
+
+.activity-intensity-card__btn-label {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* ── 备注 ── */
+.activity-note__input {
+  width: 100%;
+  min-height: 60px;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #4A3035;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+
+/* ── 底部提交栏 ── */
+.activity-submit {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px 16px;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  background: #fff;
+  border-top: 0.5px solid #F5EEF0;
+  z-index: 100;
+}
+
+.activity-submit__inner {
+  display: flex;
+  gap: 12px;
+}
+
+.activity-submit__btn {
+  height: 48px;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.activity-submit__btn--primary {
+  flex: 1;
+  background: linear-gradient(135deg, #DDB870, #E8CC8C);
+  box-shadow: 0 4px 12px rgba(221, 184, 112, 0.3);
+}
+
+.activity-submit__btn--delete {
+  width: 80px;
+  background: #F5F0F2;
+}
+
+.activity-submit__btn--disabled {
+  opacity: 0.6;
+}
+
+.activity-submit__btn-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.activity-submit__btn-text--delete {
+  color: #F05060;
+}
+
+/* ── 删除确认底部 Sheet ── */
+.activity-sheet-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.activity-sheet {
+  width: 100%;
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+  padding: 12px 20px;
+  padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  text-align: center;
+}
+
+.activity-sheet__handle {
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background: #E5D8DA;
+  margin: 0 auto 16px;
+}
+
+.activity-sheet__title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #4A3035;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.activity-sheet__desc {
+  font-size: 12px;
+  color: #9A8090;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.activity-sheet__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.activity-sheet__btn {
+  height: 48px;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.activity-sheet__btn--cancel {
+  background: #F5F0F2;
+  color: #7A5A60;
+}
+
+.activity-sheet__btn--danger {
+  background: #F05060;
+  color: #fff;
+}

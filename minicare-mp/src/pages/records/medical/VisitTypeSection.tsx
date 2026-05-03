@@ -1,0 +1,55 @@
+/**
+ * 医疗记录 - 检查类型选择（2 列网格，6 种类型）
+ * 与 Web pages/records/medical/VisitTypeSection.tsx 1:1 对齐
+ */
+import { View, Text, Image } from '@tarojs/components'
+
+/** 检查类型图标 Data URI（与 Web icons.tsx 中 6 个图标语义一致） */
+const ICON_BABY = `data:image/svg+xml,${encodeURIComponent('<svg viewBox="0 0 24 24" fill="none" stroke="#F0B8C8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>')}`
+const ICON_MICROSCOPE = `data:image/svg+xml,${encodeURIComponent('<svg viewBox="0 0 24 24" fill="none" stroke="#F0A0B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M6 18h8"/><path d="M3 22h18"/><path d="M14 22a7 7 0 1 0 0-14h-1"/><path d="M9 14h2"/><path d="M9 12a2 2 0 0 1-2-2V6h6v4a2 2 0 0 1-2 2Z"/><path d="M12 6V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3"/></svg>')}`
+const ICON_HOSPITAL = `data:image/svg+xml,${encodeURIComponent('<svg viewBox="0 0 24 24" fill="none" stroke="#C8A8D8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>')}`
+const ICON_SYRINGE = `data:image/svg+xml,${encodeURIComponent('<svg viewBox="0 0 24 24" fill="none" stroke="#88C8A0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="m18 2 4 4"/><path d="m17 7 3-3"/><path d="M19 9 8.7 19.3c-1 1-2.5 1-3.4 0l-.6-.6c-1-1-1-2.5 0-3.4L15 5"/><path d="m9 11 4 4"/><path d="m5 19-3 3"/><path d="m14 4 6 6"/></svg>')}`
+const ICON_BLOOD = `data:image/svg+xml,${encodeURIComponent('<svg viewBox="0 0 24 24" fill="none" stroke="#F87098" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>')}`
+const ICON_FILE = `data:image/svg+xml,${encodeURIComponent('<svg viewBox="0 0 24 24" fill="none" stroke="#B09A9D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>')}`
+
+/** 与 Web VISIT_TYPE_OPTIONS 1:1 对齐的选项列表 */
+const VISIT_TYPE_OPTIONS: { key: string; label: string; color: string; icon: string }[] = [
+  { key: 'checkup', label: '儿保检查', color: '#F0B8C8', icon: ICON_BABY },
+  { key: 'allergy', label: '过敏原检测', color: '#F0A0B0', icon: ICON_MICROSCOPE },
+  { key: 'sick', label: '就诊记录', color: '#C8A8D8', icon: ICON_HOSPITAL },
+  { key: 'vaccine', label: '疫苗接种', color: '#88C8A0', icon: ICON_SYRINGE },
+  { key: 'blood', label: '血液检查', color: '#F87098', icon: ICON_BLOOD },
+  { key: 'other', label: '其他检查', color: '#B09A9D', icon: ICON_FILE },
+]
+
+interface Props {
+  value: string
+  onChange: (v: string) => void
+}
+
+export default function VisitTypeSection({ value, onChange }: Props) {
+  return (
+    <View className='medical-visit-grid'>
+      {VISIT_TYPE_OPTIONS.map(({ key, label, color, icon }) => (
+        <View
+          key={key}
+          className={`medical-visit-item ${value === key ? 'medical-visit-item--active' : ''}`}
+          onClick={() => onChange(key)}
+        >
+          <View
+            className='medical-visit-item__icon'
+            style={{ background: `${color}22` }}
+          >
+            <Image src={icon} className='medical-visit-item__icon-img' />
+          </View>
+          <Text
+            className='medical-visit-item__label'
+            style={{ color: value === key ? '#F87098' : '#4A3035' }}
+          >
+            {label}
+          </Text>
+        </View>
+      ))}
+    </View>
+  )
+}

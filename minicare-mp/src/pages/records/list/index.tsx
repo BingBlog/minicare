@@ -34,6 +34,7 @@ import {
 } from '@/lib/recordsSort'
 import RecordGroup from './RecordGroup'
 import RecordActionSheet from './RecordActionSheet'
+import GuestRecordsList from './GuestRecordsList'
 import type { Family, Baby, RecordItem } from '@/api/types'
 import './index.scss'
 
@@ -96,6 +97,9 @@ export default function RecordsListPage() {
   const [selectedRecord, setSelectedRecord] = useState<RecordItem | null>(null)
   const [actionOpen, setActionOpen] = useState(false)
 
+  // 是否未登录
+  const [isGuest, setIsGuest] = useState(false)
+
   // 初始化加载 family + baby（useDidShow 保证 tabBar 切换回来时也能刷新）
   const cancelRef = useRef(false)
   useDidShow(() => {
@@ -103,9 +107,11 @@ export default function RecordsListPage() {
     async function init() {
       const token = getToken()
       if (!token) {
-        Taro.reLaunch({ url: '/pages/login/index' })
+        setIsGuest(true)
+        setLoading(false)
         return
       }
+      setIsGuest(false)
       setLoading(true)
       try {
         const families = await familyApi.getMine()
@@ -231,6 +237,15 @@ export default function RecordsListPage() {
 
   // ── 加载中 / 无家庭宝宝 ──
   const safeAreaStyle = { paddingTop: `${getStatusBarHeight()}px` }
+
+  if (isGuest) {
+    return (
+      <View className='records-list-page' style={safeAreaStyle}>
+        <GuestRecordsList />
+        <TabBar activeTab='records' />
+      </View>
+    )
+  }
 
   if (loading && !family) {
     return (

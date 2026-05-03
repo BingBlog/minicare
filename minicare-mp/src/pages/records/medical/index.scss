@@ -1,0 +1,625 @@
+/* 医疗记录表单页 — 样式（与 health 页面风格保持一致） */
+
+.medical-page {
+  min-height: 100vh;
+  background: #FAF5F6;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── 导航栏 ── */
+.medical-nav {
+  background: #fff;
+  border-bottom: 0.5px solid #F5EEF0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.medical-nav__content {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 16px;
+  position: relative;
+}
+
+.medical-nav__back {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.medical-nav__back-icon {
+  font-size: 22px;
+  color: #7A5A60;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.medical-nav__title {
+  flex: 1;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #3A2428;
+}
+
+.medical-nav__placeholder {
+  width: 32px;
+}
+
+/* ── 加载态 ── */
+.medical-loading {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.medical-loading__text {
+  font-size: 14px;
+  color: #9A8090;
+}
+
+/* ── 表单主体 ── */
+.medical-body {
+  flex: 1;
+  padding-bottom: 100px;
+}
+
+/* ── 节标签 ── */
+.medical-section-label {
+  padding: 16px 18px 8px;
+  font-size: 12px;
+  color: #9A8090;
+  font-weight: 500;
+}
+
+/* ── 白底卡片（通用） ── */
+.medical-card {
+  margin: 0 16px 12px;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(200, 100, 120, 0.08);
+}
+
+.medical-card__row {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+}
+
+.medical-card__row--border {
+  border-bottom: 0.5px solid #F5EEF0;
+}
+
+.medical-card__label {
+  font-size: 13px;
+  color: #7A5A60;
+  width: 160rpx;
+  flex-shrink: 0;
+}
+
+.medical-card__picker {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.medical-card__picker-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: #4A3035;
+}
+
+.medical-card__input {
+  flex: 1;
+  font-size: 13px;
+  color: #4A3035;
+  text-align: right;
+}
+
+.medical-card__placeholder {
+  color: #C0A8B0;
+  font-size: 13px;
+}
+
+.medical-card__textarea-wrap {
+  padding: 14px 16px;
+}
+
+.medical-card__textarea-label {
+  display: block;
+  font-size: 13px;
+  color: #7A5A60;
+  margin-bottom: 8px;
+}
+
+.medical-card__textarea {
+  width: 100%;
+  min-height: 60px;
+  font-size: 13px;
+  color: #4A3035;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+
+/* ── 检查类型网格 ── */
+.medical-visit-grid {
+  margin: 0 16px 12px;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(200, 100, 120, 0.08);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  padding: 8px 12px 14px;
+}
+
+.medical-visit-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 12px;
+  border-radius: 12px;
+  border: 1.5px solid #EDE0E3;
+  background: #fff;
+  transition: all 0.15s ease;
+}
+
+.medical-visit-item--active {
+  border-color: #F87098;
+  background: #FFF5F8;
+}
+
+.medical-visit-item__icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.medical-visit-item__icon-img {
+  width: 15px;
+  height: 15px;
+}
+
+.medical-visit-item__label {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ── 用药记录 ── */
+.medical-meds__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 10px;
+  border-bottom: 0.5px solid #F5EEF0;
+}
+
+.medical-meds__title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #7A5A60;
+}
+
+.medical-meds__add-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  background: #FFF5F8;
+}
+
+.medical-meds__add-icon {
+  font-size: 14px;
+  font-weight: 600;
+  color: #F87098;
+  line-height: 1;
+}
+
+.medical-meds__add-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #F87098;
+}
+
+.medical-meds__empty {
+  padding: 16px;
+  text-align: center;
+}
+
+.medical-meds__empty-text {
+  font-size: 13px;
+  color: #9A8090;
+}
+
+.medical-meds__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+}
+
+.medical-meds__item--border {
+  border-bottom: 0.5px solid #F5EEF0;
+}
+
+.medical-meds__name {
+  flex: 1;
+  font-size: 13px;
+  color: #4A3035;
+}
+
+.medical-meds__dose {
+  width: 180rpx;
+  font-size: 13px;
+  color: #4A3035;
+  text-align: right;
+}
+
+.medical-meds__remove {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: 4px;
+}
+
+.medical-meds__remove-icon {
+  font-size: 14px;
+  color: #F05060;
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* ── OCR 上传区 ── */
+.medical-ocr__upload {
+  margin: 0 16px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  border-radius: 16px;
+  background: #FFF5F8;
+  border: 1.5px dashed #F0B8C8;
+  padding: 20px 16px;
+}
+
+.medical-ocr__upload--loading {
+  opacity: 0.6;
+}
+
+.medical-ocr__camera {
+  width: 32px;
+  height: 32px;
+}
+
+.medical-ocr__title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #F87098;
+}
+
+.medical-ocr__desc {
+  font-size: 12px;
+  color: #9A8090;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.medical-ocr__btn {
+  margin-top: 4px;
+  padding: 8px 20px;
+  border-radius: 8px;
+  background: #F87098;
+  box-shadow: 0 3px 10px rgba(248, 112, 152, 0.3);
+}
+
+.medical-ocr__btn-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* OCR 结果 */
+.medical-ocr__result {
+  margin: 0 16px 12px;
+  border-radius: 16px;
+  background: #FFF5F8;
+  border: 1.5px solid #F0B8C8;
+  padding: 14px 16px;
+}
+
+.medical-ocr__result-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #F87098;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.medical-ocr__result-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 0.5px solid #F5EEF0;
+}
+
+.medical-ocr__result-label {
+  font-size: 12px;
+  color: #9A8090;
+}
+
+.medical-ocr__result-value-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.medical-ocr__result-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: #4A3035;
+}
+
+.medical-ocr__result-edit {
+  font-size: 11px;
+  color: #F87098;
+  font-weight: 500;
+}
+
+.medical-ocr__result-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.medical-ocr__result-btn {
+  flex: 1;
+  padding: 10px 0;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.medical-ocr__result-btn--secondary {
+  border: 1px solid #E5D8DA;
+  background: #fff;
+  color: #9A8090;
+}
+
+.medical-ocr__result-btn--primary {
+  background: #F87098;
+  color: #fff;
+}
+
+/* ── 复查提醒 ── */
+.medical-followup {
+  margin: 0 16px 12px;
+  border-radius: 16px;
+  background: #FFFBEB;
+  border: 1.5px solid #FCD34D;
+  padding: 14px 16px;
+}
+
+.medical-followup__header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.medical-followup__title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #B45309;
+}
+
+.medical-followup__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.medical-followup__label {
+  font-size: 13px;
+  color: #4A3035;
+  flex: 1;
+}
+
+.medical-followup__date {
+  padding: 4px 8px;
+  border-radius: 8px;
+  border: 1px solid #E5D8DA;
+  background: #fff;
+}
+
+.medical-followup__date-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: #4A3035;
+}
+
+.medical-followup__toggle {
+  width: 44px;
+  height: 24px;
+  border-radius: 12px;
+  background: #E5D8DA;
+  position: relative;
+  flex-shrink: 0;
+  transition: background 0.2s ease;
+}
+
+.medical-followup__toggle--on {
+  background: #F87098;
+}
+
+.medical-followup__toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  transition: left 0.2s ease;
+}
+
+.medical-followup__toggle--on .medical-followup__toggle-thumb {
+  left: 22px;
+}
+
+.medical-followup__hint {
+  font-size: 11px;
+  color: #9A8090;
+  margin-top: 8px;
+  display: block;
+}
+
+/* ── 备注 ── */
+.medical-note__input {
+  width: 100%;
+  min-height: 60px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: #4A3035;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+
+/* ── 底部提交栏 ── */
+.medical-submit {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px 16px;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  background: #fff;
+  border-top: 0.5px solid #F5EEF0;
+  z-index: 100;
+}
+
+.medical-submit__inner {
+  display: flex;
+  gap: 12px;
+}
+
+.medical-submit__btn {
+  height: 48px;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.medical-submit__btn--primary {
+  flex: 1;
+  background: linear-gradient(135deg, #F87098, #F9A8C0);
+  box-shadow: 0 4px 12px rgba(248, 112, 152, 0.3);
+}
+
+.medical-submit__btn--delete {
+  width: 80px;
+  background: #F5F0F2;
+}
+
+.medical-submit__btn--disabled {
+  opacity: 0.6;
+}
+
+.medical-submit__btn-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.medical-submit__btn-text--delete {
+  color: #F05060;
+}
+
+/* ── 删除确认底部 Sheet ── */
+.medical-sheet-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.medical-sheet {
+  width: 100%;
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+  padding: 12px 20px;
+  padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  text-align: center;
+}
+
+.medical-sheet__handle {
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background: #E5D8DA;
+  margin: 0 auto 16px;
+}
+
+.medical-sheet__title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #4A3035;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.medical-sheet__desc {
+  font-size: 12px;
+  color: #9A8090;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.medical-sheet__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.medical-sheet__btn {
+  height: 48px;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.medical-sheet__btn--cancel {
+  background: #F5F0F2;
+  color: #7A5A60;
+}
+
+.medical-sheet__btn--danger {
+  background: #F05060;
+  color: #fff;
+}

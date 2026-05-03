@@ -919,3 +919,133 @@
   background: #f05060;
   color: #fff;
 }
+
+// ── ContactModal ──────────────────────────────────────────────────
+
+.contact-modal__mask {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  padding: 0 24px;
+}
+
+.contact-modal {
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 20px;
+  padding: 24px 20px;
+}
+
+.contact-modal__title {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  color: #4a3035;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.contact-modal__desc {
+  display: block;
+  font-size: 13px;
+  color: #6a5560;
+  line-height: 1.7;
+  margin-bottom: 10px;
+}
+
+.contact-modal__list {
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  background: #fdf7f5;
+  border-radius: 12px;
+}
+
+.contact-modal__item {
+  display: block;
+  font-size: 13px;
+  color: #6a5560;
+  line-height: 2;
+
+  &::before {
+    content: '· ';
+    color: #f87098;
+    font-weight: 700;
+  }
+}
+
+.contact-modal__email-wrap {
+  padding: 14px;
+  background: #fff0f4;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+.contact-modal__email-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #9a8090;
+  margin-bottom: 8px;
+}
+
+.contact-modal__email-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.contact-modal__email {
+  font-size: 15px;
+  font-weight: 600;
+  color: #f87098;
+}
+
+.contact-modal__copy-btn {
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: #f87098;
+  flex-shrink: 0;
+
+  &:active {
+    opacity: 0.85;
+  }
+}
+
+.contact-modal__copy-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.contact-modal__tip {
+  display: block;
+  font-size: 12px;
+  color: #c0a8ad;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.contact-modal__close-btn {
+  width: 100%;
+  padding: 14px 0;
+  text-align: center;
+  border-radius: 16px;
+  background: #f5f0f2;
+
+  &:active {
+    background: #ebe0e4;
+  }
+}
+
+.contact-modal__close-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #9a8090;
+}
