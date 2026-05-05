@@ -16,6 +16,7 @@ import SubmitBar from '@/components/SubmitBar'
 import PageLoading from '@/components/PageLoading'
 import SpiritSection from './SpiritSection'
 import MoodSection from './MoodSection'
+import { useIsIPad } from '@/lib/useIsIPad'
 import './index.scss'
 
 // -- Spirit/Mood 映射 --
@@ -48,6 +49,8 @@ function toFrontendMood(backendMood: string): string {
 }
 
 export default function SymptomFormPage() {
+  const isIPad = useIsIPad()
+  const cls = (base: string) => isIPad ? `${base} is-ipad` : base
   // ── 表单状态 ──
   const [recordDate, setRecordDate] = useState(nowDate())
   const [recordTime, setRecordTime] = useState(nowTime())
@@ -114,7 +117,7 @@ export default function SymptomFormPage() {
   // ── Loading ──
   if (loading) {
     return (
-      <View className='symptom-page'>
+      <View className={cls('symptom-page')}>
         <RecordNavBar title='表现记录' isEditMode={false} />
         <PageLoading />
       </View>
@@ -122,7 +125,7 @@ export default function SymptomFormPage() {
   }
 
   return (
-    <View className='symptom-page'>
+    <View className={cls('symptom-page')}>
       <RecordNavBar
         title='表现记录'
         isEditMode={isEditMode}

@@ -21,6 +21,10 @@ export default {
       pages: ['index'],
     },
     {
+      root: 'pages/dashboard',
+      pages: ['index'],
+    },
+    {
       root: 'pages/records/feeding',
       pages: ['index'],
     },
@@ -53,12 +57,14 @@ export default {
       pages: ['index'],
     },
   ],
+  resizable: true,
   window: {
     backgroundTextStyle: 'light',
     navigationBarBackgroundColor: '#fff',
     navigationBarTitleText: '敏宝日记',
     navigationBarTextStyle: 'black',
     navigationStyle: 'custom',
+    pageOrientation: 'auto',
   },
   tabBar: {
     custom: true,

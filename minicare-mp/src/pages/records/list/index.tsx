@@ -18,6 +18,7 @@ import Taro, { useDidShow } from '@tarojs/taro'
 import { useEffect, useRef, useState } from 'react'
 import { familyApi, babyApi, recordsApi } from '@/api'
 import { getStatusBarHeight } from '@/lib/safeArea'
+import { useIsIPad } from '@/lib/useIsIPad'
 import { getToken } from '@/api/http'
 import TabBar from '@/components/TabBar/TabBar'
 import {
@@ -92,6 +93,8 @@ function buildEditUrl(record: RecordItem): string {
 }
 
 export default function RecordsListPage() {
+  const isIPad = useIsIPad()
+  const cls = (base: string) => isIPad ? `${base} is-ipad` : base
   const [family, setFamily] = useState<Family | null>(null)
   const [baby, setBaby] = useState<Baby | null>(null)
   const [records, setRecords] = useState<RecordItem[]>([])
@@ -243,7 +246,7 @@ export default function RecordsListPage() {
 
   if (isGuest) {
     return (
-      <View className='records-list-page' style={safeAreaStyle}>
+      <View className={cls('records-list-page')} style={safeAreaStyle}>
         <GuestRecordsList />
         <TabBar activeTab='records' />
       </View>
@@ -252,7 +255,7 @@ export default function RecordsListPage() {
 
   if (loading && !family) {
     return (
-      <View className='records-list-page' style={safeAreaStyle}>
+      <View className={cls('records-list-page')} style={safeAreaStyle}>
         <View className='records-status'>
           <Text className='records-status__title'>加载中...</Text>
         </View>
@@ -263,7 +266,7 @@ export default function RecordsListPage() {
 
   if (!family || !baby) {
     return (
-      <View className='records-list-page' style={safeAreaStyle}>
+      <View className={cls('records-list-page')} style={safeAreaStyle}>
         <View className='records-status'>
           <View className='records-status__icon'>
             <Text>--</Text>
@@ -276,7 +279,7 @@ export default function RecordsListPage() {
   }
 
   return (
-    <View className='records-list-page' style={safeAreaStyle}>
+    <View className={cls('records-list-page')} style={safeAreaStyle}>
       {/* ── 筛选栏 ── */}
       <View className='records-filter'>
         {/* 标题行 */}

@@ -1,3 +1,5 @@
+@use '../../../styles/ipad-adapt-mixins' as ipad;
+
 .records-list-page {
   display: flex;
   flex-direction: column;
@@ -610,3 +612,5 @@
   background: #F05060;
   color: #fff;
 }
+
+@include ipad.records-list;

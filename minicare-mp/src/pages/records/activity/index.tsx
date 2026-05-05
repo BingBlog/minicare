@@ -16,6 +16,7 @@ import SubmitBar from '@/components/SubmitBar'
 import PageLoading from '@/components/PageLoading'
 import ActivityTypeSection from './ActivityTypeSection'
 import IntensitySection from './IntensitySection'
+import { useIsIPad } from '@/lib/useIsIPad'
 import './index.scss'
 
 // ── 类型定义 ──
@@ -26,6 +27,8 @@ type ActivityIntensity = 'easy' | 'medium' | 'active'
 const ICON_CLOCK = `data:image/svg+xml,${encodeURIComponent('<svg viewBox="0 0 24 24" fill="none" stroke="#F0B8C8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>')}`
 
 export default function ActivityFormPage() {
+  const isIPad = useIsIPad()
+  const cls = (base: string) => isIPad ? `${base} is-ipad` : base
   // ── 表单状态 ──
   const [recordDate, setRecordDate] = useState(nowDate())
   const [recordTime, setRecordTime] = useState(nowTime())
@@ -88,7 +91,7 @@ export default function ActivityFormPage() {
   // ── Loading ──
   if (loading) {
     return (
-      <View className='activity-page'>
+      <View className={cls('activity-page')}>
         <RecordNavBar title='活动记录' isEditMode={false} />
         <PageLoading />
       </View>
@@ -96,7 +99,7 @@ export default function ActivityFormPage() {
   }
 
   return (
-    <View className='activity-page'>
+    <View className={cls('activity-page')}>
       <RecordNavBar
         title='活动记录'
         isEditMode={isEditMode}

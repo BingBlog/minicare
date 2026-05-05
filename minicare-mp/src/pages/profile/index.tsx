@@ -28,6 +28,7 @@ import ContactModal from './ContactModal'
 import TabBar from '@/components/TabBar/TabBar'
 import LoginGuide from '@/components/LoginGuide/LoginGuide'
 import { getStatusBarHeight } from '@/lib/safeArea'
+import { useIsIPad } from '@/lib/useIsIPad'
 
 import './index.scss'
 
@@ -40,7 +41,9 @@ function showToast(title: string) {
 }
 
 export default function ProfilePage() {
-  // ── 核心数据状态 ──────────────────────────────────────────────
+  const isIPad = useIsIPad()
+  const cls = (base: string) => isIPad ? `${base} is-ipad` : base
+  // ── 核心数据状态──────────────────────────────────────────────
   const [user, setUser] = useState<User | null>(null)
   const [currentFamily, setCurrentFamily] = useState<Family | null>(null)
   const [currentBaby, setCurrentBaby] = useState<Baby | null>(null)
@@ -260,6 +263,18 @@ export default function ProfilePage() {
     },
   ]
 
+  const toolRows: SettingsRow[] = [
+    {
+      id: 'dashboard',
+      type: 'arrow',
+      icon: 'monitor',
+      iconBg: '#F0F4FF',
+      label: 'iPad 数据看板',
+      subText: '床头大屏',
+      onClick: () => Taro.navigateTo({ url: '/pages/dashboard/index' }),
+    },
+  ]
+
   const aboutRows: SettingsRow[] = [
     {
       id: 'version',
@@ -306,7 +321,7 @@ export default function ProfilePage() {
   // 游客模式
   if (isGuest) {
     return (
-      <View className='profile-page'>
+      <View className={cls('profile-page')}>
         <View className='profile-page__header' style={{ paddingTop: `${getStatusBarHeight() + 12}px` }}>
           <Text className='profile-page__title'>我的</Text>
         </View>
@@ -346,7 +361,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <View className='profile-page'>
+    <View className={cls('profile-page')}>
       {/* 页面标题 */}
       <View className='profile-page__header' style={{ paddingTop: `${getStatusBarHeight() + 12}px` }}>
         <Text className='profile-page__title'>我的</Text>
@@ -370,6 +385,9 @@ export default function ProfilePage() {
 
         {/* 家庭设置组 */}
         <SettingsGroup title='家庭' rows={familyRows} />
+
+        {/* 工具设置组 */}
+        <SettingsGroup title='工具' rows={toolRows} />
 
         {/* 关于设置组 */}
         <SettingsGroup title='关于' rows={aboutRows} />

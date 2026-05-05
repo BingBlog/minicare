@@ -1,3 +1,5 @@
+@use '../../../styles/ipad-adapt-mixins' as ipad;
+
 /* 表现记录表单页 — 样式（与 Web symptom 页面视觉对齐） */
 
 .symptom-page {
@@ -384,3 +386,5 @@
   background: #F05060;
   color: #fff;
 }
+
+@include ipad.symptom;

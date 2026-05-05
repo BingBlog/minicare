@@ -1,3 +1,5 @@
+@use '../../../styles/ipad-adapt-mixins' as ipad;
+
 .diaper-page {
   min-height: 100vh;
   background: #faf5f6;
@@ -280,3 +282,5 @@
   font-size: 16px;
   font-weight: 700;
 }
+
+@include ipad.diaper;

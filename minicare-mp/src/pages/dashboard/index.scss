@@ -1,0 +1,878 @@
+/**
+ * Dashboard 看板页面样式（MP 版 — iPad 适配）
+ *
+ * 设计原则：
+ * 1. 深色背景 + 低对比度文字，适合夜间床头使用
+ * 2. 全屏无滚动，所有内容一屏展示（横屏）
+ * 3. 4x2 八格等宽网格布局（横屏），自适应列数（竖屏）
+ * 4. 通过 $scale 变量统一放大所有尺寸，适配 iPad 老人使用
+ *
+ * 缩放说明：
+ * - zoom 在小程序真机不生效，因此直接将所有尺寸乘以 $scale
+ * - 修改 $scale 即可一键调整整体大小（1 = Web 原始大小，1.5 = 放大 50%）
+ */
+@use 'sass:math';
+
+// ── 缩放比例（调整此值即可放大/缩小整个 Dashboard） ──────────
+// 启用 resizable:true 后 iPad 以原生分辨率全屏运行，1.5 过大，1.25 适中
+$scale: 1.25;
+
+// ── 缩放函数：将 Web 原始 px 值按比例放大 ──────────────────
+@function s($px) {
+  @return math.round($px * $scale) * 1px;
+}
+
+// ── 颜色变量 ──────────────────────────────────────────
+$bg-root: #0f1117;
+$bg-header: #161822;
+$bg-col: transparent;
+$text-primary: #d0d4dc;
+$text-secondary: #8a90a8;
+$text-muted: #5a6080;
+$border-color: #1e2130;
+$border-row: #252836;
+$font-stack: -apple-system, 'SF Pro Display', 'PingFang SC', sans-serif;
+
+// ── 根容器（全屏） ──────────────────────────────────────────
+.db-root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  background: $bg-root;
+  color: $text-primary;
+  font-family: $font-stack;
+  font-size: s(14);
+  line-height: 1.5;
+  overflow: hidden;
+}
+
+.db-root.db-night {
+  filter: brightness(0.6) sepia(0.15);
+}
+
+.db-loading {
+  align-items: center;
+  justify-content: center;
+}
+
+.db-loading-text {
+  color: $text-secondary;
+  font-size: s(16);
+}
+
+// ── 顶栏 ──────────────────────────────────────────
+.db-header {
+  display: flex;
+  align-items: center;
+  padding: s(4) s(16);
+  background: $bg-header;
+  border-bottom: 1px solid $border-row;
+  flex-shrink: 0;
+  min-height: s(36);
+  gap: s(12);
+}
+
+.db-header-left {
+  display: flex;
+  align-items: center;
+  gap: s(10);
+}
+
+.db-baby-name {
+  font-size: s(14);
+  font-weight: 700;
+  color: #eef0f6;
+}
+
+.db-date-selector {
+  display: inline-flex;
+  align-items: center;
+  gap: s(6);
+}
+
+.db-date-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: s(4) s(10);
+  border-radius: s(8);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid $border-row;
+  color: $text-secondary;
+  font-size: s(12);
+  font-weight: 500;
+  white-space: nowrap;
+  min-height: s(28);
+}
+
+.db-date-btn--active {
+  background: rgba(90, 106, 207, 0.22);
+  color: #8b9aef;
+  font-weight: 600;
+  border-color: rgba(90, 106, 207, 0.35);
+}
+
+.db-date-btn--calendar {
+  padding: s(4) s(9);
+  color: $text-muted;
+  background: rgba(255, 255, 255, 0.03);
+  border-color: $border-row;
+}
+
+.db-header-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: s(4) s(10);
+  border-radius: s(12);
+  font-size: s(12);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.db-tag-clock {
+  background: rgba(100, 110, 160, 0.12);
+  color: #8b9aef;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5px;
+}
+
+.db-header-right {
+  display: flex;
+  align-items: center;
+  gap: s(10);
+  margin-left: auto;
+}
+
+.db-sound-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: s(6);
+}
+
+.db-sound-switch-label {
+  font-size: s(12);
+  color: $text-secondary;
+  white-space: nowrap;
+}
+
+.db-sound-switch-ctrl {
+  transform: scale(0.75);
+  transform-origin: center;
+}
+
+// ── 主体网格（全屏两行 × 四列） ──────────────────────────────────
+.db-body {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.db-grid-row {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.db-grid-row--top {
+  border-bottom: 1px solid $border-row;
+}
+
+// ── 列容器（外层 wrap 负责 flex 布局 + 边框） ──────────────────
+.db-col-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid $border-color;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.db-col-wrap:last-child {
+  border-right: none;
+}
+
+// ── 列卡片内部（各 Column 组件的根元素） ──────────────────
+.db-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.db-col-header {
+  display: flex;
+  align-items: center;
+  padding: s(3) s(10);
+  border-bottom: 1px solid $border-color;
+  flex-shrink: 0;
+  min-height: s(24);
+}
+
+.db-col-title {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.db-col-title-text {
+  font-size: s(10);
+  font-weight: 600;
+  color: inherit;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+// ── 列颜色区分 ──────────────────────────────
+.db-col-feeding {
+  .db-col-header { background: linear-gradient(180deg, rgba(232, 48, 90, 0.08) 0%, transparent 100%); }
+  .db-col-title, .db-col-title-text { color: #f07888; }
+}
+
+.db-col-diaper {
+  .db-col-header { background: linear-gradient(180deg, rgba(42, 158, 212, 0.08) 0%, transparent 100%); }
+  .db-col-title, .db-col-title-text { color: #5ac0e8; }
+}
+
+.db-col-sleep {
+  .db-col-header { background: linear-gradient(180deg, rgba(67, 88, 200, 0.08) 0%, transparent 100%); }
+  .db-col-title, .db-col-title-text { color: #7888e8; }
+}
+
+.db-col-supplement {
+  .db-col-header { background: linear-gradient(180deg, rgba(232, 160, 0, 0.08) 0%, transparent 100%); }
+  .db-col-title, .db-col-title-text { color: #e8b84a; }
+}
+
+.db-col-activity {
+  .db-col-header { background: linear-gradient(180deg, rgba(90, 180, 90, 0.08) 0%, transparent 100%); }
+  .db-col-title, .db-col-title-text { color: #68c070; }
+}
+
+.db-col-symptom {
+  .db-col-header { background: linear-gradient(180deg, rgba(248, 112, 152, 0.06) 0%, transparent 100%); }
+  .db-col-title, .db-col-title-text { color: #e88090; }
+}
+
+.db-col-timeline {
+  .db-col-header { background: linear-gradient(180deg, rgba(90, 180, 120, 0.08) 0%, transparent 100%); }
+  .db-col-title, .db-col-title-text { color: #68c090; }
+}
+
+.db-col-reminders {
+  .db-col-header { background: linear-gradient(180deg, rgba(90, 106, 207, 0.06) 0%, transparent 100%); }
+  .db-col-title, .db-col-title-text { color: #8b9aef; }
+}
+
+.db-col-add-btn {
+  margin-left: auto;
+  font-size: s(9);
+  color: #88aaff;
+  padding: s(2) s(8);
+  border-radius: s(8);
+  background: rgba(100, 140, 255, 0.1);
+  white-space: nowrap;
+}
+
+// 列底部小结
+.db-col-summary {
+  padding: s(6) s(12);
+  border-top: 1px solid $border-color;
+  font-size: s(11);
+  color: $text-secondary;
+  flex-shrink: 0;
+}
+
+// ── 记录列表容器 ──────────────────────────────────────────
+.db-col-records {
+  flex: 1;
+  min-height: s(76);
+  overflow-y: auto;
+}
+
+// ── 记录行：time | label | tags | summary ──────────────────
+.db-row {
+  display: flex;
+  align-items: center;
+  gap: s(6);
+  padding: s(3) s(10);
+  border-bottom: 1px solid rgba(30, 33, 48, 0.5);
+  font-size: s(12);
+  min-height: s(28);
+}
+
+.db-row-time {
+  flex-shrink: 0;
+  width: s(38);
+  font-size: s(11);
+  color: #6a7090;
+  font-variant-numeric: tabular-nums;
+  text-align: left;
+}
+
+// 固定宽度标题列
+.db-row-label {
+  flex-shrink: 0;
+  width: s(46);
+  font-size: s(11);
+  font-weight: 600;
+  color: #d0d4dc;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// 中间标签区域（弹性伸缩）
+.db-row-tags {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: s(4);
+}
+
+// 深色主题下的 Pill 标签
+.db-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: s(2);
+  padding: s(1) s(6);
+  border-radius: s(8);
+  font-size: s(10);
+  font-weight: 500;
+  white-space: nowrap;
+  background: rgba(100, 110, 160, 0.12);
+  color: #9a9eb8;
+}
+
+// 右侧数值摘要
+.db-row-summary {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 1px;
+  padding: s(2) s(8);
+  border-radius: s(8);
+  font-variant-numeric: tabular-nums;
+}
+
+.db-row-summary-value {
+  font-size: s(11);
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  line-height: 1.3;
+}
+
+.db-row-summary-unit {
+  font-size: s(10);
+  font-weight: 500;
+  opacity: 0.75;
+}
+
+// 兼容旧结构：content 包裹 main+sub
+.db-row-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.db-row-main {
+  font-size: s(13);
+  color: #d0d4dc;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.db-row-sub {
+  font-size: s(11);
+  color: #6a7090;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// 进行中的睡眠行
+.db-row-ongoing {
+  animation: db-row-pulse 2s ease-in-out infinite;
+}
+
+@keyframes db-row-pulse {
+  0%, 100% { background: transparent; }
+  50% { background: rgba(120, 136, 232, 0.08); }
+}
+
+// ── Pill 颜色变体（深色主题） ──────────────────────────────
+.db-pill-pink {
+  background: rgba(248, 112, 152, 0.15);
+  color: #f07888;
+}
+
+.db-pill-blue {
+  background: rgba(42, 158, 212, 0.15);
+  color: #5ac0e8;
+}
+
+.db-pill-purple {
+  background: rgba(90, 106, 207, 0.15);
+  color: #8b9aef;
+}
+
+.db-pill-amber {
+  background: rgba(232, 160, 0, 0.15);
+  color: #e8b84a;
+}
+
+.db-pill-brown {
+  background: rgba(180, 130, 60, 0.15);
+  color: #c8a050;
+}
+
+.db-pill-green {
+  background: rgba(90, 180, 90, 0.15);
+  color: #68c070;
+}
+
+.db-pill-red {
+  background: rgba(240, 80, 112, 0.18);
+  color: #f06878;
+}
+
+.db-pill-lavender {
+  background: rgba(180, 100, 220, 0.12);
+  color: #c47de0;
+}
+
+// ── Summary 颜色变体 ──────────────────────────────────────
+.db-summary-pink {
+  background: rgba(248, 112, 152, 0.12);
+  .db-row-summary-value,
+  .db-row-summary-unit {
+    color: #f07888;
+  }
+}
+
+.db-summary-gold {
+  background: rgba(192, 146, 42, 0.12);
+  .db-row-summary-value,
+  .db-row-summary-unit {
+    color: #e8b84a;
+  }
+}
+
+.db-summary-red {
+  background: rgba(240, 80, 112, 0.15);
+  .db-row-summary-value,
+  .db-row-summary-unit {
+    color: #f06878;
+  }
+}
+
+.db-summary-active {
+  border: 1px solid rgba(248, 112, 152, 0.3);
+}
+
+// ── 结束睡眠按钮 ──────────────────────────────────────────
+.db-row-actions {
+  display: flex;
+  gap: s(6);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.db-end-sleep-btn {
+  padding: s(3) s(10);
+  border: 1px solid rgba(248, 112, 152, 0.4);
+  border-radius: s(10);
+  background: rgba(248, 112, 152, 0.1);
+  color: #f87098;
+  font-size: s(11);
+  white-space: nowrap;
+}
+
+.db-end-sleep-btn--confirm {
+  background: rgba(248, 80, 100, 0.2);
+  border-color: #f85064;
+  color: #ff6b7a;
+}
+
+.db-end-sleep-btn--cancel {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #8a8ea0;
+}
+
+// 空状态
+.db-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: s(20) 0;
+  color: #353848;
+  font-size: s(12);
+  font-style: italic;
+}
+
+// ── 睡眠状态 ──────────────────────────────────────────
+.db-sleep-ongoing {
+  display: flex;
+  align-items: center;
+  gap: s(10);
+  padding: s(10) s(12);
+  margin: s(6) s(12);
+  background: rgba(120, 136, 232, 0.12);
+  border-radius: s(10);
+  border: 1px solid rgba(120, 136, 232, 0.2);
+  animation: db-sleep-glow 2.5s ease-in-out infinite;
+}
+
+.db-sleep-ongoing-text {
+  flex: 1;
+  font-size: s(13);
+  color: #c4b8ff;
+}
+
+.db-sleep-end-btn {
+  font-size: s(12);
+  color: #f06878;
+  padding: s(5) s(12);
+  border-radius: s(10);
+  background: rgba(240, 104, 120, 0.15);
+  min-height: s(32);
+  display: inline-flex;
+  align-items: center;
+}
+
+// ── 时间线列 ──────────────────────────────────────────
+.db-timeline-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: s(10) s(14) s(8);
+  display: flex;
+  flex-direction: column;
+  gap: s(8);
+}
+
+.db-tl-track-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: s(4);
+  flex: 1;
+}
+
+.db-tl-track-wrap--dual {
+  gap: s(2);
+}
+
+.db-tl-track-label {
+  font-size: s(10);
+  color: #555a70;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+.db-tl-dual-row {
+  display: flex;
+  align-items: center;
+  gap: s(4);
+
+  .db-tl-track {
+    flex: 1;
+    height: auto;
+    min-height: s(10);
+  }
+}
+
+.db-tl-dual-row--yesterday {
+  .db-tl-track {
+    min-height: s(8);
+  }
+}
+
+.db-tl-row-tag {
+  font-size: s(9);
+  font-weight: 600;
+  color: #8b9aef;
+  width: s(14);
+  text-align: center;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.db-tl-row-tag--yesterday {
+  color: #555a70;
+  font-weight: 400;
+}
+
+.db-tl-track {
+  position: relative;
+  height: 100%;
+  min-height: s(14);
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: s(6);
+  overflow: hidden;
+}
+
+.db-tl-track--yesterday-row {
+  background: rgba(255, 255, 255, 0.02);
+  opacity: 0.7;
+}
+
+.db-tl-segment {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-radius: s(6);
+  min-width: s(4);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+}
+
+.db-tl-segment--ongoing {
+  animation: db-tl-breathe 2s ease-in-out infinite;
+}
+
+@keyframes db-tl-breathe {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 1; }
+}
+
+.db-tl-segment--yesterday {
+  opacity: 0.18;
+  height: 100%;
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+  box-shadow: none;
+}
+
+.db-tl-legend-hint {
+  font-size: s(10);
+  color: #555a70;
+  margin-left: s(6);
+  opacity: 0.7;
+}
+
+.db-tl-axis {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1px;
+}
+
+.db-tl-axis-tick {
+  font-size: s(9);
+  color: #353848;
+  font-variant-numeric: tabular-nums;
+}
+
+.db-tl-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: s(4);
+  margin-top: 0;
+  flex-shrink: 0;
+}
+
+.db-tl-stat {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid #1e2130;
+  border-radius: s(6);
+  padding: s(4) s(8);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.db-tl-stat-label {
+  font-size: s(9);
+  color: #555a70;
+  font-weight: 500;
+}
+
+.db-tl-stat-value {
+  font-size: s(14);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+
+.db-tl-stat-sub {
+  font-size: s(9);
+  color: #555a70;
+  margin-top: 0;
+}
+
+// ── 提醒待办 ──────────────────────────────────────────
+.db-reminders-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: s(4) s(10);
+  display: flex;
+  flex-direction: column;
+  gap: s(4);
+}
+
+.db-reminder-card {
+  display: flex;
+  align-items: flex-start;
+  gap: s(8);
+  padding: s(6) s(8);
+  border-radius: s(6);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.db-reminder-card--urgent {
+  background: rgba(240, 104, 120, 0.08);
+  border: 1px solid rgba(240, 104, 120, 0.15);
+}
+
+.db-reminder-card--warn {
+  background: rgba(232, 184, 74, 0.06);
+}
+
+.db-reminder-card--ok {
+  background: rgba(90, 180, 120, 0.06);
+}
+
+.db-reminder-card--todo {
+  background: rgba(100, 110, 160, 0.06);
+}
+
+.db-reminder-icon {
+  width: s(18);
+  height: s(18);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: s(10);
+  margin-top: s(2);
+}
+
+.db-reminder-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: s(2);
+}
+
+.db-reminder-title {
+  font-size: s(13);
+  color: $text-primary;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.db-reminder-desc {
+  font-size: s(11);
+  color: $text-secondary;
+  line-height: 1.4;
+}
+
+.db-reminder-action {
+  font-size: s(12);
+  color: #88aaff;
+  padding: s(4) s(10);
+  border-radius: s(10);
+  background: rgba(100, 140, 255, 0.12);
+  flex-shrink: 0;
+  align-self: center;
+  min-height: s(28);
+  display: inline-flex;
+  align-items: center;
+}
+
+.db-reminder-progress {
+  display: flex;
+  align-items: center;
+  gap: s(6);
+  margin-top: s(4);
+}
+
+.db-reminder-progress-bar {
+  flex: 1;
+  height: s(4);
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: s(2);
+  overflow: hidden;
+}
+
+.db-reminder-progress-fill {
+  height: 100%;
+  background: #68c090;
+  border-radius: s(2);
+  transition: width 0.3s;
+}
+
+.db-reminder-progress-label {
+  font-size: s(10);
+  color: $text-muted;
+  white-space: nowrap;
+}
+
+// ══════════════════════════════════════════════════════════════
+// ── 竖屏自适应（iPad 竖屏 / 窄屏场景） ──────────────────────
+// 当屏幕宽高比 < 1（竖屏）时，4 列布局太挤，改为：
+//   - 顶栏：折行居中
+//   - 网格：CSS Grid auto-fill，按最小列宽自动计算列数并铺满
+// ══════════════════════════════════════════════════════════════
+@media (orientation: portrait) {
+  // 根容器：竖屏时允许内部滚动
+  .db-root {
+    overflow-y: auto;
+  }
+
+  // 顶栏：竖屏时折行
+  .db-header {
+    flex-wrap: wrap;
+    gap: s(6);
+    padding: s(6) s(16);
+    min-height: auto;
+  }
+
+  .db-header-left {
+    flex: none;
+    gap: s(8);
+  }
+
+  .db-header-right {
+    margin-left: auto;
+  }
+
+  // 网格：改为 CSS Grid 自适应列数
+  .db-grid-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(s(280), 1fr));
+    flex: none;
+    overflow: visible;
+  }
+
+  .db-grid-row--top {
+    border-bottom: none;
+  }
+
+  .db-col-wrap {
+    min-height: s(280);
+    border-right: none;
+    border-bottom: 1px solid $border-row;
+  }
+
+  .db-col-wrap:last-child {
+    border-bottom: none;
+  }
+
+  // 竖屏时 body 允许滚动
+  .db-body {
+    overflow-y: auto;
+    flex: none;
+  }
+}

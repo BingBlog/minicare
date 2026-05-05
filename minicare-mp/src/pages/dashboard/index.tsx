@@ -1,0 +1,222 @@
+/**
+ * Dashboard 看板页面 — MP 版
+ *
+ * 深色布局，竖屏优化（小程序不支持横屏锁定）。
+ * 数据来源：recordsApi.today(familyId, date?)
+ * 实时更新：定时轮询（每 30 秒）+ useDidShow 页面恢复刷新
+ *
+ * 差异化：
+ * - 无 router，使用 Taro.navigateTo 跳转记录表单页
+ * - 无全局 store，使用 Taro.getStorageSync 获取 family/baby 信息
+ * - 无 RecordDrawer，点击"记录"直接跳转对应分包页面
+ * - 无全屏按钮、无 AudioUnlockBanner（小程序无自动播放限制）
+ * - setKeepScreenOn(true) 防止屏幕熄灭
+ *
+ * 布局结构（竖屏两列四行）：
+ * ┌─ HeaderBar
+ * ├─ Row1: 喂养 | 尿布
+ * ├─ Row2: 睡眠 | 补剂
+ * ├─ Row3: 活动 | 表现
+ * └─ Row4: 时间线 | 提醒待办
+ */
+import { useState, useEffect, useCallback } from 'react'
+import Taro, { useDidShow } from '@tarojs/taro'
+import { View, Text } from '@tarojs/components'
+import { familyApi, babyApi, recordsApi } from '@/api'
+import type { RecordFormType } from './types'
+import { useDashboardData, getTodayStr } from './useDashboardData'
+import HeaderBar from './HeaderBar'
+import FeedingColumn from './FeedingColumn'
+import DiaperColumn from './DiaperColumn'
+import SleepColumn from './SleepColumn'
+import SupplementColumn from './SupplementColumn'
+import ActivityColumn from './ActivityColumn'
+import SymptomColumn from './SymptomColumn'
+import TimelineColumn from './TimelineColumn'
+import RemindersColumn from './RemindersColumn'
+import { useReminder, createFeedingSource, ReminderOverlay } from './reminder'
+import type { ReminderSource } from './reminder'
+import './index.scss'
+
+/** 记录类型 → 分包页面路径映射 */
+const RECORD_PAGE_MAP: Record<RecordFormType, string> = {
+  feeding: '/pages/records/feeding/index',
+  diaper: '/pages/records/diaper/index',
+  sleep: '/pages/records/sleep/index',
+  activity: '/pages/records/activity/index',
+  health: '/pages/records/health/index',
+}
+
+export default function DashboardPage() {
+  const [loading, setLoading] = useState(true)
+  const [familyId, setFamilyId] = useState<string | null>(null)
+  const [babyName, setBabyName] = useState('宝宝')
+  const [babyId, setBabyId] = useState<string | null>(null)
+
+  // 当前查看的日期
+  const [selectedDate, setSelectedDate] = useState<string>(getTodayStr())
+
+  // 初始化家庭和宝宝
+  useEffect(() => {
+    async function init() {
+      try {
+        // 尝试从缓存获取
+        const cachedFamily = Taro.getStorageSync('currentFamily')
+        const cachedBaby = Taro.getStorageSync('currentBaby')
+
+        let fId = cachedFamily?.id
+        let bName = cachedBaby?.name || '宝宝'
+        let bId = cachedBaby?.id
+
+        if (!fId) {
+          const families = await familyApi.getMine()
+          if (families.length === 0) {
+            Taro.redirectTo({ url: '/pages/login/index' })
+            return
+          }
+          fId = families[0].id
+          Taro.setStorageSync('currentFamily', families[0])
+        }
+
+        if (!bId) {
+          const baby = await babyApi.get(fId)
+          bId = baby.id
+          bName = baby.name
+          Taro.setStorageSync('currentBaby', baby)
+        }
+
+        setFamilyId(fId)
+        setBabyId(bId)
+        setBabyName(bName)
+      } catch {
+        Taro.redirectTo({ url: '/pages/login/index' })
+      } finally {
+        setLoading(false)
+      }
+    }
+    init()
+  }, [])
+
+  // 保持屏幕常亮
+  useEffect(() => {
+    Taro.setKeepScreenOn({ keepScreenOn: true })
+    return () => {
+      Taro.setKeepScreenOn({ keepScreenOn: false })
+    }
+  }, [])
+
+  // 数据加载
+  const data = useDashboardData(familyId, babyId, loading, selectedDate)
+
+  // 跳转到记录表单页
+  const handleAdd = useCallback((type: RecordFormType) => {
+    const url = RECORD_PAGE_MAP[type]
+    if (url) {
+      Taro.navigateTo({ url })
+    }
+  }, [])
+
+  // 结束睡眠
+  const handleEndSleep = useCallback(async (sleepId: string) => {
+    if (!familyId) return
+    const now = new Date()
+    const endTime = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}T${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`
+    try {
+      await recordsApi.sleep.endSleep(familyId, sleepId, {
+        end_time: endTime,
+        quality: 'normal',
+        sleep_period: 'night',
+      })
+      data.refresh()
+    } catch (err) {
+      console.error('[Dashboard] endSleep error:', err)
+      Taro.showToast({ title: '操作失败', icon: 'none' })
+    }
+  }, [familyId, data])
+
+  // 夜间模式
+  const [isNight, setIsNight] = useState(() => {
+    const h = new Date().getHours()
+    return h >= 22 || h < 6
+  })
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const h = new Date().getHours()
+      setIsNight(h >= 22 || h < 6)
+    }, 60_000)
+    return () => clearInterval(timer)
+  }, [])
+
+  // 提醒声音开关
+  const [soundEnabled, setSoundEnabled] = useState(true)
+
+  // 提醒系统
+  const isToday = selectedDate === getTodayStr()
+  const reminderSources: ReminderSource[] = [
+    createFeedingSource(() => data.feeding),
+  ]
+  const { active: activeReminder, dismiss: dismissReminder } = useReminder(reminderSources, {
+    isNight,
+    enabled: isToday && soundEnabled,
+  })
+
+  if (loading) {
+    return (
+      <View className='db-root db-loading'>
+        <Text className='db-loading-text'>加载中...</Text>
+      </View>
+    )
+  }
+
+  return (
+    <View className={`db-root ${isNight ? 'db-night' : ''}`}>
+      <HeaderBar
+        babyName={babyName}
+        data={data}
+        selectedDate={selectedDate}
+        onDateChange={setSelectedDate}
+        soundEnabled={soundEnabled}
+        onSoundToggle={setSoundEnabled}
+      />
+
+      <View className='db-body'>
+        {/* 上排四列：喂养 | 尿布 | 睡眠 | 补剂 */}
+        <View className='db-grid-row db-grid-row--top'>
+          <View className='db-col-wrap db-col-feeding'>
+            <FeedingColumn data={data} onAdd={() => handleAdd('feeding')} />
+          </View>
+          <View className='db-col-wrap db-col-diaper'>
+            <DiaperColumn data={data} onAdd={() => handleAdd('diaper')} />
+          </View>
+          <View className='db-col-wrap db-col-sleep'>
+            <SleepColumn data={data} onAdd={() => handleAdd('sleep')} onEndSleep={handleEndSleep} />
+          </View>
+          <View className='db-col-wrap db-col-supplement'>
+            <SupplementColumn data={data} onAdd={() => handleAdd('feeding')} />
+          </View>
+        </View>
+
+        {/* 下排四列：活动 | 表现 | 时间线 | 提醒待办 */}
+        <View className='db-grid-row db-grid-row--bottom'>
+          <View className='db-col-wrap db-col-activity'>
+            <ActivityColumn data={data} onAdd={() => handleAdd('activity')} />
+          </View>
+          <View className='db-col-wrap db-col-symptom'>
+            <SymptomColumn data={data} onAdd={() => handleAdd('health')} />
+          </View>
+          <View className='db-col-wrap db-col-timeline'>
+            <TimelineColumn data={data} selectedDate={selectedDate} />
+          </View>
+          <View className='db-col-wrap db-col-reminders'>
+            <RemindersColumn data={data} selectedDate={selectedDate} onAdd={handleAdd} />
+          </View>
+        </View>
+      </View>
+
+      {/* 提醒浮层 */}
+      {activeReminder && (
+        <ReminderOverlay reminder={activeReminder} onDismiss={dismissReminder} />
+      )}
+    </View>
+  )
+}

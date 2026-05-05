@@ -1,3 +1,5 @@
+@use '../../styles/ipad-adapt-mixins' as ipad;
+
 .home-page {
   min-height: 100vh;
   background: #fdf7f5;
@@ -884,7 +886,7 @@
 
 .daily-compare__row {
   display: flex;
-  align-items: flex-start;
+  align-items: baseline;
   gap: 10px;
 }
 
@@ -894,7 +896,7 @@
   color: #9a8090;
   font-size: 11px;
   font-weight: 600;
-  line-height: 22px;
+  line-height: 20px;
 }
 
 .daily-compare__tags {
@@ -908,7 +910,7 @@
 .daily-compare__tag {
   border-radius: 999px;
   padding: 2px 10px;
-  line-height: 1.4;
+  line-height: 16px;
 }
 
 .daily-compare__tag--done {
@@ -931,40 +933,12 @@
   font-weight: 500;
 }
 
-.daily-compare__tag--missed {
-  background: #FFF3E0;
-  border: 1px dashed #E8A000;
-}
-
-.daily-compare__tag--missed .daily-compare__tag-text {
-  color: #E8A000;
-  font-size: 11px;
-  font-weight: 500;
-}
-
 .daily-compare__empty-text {
   color: #c0a8ad;
   font-size: 11px;
-  line-height: 22px;
+  line-height: 20px;
 }
 
-.daily-compare__missed {
-  margin-top: 4px;
-  padding-top: 8px;
-  border-top: 1px dashed #f5f0f2;
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-}
-
-.daily-compare__missed-label {
-  flex-shrink: 0;
-  width: 56px;
-  color: #E8A000;
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 22px;
-}
 
 // ── 游客模式样式 ──────────────────────────────────
 
@@ -1051,4 +1025,6 @@
   font-size: 15px;
   font-weight: 600;
 }
+
+@include ipad.home;
 

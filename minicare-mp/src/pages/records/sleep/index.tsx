@@ -34,6 +34,7 @@ import type { SleepRecord, SleepQuality } from '@/api/sleep'
 import TimerMode from './TimerMode'
 import ManualMode from './ManualMode'
 import QualitySection from './QualitySection'
+import { useIsIPad } from '@/lib/useIsIPad'
 import './index.scss'
 
 // ---------------------------------------------------------------------------
@@ -57,6 +58,8 @@ type SleepMode = 'timer' | 'manual'
 // 页面入口
 // ---------------------------------------------------------------------------
 export default function SleepFormPage() {
+  const isIPad = useIsIPad()
+  const cls = (base: string) => isIPad ? `${base} is-ipad` : base
   // ── 初始化状态 ────────────────────────────────────────────────────
   const [loading, setLoading] = useState(true)
   const [familyId, setFamilyId] = useState('')
@@ -422,7 +425,7 @@ export default function SleepFormPage() {
   // ── Loading 态 ──────────────────────────────────────────────────
   if (loading) {
     return (
-      <View className='sleep-page'>
+      <View className={cls('sleep-page')}>
         <View className='sleep-loading'><Text>加载中...</Text></View>
       </View>
     )
@@ -430,7 +433,7 @@ export default function SleepFormPage() {
 
   // ── Render ──────────────────────────────────────────────────────
   return (
-    <View className='sleep-page'>
+    <View className={cls('sleep-page')}>
       {/* 导航栏 */}
       <View className='sleep-nav' style={{ paddingTop: `${getStatusBarHeight() + 10}px` }}>
         <View className='sleep-nav__back' onClick={() => Taro.navigateBack()}>

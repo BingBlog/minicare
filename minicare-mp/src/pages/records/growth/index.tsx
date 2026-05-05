@@ -14,6 +14,7 @@ import { useRecordSubmit } from '@/lib/useRecordSubmit'
 import RecordNavBar from '@/components/RecordNavBar'
 import SubmitBar from '@/components/SubmitBar'
 import PageLoading from '@/components/PageLoading'
+import { useIsIPad } from '@/lib/useIsIPad'
 import './index.scss'
 
 type MeasureKey = 'height' | 'weight' | 'head'
@@ -27,6 +28,8 @@ function toHHmm(raw: string): string {
 const ORG_OPTIONS = ['儿保门诊', '家中自测', '社区卫生', '其他']
 
 export default function GrowthFormPage() {
+  const isIPad = useIsIPad()
+  const cls = (base: string) => isIPad ? `${base} is-ipad` : base
   // ── 表单状态 ──
   const [recordDate, setRecordDate] = useState(nowDate())
   const [recordTime, setRecordTime] = useState(nowTime())
@@ -140,7 +143,7 @@ export default function GrowthFormPage() {
   // ── Loading ──
   if (loading) {
     return (
-      <View className='growth-page'>
+      <View className={cls('growth-page')}>
         <RecordNavBar title='生长记录' isEditMode={false} />
         <PageLoading />
       </View>
@@ -148,7 +151,7 @@ export default function GrowthFormPage() {
   }
 
   return (
-    <View className='growth-page'>
+    <View className={cls('growth-page')}>
       <RecordNavBar
         title='生长记录'
         isEditMode={isEditMode}

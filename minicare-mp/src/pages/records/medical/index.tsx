@@ -21,9 +21,12 @@ import OCRSection from './OCRSection'
 import ResultSection from './ResultSection'
 import MedicationsSection, { type Medication } from './MedicationsSection'
 import FollowUpSection from './FollowUpSection'
+import { useIsIPad } from '@/lib/useIsIPad'
 import './index.scss'
 
 export default function MedicalFormPage() {
+  const isIPad = useIsIPad()
+  const cls = (base: string) => isIPad ? `${base} is-ipad` : base
   // ── 表单状态 ──
   const [visitDate, setVisitDate] = useState(nowDate())
   const [visitType, setVisitType] = useState<string>('checkup')
@@ -112,7 +115,7 @@ export default function MedicalFormPage() {
   // ── Loading ──
   if (loading) {
     return (
-      <View className='medical-page'>
+      <View className={cls('medical-page')}>
         <RecordNavBar title='医疗记录' isEditMode={false} />
         <PageLoading />
       </View>
@@ -120,7 +123,7 @@ export default function MedicalFormPage() {
   }
 
   return (
-    <View className='medical-page'>
+    <View className={cls('medical-page')}>
       <RecordNavBar
         title='医疗记录'
         isEditMode={isEditMode}

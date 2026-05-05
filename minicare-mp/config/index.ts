@@ -20,7 +20,9 @@ export default defineConfig<'webpack5'>(async (merge) => {
     plugins: ['@tarojs/plugin-generator'],
     defineConstants: {},
     copy: {
-      patterns: [],
+      patterns: [
+        { from: 'src/assets/sounds/', to: 'dist/assets/sounds/', ignore: ['.*'] },
+      ],
       options: {},
     },
     framework: 'react',

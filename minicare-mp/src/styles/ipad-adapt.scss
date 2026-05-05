@@ -1,0 +1,1031 @@
+/**
+ * 全局 iPad 适配样式
+ *
+ * 策略：通过 @media (min-width: 768px) 检测 iPad 等宽屏设备，
+ * 统一放大所有页面的字体、间距、控件尺寸。
+ *
+ * 为什么不用 zoom：小程序真机 WebView 不支持 zoom CSS 属性。
+ * 为什么不逐页面改：页面太多（12+），维护成本高。
+ * 为什么用媒体查询：小程序真机支持标准 CSS @media，可靠。
+ *
+ * 注意：Dashboard 页面有独立的 $scale 方案，不受此文件影响。
+ */
+
+// ══════════════════════════════════════════════════════════════
+// iPad 宽屏适配（≥768px，即 iPad 竖屏及以上）
+// ══════════════════════════════════════════════════════════════
+@media (min-width: 768px) {
+  // ── 全局基础字号放大 ──────────────────────────────────────
+  page {
+    font-size: 18px;
+  }
+
+  // ── 首页 (home) ──────────────────────────────────────────
+  .home-page {
+    font-size: 18px;
+  }
+
+  .home-hero__title {
+    font-size: 28px;
+  }
+
+  .home-hero__subtitle {
+    font-size: 16px;
+  }
+
+  .home-baby-card__name {
+    font-size: 22px;
+  }
+
+  .home-baby-card__age {
+    font-size: 15px;
+  }
+
+  .home-stats__value {
+    font-size: 22px;
+  }
+
+  .home-stats__label {
+    font-size: 14px;
+  }
+
+  .home-card__title {
+    font-size: 18px;
+  }
+
+  .home-quick-grid__label {
+    font-size: 14px;
+  }
+
+  .home-quick-grid__icon {
+    width: 52px;
+    height: 52px;
+  }
+
+  .home-timeline__time {
+    font-size: 15px;
+  }
+
+  .home-timeline__title {
+    font-size: 16px;
+  }
+
+  .home-timeline__desc {
+    font-size: 14px;
+  }
+
+  .home-content {
+    padding: 20px 24px;
+  }
+
+  .home-card {
+    padding: 18px 20px;
+    margin-bottom: 18px;
+    border-radius: 20px;
+  }
+
+  // ── 记录列表 (records/list) ──────────────────────────────
+  .records-list-page {
+    font-size: 18px;
+  }
+
+  .records-filter__chip {
+    font-size: 15px;
+    padding: 10px 18px;
+    border-radius: 22px;
+  }
+
+  .record-group__date {
+    font-size: 16px;
+  }
+
+  .record-item {
+    padding: 16px 20px;
+    gap: 14px;
+    min-height: 60px;
+  }
+
+  .record-item__time {
+    font-size: 16px;
+  }
+
+  .record-item__title {
+    font-size: 17px;
+  }
+
+  .record-item__tag {
+    font-size: 14px;
+    padding: 5px 12px;
+  }
+
+  .record-item__summary {
+    font-size: 15px;
+  }
+
+  .record-item__note {
+    font-size: 14px;
+  }
+
+  // ── 个人页 (profile) ──────────────────────────────────────
+  .profile-page {
+    font-size: 18px;
+  }
+
+  .baby-hero__name {
+    font-size: 24px;
+  }
+
+  .baby-hero__age {
+    font-size: 16px;
+  }
+
+  .baby-stats__value {
+    font-size: 22px;
+  }
+
+  .baby-stats__label {
+    font-size: 14px;
+  }
+
+  .settings-group__item {
+    padding: 18px 20px;
+    min-height: 56px;
+  }
+
+  .settings-group__label {
+    font-size: 17px;
+  }
+
+  .settings-group__value {
+    font-size: 16px;
+  }
+
+  // ── 所有记录表单页通用样式放大 ──────────────────────────────
+  // 导航栏
+  .feed-nav, .sleep-nav, .diaper-nav, .growth-nav,
+  .health-nav__content, .activity-nav__content,
+  .symptom-nav__content, .medical-nav__content {
+    padding: 14px 24px;
+    min-height: 52px;
+  }
+
+  .feed-nav__title, .sleep-nav__title, .diaper-nav__title, .growth-nav__title,
+  .health-nav__title, .activity-nav__title, .symptom-nav__title, .medical-nav__title {
+    font-size: 20px;
+  }
+
+  .feed-nav__back, .sleep-nav__back, .diaper-nav__back, .growth-nav__back,
+  .health-nav__back, .activity-nav__back, .symptom-nav__back, .medical-nav__back {
+    width: 44px;
+    height: 44px;
+  }
+
+  .feed-nav__back-arrow, .sleep-nav__back-arrow,
+  .diaper-nav__back-arrow, .growth-nav__back-arrow,
+  .health-nav__back-icon, .activity-nav__back-icon,
+  .symptom-nav__back-icon, .medical-nav__back-icon {
+    font-size: 24px;
+  }
+
+  // 卡片容器
+  .feed-card, .sleep-card, .diaper-card, .growth-card-box,
+  .health-card, .activity-card, .symptom-card, .medical-card,
+  .health-collapse-card, .activity-type-card,
+  .activity-duration-card, .activity-intensity-card {
+    margin: 0 24px 14px;
+    border-radius: 20px;
+  }
+
+  // 表单行
+  .feed-row, .sleep-row, .diaper-time-row, .growth-row,
+  .health-card__row, .activity-card__row,
+  .symptom-card__row, .medical-card__row {
+    padding: 16px 22px;
+    min-height: 56px;
+  }
+
+  // 行标签
+  .feed-row__label, .sleep-row__label, .diaper-time-row__label,
+  .health-card__label, .activity-card__label,
+  .symptom-card__label, .medical-card__label {
+    font-size: 16px;
+  }
+
+  .growth-row__label {
+    font-size: 17px;
+  }
+
+  // 行值
+  .feed-row__picker, .sleep-row__picker, .sleep-row__value,
+  .diaper-time-row__picker, .growth-row__picker,
+  .health-card__picker-text, .activity-card__picker-text,
+  .symptom-card__picker-text, .medical-card__picker-text {
+    font-size: 17px;
+  }
+
+  // 章节标签
+  .feed-section-label, .sleep-section-label, .diaper-section-label,
+  .growth-section-label, .health-section-label,
+  .activity-section-label, .symptom-section-label, .medical-section-label {
+    font-size: 15px;
+    padding: 18px 22px 8px;
+  }
+
+  // Tabs / 模式切换
+  .feed-tabs {
+    margin: 12px 24px 14px;
+    border-radius: 20px;
+    padding: 4px;
+  }
+
+  .feed-tabs__item {
+    padding: 12px 0;
+    border-radius: 16px;
+  }
+
+  .feed-tabs__label {
+    font-size: 16px;
+  }
+
+  .sleep-mode-switch {
+    margin: 12px 24px 14px;
+    border-radius: 20px;
+    padding: 4px;
+  }
+
+  .sleep-mode-switch__item {
+    padding: 12px 0;
+    border-radius: 16px;
+  }
+
+  .sleep-mode-switch__label {
+    font-size: 17px;
+  }
+
+  // Chip 选择器
+  .feed-chips {
+    gap: 12px;
+    padding: 16px 22px 12px;
+  }
+
+  .feed-chip {
+    padding: 10px 0;
+    border-radius: 24px;
+  }
+
+  .feed-chip__text {
+    font-size: 15px;
+  }
+
+  // Stepper 步进器
+  .feed-stepper {
+    gap: 20px;
+    padding: 12px 22px 16px;
+  }
+
+  .feed-stepper__btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  .feed-stepper__btn-text {
+    font-size: 22px;
+  }
+
+  .feed-stepper__val {
+    font-size: 28px;
+    min-width: 56px;
+  }
+
+  .feed-stepper__unit {
+    font-size: 16px;
+  }
+
+  // 尿布类型网格
+  .diaper-type-grid {
+    gap: 12px;
+    padding: 16px 20px;
+  }
+
+  .diaper-type-opt {
+    padding: 20px 12px;
+    border-radius: 18px;
+  }
+
+  .diaper-type-opt__label {
+    font-size: 17px;
+  }
+
+  // 尿布标签
+  .diaper-tags {
+    gap: 12px;
+    padding: 16px 22px;
+  }
+
+  .diaper-tag {
+    padding: 10px 16px;
+    border-radius: 24px;
+  }
+
+  .diaper-tag__label {
+    font-size: 15px;
+  }
+
+  .diaper-tag__dot {
+    width: 14px;
+    height: 14px;
+  }
+
+  // 生长数据输入
+  .growth-row__input {
+    width: 100px;
+    height: 40px;
+    font-size: 18px;
+  }
+
+  .growth-row__unit {
+    font-size: 16px;
+  }
+
+  // 健康 - 体温步进器
+  .health-temp__btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .health-temp__btn-text {
+    font-size: 22px;
+  }
+
+  .health-temp__value {
+    font-size: 24px;
+  }
+
+  .health-temp__unit {
+    font-size: 16px;
+  }
+
+  // 健康 - 过敏网格
+  .health-allergy__grid {
+    gap: 12px;
+    padding: 16px 20px;
+  }
+
+  .health-allergy__item {
+    padding: 14px 12px;
+    border-radius: 16px;
+  }
+
+  .health-allergy__item-text {
+    font-size: 16px;
+  }
+
+  // 活动类型网格
+  .activity-type-card__grid {
+    gap: 12px;
+    padding: 16px 20px;
+  }
+
+  .activity-type-card__item {
+    padding: 14px 8px;
+    border-radius: 16px;
+  }
+
+  .activity-type-card__item-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+  }
+
+  .activity-type-card__item-label {
+    font-size: 16px;
+  }
+
+  .activity-type-card__item-sub {
+    font-size: 13px;
+  }
+
+  // 活动时长
+  .activity-duration-card__btn {
+    width: 48px;
+    height: 48px;
+  }
+
+  .activity-duration-card__btn-text {
+    font-size: 24px;
+  }
+
+  .activity-duration-card__value {
+    font-size: 36px;
+  }
+
+  .activity-duration-card__unit {
+    font-size: 15px;
+  }
+
+  // 睡眠计时器
+  .sleep-timer__ring {
+    width: 240px;
+    height: 240px;
+  }
+
+  .sleep-timer__inner {
+    width: 200px;
+    height: 200px;
+  }
+
+  .sleep-timer__time {
+    font-size: 44px;
+  }
+
+  .sleep-timer__status {
+    font-size: 16px;
+  }
+
+  .sleep-timer__btn {
+    width: 220px;
+    padding: 20px 0;
+    border-radius: 20px;
+  }
+
+  .sleep-timer__btn-text {
+    font-size: 20px;
+  }
+
+  // 睡眠质量
+  .sleep-quality-grid {
+    gap: 14px;
+    padding: 16px 22px;
+  }
+
+  .sleep-quality-opt {
+    padding: 16px 0;
+    border-radius: 16px;
+  }
+
+  .sleep-quality-opt__label {
+    font-size: 15px;
+  }
+
+  // 医疗 - 检查类型
+  .medical-visit-grid {
+    margin: 0 24px 14px;
+    gap: 12px;
+    padding: 12px 16px 18px;
+  }
+
+  .medical-visit-item {
+    padding: 14px 16px;
+    border-radius: 16px;
+  }
+
+  .medical-visit-item__icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+  }
+
+  .medical-visit-item__label {
+    font-size: 16px;
+  }
+
+  // 备注输入框
+  .feed-note-input, .sleep-note-input, .diaper-note, .growth-note-input,
+  .health-note__input, .activity-note__input,
+  .symptom-note__input, .medical-note__input,
+  .medical-card__textarea {
+    font-size: 17px;
+    min-height: 56px;
+    padding: 14px 22px;
+  }
+
+  // 提交按钮栏
+  .feed-submit, .sleep-submit, .diaper-submit, .growth-submit,
+  .health-submit, .activity-submit, .symptom-submit, .medical-submit {
+    padding: 16px 24px 32px;
+  }
+
+  .feed-submit__btn, .sleep-submit__btn, .diaper-submit__btn, .growth-submit__btn {
+    border-radius: 18px;
+    padding: 18px 0;
+  }
+
+  .health-submit__btn, .activity-submit__btn, .symptom-submit__btn, .medical-submit__btn {
+    height: 56px;
+    border-radius: 28px;
+  }
+
+  .feed-submit__text, .sleep-submit__text, .diaper-submit__text, .growth-submit__text,
+  .health-submit__btn-text, .activity-submit__btn-text,
+  .symptom-submit__btn-text, .medical-submit__btn-text {
+    font-size: 19px;
+  }
+
+  // 删除确认弹层
+  .health-sheet, .activity-sheet, .symptom-sheet, .medical-sheet {
+    max-width: 500px;
+    border-radius: 24px 24px 0 0;
+  }
+
+  .health-sheet__title, .activity-sheet__title,
+  .symptom-sheet__title, .medical-sheet__title {
+    font-size: 19px;
+  }
+
+  .health-sheet__desc, .activity-sheet__desc,
+  .symptom-sheet__desc, .medical-sheet__desc {
+    font-size: 15px;
+  }
+
+  .health-sheet__btn, .activity-sheet__btn,
+  .symptom-sheet__btn, .medical-sheet__btn {
+    height: 56px;
+    border-radius: 28px;
+    font-size: 18px;
+  }
+
+  // 奶粉选择网格
+  .feed-milk-grid {
+    gap: 12px;
+    padding: 16px 20px;
+  }
+
+  .feed-milk-opt {
+    padding: 14px 16px;
+    border-radius: 16px;
+  }
+
+  .feed-milk-opt__name {
+    font-size: 16px;
+  }
+
+  .feed-milk-opt__desc {
+    font-size: 14px;
+  }
+
+  // 配比列表
+  .feed-ratio-item {
+    padding: 16px;
+    border-radius: 16px;
+    margin-bottom: 12px;
+  }
+
+  .feed-ratio-item__name {
+    font-size: 16px;
+  }
+
+  // 勺数输入
+  .scoop-input__btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .scoop-input__val {
+    font-size: 24px;
+    min-width: 40px;
+  }
+
+  .scoop-input__unit {
+    font-size: 15px;
+  }
+
+  // 营养素行
+  .feed-supp-row {
+    padding: 16px 22px;
+    gap: 14px;
+  }
+
+  .feed-supp-row__check {
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+  }
+
+  .feed-supp-row__name {
+    font-size: 17px;
+  }
+
+  .feed-supp-row__hint {
+    font-size: 14px;
+  }
+
+  .feed-supp-row__input {
+    width: 80px;
+    height: 40px;
+    font-size: 16px;
+    border-radius: 10px;
+  }
+
+  .feed-supp-row__unit {
+    font-size: 15px;
+  }
+
+  // 辅食标签
+  .feed-food-chips {
+    gap: 12px;
+    padding: 16px 22px;
+  }
+
+  .feed-food-chip {
+    padding: 8px 16px;
+    border-radius: 24px;
+  }
+
+  .feed-food-chip__text {
+    font-size: 16px;
+  }
+
+  .feed-food-input {
+    height: 44px;
+    font-size: 17px;
+  }
+
+  .feed-food-add {
+    width: 44px;
+    height: 44px;
+  }
+
+  .feed-food-add__text {
+    font-size: 28px;
+  }
+
+  // 母乳侧选择
+  .feed-side-grid {
+    gap: 12px;
+    padding: 16px 20px;
+  }
+
+  .feed-side-opt {
+    padding: 18px 0;
+    border-radius: 16px;
+  }
+
+  .feed-side-opt__label {
+    font-size: 17px;
+  }
+
+  // 上次配方卡片
+  .feed-last-card {
+    margin: 0 24px 14px;
+    border-radius: 20px;
+  }
+
+  .feed-last-card__title {
+    font-size: 15px;
+  }
+
+  .feed-last-card__milk-label {
+    font-size: 16px;
+  }
+
+  .feed-last-card__milk-scoop {
+    font-size: 20px;
+  }
+
+  // 生长 - 机构选择
+  .growth-org-chips {
+    gap: 12px;
+    padding: 16px 22px;
+  }
+
+  .growth-org-chip {
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-size: 16px;
+  }
+
+  // 生长 - 拍照按钮
+  .growth-photo-btn__icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 16px;
+  }
+
+  .growth-photo-btn__icon-text {
+    font-size: 32px;
+  }
+
+  .growth-photo-btn__title {
+    font-size: 17px;
+  }
+
+  .growth-photo-btn__desc {
+    font-size: 15px;
+  }
+
+  // 健康 - 护肤 Chip
+  .health-skin__chip {
+    padding: 10px 18px;
+    font-size: 16px;
+  }
+
+  .health-skin__group-label {
+    font-size: 15px;
+  }
+
+  // 表现 - 选项卡片
+  .symptom-card__icon-wrap {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+  }
+
+  .symptom-card__icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .symptom-card__label {
+    font-size: 17px;
+  }
+
+  .symptom-card__sublabel {
+    font-size: 15px;
+  }
+
+  .symptom-card__detail {
+    font-size: 14px;
+  }
+
+  // 医疗 - OCR 上传
+  .medical-ocr__upload {
+    margin: 0 24px 14px;
+    padding: 28px 24px;
+    border-radius: 20px;
+  }
+
+  .medical-ocr__title {
+    font-size: 18px;
+  }
+
+  .medical-ocr__desc {
+    font-size: 15px;
+  }
+
+  .medical-ocr__btn {
+    padding: 12px 28px;
+    border-radius: 12px;
+  }
+
+  .medical-ocr__btn-text {
+    font-size: 16px;
+  }
+
+  // 医疗 - 复查提醒
+  .medical-followup {
+    margin: 0 24px 14px;
+    padding: 18px 22px;
+    border-radius: 20px;
+  }
+
+  .medical-followup__title {
+    font-size: 16px;
+  }
+
+  .medical-followup__label {
+    font-size: 16px;
+  }
+
+  // 睡眠弹窗
+  .sleep-dialog {
+    max-width: 480px;
+    border-radius: 24px;
+  }
+
+  .sleep-dialog__title {
+    font-size: 20px;
+  }
+
+  .sleep-dialog__desc {
+    font-size: 16px;
+  }
+
+  .sleep-dialog__btn {
+    padding: 20px 0;
+  }
+
+  .sleep-dialog__btn-text {
+    font-size: 18px;
+  }
+
+  // ── 自定义 TabBar 放大 ──────────────────────────────────
+  .home-tabbar__item-text {
+    font-size: 14px;
+  }
+
+  .home-tabbar__item-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .home-tabbar {
+    height: 80px;
+  }
+
+  // ── FAB 弹出面板 ──────────────────────────────────────
+  .fab-sheet__item-text {
+    font-size: 16px;
+  }
+
+  .fab-sheet__item-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  // ── 删除文字放大 ──────────────────────────────────────
+  .feed-nav__delete-text, .sleep-nav__delete-text,
+  .diaper-nav__delete-text, .growth-nav__delete-text {
+    font-size: 16px;
+  }
+
+  // ── 尿布次数控件 ──────────────────────────────────────
+  .diaper-count {
+    padding: 14px 22px;
+  }
+
+  .diaper-count__label {
+    font-size: 16px;
+  }
+
+  .diaper-count__btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .diaper-count__btn-text {
+    font-size: 24px;
+  }
+
+  .diaper-count__val {
+    font-size: 24px;
+    min-width: 32px;
+  }
+
+  // ── 活动强度选项 ──────────────────────────────────────
+  .activity-intensity-card__options {
+    gap: 14px;
+    padding: 16px 22px;
+  }
+
+  .activity-intensity-card__btn {
+    padding: 16px 0;
+    border-radius: 16px;
+  }
+
+  .activity-intensity-card__btn-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+  }
+
+  .activity-intensity-card__btn-label {
+    font-size: 15px;
+  }
+
+  // ── 可折叠卡片标题 ──────────────────────────────────────
+  .health-collapse-card__title {
+    font-size: 16px;
+  }
+
+  .health-collapse-card__badge {
+    font-size: 14px;
+    padding: 4px 12px;
+  }
+
+  .health-collapse-card__hint {
+    font-size: 15px;
+  }
+
+  // ── 医疗用药 ──────────────────────────────────────────
+  .medical-meds__title {
+    font-size: 16px;
+  }
+
+  .medical-meds__add-text {
+    font-size: 15px;
+  }
+
+  .medical-meds__name {
+    font-size: 16px;
+  }
+
+  .medical-meds__dose {
+    font-size: 16px;
+  }
+
+  // ── 加载态文字 ──────────────────────────────────────────
+  .feed-loading, .sleep-loading, .diaper-loading, .growth-loading,
+  .health-loading__text, .activity-loading__text,
+  .symptom-loading__text, .medical-loading__text {
+    font-size: 17px;
+  }
+
+  // ── 首页宽屏优化 ──────────────────────────────────────
+  // 首页内容区增加水平内边距，让卡片不会贴边
+  .home-hero {
+    padding: 12px 32px 0;
+  }
+
+  .home-content {
+    padding: 16px 32px 30px;
+  }
+
+  // 统计面板在宽屏时间距更大
+  .home-stats__item {
+    padding: 12px 10px;
+  }
+
+  .home-stats__unit {
+    font-size: 14px;
+  }
+
+  // 快捷入口网格 — 宽屏时图标和文字更大
+  .home-quick-grid {
+    gap: 12px;
+    padding: 8px 16px 18px;
+  }
+
+  .home-quick-grid__item {
+    padding: 14px 8px;
+    border-radius: 14px;
+  }
+
+  // ── 记录列表宽屏优化 ──────────────────────────────────
+  .records-list-page {
+    padding: 0 16px;
+  }
+
+  .records-filter {
+    padding: 12px 8px;
+  }
+
+  .record-group {
+    margin: 0 8px 16px;
+    border-radius: 18px;
+  }
+
+  // ── 表单页面宽屏优化 ──────────────────────────────────
+  // 表单页面在 iPad 横屏时限制最大宽度，居中显示，避免内容拉得太宽
+  .feed-body, .sleep-body, .diaper-body, .growth-body,
+  .health-body, .activity-body, .symptom-body, .medical-body {
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  // 提交栏也居中
+  .feed-submit, .sleep-submit, .diaper-submit, .growth-submit,
+  .health-submit, .activity-submit, .symptom-submit, .medical-submit {
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// iPad 横屏（≥1024px）额外优化
+// 横屏时屏幕更宽，进一步调整布局
+// ══════════════════════════════════════════════════════════════
+@media (min-width: 1024px) {
+  // 首页内容区更大的内边距
+  .home-hero {
+    padding: 16px 48px 0;
+  }
+
+  .home-content {
+    padding: 20px 48px 30px;
+  }
+
+  // 首页卡片可以并排显示
+  .home-card {
+    margin-bottom: 20px;
+  }
+
+  // 记录列表 — 更宽松的布局
+  .record-item {
+    padding: 18px 24px;
+    gap: 16px;
+  }
+
+  // 表单页面在横屏时进一步限宽
+  .feed-body, .sleep-body, .diaper-body, .growth-body,
+  .health-body, .activity-body, .symptom-body, .medical-body {
+    max-width: 720px;
+  }
+
+  .feed-submit, .sleep-submit, .diaper-submit, .growth-submit,
+  .health-submit, .activity-submit, .symptom-submit, .medical-submit {
+    max-width: 720px;
+  }
+
+  // 首页统计面板字号进一步放大
+  .home-stats__value {
+    font-size: 26px;
+  }
+
+  .home-stats__label {
+    font-size: 15px;
+  }
+}

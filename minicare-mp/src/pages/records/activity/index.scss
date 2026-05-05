@@ -1,3 +1,5 @@
+@use '../../../styles/ipad-adapt-mixins' as ipad;
+
 /* 活动记录表单页 — 样式（与 Web activity 页面视觉对齐） */
 
 .activity-page {
@@ -466,3 +468,5 @@
   background: #F05060;
   color: #fff;
 }
+
+@include ipad.activity;

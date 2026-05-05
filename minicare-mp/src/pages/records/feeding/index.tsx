@@ -26,6 +26,7 @@ import BreastSection from './BreastSection'
 import SupplementSection from './SupplementSection'
 import FoodSection from './FoodSection'
 import ConfirmSheet from '@/components/ConfirmSheet'
+import { useIsIPad } from '@/lib/useIsIPad'
 import './index.scss'
 
 // ---------------------------------------------------------------------------
@@ -64,6 +65,8 @@ function saveLastFormula(babyId: string, data: LastFormulaCache) {
 // 页面入口
 // ---------------------------------------------------------------------------
 export default function FeedingFormPage() {
+  const isIPad = useIsIPad()
+  const cls = (base: string) => isIPad ? `${base} is-ipad` : base
   const [loading, setLoading] = useState(true)
   const [familyId, setFamilyId] = useState('')
   const [babyId, setBabyId] = useState('')
@@ -286,7 +289,7 @@ export default function FeedingFormPage() {
   // -----------------------------------------------------------------------
   if (loading) {
     return (
-      <View className='feed-page'>
+      <View className={cls('feed-page')}>
         <View className='feed-loading'><Text>加载中...</Text></View>
       </View>
     )
@@ -296,7 +299,7 @@ export default function FeedingFormPage() {
   // Render
   // -----------------------------------------------------------------------
   return (
-    <View className='feed-page'>
+    <View className={cls('feed-page')}>
       {/* 导航栏 */}
       <View className='feed-nav' style={{ paddingTop: `${getStatusBarHeight() + 10}px` }}>
         <View className='feed-nav__back' onClick={() => Taro.navigateBack()}>

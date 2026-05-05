@@ -1,3 +1,5 @@
+@use '../../styles/ipad-adapt-mixins' as ipad;
+
 // ── Profile Page Layout ──────────────────────────────────────────────
 
 .profile-page {
@@ -1049,3 +1051,5 @@
   font-weight: 600;
   color: #9a8090;
 }
+
+@include ipad.profile;

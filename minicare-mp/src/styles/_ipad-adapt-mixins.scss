@@ -1,0 +1,2011 @@
+/**
+ * iPad 适配 Mixins（按页面拆分）
+ *
+ * 实现方式：
+ * 通过 JS 设备检测（useIsIPad hook）在页面根元素上添加 .is-ipad class，
+ * 然后用 CSS class 选择器（而非 @media 查询）来应用 iPad 样式。
+ *
+ * 为什么不用 @media (min-width: 768px)：
+ * 微信小程序在 iPad 上以 iPhone 兼容模式运行，viewport 宽度仍为 ~375px，
+ * 导致 min-width: 768px 的媒体查询永远不会触发。
+ *
+ * 为什么用 mixin 而不是全局 app.scss：
+ * 微信小程序中，页面 wxss 的局部样式会覆盖 app.wxss 的全局样式。
+ * 因此必须将样式编译到各页面自己的 wxss 中，才能正确生效。
+ *
+ * 选择器规则：
+ * - 页面根元素（.xxx-page）：使用 .xxx-page.is-ipad { ... }（复合选择器）
+ * - 子元素：使用 .is-ipad .child { ... }（后代选择器）
+ *
+ * 用法：在页面 SCSS 末尾添加：
+ *   @use '../../styles/ipad-adapt-mixins' as ipad;
+ *   @include ipad.home;  // 对应页面的 mixin
+ */
+
+// ══════════════════════════════════════════════════════════════
+// 首页 (home)
+// ══════════════════════════════════════════════════════════════
+@mixin home {
+
+    .home-page.is-ipad {
+      font-size: 18px;
+    }
+
+
+    .is-ipad .home-hero__greeting {
+      font-size: 32px;
+    }
+
+
+    .is-ipad .home-hero__date {
+      font-size: 15px;
+    }
+
+
+    .is-ipad .home-baby-card__name {
+      font-size: 22px;
+    }
+
+
+    .is-ipad .home-baby-card__sub {
+      font-size: 15px;
+    }
+
+
+    .is-ipad .home-stats__value {
+      font-size: 22px;
+    }
+
+
+    .is-ipad .home-stats__label {
+      font-size: 14px;
+    }
+
+
+    .is-ipad .home-stats__unit {
+      font-size: 14px;
+    }
+
+
+    .is-ipad .home-card__title {
+      font-size: 14px;
+    }
+
+
+    .is-ipad .home-card__hint {
+      font-size: 15px;
+    }
+
+
+    .is-ipad .home-quick-grid {
+      gap: 12px;
+      padding: 8px 16px 18px;
+    }
+
+
+    .is-ipad .home-quick-grid__item {
+      padding: 14px 8px;
+      border-radius: 14px;
+      min-height: 90px;
+    }
+
+
+    .is-ipad .home-quick-icon {
+      width: 68px;
+      height: 68px;
+      border-radius: 20px;
+    }
+
+
+    .is-ipad .home-quick-icon__img {
+      width: 36px;
+      height: 36px;
+    }
+
+
+    .is-ipad .home-quick-grid__text {
+      font-size: 14px;
+    }
+
+
+    .is-ipad .home-timeline__time {
+      font-size: 15px;
+    }
+
+
+    .is-ipad .home-timeline__title {
+      font-size: 16px;
+    }
+
+
+    .is-ipad .home-timeline__desc {
+      font-size: 14px;
+    }
+
+
+    .is-ipad .home-timeline__summary {
+      font-size: 13px;
+    }
+
+
+    .is-ipad .home-timeline__tag {
+      font-size: 13px;
+    }
+
+
+    .is-ipad .home-content {
+      padding: 16px 32px 30px;
+    }
+
+
+    .is-ipad .home-card {
+      padding: 0;
+      margin-bottom: 18px;
+      border-radius: 20px;
+    }
+
+
+    .is-ipad .home-hero {
+      padding: 12px 32px 0;
+    }
+
+
+    .is-ipad .home-stats__item {
+      padding: 12px 10px;
+    }
+
+
+    .is-ipad .home-empty__title {
+      font-size: 17px;
+    }
+
+
+    .is-ipad .home-empty__desc {
+      font-size: 15px;
+    }
+
+
+    // TabBar
+    .is-ipad .home-tabbar {
+      height: 80px;
+    }
+
+
+    .is-ipad .home-tabbar__item-text {
+      font-size: 14px;
+    }
+
+
+    .is-ipad .home-tabbar__item-icon {
+      width: 30px;
+      height: 30px;
+    }
+
+
+    // FAB 弹出面板
+    .is-ipad .fab-sheet__label {
+      font-size: 17px;
+    }
+
+
+    .is-ipad .fab-sheet__sub {
+      font-size: 14px;
+    }
+
+
+    .is-ipad .fab-sheet__icon {
+      width: 48px;
+      height: 48px;
+    }
+
+
+    .is-ipad .fab-sheet__title {
+      font-size: 18px;
+    }
+
+
+    // 内联 Banner
+    .is-ipad .home-inline-banner__title {
+      font-size: 15px;
+    }
+
+
+    .is-ipad .home-inline-banner__desc {
+      font-size: 13px;
+    }
+
+
+    // 日对比卡片
+    .is-ipad .daily-compare__title {
+      font-size: 16px;
+    }
+
+
+    .is-ipad .daily-compare__label {
+      font-size: 13px;
+    }
+
+
+    .is-ipad .daily-compare__tag-text {
+      font-size: 13px;
+    }
+
+
+    // 排序切换
+    .is-ipad .home-sort-switch__item {
+      font-size: 14px;
+    }
+
+
+    // 编辑模式
+    .is-ipad .home-edit__label {
+      font-size: 13px;
+    }
+
+
+    .is-ipad .home-edit__tip {
+      font-size: 12px;
+    }
+
+
+    // Guest 功能列表
+    .is-ipad .home-guest-features__title {
+      font-size: 16px;
+    }
+
+
+    .is-ipad .home-guest-features__desc {
+      font-size: 14px;
+    }
+
+
+    .is-ipad .home-guest-login__title {
+      font-size: 18px;
+    }
+
+
+    .is-ipad .home-guest-login__desc {
+      font-size: 15px;
+    }
+
+
+    .is-ipad .home-guest-login__btn-text {
+      font-size: 17px;
+    }
+
+
+
+
+    .is-ipad .home-hero {
+      padding: 16px 48px 0;
+    }
+
+
+    .is-ipad .home-content {
+      padding: 20px 48px 30px;
+    }
+
+
+    .is-ipad .home-card {
+      margin-bottom: 20px;
+    }
+
+
+    .is-ipad .home-stats__value {
+      font-size: 26px;
+    }
+
+
+    .is-ipad .home-stats__label {
+      font-size: 15px;
+    }
+
+
+}
+
+// ══════════════════════════════════════════════════════════════
+// 记录列表 (records/list)
+// ══════════════════════════════════════════════════════════════
+@mixin records-list {
+
+    .records-list-page.is-ipad {
+      font-size: 18px;
+      padding: 0 16px;
+    }
+
+
+    .is-ipad .records-filter__chip {
+      font-size: 15px;
+      padding: 10px 18px;
+      border-radius: 22px;
+    }
+
+
+    .is-ipad .records-filter {
+      padding: 12px 8px;
+    }
+
+
+    .is-ipad .record-group__date {
+      font-size: 16px;
+    }
+
+
+    .is-ipad .record-group {
+      margin: 0 8px 16px;
+      border-radius: 18px;
+    }
+
+
+    .is-ipad .record-item {
+      padding: 16px 20px;
+      gap: 14px;
+      min-height: 60px;
+    }
+
+
+    .is-ipad .record-item__time {
+      font-size: 16px;
+    }
+
+
+    .is-ipad .record-item__title {
+      font-size: 17px;
+    }
+
+
+    .is-ipad .record-item__tag {
+      font-size: 14px;
+      padding: 5px 12px;
+    }
+
+
+    .is-ipad .record-item__summary {
+      font-size: 15px;
+    }
+
+
+    .is-ipad .record-item__note {
+      font-size: 14px;
+    }
+
+
+
+
+    .is-ipad .record-item {
+      padding: 18px 24px;
+      gap: 16px;
+    }
+
+
+}
+
+// ══════════════════════════════════════════════════════════════
+// 个人页 (profile)
+// ══════════════════════════════════════════════════════════════
+@mixin profile {
+
+    .profile-page.is-ipad {
+      font-size: 18px;
+    }
+
+
+    .is-ipad .baby-hero__name {
+      font-size: 24px;
+    }
+
+
+    .is-ipad .baby-hero__age {
+      font-size: 16px;
+    }
+
+
+    .is-ipad .baby-stats__value {
+      font-size: 22px;
+    }
+
+
+    .is-ipad .baby-stats__label {
+      font-size: 14px;
+    }
+
+
+    .is-ipad .settings-group__item {
+      padding: 18px 20px;
+      min-height: 56px;
+    }
+
+
+    .is-ipad .settings-group__label {
+      font-size: 17px;
+    }
+
+
+    .is-ipad .settings-group__value {
+      font-size: 16px;
+    }
+
+
+}
+
+// ══════════════════════════════════════════════════════════════
+// 喂养记录 (records/feeding)
+// ══════════════════════════════════════════════════════════════
+@mixin feeding {
+
+    // 导航栏
+    .is-ipad .feed-nav {
+      padding: 14px 24px;
+      min-height: 52px;
+    }
+
+
+    .is-ipad .feed-nav__title {
+      font-size: 20px;
+    }
+
+
+    .is-ipad .feed-nav__back {
+      width: 44px;
+      height: 44px;
+    }
+
+
+    .is-ipad .feed-nav__back-arrow {
+      font-size: 24px;
+    }
+
+
+    .is-ipad .feed-nav__delete-text {
+      font-size: 16px;
+    }
+
+
+    // 卡片
+    .is-ipad .feed-card {
+      margin: 0 24px 14px;
+      border-radius: 20px;
+    }
+
+
+    // 表单行
+    .is-ipad .feed-row {
+      padding: 16px 22px;
+      min-height: 56px;
+    }
+
+
+    .is-ipad .feed-row__label {
+      font-size: 16px;
+    }
+
+
+    .is-ipad .feed-row__picker {
+      font-size: 17px;
+    }
+
+
+    // 章节标签
+    .is-ipad .feed-section-label {
+      font-size: 15px;
+      padding: 18px 22px 8px;
+    }
+
+
+    // Tabs
+    .is-ipad .feed-tabs {
+      margin: 12px 24px 14px;
+      border-radius: 20px;
+      padding: 4px;
+    }
+
+
+    .is-ipad .feed-tabs__item {
+      padding: 12px 0;
+      border-radius: 16px;
+    }
+
+
+    .is-ipad .feed-tabs__label {
+      font-size: 16px;
+    }
+
+
+    // Chips
+    .is-ipad .feed-chips {
+      gap: 12px;
+      padding: 16px 22px 12px;
+    }
+
+
+    .is-ipad .feed-chip {
+      padding: 10px 0;
+      border-radius: 24px;
+    }
+
+
+    .is-ipad .feed-chip__text {
+      font-size: 15px;
+    }
+
+
+    // Stepper
+    .is-ipad .feed-stepper {
+      gap: 20px;
+      padding: 12px 22px 16px;
+    }
+
+
+    .is-ipad .feed-stepper__btn {
+      width: 44px;
+      height: 44px;
+    }
+
+
+    .is-ipad .feed-stepper__btn-text {
+      font-size: 22px;
+    }
+
+
+    .is-ipad .feed-stepper__val {
+      font-size: 28px;
+      min-width: 56px;
+    }
+
+
+    .is-ipad .feed-stepper__unit {
+      font-size: 16px;
+    }
+
+
+    // 奶粉选择
+    .is-ipad .feed-milk-grid {
+      gap: 12px;
+      padding: 16px 20px;
+    }
+
+
+    .is-ipad .feed-milk-opt {
+      padding: 14px 16px;
+      border-radius: 16px;
+    }
+
+
+    .is-ipad .feed-milk-opt__name {
+      font-size: 16px;
+    }
+
+
+    .is-ipad .feed-milk-opt__desc {
+      font-size: 14px;
+    }
+
+
+    // 配比
+    .is-ipad .feed-ratio-item {
+      padding: 16px;
+      border-radius: 16px;
+      margin-bottom: 12px;
+    }
+
+
+    .is-ipad .feed-ratio-item__name {
+      font-size: 16px;
+    }
+
+
+    // 勺数
+    .is-ipad .scoop-input__btn {
+      width: 40px;
+      height: 40px;
+    }
+
+
+    .is-ipad .scoop-input__val {
+      font-size: 24px;
+      min-width: 40px;
+    }
+
+
+    .is-ipad .scoop-input__unit {
+      font-size: 15px;
+    }
+
+
+    // 营养素
+    .is-ipad .feed-supp-row {
+      padding: 16px 22px;
+      gap: 14px;
+    }
+
+
+    .is-ipad .feed-supp-row__check {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+    }
+
+
+    .is-ipad .feed-supp-row__name {
+      font-size: 17px;
+    }
+
+
+    .is-ipad .feed-supp-row__hint {
+      font-size: 14px;
+    }
+
+
+    .is-ipad .feed-supp-row__input {
+      width: 80px;
+      height: 40px;
+      font-size: 16px;
+      border-radius: 10px;
+    }
+
+
+    .is-ipad .feed-supp-row__unit {
+      font-size: 15px;
+    }
+
+
+    // 辅食标签
+    .is-ipad .feed-food-chips {
+      gap: 12px;
+      padding: 16px 22px;
+    }
+
+
+    .is-ipad .feed-food-chip {
+      padding: 8px 16px;
+      border-radius: 24px;
+    }
+
+
+    .is-ipad .feed-food-chip__text {
+      font-size: 16px;
+    }
+
+
+    .is-ipad .feed-food-input {
+      height: 44px;
+      font-size: 17px;
+    }
+
+
+    .is-ipad .feed-food-add {
+      width: 44px;
+      height: 44px;
+    }
+
+
+    .is-ipad .feed-food-add__text {
+      font-size: 28px;
+    }
+
+
+    // 母乳侧选择
+    .is-ipad .feed-side-grid {
+      gap: 12px;
+      padding: 16px 20px;
+    }
+
+
+    .is-ipad .feed-side-opt {
+      padding: 18px 0;
+      border-radius: 16px;
+    }
+
+
+    .is-ipad .feed-side-opt__label {
+      font-size: 17px;
+    }
+
+
+    // 上次配方
+    .is-ipad .feed-last-card {
+      margin: 0 24px 14px;
+      border-radius: 20px;
+    }
+
+
+    .is-ipad .feed-last-card__title {
+      font-size: 15px;
+    }
+
+
+    .is-ipad .feed-last-card__milk-label {
+      font-size: 16px;
+    }
+
+
+    .is-ipad .feed-last-card__milk-scoop {
+      font-size: 20px;
+    }
+
+
+    // 备注
+    .is-ipad .feed-note-input {
+      font-size: 17px;
+      min-height: 56px;
+      padding: 14px 22px;
+    }
+
+
+    // 加载态
+    .is-ipad .feed-loading {
+      font-size: 17px;
+    }
+
+
+    // 提交
+    .is-ipad .feed-submit {
+      padding: 16px 24px 32px;
+    }
+
+
+    .is-ipad .feed-submit__btn {
+      border-radius: 18px;
+      padding: 18px 0;
+    }
+
+
+    .is-ipad .feed-submit__text {
+      font-size: 19px;
+    }
+
+
+
+
+}
+
+// ══════════════════════════════════════════════════════════════
+// 睡眠记录 (records/sleep)
+// ══════════════════════════════════════════════════════════════
+@mixin sleep {
+
+    // 导航栏
+    .is-ipad .sleep-nav {
+      padding: 14px 24px;
+      min-height: 52px;
+    }
+
+
+    .is-ipad .sleep-nav__title {
+      font-size: 20px;
+    }
+
+
+    .is-ipad .sleep-nav__back {
+      width: 44px;
+      height: 44px;
+    }
+
+
+    .is-ipad .sleep-nav__back-arrow {
+      font-size: 24px;
+    }
+
+
+    .is-ipad .sleep-nav__delete-text {
+      font-size: 16px;
+    }
+
+
+    // 卡片
+    .is-ipad .sleep-card {
+      margin: 0 24px 14px;
+      border-radius: 20px;
+    }
+
+
+    // 表单行
+    .is-ipad .sleep-row {
+      padding: 16px 22px;
+      min-height: 56px;
+    }
+
+
+    .is-ipad .sleep-row__label {
+      font-size: 16px;
+    }
+
+
+    .is-ipad .sleep-row__value {
+      font-size: 17px;
+    }
+
+
+    // 章节标签
+    .is-ipad .sleep-section-label {
+      font-size: 15px;
+      padding: 18px 22px 8px;
+    }
+
+
+    // 模式切换
+    .is-ipad .sleep-mode-switch {
+      margin: 12px 24px 14px;
+      border-radius: 20px;
+      padding: 4px;
+    }
+
+
+    .is-ipad .sleep-mode-switch__item {
+      padding: 12px 0;
+      border-radius: 16px;
+    }
+
+
+    .is-ipad .sleep-mode-switch__label {
+      font-size: 17px;
+    }
+
+
+    // 计时器
+    .is-ipad .sleep-timer__ring {
+      width: 240px;
+      height: 240px;
+    }
+
+
+    .is-ipad .sleep-timer__inner {
+      width: 200px;
+      height: 200px;
+    }
+
+
+    .is-ipad .sleep-timer__time {
+      font-size: 44px;
+    }
+
+
+    .is-ipad .sleep-timer__status {
+      font-size: 16px;
+    }
+
+
+    .is-ipad .sleep-timer__btn {
+      width: 220px;
+      padding: 20px 0;
+      border-radius: 20px;
+    }
+
+
+    .is-ipad .sleep-timer__btn-text {
+      font-size: 20px;
+    }
+
+
+    // 睡眠质量
+    .is-ipad .sleep-quality-grid {
+      gap: 14px;
+      padding: 16px 22px;
+    }
+
+
+    .is-ipad .sleep-quality-opt {
+      padding: 16px 0;
+      border-radius: 16px;
+    }
+
+
+    .is-ipad .sleep-quality-opt__label {
+      font-size: 15px;
+    }
+
+
+    // 弹窗
+    .is-ipad .sleep-dialog {
+      max-width: 480px;
+      border-radius: 24px;
+    }
+
+
+    .is-ipad .sleep-dialog__title {
+      font-size: 20px;
+    }
+
+
+    .is-ipad .sleep-dialog__desc {
+      font-size: 16px;
+    }
+
+
+    .is-ipad .sleep-dialog__btn {
+      padding: 20px 0;
+    }
+
+
+    .is-ipad .sleep-dialog__btn-text {
+      font-size: 18px;
+    }
+
+
+    // 备注
+    .is-ipad .sleep-note-input {
+      font-size: 17px;
+      min-height: 56px;
+      padding: 14px 22px;
+    }
+
+
+    // 加载态
+    .is-ipad .sleep-loading {
+      font-size: 17px;
+    }
+
+
+    // 提交
+    .is-ipad .sleep-submit {
+      padding: 16px 24px 32px;
+    }
+
+
+    .is-ipad .sleep-submit__btn {
+      border-radius: 18px;
+      padding: 18px 0;
+    }
+
+
+    .is-ipad .sleep-submit__text {
+      font-size: 19px;
+    }
+
+
+
+
+}
+
+// ══════════════════════════════════════════════════════════════
+// 尿布记录 (records/diaper)
+// ══════════════════════════════════════════════════════════════
+@mixin diaper {
+
+    // 导航栏
+    .is-ipad .diaper-nav {
+      padding: 14px 24px;
+      min-height: 52px;
+    }
+
+
+    .is-ipad .diaper-nav__title {
+      font-size: 20px;
+    }
+
+
+    .is-ipad .diaper-nav__back {
+      width: 44px;
+      height: 44px;
+    }
+
+
+    .is-ipad .diaper-nav__back-arrow {
+      font-size: 24px;
+    }
+
+
+    .is-ipad .diaper-nav__delete-text {
+      font-size: 16px;
+    }
+
+
+    // 卡片
+    .is-ipad .diaper-card {
+      margin: 0 24px 14px;
+      border-radius: 20px;
+    }
+
+
+    // 表单行
+    .is-ipad .diaper-time-row {
+      padding: 16px 22px;
+      min-height: 56px;
+    }
+
+
+    .is-ipad .diaper-time-row__label {
+      font-size: 16px;
+    }
+
+
+    .is-ipad .diaper-time-row__picker {
+      font-size: 17px;
+    }
+
+
+    // 章节标签
+    .is-ipad .diaper-section-label {
+      font-size: 15px;
+      padding: 18px 22px 8px;
+    }
+
+
+    // 类型网格
+    .is-ipad .diaper-type-grid {
+      gap: 12px;
+      padding: 16px 20px;
+    }
+
+
+    .is-ipad .diaper-type-opt {
+      padding: 20px 12px;
+      border-radius: 18px;
+    }
+
+
+    .is-ipad .diaper-type-opt__label {
+      font-size: 17px;
+    }
+
+
+    // 标签
+    .is-ipad .diaper-tags {
+      gap: 12px;
+      padding: 16px 22px;
+    }
+
+
+    .is-ipad .diaper-tag {
+      padding: 10px 16px;
+      border-radius: 24px;
+    }
+
+
+    .is-ipad .diaper-tag__label {
+      font-size: 15px;
+    }
+
+
+    .is-ipad .diaper-tag__dot {
+      width: 14px;
+      height: 14px;
+    }
+
+
+    // 次数控件
+    .is-ipad .diaper-count {
+      padding: 14px 22px;
+    }
+
+
+    .is-ipad .diaper-count__label {
+      font-size: 16px;
+    }
+
+
+    .is-ipad .diaper-count__btn {
+      width: 40px;
+      height: 40px;
+    }
+
+
+    .is-ipad .diaper-count__btn-text {
+      font-size: 24px;
+    }
+
+
+    .is-ipad .diaper-count__val {
+      font-size: 24px;
+      min-width: 32px;
+    }
+
+
+    // 备注
+    .is-ipad .diaper-note {
+      font-size: 17px;
+      min-height: 56px;
+      padding: 14px 22px;
+    }
+
+
+    // 加载态
+    .is-ipad .diaper-loading {
+      font-size: 17px;
+    }
+
+
+    // 提交
+    .is-ipad .diaper-submit {
+      padding: 16px 24px 32px;
+    }
+
+
+    .is-ipad .diaper-submit__btn {
+      border-radius: 18px;
+      padding: 18px 0;
+    }
+
+
+    .is-ipad .diaper-submit__text {
+      font-size: 19px;
+    }
+
+
+
+
+}
+
+// ══════════════════════════════════════════════════════════════
+// 生长记录 (records/growth)
+// ══════════════════════════════════════════════════════════════
+@mixin growth {
+
+    // 导航栏
+    .is-ipad .growth-nav {
+      padding: 14px 24px;
+      min-height: 52px;
+    }
+
+
+    .is-ipad .growth-nav__title {
+      font-size: 20px;
+    }
+
+
+    .is-ipad .growth-nav__back {
+      width: 44px;
+      height: 44px;
+    }
+
+
+    .is-ipad .growth-nav__back-arrow {
+      font-size: 24px;
+    }
+
+
+    .is-ipad .growth-nav__delete-text {
+      font-size: 16px;
+    }
+
+
+    // 卡片
+    .is-ipad .growth-card-box {
+      margin: 0 24px 14px;
+      border-radius: 20px;
+    }
+
+
+    // 表单行
+    .is-ipad .growth-row {
+      padding: 16px 22px;
+      min-height: 56px;
+    }
+
+
+    .is-ipad .growth-row__label {
+      font-size: 17px;
+    }
+
+
+    .is-ipad .growth-row__picker {
+      font-size: 17px;
+    }
+
+
+    .is-ipad .growth-row__input {
+      width: 100px;
+      height: 40px;
+      font-size: 18px;
+    }
+
+
+    .is-ipad .growth-row__unit {
+      font-size: 16px;
+    }
+
+
+    // 章节标签
+    .is-ipad .growth-section-label {
+      font-size: 15px;
+      padding: 18px 22px 8px;
+    }
+
+
+    // 机构选择
+    .is-ipad .growth-org-chips {
+      gap: 12px;
+      padding: 16px 22px;
+    }
+
+
+    .is-ipad .growth-org-chip {
+      padding: 10px 18px;
+      border-radius: 24px;
+      font-size: 16px;
+    }
+
+
+    // 拍照按钮
+    .is-ipad .growth-photo-btn__icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 16px;
+    }
+
+
+    .is-ipad .growth-photo-btn__icon-text {
+      font-size: 32px;
+    }
+
+
+    .is-ipad .growth-photo-btn__title {
+      font-size: 17px;
+    }
+
+
+    .is-ipad .growth-photo-btn__desc {
+      font-size: 15px;
+    }
+
+
+    // 备注
+    .is-ipad .growth-note-input {
+      font-size: 17px;
+      min-height: 56px;
+      padding: 14px 22px;
+    }
+
+
+    // 加载态
+    .is-ipad .growth-loading {
+      font-size: 17px;
+    }
+
+
+    // 提交
+    .is-ipad .growth-submit {
+      padding: 16px 24px 32px;
+    }
+
+
+    .is-ipad .growth-submit__btn {
+      border-radius: 18px;
+      padding: 18px 0;
+    }
+
+
+    .is-ipad .growth-submit__text {
+      font-size: 19px;
+    }
+
+
+
+
+}
+
+// ══════════════════════════════════════════════════════════════
+// 健康记录 (records/health)
+// ══════════════════════════════════════════════════════════════
+@mixin health {
+
+    // 导航栏
+    .is-ipad .health-nav__content {
+      padding: 14px 24px;
+      min-height: 52px;
+    }
+
+
+    .is-ipad .health-nav__title {
+      font-size: 20px;
+    }
+
+
+    .is-ipad .health-nav__back {
+      width: 44px;
+      height: 44px;
+    }
+
+
+    .is-ipad .health-nav__back-icon {
+      font-size: 24px;
+    }
+
+
+    // 卡片
+    .is-ipad .health-collapse-card {
+      margin: 0 24px 14px;
+      border-radius: 20px;
+    }
+
+
+    // 表单行
+    .is-ipad .health-card__row {
+      padding: 16px 22px;
+      min-height: 56px;
+    }
+
+
+    .is-ipad .health-card__label {
+      font-size: 16px;
+    }
+
+
+    .is-ipad .health-card__picker-text {
+      font-size: 17px;
+    }
+
+
+    // 章节标签
+    .is-ipad .health-section-label {
+      font-size: 15px;
+      padding: 18px 22px 8px;
+    }
+
+
+    // 体温
+    .is-ipad .health-temp__btn {
+      width: 40px;
+      height: 40px;
+    }
+
+
+    .is-ipad .health-temp__btn-text {
+      font-size: 22px;
+    }
+
+
+    .is-ipad .health-temp__value {
+      font-size: 24px;
+    }
+
+
+    .is-ipad .health-temp__unit {
+      font-size: 16px;
+    }
+
+
+    // 过敏网格
+    .is-ipad .health-allergy__grid {
+      gap: 12px;
+      padding: 16px 20px;
+    }
+
+
+    .is-ipad .health-allergy__item {
+      padding: 14px 12px;
+      border-radius: 16px;
+    }
+
+
+    .is-ipad .health-allergy__item-text {
+      font-size: 16px;
+    }
+
+
+    // 护肤
+    .is-ipad .health-skin__chip {
+      padding: 10px 18px;
+      font-size: 16px;
+    }
+
+
+    .is-ipad .health-skin__group-label {
+      font-size: 15px;
+    }
+
+
+    // 可折叠卡片
+    .is-ipad .health-collapse-card__title {
+      font-size: 16px;
+    }
+
+
+    .is-ipad .health-collapse-card__badge {
+      font-size: 14px;
+      padding: 4px 12px;
+    }
+
+
+    .is-ipad .health-collapse-card__hint {
+      font-size: 15px;
+    }
+
+
+    // 备注
+    .is-ipad .health-note__input {
+      font-size: 17px;
+      min-height: 56px;
+      padding: 14px 22px;
+    }
+
+
+    // 加载态
+    .is-ipad .health-loading__text {
+      font-size: 17px;
+    }
+
+
+    // 提交
+    .is-ipad .health-submit {
+      padding: 16px 24px 32px;
+    }
+
+
+    .is-ipad .health-submit__btn {
+      height: 56px;
+      border-radius: 28px;
+    }
+
+
+    .is-ipad .health-submit__btn-text {
+      font-size: 19px;
+    }
+
+
+    // 弹层
+    .is-ipad .health-sheet {
+      max-width: 500px;
+      border-radius: 24px 24px 0 0;
+    }
+
+
+    .is-ipad .health-sheet__title {
+      font-size: 19px;
+    }
+
+
+    .is-ipad .health-sheet__desc {
+      font-size: 15px;
+    }
+
+
+    .is-ipad .health-sheet__btn {
+      height: 56px;
+      border-radius: 28px;
+      font-size: 18px;
+    }
+
+
+
+
+}
+
+// ══════════════════════════════════════════════════════════════
+// 活动记录 (records/activity)
+// ══════════════════════════════════════════════════════════════
+@mixin activity {
+
+    // 导航栏
+    .is-ipad .activity-nav__content {
+      padding: 14px 24px;
+      min-height: 52px;
+    }
+
+
+    .is-ipad .activity-nav__title {
+      font-size: 20px;
+    }
+
+
+    .is-ipad .activity-nav__back {
+      width: 44px;
+      height: 44px;
+    }
+
+
+    .is-ipad .activity-nav__back-icon {
+      font-size: 24px;
+    }
+
+
+    // 卡片
+    .is-ipad .activity-intensity-card {
+      margin: 0 24px 14px;
+      border-radius: 20px;
+    }
+
+
+    // 表单行
+    .is-ipad .activity-card__row {
+      padding: 16px 22px;
+      min-height: 56px;
+    }
+
+
+    .is-ipad .activity-card__label {
+      font-size: 16px;
+    }
+
+
+    .is-ipad .activity-card__picker-text {
+      font-size: 17px;
+    }
+
+
+    // 章节标签
+    .is-ipad .activity-section-label {
+      font-size: 15px;
+      padding: 18px 22px 8px;
+    }
+
+
+    // 类型网格
+    .is-ipad .activity-type-card__grid {
+      gap: 12px;
+      padding: 16px 20px;
+    }
+
+
+    .is-ipad .activity-type-card__item {
+      padding: 14px 8px;
+      border-radius: 16px;
+    }
+
+
+    .is-ipad .activity-type-card__item-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+    }
+
+
+    .is-ipad .activity-type-card__item-label {
+      font-size: 16px;
+    }
+
+
+    .is-ipad .activity-type-card__item-sub {
+      font-size: 13px;
+    }
+
+
+    // 时长
+    .is-ipad .activity-duration-card__btn {
+      width: 48px;
+      height: 48px;
+    }
+
+
+    .is-ipad .activity-duration-card__btn-text {
+      font-size: 24px;
+    }
+
+
+    .is-ipad .activity-duration-card__value {
+      font-size: 36px;
+    }
+
+
+    .is-ipad .activity-duration-card__unit {
+      font-size: 15px;
+    }
+
+
+    // 强度
+    .is-ipad .activity-intensity-card__options {
+      gap: 14px;
+      padding: 16px 22px;
+    }
+
+
+    .is-ipad .activity-intensity-card__btn {
+      padding: 16px 0;
+      border-radius: 16px;
+    }
+
+
+    .is-ipad .activity-intensity-card__btn-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+    }
+
+
+    .is-ipad .activity-intensity-card__btn-label {
+      font-size: 15px;
+    }
+
+
+    // 备注
+    .is-ipad .activity-note__input {
+      font-size: 17px;
+      min-height: 56px;
+      padding: 14px 22px;
+    }
+
+
+    // 加载态
+    .is-ipad .activity-loading__text {
+      font-size: 17px;
+    }
+
+
+    // 提交
+    .is-ipad .activity-submit {
+      padding: 16px 24px 32px;
+    }
+
+
+    .is-ipad .activity-submit__btn {
+      height: 56px;
+      border-radius: 28px;
+    }
+
+
+    .is-ipad .activity-submit__btn-text {
+      font-size: 19px;
+    }
+
+
+    // 弹层
+    .is-ipad .activity-sheet {
+      max-width: 500px;
+      border-radius: 24px 24px 0 0;
+    }
+
+
+    .is-ipad .activity-sheet__title {
+      font-size: 19px;
+    }
+
+
+    .is-ipad .activity-sheet__desc {
+      font-size: 15px;
+    }
+
+
+    .is-ipad .activity-sheet__btn {
+      height: 56px;
+      border-radius: 28px;
+      font-size: 18px;
+    }
+
+
+
+
+}
+
+// ══════════════════════════════════════════════════════════════
+// 表现记录 (records/symptom)
+// ══════════════════════════════════════════════════════════════
+@mixin symptom {
+
+    // 导航栏
+    .is-ipad .symptom-nav__content {
+      padding: 14px 24px;
+      min-height: 52px;
+    }
+
+
+    .is-ipad .symptom-nav__title {
+      font-size: 20px;
+    }
+
+
+    .is-ipad .symptom-nav__back {
+      width: 44px;
+      height: 44px;
+    }
+
+
+    .is-ipad .symptom-nav__back-icon {
+      font-size: 24px;
+    }
+
+
+    // 卡片
+    .is-ipad .symptom-card {
+      margin: 0 24px 14px;
+      border-radius: 20px;
+    }
+
+
+    // 表单行
+    .is-ipad .symptom-card__row {
+      padding: 16px 22px;
+      min-height: 56px;
+    }
+
+
+    .is-ipad .symptom-card__label {
+      font-size: 17px;
+    }
+
+
+    .is-ipad .symptom-card__sublabel {
+      font-size: 15px;
+    }
+
+
+    .is-ipad .symptom-card__picker-text {
+      font-size: 17px;
+    }
+
+
+    .is-ipad .symptom-card__detail {
+      font-size: 14px;
+    }
+
+
+    // 章节标签
+    .is-ipad .symptom-section-label {
+      font-size: 15px;
+      padding: 18px 22px 8px;
+    }
+
+
+    // 选项卡片图标
+    .is-ipad .symptom-card__icon-wrap {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+    }
+
+
+    .is-ipad .symptom-card__icon {
+      width: 28px;
+      height: 28px;
+    }
+
+
+    // 备注
+    .is-ipad .symptom-note__input {
+      font-size: 17px;
+      min-height: 56px;
+      padding: 14px 22px;
+    }
+
+
+    // 加载态
+    .is-ipad .symptom-loading__text {
+      font-size: 17px;
+    }
+
+
+    // 提交
+    .is-ipad .symptom-submit {
+      padding: 16px 24px 32px;
+    }
+
+
+    .is-ipad .symptom-submit__btn {
+      height: 56px;
+      border-radius: 28px;
+    }
+
+
+    .is-ipad .symptom-submit__btn-text {
+      font-size: 19px;
+    }
+
+
+    // 弹层
+    .is-ipad .symptom-sheet {
+      max-width: 500px;
+      border-radius: 24px 24px 0 0;
+    }
+
+
+    .is-ipad .symptom-sheet__title {
+      font-size: 19px;
+    }
+
+
+    .is-ipad .symptom-sheet__desc {
+      font-size: 15px;
+    }
+
+
+    .is-ipad .symptom-sheet__btn {
+      height: 56px;
+      border-radius: 28px;
+      font-size: 18px;
+    }
+
+
+
+
+}
+
+// ══════════════════════════════════════════════════════════════
+// 医疗记录 (records/medical)
+// ══════════════════════════════════════════════════════════════
+@mixin medical {
+
+    // 导航栏
+    .is-ipad .medical-nav__content {
+      padding: 14px 24px;
+      min-height: 52px;
+    }
+
+
+    .is-ipad .medical-nav__title {
+      font-size: 20px;
+    }
+
+
+    .is-ipad .medical-nav__back {
+      width: 44px;
+      height: 44px;
+    }
+
+
+    .is-ipad .medical-nav__back-icon {
+      font-size: 24px;
+    }
+
+
+    // 卡片
+    .is-ipad .medical-card {
+      margin: 0 24px 14px;
+      border-radius: 20px;
+    }
+
+
+    // 表单行
+    .is-ipad .medical-card__row {
+      padding: 16px 22px;
+      min-height: 56px;
+    }
+
+
+    .is-ipad .medical-card__label {
+      font-size: 16px;
+    }
+
+
+    .is-ipad .medical-card__picker-text {
+      font-size: 17px;
+    }
+
+
+    // 章节标签
+    .is-ipad .medical-section-label {
+      font-size: 15px;
+      padding: 18px 22px 8px;
+    }
+
+
+    // 检查类型
+    .is-ipad .medical-visit-grid {
+      margin: 0 24px 14px;
+      gap: 12px;
+      padding: 12px 16px 18px;
+    }
+
+
+    .is-ipad .medical-visit-item {
+      padding: 14px 16px;
+      border-radius: 16px;
+    }
+
+
+    .is-ipad .medical-visit-item__icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+    }
+
+
+    .is-ipad .medical-visit-item__label {
+      font-size: 16px;
+    }
+
+
+    // OCR 上传
+    .is-ipad .medical-ocr__upload {
+      margin: 0 24px 14px;
+      padding: 28px 24px;
+      border-radius: 20px;
+    }
+
+
+    .is-ipad .medical-ocr__title {
+      font-size: 18px;
+    }
+
+
+    .is-ipad .medical-ocr__desc {
+      font-size: 15px;
+    }
+
+
+    .is-ipad .medical-ocr__btn {
+      padding: 12px 28px;
+      border-radius: 12px;
+    }
+
+
+    .is-ipad .medical-ocr__btn-text {
+      font-size: 16px;
+    }
+
+
+    // 复查提醒
+    .is-ipad .medical-followup {
+      margin: 0 24px 14px;
+      padding: 18px 22px;
+      border-radius: 20px;
+    }
+
+
+    .is-ipad .medical-followup__title {
+      font-size: 16px;
+    }
+
+
+    .is-ipad .medical-followup__label {
+      font-size: 16px;
+    }
+
+
+    // 用药
+    .is-ipad .medical-meds__title {
+      font-size: 16px;
+    }
+
+
+    .is-ipad .medical-meds__add-text {
+      font-size: 15px;
+    }
+
+
+    .is-ipad .medical-meds__name {
+      font-size: 16px;
+    }
+
+
+    .is-ipad .medical-meds__dose {
+      font-size: 16px;
+    }
+
+
+    // 备注
+    .is-ipad .medical-card__textarea {
+      font-size: 17px;
+      min-height: 56px;
+      padding: 14px 22px;
+    }
+
+
+    // 加载态
+    .is-ipad .medical-loading__text {
+      font-size: 17px;
+    }
+
+
+    // 提交
+    .is-ipad .medical-submit {
+      padding: 16px 24px 32px;
+    }
+
+
+    .is-ipad .medical-submit__btn {
+      height: 56px;
+      border-radius: 28px;
+    }
+
+
+    .is-ipad .medical-submit__btn-text {
+      font-size: 19px;
+    }
+
+
+    // 弹层
+    .is-ipad .medical-sheet {
+      max-width: 500px;
+      border-radius: 24px 24px 0 0;
+    }
+
+
+    .is-ipad .medical-sheet__title {
+      font-size: 19px;
+    }
+
+
+    .is-ipad .medical-sheet__desc {
+      font-size: 15px;
+    }
+
+
+    .is-ipad .medical-sheet__btn {
+      height: 56px;
+      border-radius: 28px;
+      font-size: 18px;
+    }
+
+
+
+
+}

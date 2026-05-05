@@ -17,6 +17,7 @@ import PageLoading from '@/components/PageLoading'
 import TemperatureSection from './TemperatureSection'
 import AllergySection from './AllergySection'
 import type { Severity } from './AllergySection'
+import { useIsIPad } from '@/lib/useIsIPad'
 import './index.scss'
 
 /** 保湿护理分组 Chip 列表 */
@@ -35,6 +36,8 @@ const ICON_CHEVRON = `data:image/svg+xml,${encodeURIComponent('<svg viewBox="0 0
 const SEVERITY_LABEL: Record<string, string> = { mild: '轻度', moderate: '中度', severe: '重度' }
 
 export default function HealthFormPage() {
+  const isIPad = useIsIPad()
+  const cls = (base: string) => isIPad ? `${base} is-ipad` : base
   // ── 表单状态 ──
   const [recordDate, setRecordDate] = useState(nowDate())
   const [recordTime, setRecordTime] = useState(nowTime())
@@ -133,7 +136,7 @@ export default function HealthFormPage() {
   // ── Loading ──
   if (loading) {
     return (
-      <View className='health-page'>
+      <View className={cls('health-page')}>
         <RecordNavBar title='健康记录' isEditMode={false} />
         <PageLoading />
       </View>
@@ -141,7 +144,7 @@ export default function HealthFormPage() {
   }
 
   return (
-    <View className='health-page'>
+    <View className={cls('health-page')}>
       <RecordNavBar
         title='健康记录'
         isEditMode={isEditMode}

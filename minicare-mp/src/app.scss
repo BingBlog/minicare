@@ -1,3 +1,15 @@
 page {
   height: 100%;
 }
+
+/**
+ * iPad 适配说明：
+ * zoom 属性在小程序真机 WebView 中不生效（仅模拟器有效），
+ * 因此通过 @media (min-width: 768px) 媒体查询放大各页面的字体和间距。
+ *
+ * 方案：每个页面 SCSS 末尾 @include 对应的 mixin（来自 styles/_ipad-adapt-mixins.scss）
+ * 这样媒体查询编译到页面自己的 wxss 中，避免被页面局部样式覆盖。
+ *
+ * - 各页面适配 mixin：src/styles/_ipad-adapt-mixins.scss
+ * - Dashboard 独立方案：pages/dashboard/index.scss（$scale 编译时缩放）
+ */

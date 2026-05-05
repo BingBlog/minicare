@@ -6,6 +6,7 @@ import type { OngoingSleepRecord } from '@/api/sleep'
 import { HOME_RECORD_ROUTES } from '@/lib/constants'
 import { navigateToRecord } from '@/lib/navigation'
 import { getStatusBarHeight } from '@/lib/safeArea'
+import { useIsIPad } from '@/lib/useIsIPad'
 import { getBabyAge, getGreeting, getTodayDateStr, compareTime } from '@/lib/utils'
 import { getToken } from '@/api/http'
 
@@ -23,6 +24,8 @@ import { toHomeRecord } from './homeRecords'
 import './index.scss'
 
 export default function HomePage() {
+  const isIPad = useIsIPad()
+  const cls = (base: string) => isIPad ? `${base} is-ipad` : base
   const [backendStatus, setBackendStatus] = useState('')
   const [records, setRecords] = useState<HomeRecord[]>([])
   const [yesterdayRecords, setYesterdayRecords] = useState<HomeRecord[]>([])
@@ -231,7 +234,7 @@ export default function HomePage() {
 
   if (loading) {
     return (
-      <View className='home-page home-page--safe' style={{ paddingTop: `${getStatusBarHeight()}px` }}>
+      <View className={cls('home-page home-page--safe')} style={{ paddingTop: `${getStatusBarHeight()}px` }}>
         <View className='home-content'>
           <View className='home-card'>
             <View className='home-empty'>
@@ -247,7 +250,7 @@ export default function HomePage() {
   // ── 游客模式：未登录时展示功能预览，引导用户自行登录 ──
   if (isGuest) {
     return (
-      <View className='home-page'>
+      <View className={cls('home-page')}>
         <View className='home-hero' style={{ paddingTop: `${getStatusBarHeight() + 8}px` }}>
           <View className='home-hero__decor home-hero__decor--big' />
           <View className='home-hero__decor home-hero__decor--small' />
@@ -286,7 +289,7 @@ export default function HomePage() {
   }
 
   return (
-    <View className='home-page'>
+    <View className={cls('home-page')}>
       <HeroSection
         babyName={babyName}
         babyAgeText={birthDate ? getBabyAge(birthDate) : '—'}

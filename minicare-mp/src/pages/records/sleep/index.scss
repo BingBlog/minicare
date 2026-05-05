@@ -1,3 +1,5 @@
+@use '../../../styles/ipad-adapt-mixins' as ipad;
+
 .sleep-page {
   min-height: 100vh;
   background: #faf5f6;
@@ -415,3 +417,5 @@
 .sleep-dialog__btn-text--danger {
   color: #f05060;
 }
+
+@include ipad.sleep;

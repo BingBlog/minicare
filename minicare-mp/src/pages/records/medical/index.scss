@@ -1,3 +1,5 @@
+@use '../../../styles/ipad-adapt-mixins' as ipad;
+
 /* 医疗记录表单页 — 样式（与 health 页面风格保持一致） */
 
 .medical-page {
@@ -623,3 +625,5 @@
   background: #F05060;
   color: #fff;
 }
+
+@include ipad.medical;

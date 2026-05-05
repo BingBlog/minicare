@@ -19,6 +19,7 @@ import DiaperTypeSection from './DiaperTypeSection'
 import PoopSection from './PoopSection'
 import ButtConditionSection from './ButtConditionSection'
 import type { ButtCondition } from './ButtConditionSection'
+import { useIsIPad } from '@/lib/useIsIPad'
 import './index.scss'
 
 type DiaperChip = 'wet' | 'dirty' | 'mixed'
@@ -27,6 +28,8 @@ type DiaperChip = 'wet' | 'dirty' | 'mixed'
 // 页面入口
 // ---------------------------------------------------------------------------
 export default function DiaperFormPage() {
+  const isIPad = useIsIPad()
+  const cls = (base: string) => isIPad ? `${base} is-ipad` : base
   // ── 表单状态 ──
   const [recordDate, setRecordDate] = useState(nowDate())
   const [recordTime, setRecordTime] = useState(nowTime())
@@ -105,7 +108,7 @@ export default function DiaperFormPage() {
   // ── Loading ──
   if (loading) {
     return (
-      <View className='diaper-page'>
+      <View className={cls('diaper-page')}>
         <RecordNavBar title='尿布记录' isEditMode={false} />
         <PageLoading />
       </View>
@@ -114,7 +117,7 @@ export default function DiaperFormPage() {
 
   // ── Render ──
   return (
-    <View className='diaper-page'>
+    <View className={cls('diaper-page')}>
       <RecordNavBar
         title='尿布记录'
         isEditMode={isEditMode}
