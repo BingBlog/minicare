@@ -17,7 +17,8 @@
 import React, { useState } from 'react'
 import { useAppStore } from '@/lib/store'
 import { recordsApi } from '@/api'
-// 注意：子组件内部各自定义了本地类型（DiaperChip, ButtCondition, SleepQuality, Intensity, ActivityType）
+import type { PoopType, ButtCondition, ActivityType } from '@/api/types'
+// 注意：子组件内部各自定义了本地类型（DiaperChip, SleepQuality, Intensity）
 // 这些与 api/types 中的同名类型结构一致，TypeScript 结构类型系统会正确匹配
 import DatePicker from '@/components/DatePicker'
 import TimePicker from '@/components/TimePicker'
@@ -440,8 +441,8 @@ function DiaperForm({ onClose, onSuccess }: { onClose: () => void; onSuccess: ()
   const [recordTime, setRecordTime] = useState(nowTime)
   const [diaperType, setDiaperType] = useState<'wet' | 'dirty' | 'mixed'>('wet')
   const [diaperCount, setDiaperCount] = useState(1)
-  const [poopType, setPoopType] = useState<string | null>('normal')
-  const [buttCondition, setButtCondition] = useState<string | null>('normal')
+  const [poopType, setPoopType] = useState<PoopType | null>('normal')
+  const [buttCondition, setButtCondition] = useState<ButtCondition | null>('normal')
   const [colorSelected, setColorSelected] = useState<Set<string>>(new Set())
   const [note, setNote] = useState('')
   const [submitting, setSubmitting] = useState(false)
@@ -456,9 +457,9 @@ function DiaperForm({ onClose, onSuccess }: { onClose: () => void; onSuccess: ()
         baby_id: currentBaby.id,
         diaper_type: diaperType,
         record_time: timeToISO(recordDate, recordTime),
-        stool_colors: showPoop && colorSelected.size > 0 ? [...colorSelected] : undefined,
-        poop_type: (showPoop && poopType ? poopType : undefined) ?? undefined,
-        butt_condition: buttCondition ?? undefined,
+        color: showPoop && colorSelected.size > 0 ? [...colorSelected].join(',') : undefined,
+        poop_type: (showPoop && poopType ? poopType : undefined) as PoopType | undefined,
+        butt_condition: (buttCondition ?? undefined) as ButtCondition | undefined,
         diaper_count: diaperCount !== 1 ? diaperCount : undefined,
         note: note || undefined,
       })
@@ -488,7 +489,7 @@ function DiaperForm({ onClose, onSuccess }: { onClose: () => void; onSuccess: ()
       {showPoop && (
         <PoopSection
           poopType={poopType}
-          onPoopTypeChange={(key) => setPoopType(key as PoopType | null)}
+          onPoopTypeChange={(key) => setPoopType(key as PoopType | null)}  // eslint-disable-line
           colorSelected={colorSelected}
           onToggleColor={(key) => {
             setColorSelected((prev) => {
@@ -500,7 +501,7 @@ function DiaperForm({ onClose, onSuccess }: { onClose: () => void; onSuccess: ()
         />
       )}
 
-      <ButtConditionSection value={buttCondition} onChange={setButtCondition} />
+      <ButtConditionSection value={buttCondition as any} onChange={(v) => setButtCondition(v as ButtCondition | null)} />
 
       <CompactNote value={note} onChange={setNote} placeholder="其他观察或备注..." />
 
@@ -809,7 +810,7 @@ function ActivityForm({ onClose, onSuccess }: { onClose: () => void; onSuccess: 
 
   const [recordDate, setRecordDate] = useState(nowDate)
   const [recordTime, setRecordTime] = useState(nowTime)
-  const [activityType, setActivityType] = useState<string>('gross_motor')
+  const [activityType, setActivityType] = useState<ActivityType>('gross_motor')
   const [intensity, setIntensity] = useState<'easy' | 'medium' | 'active'>('medium')
   const [actDurationMin, setActDurationMin] = useState(15)
   const [note, setNote] = useState('')
@@ -843,7 +844,7 @@ function ActivityForm({ onClose, onSuccess }: { onClose: () => void; onSuccess: 
         onDateChange={setRecordDate} onTimeChange={setRecordTime}
       />
 
-      <ActivityTypeSection value={activityType as any} onChange={setActivityType as any} compact />
+      <ActivityTypeSection value={activityType} onChange={(v) => setActivityType(v as ActivityType)} compact />
 
       {/* 活动时长 */}
       <div
