@@ -28,7 +28,8 @@ function withType<T extends { id: string }>(type: string, items: T[]): T[] {
 }
 
 export const recordsApi = {
-  today: (familyId: string) => request<TodayRecord[]>(`/api/family/${familyId}/records/today`),
+  today: (familyId: string, date?: string) =>
+    request<TodayRecord[]>(`/api/family/${familyId}/records/today${date ? `?date=${date}` : ''}`),
   remove: (familyId: string, type: string, id: string) =>
     request<void>(`/api/family/${familyId}/records/${type}/${id}`, { method: 'DELETE' }),
   feeding: {

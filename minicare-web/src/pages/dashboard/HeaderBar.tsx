@@ -88,9 +88,13 @@ interface Props {
   /** 当前查看的日期，YYYY-MM-DD，undefined 表示今日 */
   selectedDate: string
   onDateChange: (date: string) => void
+  /** 提醒声音是否开启 */
+  soundEnabled: boolean
+  /** 切换声音开关 */
+  onSoundToggle: (enabled: boolean) => void
 }
 
-export default function HeaderBar({ baby, data, selectedDate, onDateChange }: Props) {
+export default function HeaderBar({ baby, data, selectedDate, onDateChange, soundEnabled, onSoundToggle }: Props) {
   const [now, setNow] = useState(new Date())
   const [isFullscreen, setIsFullscreen] = useState(!!document.fullscreenElement)
   const [showDatePicker, setShowDatePicker] = useState(false)
@@ -258,6 +262,25 @@ export default function HeaderBar({ baby, data, selectedDate, onDateChange }: Pr
           </svg>
           {formatTime(now)}
         </span>
+        <button
+          className={`db-sound-btn ${soundEnabled ? 'db-sound-btn--on' : 'db-sound-btn--off'}`}
+          onClick={() => onSoundToggle(!soundEnabled)}
+          title={soundEnabled ? '关闭提醒声音' : '开启提醒声音'}
+        >
+          {soundEnabled ? (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+            </svg>
+          ) : (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+              <line x1="23" y1="9" x2="17" y2="15" />
+              <line x1="17" y1="9" x2="23" y2="15" />
+            </svg>
+          )}
+        </button>
         <button className="db-fullscreen-btn" onClick={toggleFullscreen} title={isFullscreen ? '退出全屏' : '全屏展示'}>
           {isFullscreen ? (
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

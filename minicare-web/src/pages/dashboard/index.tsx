@@ -10,7 +10,7 @@
  * ├─ 上排四列（喂养 | 尿布 | 睡眠 | 补剂）
  * └─ 下排四列（活动 | 表现 | 今日节律 | 提醒待办）
  */
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { familyApi, babyApi, recordsApi } from '@/api'
 import { useAppStore } from '@/lib/store'
@@ -29,6 +29,9 @@ import RemindersColumn from './RemindersColumn'
 import RecordDrawer from './RecordDrawer'
 import type { DrawerRecordType } from './RecordDrawer'
 import { useDashboardData, getTodayStr } from './useDashboardData'
+import { useReminder, createFeedingSource, ReminderOverlay, audioManager } from './reminder'
+import type { ReminderSource } from './reminder'
+import AudioUnlockBanner from './AudioUnlockBanner'
 import './dashboard.css'
 
 export default function DashboardPage() {
@@ -111,6 +114,29 @@ export default function DashboardPage() {
     return () => clearInterval(timer)
   }, [])
 
+  // 提醒声音开关（默认开启）
+  const [soundEnabled, setSoundEnabled] = useState(true)
+  // 音频是否已解锁
+  const [audioUnlocked, setAudioUnlocked] = useState(false)
+
+  // 关闭声音时立即停止播放
+  useEffect(() => {
+    if (!soundEnabled) {
+      audioManager.stop()
+    }
+  }, [soundEnabled])
+
+  // 提醒系统
+  const reminderSources = useMemo<ReminderSource[]>(() => [
+    createFeedingSource(() => data.feeding),
+  ], [data.feeding])
+
+  const isToday = selectedDate === getTodayStr()
+  const { active: activeReminder, dismiss: dismissReminder } = useReminder(reminderSources, {
+    isNight,
+    enabled: isToday && soundEnabled, // 仅查看今日且声音开启时启用提醒
+  })
+
   // 防误触：拦截后退手势
   useEffect(() => {
     history.pushState(null, '', location.href)
@@ -134,6 +160,29 @@ export default function DashboardPage() {
     document.documentElement.requestFullscreen?.().catch(() => {})
   }, [])
 
+  // 解锁音频：监听用户首次交互以满足浏览器自动播放策略
+  const handleUnlockAudio = useCallback(() => {
+    audioManager.unlock()
+    setAudioUnlocked(true)
+  }, [])
+
+  useEffect(() => {
+    const unlockAudio = () => {
+      handleUnlockAudio()
+      document.removeEventListener('click', unlockAudio)
+      document.removeEventListener('touchstart', unlockAudio)
+      document.removeEventListener('keydown', unlockAudio)
+    }
+    document.addEventListener('click', unlockAudio)
+    document.addEventListener('touchstart', unlockAudio)
+    document.addEventListener('keydown', unlockAudio)
+    return () => {
+      document.removeEventListener('click', unlockAudio)
+      document.removeEventListener('touchstart', unlockAudio)
+      document.removeEventListener('keydown', unlockAudio)
+    }
+  }, [handleUnlockAudio])
+
   if (loading) {
     return (
       <div className="db-root" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -149,7 +198,14 @@ export default function DashboardPage() {
         data={data}
         selectedDate={selectedDate}
         onDateChange={setSelectedDate}
+        soundEnabled={soundEnabled}
+        onSoundToggle={setSoundEnabled}
       />
+
+      {/* 音频解锁提示 — 页面加载时显示，用户点击后消失 */}
+      {!audioUnlocked && (
+        <AudioUnlockBanner onUnlock={handleUnlockAudio} />
+      )}
 
       <div className="db-body">
         {/* 上排：喂养 | 尿布 | 睡眠 | 补剂 */}
@@ -192,6 +248,10 @@ export default function DashboardPage() {
         onClose={closeDrawer}
         onSuccess={() => data.refresh()}
       />
+
+      {activeReminder && (
+        <ReminderOverlay reminder={activeReminder} onDismiss={dismissReminder} />
+      )}
     </div>
   )
 }

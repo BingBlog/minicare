@@ -13,6 +13,7 @@ import HeroSection from './HeroSection'
 import QuickActions from './QuickActions'
 import GuestQuickActions from './GuestQuickActions'
 import TodayTimeline from './TodayTimeline'
+import DailyComparison from './DailyComparison'
 import SleepBanner from './SleepBanner'
 import FeedingBanner from './FeedingBanner'
 import RecordActionSheet from './RecordActionSheet'
@@ -24,6 +25,7 @@ import './index.scss'
 export default function HomePage() {
   const [backendStatus, setBackendStatus] = useState('')
   const [records, setRecords] = useState<HomeRecord[]>([])
+  const [yesterdayRecords, setYesterdayRecords] = useState<HomeRecord[]>([])
   const [ongoingSleep, setOngoingSleep] = useState<OngoingSleepRecord | null>(null)
   const [actionOpen, setActionOpen] = useState(false)
   const [selectedRecord, setSelectedRecord] = useState<HomeRecord | null>(null)
@@ -33,6 +35,13 @@ export default function HomePage() {
   const [familyId, setFamilyId] = useState('')
   const familyIdRef = useRef('')
   const [loading, setLoading] = useState(true)
+
+  /** 获取昨日日期字符串 YYYY-MM-DD */
+  const getYesterdayDateStr = useCallback(() => {
+    const d = new Date()
+    d.setDate(d.getDate() - 1)
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+  }, [])
 
   /** 刷新今日记录 & 进行中睡眠（页面从子页面返回时复用） */
   const refreshTodayRecords = useCallback(async (fid: string) => {
@@ -52,10 +61,18 @@ export default function HomePage() {
       setBirthDate(baby.birth_date || '')
       setRecords(todayRecords.map(toHomeRecord))
       setOngoingSleep(ongoing)
+
+      // 同时刷新昨日记录（用于对比）
+      try {
+        const yRecords = await recordsApi.today(fid, getYesterdayDateStr())
+        setYesterdayRecords(yRecords.map(toHomeRecord))
+      } catch {
+        // 昨日记录获取失败不影响主流程
+      }
     } catch {
       // 静默失败，保留已有数据
     }
-  }, [])
+  }, [getYesterdayDateStr])
 
   // 是否处于游客模式（未登录）
   const [isGuest, setIsGuest] = useState(false)
@@ -104,6 +121,11 @@ export default function HomePage() {
           setRecords(todayRecords.map(toHomeRecord))
           setOngoingSleep(ongoing)
           setBackendStatus('')
+
+          // 获取昨日记录用于对比
+          recordsApi.today(fid, getYesterdayDateStr())
+            .then((yRecs) => { if (!cancelled) setYesterdayRecords(yRecs.map(toHomeRecord)) })
+            .catch(() => {})
         }
       } catch (err) {
         if (!cancelled) {
@@ -303,6 +325,10 @@ export default function HomePage() {
             const route = HOME_RECORD_ROUTES[key] ?? '/records'
             navigateToRecord(route)
           }}
+        />
+        <DailyComparison
+          todayRecords={records}
+          yesterdayRecords={yesterdayRecords}
         />
         <TodayTimeline
           records={records}
