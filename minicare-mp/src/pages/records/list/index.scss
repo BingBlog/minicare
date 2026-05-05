@@ -316,21 +316,26 @@
   padding-bottom: 12px;
 }
 
+/* 主行：flex-wrap，窄屏时数据区可折到第二行 */
 .record-item__row {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 8px;
 }
 
+/* 时间列 */
 .record-item__time {
   flex-shrink: 0;
   width: 34px;
+  margin-right: 4px;
   font-size: 12px;
   font-weight: 600;
   color: #8D6F75;
   line-height: 1;
 }
 
+/* 图标列 */
 .record-item__icon {
   flex-shrink: 0;
   width: 36px;
@@ -346,20 +351,37 @@
   height: 17px;
 }
 
+/* 标签列：固定宽度保持纵向对齐 */
 .record-item__label {
   flex-shrink: 0;
+  width: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.record-item__label-text {
   font-size: 13px;
   font-weight: 600;
   color: #6A5055;
   line-height: 1.3;
-  white-space: nowrap;
 }
 
+/* 数据区：tags + summary 包裹容器，有最小宽度保证 */
+.record-item__data {
+  flex: 1;
+  min-width: 140px; /* 最小宽度，不够时整体折到第二行 */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* tags 列：flex:1 + flex-wrap 支持多 tag 换行 */
 .record-item__tags {
   flex: 1;
   min-width: 0;
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 4px;
 }
 
@@ -370,36 +392,26 @@
   border-radius: 6px;
   background: #F5F0F2;
   color: #9A8090;
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.record-item__arrow {
+/* summary 列：固定宽度保持纵向对齐 */
+.record-item__summary {
   flex-shrink: 0;
-  font-size: 13px;
-  color: #D4B8BE;
-  line-height: 1;
-  margin-left: auto;
-}
-
-/* ── 第二行 summary（独立行，不与 tags 争空间） ── */
-.record-item__summary-row {
+  width: 72px;
   display: flex;
   align-items: center;
-  /* 左对齐到 icon 右侧：time(34px) + gap(8px) + icon(36px) + gap(8px) = 86px */
-  padding-left: 86px;
-  margin-top: 6px;
+  justify-content: flex-start;
 }
 
 .record-item__summary-badge {
   display: inline-flex;
   align-items: baseline;
   gap: 1px;
-  padding: 2px 8px;
+  padding: 2px 6px;
   border-radius: 8px;
   background: #FFF0F4;
+  max-width: 100%;
 }
 
 .record-item__summary-badge--warm {
@@ -415,11 +427,14 @@
 }
 
 .record-item__summary-value {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 800;
   color: #F87098;
   letter-spacing: -0.3px;
   line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .record-item__summary-value--warm {
@@ -438,6 +453,7 @@
   font-size: 10px;
   font-weight: 500;
   opacity: 0.75;
+  white-space: nowrap;
 }
 
 /* Long summary values (>5 chars) get smaller font */
@@ -448,10 +464,19 @@
   font-size: 9px;
 }
 
+/* 右箭头：始终在第一行最右侧 */
+.record-item__arrow {
+  flex-shrink: 0;
+  font-size: 13px;
+  color: #D4B8BE;
+  line-height: 1;
+}
+
 /* ── 备注 ── */
 .record-item__note {
   margin-top: 6px;
-  padding-left: 86px;
+  /* 左对齐到 tags 列起始位置 */
+  padding-left: 138px;
   font-size: 11px;
   color: #B0A0A4;
   line-height: 1.4;
