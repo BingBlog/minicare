@@ -1,0 +1,46 @@
+/* SubmitBar — 底部提交栏样式 */
+.submit-bar {
+  position: sticky;
+  bottom: 0;
+  padding: 12px 16px;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  background: linear-gradient(to top, #FFF9F5 60%, transparent);
+}
+
+.submit-bar__inner {
+  display: flex;
+  gap: 10px;
+}
+
+.submit-bar__btn {
+  height: 48px;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.submit-bar__btn--primary {
+  flex: 1;
+  background: linear-gradient(135deg, #DDB870, #E8CC8C);
+  box-shadow: 0 4px 12px rgba(221, 184, 112, 0.3);
+}
+
+.submit-bar__btn--delete {
+  width: 80px;
+  background: #F5F0F2;
+}
+
+.submit-bar__btn--disabled {
+  opacity: 0.6;
+}
+
+.submit-bar__btn-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.submit-bar__btn-text--delete {
+  color: #F05060;
+}

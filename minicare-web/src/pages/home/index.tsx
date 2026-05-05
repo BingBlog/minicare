@@ -23,6 +23,7 @@ import TodayTimeline from "./TodayTimeline";
 import FabSheet from "./FabSheet";
 import SleepBanner from "./SleepBanner";
 import FeedingBanner from "./FeedingBanner";
+import GuestHome from "./GuestHome";
 import RecordActionSheet from "@/pages/records-list/RecordActionSheet";
 import { RECORD_ROUTES, FAB_GROUPS } from "@/lib/constants";
 import { useQuickActionKeys } from "@/lib/useQuickActionKeys";
@@ -51,8 +52,13 @@ const deletableApis = recordsApi as unknown as Record<
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const { currentFamily, currentBaby, setCurrentFamily, setCurrentBaby } =
+  const { token, currentFamily, currentBaby, setCurrentFamily, setCurrentBaby } =
     useAppStore();
+
+  // 游客模式：未登录时展示 GuestHome
+  if (!token) {
+    return <GuestHome />;
+  }
 
   // 快捷区已用的 key（用于动态过滤 FAB 弹层）
   const { keys: quickKeys } = useQuickActionKeys();

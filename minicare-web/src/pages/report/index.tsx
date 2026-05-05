@@ -14,11 +14,12 @@
  *   - 睡眠：14天
  *   - 健康：7天
  */
-import { useState, useCallback, useEffect, useMemo } from "react";
+import { useState, useCallback, useEffect } from "react";
 import dayjs from "dayjs";
 import { useAppStore } from "@/lib/store";
 import { useToast } from "@/components/ui/Toast";
 import { reportApi } from "@/api/report";
+import GuestReport from "./GuestReport";
 import type {
   DailyFeedingData,
   DailyDiaperData,
@@ -114,8 +115,13 @@ function getRangeText(rangeKey: string, birthDate?: string | null): string {
 
 // ══ 分析页面主体 ══════════════════════════════════════════════════
 export default function AnalysisPage() {
-  const { currentBaby, currentFamily } = useAppStore();
+  const { token, currentBaby, currentFamily } = useAppStore();
   const { showToast, ToastNode } = useToast();
+
+  // 游客模式：未登录时展示 GuestReport
+  if (!token) {
+    return <GuestReport />;
+  }
 
   // 当前激活的 Tab
   const [activeTab, setActiveTab] = useState<TabKey>("feeding");

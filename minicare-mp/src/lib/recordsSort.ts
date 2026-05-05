@@ -1,6 +1,6 @@
 import type { HomeRecord } from '@/pages/home/types'
 import type { RecordItem } from '@/api/types'
-import { getRecordTime } from './utils'
+import { getRecordTime, compareTime } from './utils'
 
 export type RecordsSortMode = 'time' | 'type'
 
@@ -29,7 +29,7 @@ export const RECORD_LIST_TYPE_ORDER: string[] = [
 export function sortDayItems(items: RecordItem[], mode: RecordsSortMode): RecordItem[] {
   const next = [...items]
   if (mode === 'time') {
-    next.sort((a, b) => new Date(getRecordTime(b)).getTime() - new Date(getRecordTime(a)).getTime())
+    next.sort((a, b) => compareTime(getRecordTime(b), getRecordTime(a)))
     return next
   }
 
@@ -41,7 +41,7 @@ export function sortDayItems(items: RecordItem[], mode: RecordsSortMode): Record
     const oa = ia === -1 ? 999 : ia
     const ob = ib === -1 ? 999 : ib
     if (oa !== ob) return oa - ob
-    return new Date(getRecordTime(b)).getTime() - new Date(getRecordTime(a)).getTime()
+    return compareTime(getRecordTime(b), getRecordTime(a))
   })
   return next
 }
@@ -49,7 +49,7 @@ export function sortDayItems(items: RecordItem[], mode: RecordsSortMode): Record
 export function sortHomeDayItems(items: HomeRecord[], mode: RecordsSortMode): HomeRecord[] {
   const next = [...items]
   if (mode === 'time') {
-    next.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
+    next.sort((a, b) => compareTime(b.time, a.time))
     return next
   }
 
@@ -59,7 +59,7 @@ export function sortHomeDayItems(items: HomeRecord[], mode: RecordsSortMode): Ho
     const oa = ia === -1 ? 999 : ia
     const ob = ib === -1 ? 999 : ib
     if (oa !== ob) return oa - ob
-    return new Date(b.time).getTime() - new Date(a.time).getTime()
+    return compareTime(b.time, a.time)
   })
   return next
 }

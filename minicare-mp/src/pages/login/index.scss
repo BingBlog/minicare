@@ -77,6 +77,14 @@
   color: #f87098;
   background: #fff0f4;
   border: 0;
+  font-size: 12px;
+  white-space: nowrap;
+
+  &[disabled] {
+    color: #e85580;
+    background: #fff0f4;
+    opacity: 1;
+  }
 }
 
 .login-btn {

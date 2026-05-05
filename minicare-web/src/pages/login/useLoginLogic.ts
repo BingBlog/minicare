@@ -33,6 +33,9 @@ export function useLoginLogic() {
   // ── Tab ────────────────────────────────────────────────────────────
   const [mode, setMode] = useState<LoginMode>('sms')
 
+  // ── 协议勾选 ─────────────────────────────────────────────────────────
+  const [agreed, setAgreed] = useState(false)
+
   // ── 验证码模式状态 ──────────────────────────────────────────────────
   const [phone, setPhone] = useState('')
   const [code, setCode] = useState('')
@@ -123,6 +126,7 @@ export function useLoginLogic() {
 
   // ── 发送验证码 ───────────────────────────────────────────────────────
   const handleSendCode = async () => {
+    if (!agreed) { showToast('请先阅读并同意隐私政策和用户协议'); return }
     if (phone.length !== 11) { showToast('请输入正确的手机号'); return }
     setLoadingSend(true)
     setError('')
@@ -165,6 +169,7 @@ export function useLoginLogic() {
   // ── 验证码登录提交 ───────────────────────────────────────────────────
   const handleSmsLogin = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!agreed) { showToast('请先阅读并同意隐私政策和用户协议'); return }
     if (!codeSent) { showToast('请先获取验证码'); return }
     if (code.length < 4) { setError('请输入验证码'); return }
     setLoadingLogin(true)
@@ -206,6 +211,7 @@ export function useLoginLogic() {
   // ── 密码登录提交（功能开发中） ───────────────────────────────────────
   const handlePwdLogin = (e: React.FormEvent) => {
     e.preventDefault()
+    if (!agreed) { showToast('请先阅读并同意隐私政策和用户协议'); return }
     showToast('密码登录功能开发中，请使用验证码登录')
   }
 
@@ -219,6 +225,8 @@ export function useLoginLogic() {
     // Tab
     mode,
     switchMode,
+    // 协议
+    agreed, setAgreed,
     // 验证码面板
     phone, setPhone,
     code, setCode,

@@ -29,6 +29,7 @@ import { useState, useEffect, useRef } from 'react'
 import dayjs from 'dayjs'
 import { babyApi, familyApi, recordsApi } from '@/api'
 import { getStatusBarHeight } from '@/lib/safeArea'
+import { nowTime, nowDate, isoToLocalDate, isoToLocalTime, dateToLocalISO, nowLocalISO, buildLocalISOPair, calcDurationMinFromRange } from '@/lib/utils'
 import type { SleepRecord, SleepQuality } from '@/api/sleep'
 import TimerMode from './TimerMode'
 import ManualMode from './ManualMode'
@@ -36,40 +37,8 @@ import QualitySection from './QualitySection'
 import './index.scss'
 
 // ---------------------------------------------------------------------------
-// 时间工具（与 Web shared 工具 1:1 对齐）
+// 时间工具（统一使用 @/lib/utils 导出）
 // ---------------------------------------------------------------------------
-function nowTime(): string { return dayjs().format('HH:mm') }
-function nowDate(): string { return dayjs().format('YYYY-MM-DD') }
-function isoToLocalDate(iso: string): string { return dayjs(iso).format('YYYY-MM-DD') }
-function isoToLocalTime(iso: string): string { return dayjs(iso).format('HH:mm') }
-function dateToLocalISO(d: Date): string {
-  return dayjs(d).format('YYYY-MM-DDTHH:mm:ss')
-}
-
-/** 入睡/醒来分属两日时的本地时间串 → 后端 ISO 字段 */
-function buildLocalISOPair(
-  startDateStr: string,
-  startTime: string,
-  endDateStr: string,
-  endTime: string,
-): { startISO: string; endISO: string } {
-  return {
-    startISO: `${startDateStr}T${startTime}:00`,
-    endISO: `${endDateStr}T${endTime}:00`,
-  }
-}
-
-function calcDurationMinFromRange(
-  startDateStr: string,
-  startTime: string,
-  endDateStr: string,
-  endTime: string,
-): number {
-  const start = dayjs(`${startDateStr}T${startTime}:00`)
-  const end = dayjs(`${endDateStr}T${endTime}:00`)
-  if (!start.isValid() || !end.isValid()) return 0
-  return Math.round(end.diff(start, 'minute', true))
-}
 
 /** 将秒数格式化为「X 分 Y 秒」或「X 秒」的可读文案 */
 function formatShortDuration(seconds: number): string {
@@ -234,7 +203,7 @@ export default function SleepFormPage() {
       const startDateDate = new Date()
       const { id } = await recordsApi.sleep.startSleep(familyId, {
         baby_id: babyId,
-        start_time: dateToLocalISO(startDateDate),
+        start_time: nowLocalISO(),
       })
       setOngoingId(id)
       setTimerStartTime(startDateDate)
@@ -272,7 +241,7 @@ export default function SleepFormPage() {
     setTimerApiLoading(true)
     try {
       await recordsApi.sleep.endSleep(familyId, ongoingId, {
-        end_time: dateToLocalISO(new Date()),
+        end_time: nowLocalISO(),
         quality: sleepQuality,
         note: note || undefined,
       })

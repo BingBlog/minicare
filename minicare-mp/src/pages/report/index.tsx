@@ -5,7 +5,7 @@
  */
 import { View, Text, ScrollView } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import dayjs from 'dayjs'
 import { babyApi, familyApi } from '@/api'
 import { reportApi } from '@/api/report'
@@ -79,6 +79,12 @@ export default function ReportPage() {
 
   const currentRange = rangeMap[activeTab]
 
+  // Refs 用于在 useDidShow 闭包中读取最新的 state，避免 stale closure
+  const activeTabRef = useRef(activeTab)
+  const rangeMapRef = useRef(rangeMap)
+  useEffect(() => { activeTabRef.current = activeTab }, [activeTab])
+  useEffect(() => { rangeMapRef.current = rangeMap }, [rangeMap])
+
   useDidShow(() => {
     const token = getToken()
     if (!token) {
@@ -86,19 +92,37 @@ export default function ReportPage() {
       return
     }
     setIsGuest(false)
-    familyApi.getMine().then(families => {
-      if (!families.length) return
-      const fid = families[0].id
-      setFamilyId(fid)
-      babyApi.get(fid).then(baby => {
+
+    let cancelled = false
+
+    const init = async () => {
+      try {
+        const families = await familyApi.getMine()
+        if (cancelled || !families.length) return
+        const fid = families[0].id
+
+        const baby = await babyApi.get(fid)
+        if (cancelled) return
+
+        setFamilyId(fid)
         setBabyId(baby.id)
         setBabyName(baby.name)
         setBabyGender(baby.gender as 'male' | 'female' | null)
         setBabyBirthDate(baby.birth_date)
-        // 首次加载当前 tab
-        loadTabData(fid, baby.id, currentRange, activeTab, baby.birth_date)
-      })
-    }).catch(e => console.error('[report] init error', e))
+
+        // 使用 ref 读取最新的 tab 和 range，避免 stale closure
+        const tab = activeTabRef.current
+        const range = rangeMapRef.current[tab]
+        loadTabData(fid, baby.id, range, tab, baby.birth_date)
+      } catch (e) {
+        if (!cancelled) console.error('[report] init error', e)
+      }
+    }
+
+    init()
+
+    // useDidShow 不支持返回 cleanup，通过 cancelled flag 防止竞态
+    return () => { cancelled = true }
   })
 
   const loadTabData = useCallback(async (

@@ -25,6 +25,8 @@ import {
   getDateKey,
   getDateLabel,
   getRecordType,
+  getTodayKey,
+  compareTime,
 } from '@/lib/utils'
 import {
   ALL_TYPE_KEYS,
@@ -60,6 +62,9 @@ const RECORD_FORM_MP_ROUTES: Record<string, string> = {
   diaper: '/pages/records/diaper/index',
   growth: '/pages/records/growth/index',
   health: '/pages/records/health/index',
+  activity: '/pages/records/activity/index',
+  symptom: '/pages/records/symptom/index',
+  medical: '/pages/records/medical/index',
 }
 
 /** 记录子类型 → 已迁移 MP 表单页路由（用于已迁移的 feeding 等类型） */
@@ -168,9 +173,7 @@ export default function RecordsListPage() {
 
         // 按时间降序
         allRecs.sort(
-          (a, b) =>
-            new Date(getRecordTime(b)).getTime() -
-            new Date(getRecordTime(a)).getTime(),
+          (a, b) => compareTime(getRecordTime(b), getRecordTime(a)),
         )
 
         if (!cancelled) setRecords(allRecs as RecordItem[])
@@ -185,7 +188,7 @@ export default function RecordsListPage() {
   }, [family, baby, activeFilter])
 
   // ── 按日期分组 ──
-  const todayKey = getDateKey(new Date().toISOString())
+  const todayKey = getTodayKey()
   const dateMap = new Map<string, RecordItem[]>()
   for (const rec of records) {
     const dk = getDateKey(getRecordTime(rec))

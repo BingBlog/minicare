@@ -2,7 +2,8 @@ import { View, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { useEffect, useState } from 'react'
 import FabSheet from './FabSheet'
-import { GLOBAL_FAB_GROUPS, HOME_RECORD_ROUTES, HOME_RECORD_MP_ROUTES } from '@/lib/constants'
+import { GLOBAL_FAB_GROUPS, HOME_RECORD_ROUTES } from '@/lib/constants'
+import { navigateToRecord } from '@/lib/navigation'
 import './TabBar.scss'
 
 /** 全局事件名：外部组件可通过 Taro.eventCenter.trigger 打开 FAB 弹层 */
@@ -21,24 +22,6 @@ const RIGHT_TABS = [
   { key: 'report', label: '分析', url: '/pages/report/index' },
   { key: 'profile', label: '我的', url: '/pages/profile/index' },
 ] as const
-
-/** 将 Web 路由解析为可直接跳转的 MP 路径 */
-function navigateToRecord(target: string, recordId?: string) {
-  const [path, query] = target.split('?')
-  const mpPage = HOME_RECORD_MP_ROUTES[path]
-  if (mpPage) {
-    const parts: string[] = []
-    if (query) parts.push(query)
-    if (recordId) parts.push(`recordId=${encodeURIComponent(recordId)}`)
-    const qs = parts.length ? `?${parts.join('&')}` : ''
-    Taro.navigateTo({ url: `${mpPage}${qs}` })
-  } else {
-    const encoded = encodeURIComponent(target)
-    const parts: string[] = [`target=${encoded}`]
-    if (recordId) parts.push(`recordId=${encodeURIComponent(recordId)}`)
-    Taro.navigateTo({ url: `/pages/records/index?${parts.join('&')}` })
-  }
-}
 
 export default function TabBar({ activeTab }: TabBarProps) {
   const [fabOpen, setFabOpen] = useState(false)

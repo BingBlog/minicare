@@ -5,25 +5,21 @@
  * 子组件拆分与 Web 1:1 对应。
  */
 import { View, Text, Input, Picker } from '@tarojs/components'
-import Taro, { useLoad } from '@tarojs/taro'
 import { useState } from 'react'
-import dayjs from 'dayjs'
-import { babyApi, familyApi, recordsApi } from '@/api'
-import { getStatusBarHeight } from '@/lib/safeArea'
+import { recordsApi } from '@/api'
+import type { DiaperRecord } from '@/api/diaper'
+import { nowTime, nowDate, toLocalISO, isoToLocalDate, isoToLocalTime } from '@/lib/utils'
+import { useRecordInit } from '@/lib/useRecordInit'
+import { useRecordSubmit } from '@/lib/useRecordSubmit'
+import RecordNavBar from '@/components/RecordNavBar'
+import ConfirmSheet from '@/components/ConfirmSheet'
+import SubmitBar from '@/components/SubmitBar'
+import PageLoading from '@/components/PageLoading'
 import DiaperTypeSection from './DiaperTypeSection'
 import PoopSection from './PoopSection'
 import ButtConditionSection from './ButtConditionSection'
 import type { ButtCondition } from './ButtConditionSection'
 import './index.scss'
-
-// ---------------------------------------------------------------------------
-// 时间工具
-// ---------------------------------------------------------------------------
-function nowHhmm(): string { return dayjs().format('HH:mm') }
-function nowDateStr(): string { return dayjs().format('YYYY-MM-DD') }
-function hhmmToIso(date: string, hhmm: string): string { return dayjs(`${date}T${hhmm}:00`).toISOString() }
-function isoToDate(iso: string): string { return dayjs(iso).format('YYYY-MM-DD') }
-function isoToTime(iso: string): string { return dayjs(iso).format('HH:mm') }
 
 type DiaperChip = 'wet' | 'dirty' | 'mixed'
 
@@ -31,77 +27,37 @@ type DiaperChip = 'wet' | 'dirty' | 'mixed'
 // 页面入口
 // ---------------------------------------------------------------------------
 export default function DiaperFormPage() {
-  const [loading, setLoading] = useState(true)
-  const [familyId, setFamilyId] = useState('')
-  const [babyId, setBabyId] = useState('')
-  const [submitting, setSubmitting] = useState(false)
-  const [editRecordId, setEditRecordId] = useState('')
-  const isEditMode = editRecordId !== ''
-
-  const [recordDate, setRecordDate] = useState(nowDateStr())
-  const [recordTime, setRecordTime] = useState(nowHhmm())
+  // ── 表单状态 ──
+  const [recordDate, setRecordDate] = useState(nowDate())
+  const [recordTime, setRecordTime] = useState(nowTime())
   const [note, setNote] = useState('')
-
   const [diaperType, setDiaperType] = useState<DiaperChip>('wet')
   const [diaperCount, setDiaperCount] = useState(1)
   const [poopType, setPoopType] = useState<string | null>('normal')
   const [buttCondition, setButtCondition] = useState<ButtCondition | null>('normal')
   const [colorSelected, setColorSelected] = useState<Set<string>>(new Set())
 
-  // -----------------------------------------------------------------------
-  // 初始化
-  // -----------------------------------------------------------------------
-  useLoad((options) => {
-    const initRecordId = (options?.recordId as string | undefined) ?? ''
-    init(initRecordId)
+  // ── 通用初始化 ──
+  const { loading, familyId, babyId, editRecordId, isEditMode } = useRecordInit<DiaperRecord>({
+    loadRecord: (fid, rid) => recordsApi.diaper.getOne(fid, rid),
+    onRecord: (rec) => {
+      if (rec.record_time) {
+        setRecordDate(isoToLocalDate(rec.record_time))
+        setRecordTime(isoToLocalTime(rec.record_time))
+      }
+      if (rec.diaper_type) setDiaperType(rec.diaper_type)
+      if (rec.diaper_count != null) setDiaperCount(rec.diaper_count)
+      setPoopType(rec.poop_type ?? null)
+      setButtCondition((rec.butt_condition as ButtCondition | null) ?? null)
+      if (rec.stool_colors) setColorSelected(new Set(rec.stool_colors))
+      if (rec.note) setNote(rec.note)
+    },
   })
 
-  const init = async (initRecordId: string) => {
-    setEditRecordId(initRecordId)
-    try {
-      const families = await familyApi.getMine()
-      if (!families.length) {
-        Taro.showToast({ title: '请先完成建档', icon: 'none' })
-        Taro.reLaunch({ url: '/pages/home/index' })
-        return
-      }
-      const fid = families[0].id
-      const baby = await babyApi.get(fid)
-      setFamilyId(fid)
-      setBabyId(baby.id)
+  // ── 通用提交/删除 ──
+  const { submitting, deleteConfirmOpen, setDeleteConfirmOpen, handleSubmit, handleDelete } = useRecordSubmit()
 
-      if (initRecordId) {
-        try {
-          const rec = await recordsApi.diaper.getOne(fid, initRecordId)
-          populateEditForm(rec as Record<string, unknown>)
-        } catch {
-          Taro.showToast({ title: '加载记录失败', icon: 'none' })
-        }
-      }
-    } catch {
-      Taro.showToast({ title: '加载失败', icon: 'none' })
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const populateEditForm = (rec: Record<string, unknown>) => {
-    if (rec.record_time) {
-      setRecordDate(isoToDate(rec.record_time as string))
-      setRecordTime(isoToTime(rec.record_time as string))
-    }
-    if (rec.diaper_type) setDiaperType(rec.diaper_type as DiaperChip)
-    if (rec.diaper_count != null) setDiaperCount(rec.diaper_count as number)
-    setPoopType((rec.poop_type as string | null) ?? null)
-    setButtCondition((rec.butt_condition as ButtCondition | null) ?? null)
-    if (rec.stool_colors) setColorSelected(new Set(rec.stool_colors as string[]))
-    if (rec.note) setNote(rec.note as string)
-  }
-
-  // -----------------------------------------------------------------------
-  // Helper
-  // -----------------------------------------------------------------------
+  // ── Helper ──
   const showPoop = diaperType === 'dirty' || diaperType === 'mixed'
 
   const toggleColor = (key: string) => {
@@ -112,78 +68,58 @@ export default function DiaperFormPage() {
     })
   }
 
-  // -----------------------------------------------------------------------
-  // 提交
-  // -----------------------------------------------------------------------
-  const handleSubmit = async () => {
-    if (!familyId || !babyId) { Taro.showToast({ title: '请先完成宝宝建档', icon: 'none' }); return }
-    setSubmitting(true)
-    try {
+  // ── 提交 ──
+  const onSubmit = () => handleSubmit({
+    validate: () => {
+      if (!familyId || !babyId) return '请先完成宝宝建档'
+      return true
+    },
+    execute: async () => {
       const stoolColors = colorSelected.size > 0 ? [...colorSelected] : undefined
       const payload = {
         baby_id: babyId,
         diaper_type: diaperType,
-        record_time: hhmmToIso(recordDate, recordTime),
+        record_time: toLocalISO(recordDate, recordTime),
         stool_colors: stoolColors,
         poop_type: (showPoop && poopType ? poopType : undefined) ?? undefined,
         butt_condition: buttCondition ?? undefined,
         diaper_count: diaperCount !== 1 ? diaperCount : undefined,
         note: note || undefined,
       }
-
       if (isEditMode) {
         const { baby_id: _, ...updatePayload } = payload
         await recordsApi.diaper.update(familyId, editRecordId, updatePayload)
+        return '记录已更新'
       } else {
         await recordsApi.diaper.create(familyId, payload)
+        return '记录已保存'
       }
+    },
+  })
 
-      Taro.showToast({ title: isEditMode ? '记录已更新' : '记录已保存', icon: 'success' })
-      setTimeout(() => Taro.navigateBack(), 1000)
-    } catch (err) {
-      Taro.showToast({ title: err instanceof Error ? err.message : '保存失败', icon: 'none' })
-    } finally { setSubmitting(false) }
-  }
+  // ── 删除 ──
+  const onDelete = () => handleDelete({
+    execute: () => recordsApi.diaper.remove(familyId, editRecordId),
+  })
 
-  const handleDelete = async () => {
-    if (!familyId || !editRecordId) return
-    try {
-      await recordsApi.diaper.remove(familyId, editRecordId)
-      Taro.showToast({ title: '记录已删除', icon: 'success' })
-      setTimeout(() => Taro.navigateBack(), 800)
-    } catch { Taro.showToast({ title: '删除失败', icon: 'none' }) }
-  }
-
-  // -----------------------------------------------------------------------
-  // Loading
-  // -----------------------------------------------------------------------
+  // ── Loading ──
   if (loading) {
     return (
       <View className='diaper-page'>
-        <View className='diaper-loading'><Text>加载中...</Text></View>
+        <RecordNavBar title='尿布记录' isEditMode={false} />
+        <PageLoading />
       </View>
     )
   }
 
-  // -----------------------------------------------------------------------
-  // Render
-  // -----------------------------------------------------------------------
+  // ── Render ──
   return (
     <View className='diaper-page'>
-      {/* 导航栏 */}
-      <View className='diaper-nav' style={{ paddingTop: `${getStatusBarHeight() + 10}px` }}>
-        <View className='diaper-nav__back' onClick={() => Taro.navigateBack()}>
-          <Text className='diaper-nav__back-arrow'>{'<'}</Text>
-        </View>
-        <Text className='diaper-nav__title'>{isEditMode ? '编辑尿布记录' : '尿布记录'}</Text>
-        {isEditMode ? (
-          <View className='diaper-nav__delete' onClick={handleDelete}>
-            <Text className='diaper-nav__delete-text'>删除</Text>
-          </View>
-        ) : (
-          <View className='diaper-nav__spacer' />
-        )}
-      </View>
+      <RecordNavBar
+        title='尿布记录'
+        isEditMode={isEditMode}
+        onRightAction={isEditMode ? () => setDeleteConfirmOpen(true) : undefined}
+      />
 
       <View className='diaper-body'>
         {/* 记录时间 */}
@@ -222,11 +158,19 @@ export default function DiaperFormPage() {
       </View>
 
       {/* 提交 */}
-      <View className='diaper-submit'>
-        <View className={`diaper-submit__btn ${submitting ? 'diaper-submit__btn--loading' : ''}`} onClick={submitting ? undefined : handleSubmit}>
-          <Text className='diaper-submit__text'>{submitting ? '提交中...' : isEditMode ? '更新记录' : '保存记录'}</Text>
-        </View>
-      </View>
+      <SubmitBar
+        submitting={submitting}
+        isEditMode={isEditMode}
+        onSubmit={onSubmit}
+        onDelete={() => setDeleteConfirmOpen(true)}
+      />
+
+      {/* 删除确认 */}
+      <ConfirmSheet
+        open={deleteConfirmOpen}
+        onConfirm={onDelete}
+        onCancel={() => setDeleteConfirmOpen(false)}
+      />
     </View>
   )
 }

@@ -19,7 +19,7 @@ MVP 阶段支持**手机号 + 短信验证码**方式登录（登录即注册）
 - **生产模式（sms）**：调用 CloudBase Auth 发送真实短信验证码
 - **测试模式（test）**：固定验证码 `123456`，跳过 SMS 发送，用于开发调试
 
-模式通过环境变量 `TARO_APP_AUTH_MODE`（小程序端）/ `AUTH_MODE`（服务端）控制。
+模式通过环境变量 `TARO_APP_AUTH_MODE`（小程序端，值为 `test` 或 `sms`）/ `AUTH_TEST_MODE`（服务端，值为 `true` 时启用测试模式）控制。
 
 ## 游客预览模式
 
@@ -39,12 +39,15 @@ flowchart TD
     E --> F[跳转登录页]
     F --> G[输入手机号]
     G --> H{认证模式?}
-    H -- sms --> I[POST /api/auth/send-code<br/>触发 CloudBase SMS]
-    H -- test --> J[跳过发送<br/>验证码固定 123456]
+    H -- sms --> I[前端 SDK signInWithOtp<br/>发送真实短信]
+    H -- test --> J[POST /api/auth/send-code<br/>验证码固定 123456]
     I --> K[用户输入收到的验证码]
-    J --> K
-    K --> L[POST /api/auth/verify-code]
-    L --> M{验证成功?}
+    J --> K1[用户输入 123456]
+    K --> L1[前端 SDK verifyOtp<br/>获取 access_token]
+    K1 --> L2[POST /api/auth/verify-code]
+    L1 --> L3[POST /api/auth/tcb-login<br/>access_token 换发 JWT]
+    L2 --> M{验证成功?}
+    L3 --> M
     M -- 失败 --> N[提示错误信息<br/>可重试]
     N --> G
     M -- 成功 --> O[后端颁发 JWT<br/>存入 Taro Storage]
@@ -57,17 +60,17 @@ flowchart TD
 
 | 端点 | 方法 | 说明 |
 |------|------|------|
-| `/api/auth/send-code` | POST | 发送短信验证码（body: `{ phone }`) |
-| `/api/auth/verify-code` | POST | 验证码校验 + 登录/注册（body: `{ phone, code }`） |
-| `/api/auth/tcb-login` | POST | CloudBase token 换发 JWT（备用） |
+| `/api/auth/send-code` | POST | 发送验证码（仅 test 模式有效，生产模式会返回 400） |
+| `/api/auth/verify-code` | POST | 验证码校验 + 登录/注册（test 模式主接口） |
+| `/api/auth/tcb-login` | POST | CloudBase access_token 换发 JWT（生产 sms 模式主接口） |
 | `/api/auth/me` | GET | 获取当前用户信息（需 Bearer Token） |
 
 ## Token 管理
 
 - JWT 有效期 30 天
-- 存储位置：Taro Storage（key: `token`）
+- 存储位置：Taro Storage（key: `minicare_token`），用户信息同步存储于 key `minicare_user`
 - 每次 HTTP 请求通过 `http.ts` 自动附加 `Authorization: Bearer <token>`
-- 收到 401 响应时：清除本地 Token → 跳转登录页
+- 收到 401 响应时：清除 `minicare_token` 和 `minicare_user` → 跳转登录页
 
 ## 业务规则
 
@@ -75,7 +78,8 @@ flowchart TD
 - 获取验证码按钮 60 秒倒计时，期间不可重复点击
 - 服务端限流：同手机号 60s 内只能发 1 次
 - 未注册手机号验证通过后自动创建 `user_account` 记录
-- 登录成功后：有宝宝档案 → 首页；无档案 → 引导页（Onboarding）
+- 登录成功后：判断 `isNewUser && !hasActivatedFamily`，新用户且无已激活家庭邀请时跳转引导页，否则直接进入首页
+- `verify-code` 返回值包含 `isNewUser` 和 `activatedFamilyIds` 字段，用于判断跳转逻辑
 
 ## 验收标准（AC）
 

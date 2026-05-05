@@ -2,7 +2,7 @@ import { View, Text, Input, Picker } from '@tarojs/components'
 import type { AllergyLevel, AllergyType } from '@/api'
 import { ALLERGY_LEVEL_OPTIONS } from '@/lib/constants'
 import { useAppConfig } from '@/lib/useAppConfig'
-import dayjs from 'dayjs'
+import { nowDate } from '@/lib/utils'
 
 interface EditBabyModalProps {
   open: boolean
@@ -22,9 +22,6 @@ interface EditBabyModalProps {
   onCdcHelp: () => void
 }
 
-function nowDate(): string {
-  return dayjs().format('YYYY-MM-DD')
-}
 
 export default function EditBabyModal({
   open,

@@ -14,9 +14,10 @@
 import { View, Text, Input, Picker } from '@tarojs/components'
 import Taro, { useLoad } from '@tarojs/taro'
 import { useEffect, useRef, useState } from 'react'
-import dayjs from 'dayjs'
 import { babyApi, familyApi, recordsApi } from '@/api'
+import type { FeedingRecord, CreateFeedingDto, UpdateFeedingDto } from '@/api/feeding'
 import { getStatusBarHeight } from '@/lib/safeArea'
+import { nowTime, nowDate, toLocalISO, isoToLocalDate, isoToLocalTime, addMinutes, timeDiffMinutes } from '@/lib/utils'
 import type { FeedTab, MilkType } from './types'
 import { milkTypeOptions, suppItems } from './types'
 import TabSelector from './TabSelector'
@@ -24,28 +25,17 @@ import FormulaSection from './FormulaSection'
 import BreastSection from './BreastSection'
 import SupplementSection from './SupplementSection'
 import FoodSection from './FoodSection'
+import ConfirmSheet from '@/components/ConfirmSheet'
 import './index.scss'
 
 // ---------------------------------------------------------------------------
-// 时间工具
+// 时间工具别名（统一使用 @/lib/utils 导出）
 // ---------------------------------------------------------------------------
-function nowHhmm(): string { return dayjs().format('HH:mm') }
-function nowDateStr(): string { return dayjs().format('YYYY-MM-DD') }
-function hhmmToIso(date: string, hhmm: string): string { return dayjs(`${date}T${hhmm}:00`).toISOString() }
-function isoToDate(iso: string): string { return dayjs(iso).format('YYYY-MM-DD') }
-function isoToTime(iso: string): string { return dayjs(iso).format('HH:mm') }
-function addMinutes(hhmm: string, delta: number): string {
-  const [h, m] = hhmm.split(':').map(Number)
-  const total = ((h * 60 + m + delta) % 1440 + 1440) % 1440
-  return `${String(Math.floor(total / 60)).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}`
-}
-function timeDiffMinutes(start: string, end: string): number {
-  const [sh, sm] = start.split(':').map(Number)
-  const [eh, em] = end.split(':').map(Number)
-  let diff = eh * 60 + em - (sh * 60 + sm)
-  if (diff < 0) diff += 1440
-  return diff
-}
+const nowHhmm = nowTime
+const nowDateStr = nowDate
+const hhmmToIso = toLocalISO
+const isoToDate = isoToLocalDate
+const isoToTime = isoToLocalTime
 
 // ---------------------------------------------------------------------------
 // 上次配方缓存 (Taro Storage)
@@ -79,7 +69,9 @@ export default function FeedingFormPage() {
   const [babyId, setBabyId] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [editRecordId, setEditRecordId] = useState('')
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false)
   const isEditMode = editRecordId !== ''
+  const initDoneRef = useRef(false)
 
   const [tab, setTab] = useState<FeedTab>('formula')
   const [recordDate, setRecordDate] = useState(nowDateStr())
@@ -114,6 +106,8 @@ export default function FeedingFormPage() {
   // 初始化
   // -----------------------------------------------------------------------
   useLoad((options) => {
+    if (initDoneRef.current) return
+    initDoneRef.current = true
     const initTab = (options?.tab as FeedTab | undefined) ?? 'formula'
     const initRecordId = (options?.recordId as string | undefined) ?? ''
     init(initTab, initRecordId)
@@ -145,7 +139,7 @@ export default function FeedingFormPage() {
       } else {
         try {
           const rec = await recordsApi.feeding.getOne(fid, initRecordId)
-          populateEditForm(rec as Record<string, unknown>)
+          populateEditForm(rec)
         } catch {
           Taro.showToast({ title: '加载记录失败', icon: 'none' })
         }
@@ -157,52 +151,52 @@ export default function FeedingFormPage() {
     }
   }
 
-  const populateEditForm = (rec: Record<string, unknown>) => {
-    const ft = rec.feed_type as string | undefined
+  const populateEditForm = (rec: FeedingRecord) => {
+    const ft = rec.feed_type
     if (rec.record_time) {
-      setRecordDate(isoToDate(rec.record_time as string))
-      setRecordTime(isoToTime(rec.record_time as string))
+      setRecordDate(isoToDate(rec.record_time))
+      setRecordTime(isoToTime(rec.record_time))
     }
     if (ft === 'breast') {
       setTab('breast')
-      if (rec.breast_side) setBreastSide(rec.breast_side as 'left' | 'right' | 'both')
-      if (rec.duration_min != null) setDurationMin(rec.duration_min as number)
+      if (rec.breast_side) setBreastSide(rec.breast_side)
+      if (rec.duration_min != null) setDurationMin(rec.duration_min)
     } else if (ft === 'complementary') {
       if (rec.complementary_food === '营养素') setTab('supplement')
       else setTab('food')
       if (rec.supplement_items && Array.isArray(rec.supplement_items)) {
         const checked: Record<string, boolean> = {}
         const dose: Record<string, string> = {}
-        for (const item of rec.supplement_items as Array<Record<string, unknown>>) {
+        for (const item of rec.supplement_items) {
           if (item.key && item.key !== 'other') {
-            checked[item.key as string] = true
-            if (item.dose) dose[item.key as string] = item.dose as string
+            checked[item.key] = true
+            if (item.dose) dose[item.key] = item.dose
           }
         }
         setSuppChecked(checked)
         setSuppDose(dose)
-        const other = (rec.supplement_items as Array<Record<string, unknown>>).find((i) => i.key === 'other')
+        const other = rec.supplement_items.find((i) => i.key === 'other')
         if (other) {
-          setSuppOtherName((other.label as string) ?? '')
-          setSuppOtherDose((other.dose as string) ?? '')
-          setSuppOtherUnit((other.unit as string) ?? '')
+          setSuppOtherName(other.label ?? '')
+          setSuppOtherDose(other.dose ?? '')
+          setSuppOtherUnit(other.unit ?? '')
         }
       }
       if (rec.complementary_food && rec.complementary_food !== '营养素') {
-        setFoodList((rec.complementary_food as string).split('、').filter(Boolean))
+        setFoodList(rec.complementary_food.split('、').filter(Boolean))
       }
     } else {
       setTab('formula')
-      if (rec.formula_ml != null) setFormulaMl(rec.formula_ml as number)
-      if (rec.milk_types) setSelectedMilkTypes(new Set(rec.milk_types as MilkType[]))
-      if (rec.milk_scoops) setScoops((prev) => ({ ...prev, ...(rec.milk_scoops as Record<MilkType, number>) }))
-      if (rec.duration_min != null && (rec.duration_min as number) > 0) {
-        const start = rec.record_time ? isoToTime(rec.record_time as string) : recordTime
-        setFormulaEndTime(addMinutes(start, rec.duration_min as number))
+      if (rec.formula_ml != null) setFormulaMl(rec.formula_ml)
+      if (rec.milk_types) setSelectedMilkTypes(new Set(rec.milk_types))
+      if (rec.milk_scoops) setScoops((prev) => ({ ...prev, ...rec.milk_scoops }))
+      if (rec.duration_min != null && rec.duration_min > 0) {
+        const start = rec.record_time ? isoToTime(rec.record_time) : recordTime
+        setFormulaEndTime(addMinutes(start, rec.duration_min))
         endTimeUserSetRef.current = true
       }
     }
-    if (rec.note) setNote(rec.note as string)
+    if (rec.note) setNote(rec.note)
   }
 
   // 结束时间联动
@@ -240,7 +234,7 @@ export default function FeedingFormPage() {
     setSubmitting(true)
     try {
       const isoTime = hhmmToIso(recordDate, recordTime)
-      let payload: Record<string, unknown>
+      let payload: CreateFeedingDto | UpdateFeedingDto
 
       if (tab === 'formula') {
         const activeKeys = milkTypeOptions.filter((m) => selectedMilkTypes.has(m.key) && scoops[m.key] > 0).map((m) => m.key)
@@ -279,6 +273,7 @@ export default function FeedingFormPage() {
 
   const handleDelete = async () => {
     if (!familyId || !editRecordId) return
+    setDeleteConfirmOpen(false)
     try {
       await recordsApi.feeding.remove(familyId, editRecordId)
       Taro.showToast({ title: '记录已删除', icon: 'success' })
@@ -309,7 +304,7 @@ export default function FeedingFormPage() {
         </View>
         <Text className='feed-nav__title'>{isEditMode ? '编辑饮食记录' : '饮食记录'}</Text>
         {isEditMode ? (
-          <View className='feed-nav__delete' onClick={handleDelete}>
+          <View className='feed-nav__delete' onClick={() => setDeleteConfirmOpen(true)}>
             <Text className='feed-nav__delete-text'>删除</Text>
           </View>
         ) : (
@@ -405,6 +400,13 @@ export default function FeedingFormPage() {
           <Text className='feed-submit__text'>{submitting ? '提交中...' : isEditMode ? '更新记录' : '保存记录'}</Text>
         </View>
       </View>
+
+      {/* 删除确认 */}
+      <ConfirmSheet
+        open={deleteConfirmOpen}
+        onConfirm={handleDelete}
+        onCancel={() => setDeleteConfirmOpen(false)}
+      />
     </View>
   )
 }

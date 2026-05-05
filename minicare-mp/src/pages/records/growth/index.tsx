@@ -2,125 +2,74 @@
  * 生长记录表单页（MP 迁移）
  *
  * 与 Web pages/records/growth/index.tsx 保持业务逻辑对齐。
- * 差异：路由/Taro 组件/存储方案按平台适配。
  */
 import { View, Text, Input, Picker, Textarea } from '@tarojs/components'
-import Taro, { useLoad } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { useState } from 'react'
-import dayjs from 'dayjs'
-import { babyApi, familyApi, recordsApi } from '@/api'
-import { getStatusBarHeight } from '@/lib/safeArea'
+import { recordsApi } from '@/api'
+import type { GrowthRecord } from '@/api/growth'
+import { nowTime, nowDate, isoToLocalDate } from '@/lib/utils'
+import { useRecordInit } from '@/lib/useRecordInit'
+import { useRecordSubmit } from '@/lib/useRecordSubmit'
+import RecordNavBar from '@/components/RecordNavBar'
+import SubmitBar from '@/components/SubmitBar'
+import PageLoading from '@/components/PageLoading'
 import './index.scss'
 
 type MeasureKey = 'height' | 'weight' | 'head'
 
-// ---------------------------------------------------------------------------
-// 时间工具
-// ---------------------------------------------------------------------------
-function nowHhmm(): string { return dayjs().format('HH:mm') }
-function nowDateStr(): string { return dayjs().format('YYYY-MM-DD') }
-
-/** ISO 字符串 → 本地日期 YYYY-MM-DD */
-function isoToLocalDate(raw: string): string {
-  if (raw.includes('T') || raw.includes('Z')) return dayjs(raw).format('YYYY-MM-DD')
-  return raw.slice(0, 10)
-}
-
 /** record_time 后端返回 "HH:mm:ss"，截取 HH:mm */
 function toHHmm(raw: string): string {
-  if (!raw) return nowHhmm()
+  if (!raw) return nowTime()
   return raw.slice(0, 5)
 }
 
-// ---------------------------------------------------------------------------
-// 常量（与 Web 完全一致）
-// ---------------------------------------------------------------------------
 const ORG_OPTIONS = ['儿保门诊', '家中自测', '社区卫生', '其他']
 
-// ---------------------------------------------------------------------------
-// 页面入口
-// ---------------------------------------------------------------------------
 export default function GrowthFormPage() {
-  const [loading, setLoading] = useState(true)
-  const [familyId, setFamilyId] = useState('')
-  const [babyId, setBabyId] = useState('')
-  const [submitting, setSubmitting] = useState(false)
-  const [editRecordId, setEditRecordId] = useState('')
-  const isEditMode = editRecordId !== ''
-  const [refreshing, setRefreshing] = useState(false)
-
-  const [recordDate, setRecordDate] = useState(nowDateStr())
-  const [recordTime, setRecordTime] = useState(nowHhmm())
+  // ── 表单状态 ──
+  const [recordDate, setRecordDate] = useState(nowDate())
+  const [recordTime, setRecordTime] = useState(nowTime())
   const [height, setHeight] = useState('')
   const [weight, setWeight] = useState('')
   const [head, setHead] = useState('')
   const [orgChip, setOrgChip] = useState<string | null>('儿保门诊')
   const [note, setNote] = useState('')
+  const [refreshing, setRefreshing] = useState(false)
 
-  // ---------------------------------------------------------------------------
-  // 初始化
-  // ---------------------------------------------------------------------------
-  useLoad((options) => {
-    const initRecordId = (options?.recordId as string | undefined) ?? ''
-    init(initRecordId)
-  })
-
-  const init = async (initRecordId: string) => {
-    setEditRecordId(initRecordId)
-    try {
-      const families = await familyApi.getMine()
-      if (!families.length) {
-        Taro.showToast({ title: '请先完成建档', icon: 'none' })
-        Taro.reLaunch({ url: '/pages/home/index' })
-        return
+  // ── 通用初始化 ──
+  const { loading, familyId, babyId, editRecordId, isEditMode } = useRecordInit<GrowthRecord>({
+    loadRecord: async (fid, rid) => {
+      setRefreshing(true)
+      try {
+        return await recordsApi.growth.getOne(fid, rid)
+      } finally {
+        setRefreshing(false)
       }
-      const fid = families[0].id
-      const baby = await babyApi.get(fid)
-      setFamilyId(fid)
-      setBabyId(baby.id)
-
-      if (initRecordId) {
-        setRefreshing(true)
-        try {
-          const fresh = await recordsApi.growth.getOne(fid, initRecordId)
-          populateEditForm(fresh as Record<string, unknown>)
-        } catch {
-          Taro.showToast({ title: '加载记录失败', icon: 'none' })
-        } finally {
-          setRefreshing(false)
+    },
+    onRecord: (rec) => {
+      if (rec.record_date) setRecordDate(isoToLocalDate(rec.record_date))
+      if (rec.record_time) setRecordTime(toHHmm(rec.record_time))
+      if (rec.height_mm != null) setHeight((rec.height_mm / 10).toFixed(1))
+      if (rec.weight_g != null) setWeight((rec.weight_g / 1000).toFixed(2))
+      if (rec.head_mm != null) setHead((rec.head_mm / 10).toFixed(1))
+      if (rec.note != null) {
+        const match = rec.note.match(/^机构：([^/]+?)(?:\s*\/\s*(.*))?$/)
+        if (match) {
+          const org = match[1].trim()
+          if (ORG_OPTIONS.includes(org)) setOrgChip(org)
+          setNote((match[2] ?? '').trim())
+        } else {
+          setNote(rec.note)
         }
       }
-    } catch {
-      Taro.showToast({ title: '加载失败', icon: 'none' })
-    } finally {
-      setLoading(false)
-    }
-  }
+    },
+  })
 
-  const populateEditForm = (rec: Record<string, unknown>) => {
-    if (rec.record_date) setRecordDate(isoToLocalDate(rec.record_date as string))
-    if (rec.record_time) setRecordTime(toHHmm(rec.record_time as string))
-    // 编辑时从 mm/g 反推回 cm/kg（身高/头围精度 0.1 cm，体重精度 0.01 kg）
-    if (rec.height_mm != null) setHeight(((rec.height_mm as number) / 10).toFixed(1))
-    if (rec.weight_g != null) setWeight(((rec.weight_g as number) / 1000).toFixed(2))
-    if (rec.head_mm != null) setHead(((rec.head_mm as number) / 10).toFixed(1))
-    // 从 note 中解析机构前缀和用户备注（格式："机构：XXX / 备注内容"）
-    if (rec.note != null) {
-      const noteStr = rec.note as string
-      const match = noteStr.match(/^机构：([^/]+?)(?:\s*\/\s*(.*))?$/)
-      if (match) {
-        const org = match[1].trim()
-        if (ORG_OPTIONS.includes(org)) setOrgChip(org)
-        setNote((match[2] ?? '').trim())
-      } else {
-        setNote(noteStr)
-      }
-    }
-  }
+  // ── 通用提交/删除 ──
+  const { submitting, handleSubmit, handleDelete } = useRecordSubmit()
 
-  // ---------------------------------------------------------------------------
-  // 输入处理（与 Web 规则一致：仅允许数字和点，blur 时格式化精度）
-  // ---------------------------------------------------------------------------
+  // ── 输入处理 ──
   const handleMeasureInput = (key: MeasureKey, raw: string) => {
     const filtered = raw.replace(/[^0-9.]/g, '')
     if (key === 'height') setHeight(filtered)
@@ -140,20 +89,14 @@ export default function GrowthFormPage() {
 
   const valueMap: Record<MeasureKey, string> = { height, weight, head }
 
-  // ---------------------------------------------------------------------------
-  // 提交
-  // ---------------------------------------------------------------------------
-  const handleSubmit = async () => {
-    if (!familyId || !babyId) {
-      Taro.showToast({ title: '请先完成宝宝建档', icon: 'none' })
-      return
-    }
-    if (!height && !weight && !head) {
-      Taro.showToast({ title: '请至少填写一项测量数据', icon: 'none' })
-      return
-    }
-    setSubmitting(true)
-    try {
+  // ── 提交 ──
+  const onSubmit = () => handleSubmit({
+    validate: () => {
+      if (!familyId || !babyId) return '请先完成宝宝建档'
+      if (!height && !weight && !head) return '请至少填写一项测量数据'
+      return true
+    },
+    execute: async () => {
       const heightMm = height ? Math.round(parseFloat(height) * 10) : undefined
       const weightG = weight ? Math.round(parseFloat(weight) * 1000) : undefined
       const headMm = head ? Math.round(parseFloat(head) * 10) : undefined
@@ -161,7 +104,7 @@ export default function GrowthFormPage() {
       if (orgChip) noteArr.push('机构：' + orgChip)
       if (note) noteArr.push(note)
 
-      const payload: Record<string, unknown> = {
+      const payload = {
         record_date: recordDate,
         record_time: recordTime || undefined,
         height_mm: heightMm,
@@ -169,26 +112,18 @@ export default function GrowthFormPage() {
         head_mm: headMm,
         note: noteArr.length > 0 ? noteArr.join(' / ') : undefined,
       }
-
       if (isEditMode) {
         await recordsApi.growth.update(familyId, editRecordId, payload)
-        Taro.showToast({ title: '记录已更新', icon: 'success' })
+        return '记录已更新'
       } else {
         await recordsApi.growth.create(familyId, { baby_id: babyId, ...payload })
-        Taro.showToast({ title: '记录已保存', icon: 'success' })
+        return '记录已保存'
       }
-      setTimeout(() => Taro.navigateBack(), 1000)
-    } catch (err) {
-      Taro.showToast({
-        title: err instanceof Error ? err.message : '保存失败（同日只可记录一次）',
-        icon: 'none',
-      })
-    } finally {
-      setSubmitting(false)
-    }
-  }
+    },
+  })
 
-  const handleDelete = async () => {
+  // ── 删除（growth 使用 Taro.showModal 而非 ConfirmSheet） ──
+  const onDeleteClick = async () => {
     if (!familyId || !editRecordId) return
     const { confirm } = await Taro.showModal({
       title: '确定删除这条记录吗？',
@@ -197,68 +132,44 @@ export default function GrowthFormPage() {
       confirmColor: '#F05060',
     })
     if (!confirm) return
-    try {
-      await recordsApi.growth.remove(familyId, editRecordId)
-      Taro.showToast({ title: '记录已删除', icon: 'success' })
-      setTimeout(() => Taro.navigateBack(), 800)
-    } catch {
-      Taro.showToast({ title: '删除失败，请重试', icon: 'none' })
-    }
+    handleDelete({
+      execute: () => recordsApi.growth.remove(familyId, editRecordId),
+    })
   }
 
-  // ---------------------------------------------------------------------------
-  // Loading
-  // ---------------------------------------------------------------------------
+  // ── Loading ──
   if (loading) {
     return (
       <View className='growth-page'>
-        <View className='growth-loading'><Text>加载中...</Text></View>
+        <RecordNavBar title='生长记录' isEditMode={false} />
+        <PageLoading />
       </View>
     )
   }
 
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
   return (
     <View className='growth-page'>
-      {/* 导航栏 */}
-      <View className='growth-nav' style={{ paddingTop: `${getStatusBarHeight() + 10}px` }}>
-        <View className='growth-nav__back' onClick={() => Taro.navigateBack()}>
-          <Text className='growth-nav__back-arrow'>{'<'}</Text>
-        </View>
-        <Text className='growth-nav__title'>{isEditMode ? '编辑生长记录' : '生长记录'}</Text>
-        {isEditMode ? (
-          <View className='growth-nav__delete' onClick={handleDelete}>
-            <Text className='growth-nav__delete-text'>删除</Text>
-          </View>
-        ) : (
-          <View className='growth-nav__spacer' />
-        )}
-      </View>
+      <RecordNavBar
+        title='生长记录'
+        isEditMode={isEditMode}
+        onRightAction={isEditMode ? onDeleteClick : undefined}
+      />
 
       {/* 编辑模式刷新提示 */}
       {refreshing && (
-        <View className='growth-refreshing'>
-          <Text>正在加载最新数据...</Text>
-        </View>
+        <View className='growth-refreshing'><Text>正在加载最新数据...</Text></View>
       )}
 
       <View className='growth-body'>
         {/* 填写数值 */}
-        <View className='growth-section-label'>
-          <Text>填写数值</Text>
-        </View>
+        <View className='growth-section-label'><Text>填写数值</Text></View>
         <View className='growth-card-box'>
           {([
-            { key: 'height' as const, label: '身高', unit: 'cm', placeholder: '如 68.0', decimals: 1 },
-            { key: 'weight' as const, label: '体重', unit: 'kg', placeholder: '如 7.28', decimals: 2 },
-            { key: 'head' as const, label: '头围', unit: 'cm', placeholder: '如 43.0', decimals: 1 },
-          ]).map(({ key, label, unit, placeholder, decimals }, idx) => (
-            <View
-              key={key}
-              className={`growth-row ${idx < 2 ? 'growth-row--border' : ''}`}
-            >
+            { key: 'height' as const, label: '身高', unit: 'cm', placeholder: '如 68.0' },
+            { key: 'weight' as const, label: '体重', unit: 'kg', placeholder: '如 7.28' },
+            { key: 'head' as const, label: '头围', unit: 'cm', placeholder: '如 43.0' },
+          ]).map(({ key, label, unit, placeholder }, idx) => (
+            <View key={key} className={`growth-row ${idx < 2 ? 'growth-row--border' : ''}`}>
               <Text className='growth-row__label'>{label}</Text>
               <View className='growth-row__input-group'>
                 <Input
@@ -275,7 +186,7 @@ export default function GrowthFormPage() {
           ))}
           <View className='growth-row growth-row--border-top'>
             <Text className='growth-row__label'>测量日期</Text>
-            <Picker mode='date' value={recordDate} end={nowDateStr()} onChange={(e) => setRecordDate(e.detail.value)}>
+            <Picker mode='date' value={recordDate} end={nowDate()} onChange={(e) => setRecordDate(e.detail.value)}>
               <View className='growth-row__picker'><Text>{recordDate}</Text></View>
             </Picker>
           </View>
@@ -287,10 +198,8 @@ export default function GrowthFormPage() {
           </View>
         </View>
 
-        {/* 测量机构（可选） */}
-        <View className='growth-section-label'>
-          <Text>测量机构（可选）</Text>
-        </View>
+        {/* 测量机构 */}
+        <View className='growth-section-label'><Text>测量机构（可选）</Text></View>
         <View className='growth-card-box'>
           <View className='growth-org-chips'>
             {ORG_OPTIONS.map((org) => (
@@ -305,10 +214,8 @@ export default function GrowthFormPage() {
           </View>
         </View>
 
-        {/* 上传测量单（可选） */}
-        <View className='growth-section-label'>
-          <Text>上传测量单（可选）</Text>
-        </View>
+        {/* 上传测量单 */}
+        <View className='growth-section-label'><Text>上传测量单（可选）</Text></View>
         <View className='growth-card-box'>
           <View className='growth-photo-btn' onClick={() => Taro.showToast({ title: '拍照上传（功能开发中）', icon: 'none' })}>
             <View className='growth-photo-btn__icon'>
@@ -322,9 +229,7 @@ export default function GrowthFormPage() {
         </View>
 
         {/* 备注 */}
-        <View className='growth-section-label'>
-          <Text>备注（可选）</Text>
-        </View>
+        <View className='growth-section-label'><Text>备注（可选）</Text></View>
         <View className='growth-card-box'>
           <Textarea
             className='growth-note-input'
@@ -335,25 +240,14 @@ export default function GrowthFormPage() {
           />
         </View>
 
-        {/* 提示文字（仅新建模式） */}
+        {/* 提示文字 */}
         {!isEditMode && (
-          <View className='growth-hint'>
-            <Text>同一天只能记录一次，如已有记录将覆盖</Text>
-          </View>
+          <View className='growth-hint'><Text>同一天只能记录一次，如已有记录将覆盖</Text></View>
         )}
       </View>
 
       {/* 提交 */}
-      <View className='growth-submit'>
-        <View
-          className={`growth-submit__btn ${submitting ? 'growth-submit__btn--loading' : ''}`}
-          onClick={submitting ? undefined : handleSubmit}
-        >
-          <Text className='growth-submit__text'>
-            {submitting ? '提交中...' : isEditMode ? '更新记录' : '保存记录'}
-          </Text>
-        </View>
-      </View>
+      <SubmitBar submitting={submitting} isEditMode={isEditMode} onSubmit={onSubmit} />
     </View>
   )
 }

@@ -8,7 +8,7 @@ import { View, Text } from '@tarojs/components'
 import { useMemo } from 'react'
 import EcChart from '@/components/EcChart'
 import type { DailyFeedingData } from '@/api/report'
-import { formatDateSlash } from '@/lib/utils'
+import { formatDateSlash, nowDate } from '@/lib/utils'
 
 // ── 奶粉类型配置（L1，与 Web milkTypeOptions 一致）─────────────────
 
@@ -31,10 +31,6 @@ function milkTypeColor(key: string): string {
   return milkTypeOptions.find(o => o.key === key)?.color ?? '#9CA3AF'
 }
 
-function nowDate(): string {
-  const d = new Date()
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`
-}
 
 interface FeedingTabProps {
   data: DailyFeedingData[] | null

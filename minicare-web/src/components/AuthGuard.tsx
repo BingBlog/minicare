@@ -1,7 +1,9 @@
 /**
  * AuthGuard
  *
- * 1. 未登录 → /login
+ * 1. 未登录 → 根据 allowGuest 决定是否放行：
+ *    - allowGuest=true: 正常渲染子组件（页面内自行判断游客状态）
+ *    - allowGuest=false: → /login
  * 2. 已登录但无家庭/宝宝档案 → /onboarding（onboarding 页本身豁免）
  * 3. 已登录且有档案 → 正常渲染
  */
@@ -13,17 +15,19 @@ import type { ReactNode } from 'react'
 
 interface Props {
   children: ReactNode
+  /** 是否允许未登录用户访问（游客模式），默认 false */
+  allowGuest?: boolean
 }
 
-type Status = 'checking' | 'ready' | 'onboarding' | 'unauthed'
+type Status = 'checking' | 'ready' | 'onboarding' | 'unauthed' | 'guest'
 
-export default function AuthGuard({ children }: Props) {
+export default function AuthGuard({ children, allowGuest = false }: Props) {
   const { token, currentFamily, currentBaby, setCurrentFamily, setCurrentBaby } = useAppStore()
   const location = useLocation()
   const isOnboarding = location.pathname === '/onboarding'
 
   const [status, setStatus] = useState<Status>(() => {
-    if (!token) return 'unauthed'
+    if (!token) return allowGuest ? 'guest' : 'unauthed'
     if (currentFamily && currentBaby) return 'ready'
     return 'checking'
   })
@@ -59,7 +63,7 @@ export default function AuthGuard({ children }: Props) {
         }
       } catch {
         if (cancelled) return
-        setStatus('unauthed')
+        setStatus(allowGuest ? 'guest' : 'unauthed')
       }
     }
 
@@ -78,6 +82,9 @@ export default function AuthGuard({ children }: Props) {
   }, [currentFamily, currentBaby, status])
 
   if (status === 'unauthed') return <Navigate to="/login" replace />
+
+  // 游客模式：直接渲染子组件，页面内自行判断
+  if (status === 'guest') return <>{children}</>
 
   if (status === 'checking') {
     return (

@@ -2,7 +2,7 @@ import { View, Text } from '@tarojs/components'
 import { useEffect, useRef, useState } from 'react'
 import dayjs from 'dayjs'
 import { sleepApi } from '@/api'
-import { formatTime } from '@/lib/utils'
+import { formatTime, nowLocalISO } from '@/lib/utils'
 
 function formatElapsed(seconds: number): string {
   const h = Math.floor(seconds / 3600)
@@ -45,7 +45,7 @@ export default function SleepBanner(props: SleepBannerProps) {
     setEnding(true)
     try {
       await sleepApi.endSleep(familyId, recordId, {
-        end_time: new Date().toISOString(),
+        end_time: nowLocalISO(),
         quality: 'normal',
         sleep_period: sleepPeriod || 'night',
       })

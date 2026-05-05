@@ -21,6 +21,7 @@ import EmptyState from "@/components/ui/EmptyState";
 import { FilterBar } from "@/components/record/FilterChip";
 import RecordGroup from "./RecordGroup";
 import RecordActionSheet from "./RecordActionSheet";
+import GuestRecords from "./GuestRecords";
 import {
   getRecordTime,
   getDateKey,
@@ -102,8 +103,13 @@ const FILTER_MORE: FilterChipOption[] = [
 
 export default function RecordsPage() {
   const navigate = useNavigate();
-  const { currentFamily, currentBaby } = useAppStore();
+  const { token, currentFamily, currentBaby } = useAppStore();
   const { showToast, ToastNode } = useToast();
+
+  // 游客模式：未登录时展示 GuestRecords
+  if (!token) {
+    return <GuestRecords />;
+  }
 
   const [records, setRecords] = useState<RecordItem[]>([]);
   const [activeFilter, setActiveFilter] = useState("all");

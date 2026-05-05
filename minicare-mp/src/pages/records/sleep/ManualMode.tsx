@@ -5,20 +5,7 @@
  * 差异：Taro Picker 替代 DatePicker/TimePicker 组件。
  */
 import { View, Text, Picker } from '@tarojs/components'
-import dayjs from 'dayjs'
-
-/** 根据入睡日期+时间、醒来日期+时间计算时长（分钟） */
-function calcDurationMin(
-  startDate: string,
-  startTime: string,
-  endDate: string,
-  endTime: string,
-): number {
-  const start = dayjs(`${startDate}T${startTime}:00`)
-  const end = dayjs(`${endDate}T${endTime}:00`)
-  if (!start.isValid() || !end.isValid()) return 0
-  return Math.round(end.diff(start, 'minute', true))
-}
+import { calcDurationMinFromRange } from '@/lib/utils'
 
 interface Props {
   startDate: string
@@ -41,7 +28,7 @@ export default function ManualMode({
   onStartChange,
   onEndChange,
 }: Props) {
-  const durationMin = calcDurationMin(startDate, startTime, endDate, endTime)
+  const durationMin = calcDurationMinFromRange(startDate, startTime, endDate, endTime)
 
   return (
     <>

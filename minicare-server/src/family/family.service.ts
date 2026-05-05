@@ -217,7 +217,7 @@ export class FamilyService {
    * 每条记录携带 detail JSON 对象，包含该类型的关键摘要字段，
    * 供前端 getRecordSummary() 直接消费，无需额外请求。
    */
-  async getTodayRecords(familyId: string) {
+  async getTodayRecords(familyId: string, date?: string) {
     // 先取 baby_id（MVP: 每家庭 1 个宝宝）
     const [babies] = await this.db.execute<any[]>(
       'SELECT id FROM baby_profile WHERE family_id = ? LIMIT 1',
@@ -226,8 +226,15 @@ export class FamilyService {
     if (babies.length === 0) return [];
     const babyId = babies[0].id;
 
-    const today = new Date();
-    const dateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    // 若传入 date 且格式合法（YYYY-MM-DD），使用传入日期；否则默认今日
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    let dateStr: string;
+    if (date && dateRegex.test(date)) {
+      dateStr = date;
+    } else {
+      const today = new Date();
+      dateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    }
 
     // feeding: 四张子表 UNION，各自携带类型标记和关键摘要
     const sql = `
@@ -286,14 +293,19 @@ export class FamilyService {
       UNION ALL
       SELECT 'health' AS type, id, record_time AS time, note,
         JSON_OBJECT(
-          'temperature', temperature
+          'temperature',      temperature,
+          'skin_care',        skin_care,
+          'allergy_symptoms', allergy_symptoms,
+          'allergy_severity', allergy_severity,
+          'medications',      medications
         ) AS detail
       FROM health_record WHERE baby_id = ? AND DATE(record_time) = ?
       UNION ALL
       SELECT 'symptom' AS type, id, record_time AS time, note,
         JSON_OBJECT(
-          'spirit', spirit,
-          'mood',   mood
+          'spirit',   spirit,
+          'mood',     mood,
+          'symptoms', symptoms
         ) AS detail
       FROM symptom_record WHERE baby_id = ? AND DATE(record_time) = ?
       UNION ALL
@@ -338,6 +350,17 @@ export class FamilyService {
         // 仅当 parsed 里本身有该字段时才做 JSON 解析，避免其他类型记录多出 null 字段
         if (Object.prototype.hasOwnProperty.call(parsed, 'supplement_items')) {
           detail = { ...parsed, supplement_items: this.tryParseJson(parsed.supplement_items) };
+        } else if (Object.prototype.hasOwnProperty.call(parsed, 'medications')) {
+          // health_record: medications / skin_care / allergy_symptoms 均为 JSON 列
+          detail = {
+            ...parsed,
+            medications:      this.tryParseJson(parsed.medications),
+            skin_care:        this.tryParseJson(parsed.skin_care),
+            allergy_symptoms: this.tryParseJson(parsed.allergy_symptoms),
+          };
+        } else if (Object.prototype.hasOwnProperty.call(parsed, 'symptoms')) {
+          // symptom_record: symptoms 为 JSON 列
+          detail = { ...parsed, symptoms: this.tryParseJson(parsed.symptoms) };
         } else {
           detail = { ...parsed };
         }

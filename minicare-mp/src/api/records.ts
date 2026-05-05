@@ -8,15 +8,22 @@ import type {
   CreateCompleteSleepDto,
   UpdateSleepDto,
 } from './sleep'
+import { feedingApi } from './feeding'
+import type { FeedingRecord, CreateFeedingDto, UpdateFeedingDto } from './feeding'
+import { diaperApi } from './diaper'
+import type { DiaperRecord, CreateDiaperDto, UpdateDiaperDto } from './diaper'
+import { activityApi } from './activity'
+import type { ActivityRecord, CreateActivityDto, UpdateActivityDto } from './activity'
+import { healthApi } from './health'
+import type { HealthRecord, CreateHealthDto, UpdateHealthDto } from './health'
+import { growthApi } from './growth'
+import type { GrowthRecord, CreateGrowthDto, UpdateGrowthDto } from './growth'
+import { medicalApi } from './medical'
+import type { MedicalRecord, CreateMedicalDto, UpdateMedicalDto } from './medical'
+import { symptomApi } from './symptom'
+import type { SymptomRecord, CreateSymptomDto, UpdateSymptomDto } from './symptom'
 
-function buildListQuery(babyId: string, limit?: number, offset?: number): string {
-  const params: string[] = [`baby_id=${babyId}`]
-  if (limit != null) params.push(`limit=${limit}`)
-  if (offset != null) params.push(`offset=${offset}`)
-  return params.join('&')
-}
-
-function withType<T extends Record<string, unknown>>(type: string, items: T[]): T[] {
+function withType<T extends { id: string }>(type: string, items: T[]): T[] {
   return items.map((r) => ({ ...r, type }))
 }
 
@@ -26,27 +33,25 @@ export const recordsApi = {
     request<void>(`/api/family/${familyId}/records/${type}/${id}`, { method: 'DELETE' }),
   feeding: {
     list: (familyId: string, babyId: string, params?: { limit?: number; offset?: number }) =>
-      request<Record<string, unknown>[]>(`/api/family/${familyId}/records/feeding?${buildListQuery(babyId, params?.limit, params?.offset)}`)
+      feedingApi.list(familyId, babyId, params)
         .then((items) => withType('feeding', items)),
-    create: (familyId: string, data: Record<string, unknown>) =>
-      request<{ id: string }>(`/api/family/${familyId}/records/feeding`, {
-        method: 'POST',
-        data,
-      }),
-    update: (familyId: string, id: string, data: Record<string, unknown>) =>
-      request<{ id: string }>(`/api/family/${familyId}/records/feeding/${id}`, {
-        method: 'PATCH',
-        data,
-      }),
+    create: (familyId: string, data: CreateFeedingDto) =>
+      feedingApi.create(familyId, data),
+    update: (familyId: string, id: string, data: UpdateFeedingDto) =>
+      feedingApi.update(familyId, id, data),
     remove: (familyId: string, id: string) =>
-      request<void>(`/api/family/${familyId}/records/feeding/${id}`, { method: 'DELETE' }),
+      feedingApi.remove(familyId, id),
     getOne: (familyId: string, id: string) =>
-      request<Record<string, unknown>>(`/api/family/${familyId}/records/feeding/${id}`),
+      feedingApi.getOne(familyId, id),
   },
   sleep: {
-    list: (familyId: string, babyId: string, params?: { limit?: number; offset?: number }) =>
-      request<Record<string, unknown>[]>(`/api/family/${familyId}/records/sleep?${buildListQuery(babyId, params?.limit, params?.offset)}`)
-        .then((items) => withType('sleep', items)),
+    list: (familyId: string, babyId: string, params?: { limit?: number; offset?: number }) => {
+      const query: string[] = [`baby_id=${babyId}`]
+      if (params?.limit != null) query.push(`limit=${params.limit}`)
+      if (params?.offset != null) query.push(`offset=${params.offset}`)
+      return request<SleepRecord[]>(`/api/family/${familyId}/records/sleep?${query.join('&')}`)
+        .then((items) => withType('sleep', items))
+    },
     getOngoing: sleepApi.getOngoing,
     startSleep: sleepApi.startSleep,
     endSleep: sleepApi.endSleep,
@@ -57,118 +62,94 @@ export const recordsApi = {
   },
   diaper: {
     list: (familyId: string, babyId: string, params?: { limit?: number; offset?: number }) =>
-      request<Record<string, unknown>[]>(`/api/family/${familyId}/records/diaper?${buildListQuery(babyId, params?.limit, params?.offset)}`)
+      diaperApi.list(familyId, babyId, params)
         .then((items) => withType('diaper', items)),
-    create: (familyId: string, data: Record<string, unknown>) =>
-      request<{ id: string }>(`/api/family/${familyId}/records/diaper`, {
-        method: 'POST',
-        data,
-      }),
-    update: (familyId: string, id: string, data: Record<string, unknown>) =>
-      request<{ id: string }>(`/api/family/${familyId}/records/diaper/${id}`, {
-        method: 'PATCH',
-        data,
-      }),
+    create: (familyId: string, data: CreateDiaperDto) =>
+      diaperApi.create(familyId, data),
+    update: (familyId: string, id: string, data: UpdateDiaperDto) =>
+      diaperApi.update(familyId, id, data),
     remove: (familyId: string, id: string) =>
-      request<void>(`/api/family/${familyId}/records/diaper/${id}`, { method: 'DELETE' }),
+      diaperApi.remove(familyId, id),
     getOne: (familyId: string, id: string) =>
-      request<Record<string, unknown>>(`/api/family/${familyId}/records/diaper/${id}`),
+      diaperApi.getOne(familyId, id),
   },
   activity: {
     list: (familyId: string, babyId: string, params?: { limit?: number; offset?: number }) =>
-      request<Record<string, unknown>[]>(`/api/family/${familyId}/records/activity?${buildListQuery(babyId, params?.limit, params?.offset)}`)
+      activityApi.list(familyId, babyId, params)
         .then((items) => withType('activity', items)),
-    create: (familyId: string, data: Record<string, unknown>) =>
-      request<{ id: string }>(`/api/family/${familyId}/records/activity`, {
-        method: 'POST',
-        data,
-      }),
-    update: (familyId: string, id: string, data: Record<string, unknown>) =>
-      request<{ id: string }>(`/api/family/${familyId}/records/activity/${id}`, {
-        method: 'PATCH',
-        data,
-      }),
+    create: (familyId: string, data: CreateActivityDto) =>
+      activityApi.create(familyId, data),
+    update: (familyId: string, id: string, data: UpdateActivityDto) =>
+      activityApi.update(familyId, id, data),
     remove: (familyId: string, id: string) =>
-      request<void>(`/api/family/${familyId}/records/activity/${id}`, { method: 'DELETE' }),
+      activityApi.remove(familyId, id),
     getOne: (familyId: string, id: string) =>
-      request<Record<string, unknown>>(`/api/family/${familyId}/records/activity/${id}`),
+      activityApi.getOne(familyId, id),
   },
   health: {
     list: (familyId: string, babyId: string, params?: { limit?: number; offset?: number }) =>
-      request<Record<string, unknown>[]>(`/api/family/${familyId}/records/health?${buildListQuery(babyId, params?.limit, params?.offset)}`)
+      healthApi.list(familyId, babyId, params)
         .then((items) => withType('health', items)),
-    create: (familyId: string, data: Record<string, unknown>) =>
-      request<{ id: string }>(`/api/family/${familyId}/records/health`, {
-        method: 'POST',
-        data,
-      }),
-    update: (familyId: string, id: string, data: Record<string, unknown>) =>
-      request<{ id: string }>(`/api/family/${familyId}/records/health/${id}`, {
-        method: 'PATCH',
-        data,
-      }),
+    create: (familyId: string, data: CreateHealthDto) =>
+      healthApi.create(familyId, data),
+    update: (familyId: string, id: string, data: UpdateHealthDto) =>
+      healthApi.update(familyId, id, data),
     remove: (familyId: string, id: string) =>
-      request<void>(`/api/family/${familyId}/records/health/${id}`, { method: 'DELETE' }),
+      healthApi.remove(familyId, id),
     getOne: (familyId: string, id: string) =>
-      request<Record<string, unknown>>(`/api/family/${familyId}/records/health/${id}`),
+      healthApi.getOne(familyId, id),
   },
   growth: {
     list: (familyId: string, babyId: string, params?: { limit?: number; offset?: number }) =>
-      request<Record<string, unknown>[]>(`/api/family/${familyId}/records/growth?${buildListQuery(babyId, params?.limit, params?.offset)}`)
+      growthApi.list(familyId, babyId, params)
         .then((items) => withType('growth', items)),
-    create: (familyId: string, data: Record<string, unknown>) =>
-      request<{ id: string }>(`/api/family/${familyId}/records/growth`, {
-        method: 'POST',
-        data,
-      }),
-    update: (familyId: string, id: string, data: Record<string, unknown>) =>
-      request<{ id: string }>(`/api/family/${familyId}/records/growth/${id}`, {
-        method: 'PATCH',
-        data,
-      }),
+    create: (familyId: string, data: CreateGrowthDto) =>
+      growthApi.create(familyId, data),
+    update: (familyId: string, id: string, data: UpdateGrowthDto) =>
+      growthApi.update(familyId, id, data),
     remove: (familyId: string, id: string) =>
-      request<void>(`/api/family/${familyId}/records/growth/${id}`, { method: 'DELETE' }),
+      growthApi.remove(familyId, id),
     getOne: (familyId: string, id: string) =>
-      request<Record<string, unknown>>(`/api/family/${familyId}/records/growth/${id}`),
+      growthApi.getOne(familyId, id),
   },
   medical: {
     list: (familyId: string, babyId: string, params?: { limit?: number; offset?: number }) =>
-      request<Record<string, unknown>[]>(`/api/family/${familyId}/records/medical?${buildListQuery(babyId, params?.limit, params?.offset)}`)
+      medicalApi.list(familyId, babyId, params)
         .then((items) => withType('medical', items)),
-    create: (familyId: string, data: Record<string, unknown>) =>
-      request<{ id: string }>(`/api/family/${familyId}/records/medical`, {
-        method: 'POST',
-        data,
-      }),
-    update: (familyId: string, id: string, data: Record<string, unknown>) =>
-      request<{ id: string }>(`/api/family/${familyId}/records/medical/${id}`, {
-        method: 'PATCH',
-        data,
-      }),
+    create: (familyId: string, data: CreateMedicalDto) =>
+      medicalApi.create(familyId, data),
+    update: (familyId: string, id: string, data: UpdateMedicalDto) =>
+      medicalApi.update(familyId, id, data),
     remove: (familyId: string, id: string) =>
-      request<void>(`/api/family/${familyId}/records/medical/${id}`, { method: 'DELETE' }),
+      medicalApi.remove(familyId, id),
     getOne: (familyId: string, id: string) =>
-      request<Record<string, unknown>>(`/api/family/${familyId}/records/medical/${id}`),
+      medicalApi.getOne(familyId, id),
   },
   symptom: {
     list: (familyId: string, babyId: string, params?: { limit?: number; offset?: number }) =>
-      request<Record<string, unknown>[]>(`/api/family/${familyId}/records/symptom?${buildListQuery(babyId, params?.limit, params?.offset)}`)
+      symptomApi.list(familyId, babyId, params)
         .then((items) => withType('symptom', items)),
-    create: (familyId: string, data: Record<string, unknown>) =>
-      request<{ id: string }>(`/api/family/${familyId}/records/symptom`, {
-        method: 'POST',
-        data,
-      }),
-    update: (familyId: string, id: string, data: Record<string, unknown>) =>
-      request<{ id: string }>(`/api/family/${familyId}/records/symptom/${id}`, {
-        method: 'PATCH',
-        data,
-      }),
+    create: (familyId: string, data: CreateSymptomDto) =>
+      symptomApi.create(familyId, data),
+    update: (familyId: string, id: string, data: UpdateSymptomDto) =>
+      symptomApi.update(familyId, id, data),
     remove: (familyId: string, id: string) =>
-      request<void>(`/api/family/${familyId}/records/symptom/${id}`, { method: 'DELETE' }),
+      symptomApi.remove(familyId, id),
     getOne: (familyId: string, id: string) =>
-      request<Record<string, unknown>>(`/api/family/${familyId}/records/symptom/${id}`),
+      symptomApi.getOne(familyId, id),
   },
 }
 
-export type { SleepRecord, StartSleepDto, EndSleepDto, CreateCompleteSleepDto, UpdateSleepDto }
+export type {
+  SleepRecord, StartSleepDto, EndSleepDto, CreateCompleteSleepDto, UpdateSleepDto,
+  FeedingRecord, CreateFeedingDto, UpdateFeedingDto,
+  DiaperRecord, CreateDiaperDto, UpdateDiaperDto,
+  ActivityRecord, CreateActivityDto, UpdateActivityDto,
+  HealthRecord, CreateHealthDto, UpdateHealthDto,
+  GrowthRecord, CreateGrowthDto, UpdateGrowthDto,
+  MedicalRecord, CreateMedicalDto, UpdateMedicalDto,
+  SymptomRecord, CreateSymptomDto, UpdateSymptomDto,
+}
+
+// Re-export for backward compatibility
+export type { TodayRecord, RecordItem }

@@ -15,11 +15,13 @@ export { medicalApi } from './medical'
 export { symptomApi } from './symptom'
 
 /**
- * 今日聚合时间轴
- * 路由：GET /api/family/:familyId/records/today
- * 返回当天所有类型记录的时间轴（倒序）
+ * 聚合时间轴
+ * 路由：GET /api/family/:familyId/records/today[?date=YYYY-MM-DD]
+ * date 缺省时服务端默认今日
  */
 export const todayApi = {
-  list: (familyId: string): Promise<ListResult<TodayRecord>> =>
-    request<ListResult<TodayRecord>>(`/api/family/${familyId}/records/today`),
+  list: (familyId: string, date?: string): Promise<ListResult<TodayRecord>> => {
+    const qs = date ? `?date=${encodeURIComponent(date)}` : ''
+    return request<ListResult<TodayRecord>>(`/api/family/${familyId}/records/today${qs}`)
+  },
 }

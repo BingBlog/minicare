@@ -1,114 +1,103 @@
 # F04 · 睡眠记录
 
-> 来源：MVP-PRD.md §2.4.3、§3.2.6  
 > 功能 ID：P0-007  
 > 优先级：P0  
-> 最后同步：2026-03-29
+> 状态：**已完成** ✅  
+> 最后更新：2026-05-03（对齐小程序实际实现）
 
 ## 功能描述
 
-记录宝宝的睡眠时长、入睡/醒来时间和睡眠质量；支持计时模式和补录模式。
+记录宝宝的睡眠时长、入睡/醒来时间和睡眠质量；支持**计时模式**（实时开始/结束）和**补录模式**（事后手动填写时间段）。
+
+**平台实现**：微信小程序（主平台），数据通过 REST API 存入远程 MySQL。
 
 ## 核心功能
 
 ### 计时模式
-1. 在睡眠表单点击「开始睡眠」→ **立即将开始时间戳写入本地数据库**（状态标记为 `sleeping`）
-2. 实时显示已睡时长（根据当前时间与开始时间差计算，不依赖内存维持）
-3. 再次进入或点击「结束睡眠」→ 写入结束时间，自动计算时长 → 保存
+
+1. 点击「开始睡眠」→ 调用 `POST .../sleep/start` 创建 `status=ongoing` 记录
+2. 前端 `setInterval` 本地计时显示，服务端持久化开始时间（断线可恢复）
+3. 页面加载时通过 `GET .../sleep/ongoing` 检查是否有进行中记录，有则恢复计时
+4. 点击「结束」→ 调用 `PATCH .../sleep/:id/end` 将状态改为 `ended`，后端计算 `duration_min`
+5. **3 分钟短时确认**：计时不足 3 分钟时结束，弹出确认弹窗（"仍然保存" / "继续计时"），防止误触
+6. **取消计时**：计时中可点击"取消本次计时"，调用 DELETE API 删除 ongoing 记录
 
 ### 补录模式
-- 直接选择入睡与醒来时间（或选预设时长）→ 选睡眠质量 → 保存
 
-## 计时模式中断与异常态处理规则
+点击切换到补录 Tab → 手动选择开始时间和结束时间 → 调用 `POST .../sleep/complete` 一次性写入完成状态记录（不走 start+end 两步）。
 
-1. **数据持久化**：点击「开始睡眠」后，立即将开始时间戳写入本地数据库（状态标记为 `sleeping`）
+### 首页 SleepBanner
 
-2. **重新进入时的状态恢复**：App 冷启动或从后台唤醒时，检测是否存在 `sleeping` 状态的未结束记录：
-   - 若存在 → **首页顶部显示「进行中」横幅**（显示已睡时长），**睡眠快捷入口**变为「⏹ 结束睡眠」状态
-   - 若不存在 → 正常加载今日摘要
+当存在 ongoing 记录时，首页显示"宝宝正在睡觉"横幅（含实时计时），支持一键结束。
 
-3. **超时自动异常标记**：计时开始后超过 **12 小时**仍未结束，系统自动将该记录标记为 `status = abnormal`，下次打开时显示提示卡片：「有一条睡眠记录持续超过 12 小时，可能是忘记结束，请手动修正」；用户可选择「修改结束时间」或「标记为异常记录」
-
-4. **结束睡眠流程**：点击「结束睡眠」→ 写入结束时间戳 → 状态更新为 `completed` → 自动计算时长 → 弹出睡眠质量选择弹窗（可跳过）→ 保存成功 → 返回首页
-
-## 输入方式
-
-- **手动/快选**：时间选择器选择入睡和醒来时间，快速选择常见时段
-- **自然语言**：「昨晚 22 点半睡着，早上 8 点醒」→ 系统解析 → 确认卡片 → 确认保存
-- **语音**：说出睡眠情况 → 语音转文字 → 解析 → 确认
-- **拍照/图片**：拍摄纸质睡眠记录表 → **仅做图片留档，不做 OCR 识别**；时间字段需用户手动输入
-
-## 交互示意图
+## 状态机
 
 ```
-┌──────────────────────────────┐    ┌──────────────────────────────┐
-│  睡眠记录（计时模式）          │    │  睡眠记录（补录模式）           │
-│                               │    │                               │
-│  ┌──────────────────────┐    │    │ 入睡时间  [22:30  ▼]          │
-│  │   宝宝睡着了          │    │    │ 醒来时间  [08:00  ▼]          │
-│  │   已睡  2h 30m        │    │    │ 睡眠时长  自动计算  9h 30m    │
-│  │   开始  09:30         │    │    │                               │
-│  └──────────────────────┘    │    │ 睡眠时段  ○夜间  ○上午  ○下午 │
-│                               │    │                               │
-│  ┌──────────────────────┐    │    │ 睡眠质量  良好 / 一般 / 较差  │
-│  │   ⏹ 结束睡眠         │    │    │                               │
-│  └──────────────────────┘    │    │ 备  注  [__________________]  │
-│                               │    │                               │
-│  模式切换: [计时] [补录]       │    │         保  存                │
-└──────────────────────────────┘    └──────────────────────────────┘
+ongoing ──(end)──→ ended
+   │
+   └──(cancel/delete)──→ 删除
 ```
 
-## 交互流程
+只有两种状态：`ongoing`（进行中）和 `ended`（已结束）。
 
-```mermaid
-flowchart TD
-    LAUNCH([App 启动/前台恢复]) --> CHECK{是否存在\n未结束的睡眠记录?}
-    CHECK -- 是 --> BANNER[首页显示「进行中」横幅\n睡眠入口变为「结束睡眠」]
-    CHECK -- 是，且已超12小时 --> ABNORMAL[标记为 abnormal\n弹出提示卡片]
-    ABNORMAL --> FIX{用户操作}
-    FIX -- 修改结束时间 --> F
-    FIX -- 标记为异常 --> SAVED
-    BANNER --> E[点击「结束睡眠」]
-    CHECK -- 否 --> A[进入睡眠记录页]
-    A --> B{选择模式}
-    B -- 计时模式 --> C[写入开始时间戳\n状态=sleeping]
-    C --> D[实时显示已睡时长]
-    D --> E
-    E --> F[写入结束时间\n状态=completed\n自动计算时长]
-    F --> QUALITY[弹出睡眠质量选择\n可跳过]
-    QUALITY --> SAVED[保存成功 ✓\n返回首页]
-    B -- 补录模式 --> G[时间选择器选择\n入睡/醒来时间]
-    G --> H[自动计算时长]
-    H --> J[选择睡眠质量]
-    J --> SAVED
-```
+## 后端 API
+
+| 端点 | 方法 | 说明 |
+|------|------|------|
+| `/api/family/:familyId/records/sleep/start` | POST | 开始计时（创建 ongoing 记录） |
+| `/api/family/:familyId/records/sleep/:id/end` | PATCH | 结束计时 |
+| `/api/family/:familyId/records/sleep/complete` | POST | 补录完整记录（一步到位） |
+| `/api/family/:familyId/records/sleep/ongoing` | GET | 查询当前 ongoing 记录 |
+| `/api/family/:familyId/records/sleep` | GET | 查询睡眠记录列表 |
+| `/api/family/:familyId/records/sleep/:id` | PATCH | 编辑已结束记录 |
+| `/api/family/:familyId/records/sleep/:id` | DELETE | 删除记录 |
 
 ## 数据库表
 
-`sleep_record` 表 — 见 `05-data-schema.md`
+**sleep_record**（Migration 008）：
 
-关键字段：
-- `status`：`sleeping`（计时中）/ `completed`（已结束）/ `abnormal`（异常超时）
-- `start_time`：点击「开始睡眠」时立即写入
-- `end_time`：结束时写入，NULL 表示计时进行中
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `id` | CHAR(36) | UUID |
+| `baby_id` | CHAR(36) | 关联 baby_profile.id |
+| `recorded_by` | CHAR(36) | 操作用户 ID |
+| `start_time` | DATETIME | 入睡时间 |
+| `end_time` | DATETIME | 醒来时间（ongoing 时为 NULL） |
+| `duration_min` | INT | 时长（分钟），后端 TIMESTAMPDIFF 计算 |
+| `status` | VARCHAR(10) | `ongoing` / `ended` |
+| `sleep_period` | VARCHAR(20) | 时段：night/morning_nap/afternoon_nap/other |
+| `quality` | VARCHAR(10) | 质量：good/fair/poor（可选） |
+| `note` | TEXT | 备注 |
+
+## DTO 字段
+
+**CreateSleepDto**（start）：`baby_id`（必填）、`start_time`（可选，默认当前时间）
+
+**EndSleepDto**：`end_time`（可选，默认当前时间）、`quality`、`sleep_period`、`note`
+
+**CreateCompleteSleepDto**（补录）：`baby_id`（必填）、`start_time`（必填）、`end_time`（必填）、`quality`、`sleep_period`、`note`
+
+## 技术细节
+
+- `duration_min` 由后端 MySQL `TIMESTAMPDIFF(MINUTE, start_time, end_time)` 计算，规避容器 UTC+0 时区问题
+- 前端计时器使用 `setInterval` 每秒更新显示，实际时长以服务端 `start_time` 为准
+- 编辑模式：通过 URL 参数 `recordId` 进入，可修改已结束的睡眠记录
 
 ## 验收标准（AC）
 
-### 计时模式
-- [ ] 点击「开始睡眠」立即将开始时间戳写入数据库，状态为 `sleeping`
-- [ ] App 被杀死或后台唤醒后，仍能正确显示进行中横幅和已睡时长
-- [ ] 计时超过 12 小时自动标记为 `abnormal`，下次打开时显示提示卡片
-- [ ] 点击「结束睡眠」完成流程，弹出睡眠质量选择（可跳过）
+- [x] 计时模式：点击开始立即创建服务端记录
+- [x] 计时模式：结束后正确计算时长
+- [x] 3 分钟短时确认弹窗，防止误触
+- [x] 计时取消功能
+- [x] 补录模式：手动选择时间段一步创建
+- [x] 页面重进时恢复 ongoing 状态
+- [x] 首页 SleepBanner 显示 + 一键结束
+- [x] 睡眠质量选择（好/一般/差）
+- [x] 编辑和删除已有记录
 
-### 补录模式
-- [ ] 可通过时间选择器选择入睡/醒来时间，系统自动计算时长
-- [ ] 可通过自然语言/语音输入，经解析确认卡片确认后保存
-- [ ] 可上传纸质记录照片（仅留档，不做 OCR）
+## 相关文件
 
-### 通用
-- [ ] 支持快速选择常见睡眠时段（夜间/上午/下午）
-- [ ] 保存成功后显示 Toast 并返回首页
-
-## UI 对应文件
-
-- `ui-draft/form-sleep.html`
+- 睡眠表单：`minicare-mp/src/pages/records/sleep/index.tsx`
+- 首页横幅：`minicare-mp/src/pages/home/SleepBanner.tsx`
+- API 模块：`minicare-mp/src/api/records/sleep.ts`
+- 服务端：`minicare-server/src/records/sleep/`

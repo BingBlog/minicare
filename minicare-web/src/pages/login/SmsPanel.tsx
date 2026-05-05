@@ -6,8 +6,9 @@
  *   - 验证码输入框（图标 + 「获取/重发」按钮 + 倒计时）
  *   - 错误提示
  *   - 登录按钮（含加载态 spinner）
- *   - 用户协议文字
+ *   - 协议勾选（checkbox + 链接跳转）
  */
+import { useNavigate } from 'react-router-dom'
 
 interface Props {
   phone: string;
@@ -21,6 +22,8 @@ interface Props {
   error: string;
   onSendCode: () => void;
   onSubmit: (e: React.FormEvent) => void;
+  agreed: boolean;
+  onToggleAgreed: () => void;
 }
 
 /** 手机图标 */
@@ -63,7 +66,10 @@ export default function SmsPanel({
   error,
   onSendCode,
   onSubmit,
+  agreed,
+  onToggleAgreed,
 }: Props) {
+  const navigate = useNavigate()
   return (
     <form onSubmit={onSubmit} className="space-y-0">
       {/* 手机号 */}
@@ -143,12 +149,34 @@ export default function SmsPanel({
         ) : '登录 / 注册'}
       </button>
 
-      {/* 用户协议 */}
-      <div className="text-center mt-4 text-[11px] text-[#9A8090] leading-relaxed">
-        登录即代表同意{' '}
-        <span className="text-[#F87098] font-medium cursor-pointer">《用户协议》</span>
-        {' '}和{' '}
-        <span className="text-[#F87098] font-medium cursor-pointer">《隐私政策》</span>
+      {/* 协议勾选 */}
+      <div className="flex items-start gap-2 mt-5">
+        <div
+          onClick={onToggleAgreed}
+          className="mt-0.5 flex-shrink-0 w-[16px] h-[16px] rounded-sm border-[1.5px] flex items-center justify-center cursor-pointer transition-all"
+          style={{
+            borderColor: agreed ? '#F87098' : '#C0A8AD',
+            backgroundColor: agreed ? '#F87098' : 'transparent',
+          }}
+        >
+          {agreed && (
+            <svg viewBox="0 0 24 24" className="w-[10px] h-[10px]" fill="none" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          )}
+        </div>
+        <div className="text-[11px] text-[#9A8090] leading-relaxed">
+          我已阅读并同意
+          <span
+            className="text-[#F87098] font-medium cursor-pointer"
+            onClick={() => navigate('/privacy?tab=privacy')}
+          >《隐私政策》</span>
+          和
+          <span
+            className="text-[#F87098] font-medium cursor-pointer"
+            onClick={() => navigate('/privacy?tab=terms')}
+          >《用户服务协议》</span>
+        </div>
       </div>
     </form>
   );

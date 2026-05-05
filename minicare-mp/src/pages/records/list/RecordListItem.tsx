@@ -1,16 +1,16 @@
 /**
  * RecordListItem 记录列表条目
  *
- * 与 Web RecordListItem 保持相同的 6 列定宽布局：
+ * 自适应布局：宽屏单行展示全部信息，窄屏时 summary 自动换行到第二行。
  *
- *  ┌────────┬──────┬──────────┬───────────────────┬──────────┬────┐
- *  │  time  │ icon │  label   │  tags（Pill）      │ summary  │ >  │
- *  │w-34px  │ 36px │ w-44px   │  flex-1 min-w-0   │ w-72px   │13px│
- *  └────────┴──────┴──────────┴───────────────────┴──────────┴────┘
+ * 布局结构（flex-wrap）：
+ *  ┌────────┬──────┬────────┬─────────────────┬──────────┬────┐
+ *  │  time  │ icon │ label  │  tags           │ summary  │ >  │
+ *  │ 34px   │ 36px │ auto   │  flex:1         │ auto     │    │
+ *  └────────┴──────┴────────┴─────────────────┴──────────┴────┘
+ *  当空间不足时，summary 自动折到第二行左对齐到 label 位置。
  *
- * 使用 recordListDisplay.ts 中的 getRecordListParts + getRecordSummary
- * 替代之前使用的 homeRecords.getTimelineRecordDisplay（保持与 Web 一致）。
- *
+ * 使用 recordListDisplay.ts 中的 getRecordListParts + getRecordSummary。
  * 被引用：RecordGroup.tsx → index.tsx
  */
 import { View, Text, Image } from '@tarojs/components'
@@ -71,39 +71,41 @@ export default function RecordListItem({ record, showDivider, onClick }: RecordL
   return (
     <View className='record-item' onClick={() => onClick(record)}>
       <View className={cls}>
+        {/* 主行：flex-wrap，宽屏单行，窄屏自动折行 */}
         <View className='record-item__row'>
-          <Text className='record-item__time'>{displayTime}</Text>
-
-          <View className='record-item__icon' style={{ background: iconBgColor }}>
-            <Image className='record-item__icon-img' src={iconSrc} mode='aspectFit' />
+          {/* 左侧固定区：time + icon */}
+          <View className='record-item__left'>
+            <Text className='record-item__time'>{displayTime}</Text>
+            <View className='record-item__icon' style={{ background: iconBgColor }}>
+              <Image className='record-item__icon-img' src={iconSrc} mode='aspectFit' />
+            </View>
           </View>
 
-          <View className='record-item__label'>
-            {label && <Text className='record-item__label-text'>{label}</Text>}
-          </View>
+          {/* 内容区：label + tags + summary，可换行 */}
+          <View className='record-item__content'>
+            <Text className='record-item__label'>{label}</Text>
 
-          <View className='record-item__tags'>
             {tags.map((tag, i) => (
               <Text key={`${record.id}-t${i}`} className='record-item__tag'>
                 {tag}
               </Text>
             ))}
-          </View>
 
-          <View className='record-item__summary'>
-            {summary ? (
+            {summary && (
               <View className={`${SUMMARY_BADGE_CLS[summary.theme]}${summaryCompact ? ' record-item__summary-badge--compact' : ''}`}>
                 <Text className={SUMMARY_VALUE_CLS[summary.theme]}>{summary.value}</Text>
                 {summary.unit && (
                   <Text className={`record-item__summary-unit ${SUMMARY_VALUE_CLS[summary.theme]}`}>{summary.unit}</Text>
                 )}
               </View>
-            ) : null}
+            )}
           </View>
 
+          {/* 右箭头 */}
           <Text className='record-item__arrow'>{'\u203A'}</Text>
         </View>
 
+        {/* 备注 */}
         {hasNote && (
           <View className='record-item__note'>
             <Text>{note}</Text>

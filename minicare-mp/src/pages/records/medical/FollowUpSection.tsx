@@ -3,11 +3,7 @@
  * 与 Web pages/records/medical/FollowUpSection.tsx 1:1 对齐
  */
 import { View, Text, Picker } from '@tarojs/components'
-import dayjs from 'dayjs'
-
-function nowDate(): string {
-  return dayjs().format('YYYY-MM-DD')
-}
+import { nowDate } from '@/lib/utils'
 
 interface Props {
   followUpDate: string

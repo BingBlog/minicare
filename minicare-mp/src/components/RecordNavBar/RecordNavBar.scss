@@ -1,0 +1,59 @@
+/* RecordNavBar — 记录表单页面通用导航栏样式 */
+.record-nav {
+  width: 100%;
+  flex-shrink: 0;
+  background: transparent;
+}
+
+.record-nav__content {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 16px;
+  position: relative;
+}
+
+.record-nav__back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+.record-nav__back-icon {
+  font-size: 28px;
+  color: #4A3035;
+  line-height: 1;
+}
+
+.record-nav__title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 17px;
+  font-weight: 600;
+  color: #4A3035;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 60%;
+}
+
+.record-nav__right {
+  margin-left: auto;
+  padding: 6px 12px;
+}
+
+.record-nav__right-text {
+  font-size: 14px;
+  color: #F05060;
+  font-weight: 500;
+}
+
+.record-nav__placeholder {
+  margin-left: auto;
+  width: 36px;
+  height: 36px;
+}

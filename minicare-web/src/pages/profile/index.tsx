@@ -26,6 +26,7 @@ import type { SettingsRow } from "./SettingsGroup";
 import EditBabyModal from "./EditBabyModal";
 import BottomSheet from "@/components/ui/BottomSheet";
 import MembersModal from "./MembersModal";
+import LoginGuide from "@/components/LoginGuide";
 
 // ── SettingsGroup 所需的图标（仅在本文件内使用）──────────────────
 
@@ -128,9 +129,14 @@ const IconLogOut = () => (
 // ══ 我的页面主体 ══════════════════════════════════════════════════
 export default function ProfilePage() {
   const navigate = useNavigate();
-  const { user, currentBaby, currentFamily, setCurrentBaby, logout } =
+  const { token, user, currentBaby, currentFamily, setCurrentBaby, logout } =
     useAppStore();
   const { showToast, ToastNode } = useToast();
+
+  // 游客模式：未登录时展示简化版（仅关于/协议入口 + 登录引导）
+  if (!token) {
+    return <GuestProfile />;
+  }
 
   // ── 外观设置 ──────────────────────────────────────────────────
   const [largeFontMode, setLargeFontMode] = useState(false);
@@ -491,5 +497,110 @@ export default function ProfilePage() {
       {/* spin 关键帧（供 MembersModal 旋转动画使用） */}
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
+  );
+}
+
+// ══ 游客版"我的"页面 ══════════════════════════════════════════════
+
+function GuestProfile() {
+  const navigate = useNavigate();
+
+  return (
+    <div className="min-h-full bg-bg">
+      {/* 页面标题 */}
+      <div className="px-5 pt-12 pb-4 bg-bg">
+        <div className="text-[22px] font-extrabold text-[#4A3035] tracking-tight">
+          我的
+        </div>
+      </div>
+
+      {/* 登录引导 */}
+      <div className="px-4 mb-4">
+        <div
+          className="rounded-2xl overflow-hidden"
+          style={{ background: '#FFFBFC', border: '1px solid #F5F0F2' }}
+        >
+          <LoginGuide
+            title="登录后查看"
+            desc="登录后可管理宝宝档案、家庭成员和个人设置"
+          />
+        </div>
+      </div>
+
+      {/* 关于分组（游客也可访问） */}
+      <div className="mx-4 mb-4">
+        <div className="text-[11px] font-semibold text-[#C0A8AD] tracking-[0.5px] uppercase mb-2 px-1">
+          关于
+        </div>
+        <div
+          className="rounded-2xl overflow-hidden"
+          style={{ background: '#fff', boxShadow: '0 1px 4px rgba(200,100,120,0.06)' }}
+        >
+          <button
+            type="button"
+            onClick={() => navigate('/privacy?tab=privacy')}
+            className="w-full flex items-center gap-3 px-4 py-3.5 border-none bg-transparent cursor-pointer active:bg-gray-50 transition-colors text-left"
+            style={{ borderBottom: '0.5px solid #F5F0F2' }}
+          >
+            <IconFileTextGuest />
+            <span className="flex-1 text-[14px] text-[#4A3035]">隐私政策</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="#C0A8AD" strokeWidth="2"
+              strokeLinecap="round" strokeLinejoin="round" style={{ width: 14, height: 14 }}>
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate('/privacy?tab=terms')}
+            className="w-full flex items-center gap-3 px-4 py-3.5 border-none bg-transparent cursor-pointer active:bg-gray-50 transition-colors text-left"
+            style={{ borderBottom: '0.5px solid #F5F0F2' }}
+          >
+            <IconFileTextGuest />
+            <span className="flex-1 text-[14px] text-[#4A3035]">用户服务协议</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="#C0A8AD" strokeWidth="2"
+              strokeLinecap="round" strokeLinejoin="round" style={{ width: 14, height: 14 }}>
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              if (navigator.clipboard) {
+                navigator.clipboard.writeText('abingblog@gmail.com')
+              }
+            }}
+            className="w-full flex items-center gap-3 px-4 py-3.5 border-none bg-transparent cursor-pointer active:bg-gray-50 transition-colors text-left"
+          >
+            <IconMailGuest />
+            <span className="flex-1 text-[14px] text-[#4A3035]">联系我们</span>
+            <span className="text-[12px] text-[#9A8090]">abingblog@gmail.com</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** 游客版文件图标 */
+function IconFileTextGuest() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="#9A8090" strokeWidth="2"
+      strokeLinecap="round" strokeLinejoin="round" style={{ width: 18, height: 18, flexShrink: 0 }}>
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+      <polyline points="14 2 14 8 20 8" />
+      <line x1="16" y1="13" x2="8" y2="13" />
+      <line x1="16" y1="17" x2="8" y2="17" />
+    </svg>
+  );
+}
+
+/** 游客版邮件图标 */
+function IconMailGuest() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="#9A8090" strokeWidth="2"
+      strokeLinecap="round" strokeLinejoin="round" style={{ width: 18, height: 18, flexShrink: 0 }}>
+      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+      <polyline points="22,6 12,13 2,6" />
+    </svg>
   );
 }

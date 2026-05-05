@@ -1,0 +1,1073 @@
+/**
+ * Dashboard 看板页面 — 深色主题样式
+ *
+ * 设计原则：
+ * 1. 深色背景 + 低对比度文字，适合夜间床头使用
+ * 2. 纸质记录本风格：竖线分隔列，横线分隔行
+ * 3. 全屏无滚动，所有内容一屏展示
+ * 4. 夜间模式进一步降低亮度
+ *
+ * v2 优化：
+ * - 触控目标 ≥ 44px（Apple HIG）
+ * - 副标题/时间对比度提升
+ * - 行高统一（消除 baseline 对齐导致的不齐整）
+ * - 小结融入列标题，去掉独立汇总栏
+ * - 底部标签色彩与喂养列区分
+ * - 顶栏喂奶计时器视觉权重增强
+ */
+
+/* ── 根容器 ─────────────────────────────────────────────────── */
+.db-root {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: #0f1117;
+  color: #d0d4dc;
+  font-family: -apple-system, 'SF Pro Display', 'PingFang SC', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: filter 0.8s ease;
+}
+
+/* 夜间模式：降低亮度 + 暖色滤镜 */
+.db-root.db-night {
+  filter: brightness(0.6) sepia(0.15);
+}
+
+/* ── 加载动画 ───────────────────────────────────────────────── */
+.db-loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #5a6acf;
+  border-radius: 50%;
+  animation: db-spin 0.8s linear infinite;
+}
+
+@keyframes db-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── 顶栏 ───────────────────────────────────────────────────── */
+.db-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: #161822;
+  border-bottom: 1px solid #252836;
+  flex-shrink: 0;
+  min-height: 56px;
+}
+
+.db-header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+}
+
+.db-header-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.db-baby-name {
+  font-size: 17px;
+  font-weight: 700;
+  color: #eef0f6;
+}
+
+/* ── 顶栏指标区域（居中统一展示）─────────────────────── */
+
+.db-header-indicators {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  justify-content: center;
+}
+
+/* 统一指标标签样式 */
+.db-header-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  min-height: 32px;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+
+/* 今日暂无喂奶 */
+.db-tag-feeding-none {
+  background: rgba(100, 110, 160, 0.12);
+  color: #6a7090;
+}
+
+/* 睡眠中 — 呼吸动画 */
+.db-tag-sleeping {
+  background: rgba(100, 80, 220, 0.38);
+  color: #c4b8ff;
+  text-shadow: 0 1px 10px rgba(140, 120, 255, 0.5);
+  border: 1px solid rgba(140, 120, 240, 0.3);
+  animation: db-sleep-glow 2.5s ease-in-out infinite;
+}
+
+@keyframes db-sleep-glow {
+  0%, 100% {
+    box-shadow: 0 0 6px 2px rgba(140, 120, 240, 0.15);
+    background: rgba(100, 80, 220, 0.38);
+  }
+  50% {
+    box-shadow: 0 0 24px 8px rgba(140, 120, 240, 0.45);
+    background: rgba(110, 90, 230, 0.52);
+  }
+}
+
+.db-tag-pulse {
+  animation: db-feed-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes db-feed-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.75; transform: scale(1.03); }
+}
+
+.db-tag-temp {
+  background: rgba(90, 180, 120, 0.15);
+  color: #68c090;
+}
+
+.db-tag-temp--fever {
+  background: rgba(240, 60, 60, 0.2);
+  color: #f05050;
+}
+
+.db-tag-spirit {
+  background: rgba(90, 106, 207, 0.15);
+  color: #8b9aef;
+}
+
+.db-tag-mood {
+  background: rgba(232, 150, 10, 0.15);
+  color: #e8b84a;
+}
+
+/* 时钟标签 — 与 db-header-tag 统一视觉 */
+.db-tag-clock {
+  background: rgba(100, 110, 160, 0.12);
+  color: #8b9aef;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5px;
+}
+
+/* 全屏按钮 */
+.db-fullscreen-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+  border: none;
+  background: rgba(100, 110, 160, 0.12);
+  color: #6a7090;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.db-fullscreen-btn:hover {
+  background: rgba(90, 106, 207, 0.22);
+  color: #8b9aef;
+}
+
+/* ── 日期选择器 ─────────────────────────────────────────── */
+
+/* 快捷按钮组容器 */
+.db-date-selector {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid #252836;
+  border-radius: 10px;
+  padding: 3px 5px;
+}
+
+/* 单个快捷按钮 */
+.db-date-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 7px;
+  border: none;
+  background: transparent;
+  color: #6a7090;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+  min-height: 28px;
+}
+
+.db-date-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #a0a8c0;
+}
+
+/* 激活状态（当前选中日期） */
+.db-date-btn--active {
+  background: rgba(90, 106, 207, 0.22);
+  color: #8b9aef;
+  font-weight: 600;
+}
+
+.db-date-btn--active:hover {
+  background: rgba(90, 106, 207, 0.3);
+  color: #a0aef8;
+}
+
+/* 日历图标按钮 */
+.db-date-btn--calendar {
+  padding: 4px 9px;
+}
+
+
+/* 历史日期提示标记 */
+.db-date-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 10px;
+  background: rgba(232, 160, 0, 0.14);
+  color: #e8b84a;
+  font-size: 11px;
+  font-weight: 500;
+  border: 1px solid rgba(232, 160, 0, 0.2);
+}
+
+/* ── 内容区（两行 × 三列 等宽六格）──────────────────────── */
+.db-body {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 每行：三列等宽，各占 body 高度的 50% */
+.db-grid-row {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.db-grid-row--top {
+  border-bottom: 1px solid #252836;
+}
+
+.db-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #1e2130;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.db-col:last-child {
+  border-right: none;
+}
+
+/* 列标题 — 两行结构：标题 + 小结摘要 */
+.db-col-header {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 14px 8px;
+  border-bottom: 1px solid #1e2130;
+  flex-shrink: 0;
+}
+
+.db-col-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.db-col-feeding .db-col-header {
+  background: linear-gradient(180deg, rgba(232, 48, 90, 0.08) 0%, transparent 100%);
+}
+.db-col-feeding .db-col-title { color: #f07888; }
+
+.db-col-diaper .db-col-header {
+  background: linear-gradient(180deg, rgba(42, 158, 212, 0.08) 0%, transparent 100%);
+}
+.db-col-diaper .db-col-title { color: #5ac0e8; }
+
+.db-col-sleep .db-col-header {
+  background: linear-gradient(180deg, rgba(67, 88, 200, 0.08) 0%, transparent 100%);
+}
+.db-col-sleep .db-col-title { color: #7888e8; }
+
+.db-col-supplement .db-col-header {
+  background: linear-gradient(180deg, rgba(232, 160, 0, 0.08) 0%, transparent 100%);
+}
+.db-col-supplement .db-col-title { color: #e8b84a; }
+
+.db-col-activity .db-col-header {
+  background: linear-gradient(180deg, rgba(90, 180, 90, 0.08) 0%, transparent 100%);
+}
+.db-col-activity .db-col-title { color: #68c070; }
+
+.db-col-symptom .db-col-header {
+  background: linear-gradient(180deg, rgba(248, 112, 152, 0.06) 0%, transparent 100%);
+}
+.db-col-symptom .db-col-title { color: #e88090; }
+
+.db-col-timeline .db-col-header {
+  background: linear-gradient(180deg, rgba(90, 180, 120, 0.08) 0%, transparent 100%);
+}
+.db-col-timeline .db-col-title { color: #68c090; }
+
+.db-col-reminders .db-col-header {
+  background: linear-gradient(180deg, rgba(180, 100, 220, 0.08) 0%, transparent 100%);
+}
+.db-col-reminders .db-col-title { color: #c47de0; }
+
+/* 列标题图标 */
+.db-col-title-icon {
+  flex-shrink: 0;
+  opacity: 0.9;
+}
+
+.db-col-count {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 400;
+  opacity: 0.5;
+}
+
+/* 列标题下方的小结摘要行 */
+.db-col-summary {
+  margin-top: 4px;
+  font-size: 11px;
+  color: #6a7090;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+}
+
+/* 记录列表滚动容器 — 至少保留两行空行高度（38px × 2） */
+.db-col-records {
+  flex: 1;
+  min-height: 76px;
+  overflow-y: auto;
+}
+
+.db-col-records::-webkit-scrollbar {
+  width: 2px;
+}
+
+.db-col-records::-webkit-scrollbar-thumb {
+  background: #2a2d40;
+  border-radius: 1px;
+}
+
+/* ── 记录行：time | label | tags | summary ────────────────── */
+.db-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-bottom: 1px solid rgba(30, 33, 48, 0.5);
+  font-size: 13px;
+  min-height: 38px;
+  transition: background 0.15s;
+}
+
+.db-row:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.db-row-time {
+  flex-shrink: 0;
+  width: 36px;
+  font-size: 11px;
+  color: #6a7090;
+  font-variant-numeric: tabular-nums;
+  text-align: left;
+}
+
+/* 固定宽度标题列 */
+.db-row-label {
+  flex-shrink: 0;
+  width: 48px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #d0d4dc;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 中间标签区域（弹性伸缩） */
+.db-row-tags {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+
+/* 深色主题下的 Pill 标签 */
+.db-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 500;
+  white-space: nowrap;
+  background: rgba(100, 110, 160, 0.12);
+  color: #9a9eb8;
+}
+
+/* 右侧数值摘要 */
+.db-row-summary {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 1px;
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+.db-row-summary-value {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  line-height: 1.25;
+}
+
+.db-row-summary-unit {
+  font-size: 10px;
+  font-weight: 500;
+  opacity: 0.75;
+}
+
+/* 兼容旧结构：content 包裹 main+sub */
+.db-row-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.db-row-main {
+  font-size: 13px;
+  color: #d0d4dc;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.db-row-sub {
+  font-size: 11px;
+  color: #6a7090;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 进行中的睡眠行 */
+.db-row-ongoing {
+  animation: db-row-pulse 2s ease-in-out infinite;
+}
+
+@keyframes db-row-pulse {
+  0%, 100% { background: transparent; }
+  50% { background: rgba(120, 136, 232, 0.08); }
+}
+
+/* ── Pill 颜色变体（深色主题） ─────────────────────────────── */
+.db-pill-pink {
+  background: rgba(248, 112, 152, 0.15);
+  color: #f07888;
+}
+.db-pill-blue {
+  background: rgba(42, 158, 212, 0.15);
+  color: #5ac0e8;
+}
+.db-pill-purple {
+  background: rgba(90, 106, 207, 0.15);
+  color: #8b9aef;
+}
+.db-pill-amber {
+  background: rgba(232, 160, 0, 0.15);
+  color: #e8b84a;
+}
+.db-pill-brown {
+  background: rgba(180, 130, 60, 0.15);
+  color: #c8a050;
+}
+.db-pill-green {
+  background: rgba(90, 180, 90, 0.15);
+  color: #68c070;
+}
+.db-pill-red {
+  background: rgba(240, 80, 112, 0.18);
+  color: #f06878;
+}
+.db-pill-lavender {
+  background: rgba(180, 100, 220, 0.12);
+  color: #c47de0;
+}
+
+/* ── Summary 颜色变体 ─────────────────────────────────────── */
+.db-summary-pink {
+  background: rgba(248, 112, 152, 0.12);
+}
+.db-summary-pink .db-row-summary-value,
+.db-summary-pink .db-row-summary-unit {
+  color: #f07888;
+}
+.db-summary-gold {
+  background: rgba(192, 146, 42, 0.12);
+}
+.db-summary-gold .db-row-summary-value,
+.db-summary-gold .db-row-summary-unit {
+  color: #e8b84a;
+}
+.db-summary-red {
+  background: rgba(240, 80, 112, 0.15);
+}
+.db-summary-red .db-row-summary-value,
+.db-summary-red .db-row-summary-unit {
+  color: #f06878;
+}
+.db-summary-active {
+  border: 1px solid rgba(248, 112, 152, 0.3);
+}
+
+/* 结束睡眠按钮 */
+.db-row-actions {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.db-end-sleep-btn {
+  padding: 3px 10px;
+  border: 1px solid rgba(248, 112, 152, 0.4);
+  border-radius: 10px;
+  background: rgba(248, 112, 152, 0.1);
+  color: #f87098;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.db-end-sleep-btn:hover {
+  background: rgba(248, 112, 152, 0.2);
+  border-color: rgba(248, 112, 152, 0.6);
+}
+.db-end-sleep-btn--confirm {
+  background: rgba(248, 80, 100, 0.2);
+  border-color: #f85064;
+  color: #ff6b7a;
+}
+.db-end-sleep-btn--confirm:hover {
+  background: rgba(248, 80, 100, 0.35);
+}
+.db-end-sleep-btn--confirm:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.db-end-sleep-btn--cancel {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #8a8ea0;
+}
+.db-end-sleep-btn--cancel:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #b0b4c4;
+}
+
+/* 空状态 */
+.db-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+  color: #353848;
+  font-size: 12px;
+  font-style: italic;
+}
+
+/* ── 时间轴列（第五格）──────────────────────────────────────── */
+.db-timeline-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 10px 14px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.db-timeline-body::-webkit-scrollbar { width: 2px; }
+.db-timeline-body::-webkit-scrollbar-thumb { background: #2a2d40; border-radius: 1px; }
+
+/* 横向时间轴轨道 */
+.db-tl-track-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.db-tl-track-label {
+  font-size: 10px;
+  color: #555a70;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+.db-tl-track {
+  position: relative;
+  height: 100%;
+  min-height: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.db-tl-segment {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-radius: 6px;
+  min-width: 4px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+}
+
+/* 双行轨道布局（今日/昨日分开） */
+.db-tl-track-wrap--dual {
+  gap: 2px;
+}
+
+.db-tl-dual-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.db-tl-dual-row .db-tl-track {
+  flex: 1;
+  height: auto;
+  min-height: 10px;
+}
+
+.db-tl-dual-row--yesterday .db-tl-track {
+  min-height: 8px;
+}
+
+/* 今/昨 行标签 */
+.db-tl-row-tag {
+  font-size: 9px;
+  font-weight: 600;
+  color: #8b9aef;
+  width: 14px;
+  text-align: center;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.db-tl-row-tag--yesterday {
+  color: #555a70;
+  font-weight: 400;
+}
+
+/* 昨日轨道行 */
+.db-tl-track--yesterday-row {
+  background: rgba(255, 255, 255, 0.02) !important;
+  opacity: 0.7;
+}
+
+/* 进行中的睡眠 — 呼吸动画区分 */
+.db-tl-segment--ongoing {
+  opacity: 1 !important;
+  animation: db-tl-breathe 2s ease-in-out infinite;
+}
+
+@keyframes db-tl-breathe {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 1; }
+}
+
+/* 昨日节律 — 浅色对比（降低透明度 + 虚线边框区分） */
+.db-tl-segment--yesterday {
+  opacity: 0.18 !important;
+  height: 100%;
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+  box-shadow: none !important;
+}
+
+/* 图例提示 */
+.db-tl-legend-hint {
+  font-size: 10px;
+  color: #555a70;
+  margin-left: 6px;
+  opacity: 0.7;
+}
+
+/* 时间轴刻度行 */
+.db-tl-axis {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1px;
+}
+
+.db-tl-axis-tick {
+  font-size: 9px;
+  color: #353848;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 今日统计摘要卡片 — 紧凑布局 */
+.db-tl-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  margin-top: 0;
+  flex-shrink: 0;
+}
+
+.db-tl-stat {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid #1e2130;
+  border-radius: 6px;
+  padding: 4px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.db-tl-stat-label {
+  font-size: 9px;
+  color: #555a70;
+  font-weight: 500;
+}
+
+.db-tl-stat-value {
+  font-size: 14px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+
+.db-tl-stat-sub {
+  font-size: 9px;
+  color: #555a70;
+  margin-top: 0;
+}
+
+/* ── 提醒列（第六格）────────────────────────────────────────── */
+.db-reminders-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 8px 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.db-reminders-body::-webkit-scrollbar { width: 2px; }
+.db-reminders-body::-webkit-scrollbar-thumb { background: #2a2d40; border-radius: 1px; }
+
+.db-reminder-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.03);
+  transition: background 0.15s;
+}
+
+.db-reminder-card--urgent {
+  background: rgba(240, 104, 120, 0.08);
+  border-color: rgba(240, 104, 120, 0.2);
+}
+
+.db-reminder-card--warn {
+  background: rgba(232, 184, 74, 0.07);
+  border-color: rgba(232, 184, 74, 0.18);
+}
+
+.db-reminder-card--ok {
+  background: rgba(90, 180, 120, 0.06);
+  border-color: rgba(90, 180, 120, 0.15);
+}
+
+.db-reminder-card--todo {
+  background: rgba(180, 100, 220, 0.06);
+  border-color: rgba(180, 100, 220, 0.15);
+}
+
+.db-reminder-icon {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.db-reminder-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.db-reminder-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #c0c4d4;
+  line-height: 1.3;
+}
+
+.db-reminder-desc {
+  font-size: 11px;
+  color: #6a7090;
+  line-height: 1.4;
+}
+
+.db-reminder-action {
+  flex-shrink: 0;
+  padding: 5px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(180, 140, 240, 0.4);
+  background: rgba(140, 100, 220, 0.18);
+  color: #c8b0f0;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  align-self: center;
+  white-space: nowrap;
+}
+
+.db-reminder-action:hover {
+  border-color: #d090ff;
+  background: rgba(160, 120, 240, 0.28);
+  color: #e0c8ff;
+}
+
+/* ── 进度条（昨日对比）─────────────────────────────────────── */
+.db-reminder-progress {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.db-reminder-progress-bar {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.db-reminder-progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #7c6cf0, #a88cf8);
+  transition: width 0.4s ease;
+}
+
+.db-reminder-progress-label {
+  font-size: 10px;
+  color: #8a8eb0;
+  white-space: nowrap;
+}
+
+/* ── 列标题添加按钮（≥44px 触控目标）──────────────────────── */
+.db-col-add-btn {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  background: transparent;
+  color: inherit;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.45;
+  transition: opacity 0.2s, background 0.2s;
+  padding: 0 0 1px;
+  /* 扩大触控热区到 44px，不影响视觉尺寸 */
+  position: relative;
+}
+
+.db-col-add-btn::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+}
+
+.db-col-add-btn:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* ── 底部抽屉 ─────────────────────────────────────────────── */
+.db-drawer-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: flex-end;
+  animation: db-overlay-in 0.25s ease-out;
+}
+
+@keyframes db-overlay-in {
+  from { background: rgba(0, 0, 0, 0); }
+  to   { background: rgba(0, 0, 0, 0.5); }
+}
+
+.db-drawer-panel {
+  width: 100%;
+  max-height: 90vh;
+  background: #f8f4f5;
+  border-radius: 20px 20px 0 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: db-drawer-slide-up 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@keyframes db-drawer-slide-up {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+.db-drawer-handle {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0 2px;
+  flex-shrink: 0;
+}
+
+.db-drawer-handle-bar {
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background: #d0c8ca;
+}
+
+.db-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 16px 8px;
+  flex-shrink: 0;
+}
+
+.db-drawer-close {
+  background: none;
+  border: none;
+  color: #9A8090;
+  font-size: 15px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.db-drawer-close:hover {
+  color: #7A5A60;
+}
+
+.db-drawer-title {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.db-drawer-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  -webkit-overflow-scrolling: touch;
+}
+
+/*
+ * 抽屉内紧凑模式
+ * 日期/时间合并为一行，备注缩为单行，提交按钮紧贴底部。
+ */
+
+/* 日期+时间合并行 */
+.db-drawer-datetime-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+}
+
+.db-drawer-datetime-row > div {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ── 响应式：竖屏平板 ──────────────────────────────────────── */
+@media (max-width: 900px) {
+  .db-header { padding: 8px 12px; }
+  .db-tag-clock { font-size: 12px; }
+  .db-col-header { padding: 8px 10px 6px; }
+  .db-col-title { font-size: 12px; }
+  .db-row { padding: 6px 10px; font-size: 12px; }
+}
+
+/* ── 响应式：手机（不推荐但兜底） ──────────────────────────── */
+@media (max-width: 600px) {
+  .db-grid-row {
+    flex-wrap: wrap;
+  }
+  .db-col {
+    flex: 1 1 50%;
+    min-width: 50%;
+  }
+}

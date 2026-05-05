@@ -11,6 +11,7 @@ import dayjs from 'dayjs'
 import RecordGroup from './RecordGroup'
 import LoginGuide from '@/components/LoginGuide/LoginGuide'
 import type { RecordItem } from '@/api/types'
+import { getDateKey, getRecordTime, getDateLabel, getTodayKey, compareTime } from '@/lib/utils'
 
 /** 构造模拟记录 — 字段与 API RecordItem 格式一致 */
 function makeMock(
@@ -57,25 +58,10 @@ const DEMO_RECORDS: RecordItem[] = [
   }),
 ]
 
-function getDateKey(iso: string): string {
-  return iso.slice(0, 10)
-}
-
-function getRecordTime(rec: RecordItem): string {
-  return (rec.start_time || rec.startTime || rec.created_at || '') as string
-}
-
-function getDateLabel(iso: string): string {
-  const d = dayjs(iso)
-  const today = dayjs()
-  if (d.format('YYYY-MM-DD') === today.format('YYYY-MM-DD')) return '今天'
-  if (d.format('YYYY-MM-DD') === today.subtract(1, 'day').format('YYYY-MM-DD')) return '昨天'
-  return d.format('M月D日')
-}
 
 export default function GuestRecordsList() {
   // 按日期分组
-  const todayKey = getDateKey(dayjs().toISOString())
+  const todayKey = getTodayKey()
   const dateMap = new Map<string, RecordItem[]>()
   for (const rec of DEMO_RECORDS) {
     const dk = getDateKey(getRecordTime(rec))
@@ -88,7 +74,7 @@ export default function GuestRecordsList() {
     dateLabel: getDateLabel(getRecordTime(items[0])),
     isToday: dk === todayKey,
     items: items.sort(
-      (a, b) => new Date(getRecordTime(b)).getTime() - new Date(getRecordTime(a)).getTime(),
+      (a, b) => compareTime(getRecordTime(b), getRecordTime(a)),
     ),
   }))
 

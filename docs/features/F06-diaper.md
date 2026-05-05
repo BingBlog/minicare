@@ -1,78 +1,104 @@
 # F06 · 尿布记录
 
-> 来源：MVP-PRD.md §2.4.5、§3.2.3  
-> 功能 ID：P0-004  
+> 功能 ID：P0-008  
 > 优先级：P0  
-> 最后同步：2026-04-03（更新：换尿布类型改为嘘嘘/臭臭/臭臭+嘘嘘；新增屁屁状态字段）
+> 状态：**已完成** ✅  
+> 最后更新：2026-05-03（对齐小程序实际实现）
+>
+> **数据库架构**（Migration 008）：diaper_type 已从 TINYINT 迁移为 VARCHAR(10)。
+> `color` 单值字段已重构为 `stool_colors` JSON 数组（支持多选）。
 
 ## 功能描述
 
-记录宝宝的大便、小便情况。
+记录宝宝的换尿布情况，包括尿布类型、大便性状和颜色。
 
-## 大便记录功能
+**平台实现**：微信小程序（主平台），数据通过 REST API 存入远程 MySQL。
 
-- 采用选项式勾选设计，避免打字输入
-- 记录排便次数、性状（稀便 / 软便 / 便秘 / 血便等）
-- 支持拍照记录（上传便便图片，**仅做留档，不做 OCR 识别**）
-- 提供 Bristol 大便分级对照图作为参考
+## 尿布类型
 
-## 小便记录功能
+| 枚举值 | 中文标签 |
+|--------|----------|
+| `wet` | 小便（嘘嘘） |
+| `dirty` | 大便（臭臭） |
+| `mixed` | 混合 |
+| `dry` | 干净 |
 
-- 记录换尿布次数和尿湿程度
-- **MVP 不实现预警推送**（预警功能留到后续迭代）
+选择 `dirty` 或 `mixed` 时展开大便详情区域。
 
-## 换尿布类型（diaper_type）
+## 大便性状（poop_type）
 
-~~`wet`（湿尿布）、`dirty`（大便）、`mixed`（都有）、`dry`（未换）~~（已废弃）
+5 种单选：
 
-**新枚举值（DDL: TINYINT 1=wet 2=dirty 3=mixed）**：
+| 枚举值 | 中文标签 |
+|--------|----------|
+| `normal` | 正常软便 |
+| `loose` | 稀便 |
+| `watery` | 水样便 |
+| `hard` | 干硬粒 |
+| `bloody` | 血丝便 |
 
-| 值 | 显示标签 | 说明 |
-| -- | -------- | ---- |
-| `wet` | 嘘嘘 | 仅小便 |
-| `dirty` | 臭臭 | 仅大便 |
-| `mixed` | 臭臭 + 嘘嘘 | 大便 + 小便 |
+## 大便颜色（stool_colors）
 
-> 注：`dry`（未换）已从选项中移除。
+JSON 数组，支持多选：
 
-## 屁屁状态（butt_condition）
+| 枚举值 | 中文标签 |
+|--------|----------|
+| `yellow` | 黄色 |
+| `brown_yellow` | 棕黄色 |
+| `green` | 绿色 |
 
-新增可选字段，记录每次换尿布时的屁屁皮肤状态，用于追踪尿布疹发展趋势。
+## 后端 API
 
-**枚举值（DDL: VARCHAR(30)）**：
+| 端点 | 方法 | 说明 |
+|------|------|------|
+| `/api/family/:familyId/records/diaper` | POST | 创建尿布记录 |
+| `/api/family/:familyId/records/diaper` | GET | 查询尿布记录列表 |
+| `/api/family/:familyId/records/diaper/:id` | PATCH | 更新记录 |
+| `/api/family/:familyId/records/diaper/:id` | DELETE | 删除记录 |
 
-| 值 | 显示标签 | 说明 |
-| -- | -------- | ---- |
-| `normal` | 正常 | 皮肤健康 |
-| `slightly_red` | 轻微发红 | 局部粉红，尚未发展为尿布疹 |
-| `rash` | 红屁屁 | 尿布疹，明显红斑 |
-| `severe_rash` | 严重红屁屁 | 破皮或渗出 |
-| `fungal` | 疑似感染 | 边界清晰红斑，疑似真菌感染（念珠菌） |
-| `other` | 其他异常 | 需进一步观察 |
+## DTO 字段
 
-> 该字段为可选（NULL = 未记录），不强制填写。
+**CreateDiaperDto**：
 
-## stool_types 预设值
-
-`normal_soft`（正常软便）、`loose`（稀便）、`watery`（水样便）、`hard`（干硬粒）、`bloody`（血丝便）、`normal_form`（正常成形）
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `baby_id` | string | 是 | 宝宝 UUID |
+| `record_time` | string | 是 | ISO 8601 时间 |
+| `diaper_type` | enum | 是 | wet/dirty/mixed/dry |
+| `diaper_count` | number | 否 | 尿布数量（0~20，步进器） |
+| `poop_type` | enum | 否 | 大便性状（dirty/mixed 时选填） |
+| `stool_colors` | string[] | 否 | 大便颜色数组（多选） |
+| `note` | string | 否 | 备注 |
 
 ## 数据库表
 
-`diaper_record` 表 — 见 `architecture.md`
+**diaper_record**（Migration 008）：
 
-迁移文件：`migrations/007_diaper_butt_condition.sql`（新增 `butt_condition` 列）
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `id` | CHAR(36) | UUID |
+| `baby_id` | CHAR(36) | 关联 baby_profile.id |
+| `recorded_by` | CHAR(36) | 操作用户 ID |
+| `record_time` | DATETIME | 记录时间 |
+| `diaper_type` | VARCHAR(10) | 尿布类型枚举 |
+| `diaper_count` | INT | 尿布数量 |
+| `poop_type` | VARCHAR(20) | 大便性状 |
+| `stool_colors` | JSON | 颜色数组 |
+| `note` | TEXT | 备注 |
 
 ## 验收标准（AC）
 
-- [ ] 换尿布类型显示为：嘘嘘 / 臭臭 / 臭臭 + 嘘嘘（三个 Chip 单选）
-- [ ] 选中「臭臭」或「臭臭 + 嘘嘘」时展示大便性状卡片
-- [ ] 屁屁状态卡片始终显示（可不选）
-- [ ] 大便性状可单选（6 种选项，3 列网格）
-- [ ] 颜色可多选（黄色 / 棕黄 / 绿色）
-- [ ] 屁屁状态可单选（6 种选项，3 列网格）
-- [ ] 今日次数可通过步进器调整
-- [ ] 保存后归入当日时间线
+- [x] 尿布类型 4 选 1（嘘嘘/臭臭/混合/干净）
+- [x] 选择臭臭/混合时展开大便详情
+- [x] 大便性状 5 选 1
+- [x] 颜色可多选（黄色/棕黄/绿色）
+- [x] 提交后 Toast 提示并返回上一页
+- [x] 支持编辑和删除已有记录
 
-## UI 对应文件
+## 相关文件
 
-- `ui-draft/form-diaper.html`
+- 尿布表单：`minicare-mp/src/pages/records/diaper/index.tsx`
+- 类型选择：`minicare-mp/src/pages/records/diaper/DiaperTypeSection.tsx`
+- 大便详情：`minicare-mp/src/pages/records/diaper/PoopSection.tsx`
+- API 模块：`minicare-mp/src/api/records/diaper.ts`
+- 服务端：`minicare-server/src/records/diaper/`

@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -93,9 +94,12 @@ export class FamilyController {
 
   @Get(':familyId/records/today')
   @UseGuards(FamilyMemberGuard, RoleGuard)
-  @ApiOperation({ summary: '获取今日所有记录聚合（时间轴）' })
-  getTodayRecords(@Param('familyId') familyId: string) {
-    return this.familyService.getTodayRecords(familyId);
+  @ApiOperation({ summary: '获取指定日期所有记录聚合（时间轴），date 默认今日，格式 YYYY-MM-DD' })
+  getTodayRecords(
+    @Param('familyId') familyId: string,
+    @Query('date') date?: string,
+  ) {
+    return this.familyService.getTodayRecords(familyId, date);
   }
 
   /**

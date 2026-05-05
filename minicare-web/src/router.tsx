@@ -14,6 +14,8 @@ const RecordsPage = lazy(() => import("./pages/records-list"));
 const ProfilePage = lazy(() => import("./pages/profile"));
 const OnboardingPage = lazy(() => import("./pages/onboarding"));
 const ReportPage = lazy(() => import("./pages/report"));
+const DashboardPage = lazy(() => import("./pages/dashboard"));
+const PrivacyPage = lazy(() => import("./pages/privacy"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 
 // 开发工具页面（无鉴权）
@@ -50,10 +52,16 @@ export const router = createHashRouter([
     path: "/onboarding",
     element: <AuthGuard>{S(OnboardingPage)}</AuthGuard>,
   },
+  // ── 隐私协议页面（无鉴权，任何人可访问） ───────────────────────────────────
+  {
+    path: "/privacy",
+    element: S(PrivacyPage),
+  },
+  // ── 主布局（含 Tab Bar）：允许游客访问首页、记录、分析 ─────────────────────
   {
     path: "/",
     element: (
-      <AuthGuard>
+      <AuthGuard allowGuest>
         <AppLayout />
       </AuthGuard>
     ),
@@ -100,6 +108,11 @@ export const router = createHashRouter([
   {
     path: "/records/form/medical",
     element: <AuthGuard>{S(MedicalFormPage)}</AuthGuard>,
+  },
+  // ── 看板页面（全屏，无 Tab Bar，需登录） ──────────────────────────────────
+  {
+    path: "/dashboard",
+    element: <AuthGuard>{S(DashboardPage)}</AuthGuard>,
   },
   // ── 开发工具页面（无鉴权） ───────────────────────────────────────────────
   {

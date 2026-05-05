@@ -3,11 +3,7 @@
  * 与 Web pages/records/medical/BasicInfoSection.tsx 1:1 对齐
  */
 import { View, Text, Input, Picker } from '@tarojs/components'
-import dayjs from 'dayjs'
-
-function nowDate(): string {
-  return dayjs().format('YYYY-MM-DD')
-}
+import { nowDate } from '@/lib/utils'
 
 interface Props {
   visitDate: string

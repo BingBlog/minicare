@@ -11,7 +11,7 @@
  *   stopped — 已保存（stopped）                          → 显示保存成功提示
  */
 import { View, Text } from '@tarojs/components'
-import dayjs from 'dayjs'
+import { isoToLocalTime, dateToLocalISO } from '@/lib/utils'
 
 /** 将秒数格式化为 mm:ss 或 h:mm:ss */
 function formatTimer(seconds: number): string {
@@ -81,7 +81,7 @@ export default function TimerMode({
       {/* 开始时间提示 */}
       {startTime && (
         <Text className='sleep-timer__start-hint'>
-          开始于 {dayjs(startTime).format('HH:mm')} 今天
+          开始于 {isoToLocalTime(dateToLocalISO(startTime))} 今天
         </Text>
       )}
 

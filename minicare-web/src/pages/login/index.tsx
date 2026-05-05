@@ -25,6 +25,8 @@ import { useLoginLogic, type LoginMode } from './useLoginLogic'
 export default function LoginPage() {
   const {
     mode, switchMode,
+    // 协议
+    agreed, setAgreed,
     // 验证码面板
     phone, setPhone,
     code, setCode,
@@ -94,6 +96,8 @@ export default function LoginPage() {
             error={error}
             onSendCode={handleSendCode}
             onSubmit={handleSmsLogin}
+            agreed={agreed}
+            onToggleAgreed={() => setAgreed((v) => !v)}
           />
         )}
 
@@ -109,6 +113,8 @@ export default function LoginPage() {
             onSubmit={handlePwdLogin}
             onSwitchToSms={() => switchMode('sms')}
             onForgotPassword={() => showToast('忘记密码 - 请使用验证码登录')}
+            agreed={agreed}
+            onToggleAgreed={() => setAgreed((v) => !v)}
           />
         )}
       </div>

@@ -2,6 +2,13 @@
   "extends": ["taro/react"],
   "rules": {
     "react/jsx-uses-react": "off",
-    "react/react-in-jsx-scope": "off"
+    "react/react-in-jsx-scope": "off",
+    "no-restricted-syntax": [
+      "warn",
+      {
+        "selector": "CallExpression[callee.property.name='toISOString']",
+        "message": "禁止直接调用 .toISOString()，它会将本地时间转为 UTC 导致时区偏移。请使用 lib/utils.ts 中的 toLocalISO() / nowLocalISO() / dateToLocalISO() 等函数。"
+      }
+    ]
   }
 }

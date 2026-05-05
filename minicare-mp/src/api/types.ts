@@ -55,10 +55,18 @@ export interface TodayRecord {
   id: string
   time: string
   note?: string | null
+  /** 各记录类型的原始详情，具体字段因 type 而异 */
   detail?: Record<string, unknown> | null
 }
 
-/** 与 Web RecordItem 对齐的宽松记录类型 */
+/**
+ * 与 Web RecordItem 对齐的记录列表项类型。
+ *
+ * 索引签名 `[key: string]: unknown` 是有意保留的：
+ * 列表页面（RecordGroup、RecordListItem）需要访问各记录类型的特有字段
+ * （如 feed_type、diaper_type、formula_ml 等）用于展示摘要信息。
+ * 如需类型安全访问，请使用各记录类型的专属接口（FeedingRecord、DiaperRecord 等）。
+ */
 export interface RecordItem {
   id: string
   type?: string

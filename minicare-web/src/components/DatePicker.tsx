@@ -41,6 +41,10 @@ interface DatePickerProps {
   min?: string;
   label?: string;
   className?: string;
+  /** 受控模式：外部控制弹层显示状态，传入时忽略触发行 */
+  open?: boolean;
+  /** 受控模式：弹层关闭回调 */
+  onClose?: () => void;
 }
 
 // ─── iOS 滚动穿透锁定 Hook ───────────────────────────────────────────────────
@@ -210,8 +214,20 @@ export default function DatePicker({
   min,
   label = "日期",
   className,
+  open: controlledOpen,
+  onClose,
 }: DatePickerProps) {
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
+  // 受控模式：外部传入 open；非受控模式：内部 state
+  const isControlled = controlledOpen !== undefined;
+  const open = isControlled ? controlledOpen : internalOpen;
+  const setOpen = (v: boolean) => {
+    if (isControlled) {
+      if (!v && onClose) onClose();
+    } else {
+      setInternalOpen(v);
+    }
+  };
 
   const maxDate = max ?? todayStr();
   const minDate = min ?? dayjs().subtract(3, "year").format("YYYY-MM-DD");
@@ -333,28 +349,30 @@ export default function DatePicker({
 
   return (
     <>
-      {/* 触发行 */}
-      <div
-        className={`flex items-center cursor-pointer ${className ?? ""}`}
-        onClick={() => setOpen(true)}>
-        <span className="text-[14px] text-[#7A5A60] flex-1">{label}</span>
-        <div className="flex items-center gap-1.5">
-          <span
-            className={`text-[14px] font-semibold ${value ? "text-[#4A3035]" : "text-[#C0A8AD]"}`}>
-            {formatDisplay(value)}
-          </span>
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="#C0A8B0"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            style={{ width: 14, height: 14 }}>
-            <polyline points="9 18 15 12 9 6" />
-          </svg>
+      {/* 触发行 — 受控模式下隐藏（外部自行提供触发按钮） */}
+      {!isControlled && (
+        <div
+          className={`flex items-center cursor-pointer ${className ?? ""}`}
+          onClick={() => setOpen(true)}>
+          <span className="text-[14px] text-[#7A5A60] flex-1">{label}</span>
+          <div className="flex items-center gap-1.5">
+            <span
+              className={`text-[14px] font-semibold ${value ? "text-[#4A3035]" : "text-[#C0A8AD]"}`}>
+              {formatDisplay(value)}
+            </span>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#C0A8B0"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              style={{ width: 14, height: 14 }}>
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* 底部弹层 */}
       {open && (

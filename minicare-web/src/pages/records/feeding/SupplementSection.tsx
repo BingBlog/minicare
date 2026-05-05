@@ -26,6 +26,8 @@ interface Props {
   /** 「其他」行：单位 */
   otherUnit: string;
   onOtherUnitChange: (val: string) => void;
+  /** 紧凑模式（抽屉中使用）：两列网格布局 */
+  compact?: boolean;
 }
 
 function SuppRow({
@@ -107,10 +109,11 @@ export default function SupplementSection({
   onOtherDoseChange,
   otherUnit,
   onOtherUnitChange,
+  compact,
 }: Props) {
   return (
     <>
-      {/* ── 营养素列表（统一显示，不再区分必吃/看情况） ─────── */}
+      {/* ── 营养素列表 ─────── */}
       <div className="px-4 mb-1">
         <span className="text-[12px] font-semibold text-[#9A8090]">
           营养素记录
@@ -119,17 +122,70 @@ export default function SupplementSection({
       <div
         className="mx-4 mb-3 bg-white rounded-2xl overflow-hidden"
         style={{ boxShadow: "0 1px 6px rgba(200,100,120,0.08)" }}>
-        {suppItems.map((s, idx) => (
-          <SuppRow
-            key={s.key}
-            s={s}
-            checked={!!checked[s.key]}
-            dose={dose[s.key] || ""}
-            isLast={false}
-            onToggle={onToggle}
-            onDoseChange={onDoseChange}
-          />
-        ))}
+        {compact ? (
+          /* 紧凑模式：两列网格 */
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0 }}>
+            {suppItems.map((s) => {
+              const isChecked = !!checked[s.key];
+              return (
+                <div
+                  key={s.key}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: 6,
+                    padding: '8px 10px',
+                    borderBottom: '0.5px solid #F5EEF0',
+                    borderRight: '0.5px solid #F5EEF0',
+                  }}
+                >
+                  <button
+                    type="button"
+                    onClick={() => onToggle(s.key)}
+                    style={{
+                      width: 18, height: 18, borderRadius: 5, flexShrink: 0,
+                      border: `2px solid ${isChecked ? '#F87098' : '#D0C0C4'}`,
+                      background: isChecked ? '#F87098' : '#fff',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      cursor: 'pointer', padding: 0,
+                    }}
+                  >
+                    {isChecked && <span style={{ color: '#fff', fontSize: 10, fontWeight: 700, lineHeight: 1 }}>\u2713</span>}
+                  </button>
+                  <span style={{ fontSize: 12, fontWeight: 500, color: '#4A3035', flex: 1, minWidth: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {s.label}
+                  </span>
+                  <input
+                    type="text"
+                    inputMode="decimal"
+                    placeholder="-"
+                    value={dose[s.key] || ''}
+                    onChange={(e) => onDoseChange(s.key, e.target.value.replace(/[^0-9.]/g, ''))}
+                    style={{
+                      width: 36, textAlign: 'center', fontSize: 11, color: '#4A3035',
+                      background: '#FAF5F6', borderRadius: 6, border: '1px solid #E5D8DA',
+                      outline: 'none', padding: '3px 2px',
+                    }}
+                  />
+                  <span style={{ fontSize: 10, color: '#9A8090', width: 20 }}>{s.unit}</span>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          /* 标准模式：单列列表 */
+          <>
+            {suppItems.map((s, idx) => (
+              <SuppRow
+                key={s.key}
+                s={s}
+                checked={!!checked[s.key]}
+                dose={dose[s.key] || ""}
+                isLast={false}
+                onToggle={onToggle}
+                onDoseChange={onDoseChange}
+              />
+            ))}
+          </>
+        )}
 
         {/* ── 其他（自由输入） ─────────────────────────────── */}
         <div

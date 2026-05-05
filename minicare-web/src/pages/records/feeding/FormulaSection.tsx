@@ -175,6 +175,8 @@ interface Props {
   onResetToDefault?: () => void;
   /** 是否编辑模式（编辑模式始终展开） */
   isEditMode?: boolean;
+  /** 紧凑模式（抽屉中使用）：奶粉类型横向一行展示 */
+  compact?: boolean;
 }
 
 export default function FormulaSection({
@@ -187,6 +189,7 @@ export default function FormulaSection({
   loadedFromLast,
   onResetToDefault,
   isEditMode,
+  compact,
 }: Props) {
   // 总勺数（用于配比百分比计算）
   const totalScoops = Object.values(scoops).reduce((a, b) => a + b, 0);
@@ -384,57 +387,92 @@ export default function FormulaSection({
           <div
             className="mx-4 mb-3 bg-white rounded-2xl overflow-hidden"
             style={{ boxShadow: "0 1px 6px rgba(200,100,120,0.08)" }}>
-            <div className="grid grid-cols-2 gap-2 p-3">
-              {milkTypeOptions.map(({ key, label, desc, color }, idx) => {
-                const isSelected = selectedMilkTypes.has(key);
-                // 最后一项（普通奶粉）独占整行
-                const isLast = idx === milkTypeOptions.length - 1;
-                return (
-                  <button
-                    key={key}
-                    type="button"
-                    onClick={() => onToggleMilkType(key)}
-                    className={`relative py-2.5 px-3 rounded-xl border text-left transition-all active:scale-95${
-                      isLast ? " col-span-2" : ""
-                    }`}
-                    style={{
-                      borderColor: isSelected ? color : "#E5D8DA",
-                      background: isSelected ? color + "15" : "#fff",
-                    }}>
-                    {/* 多选角标 —— 垂直居中 */}
-                    <span
-                      className="absolute top-1/2 -translate-y-1/2 right-2 w-4 h-4 rounded-full border flex items-center justify-center"
+            {compact ? (
+              /* 紧凑模式：横向一行，可滚动，按钮与标准模式接近高度 */
+              <div style={{ display: 'flex', gap: 8, padding: '10px 12px', overflowX: 'auto' }}>
+                {milkTypeOptions.map(({ key, label, desc, color }) => {
+                  const isSelected = selectedMilkTypes.has(key);
+                  return (
+                    <button
+                      key={key}
+                      type="button"
+                      onClick={() => onToggleMilkType(key)}
                       style={{
-                        borderColor: isSelected ? color : "#D0C0C4",
-                        background: isSelected ? color : "#fff",
+                        flexShrink: 0,
+                        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                        padding: '10px 16px',
+                        borderRadius: 14,
+                        border: `1.5px solid ${isSelected ? color : '#E5D8DA'}`,
+                        background: isSelected ? color + '18' : '#fff',
+                        cursor: 'pointer',
+                        transition: 'all 0.15s',
+                        minWidth: 72,
+                      }}
+                    >
+                      <span style={{ fontSize: 13, fontWeight: 700, whiteSpace: 'nowrap', color: isSelected ? color : '#4A3035', lineHeight: 1.3 }}>
+                        {isSelected ? '\u2713 ' : ''}{label}
+                      </span>
+                      <span style={{ fontSize: 10, color: isSelected ? color : '#B09098', whiteSpace: 'nowrap', marginTop: 2 }}>
+                        {desc}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            ) : (
+              /* 标准模式：2列网格 */
+              <div className="grid grid-cols-2 gap-2 p-3">
+                {milkTypeOptions.map(({ key, label, desc, color }, idx) => {
+                  const isSelected = selectedMilkTypes.has(key);
+                  // 最后一项（普通奶粉）独占整行
+                  const isLast = idx === milkTypeOptions.length - 1;
+                  return (
+                    <button
+                      key={key}
+                      type="button"
+                      onClick={() => onToggleMilkType(key)}
+                      className={`relative py-2.5 px-3 rounded-xl border text-left transition-all active:scale-95${
+                        isLast ? " col-span-2" : ""
+                      }`}
+                      style={{
+                        borderColor: isSelected ? color : "#E5D8DA",
+                        background: isSelected ? color + "15" : "#fff",
                       }}>
-                      {isSelected && (
-                        <svg
-                          viewBox="0 0 10 10"
-                          fill="none"
-                          style={{ width: 8, height: 8 }}>
-                          <path
-                            d="M1.5 5 L4 7.5 L8.5 2.5"
-                            stroke="#fff"
-                            strokeWidth="1.8"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      )}
-                    </span>
-                    <div
-                      className="text-[13px] font-semibold pr-5"
-                      style={{ color: isSelected ? color : "#4A3035" }}>
-                      {label}
-                    </div>
-                    <div className="text-[11px] text-[#9A8090] mt-0.5">
-                      {desc}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
+                      {/* 多选角标 —— 垂直居中 */}
+                      <span
+                        className="absolute top-1/2 -translate-y-1/2 right-2 w-4 h-4 rounded-full border flex items-center justify-center"
+                        style={{
+                          borderColor: isSelected ? color : "#D0C0C4",
+                          background: isSelected ? color : "#fff",
+                        }}>
+                        {isSelected && (
+                          <svg
+                            viewBox="0 0 10 10"
+                            fill="none"
+                            style={{ width: 8, height: 8 }}>
+                            <path
+                              d="M1.5 5 L4 7.5 L8.5 2.5"
+                              stroke="#fff"
+                              strokeWidth="1.8"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        )}
+                      </span>
+                      <div
+                        className="text-[13px] font-semibold pr-5"
+                        style={{ color: isSelected ? color : "#4A3035" }}>
+                        {label}
+                      </div>
+                      <div className="text-[11px] text-[#9A8090] mt-0.5">
+                        {desc}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           {/* ── 配比记录（有选中类型时显示） ─────────── */}

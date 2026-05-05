@@ -1,11 +1,12 @@
 import { View, Text } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { authApi, babyApi, familyApi, fetchAppConfig, recordsApi, sleepApi } from '@/api'
 import type { OngoingSleepRecord } from '@/api/sleep'
-import { HOME_RECORD_ROUTES, HOME_RECORD_MP_ROUTES } from '@/lib/constants'
+import { HOME_RECORD_ROUTES } from '@/lib/constants'
+import { navigateToRecord } from '@/lib/navigation'
 import { getStatusBarHeight } from '@/lib/safeArea'
-import { getBabyAge, getGreeting, getTodayDateStr } from '@/lib/utils'
+import { getBabyAge, getGreeting, getTodayDateStr, compareTime } from '@/lib/utils'
 import { getToken } from '@/api/http'
 
 import HeroSection from './HeroSection'
@@ -30,27 +31,8 @@ export default function HomePage() {
   const [babyName, setBabyName] = useState('宝宝')
   const [birthDate, setBirthDate] = useState('')
   const [familyId, setFamilyId] = useState('')
+  const familyIdRef = useRef('')
   const [loading, setLoading] = useState(true)
-
-  /** 将 Web 路由解析为可直接跳转的 MP 路径。已迁移的页面直接跳转，未迁移的走分发器兜底。 */
-  const navigateToRecord = (target: string, recordId?: string) => {
-    const [path, query] = target.split('?')
-    const mpPage = HOME_RECORD_MP_ROUTES[path]
-    if (mpPage) {
-      // 已迁移页面：直接跳转
-      const parts: string[] = []
-      if (query) parts.push(query)
-      if (recordId) parts.push(`recordId=${encodeURIComponent(recordId)}`)
-      const qs = parts.length ? `?${parts.join('&')}` : ''
-      Taro.navigateTo({ url: `${mpPage}${qs}` })
-    } else {
-      // 未迁移页面：走分发器
-      const encoded = encodeURIComponent(target)
-      const parts: string[] = [`target=${encoded}`]
-      if (recordId) parts.push(`recordId=${encodeURIComponent(recordId)}`)
-      Taro.navigateTo({ url: `/pages/records/index?${parts.join('&')}` })
-    }
-  }
 
   /** 刷新今日记录 & 进行中睡眠（页面从子页面返回时复用） */
   const refreshTodayRecords = useCallback(async (fid: string) => {
@@ -116,6 +98,7 @@ export default function HomePage() {
 
         if (!cancelled) {
           setFamilyId(fid)
+          familyIdRef.current = fid
           setBabyName(baby.name || '宝宝')
           setBirthDate(baby.birth_date || '')
           setRecords(todayRecords.map(toHomeRecord))
@@ -141,11 +124,29 @@ export default function HomePage() {
     }
   }, [])
 
-  // 从子页面返回时自动刷新今日记录
+  // 从子页面返回 / 小程序前台恢复时，刷新家庭列表 + 今日记录
   useDidShow(() => {
-    if (familyId) {
-      refreshTodayRecords(familyId)
-    }
+    const token = getToken()
+    if (!token) return
+
+    // 重新获取家庭列表，检测是否被邀请到新家庭
+    familyApi.getMine().then((families) => {
+      if (!families.length) return
+      const latestFid = families[0].id
+      if (latestFid !== familyIdRef.current) {
+        // 家庭发生变化（被邀请到新家庭），重新加载完整数据
+        setFamilyId(latestFid)
+        familyIdRef.current = latestFid
+        babyApi.get(latestFid).then((baby) => {
+          setBabyName(baby.name || '宝宝')
+          setBirthDate(baby.birth_date || '')
+        }).catch(() => {})
+      }
+      refreshTodayRecords(latestFid)
+    }).catch(() => {
+      // 静默失败，继续使用已有数据
+      if (familyIdRef.current) refreshTodayRecords(familyIdRef.current)
+    })
   })
 
   const stats = useMemo<BabyStat[]>(() => {
@@ -195,7 +196,7 @@ export default function HomePage() {
 
   const lastFeedingRecord = [...records]
     .filter((r) => r.type === 'feeding')
-    .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())[0]
+    .sort((a, b) => compareTime(b.time, a.time))[0]
 
   const handleEndSleep = () => {
     setOngoingSleep(null)

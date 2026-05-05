@@ -155,9 +155,11 @@ const ACTIVITY_OPTIONS: {
 interface Props {
   value: ActivityType;
   onChange: (v: ActivityType) => void;
+  /** 紧凑模式（抽屉中使用）：横向一行展示 */
+  compact?: boolean;
 }
 
-export default function ActivityTypeSection({ value, onChange }: Props) {
+export default function ActivityTypeSection({ value, onChange, compact }: Props) {
   return (
     <div
       className="mx-4 mb-3 bg-white rounded-2xl overflow-hidden"
@@ -179,36 +181,76 @@ export default function ActivityTypeSection({ value, onChange }: Props) {
         <span className="text-[12px] font-semibold text-[#B09098]">活动类型</span>
       </div>
 
-      {/* 2×3 网格布局 */}
-      <div className="grid grid-cols-3 gap-2 px-3 py-3">
-        {ACTIVITY_OPTIONS.map(({ key, label, sub, Icon, color, bg }) => (
-          <button
-            key={key}
-            type="button"
-            onClick={() => onChange(key)}
-            className="flex flex-col items-center gap-1 py-2.5 px-1 rounded-xl border transition-all active:scale-95"
-            style={{
-              borderColor: value === key ? color : '#E5D8DA',
-              background: value === key ? bg : '#fff',
-            }}>
-            <span
-              className="w-9 h-9 rounded-xl flex items-center justify-center"
-              style={{ background: value === key ? bg : '#F5F0F2' }}>
-              <Icon color={value === key ? color : '#B09098'} />
-            </span>
-            <span
-              className="text-[13px] font-extrabold leading-tight text-center"
-              style={{ color: value === key ? color : '#4A3035' }}>
-              {label}
-            </span>
-            <span
-              className="text-[11px] leading-tight text-center"
-              style={{ color: value === key ? color : '#9A8090' }}>
-              {sub}
-            </span>
-          </button>
-        ))}
-      </div>
+      {compact ? (
+        /* 紧凑模式：横向一行，可滚动，按钮与标准模式接近高度 */
+        <div style={{ display: 'flex', gap: 8, padding: '10px 12px', overflowX: 'auto' }}>
+          {ACTIVITY_OPTIONS.map(({ key, label, sub, Icon, color, bg }) => {
+            const active = value === key;
+            return (
+              <button
+                key={key}
+                type="button"
+                onClick={() => onChange(key)}
+                style={{
+                  flexShrink: 0,
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 3,
+                  padding: '10px 14px',
+                  borderRadius: 14,
+                  border: `1.5px solid ${active ? color : '#E5D8DA'}`,
+                  background: active ? bg : '#fff',
+                  cursor: 'pointer',
+                  transition: 'all 0.15s',
+                  minWidth: 72,
+                }}
+              >
+                <span style={{
+                  width: 28, height: 28, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  background: active ? bg : '#F5F0F2',
+                }}>
+                  <Icon color={active ? color : '#B09098'} />
+                </span>
+                <span style={{ fontSize: 12, fontWeight: 700, whiteSpace: 'nowrap', color: active ? color : '#4A3035', lineHeight: 1.2 }}>
+                  {label}
+                </span>
+                <span style={{ fontSize: 10, whiteSpace: 'nowrap', color: active ? color : '#9A8090' }}>
+                  {sub}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      ) : (
+        /* 标准模式：2×3 网格布局 */
+        <div className="grid grid-cols-3 gap-2 px-3 py-3">
+          {ACTIVITY_OPTIONS.map(({ key, label, sub, Icon, color, bg }) => (
+            <button
+              key={key}
+              type="button"
+              onClick={() => onChange(key)}
+              className="flex flex-col items-center gap-1 py-2.5 px-1 rounded-xl border transition-all active:scale-95"
+              style={{
+                borderColor: value === key ? color : '#E5D8DA',
+                background: value === key ? bg : '#fff',
+              }}>
+              <span
+                className="w-9 h-9 rounded-xl flex items-center justify-center"
+                style={{ background: value === key ? bg : '#F5F0F2' }}>
+                <Icon color={value === key ? color : '#B09098'} />
+              </span>
+              <span
+                className="text-[13px] font-extrabold leading-tight text-center"
+                style={{ color: value === key ? color : '#4A3035' }}>
+                {label}
+              </span>
+              <span
+                className="text-[11px] leading-tight text-center"
+                style={{ color: value === key ? color : '#9A8090' }}>
+                {sub}
+              </span>
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
