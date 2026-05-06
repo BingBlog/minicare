@@ -29,7 +29,8 @@ import HeaderBar from './HeaderBar'
 import FeedingColumn from './FeedingColumn'
 import DiaperColumn from './DiaperColumn'
 import SleepColumn from './SleepColumn'
-import SupplementColumn from './SupplementColumn'
+import SupplementQuickEntry from './SupplementQuickEntry'
+import { useRecentSupplements } from './useRecentSupplements'
 import ActivityColumn from './ActivityColumn'
 import SymptomColumn from './SymptomColumn'
 import TimelineColumn from './TimelineColumn'
@@ -108,11 +109,15 @@ export default function DashboardPage() {
   // 数据加载
   const data = useDashboardData(familyId, babyId, loading, selectedDate)
 
+  // 近 7 天补剂数据（用于快捷录入）
+  const { recentList, loading: recentSuppLoading, refresh: refreshRecent } = useRecentSupplements(familyId, babyId)
+
   // 跳转到记录表单页
-  const handleAdd = useCallback((type: RecordFormType) => {
+  const handleAdd = useCallback((type: RecordFormType, query?: Record<string, string>) => {
     const url = RECORD_PAGE_MAP[type]
     if (url) {
-      Taro.navigateTo({ url })
+      const qs = query ? '?' + Object.entries(query).map(([k, v]) => `${k}=${v}`).join('&') : ''
+      Taro.navigateTo({ url: url + qs })
     }
   }, [])
 
@@ -153,7 +158,7 @@ export default function DashboardPage() {
   // 提醒系统
   const isToday = selectedDate === getTodayStr()
   const reminderSources: ReminderSource[] = [
-    createFeedingSource(() => data.feeding),
+    createFeedingSource(() => data.feeding, () => data.yesterdayFeeding),
   ]
   const { active: activeReminder, dismiss: dismissReminder } = useReminder(reminderSources, {
     isNight,
@@ -192,7 +197,15 @@ export default function DashboardPage() {
             <SleepColumn data={data} onAdd={() => handleAdd('sleep')} onEndSleep={handleEndSleep} />
           </View>
           <View className='db-col-wrap db-col-supplement'>
-            <SupplementColumn data={data} onAdd={() => handleAdd('feeding')} />
+            <SupplementQuickEntry
+              data={data}
+              familyId={familyId}
+              babyId={babyId}
+              recentList={recentList}
+              recentLoading={recentSuppLoading}
+              onAdd={() => handleAdd('feeding', { tab: 'supplement' })}
+              onRecorded={() => { data.refresh(); refreshRecent(); }}
+            />
           </View>
         </View>
 

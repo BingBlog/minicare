@@ -7,7 +7,7 @@ const https = require('https');
 
 const HEALTH_URL =
   process.env.CLOUDRUN_HEALTH_URL ||
-  'https://minicare-api-240137-10-1253854169.sh.run.tcloudbase.com/health';
+  'https://minicare-api-production-240137-10-1253854169.sh.run.tcloudbase.com/health';
 
 exports.main = async (event, context) => {
   return new Promise((resolve) => {

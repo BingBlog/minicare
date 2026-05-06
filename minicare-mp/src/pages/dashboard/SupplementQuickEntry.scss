@@ -1,0 +1,139 @@
+/**
+ * SupplementQuickEntry 组件样式
+ * 快捷补剂选项 chips + 今日记录时间线
+ */
+@use 'sass:math';
+
+$scale: 1.25;
+@function s($px) {
+  @return math.round($px * $scale) * 1px;
+}
+
+// ── 主体区域 ──
+.supp-quick-body {
+  display: flex;
+  flex-direction: column;
+  gap: s(8);
+  padding: s(6) s(8);
+}
+
+// ── 快捷选项 chips ──
+.supp-quick-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: s(6);
+}
+
+.supp-quick-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: s(5);
+  padding: s(5) s(10) s(5) s(7);
+  border-radius: s(10);
+  background: rgba(232, 160, 0, 0.06);
+  border: 1px dashed rgba(232, 160, 0, 0.3);
+  transition: all 0.2s;
+}
+
+.supp-quick-chip--done {
+  background: rgba(90, 180, 90, 0.1);
+  border: 1px solid rgba(90, 180, 90, 0.35);
+
+  .supp-quick-chip-label {
+    color: #7dca85;
+    opacity: 0.75;
+  }
+}
+
+// 圆圈 checkbox 指示器
+.supp-quick-chip-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: s(14);
+  height: s(14);
+  border-radius: 50%;
+  border: 1.5px solid rgba(232, 160, 0, 0.5);
+  background: transparent;
+  font-size: s(9);
+  color: transparent;
+  flex-shrink: 0;
+}
+
+.supp-quick-chip-icon--done {
+  border-color: #68c070;
+  background: rgba(90, 180, 90, 0.25);
+  color: #68c070;
+  font-weight: 700;
+}
+
+.supp-quick-chip-label {
+  font-size: s(11);
+  font-weight: 500;
+  color: #e8b84a;
+  white-space: nowrap;
+}
+
+// ── 空状态 ──
+.supp-quick-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: s(16) s(8);
+  gap: s(6);
+}
+
+.supp-quick-empty-text {
+  font-size: s(12);
+  color: #555a70;
+  font-style: italic;
+}
+
+.supp-quick-empty-hint {
+  font-size: s(10);
+  color: #3a3f55;
+  text-align: center;
+  line-height: 1.5;
+}
+
+// ── 今日记录时间线 ──
+.supp-quick-records {
+  display: flex;
+  flex-direction: column;
+  gap: s(4);
+  border-top: 1px solid rgba(30, 33, 48, 0.8);
+  padding-top: s(6);
+  margin-top: s(4);
+}
+
+.supp-quick-records-title {
+  font-size: s(9);
+  color: #555a70;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  margin-bottom: s(2);
+}
+
+.supp-quick-record-row {
+  display: flex;
+  align-items: center;
+  gap: s(6);
+  padding: s(2) 0;
+}
+
+.supp-quick-record-time {
+  font-size: s(10);
+  color: #6a7090;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+  width: s(32);
+}
+
+.supp-quick-record-names {
+  font-size: s(10);
+  color: #9a9eb8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

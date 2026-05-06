@@ -28,6 +28,8 @@ export interface ReminderSource {
   leadTime?: number
   /** 重复提醒间隔（分钟），默认 10 */
   repeatInterval?: number
+  /** 超时后是否持续提醒（不截止），默认 false */
+  overdue?: boolean
 }
 
 /** Dismiss 操作类型 */
@@ -121,8 +123,11 @@ export function useReminder(
       const triggerStart = new Date(targetTs - leadTime * 60_000)
       const diffMin = Math.round((targetTs - now.getTime()) / 60_000)
 
-      // 未进入提醒窗口 或 已超过目标时间 30 分钟（不再提醒）
-      if (now < triggerStart || diffMin < -30) continue
+      // 未进入提醒窗口 → 跳过
+      if (now < triggerStart) continue
+      // 已超过目标时间：overdue 模式持续提醒（最多 2 小时），否则 30 分钟后停止
+      const overdueLimit = source.overdue ? -120 : -30
+      if (diffMin < overdueLimit) continue
 
       // 检查 repeatInterval：距上次响铃是否已过间隔
       const repeatInterval = source.repeatInterval ?? 10

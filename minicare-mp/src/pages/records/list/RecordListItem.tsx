@@ -53,7 +53,12 @@ const SUMMARY_VALUE_CLS: Record<SummaryTheme, string> = {
 export default function RecordListItem({ record, showDivider, onClick }: RecordListItemProps) {
   const displayTime = getDisplayTime(record)
   const recType = getRecordType(record)
-  const iconType = getTimelineIconType({ ...record, type: recType } as never)
+  // RecordItem 的 feed_type/complementary_food 在顶层，需包装为 detail 以匹配 getTimelineIconType 的期望
+  const iconType = getTimelineIconType({
+    ...record,
+    type: recType,
+    detail: { feed_type: (record as Record<string, unknown>).feed_type, complementary_food: (record as Record<string, unknown>).complementary_food },
+  } as never)
   const note = record.note as string | undefined
   const hasNote = !!note
 

@@ -1,9 +1,10 @@
-import { View, Text } from '@tarojs/components'
+import { View, Text, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { useEffect, useState } from 'react'
 import FabSheet from './FabSheet'
 import { GLOBAL_FAB_GROUPS, HOME_RECORD_ROUTES } from '@/lib/constants'
 import { navigateToRecord } from '@/lib/navigation'
+import { TABBAR_ICONS } from '@/assets/icons/tabbar'
 import './TabBar.scss'
 
 /** 全局事件名：外部组件可通过 Taro.eventCenter.trigger 打开 FAB 弹层 */
@@ -40,15 +41,24 @@ export default function TabBar({ activeTab }: TabBarProps) {
   return (
     <View className='tabbar-container'>
       <View className='tabbar'>
-        {TABS.map((tab) => (
-          <View
-            key={tab.key}
-            className={`tabbar__item${activeTab === tab.key ? ' is-active' : ''}`}
-            onClick={() => switchTo(tab.url)}
-          >
-            <Text>{tab.label}</Text>
-          </View>
-        ))}
+        {TABS.map((tab) => {
+          const isActive = activeTab === tab.key
+          const icon = TABBAR_ICONS[tab.key]
+          return (
+            <View
+              key={tab.key}
+              className={`tabbar__item${isActive ? ' is-active' : ''}`}
+              onClick={() => switchTo(tab.url)}
+            >
+              <Image
+                className='tabbar__icon'
+                src={isActive ? icon.active : icon.normal}
+                mode='aspectFit'
+              />
+              <Text className='tabbar__label'>{tab.label}</Text>
+            </View>
+          )
+        })}
 
         {/* 中间 FAB */}
         <View className='tabbar__fab-wrap'>
@@ -57,15 +67,24 @@ export default function TabBar({ activeTab }: TabBarProps) {
           </View>
         </View>
 
-        {RIGHT_TABS.map((tab) => (
-          <View
-            key={tab.key}
-            className={`tabbar__item${activeTab === tab.key ? ' is-active' : ''}`}
-            onClick={() => switchTo(tab.url)}
-          >
-            <Text>{tab.label}</Text>
-          </View>
-        ))}
+        {RIGHT_TABS.map((tab) => {
+          const isActive = activeTab === tab.key
+          const icon = TABBAR_ICONS[tab.key]
+          return (
+            <View
+              key={tab.key}
+              className={`tabbar__item${isActive ? ' is-active' : ''}`}
+              onClick={() => switchTo(tab.url)}
+            >
+              <Image
+                className='tabbar__icon'
+                src={isActive ? icon.active : icon.normal}
+                mode='aspectFit'
+              />
+              <Text className='tabbar__label'>{tab.label}</Text>
+            </View>
+          )
+        })}
       </View>
 
       {/* FAB 弹层 — 所有页面通用 */}

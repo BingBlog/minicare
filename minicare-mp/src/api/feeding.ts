@@ -26,6 +26,20 @@ export interface FeedingRecord {
   note?: string | null
 }
 
+/** Cursor 分页响应 */
+export interface FeedingListResponse {
+  items: FeedingRecord[]
+  nextCursor: { before: string; before_id: string } | null
+}
+
+/** Cursor 分页参数 */
+export interface FeedingListParams {
+  limit?: number
+  offset?: number
+  before?: string
+  before_id?: string
+}
+
 export interface CreateFeedingDto {
   baby_id: string
   feed_type: FeedType
@@ -42,16 +56,18 @@ export interface CreateFeedingDto {
 
 export type UpdateFeedingDto = Partial<Omit<CreateFeedingDto, 'baby_id'>>
 
-function buildListQuery(babyId: string, limit?: number, offset?: number): string {
-  const params: string[] = [`baby_id=${babyId}`]
-  if (limit != null) params.push(`limit=${limit}`)
-  if (offset != null) params.push(`offset=${offset}`)
-  return params.join('&')
+function buildListQuery(babyId: string, params?: FeedingListParams): string {
+  const query: string[] = [`baby_id=${babyId}`]
+  if (params?.limit != null) query.push(`limit=${params.limit}`)
+  if (params?.offset != null) query.push(`offset=${params.offset}`)
+  if (params?.before) query.push(`before=${encodeURIComponent(params.before)}`)
+  if (params?.before_id) query.push(`before_id=${encodeURIComponent(params.before_id)}`)
+  return query.join('&')
 }
 
 export const feedingApi = {
-  list: (familyId: string, babyId: string, params?: { limit?: number; offset?: number }) =>
-    request<FeedingRecord[]>(`/api/family/${familyId}/records/feeding?${buildListQuery(babyId, params?.limit, params?.offset)}`),
+  list: (familyId: string, babyId: string, params?: FeedingListParams) =>
+    request<FeedingListResponse>(`/api/family/${familyId}/records/feeding?${buildListQuery(babyId, params)}`),
 
   create: (familyId: string, data: CreateFeedingDto) =>
     request<{ id: string }>(`/api/family/${familyId}/records/feeding`, {

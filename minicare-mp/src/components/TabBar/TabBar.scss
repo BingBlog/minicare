@@ -20,12 +20,27 @@
 .tabbar__item {
   color: #a89399;
   font-size: 11px;
-  padding: 8px 0;
+  padding: 6px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
 }
 
 .tabbar__item.is-active {
   color: #f87098;
   font-weight: 700;
+}
+
+.tabbar__icon {
+  width: 22px;
+  height: 22px;
+}
+
+.tabbar__label {
+  font-size: 10px;
+  line-height: 1.2;
 }
 
 .tabbar__fab-wrap {

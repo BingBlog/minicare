@@ -497,6 +497,19 @@
   padding: 12px 0 24px;
 }
 
+/* ── 加载更多 loading 状态 ── */
+.records-footer-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 0 24px;
+}
+
+.records-footer-loading__text {
+  font-size: 11px;
+  color: #F87098;
+}
+
 /* ── 操作弹层（底部弹层） ── */
 .action-sheet-mask {
   position: fixed;

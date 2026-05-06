@@ -9,7 +9,7 @@ import type {
   UpdateSleepDto,
 } from './sleep'
 import { feedingApi } from './feeding'
-import type { FeedingRecord, CreateFeedingDto, UpdateFeedingDto } from './feeding'
+import type { FeedingRecord, FeedingListResponse, FeedingListParams, CreateFeedingDto, UpdateFeedingDto } from './feeding'
 import { diaperApi } from './diaper'
 import type { DiaperRecord, CreateDiaperDto, UpdateDiaperDto } from './diaper'
 import { activityApi } from './activity'
@@ -33,9 +33,12 @@ export const recordsApi = {
   remove: (familyId: string, type: string, id: string) =>
     request<void>(`/api/family/${familyId}/records/${type}/${id}`, { method: 'DELETE' }),
   feeding: {
-    list: (familyId: string, babyId: string, params?: { limit?: number; offset?: number }) =>
+    list: (familyId: string, babyId: string, params?: FeedingListParams) =>
       feedingApi.list(familyId, babyId, params)
-        .then((items) => withType('feeding', items)),
+        .then((res) => ({
+          items: withType('feeding', res.items),
+          nextCursor: res.nextCursor,
+        })),
     create: (familyId: string, data: CreateFeedingDto) =>
       feedingApi.create(familyId, data),
     update: (familyId: string, id: string, data: UpdateFeedingDto) =>
@@ -143,7 +146,7 @@ export const recordsApi = {
 
 export type {
   SleepRecord, StartSleepDto, EndSleepDto, CreateCompleteSleepDto, UpdateSleepDto,
-  FeedingRecord, CreateFeedingDto, UpdateFeedingDto,
+  FeedingRecord, FeedingListResponse, FeedingListParams, CreateFeedingDto, UpdateFeedingDto,
   DiaperRecord, CreateDiaperDto, UpdateDiaperDto,
   ActivityRecord, CreateActivityDto, UpdateActivityDto,
   HealthRecord, CreateHealthDto, UpdateHealthDto,

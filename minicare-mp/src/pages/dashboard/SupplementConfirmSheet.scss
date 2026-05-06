@@ -1,0 +1,139 @@
+/**
+ * SupplementConfirmSheet 确认弹层样式
+ * 深色主题，与 Dashboard 整体风格一致
+ */
+@use 'sass:math';
+
+$scale: 1.25;
+@function s($px) {
+  @return math.round($px * $scale) * 1px;
+}
+
+// ── 遮罩层 ──
+.supp-sheet-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+// ── 弹层主体 ──
+.supp-sheet {
+  width: 100%;
+  max-width: s(400);
+  background: #1a1d2e;
+  border-radius: s(16) s(16) 0 0;
+  padding: s(16) s(20) s(24);
+  display: flex;
+  flex-direction: column;
+  gap: s(16);
+}
+
+// ── 头部 ──
+.supp-sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.supp-sheet-title {
+  font-size: s(16);
+  font-weight: 700;
+  color: #eef0f6;
+}
+
+.supp-sheet-close {
+  font-size: s(13);
+  color: #8a90a8;
+  padding: s(4) s(8);
+}
+
+// ── 内容区 ──
+.supp-sheet-body {
+  display: flex;
+  flex-direction: column;
+  gap: s(14);
+}
+
+.supp-sheet-field {
+  display: flex;
+  flex-direction: column;
+  gap: s(6);
+}
+
+.supp-sheet-label {
+  font-size: s(12);
+  color: #8a90a8;
+  font-weight: 500;
+}
+
+.supp-sheet-value {
+  font-size: s(15);
+  color: #d0d4dc;
+  font-weight: 600;
+}
+
+.supp-sheet-time {
+  color: #e8b84a;
+}
+
+.supp-sheet-dose-row {
+  display: flex;
+  align-items: center;
+  gap: s(8);
+}
+
+.supp-sheet-input {
+  flex: 1;
+  height: s(36);
+  padding: 0 s(12);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: s(8);
+  color: #d0d4dc;
+  font-size: s(14);
+}
+
+.supp-sheet-unit {
+  font-size: s(13);
+  color: #8a90a8;
+  flex-shrink: 0;
+}
+
+// ── 底部按钮 ──
+.supp-sheet-footer {
+  padding-top: s(8);
+}
+
+.supp-sheet-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: s(44);
+  border-radius: s(12);
+  background: rgba(232, 160, 0, 0.2);
+  border: 1px solid rgba(232, 160, 0, 0.4);
+}
+
+.supp-sheet-btn--confirm {
+  .supp-sheet-btn-text {
+    font-size: s(15);
+    font-weight: 600;
+    color: #e8b84a;
+  }
+}
+
+.supp-sheet-btn--disabled {
+  opacity: 0.5;
+}
+
+.supp-sheet-btn-text {
+  font-size: s(15);
+  font-weight: 600;
+}
