@@ -17,12 +17,13 @@ import { View, Text } from '@tarojs/components'
 import type { DashboardData } from './types'
 import type { RecordFormType } from './types'
 import { getTodayStr } from './useDashboardData'
-import { calcNextFeedTime } from './reminder/sources/feedingSource'
+import { calcNextFeedTimeV3, FeedingModel } from './reminder/sources/feedingSource'
 
 interface Props {
   data: DashboardData
   selectedDate: string
   onAdd: (type: RecordFormType) => void
+  feedingModel?: FeedingModel | null
 }
 
 /** 进度条组件 */
@@ -68,7 +69,7 @@ function fmtElapsed(diffMin: number): string {
   return m > 0 ? `${h}小时${m}分前` : `${h}小时前`
 }
 
-export default function RemindersColumn({ data, selectedDate, onAdd }: Props) {
+export default function RemindersColumn({ data, selectedDate, onAdd, feedingModel }: Props) {
   const isToday = selectedDate === getTodayStr()
   const now = new Date()
   const nowMin = now.getHours() * 60 + now.getMinutes()
@@ -83,13 +84,12 @@ export default function RemindersColumn({ data, selectedDate, onAdd }: Props) {
         ? { current: feedings.length, total: data.yesterdayFeedingCount, label: `${feedings.length}/${data.yesterdayFeedingCount} (昨日)` }
         : undefined
 
-      const nextFeedTime = calcNextFeedTime(feedings, data.yesterdayFeeding)
+      const nextFeedTime = calcNextFeedTimeV3(feedings, data.yesterdayFeeding, feedingModel)
       if (nextFeedTime) {
         const lastFeedTime = new Date(feedings[feedings.length - 1].time)
         const lastFeedMin = lastFeedTime.getHours() * 60 + lastFeedTime.getMinutes()
         const diffMs = nextFeedTime.getTime() - now.getTime()
         const diffMin = Math.round(diffMs / 60_000)
-        // 计算平均间隔用于展示
         const avgGap = Math.round((nextFeedTime.getTime() - lastFeedTime.getTime()) / 60_000)
 
         const level: ReminderItem['level'] = diffMin < 0 ? 'urgent' : diffMin < 30 ? 'warn' : 'ok'
@@ -101,26 +101,30 @@ export default function RemindersColumn({ data, selectedDate, onAdd }: Props) {
           action: diffMin < 0 ? { label: '记录', type: 'feeding' } : undefined,
           progress: feedProgress,
         })
+      } else if (feedings.length === 0) {
+        // V3: 首餐不预测，显示"等待首餐"
+        items.push({
+          id: 'next-feed',
+          level: 'todo',
+          title: '等待今日首餐',
+          desc: '记录第一次喂奶后开始预测',
+          action: { label: '记录', type: 'feeding' },
+          progress: feedProgress,
+        })
       } else if (feedings.length === 1) {
         const lastFeedTime = new Date(feedings[0].time)
         const lastFeedMin = lastFeedTime.getHours() * 60 + lastFeedTime.getMinutes()
         const elapsedMin = nowMin - lastFeedMin
+        // V3: 首餐后，用模型估算（无模型时退化为简单判断）
         const level: ReminderItem['level'] = elapsedMin > 180 ? 'urgent' : elapsedMin > 120 ? 'warn' : 'ok'
+        const modelGap = feedingModel?.getMedianGap(lastFeedTime.getHours() - (lastFeedTime.getHours() % 2))
+        const gapDesc = modelGap ? `预计间隔约 ${Math.round(modelGap)} 分钟` : '积累数据后自动预测'
         items.push({
           id: 'next-feed',
           level,
           title: `距上次喂奶 ${fmtElapsed(elapsedMin)}`,
-          desc: '今日仅1次记录，无法预测间隔',
+          desc: gapDesc,
           action: elapsedMin > 120 ? { label: '记录', type: 'feeding' } : undefined,
-          progress: feedProgress,
-        })
-      } else {
-        items.push({
-          id: 'next-feed',
-          level: 'todo',
-          title: '今日暂无喂奶记录',
-          desc: '记录第一次喂奶',
-          action: { label: '记录', type: 'feeding' },
           progress: feedProgress,
         })
       }

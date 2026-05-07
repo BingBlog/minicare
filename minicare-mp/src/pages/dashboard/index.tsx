@@ -19,7 +19,7 @@
  * ├─ Row3: 活动 | 表现
  * └─ Row4: 时间线 | 提醒待办
  */
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { familyApi, babyApi, recordsApi } from '@/api'
@@ -37,6 +37,7 @@ import SymptomColumn from './SymptomColumn'
 import TimelineColumn from './TimelineColumn'
 import RemindersColumn from './RemindersColumn'
 import { useReminder, createFeedingSource, ReminderOverlay } from './reminder'
+import { FeedingModel } from './reminder/sources/feedingSource'
 import type { ReminderSource } from './reminder'
 import './index.scss'
 
@@ -57,6 +58,9 @@ export default function DashboardPage() {
 
   // 当前查看的日期
   const [selectedDate, setSelectedDate] = useState<string>(getTodayStr())
+
+  // 多日学习模型（V3 喂奶预测用）
+  const feedingModelRef = useRef<FeedingModel | null>(null)
 
   // 初始化家庭和宝宝
   useEffect(() => {
@@ -90,6 +94,12 @@ export default function DashboardPage() {
         setFamilyId(fId)
         setBabyId(bId)
         setBabyName(bName)
+
+        // 初始化喂奶预测模型
+        if (bId && !feedingModelRef.current) {
+          feedingModelRef.current = new FeedingModel(bId)
+          feedingModelRef.current.load()
+        }
       } catch {
         Taro.redirectTo({ url: '/pages/login/index' })
       } finally {
@@ -109,6 +119,24 @@ export default function DashboardPage() {
 
   // 数据加载
   const data = useDashboardData(familyId, babyId, loading, selectedDate)
+
+  // 更新多日学习模型：每日将昨日完整数据录入模型
+  const lastAddedDateRef = useRef<string | null>(null)
+  useEffect(() => {
+    if (!data.yesterdayFeeding.length || !babyId) return
+    // 用昨日的日期作为去重 key（取第一条记录的时间提取日期）
+    const firstTime = data.yesterdayFeeding[0]?.time
+    if (!firstTime) return
+    const yesterdayStr = firstTime.slice(0, 10) // YYYY-MM-DD
+    if (lastAddedDateRef.current === yesterdayStr) return // 已录入过
+
+    if (!feedingModelRef.current) {
+      feedingModelRef.current = new FeedingModel(babyId)
+      feedingModelRef.current.load()
+    }
+    feedingModelRef.current.addDay(data.yesterdayFeeding)
+    lastAddedDateRef.current = yesterdayStr
+  }, [data.yesterdayFeeding, babyId])
 
   // 近 7 天补剂数据（用于快捷录入）
   const { recentList, loading: recentSuppLoading, refresh: refreshRecent } = useRecentSupplements(familyId, babyId)
@@ -162,7 +190,11 @@ export default function DashboardPage() {
   // 提醒系统
   const isToday = selectedDate === getTodayStr()
   const reminderSources: ReminderSource[] = [
-    createFeedingSource(() => data.feeding, () => data.yesterdayFeeding),
+    createFeedingSource(
+      () => data.feeding,
+      () => data.yesterdayFeeding,
+      () => feedingModelRef.current,
+    ),
   ]
   const { active: activeReminder, dismiss: dismissReminder } = useReminder(reminderSources, {
     isNight,
@@ -225,7 +257,7 @@ export default function DashboardPage() {
             <TimelineColumn data={data} selectedDate={selectedDate} />
           </View>
           <View className='db-col-wrap db-col-reminders'>
-            <RemindersColumn data={data} selectedDate={selectedDate} onAdd={handleAdd} />
+            <RemindersColumn data={data} selectedDate={selectedDate} onAdd={handleAdd} feedingModel={feedingModelRef.current} />
           </View>
         </View>
       </View>
