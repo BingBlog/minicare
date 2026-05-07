@@ -4,3 +4,6 @@
 # 模板见 minicare-server/.env.example
 .env.local
 *.env.local
+
+# opencode local config (generated from .cursor/ source of truth)
+.opencode/
