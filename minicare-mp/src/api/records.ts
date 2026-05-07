@@ -3,6 +3,7 @@ import type { TodayRecord, RecordItem } from './types'
 import { sleepApi } from './sleep'
 import type {
   SleepRecord,
+  SleepListParams,
   StartSleepDto,
   EndSleepDto,
   CreateCompleteSleepDto,
@@ -11,20 +12,31 @@ import type {
 import { feedingApi } from './feeding'
 import type { FeedingRecord, FeedingListResponse, FeedingListParams, CreateFeedingDto, UpdateFeedingDto } from './feeding'
 import { diaperApi } from './diaper'
-import type { DiaperRecord, CreateDiaperDto, UpdateDiaperDto } from './diaper'
+import type { DiaperRecord, DiaperListParams, CreateDiaperDto, UpdateDiaperDto } from './diaper'
 import { activityApi } from './activity'
-import type { ActivityRecord, CreateActivityDto, UpdateActivityDto } from './activity'
+import type { ActivityRecord, ActivityListParams, CreateActivityDto, UpdateActivityDto } from './activity'
 import { healthApi } from './health'
-import type { HealthRecord, CreateHealthDto, UpdateHealthDto } from './health'
+import type { HealthRecord, HealthListParams, CreateHealthDto, UpdateHealthDto } from './health'
 import { growthApi } from './growth'
-import type { GrowthRecord, CreateGrowthDto, UpdateGrowthDto } from './growth'
+import type { GrowthRecord, GrowthListParams, CreateGrowthDto, UpdateGrowthDto } from './growth'
 import { medicalApi } from './medical'
-import type { MedicalRecord, CreateMedicalDto, UpdateMedicalDto } from './medical'
+import type { MedicalRecord, MedicalListParams, CreateMedicalDto, UpdateMedicalDto } from './medical'
 import { symptomApi } from './symptom'
-import type { SymptomRecord, CreateSymptomDto, UpdateSymptomDto } from './symptom'
+import type { SymptomRecord, SymptomListParams, CreateSymptomDto, UpdateSymptomDto } from './symptom'
 
 function withType<T extends { id: string }>(type: string, items: T[]): T[] {
   return items.map((r) => ({ ...r, type }))
+}
+
+/** 统一日期分页响应格式 */
+export interface DatePaginatedResponse<T = RecordItem> {
+  items: T[]
+  nextBeforeDate: string | null
+}
+
+/** 统一日期分页参数 */
+export interface DateListParams {
+  before_date?: string
 }
 
 export const recordsApi = {
@@ -37,7 +49,7 @@ export const recordsApi = {
       feedingApi.list(familyId, babyId, params)
         .then((res) => ({
           items: withType('feeding', res.items),
-          nextCursor: res.nextCursor,
+          nextBeforeDate: res.nextBeforeDate,
         })),
     create: (familyId: string, data: CreateFeedingDto) =>
       feedingApi.create(familyId, data),
@@ -49,13 +61,9 @@ export const recordsApi = {
       feedingApi.getOne(familyId, id),
   },
   sleep: {
-    list: (familyId: string, babyId: string, params?: { limit?: number; offset?: number }) => {
-      const query: string[] = [`baby_id=${babyId}`]
-      if (params?.limit != null) query.push(`limit=${params.limit}`)
-      if (params?.offset != null) query.push(`offset=${params.offset}`)
-      return request<SleepRecord[]>(`/api/family/${familyId}/records/sleep?${query.join('&')}`)
-        .then((items) => withType('sleep', items))
-    },
+    list: (familyId: string, babyId: string, params?: DateListParams) =>
+      sleepApi.list(familyId, babyId, params as SleepListParams)
+        .then((res) => ({ items: withType('sleep', res.items), nextBeforeDate: res.nextBeforeDate })),
     getOngoing: sleepApi.getOngoing,
     startSleep: sleepApi.startSleep,
     endSleep: sleepApi.endSleep,
@@ -65,9 +73,9 @@ export const recordsApi = {
     remove: sleepApi.remove,
   },
   diaper: {
-    list: (familyId: string, babyId: string, params?: { limit?: number; offset?: number }) =>
-      diaperApi.list(familyId, babyId, params)
-        .then((items) => withType('diaper', items)),
+    list: (familyId: string, babyId: string, params?: DateListParams) =>
+      diaperApi.list(familyId, babyId, params as DiaperListParams)
+        .then((res) => ({ items: withType('diaper', res.items), nextBeforeDate: res.nextBeforeDate })),
     create: (familyId: string, data: CreateDiaperDto) =>
       diaperApi.create(familyId, data),
     update: (familyId: string, id: string, data: UpdateDiaperDto) =>
@@ -78,9 +86,9 @@ export const recordsApi = {
       diaperApi.getOne(familyId, id),
   },
   activity: {
-    list: (familyId: string, babyId: string, params?: { limit?: number; offset?: number }) =>
-      activityApi.list(familyId, babyId, params)
-        .then((items) => withType('activity', items)),
+    list: (familyId: string, babyId: string, params?: DateListParams) =>
+      activityApi.list(familyId, babyId, params as ActivityListParams)
+        .then((res) => ({ items: withType('activity', res.items), nextBeforeDate: res.nextBeforeDate })),
     create: (familyId: string, data: CreateActivityDto) =>
       activityApi.create(familyId, data),
     update: (familyId: string, id: string, data: UpdateActivityDto) =>
@@ -91,9 +99,9 @@ export const recordsApi = {
       activityApi.getOne(familyId, id),
   },
   health: {
-    list: (familyId: string, babyId: string, params?: { limit?: number; offset?: number }) =>
-      healthApi.list(familyId, babyId, params)
-        .then((items) => withType('health', items)),
+    list: (familyId: string, babyId: string, params?: DateListParams) =>
+      healthApi.list(familyId, babyId, params as HealthListParams)
+        .then((res) => ({ items: withType('health', res.items), nextBeforeDate: res.nextBeforeDate })),
     create: (familyId: string, data: CreateHealthDto) =>
       healthApi.create(familyId, data),
     update: (familyId: string, id: string, data: UpdateHealthDto) =>
@@ -104,9 +112,9 @@ export const recordsApi = {
       healthApi.getOne(familyId, id),
   },
   growth: {
-    list: (familyId: string, babyId: string, params?: { limit?: number; offset?: number }) =>
-      growthApi.list(familyId, babyId, params)
-        .then((items) => withType('growth', items)),
+    list: (familyId: string, babyId: string, params?: DateListParams) =>
+      growthApi.list(familyId, babyId, params as GrowthListParams)
+        .then((res) => ({ items: withType('growth', res.items), nextBeforeDate: res.nextBeforeDate })),
     create: (familyId: string, data: CreateGrowthDto) =>
       growthApi.create(familyId, data),
     update: (familyId: string, id: string, data: UpdateGrowthDto) =>
@@ -117,9 +125,9 @@ export const recordsApi = {
       growthApi.getOne(familyId, id),
   },
   medical: {
-    list: (familyId: string, babyId: string, params?: { limit?: number; offset?: number }) =>
-      medicalApi.list(familyId, babyId, params)
-        .then((items) => withType('medical', items)),
+    list: (familyId: string, babyId: string, params?: DateListParams) =>
+      medicalApi.list(familyId, babyId, params as MedicalListParams)
+        .then((res) => ({ items: withType('medical', res.items), nextBeforeDate: res.nextBeforeDate })),
     create: (familyId: string, data: CreateMedicalDto) =>
       medicalApi.create(familyId, data),
     update: (familyId: string, id: string, data: UpdateMedicalDto) =>
@@ -130,9 +138,9 @@ export const recordsApi = {
       medicalApi.getOne(familyId, id),
   },
   symptom: {
-    list: (familyId: string, babyId: string, params?: { limit?: number; offset?: number }) =>
-      symptomApi.list(familyId, babyId, params)
-        .then((items) => withType('symptom', items)),
+    list: (familyId: string, babyId: string, params?: DateListParams) =>
+      symptomApi.list(familyId, babyId, params as SymptomListParams)
+        .then((res) => ({ items: withType('symptom', res.items), nextBeforeDate: res.nextBeforeDate })),
     create: (familyId: string, data: CreateSymptomDto) =>
       symptomApi.create(familyId, data),
     update: (familyId: string, id: string, data: UpdateSymptomDto) =>
@@ -145,14 +153,14 @@ export const recordsApi = {
 }
 
 export type {
-  SleepRecord, StartSleepDto, EndSleepDto, CreateCompleteSleepDto, UpdateSleepDto,
+  SleepRecord, SleepListParams, StartSleepDto, EndSleepDto, CreateCompleteSleepDto, UpdateSleepDto,
   FeedingRecord, FeedingListResponse, FeedingListParams, CreateFeedingDto, UpdateFeedingDto,
-  DiaperRecord, CreateDiaperDto, UpdateDiaperDto,
-  ActivityRecord, CreateActivityDto, UpdateActivityDto,
-  HealthRecord, CreateHealthDto, UpdateHealthDto,
-  GrowthRecord, CreateGrowthDto, UpdateGrowthDto,
-  MedicalRecord, CreateMedicalDto, UpdateMedicalDto,
-  SymptomRecord, CreateSymptomDto, UpdateSymptomDto,
+  DiaperRecord, DiaperListParams, CreateDiaperDto, UpdateDiaperDto,
+  ActivityRecord, ActivityListParams, CreateActivityDto, UpdateActivityDto,
+  HealthRecord, HealthListParams, CreateHealthDto, UpdateHealthDto,
+  GrowthRecord, GrowthListParams, CreateGrowthDto, UpdateGrowthDto,
+  MedicalRecord, MedicalListParams, CreateMedicalDto, UpdateMedicalDto,
+  SymptomRecord, SymptomListParams, CreateSymptomDto, UpdateSymptomDto,
 }
 
 // Re-export for backward compatibility

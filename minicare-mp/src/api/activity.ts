@@ -24,16 +24,24 @@ export interface CreateActivityDto {
 
 export type UpdateActivityDto = Partial<Omit<CreateActivityDto, 'baby_id'>>
 
-function buildListQuery(babyId: string, limit?: number, offset?: number): string {
-  const params: string[] = [`baby_id=${babyId}`]
-  if (limit != null) params.push(`limit=${limit}`)
-  if (offset != null) params.push(`offset=${offset}`)
-  return params.join('&')
+export interface ActivityListParams {
+  before_date?: string
+}
+
+export interface ActivityListResponse {
+  items: ActivityRecord[]
+  nextBeforeDate: string | null
+}
+
+function buildListQuery(babyId: string, params?: ActivityListParams): string {
+  const q: string[] = [`baby_id=${babyId}`]
+  if (params?.before_date) q.push(`before_date=${encodeURIComponent(params.before_date)}`)
+  return q.join('&')
 }
 
 export const activityApi = {
-  list: (familyId: string, babyId: string, params?: { limit?: number; offset?: number }) =>
-    request<ActivityRecord[]>(`/api/family/${familyId}/records/activity?${buildListQuery(babyId, params?.limit, params?.offset)}`),
+  list: (familyId: string, babyId: string, params?: ActivityListParams): Promise<ActivityListResponse> =>
+    request<ActivityListResponse>(`/api/family/${familyId}/records/activity?${buildListQuery(babyId, params)}`),
 
   create: (familyId: string, data: CreateActivityDto) =>
     request<{ id: string }>(`/api/family/${familyId}/records/activity`, {

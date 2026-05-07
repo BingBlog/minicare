@@ -41,10 +41,6 @@ import GuestRecordsList from './GuestRecordsList'
 import type { Family, Baby, RecordItem } from '@/api/types'
 import './index.scss'
 
-// ── 分页常量 ──
-const PAGE_SIZE_ALL = 30    // all 模式：每种类型每页条数（非 feeding 类型）
-const PAGE_SIZE_FEEDING = 30 // feeding 类型每页条数（cursor 分页，保证日完整性）
-const PAGE_SIZE_SINGLE = 50 // 单类型模式：每页条数
 
 // ── 筛选栏：主行 = 全部 + 饮食/尿布/生长/睡眠；其余在「更多」内 ──
 const FILTER_PRIMARY: { key: string; label: string }[] = [
@@ -115,18 +111,11 @@ export default function RecordsListPage() {
   // 是否未登录
   const [isGuest, setIsGuest] = useState(false)
 
-  // 分页状态
-  // - feeding 类型使用 cursor 分页（nextCursor）
-  // - 其他类型使用 offset 分页
-  // 用 ref 避免 useReachBottom 闭包捕获旧值
-  const offsetMapRef = useRef<Record<RecordTypeKey, number>>(
-    Object.fromEntries(ALL_TYPE_KEYS.map((k) => [k, 0])) as Record<RecordTypeKey, number>
-  )
-  // feeding 的 cursor 状态
-  const feedingCursorRef = useRef<{ before: string; before_id: string } | null>(null)
-  const singleOffsetRef = useRef(0)
-  // 单类型 feeding 模式下的 cursor
-  const singleFeedingCursorRef = useRef<{ before: string; before_id: string } | null>(null)
+  // 分页状态 — 统一日期分页
+  // 所有类型共用同一个 nextBeforeDate 游标，保证同一时间窗口内数据完整
+  const nextBeforeDateRef = useRef<string | null>(null)
+  // 单类型模式下的日期游标
+  const singleNextDateRef = useRef<string | null>(null)
   // 标记是否正在加载更多，防止重复触发
   const loadingMoreRef = useRef(false)
 
@@ -177,79 +166,92 @@ export default function RecordsListPage() {
       setHasMore(false)
 
       // 重置分页状态
-      offsetMapRef.current = Object.fromEntries(
-        ALL_TYPE_KEYS.map((k) => [k, 0])
-      ) as Record<RecordTypeKey, number>
-      feedingCursorRef.current = null
-      singleOffsetRef.current = 0
-      singleFeedingCursorRef.current = null
+      nextBeforeDateRef.current = null
+      singleNextDateRef.current = null
+
+      // 首屏最少加载条数（确保渲染满屏幕）
+      const MIN_FIRST_SCREEN = 15
+      // 最大回溯轮次（每轮查一个窗口，防止无限循环）
+      const MAX_ROUNDS = 10
 
       try {
         let allRecs: Record<string, unknown>[] = []
 
         if (activeFilter === 'all') {
-          // feeding 使用 cursor 分页，其他类型使用 offset 分页
-          const nonFeedingTypes = ALL_TYPE_KEYS.filter((t) => t !== 'feeding')
+          let beforeDate: string | undefined = undefined
+          let rounds = 0
 
-          const [feedingResult, ...otherResults] = await Promise.allSettled([
-            // feeding: cursor 分页（初次不传 before）
-            recordsApi.feeding.list(family!.id, baby!.id, { limit: PAGE_SIZE_FEEDING }),
-            // 其他类型: offset 分页
-            ...nonFeedingTypes.map((t) =>
-              recordsApi[t]?.list(family!.id, baby!.id, { limit: PAGE_SIZE_ALL, offset: 0 }) ??
-                Promise.resolve([]),
-            ),
-          ])
+          while (rounds < MAX_ROUNDS) {
+            if (cancelled) return
+            const results = await Promise.allSettled(
+              ALL_TYPE_KEYS.map((t) =>
+                recordsApi[t]?.list(family!.id, baby!.id, { before_date: beforeDate } as any) ??
+                  Promise.resolve({ items: [], nextBeforeDate: null }),
+              ),
+            )
 
-          let anyHasMore = false
-
-          // 处理 feeding 结果（cursor 分页）
-          if (feedingResult.status === 'fulfilled') {
-            const feedingRes = feedingResult.value as { items: Record<string, unknown>[]; nextCursor: { before: string; before_id: string } | null }
-            allRecs = allRecs.concat(feedingRes.items)
-            if (feedingRes.nextCursor) {
-              anyHasMore = true
-              feedingCursorRef.current = feedingRes.nextCursor
-            }
-          }
-
-          // 处理其他类型结果（offset 分页）
-          otherResults.forEach((r, i) => {
-            if (r.status === 'fulfilled') {
-              const items = r.value as Record<string, unknown>[]
-              allRecs = allRecs.concat(items)
-              if (items.length >= PAGE_SIZE_ALL) {
-                anyHasMore = true
-                offsetMapRef.current[nonFeedingTypes[i]] = PAGE_SIZE_ALL
+            let anyHasMore = false
+            results.forEach((r) => {
+              if (r.status === 'fulfilled') {
+                const val = r.value as any
+                const items = val.items ?? val
+                if (Array.isArray(items) && items.length > 0) {
+                  allRecs = allRecs.concat(items)
+                }
+                if (val.nextBeforeDate) anyHasMore = true
               }
-            }
-          })
+            })
 
-          if (!cancelled) setHasMore(anyHasMore)
-        } else if (activeFilter === 'feeding') {
-          // 单类型 feeding 模式：使用 cursor 分页
-          const res = await recordsApi.feeding.list(family!.id, baby!.id, {
-            limit: PAGE_SIZE_SINGLE,
-          })
-          allRecs = res.items as Record<string, unknown>[]
-          if (!cancelled) {
-            const more = res.nextCursor !== null
-            setHasMore(more)
-            if (more) singleFeedingCursorRef.current = res.nextCursor
+            // 更新统一游标（用 feeding 的 nextBeforeDate）
+            const feedingResult = results[ALL_TYPE_KEYS.indexOf('feeding')]
+            if (feedingResult?.status === 'fulfilled') {
+              const feedingVal = feedingResult.value as any
+              nextBeforeDateRef.current = feedingVal.nextBeforeDate ?? null
+            }
+
+            // 停止条件：已累积足够数据 或 没有更多数据了
+            if (allRecs.length >= MIN_FIRST_SCREEN || !anyHasMore) {
+              if (!cancelled) setHasMore(anyHasMore)
+              break
+            }
+
+            // 数据不够且还有更多，继续向前查
+            beforeDate = nextBeforeDateRef.current ?? undefined
+            if (!beforeDate) {
+              if (!cancelled) setHasMore(false)
+              break
+            }
+            rounds++
           }
         } else {
-          // 其他单类型模式：使用 offset 分页
+          // 单类型模式
           const t = activeFilter as RecordTypeKey
           if (recordsApi[t]) {
-            const items = await recordsApi[t].list(family!.id, baby!.id, {
-              limit: PAGE_SIZE_SINGLE,
-              offset: 0,
-            }) as Record<string, unknown>[]
-            allRecs = items
-            if (!cancelled) {
-              const more = items.length >= PAGE_SIZE_SINGLE
-              setHasMore(more)
-              if (more) singleOffsetRef.current = PAGE_SIZE_SINGLE
+            let beforeDate: string | undefined = undefined
+            let rounds = 0
+
+            while (rounds < MAX_ROUNDS) {
+              if (cancelled) return
+              const res = await recordsApi[t].list(family!.id, baby!.id, { before_date: beforeDate } as any)
+              const val = res as any
+              const items = val.items ?? val
+              const nextDate = val.nextBeforeDate ?? null
+
+              if (Array.isArray(items) && items.length > 0) {
+                allRecs = allRecs.concat(items)
+              }
+
+              // 停止条件：已累积足够数据 或 没有更多数据了
+              if (allRecs.length >= MIN_FIRST_SCREEN || !nextDate) {
+                if (!cancelled) {
+                  setHasMore(nextDate !== null)
+                  singleNextDateRef.current = nextDate
+                }
+                break
+              }
+
+              beforeDate = nextDate
+              rounds++
             }
           }
         }
@@ -276,107 +278,84 @@ export default function RecordsListPage() {
     loadingMoreRef.current = true
     setLoadingMore(true)
 
+    // 每次加载更多也累积到一定数量
+    const MIN_LOAD_MORE = 10
+    const MAX_ROUNDS = 10
+
     try {
       let newRecs: RecordItem[] = []
 
       if (activeFilter === 'all') {
-        // 并发请求：feeding 用 cursor，其他类型用 offset
-        const feedingHasMore = feedingCursorRef.current !== null
-        const nonFeedingTypesToLoad = ALL_TYPE_KEYS.filter(
-          (t) => t !== 'feeding' && offsetMapRef.current[t] > 0
-        )
+        let beforeDate = nextBeforeDateRef.current
+        if (!beforeDate) { setHasMore(false); return }
 
-        const promises: Promise<unknown>[] = []
-        const promiseLabels: string[] = []
-
-        // feeding cursor 分页
-        if (feedingHasMore) {
-          promises.push(
-            recordsApi.feeding.list(family!.id, baby!.id, {
-              limit: PAGE_SIZE_FEEDING,
-              before: feedingCursorRef.current!.before,
-              before_id: feedingCursorRef.current!.before_id,
-            })
+        let rounds = 0
+        while (rounds < MAX_ROUNDS) {
+          const results = await Promise.allSettled(
+            ALL_TYPE_KEYS.map((t) =>
+              recordsApi[t]?.list(family!.id, baby!.id, { before_date: beforeDate } as any) ??
+                Promise.resolve({ items: [], nextBeforeDate: null }),
+            ),
           )
-          promiseLabels.push('feeding')
-        }
 
-        // 其他类型 offset 分页
-        for (const t of nonFeedingTypesToLoad) {
-          promises.push(
-            recordsApi[t]?.list(family!.id, baby!.id, {
-              limit: PAGE_SIZE_ALL,
-              offset: offsetMapRef.current[t],
-            }) ?? Promise.resolve([])
-          )
-          promiseLabels.push(t)
-        }
-
-        const results = await Promise.allSettled(promises)
-
-        let anyHasMore = false
-        results.forEach((r, i) => {
-          if (r.status !== 'fulfilled') return
-          const label = promiseLabels[i]
-
-          if (label === 'feeding') {
-            // feeding cursor 结果
-            const feedingRes = r.value as { items: RecordItem[]; nextCursor: { before: string; before_id: string } | null }
-            if (feedingRes.items.length > 0) {
-              newRecs = newRecs.concat(feedingRes.items)
-            }
-            if (feedingRes.nextCursor) {
-              anyHasMore = true
-              feedingCursorRef.current = feedingRes.nextCursor
-            } else {
-              feedingCursorRef.current = null
-            }
-          } else {
-            // 其他类型 offset 结果
-            const items = r.value as RecordItem[]
-            if (items.length > 0) {
+          let anyHasMore = false
+          results.forEach((r) => {
+            if (r.status !== 'fulfilled') return
+            const val = r.value as any
+            const items = val.items ?? val
+            if (Array.isArray(items) && items.length > 0) {
               newRecs = newRecs.concat(items)
             }
-            if (items.length >= PAGE_SIZE_ALL) {
-              anyHasMore = true
-              offsetMapRef.current[label as RecordTypeKey] += PAGE_SIZE_ALL
-            } else {
-              offsetMapRef.current[label as RecordTypeKey] = 0
-            }
-          }
-        })
-        setHasMore(anyHasMore)
-      } else if (activeFilter === 'feeding') {
-        // 单类型 feeding 模式：cursor 分页
-        if (singleFeedingCursorRef.current) {
-          const res = await recordsApi.feeding.list(family!.id, baby!.id, {
-            limit: PAGE_SIZE_SINGLE,
-            before: singleFeedingCursorRef.current.before,
-            before_id: singleFeedingCursorRef.current.before_id,
+            if (val.nextBeforeDate) anyHasMore = true
           })
-          newRecs = res.items as RecordItem[]
-          if (res.nextCursor) {
-            singleFeedingCursorRef.current = res.nextCursor
-            setHasMore(true)
+
+          // 更新统一游标
+          const feedingResult = results[ALL_TYPE_KEYS.indexOf('feeding')]
+          if (feedingResult?.status === 'fulfilled') {
+            const feedingVal = feedingResult.value as any
+            nextBeforeDateRef.current = feedingVal.nextBeforeDate ?? null
           } else {
-            singleFeedingCursorRef.current = null
-            setHasMore(false)
+            nextBeforeDateRef.current = null
           }
+
+          // 停止条件：累积足够数据 或 没有更多数据
+          if (newRecs.length >= MIN_LOAD_MORE || !anyHasMore) {
+            setHasMore(anyHasMore)
+            break
+          }
+
+          // 数据不够，继续向前
+          beforeDate = nextBeforeDateRef.current
+          if (!beforeDate) { setHasMore(false); break }
+          rounds++
         }
       } else {
-        // 其他单类型模式：offset 分页
+        // 单类型模式
+        let beforeDate = singleNextDateRef.current
+        if (!beforeDate) { setHasMore(false); return }
+
+        let rounds = 0
         const t = activeFilter as RecordTypeKey
-        if (recordsApi[t]) {
-          const fetched = await recordsApi[t].list(family!.id, baby!.id, {
-            limit: PAGE_SIZE_SINGLE,
-            offset: singleOffsetRef.current,
-          }) as RecordItem[]
-          newRecs = fetched
-          const more = fetched.length >= PAGE_SIZE_SINGLE
-          setHasMore(more)
-          if (more) {
-            singleOffsetRef.current += PAGE_SIZE_SINGLE
+        while (rounds < MAX_ROUNDS) {
+          if (!recordsApi[t]) break
+          const res = await recordsApi[t].list(family!.id, baby!.id, { before_date: beforeDate } as any)
+          const val = res as any
+          const items = val.items ?? val
+          const nextDate = val.nextBeforeDate ?? null
+
+          if (Array.isArray(items) && items.length > 0) {
+            newRecs = newRecs.concat(items)
           }
+
+          // 停止条件：累积足够数据 或 没有更多数据
+          if (newRecs.length >= MIN_LOAD_MORE || !nextDate) {
+            singleNextDateRef.current = nextDate
+            setHasMore(nextDate !== null)
+            break
+          }
+
+          beforeDate = nextDate
+          rounds++
         }
       }
 

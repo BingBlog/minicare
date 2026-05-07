@@ -26,18 +26,15 @@ export interface FeedingRecord {
   note?: string | null
 }
 
-/** Cursor 分页响应 */
+/** 日期分页响应 */
 export interface FeedingListResponse {
   items: FeedingRecord[]
-  nextCursor: { before: string; before_id: string } | null
+  nextBeforeDate: string | null
 }
 
-/** Cursor 分页参数 */
+/** 日期分页参数 */
 export interface FeedingListParams {
-  limit?: number
-  offset?: number
-  before?: string
-  before_id?: string
+  before_date?: string
 }
 
 export interface CreateFeedingDto {
@@ -58,16 +55,21 @@ export type UpdateFeedingDto = Partial<Omit<CreateFeedingDto, 'baby_id'>>
 
 function buildListQuery(babyId: string, params?: FeedingListParams): string {
   const query: string[] = [`baby_id=${babyId}`]
-  if (params?.limit != null) query.push(`limit=${params.limit}`)
-  if (params?.offset != null) query.push(`offset=${params.offset}`)
-  if (params?.before) query.push(`before=${encodeURIComponent(params.before)}`)
-  if (params?.before_id) query.push(`before_id=${encodeURIComponent(params.before_id)}`)
+  if (params?.before_date) query.push(`before_date=${encodeURIComponent(params.before_date)}`)
   return query.join('&')
 }
 
 export const feedingApi = {
-  list: (familyId: string, babyId: string, params?: FeedingListParams) =>
-    request<FeedingListResponse>(`/api/family/${familyId}/records/feeding?${buildListQuery(babyId, params)}`),
+  list: async (familyId: string, babyId: string, params?: FeedingListParams): Promise<FeedingListResponse> => {
+    const raw = await request<FeedingListResponse | FeedingRecord[]>(
+      `/api/family/${familyId}/records/feeding?${buildListQuery(babyId, params)}`,
+    )
+    // 兼容后端旧版本（返回数组）
+    if (Array.isArray(raw)) {
+      return { items: raw, nextBeforeDate: null }
+    }
+    return raw as FeedingListResponse
+  },
 
   create: (familyId: string, data: CreateFeedingDto) =>
     request<{ id: string }>(`/api/family/${familyId}/records/feeding`, {

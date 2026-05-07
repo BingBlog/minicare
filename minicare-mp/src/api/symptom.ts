@@ -29,16 +29,24 @@ export interface CreateSymptomDto {
 
 export type UpdateSymptomDto = Partial<Omit<CreateSymptomDto, 'baby_id'>>
 
-function buildListQuery(babyId: string, limit?: number, offset?: number): string {
-  const params: string[] = [`baby_id=${babyId}`]
-  if (limit != null) params.push(`limit=${limit}`)
-  if (offset != null) params.push(`offset=${offset}`)
-  return params.join('&')
+export interface SymptomListParams {
+  before_date?: string
+}
+
+export interface SymptomListResponse {
+  items: SymptomRecord[]
+  nextBeforeDate: string | null
+}
+
+function buildListQuery(babyId: string, params?: SymptomListParams): string {
+  const q: string[] = [`baby_id=${babyId}`]
+  if (params?.before_date) q.push(`before_date=${encodeURIComponent(params.before_date)}`)
+  return q.join('&')
 }
 
 export const symptomApi = {
-  list: (familyId: string, babyId: string, params?: { limit?: number; offset?: number }) =>
-    request<SymptomRecord[]>(`/api/family/${familyId}/records/symptom?${buildListQuery(babyId, params?.limit, params?.offset)}`),
+  list: (familyId: string, babyId: string, params?: SymptomListParams): Promise<SymptomListResponse> =>
+    request<SymptomListResponse>(`/api/family/${familyId}/records/symptom?${buildListQuery(babyId, params)}`),
 
   create: (familyId: string, data: CreateSymptomDto) =>
     request<{ id: string }>(`/api/family/${familyId}/records/symptom`, {

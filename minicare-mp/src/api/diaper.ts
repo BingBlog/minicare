@@ -28,16 +28,24 @@ export interface CreateDiaperDto {
 
 export type UpdateDiaperDto = Partial<Omit<CreateDiaperDto, 'baby_id'>>
 
-function buildListQuery(babyId: string, limit?: number, offset?: number): string {
-  const params: string[] = [`baby_id=${babyId}`]
-  if (limit != null) params.push(`limit=${limit}`)
-  if (offset != null) params.push(`offset=${offset}`)
-  return params.join('&')
+export interface DiaperListParams {
+  before_date?: string
+}
+
+export interface DiaperListResponse {
+  items: DiaperRecord[]
+  nextBeforeDate: string | null
+}
+
+function buildListQuery(babyId: string, params?: DiaperListParams): string {
+  const q: string[] = [`baby_id=${babyId}`]
+  if (params?.before_date) q.push(`before_date=${encodeURIComponent(params.before_date)}`)
+  return q.join('&')
 }
 
 export const diaperApi = {
-  list: (familyId: string, babyId: string, params?: { limit?: number; offset?: number }) =>
-    request<DiaperRecord[]>(`/api/family/${familyId}/records/diaper?${buildListQuery(babyId, params?.limit, params?.offset)}`),
+  list: (familyId: string, babyId: string, params?: DiaperListParams): Promise<DiaperListResponse> =>
+    request<DiaperListResponse>(`/api/family/${familyId}/records/diaper?${buildListQuery(babyId, params)}`),
 
   create: (familyId: string, data: CreateDiaperDto) =>
     request<{ id: string }>(`/api/family/${familyId}/records/diaper`, {

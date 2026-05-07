@@ -47,7 +47,25 @@ export interface UpdateSleepDto {
   note?: string
 }
 
+export interface SleepListParams {
+  before_date?: string
+}
+
+export interface SleepListResponse {
+  items: SleepRecord[]
+  nextBeforeDate: string | null
+}
+
+function buildListQuery(babyId: string, params?: SleepListParams): string {
+  const q: string[] = [`baby_id=${babyId}`]
+  if (params?.before_date) q.push(`before_date=${encodeURIComponent(params.before_date)}`)
+  return q.join('&')
+}
+
 export const sleepApi = {
+  list: (familyId: string, babyId: string, params?: SleepListParams): Promise<SleepListResponse> =>
+    request<SleepListResponse>(`/api/family/${familyId}/records/sleep?${buildListQuery(babyId, params)}`),
+
   getOngoing: (familyId: string, babyId: string) =>
     request<SleepRecord | null>(`/api/family/${familyId}/records/sleep/ongoing?baby_id=${babyId}`),
 

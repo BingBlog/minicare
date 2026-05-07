@@ -141,17 +141,63 @@ export class SleepService {
     return { id, duration_min: safeDurationMin, status: 'ended' as const };
   }
 
-  async findAll(babyId: string, limit = 20, offset = 0) {
-    const safeLimit  = Math.max(1, Math.min(200, Math.floor(Number(limit)  || 20)));
-    const safeOffset = Math.max(0, Math.floor(Number(offset) || 0));
+  /**
+   * 日期分页查询睡眠记录
+   * - 每次返回固定 3 天（北京时间）的完整数据
+   * - before_date: 北京日期 YYYY-MM-DD，查询 [before_date - 3天, before_date) 范围
+   * - 初次不传 before_date，默认从明天开始（包含今天的数据）
+   * - 如果查询范围内无数据，用 COUNT 检查更早是否还有记录
+   *
+   * @returns { items, nextBeforeDate } — nextBeforeDate 为 null 表示没有更多数据
+   */
+  async findAll(babyId: string, beforeDate?: string) {
+    const endDate = beforeDate || this.addDays(this.getTodayBeijing(), 1);
+    const startDate = this.addDays(endDate, -7);
+
+    const startDatetime = `${startDate} 00:00:00`;
+    const endDatetime = `${endDate} 00:00:00`;
+
     const [rows] = await this.db.query<any[]>(
-      `SELECT * FROM sleep_record WHERE baby_id = ? ORDER BY start_time DESC LIMIT ${safeLimit} OFFSET ${safeOffset}`,
-      [babyId],
+      `SELECT * FROM sleep_record WHERE baby_id = ? AND start_time >= ? AND start_time < ? ORDER BY start_time DESC`,
+      [babyId, startDatetime, endDatetime],
     );
-    return rows.map((r) => ({
+
+    const items = rows.map((r) => ({
       ...r,
       status: r.status === SLEEP_STATUS.ONGOING ? 'ongoing' : 'ended',
     }));
+
+    // 判断是否还有更多数据
+    let hasMore = false;
+    if (items.length > 0) {
+      hasMore = true;
+    } else {
+      // 当前窗口无数据，检查更早是否还有记录
+      const [countResult] = await this.db.query<any[]>(
+        `SELECT COUNT(*) AS total FROM sleep_record WHERE baby_id = ? AND start_time < ?`,
+        [babyId, startDatetime],
+      );
+      hasMore = countResult[0]?.total > 0;
+    }
+
+    const nextBeforeDate = hasMore ? startDate : null;
+    return { items, nextBeforeDate };
+  }
+
+  private getTodayBeijing(): string {
+    const now = new Date();
+    const bj = new Date(now.getTime() + 8 * 60 * 60 * 1000);
+    const y = bj.getUTCFullYear();
+    const m = String(bj.getUTCMonth() + 1).padStart(2, '0');
+    const d = String(bj.getUTCDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  }
+
+  private addDays(dateStr: string, days: number): string {
+    const [y, m, d] = dateStr.split('-').map(Number);
+    const date = new Date(Date.UTC(y, m - 1, d));
+    date.setUTCDate(date.getUTCDate() + days);
+    return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}-${String(date.getUTCDate()).padStart(2, '0')}`;
   }
 
   /** 获取当前 ongoing 记录（用于前端显示计时器） */

@@ -21,8 +21,8 @@ export class GrowthController {
   }
 
   @Get()
-  findAll(@Query('baby_id') babyId: string, @Query('limit') limit = 50, @Query('offset') offset = 0) {
-    return this.growthService.findAll(babyId, Number(limit), Number(offset));
+  findAll(@Query('baby_id') babyId: string, @Query('before_date') beforeDate?: string) {
+    return this.growthService.findAll(babyId, beforeDate);
   }
 
   @Get(':id')

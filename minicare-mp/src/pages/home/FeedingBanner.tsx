@@ -21,6 +21,8 @@ export default function FeedingBanner({ lastFeedingTime, onRecordClick }: Feedin
   )
 
   useEffect(() => {
+    // lastFeedingTime 变化时立即更新，不等待下一个 tick
+    setElapsedMins(Math.max(0, dayjs().diff(dayjs(lastFeedingTime), 'minute')))
     const timer = setInterval(() => {
       setElapsedMins(Math.max(0, dayjs().diff(dayjs(lastFeedingTime), 'minute')))
     }, 60_000)

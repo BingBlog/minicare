@@ -21,8 +21,8 @@ export class MedicalController {
   }
 
   @Get()
-  findAll(@Query('baby_id') babyId: string, @Query('limit') limit = 20, @Query('offset') offset = 0) {
-    return this.medicalService.findAll(babyId, Number(limit), Number(offset));
+  findAll(@Query('baby_id') babyId: string, @Query('before_date') beforeDate?: string) {
+    return this.medicalService.findAll(babyId, beforeDate);
   }
 
   @Get(':id')

@@ -111,6 +111,27 @@ export function compareTime(a: string, b: string): number {
 }
 
 // ===========================================================================
+// 睡眠时段推断
+// ===========================================================================
+
+/**
+ * 根据入睡时间自动推断睡眠时段（sleep_period）
+ *
+ * 规则（基于入睡时刻的小时数）：
+ *   22:00 ~ 05:59 → night（夜觉）
+ *   06:00 ~ 11:59 → morning_nap（上午觉）
+ *   12:00 ~ 17:59 → afternoon_nap（下午觉）
+ *   18:00 ~ 21:59 → other（傍晚小憩）
+ */
+export function inferSleepPeriod(startTime: string): 'night' | 'morning_nap' | 'afternoon_nap' | 'other' {
+  const hour = dayjs(startTime).hour()
+  if (hour >= 22 || hour < 6) return 'night'
+  if (hour < 12) return 'morning_nap'
+  if (hour < 18) return 'afternoon_nap'
+  return 'other'
+}
+
+// ===========================================================================
 // 日期展示与分组
 // ===========================================================================
 

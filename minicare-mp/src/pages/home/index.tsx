@@ -220,7 +220,12 @@ export default function HomePage() {
 
 
   const lastFeedingRecord = [...records]
-    .filter((r) => r.type === 'feeding')
+    .filter((r) => {
+      if (r.type !== 'feeding') return false
+      const feedType = r.detail?.feed_type as string | undefined
+      // 排除营养素，只保留真正的喂奶记录
+      return feedType === 'formula' || feedType === 'breast' || feedType === 'complementary'
+    })
     .sort((a, b) => compareTime(b.time, a.time))[0]
 
   const handleEndSleep = () => {

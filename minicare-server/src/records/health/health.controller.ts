@@ -22,9 +22,9 @@ export class HealthController {
   }
 
   @Get()
-  @ApiOperation({ summary: '获取健康记录列表' })
-  findAll(@Query('baby_id') babyId: string, @Query('limit') limit = 20, @Query('offset') offset = 0) {
-    return this.healthService.findAll(babyId, Number(limit), Number(offset));
+  @ApiOperation({ summary: '获取健康记录列表（日期分页）' })
+  findAll(@Query('baby_id') babyId: string, @Query('before_date') beforeDate?: string) {
+    return this.healthService.findAll(babyId, beforeDate);
   }
 
   @Get(':id')

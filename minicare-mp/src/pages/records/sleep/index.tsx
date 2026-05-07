@@ -29,7 +29,7 @@ import { useState, useEffect, useRef } from 'react'
 import dayjs from 'dayjs'
 import { babyApi, familyApi, recordsApi } from '@/api'
 import { getStatusBarHeight } from '@/lib/safeArea'
-import { nowTime, nowDate, isoToLocalDate, isoToLocalTime, dateToLocalISO, nowLocalISO, buildLocalISOPair, calcDurationMinFromRange } from '@/lib/utils'
+import { nowTime, nowDate, isoToLocalDate, isoToLocalTime, dateToLocalISO, nowLocalISO, buildLocalISOPair, calcDurationMinFromRange, inferSleepPeriod } from '@/lib/utils'
 import type { SleepRecord, SleepQuality } from '@/api/sleep'
 import TimerMode from './TimerMode'
 import ManualMode from './ManualMode'
@@ -204,9 +204,11 @@ export default function SleepFormPage() {
     setTimerApiLoading(true)
     try {
       const startDateDate = new Date()
+      const startISO = nowLocalISO()
       const { id } = await recordsApi.sleep.startSleep(familyId, {
         baby_id: babyId,
-        start_time: nowLocalISO(),
+        start_time: startISO,
+        sleep_period: inferSleepPeriod(startISO),
       })
       setOngoingId(id)
       setTimerStartTime(startDateDate)
@@ -247,6 +249,7 @@ export default function SleepFormPage() {
         end_time: nowLocalISO(),
         quality: sleepQuality,
         note: note || undefined,
+        sleep_period: timerStartTime ? inferSleepPeriod(dateToLocalISO(timerStartTime)) : undefined,
       })
       setTimerStopped(true)
       setShortSleepDialogOpen(false)
@@ -399,6 +402,7 @@ export default function SleepFormPage() {
         start_time: startISO,
         end_time: endISO,
         quality: sleepQuality,
+        sleep_period: inferSleepPeriod(startISO),
         note: note || undefined,
       })
 

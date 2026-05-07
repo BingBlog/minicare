@@ -21,8 +21,8 @@ export class DiaperController {
   }
 
   @Get()
-  findAll(@Query('baby_id') babyId: string, @Query('limit') limit = 20, @Query('offset') offset = 0) {
-    return this.diaperService.findAll(babyId, Number(limit), Number(offset));
+  findAll(@Query('baby_id') babyId: string, @Query('before_date') beforeDate?: string) {
+    return this.diaperService.findAll(babyId, beforeDate);
   }
 
   @Get(':id')

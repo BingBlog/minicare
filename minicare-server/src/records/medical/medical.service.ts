@@ -37,21 +37,38 @@ export class MedicalService {
     return { id };
   }
 
-  async findAll(babyId: string, limit = 20, offset = 0) {
-    const safeLimit  = Math.max(1, Math.min(200, Math.floor(Number(limit)  || 20)));
-    const safeOffset = Math.max(0, Math.floor(Number(offset) || 0));
+  async findAll(babyId: string, beforeDate?: string) {
+    const endDate = beforeDate || this.addDays(this.getTodayBeijing(), 1);
+    const startDate = this.addDays(endDate, -7);
+
     const [rows] = await this.db.query<any[]>(
       `SELECT id, baby_id, recorded_by, visit_date,
               visit_type, hospital, doctor, diagnosis,
               result_summary, medications, photo_ids,
               follow_up_date, note, created_at, updated_at
        FROM medical_record
-       WHERE baby_id = ?
-       ORDER BY visit_date DESC
-       LIMIT ${safeLimit} OFFSET ${safeOffset}`,
-      [babyId],
+       WHERE baby_id = ? AND visit_date >= ? AND visit_date < ?
+       ORDER BY visit_date DESC`,
+      [babyId, startDate, endDate],
     );
-    return rows.map((r) => ({
+    const items = rows.map((r) => this.mapListRow(r));
+
+    let hasMore = false;
+    if (items.length > 0) {
+      hasMore = true;
+    } else {
+      const [countResult] = await this.db.query<any[]>(
+        `SELECT COUNT(*) AS total FROM medical_record WHERE baby_id = ? AND visit_date < ?`,
+        [babyId, startDate],
+      );
+      hasMore = countResult[0]?.total > 0;
+    }
+
+    return { items, nextBeforeDate: hasMore ? startDate : null };
+  }
+
+  private mapListRow(r: any) {
+    return {
       ...r,
       medications: r.medications
         ? (typeof r.medications === 'string' ? JSON.parse(r.medications) : r.medications)
@@ -59,7 +76,20 @@ export class MedicalService {
       photo_ids: r.photo_ids
         ? (typeof r.photo_ids === 'string' ? JSON.parse(r.photo_ids) : r.photo_ids)
         : [],
-    }));
+    };
+  }
+
+  private getTodayBeijing(): string {
+    const now = new Date();
+    const bj = new Date(now.getTime() + 8 * 60 * 60 * 1000);
+    return `${bj.getUTCFullYear()}-${String(bj.getUTCMonth() + 1).padStart(2, '0')}-${String(bj.getUTCDate()).padStart(2, '0')}`;
+  }
+
+  private addDays(dateStr: string, days: number): string {
+    const [y, m, d] = dateStr.split('-').map(Number);
+    const date = new Date(Date.UTC(y, m - 1, d));
+    date.setUTCDate(date.getUTCDate() + days);
+    return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}-${String(date.getUTCDate()).padStart(2, '0')}`;
   }
 
   async findOne(id: string) {

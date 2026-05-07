@@ -22,7 +22,11 @@ import { registerAuth } from '@cloudbase/auth'
 // 仅注册 auth 模块
 registerAuth(cloudbase)
 
-const envId = process.env.TARO_APP_TCB_ENV_ID || ''
+// TARO_APP_* 变量由 Taro 在编译时静态替换为字符串字面量。
+// ⚠️ 不能写 process.env.TARO_APP_TCB_ENV_ID —— 小程序运行时没有 process 对象，
+// 那样写 Taro 不会替换，运行时求值结果为空字符串，导致 cloudbase.init({ env: '' }) 抛错。
+// 必须直接引用 process.env.TARO_APP_TCB_ENV_ID 作为独立表达式，让 Taro DefinePlugin 替换。
+const envId: string = process.env.TARO_APP_TCB_ENV_ID as string
 
 export const app = cloudbase.init({
   env: envId,

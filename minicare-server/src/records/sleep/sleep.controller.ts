@@ -43,13 +43,12 @@ export class SleepController {
   }
 
   @Get()
-  @ApiOperation({ summary: '获取睡眠记录列表' })
+  @ApiOperation({ summary: '获取睡眠记录列表（日期分页）' })
   findAll(
     @Query('baby_id') babyId: string,
-    @Query('limit') limit = 20,
-    @Query('offset') offset = 0,
+    @Query('before_date') beforeDate?: string,
   ) {
-    return this.sleepService.findAll(babyId, Number(limit), Number(offset));
+    return this.sleepService.findAll(babyId, beforeDate);
   }
 
   @Get(':id')

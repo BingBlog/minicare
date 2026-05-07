@@ -34,16 +34,24 @@ export interface CreateMedicalDto {
 
 export type UpdateMedicalDto = Partial<Omit<CreateMedicalDto, 'baby_id'>>
 
-function buildListQuery(babyId: string, limit?: number, offset?: number): string {
-  const params: string[] = [`baby_id=${babyId}`]
-  if (limit != null) params.push(`limit=${limit}`)
-  if (offset != null) params.push(`offset=${offset}`)
-  return params.join('&')
+export interface MedicalListParams {
+  before_date?: string
+}
+
+export interface MedicalListResponse {
+  items: MedicalRecord[]
+  nextBeforeDate: string | null
+}
+
+function buildListQuery(babyId: string, params?: MedicalListParams): string {
+  const q: string[] = [`baby_id=${babyId}`]
+  if (params?.before_date) q.push(`before_date=${encodeURIComponent(params.before_date)}`)
+  return q.join('&')
 }
 
 export const medicalApi = {
-  list: (familyId: string, babyId: string, params?: { limit?: number; offset?: number }) =>
-    request<MedicalRecord[]>(`/api/family/${familyId}/records/medical?${buildListQuery(babyId, params?.limit, params?.offset)}`),
+  list: (familyId: string, babyId: string, params?: MedicalListParams): Promise<MedicalListResponse> =>
+    request<MedicalListResponse>(`/api/family/${familyId}/records/medical?${buildListQuery(babyId, params)}`),
 
   create: (familyId: string, data: CreateMedicalDto) =>
     request<{ id: string }>(`/api/family/${familyId}/records/medical`, {

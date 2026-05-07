@@ -23,15 +23,12 @@ export class FeedingController {
   }
 
   @Get()
-  @ApiOperation({ summary: '获取喂养记录列表（支持 cursor 分页）' })
+  @ApiOperation({ summary: '获取喂养记录列表（日期分页，每次 3 天）' })
   findAll(
     @Query('baby_id') babyId: string,
-    @Query('limit') limit = 20,
-    @Query('offset') offset = 0,
-    @Query('before') before?: string,
-    @Query('before_id') beforeId?: string,
+    @Query('before_date') beforeDate?: string,
   ) {
-    return this.feedingService.findAll(babyId, Number(limit), Number(offset), before, beforeId);
+    return this.feedingService.findAll(babyId, beforeDate);
   }
 
   @Get(':id')

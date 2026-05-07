@@ -45,14 +45,41 @@ export class GrowthService {
     return { id: rows[0]?.id ?? id };
   }
 
-  async findAll(babyId: string, limit = 50, offset = 0) {
-    const safeLimit  = Math.max(1, Math.min(200, Math.floor(Number(limit)  || 50)));
-    const safeOffset = Math.max(0, Math.floor(Number(offset) || 0));
+  async findAll(babyId: string, beforeDate?: string) {
+    const endDate = beforeDate || this.addDays(this.getTodayBeijing(), 1);
+    const startDate = this.addDays(endDate, -7);
+
     const [rows] = await this.db.query<any[]>(
-      `SELECT * FROM growth_record WHERE baby_id = ? ORDER BY record_date DESC LIMIT ${safeLimit} OFFSET ${safeOffset}`,
-      [babyId],
+      `SELECT * FROM growth_record WHERE baby_id = ? AND record_date >= ? AND record_date < ? ORDER BY record_date DESC`,
+      [babyId, startDate, endDate],
     );
-    return rows;
+    const items = rows;
+
+    let hasMore = false;
+    if (items.length > 0) {
+      hasMore = true;
+    } else {
+      const [countResult] = await this.db.query<any[]>(
+        `SELECT COUNT(*) AS total FROM growth_record WHERE baby_id = ? AND record_date < ?`,
+        [babyId, startDate],
+      );
+      hasMore = countResult[0]?.total > 0;
+    }
+
+    return { items, nextBeforeDate: hasMore ? startDate : null };
+  }
+
+  private getTodayBeijing(): string {
+    const now = new Date();
+    const bj = new Date(now.getTime() + 8 * 60 * 60 * 1000);
+    return `${bj.getUTCFullYear()}-${String(bj.getUTCMonth() + 1).padStart(2, '0')}-${String(bj.getUTCDate()).padStart(2, '0')}`;
+  }
+
+  private addDays(dateStr: string, days: number): string {
+    const [y, m, d] = dateStr.split('-').map(Number);
+    const date = new Date(Date.UTC(y, m - 1, d));
+    date.setUTCDate(date.getUTCDate() + days);
+    return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}-${String(date.getUTCDate()).padStart(2, '0')}`;
   }
 
   async findOne(id: string) {

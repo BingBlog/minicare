@@ -25,16 +25,24 @@ export interface CreateHealthDto {
 
 export type UpdateHealthDto = Partial<Omit<CreateHealthDto, 'baby_id'>>
 
-function buildListQuery(babyId: string, limit?: number, offset?: number): string {
-  const params: string[] = [`baby_id=${babyId}`]
-  if (limit != null) params.push(`limit=${limit}`)
-  if (offset != null) params.push(`offset=${offset}`)
-  return params.join('&')
+export interface HealthListParams {
+  before_date?: string
+}
+
+export interface HealthListResponse {
+  items: HealthRecord[]
+  nextBeforeDate: string | null
+}
+
+function buildListQuery(babyId: string, params?: HealthListParams): string {
+  const q: string[] = [`baby_id=${babyId}`]
+  if (params?.before_date) q.push(`before_date=${encodeURIComponent(params.before_date)}`)
+  return q.join('&')
 }
 
 export const healthApi = {
-  list: (familyId: string, babyId: string, params?: { limit?: number; offset?: number }) =>
-    request<HealthRecord[]>(`/api/family/${familyId}/records/health?${buildListQuery(babyId, params?.limit, params?.offset)}`),
+  list: (familyId: string, babyId: string, params?: HealthListParams): Promise<HealthListResponse> =>
+    request<HealthListResponse>(`/api/family/${familyId}/records/health?${buildListQuery(babyId, params)}`),
 
   create: (familyId: string, data: CreateHealthDto) =>
     request<{ id: string }>(`/api/family/${familyId}/records/health`, {

@@ -23,6 +23,7 @@ import { useState, useEffect, useCallback } from 'react'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { familyApi, babyApi, recordsApi } from '@/api'
+import { inferSleepPeriod } from '@/lib/utils'
 import type { RecordFormType } from './types'
 import { useDashboardData, getTodayStr } from './useDashboardData'
 import HeaderBar from './HeaderBar'
@@ -126,11 +127,14 @@ export default function DashboardPage() {
     if (!familyId) return
     const now = new Date()
     const endTime = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}T${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`
+    // 从当天睡眠记录中查找对应记录的入睡时间，用于推断 sleep_period
+    const sleepRecord = data.sleep.find((r) => r.id === sleepId)
+    const period = sleepRecord ? inferSleepPeriod(sleepRecord.time) : inferSleepPeriod(endTime)
     try {
       await recordsApi.sleep.endSleep(familyId, sleepId, {
         end_time: endTime,
         quality: 'normal',
-        sleep_period: 'night',
+        sleep_period: period,
       })
       data.refresh()
     } catch (err) {

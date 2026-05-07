@@ -48,20 +48,48 @@ export class HealthService {
     return { id };
   }
 
-  async findAll(babyId: string, limit = 20, offset = 0) {
-    const safeLimit  = Math.max(1, Math.min(200, Math.floor(Number(limit)  || 20)));
-    const safeOffset = Math.max(0, Math.floor(Number(offset) || 0));
+  async findAll(babyId: string, beforeDate?: string) {
+    const endDate = beforeDate || this.addDays(this.getTodayBeijing(), 1);
+    const startDate = this.addDays(endDate, -7);
+    const startDatetime = `${startDate} 00:00:00`;
+    const endDatetime = `${endDate} 00:00:00`;
+
     const [rows] = await this.db.query<any[]>(
       `SELECT id, baby_id, recorded_by, record_time, temperature,
               allergy_symptoms, allergy_severity, medications, skin_care,
               note, created_at, updated_at
        FROM health_record
-       WHERE baby_id = ?
-       ORDER BY record_time DESC
-       LIMIT ${safeLimit} OFFSET ${safeOffset}`,
-      [babyId],
+       WHERE baby_id = ? AND record_time >= ? AND record_time < ?
+       ORDER BY record_time DESC`,
+      [babyId, startDatetime, endDatetime],
     );
-    return rows.map((r) => this.mapRow(r));
+    const items = rows.map((r) => this.mapRow(r));
+
+    let hasMore = false;
+    if (items.length > 0) {
+      hasMore = true;
+    } else {
+      const [countResult] = await this.db.query<any[]>(
+        `SELECT COUNT(*) AS total FROM health_record WHERE baby_id = ? AND record_time < ?`,
+        [babyId, startDatetime],
+      );
+      hasMore = countResult[0]?.total > 0;
+    }
+
+    return { items, nextBeforeDate: hasMore ? startDate : null };
+  }
+
+  private getTodayBeijing(): string {
+    const now = new Date();
+    const bj = new Date(now.getTime() + 8 * 60 * 60 * 1000);
+    return `${bj.getUTCFullYear()}-${String(bj.getUTCMonth() + 1).padStart(2, '0')}-${String(bj.getUTCDate()).padStart(2, '0')}`;
+  }
+
+  private addDays(dateStr: string, days: number): string {
+    const [y, m, d] = dateStr.split('-').map(Number);
+    const date = new Date(Date.UTC(y, m - 1, d));
+    date.setUTCDate(date.getUTCDate() + days);
+    return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}-${String(date.getUTCDate()).padStart(2, '0')}`;
   }
 
   async findOne(id: string) {

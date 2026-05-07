@@ -23,16 +23,24 @@ export interface CreateGrowthDto {
 
 export type UpdateGrowthDto = Partial<Omit<CreateGrowthDto, 'baby_id'>>
 
-function buildListQuery(babyId: string, limit?: number, offset?: number): string {
-  const params: string[] = [`baby_id=${babyId}`]
-  if (limit != null) params.push(`limit=${limit}`)
-  if (offset != null) params.push(`offset=${offset}`)
-  return params.join('&')
+export interface GrowthListParams {
+  before_date?: string
+}
+
+export interface GrowthListResponse {
+  items: GrowthRecord[]
+  nextBeforeDate: string | null
+}
+
+function buildListQuery(babyId: string, params?: GrowthListParams): string {
+  const q: string[] = [`baby_id=${babyId}`]
+  if (params?.before_date) q.push(`before_date=${encodeURIComponent(params.before_date)}`)
+  return q.join('&')
 }
 
 export const growthApi = {
-  list: (familyId: string, babyId: string, params?: { limit?: number; offset?: number }) =>
-    request<GrowthRecord[]>(`/api/family/${familyId}/records/growth?${buildListQuery(babyId, params?.limit, params?.offset)}`),
+  list: (familyId: string, babyId: string, params?: GrowthListParams): Promise<GrowthListResponse> =>
+    request<GrowthListResponse>(`/api/family/${familyId}/records/growth?${buildListQuery(babyId, params)}`),
 
   create: (familyId: string, data: CreateGrowthDto) =>
     request<{ id: string }>(`/api/family/${familyId}/records/growth`, {

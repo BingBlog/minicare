@@ -6,10 +6,16 @@
  *   sms  → CloudBase JS SDK signInWithOtp + verifyOtp → 后端 /api/auth/tcb-login 换 JWT
  */
 import { request, setToken, setUser } from './http'
-import { auth } from '@/lib/cloudbase'
 
 const AUTH_MODE = process.env.TARO_APP_AUTH_MODE || 'test'
 export const IS_TEST_MODE = AUTH_MODE === 'test'
+
+// cloudbase SDK 仅在 sms 模式下按需加载，避免 test 模式下因 TARO_APP_TCB_ENV_ID
+// 未定义导致 process is not defined 运行时崩溃
+async function getAuth() {
+  const { auth } = await import('@/lib/cloudbase')
+  return auth
+}
 
 interface User {
   id: string
@@ -69,6 +75,7 @@ export async function sendVerificationCode(
   }
 
   // SMS 模式：使用 CloudBase JS SDK 发送真实短信
+  const auth = await getAuth()
   let data: any, sdkError: any
   try {
     const result = await auth.signInWithOtp({ phone })
