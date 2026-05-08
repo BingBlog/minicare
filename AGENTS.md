@@ -1,5 +1,33 @@
 # AGENTS.md — minicare
 
+## ⚠️ Pre-task routing (read this first)
+
+**Every non-trivial task must start by matching against the table below and reading the corresponding skill.** This is a hard gate — no code, no deploy, no design change should begin before checking the relevant skill.
+
+| User intent | Skill to read | Type |
+|---|---|---|
+| Develop / modify / fix any feature or module | `.cursor/skills/minicare-dev/SKILL.md` | Dev |
+| Deploy frontend / backend / cloud function / DB migration / full release | `.cursor/skills/minicare-deploy/SKILL.md` | Ops |
+| Design or restyle any UI page or component | `.cursor/skills/minicare-design/SKILL.md` | Design |
+| Write or refine PRD / requirements / user stories / acceptance criteria | `.cursor/skills/prd-doc-writer/SKILL.md` | PM |
+| Design or optimize DB schema / indexes / migrations | `.cursor/skills/database-designer/SKILL.md` | DB |
+| Migrate a Web page to miniprogram (MP) | `.cursor/skills/web-to-mp-page-migration/SKILL.md` | Migration |
+| Any CloudBase operation (auth / DB / storage / functions / CloudRun / AI / Agent) | `.cursor/skills/cloudbase/SKILL.md` | Platform |
+
+> `cloudbase/SKILL.md` is a **router** — it dispatches to 20+ sub-skills under `references/` (e.g. `auth-web`, `cloudrun-development`). Always read the router first, then follow its routing table to the correct sub-skill. Never call CloudBase APIs without going through the skill chain.
+
+These 5 project rules are referenced by `opencode.json` and auto-apply to matching file patterns — you do not need to manually read them, but their domain rules are binding:
+
+| Rule file | Scope |
+|---|---|
+| `.cursor/rules/api-conventions.mdc` | API design, routing, DTOs, auth |
+| `.cursor/rules/cloudbase-conventions.mdc` | CloudBase platform, MCP tools, env info |
+| `.cursor/rules/deploy-conventions.mdc` | Build config, deploy scripts, Dockerfile |
+| `.cursor/rules/frontend-coding.mdc` | Icons, enum labels, dialog rules (web + mp) |
+| `.cursor/rules/miniapp-development.mdc` | Miniprogram platform constraints |
+
+---
+
 ## Project structure
 
 Monorepo with 3 independent packages (no root `package.json`):
@@ -38,7 +66,7 @@ npm run build:prod         # tsc -b + vite build (production mode)
 ## Environment setup
 
 - **Server**: Copy `.env.example` → `.env.local` with real credentials. Local dev connects to **remote CynosDB** (not local MySQL) — prepared statement handling differs between CynosDB Serverless and local MySQL 8, causing "passes locally, fails in prod" bugs.
-- **CloudRun**: Runtime env vars come **only** from CloudRun console `EnvParams`, not from `.env.*` files in the repo. `main.ts` dotenv skips `NODE_ENV=production`.
+- **CloudRun**: Runtime env vars come **only** from CloudRun console, not from `.env.*` files in the repo. `main.ts` dotenv skips `NODE_ENV=production`. **部署时不得在 `serverConfig.EnvParams` 中传入环境变量**，否则会整体替换已有配置（包括 `JWT_SECRET`），导致全量用户 Token 失效。环境变量应在 CloudBase 控制台独立管理。
 - **Miniprogram**: Environment variables via `TARO_APP_*` prefix, injected at build time. `.env.development` / `.env.production` control API URL and auth mode (`test` vs `sms`).
 - **Web**: `.env.development` sets `VITE_API_BASE_URL=` (empty, uses Vite proxy). `.env.production`/`.env.staging` set full CloudRun URL.
 
@@ -84,8 +112,6 @@ npm run build:prod         # tsc -b + vite build (production mode)
 
 ## Deploy
 
-See `.cursor/rules/deploy-conventions.mdc` and `.cursor/rules/cloudbase-conventions.mdc` for full details. TL;DR:
-
 **Server (CloudRun):**
 1. `cd minicare-server && npm run build && bash scripts/deploy.sh` (pre-check)
 2. Deploy via CloudBase MCP `manageCloudRun(action='deploy', ...)` — **not** `tcb` CLI
@@ -94,14 +120,3 @@ See `.cursor/rules/deploy-conventions.mdc` and `.cursor/rules/cloudbase-conventi
 **Miniprogram:**
 1. `cd minicare-mp && npm run build:weapp`
 2. Upload via WeChat DevTools → submit for review → publish
-
-## Existing guidance
-
-The `.cursor/rules/` directory contains 5 authoritative rule files:
-- `api-conventions.mdc` — API design, routing, DTOs, auth
-- `cloudbase-conventions.mdc` — CloudBase platform, MCP tools, skills
-- `deploy-conventions.mdc` — Build config, deploy.sh, Dockerfile
-- `frontend-coding.mdc` — Web coding conventions (icons, enums, dialogs)
-- `miniapp-development.mdc` — Miniprogram dev constraints (primary platform)
-
-Read these when working in their domain. They are the source of truth over any prose docs.

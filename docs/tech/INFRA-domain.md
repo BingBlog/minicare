@@ -252,7 +252,7 @@ VITE_AUTH_MODE=test   # staging 前端走固定验证码 123456
 > 因此：
 > - `.env.staging` / `.env.production` 是纯人工参考文档，标注变量含义和示例值，**不影响任何运行时行为**
 > - 查看线上实际 EnvParams：`queryCloudRun(action='detail', detailServerName='minicare-api')`
-> - 修改线上 EnvParams：需要重新执行 `manageCloudRun(action='deploy')` 并在 `serverConfig.EnvParams` 字段中写入完整配置
+> - 修改线上 EnvParams：在 CloudBase 控制台操作，**不要**通过 `manageCloudRun(deploy)` 的 `serverConfig.EnvParams` 传入（会整体替换所有环境变量，导致 `JWT_SECRET` 变化、全量用户 Token 失效）
 
 #### 变更一：CORS 改为环境变量白名单控制
 
@@ -377,7 +377,7 @@ CloudBase 支持免费申请 SSL 证书，或上传腾讯云证书服务中已�
 **重新部署 CloudRun**
 
 - [ ] 2.4 `npm run build` 编译后端
-- [ ] 2.5 执行 `manageCloudRun deploy`，`EnvParams` 中新增 `CORS_ORIGINS` 字段（含 minicare.top 和 tcloudbaseapp.com 两个域名）
+- [ ] 2.5 在 CloudBase 控制台为 CloudRun 服务新增 `CORS_ORIGINS` 环境变量（含 minicare.top 和 tcloudbaseapp.com 两个域名），然后执行 `manageCloudRun deploy`（不传 `EnvParams`，仅更新代码）
 - [ ] 2.6 验证 `/health` 端点正常响应
 
 ---

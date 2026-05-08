@@ -6,7 +6,8 @@ description: minicare 项目构建发布操作手册。包含前端静态托管�
 # minicare 发布操作手册
 
 > 💡 **敏感配置（密码/密钥）见 `minicare-server/.env.example`（模板），实际值存在 `minicare-server/.env.local`（不进 git）。**
-> 执行部署前读取 `minicare-server/.env.local` 获取 `DB_HOST / DB_PORT / DB_USER / DB_PASS / JWT_SECRET` 的实际值。
+> 执行部署前读取 `minicare-server/.env.local` 获取 `DB_HOST / DB_PORT / DB_USER / DB_PASS` 的实际值。
+> **`JWT_SECRET` 不通过 EnvParams 传递**，仅通过 CloudBase 控制台设置一次后持久化，避免部署时误覆盖导致全量用户 token 失效。
 
 ---
 
@@ -38,7 +39,7 @@ description: minicare 项目构建发布操作手册。包含前端静态托管�
 
 | 属性            | staging                                                                           | production                                                                                  |
 | --------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| 项目目录        | `/Users/bing/Desktop/工作区/minicare/minicare-server`                             | 同左                                                                                        |
+| 项目目录        | `/Users/bing/Documents/minicare/minicare-server`                             | 同左                                                                                        |
 | 构建命令        | `npm run build`（= `nest build`）                                                 | 同左                                                                                        |
 | 预检命令        | `bash scripts/deploy.sh`                                                          | 同左                                                                                        |
 | CloudRun 服务名 | `minicare-api`                                                                    | `minicare-api-production`                                                                   |
@@ -50,19 +51,19 @@ description: minicare 项目构建发布操作手册。包含前端静态托管�
 
 **完整 manageCloudRun serverConfig（可直接复制）**：
 
-> 以下 `EnvParams` 中的敏感值（`DB_HOST / DB_PORT / DB_USER / DB_PASS / JWT_SECRET`）需从 `minicare-server/.env.local` 读取后填入。
+> 所有环境变量通过 CloudBase 控制台独立管理，部署时不再通过 `EnvParams` 传递。
+> 首次部署前需在控制台设置好全部变量，后续部署只更新代码。
 
 **staging 部署（`minicare-api`）：**
 ```
 manageCloudRun(
   action     = 'deploy',
   serverName = 'minicare-api',
-  targetPath = '/Users/bing/Desktop/工作区/minicare/minicare-server',
+  targetPath = '/Users/bing/Documents/minicare/minicare-server',
   serverType = 'container',
   serverConfig = {
     Cpu: 0.5, Mem: 1, MinNum: 0, MaxNum: 5, Port: 3000,
-    OpenAccessTypes: ['OA', 'PUBLIC', 'MINIAPP'],
-    EnvParams: "{\"NODE_ENV\":\"production\",\"TCB_ENV_ID\":\"minicare-cloud-6gqledlle0132cbe\",\"DB_HOST\":\"<DB_HOST>\",\"DB_PORT\":\"<DB_PORT>\",\"DB_NAME\":\"minicare_staging\",\"DB_USER\":\"<DB_USER>\",\"DB_PASS\":\"<DB_PASS>\",\"JWT_SECRET\":\"<JWT_SECRET>\",\"AUTH_TEST_MODE\":\"true\",\"CORS_ORIGINS\":\"https://minicare.top,https://minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com\"}"
+    OpenAccessTypes: ['OA', 'PUBLIC', 'MINIAPP']
   }
 )
 ```
@@ -72,12 +73,11 @@ manageCloudRun(
 manageCloudRun(
   action     = 'deploy',
   serverName = 'minicare-api-production',
-  targetPath = '/Users/bing/Desktop/工作区/minicare/minicare-server',
+  targetPath = '/Users/bing/Documents/minicare/minicare-server',
   serverType = 'container',
   serverConfig = {
     Cpu: 0.5, Mem: 1, MinNum: 0, MaxNum: 5, Port: 3000,
-    OpenAccessTypes: ['OA', 'PUBLIC', 'MINIAPP'],
-    EnvParams: "{\"NODE_ENV\":\"production\",\"TCB_ENV_ID\":\"minicare-cloud-6gqledlle0132cbe\",\"DB_HOST\":\"<DB_HOST>\",\"DB_PORT\":\"<DB_PORT>\",\"DB_NAME\":\"minicare-cloud-6gqledlle0132cbe\",\"DB_USER\":\"<DB_USER>\",\"DB_PASS\":\"<DB_PASS>\",\"JWT_SECRET\":\"<JWT_SECRET>\",\"AUTH_TEST_MODE\":\"false\",\"CORS_ORIGINS\":\"https://minicare.top,http://www.minicare.top,https://www.minicare.top,https://minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com\"}"
+    OpenAccessTypes: ['OA', 'PUBLIC', 'MINIAPP']
   }
 )
 ```
@@ -94,7 +94,7 @@ manageCloudRun(
 | 属性       | 值                                                                                           |
 | ---------- | -------------------------------------------------------------------------------------------- |
 | 函数名     | `keepalive-ping`                                                                             |
-| 函数根目录 | `/Users/bing/Desktop/工作区/minicare/minicare-server/functions`                              |
+| 函数根目录 | `/Users/bing/Documents/minicare/minicare-server/functions`                              |
 | handler    | `index.main`                                                                                 |
 | 环境变量   | `CLOUDRUN_HEALTH_URL=https://www.minicare.top/health` |
 | 验证标志   | 调用后日志含 `status=200`                                                                    |
@@ -103,7 +103,7 @@ manageCloudRun(
 
 | 属性         | 值                                                    |
 | ------------ | ----------------------------------------------------- |
-| 迁移脚本路径 | `/Users/bing/Desktop/工作区/minicare/minicare-server` |
+| 迁移脚本路径 | `/Users/bing/Documents/minicare/minicare-server` |
 | 迁移文件目录 | `minicare-server/migrations/`                         |
 | 开发库       | `minicare_dev`                                        |
 | Staging 库   | `minicare_staging`                                    |
@@ -121,7 +121,7 @@ manageCloudRun(
 
 ```bash
 # Step 1：构建 staging 版本
-cd /Users/bing/Desktop/工作区/minicare/minicare-web
+cd /Users/bing/Documents/minicare/minicare-web
 npm run build:staging
 ```
 
@@ -130,7 +130,7 @@ npm run build:staging
 ```
 # Step 2：上传到 CloudBase 静态托管 /staging/ 路径
 uploadFiles(
-  localPath  = '/Users/bing/Desktop/工作区/minicare/minicare-web/dist',
+  localPath  = '/Users/bing/Documents/minicare/minicare-web/dist',
   cloudPath  = '/staging/'
 )
 ```
@@ -143,7 +143,7 @@ uploadFiles(
 
 ```bash
 # Step 1：构建 production 版本
-cd /Users/bing/Desktop/工作区/minicare/minicare-web
+cd /Users/bing/Documents/minicare/minicare-web
 npm run build:prod
 ```
 
@@ -152,7 +152,7 @@ npm run build:prod
 ```
 # Step 2：上传到 CloudBase 静态托管 / 根路径
 uploadFiles(
-  localPath  = '/Users/bing/Desktop/工作区/minicare/minicare-web/dist',
+  localPath  = '/Users/bing/Documents/minicare/minicare-web/dist',
   cloudPath  = '/'
 )
 ```
@@ -178,7 +178,7 @@ uploadFiles(
 
 ```bash
 # Step 1：编译 TypeScript
-cd /Users/bing/Desktop/工作区/minicare/minicare-server
+cd /Users/bing/Documents/minicare/minicare-server
 npm run build
 ```
 
@@ -213,7 +213,7 @@ curl https://www.minicare.top/health
 ```
 
 **成功判定**：返回 `{"status":"ok","db":{"host_set":true,"pass_set":true,...}}`  
-若 `db.host_set=false`：EnvParams 未生效，需重新部署。  
+若 `db.host_set=false`：环境变量未生效，需在 CloudBase 控制台检查配置。  
 若超时 30s：CloudRun 冷启动，重试一次。
 
 ### 完成报告格式
@@ -235,7 +235,7 @@ curl https://www.minicare.top/health
 manageFunctions(
   action           = 'updateFunctionCode',
   functionName     = 'keepalive-ping',
-  functionRootPath = '/Users/bing/Desktop/工作区/minicare/minicare-server/functions',
+  functionRootPath = '/Users/bing/Documents/minicare/minicare-server/functions',
   handler          = 'index.main'
 )
 ```
@@ -276,7 +276,7 @@ queryFunctions(action='listFunctionLogs', functionName='keepalive-ping', limit=5
 
 ```bash
 # Step 1：预览待执行迁移（dry-run，不实际执行）
-cd /Users/bing/Desktop/工作区/minicare/minicare-server
+cd /Users/bing/Documents/minicare/minicare-server
 bash scripts/migrate.sh --dry-run --all-envs
 ```
 
@@ -345,8 +345,8 @@ bash scripts/migrate.sh --status
 | `dist/` 体积 > 5MB                          | `test/` 被编译进去                  | 确认 `nest-cli.json` 的 `tsConfigPath` 指向 `tsconfig.build.json`               |
 | `dist/test/` 目录存在                       | tsconfig.build.json 的 exclude 失效 | 检查 `nest-cli.json`                                                            |
 | 部署后 `/health` 超时 30s                   | CloudRun 冷启动                     | 重试一次；或检查 `DB_HOST` 是否使用了公网地址                                   |
-| `/health` 返回 `db.host_set=false`          | EnvParams 未生效                    | 重新执行 manageCloudRun，确认 EnvParams 字符串格式正确                          |
+| `/health` 返回 `db.host_set=false`          | 环境变量未生效                      | 在 CloudBase 控制台检查 CloudRun 服务的环境变量配置                             |
 | 数据库连接超时（upstream-timecost ≈ 30000） | CloudRun 使用了内网地址             | 确认 DB_HOST=`sh-cynosdbmysql-grp-6a0nj6a8.sql.tencentcdb.com`，DB_PORT=`21002` |
-| 生产前端登录失败（400/验证码错误）           | AUTH_TEST_MODE 未设为 false         | 确认 `minicare-api-production` 的 EnvParams 中 `AUTH_TEST_MODE=false`            |
+| 生产前端登录失败（400/验证码错误）           | AUTH_TEST_MODE 未设为 false         | 确认 `minicare-api-production` 的环境变量中 `AUTH_TEST_MODE=false`              |
 | 云函数调用返回 error                        | 函数代码错误或环境变量未配          | `queryFunctions(listFunctionLogs)` 查看错误日志                                 |
 | 迁移执行失败中断                            | SQL 语法错误或字段冲突              | 修复 SQL 文件，重新执行；`schema_migrations` 表中未记录失败的版本，可安全重试   |

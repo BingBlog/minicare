@@ -24,8 +24,8 @@
 
 > **每次开发任何模块前，必须先激活以下两个 SKILL：**
 >
-> 1. `.catpaw/skills/minicare-dev/SKILL.md` — 开发规范（代码路径、字段规范、权限模型）
-> 2. `.catpaw/skills/minicare-design/SKILL.md` — 视觉规范（色彩 Token、图标、组件样式）
+> 1. `.cursor/skills/minicare-dev/SKILL.md` — 开发规范（代码路径、字段规范、权限模型）
+> 2. `.cursor/skills/minicare-design/SKILL.md` — 视觉规范（色彩 Token、图标、组件样式）
 
 ---
 
@@ -57,7 +57,7 @@
 
 ### 1.1 F01 登录页完善
 
-> **开发前必读**：`.catpaw/skills/minicare-dev/SKILL.md` + `docs/features/F01-auth.md`
+> **开发前必读**：`.cursor/skills/minicare-dev/SKILL.md` + `docs/features/F01-auth.md`
 
 **代码路径：**
 
@@ -99,7 +99,7 @@
 
 ### 1.2 F02 宝宝档案 + 引导页
 
-> **开发前必读**：`.catpaw/skills/minicare-dev/SKILL.md` + `docs/features/F02-profile.md`
+> **开发前必读**：`.cursor/skills/minicare-dev/SKILL.md` + `docs/features/F02-profile.md`
 
 **代码路径：**
 
@@ -152,7 +152,7 @@
 
 ### 1.3 首页时间轴
 
-> **开发前必读**：`.catpaw/skills/minicare-dev/SKILL.md`
+> **开发前必读**：`.cursor/skills/minicare-dev/SKILL.md`
 
 **代码路径：**
 
@@ -192,7 +192,7 @@
 
 ### 2.1 F03 饮食记录（复杂度：高）
 
-> **开发前必读**：`.catpaw/skills/minicare-dev/SKILL.md` + `docs/features/F03-feeding.md`
+> **开发前必读**：`.cursor/skills/minicare-dev/SKILL.md` + `docs/features/F03-feeding.md`
 
 **代码路径：**
 
@@ -256,7 +256,7 @@
 
 ### 2.2 F04 睡眠记录（复杂度：高）
 
-> **开发前必读**：`.catpaw/skills/minicare-dev/SKILL.md` + `docs/features/F04-sleep.md`
+> **开发前必读**：`.cursor/skills/minicare-dev/SKILL.md` + `docs/features/F04-sleep.md`
 
 **代码路径：**
 
@@ -305,7 +305,7 @@
 
 ### 2.3 F06 尿布记录（复杂度：低）
 
-> **开发前必读**：`.catpaw/skills/minicare-dev/SKILL.md` + `docs/features/F06-diaper.md`
+> **开发前必读**：`.cursor/skills/minicare-dev/SKILL.md` + `docs/features/F06-diaper.md`
 
 **代码路径：**
 
@@ -350,7 +350,7 @@
 
 ### 2.4 F05 活动记录（复杂度：低）
 
-> **开发前必读**：`.catpaw/skills/minicare-dev/SKILL.md` + `docs/features/F05-activity.md`
+> **开发前必读**：`.cursor/skills/minicare-dev/SKILL.md` + `docs/features/F05-activity.md`
 
 **代码路径：**
 
@@ -391,7 +391,7 @@
 
 ### 2.5 F07 健康记录（复杂度：中）
 
-> **开发前必读**：`.catpaw/skills/minicare-dev/SKILL.md` + `docs/features/F07-health.md`
+> **开发前必读**：`.cursor/skills/minicare-dev/SKILL.md` + `docs/features/F07-health.md`
 
 **代码路径：**
 
@@ -438,7 +438,7 @@
 
 ### 2.6 F08 表现记录（复杂度：低）
 
-> **开发前必读**：`.catpaw/skills/minicare-dev/SKILL.md` + `docs/features/F08-symptom.md`
+> **开发前必读**：`.cursor/skills/minicare-dev/SKILL.md` + `docs/features/F08-symptom.md`
 
 **代码路径：**
 
@@ -514,7 +514,7 @@
 
 ### 3.1 F09 生长发育（复杂度：中）
 
-> **开发前必读**：`.catpaw/skills/minicare-dev/SKILL.md` + `docs/features/F09-growth.md`
+> **开发前必读**：`.cursor/skills/minicare-dev/SKILL.md` + `docs/features/F09-growth.md`
 
 **代码路径：**
 
@@ -557,7 +557,7 @@
 
 ### 3.2 F10 医疗记录（复杂度：高）
 
-> **开发前必读**：`.catpaw/skills/minicare-dev/SKILL.md` + `docs/features/F10-medical.md`
+> **开发前必读**：`.cursor/skills/minicare-dev/SKILL.md` + `docs/features/F10-medical.md`
 
 **代码路径：**
 
@@ -610,7 +610,7 @@
 
 ### 4.1 F12 家庭成员管理
 
-> **开发前必读**：`.catpaw/skills/minicare-dev/SKILL.md` + `docs/features/F12-family.md`
+> **开发前必读**：`.cursor/skills/minicare-dev/SKILL.md` + `docs/features/F12-family.md`
 
 **代码路径：**
 
@@ -662,7 +662,7 @@
 
 ### 5.1 F11 统计报告
 
-> **开发前必读**：`.catpaw/skills/minicare-dev/SKILL.md` + `docs/features/F11-report.md`
+> **开发前必读**：`.cursor/skills/minicare-dev/SKILL.md` + `docs/features/F11-report.md`
 
 **代码路径：**
 
@@ -717,7 +717,7 @@
 >
 > 1. **严格对齐设计稿**：所有页面的整体布局、样式、字体、颜色、背景必须与 `minicare/ui-draft/` 中对应 HTML 文件**完全一致**，不得自行调整视觉风格；
 > 2. **禁止使用 emoji 作为图标**：页面中所有图标必须按照 `ui-draft` 设计稿中对应的 SVG 图标实现，**严禁用 emoji 符号替代任何功能性或装饰性图标**；
-> 3. **开发前必读 SKILL**：开发任何前端页面前，必须先读取 `.catpaw/skills/minicare-dev/SKILL.md`（开发规范）和 `.catpaw/skills/minicare-design/SKILL.md`（视觉规范）。
+> 3. **开发前必读 SKILL**：开发任何前端页面前，必须先读取 `.cursor/skills/minicare-dev/SKILL.md`（开发规范）和 `.cursor/skills/minicare-design/SKILL.md`（视觉规范）。
 
 ### 后端开发规范
 

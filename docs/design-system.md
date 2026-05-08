@@ -169,5 +169,5 @@
 ## 参考文件
 
 - `minicare/ui-draft/home.html` — 首页参考实现
-- `.catpaw/skills/minicare-design/design-tokens.md` — 完整色彩/间距/阴影 Token
-- `.catpaw/skills/minicare-design/components.md` — 所有组件 CSS 类名和用法速查
+- `.cursor/skills/minicare-design/design-tokens.md` — 完整色彩/间距/阴影 Token
+- `.cursor/skills/minicare-design/components.md` — 所有组件 CSS 类名和用法速查

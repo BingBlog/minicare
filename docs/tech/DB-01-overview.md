@@ -434,7 +434,7 @@ Layer 4 · 衍生逻辑层
 
 3. **关系型数据 + 完整 SQL**：家庭、成员、宝宝、记录之间有清晰的外键关系；统计报告需要复杂聚合查询（GROUP BY、日期范围、多表 JOIN），MySQL 完美支持。
 
-4. **AI 辅助开发**：CloudBase 官方提供 MCP Server（`@cloudbase/cloudbase-mcp`），可直接在 CatPaw 中通过自然语言操作数据库、部署函数、管理资源。
+4. **AI 辅助开发**：CloudBase 官方提供 MCP Server（`@cloudbase/cloudbase-mcp`），可直接在 SOLO 中通过自然语言操作数据库、部署函数、管理资源。
 
 5. **一体化平台**：MySQL + Auth（手机号 SMS 登录）+ 云存储（照片 CDN）+ CloudRun（REST API + WebSocket）+ 静态托管，**一个平台解决所有后端需求**，与腾讯云 OCR、短信服务同账号计费。
 
