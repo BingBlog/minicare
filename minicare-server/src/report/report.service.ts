@@ -162,7 +162,10 @@ export interface ChartData {
   growth: { records: GrowthRecord[] };
 }
 
-/** 与前端睡眠 Tab 一致：夜间窗口为当日 22:00 至次日 06:00（本地时区） */
+/**
+ * 与前端睡眠 Tab 一致：夜间窗口为（北京时间）当日 22:00 至次日 06:00
+ * process.env.TZ = 'Asia/Shanghai'（main.ts 启动时设置）确保 setHours() 操作北京时间
+ */
 function minutesInNightWindow22to06(start: Date, end: Date): number {
   if (!(start instanceof Date) || !(end instanceof Date) || end <= start) return 0;
   let totalMs = 0;
@@ -934,9 +937,7 @@ export class ReportService {
       startDate: formatSqlDate(r.start_date),
       endDate: formatSqlDate(r.end_date),
       days: Number(r.days),
-      createdAt: r.created_at instanceof Date
-        ? r.created_at.toISOString()
-        : String(r.created_at),
+      createdAt: r.created_at,
     }));
   }
 
@@ -962,9 +963,7 @@ export class ReportService {
       startDate: formatSqlDate(r.start_date),
       endDate: formatSqlDate(r.end_date),
       days: Number(r.days),
-      createdAt: r.created_at instanceof Date
-        ? r.created_at.toISOString()
-        : String(r.created_at),
+      createdAt: r.created_at,
       summary: JSON.parse(r.summary_json as string) as ReportSummary,
     };
   }

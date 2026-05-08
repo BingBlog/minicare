@@ -10,7 +10,7 @@ import { Pool } from 'mysql2/promise';
 import { v4 as uuidv4 } from 'uuid';
 import { DATABASE_POOL } from '../../common/database/database.module';
 import { StartSleepDto, EndSleepDto, UpdateSleepDto, CreateCompleteSleepDto } from './dto/create-sleep.dto';
-import { toMysqlDatetime } from '../../common/utils/date.util';
+import { toMysqlDatetime, getBeijingToday, addDays } from '../../common/utils/date.util';
 
 /**
  * DDL: sleep_record.status VARCHAR(10)  ongoing=进行中  ended=已结束
@@ -151,8 +151,8 @@ export class SleepService {
    * @returns { items, nextBeforeDate } — nextBeforeDate 为 null 表示没有更多数据
    */
   async findAll(babyId: string, beforeDate?: string) {
-    const endDate = beforeDate || this.addDays(this.getTodayBeijing(), 1);
-    const startDate = this.addDays(endDate, -7);
+    const endDate = beforeDate || addDays(getBeijingToday(), 1);
+    const startDate = addDays(endDate, -7);
 
     const startDatetime = `${startDate} 00:00:00`;
     const endDatetime = `${endDate} 00:00:00`;
@@ -182,22 +182,6 @@ export class SleepService {
 
     const nextBeforeDate = hasMore ? startDate : null;
     return { items, nextBeforeDate };
-  }
-
-  private getTodayBeijing(): string {
-    const now = new Date();
-    const bj = new Date(now.getTime() + 8 * 60 * 60 * 1000);
-    const y = bj.getUTCFullYear();
-    const m = String(bj.getUTCMonth() + 1).padStart(2, '0');
-    const d = String(bj.getUTCDate()).padStart(2, '0');
-    return `${y}-${m}-${d}`;
-  }
-
-  private addDays(dateStr: string, days: number): string {
-    const [y, m, d] = dateStr.split('-').map(Number);
-    const date = new Date(Date.UTC(y, m - 1, d));
-    date.setUTCDate(date.getUTCDate() + days);
-    return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}-${String(date.getUTCDate()).padStart(2, '0')}`;
   }
 
   /** 获取当前 ongoing 记录（用于前端显示计时器） */

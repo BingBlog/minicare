@@ -1,3 +1,8 @@
+// ── 时区：全链路北京时间 ──────────────────────────────────────
+// 必须在所有 import 之前设置，确保 Node.js 的 new Date() 等操作使用北京时间
+// Dockerfile 已设置 ENV TZ=Asia/Shanghai（OS 级），此处为 Node.js 进程级兜底
+process.env.TZ = 'Asia/Shanghai';
+
 // 环境变量加载：本地开发从 .env.local 读取，生产环境由 CloudRun 直接注入
 import { config } from 'dotenv';
 import { resolve } from 'path';
@@ -10,6 +15,7 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { DateTransformInterceptor } from './common/interceptors/date-transform.interceptor';
 
 async function bootstrap() {
   const port = Number(process.env.PORT ?? 3000);
@@ -43,6 +49,9 @@ async function bootstrap() {
     origin: corsOrigins.length > 0 ? corsOrigins : false,
     credentials: true,
   });
+
+  // ── 全局 Date → 北京时间字符串 转换（curl/调试直接可读）────
+  app.useGlobalInterceptors(new DateTransformInterceptor());
 
   // ── Swagger（仅非生产环境）────────────────────────────────────
   if (process.env.NODE_ENV !== 'production') {

@@ -3,7 +3,7 @@ import { Pool } from 'mysql2/promise';
 import { v4 as uuidv4 } from 'uuid';
 import { DATABASE_POOL } from '../../common/database/database.module';
 import { CreateMedicalDto, UpdateMedicalDto } from './dto/create-medical.dto';
-import { toMysqlDate } from '../../common/utils/date.util';
+import { toMysqlDate, getBeijingToday, addDays } from '../../common/utils/date.util';
 
 @Injectable()
 export class MedicalService {
@@ -38,8 +38,8 @@ export class MedicalService {
   }
 
   async findAll(babyId: string, beforeDate?: string) {
-    const endDate = beforeDate || this.addDays(this.getTodayBeijing(), 1);
-    const startDate = this.addDays(endDate, -7);
+    const endDate = beforeDate || addDays(getBeijingToday(), 1);
+    const startDate = addDays(endDate, -7);
 
     const [rows] = await this.db.query<any[]>(
       `SELECT id, baby_id, recorded_by, visit_date,
@@ -77,19 +77,6 @@ export class MedicalService {
         ? (typeof r.photo_ids === 'string' ? JSON.parse(r.photo_ids) : r.photo_ids)
         : [],
     };
-  }
-
-  private getTodayBeijing(): string {
-    const now = new Date();
-    const bj = new Date(now.getTime() + 8 * 60 * 60 * 1000);
-    return `${bj.getUTCFullYear()}-${String(bj.getUTCMonth() + 1).padStart(2, '0')}-${String(bj.getUTCDate()).padStart(2, '0')}`;
-  }
-
-  private addDays(dateStr: string, days: number): string {
-    const [y, m, d] = dateStr.split('-').map(Number);
-    const date = new Date(Date.UTC(y, m - 1, d));
-    date.setUTCDate(date.getUTCDate() + days);
-    return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}-${String(date.getUTCDate()).padStart(2, '0')}`;
   }
 
   async findOne(id: string) {

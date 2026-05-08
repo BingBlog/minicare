@@ -1,12 +1,14 @@
 /**
  * 日期工具函数
  *
- * 全链路统一使用北京时间（CST, UTC+8）存储，无需时区转换。
- * 数据库连接已配置 timezone: '+08:00'，mysql2 会以 CST 解读 DATETIME 字段。
+ * 全链路统一使用北京时间（CST, UTC+8）：
+ *   - 进程级：main.ts 第 1 行 `process.env.TZ = 'Asia/Shanghai'`，所有 new Date() 返回北京时间
+ *   - 容器级：Dockerfile `ENV TZ=Asia/Shanghai`
+ *   - 数据库：连接配置 `timezone: '+08:00'`，mysql2 以 CST 解读 DATETIME 字段
  *
  * 核心规则：
  *  - 前端传入 ISO 字符串（不带 Z，如 '2026-04-01T07:18:00'）视为北京时间
- *  - 后端用本地时间分量写入 MySQL，Date() 构造时不加 Z 则 JS 按本地时区解析
+ *  - 后端用本地时间分量写入 MySQL，getFullYear/getMonth/getDate 返回北京时间
  *  - 查询时直接用 DATE(field) = 'YYYY-MM-DD'，字段和日期均为 CST，无偏差
  */
 
@@ -92,4 +94,31 @@ export function formatSqlDate(d: unknown): string {
     return `${y}-${m}-${day}`;
   }
   return String(d).slice(0, 10);
+}
+
+/**
+ * 返回当前北京时间日期字符串 YYYY-MM-DD
+ * 依赖 process.env.TZ = 'Asia/Shanghai'（main.ts 启动时设置）
+ */
+export function getBeijingToday(): string {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
+/**
+ * 日期字符串加减天数（纯日期算术，时区无关）
+ * @param dateStr YYYY-MM-DD
+ * @param days   正数为加，负数为减
+ */
+export function addDays(dateStr: string, days: number): string {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const date = new Date(Date.UTC(y, m - 1, d));
+  date.setUTCDate(date.getUTCDate() + days);
+  const ry = date.getUTCFullYear();
+  const rm = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const rd = String(date.getUTCDate()).padStart(2, '0');
+  return `${ry}-${rm}-${rd}`;
 }

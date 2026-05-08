@@ -16,14 +16,13 @@ import { RoleGuard } from '../family/role.guard';
 import { ReportService } from './report.service';
 import { BabyService } from '../baby/baby.service';
 import type { ReportSummary, ChartData } from './report.service';
-import { formatSqlDate } from '../common/utils/date.util';
+import { getBeijingToday, addDays } from '../common/utils/date.util';
 
-/** 默认时间范围：最近7天 */
+/** 默认时间范围：最近7天（process.env.TZ = 'Asia/Shanghai' 已生效） */
 function defaultRange(): { startDate: string; endDate: string } {
-  const end = new Date();
-  const start = new Date();
-  start.setDate(end.getDate() - 6);
-  return { startDate: formatSqlDate(start), endDate: formatSqlDate(end) };
+  const endDate = getBeijingToday();
+  const startDate = addDays(endDate, -6);
+  return { startDate, endDate };
 }
 
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;

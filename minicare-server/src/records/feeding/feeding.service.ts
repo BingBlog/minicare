@@ -6,7 +6,7 @@ import {
   CreateFeedingDto,
   UpdateFeedingDto,
 } from './dto/create-feeding.dto';
-import { toMysqlDatetime } from '../../common/utils/date.util';
+import { toMysqlDatetime, getBeijingToday, addDays } from '../../common/utils/date.util';
 
 /** JSON 字段解析辅助（mysql2 有时返回字符串） */
 function parseJson(val: unknown) {
@@ -34,32 +34,6 @@ function flattenSupplementItems(items: unknown): unknown {
     return (items as unknown[][]).flat();
   }
   return items;
-}
-
-/**
- * 获取当前北京时间的日期字符串 YYYY-MM-DD
- * CloudRun 容器时区为 UTC，需要手动 +8h
- */
-function getTodayBeijing(): string {
-  const now = new Date();
-  const bj = new Date(now.getTime() + 8 * 60 * 60 * 1000);
-  const y = bj.getUTCFullYear();
-  const m = String(bj.getUTCMonth() + 1).padStart(2, '0');
-  const d = String(bj.getUTCDate()).padStart(2, '0');
-  return `${y}-${m}-${d}`;
-}
-
-/**
- * 日期字符串加减天数
- */
-function addDays(dateStr: string, days: number): string {
-  const [y, m, d] = dateStr.split('-').map(Number);
-  const date = new Date(Date.UTC(y, m - 1, d));
-  date.setUTCDate(date.getUTCDate() + days);
-  const ry = date.getUTCFullYear();
-  const rm = String(date.getUTCMonth() + 1).padStart(2, '0');
-  const rd = String(date.getUTCDate()).padStart(2, '0');
-  return `${ry}-${rm}-${rd}`;
 }
 
 @Injectable()
@@ -222,7 +196,7 @@ export class FeedingService {
    */
   async findAll(babyId: string, beforeDate?: string) {
     // 默认 before_date = 明天（这样 < before_date 就包含今天）
-    const endDate = beforeDate || addDays(getTodayBeijing(), 1);
+    const endDate = beforeDate || addDays(getBeijingToday(), 1);
     const startDate = addDays(endDate, -7);
 
     // 数据库存储北京时间，直接用日期字符串比较

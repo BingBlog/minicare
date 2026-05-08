@@ -227,13 +227,14 @@ export class FamilyService {
     const babyId = babies[0].id;
 
     // 若传入 date 且格式合法（YYYY-MM-DD），使用传入日期；否则默认今日
+    // process.env.TZ = 'Asia/Shanghai' 已生效，new Date() 返回北京时间
     const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
     let dateStr: string;
     if (date && dateRegex.test(date)) {
       dateStr = date;
     } else {
-      const today = new Date();
-      dateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+      const d = new Date();
+      dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     }
 
     // feeding: 四张子表 UNION，各自携带类型标记和关键摘要
