@@ -134,8 +134,8 @@ export default function RecordsPage() {
       list: (
         familyId: string,
         babyId: string,
-        params?: { limit?: number; offset?: number },
-      ) => Promise<RecordItem[]>;
+        params?: { before_date?: string },
+      ) => Promise<{ items: RecordItem[]; nextBeforeDate: string | null }>;
       remove?: (familyId: string, id: string) => Promise<void>;
     }
   >;
@@ -152,27 +152,24 @@ export default function RecordsPage() {
         let allRecs: RecordItem[] = [];
 
         if (activeFilter === "all") {
-          // 并发加载所有类型（使用 allSettled 避免某一类失败影响其他）
           const results = await Promise.allSettled(
             ALL_TYPE_KEYS.map(
               (t) =>
-                detailedApis[t]?.list(currentFamily.id, currentBaby!.id, {
-                  limit: 30,
-                }) ?? Promise.resolve([]),
+                detailedApis[t]?.list(currentFamily.id, currentBaby!.id)
+                  .then(res => res.items) ?? Promise.resolve([]),
             ),
           );
           results.forEach((r) => {
             if (r.status === "fulfilled") allRecs = allRecs.concat(r.value);
           });
         } else {
-          // 只加载指定类型（单类型 API 提高响应速度）
           const t = activeFilter as RecordTypeKey;
           if (detailedApis[t]) {
-            allRecs = await detailedApis[t].list(
+            const res = await detailedApis[t].list(
               currentFamily.id,
               currentBaby!.id,
-              { limit: 50 },
             );
+            allRecs = res.items;
           }
         }
 

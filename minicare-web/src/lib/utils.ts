@@ -137,6 +137,94 @@ export function formatAgeMonths(ageMonths: number): string {
   return Number.isInteger(n) ? `${n}月龄` : `${n.toFixed(1)}月龄`
 }
 
+export function nowDate(): string {
+  return dayjs().format('YYYY-MM-DD')
+}
+
+export function nowTime(): string {
+  return dayjs().format('HH:mm')
+}
+
+export function isoToLocalDate(iso: string): string {
+  if (!iso) return ''
+  return dayjs(iso).format('YYYY-MM-DD')
+}
+
+export function isoToLocalTime(iso: string): string {
+  if (!iso) return ''
+  return dayjs(iso).format('HH:mm')
+}
+
+export function toLocalISO(dateStr: string, timeStr: string): string {
+  return `${dateStr}T${timeStr}:00`
+}
+
+export function dateToLocalISO(d: Date): string {
+  return dayjs(d).format('YYYY-MM-DDTHH:mm:ss')
+}
+
+export function nowLocalISO(): string {
+  return dayjs().format('YYYY-MM-DDTHH:mm:ss')
+}
+
+export function getTodayKey(): string {
+  return dayjs().format('YYYY-M-D')
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// 时间计算
+// ────────────────────────────────────────────────────────────────────────────
+
+export function addMinutes(hhmm: string, delta: number): string {
+  const [h, m] = hhmm.split(':').map(Number)
+  const total = ((h * 60 + m + delta) % 1440 + 1440) % 1440
+  return `${String(Math.floor(total / 60)).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}`
+}
+
+export function timeDiffMinutes(start: string, end: string): number {
+  const [sh, sm] = start.split(':').map(Number)
+  const [eh, em] = end.split(':').map(Number)
+  let diff = eh * 60 + em - (sh * 60 + sm)
+  if (diff < 0) diff += 1440
+  return diff
+}
+
+export function calcDurationMinFromRange(
+  startDateStr: string,
+  startTime: string,
+  endDateStr: string,
+  endTime: string,
+): number {
+  const start = dayjs(`${startDateStr}T${startTime}:00`)
+  const end = dayjs(`${endDateStr}T${endTime}:00`)
+  if (!start.isValid() || !end.isValid()) return 0
+  return Math.round(end.diff(start, 'minute', true))
+}
+
+export function buildLocalISOPair(
+  startDateStr: string,
+  startTime: string,
+  endDateStr: string,
+  endTime: string,
+): { startISO: string; endISO: string } {
+  return {
+    startISO: `${startDateStr}T${startTime}:00`,
+    endISO: `${endDateStr}T${endTime}:00`,
+  }
+}
+
+export function compareTime(a: string, b: string): number {
+  return dayjs(a).valueOf() - dayjs(b).valueOf()
+}
+
+export function inferSleepPeriod(startTime: string): 'night' | 'morning_nap' | 'afternoon_nap' | 'other' {
+  const hour = dayjs(startTime).hour()
+  if (hour >= 22 || hour < 6) return 'night'
+  if (hour < 12) return 'morning_nap'
+  if (hour < 18) return 'afternoon_nap'
+  return 'other'
+}
+
 // ────────────────────────────────────────────────────────────────────────────
 // 宝宝年龄计算
 // ────────────────────────────────────────────────────────────────────────────

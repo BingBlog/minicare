@@ -13,21 +13,30 @@
  *   note:        附加备注（可选）
  */
 import { request } from '../http'
-import type { SymptomRecord, CreateSymptomDto, UpdateSymptomDto, PaginationParams, ListResult } from '../types'
+import type { SymptomRecord, CreateSymptomDto, UpdateSymptomDto } from '../types'
+
+export interface SymptomListParams {
+  before_date?: string
+}
+
+export interface SymptomListResponse {
+  items: SymptomRecord[]
+  nextBeforeDate: string | null
+}
+
+function buildListQuery(babyId: string, params?: SymptomListParams): string {
+  const q: string[] = [`baby_id=${babyId}`]
+  if (params?.before_date) q.push(`before_date=${encodeURIComponent(params.before_date)}`)
+  return q.join('&')
+}
 
 export const symptomApi = {
-  /**
-   * 获取表现记录列表（按 record_time 倒序）
-   */
-  list: (
-    familyId: string,
-    babyId: string,
-    params: PaginationParams = {},
-  ): Promise<ListResult<SymptomRecord>> => {
-    const { limit = 20, offset = 0 } = params
-    return request<ListResult<SymptomRecord>>(
-      `/api/family/${familyId}/records/symptom?baby_id=${babyId}&limit=${limit}&offset=${offset}`,
-    ).then((items) => items.map((r) => ({ ...r, type: 'symptom' as const })))
+  list: (familyId: string, babyId: string, params?: SymptomListParams): Promise<SymptomListResponse> => {
+    return request<SymptomListResponse>(`/api/family/${familyId}/records/symptom?${buildListQuery(babyId, params)}`)
+      .then((res) => ({
+        items: res.items.map((r) => ({ ...r, type: 'symptom' as const })),
+        nextBeforeDate: res.nextBeforeDate,
+      }))
   },
 
   /**

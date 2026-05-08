@@ -45,6 +45,7 @@ import {
   dateToLocalISO,
   useToastMsg,
 } from "../shared";
+import { inferSleepPeriod } from "@/lib/utils";
 
 type SleepMode = "timer" | "manual";
 
@@ -298,9 +299,11 @@ export default function SleepFormPage() {
     setTimerApiLoading(true);
     try {
       const startDate = new Date();
+      const startISO = dateToLocalISO(startDate);
       const { id } = await recordsApi.sleep.startSleep(currentFamily.id, {
         baby_id: currentBaby.id,
-        start_time: dateToLocalISO(startDate),
+        start_time: startISO,
+        sleep_period: inferSleepPeriod(startISO),
       });
       setOngoingId(id);
       setTimerStartTime(startDate);
@@ -340,6 +343,7 @@ export default function SleepFormPage() {
     try {
       await recordsApi.sleep.endSleep(currentFamily.id, ongoingId, {
         end_time: dateToLocalISO(new Date()),
+        sleep_period: inferSleepPeriod(dateToLocalISO(timerStartTime!)),
         quality: sleepQuality,
         note: note || undefined,
       });
@@ -554,6 +558,7 @@ export default function SleepFormPage() {
         baby_id: currentBaby.id,
         start_time: startISO,
         end_time: endISO,
+        sleep_period: inferSleepPeriod(startISO),
         quality: sleepQuality,
         note: note || undefined,
       });

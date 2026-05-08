@@ -22,21 +22,30 @@
  *   note:               附加备注（可选）
  */
 import { request } from '../http'
-import type { FeedingRecord, CreateFeedingDto, UpdateFeedingDto, PaginationParams, ListResult } from '../types'
+import type { FeedingRecord, CreateFeedingDto, UpdateFeedingDto } from '../types'
+
+export interface FeedingListParams {
+  before_date?: string
+}
+
+export interface FeedingListResponse {
+  items: FeedingRecord[]
+  nextBeforeDate: string | null
+}
+
+function buildListQuery(babyId: string, params?: FeedingListParams): string {
+  const q: string[] = [`baby_id=${babyId}`]
+  if (params?.before_date) q.push(`before_date=${encodeURIComponent(params.before_date)}`)
+  return q.join('&')
+}
 
 export const feedingApi = {
-  /**
-   * 获取饮食记录列表（按 record_time 倒序）
-   */
-  list: (
-    familyId: string,
-    babyId: string,
-    params: PaginationParams = {},
-  ): Promise<ListResult<FeedingRecord>> => {
-    const { limit = 20, offset = 0 } = params
-    return request<ListResult<FeedingRecord>>(
-      `/api/family/${familyId}/records/feeding?baby_id=${babyId}&limit=${limit}&offset=${offset}`,
-    ).then((items) => items.map((r) => ({ ...r, type: 'feeding' })))
+  list: (familyId: string, babyId: string, params?: FeedingListParams): Promise<FeedingListResponse> => {
+    return request<FeedingListResponse>(`/api/family/${familyId}/records/feeding?${buildListQuery(babyId, params)}`)
+      .then((res) => ({
+        items: res.items.map((r) => ({ ...r, type: 'feeding' })),
+        nextBeforeDate: res.nextBeforeDate,
+      }))
   },
 
   /**

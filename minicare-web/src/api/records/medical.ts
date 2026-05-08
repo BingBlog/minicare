@@ -17,58 +17,30 @@
  * 注意：visit_type/doctor/result_summary/follow_up_date 需要 Migration 003 建列后才生效。
  */
 import { request } from '../http'
-import type { MedicalRecord, CreateMedicalDto, UpdateMedicalDto, PaginationParams, ListResult } from '../types'
+import type { MedicalRecord, CreateMedicalDto, UpdateMedicalDto } from '../types'
+
+export interface MedicalListParams {
+  before_date?: string
+}
+
+export interface MedicalListResponse {
+  items: MedicalRecord[]
+  nextBeforeDate: string | null
+}
+
+function buildListQuery(babyId: string, params?: MedicalListParams): string {
+  const q: string[] = [`baby_id=${babyId}`]
+  if (params?.before_date) q.push(`before_date=${encodeURIComponent(params.before_date)}`)
+  return q.join('&')
+}
 
 export const medicalApi = {
-  /**
-   * 获取医疗记录列表（按 visit_date 倒序）
-   *
-   * @example 响应体
-   * [
-   *   {
-   *     "id": "mr1mr2mr3-...",
-   *     "baby_id": "b1b2b3b4-...",
-   *     "recorded_by": "u1u2u3u4-...",
-   *     "visit_date": "2026-04-01",
-   *     "visit_type": "checkup",
-   *     "hospital": "北京儿童医院",
-   *     "doctor": "李医生",
-   *     "diagnosis": "正常，生长发育良好",
-   *     "result_summary": "身高70cm，体重8.2kg，头围44cm",
-   *     "medications": [],
-   *     "follow_up_date": "2026-07-01",
-   *     "note": null,
-   *     "created_at": "2026-04-01T11:00:05.000Z"
-   *   },
-   *   {
-   *     "id": "mr4mr5mr6-...",
-   *     "baby_id": "b1b2b3b4-...",
-   *     "recorded_by": "u1u2u3u4-...",
-   *     "visit_date": "2026-03-15",
-   *     "visit_type": "sick",
-   *     "hospital": "社区卫生服务中心",
-   *     "doctor": null,
-   *     "diagnosis": "急性上呼吸道感染",
-   *     "result_summary": null,
-   *     "medications": [
-   *       { "name": "布洛芬", "dose": "5ml 每次" },
-   *       { "name": "小儿感冒颗粒", "dose": "1袋 每次" }
-   *     ],
-   *     "follow_up_date": null,
-   *     "note": "多喝水，注意休息",
-   *     "created_at": "2026-03-15T15:00:05.000Z"
-   *   }
-   * ]
-   */
-  list: (
-    familyId: string,
-    babyId: string,
-    params: PaginationParams = {},
-  ): Promise<ListResult<MedicalRecord>> => {
-    const { limit = 20, offset = 0 } = params
-    return request<ListResult<MedicalRecord>>(
-      `/api/family/${familyId}/records/medical?baby_id=${babyId}&limit=${limit}&offset=${offset}`,
-    ).then((items) => items.map((r) => ({ ...r, type: 'medical' as const })))
+  list: (familyId: string, babyId: string, params?: MedicalListParams): Promise<MedicalListResponse> => {
+    return request<MedicalListResponse>(`/api/family/${familyId}/records/medical?${buildListQuery(babyId, params)}`)
+      .then((res) => ({
+        items: res.items.map((r) => ({ ...r, type: 'medical' as const })),
+        nextBeforeDate: res.nextBeforeDate,
+      }))
   },
 
   /**

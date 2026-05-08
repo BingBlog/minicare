@@ -11,21 +11,30 @@
  *   note:         附加备注（可选）
  */
 import { request } from '../http'
-import type { DiaperRecord, CreateDiaperDto, UpdateDiaperDto, PaginationParams, ListResult } from '../types'
+import type { DiaperRecord, CreateDiaperDto, UpdateDiaperDto } from '../types'
+
+export interface DiaperListParams {
+  before_date?: string
+}
+
+export interface DiaperListResponse {
+  items: DiaperRecord[]
+  nextBeforeDate: string | null
+}
+
+function buildListQuery(babyId: string, params?: DiaperListParams): string {
+  const q: string[] = [`baby_id=${babyId}`]
+  if (params?.before_date) q.push(`before_date=${encodeURIComponent(params.before_date)}`)
+  return q.join('&')
+}
 
 export const diaperApi = {
-  /**
-   * 获取尿布记录列表（按 record_time 倒序）
-   */
-  list: (
-    familyId: string,
-    babyId: string,
-    params: PaginationParams = {},
-  ): Promise<ListResult<DiaperRecord>> => {
-    const { limit = 20, offset = 0 } = params
-    return request<ListResult<DiaperRecord>>(
-      `/api/family/${familyId}/records/diaper?baby_id=${babyId}&limit=${limit}&offset=${offset}`,
-    ).then((items) => items.map((r) => ({ ...r, type: 'diaper' })))
+  list: (familyId: string, babyId: string, params?: DiaperListParams): Promise<DiaperListResponse> => {
+    return request<DiaperListResponse>(`/api/family/${familyId}/records/diaper?${buildListQuery(babyId, params)}`)
+      .then((res) => ({
+        items: res.items.map((r) => ({ ...r, type: 'diaper' })),
+        nextBeforeDate: res.nextBeforeDate,
+      }))
   },
 
   /**

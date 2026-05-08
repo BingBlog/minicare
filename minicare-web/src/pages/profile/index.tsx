@@ -26,6 +26,7 @@ import type { SettingsRow } from "./SettingsGroup";
 import EditBabyModal from "./EditBabyModal";
 import BottomSheet from "@/components/ui/BottomSheet";
 import MembersModal from "./MembersModal";
+import ContactModal from "./ContactModal";
 import LoginGuide from "@/components/LoginGuide";
 
 // ── SettingsGroup 所需的图标（仅在本文件内使用）──────────────────
@@ -126,6 +127,37 @@ const IconLogOut = () => (
   </svg>
 );
 
+/** 数据看板图标 */
+const IconMonitor = () => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: 18, height: 18, color: "#7B93DB" }}>
+    <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+    <line x1="8" y1="21" x2="16" y2="21" />
+    <line x1="12" y1="17" x2="12" y2="21" />
+  </svg>
+);
+
+/** 邮件图标 */
+const IconMail = () => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: 18, height: 18, color: "#F0B8C8" }}>
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+    <polyline points="22,6 12,13 2,6" />
+  </svg>
+);
+
 // ══ 我的页面主体 ══════════════════════════════════════════════════
 export default function ProfilePage() {
   const navigate = useNavigate();
@@ -168,7 +200,8 @@ export default function ProfilePage() {
   const [members, setMembers] = useState<FamilyMember[]>([]);
   const [membersLoading, setMembersLoading] = useState(false);
 
-  // 当前用户在家庭中的角色（用于控制邀请/移除权限）
+  const [contactOpen, setContactOpen] = useState(false);
+
   const [currentUserRole, setCurrentUserRole] = useState<'owner' | 'member'>('member');
 
   // ── 编辑弹层操作 ──────────────────────────────────────────────
@@ -328,7 +361,19 @@ export default function ProfilePage() {
     },
   ];
 
-  /** 关于分组：版本号（info）/ 关于我们 / 隐私政策 */
+  const toolRows: SettingsRow[] = [
+    {
+      id: "dashboard",
+      type: "arrow",
+      icon: <IconMonitor />,
+      iconBg: "#F0F4FF",
+      label: "数据看板",
+      subText: "床头大屏",
+      onClick: () => navigate("/dashboard"),
+    },
+  ];
+
+  /** 关于分组：版本号（info）/ 关于我们 / 隐私政策 / 用户服务协议 / 联系我们 */
   const aboutRows: SettingsRow[] = [
     {
       id: "version",
@@ -352,7 +397,23 @@ export default function ProfilePage() {
       icon: <IconFileText />,
       iconBg: "#F5F5F5",
       label: "隐私政策",
-      onClick: () => showToast("隐私政策与用户协议"),
+      onClick: () => navigate("/privacy?tab=privacy"),
+    },
+    {
+      id: "terms",
+      type: "arrow",
+      icon: <IconFileText />,
+      iconBg: "#F5F5F5",
+      label: "用户服务协议",
+      onClick: () => navigate("/privacy?tab=terms"),
+    },
+    {
+      id: "contact",
+      type: "arrow",
+      icon: <IconMail />,
+      iconBg: "#FFF0F4",
+      label: "联系我们",
+      onClick: () => setContactOpen(true),
     },
   ];
 
@@ -386,6 +447,9 @@ export default function ProfilePage() {
 
         {/* 家庭设置组 */}
         <SettingsGroup title="家庭" rows={familyRows} />
+
+        {/* 工具设置组 */}
+        <SettingsGroup title="工具" rows={toolRows} />
 
         {/* 关于设置组 */}
         <SettingsGroup title="关于" rows={aboutRows} />
@@ -490,6 +554,9 @@ export default function ProfilePage() {
         onRemoveMember={handleRemoveMember}
         onClose={closeMembers}
       />
+
+      {/* ── 联系我们弹层 ── */}
+      <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
 
       {/* Toast 全局提示 */}
       {ToastNode}

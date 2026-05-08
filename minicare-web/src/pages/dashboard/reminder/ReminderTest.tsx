@@ -50,7 +50,7 @@ export default function ReminderTest() {
 
   // 提醒系统
   const sources = useMemo<ReminderSource[]>(() => [
-    createFeedingSource(() => mockFeedings),
+    createFeedingSource(() => mockFeedings, () => []),
   ], [mockFeedings])
 
   const { active, dismiss } = useReminder(sources, { isNight: false, enabled })

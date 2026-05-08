@@ -44,9 +44,9 @@ export default function BabyStats() {
   const fetchLatestGrowth = useCallback(() => {
     if (!familyId || !babyId) return
     recordsApi.growth
-      .list(familyId, babyId, { limit: 1, offset: 0 })
-      .then((records) => {
-        const latest = records[0]
+      .list(familyId, babyId)
+      .then((res) => {
+        const latest = res.items[0]
         if (!latest) return
         setHeightMm(latest.height_mm ?? null)
         setWeightG(latest.weight_g ?? null)

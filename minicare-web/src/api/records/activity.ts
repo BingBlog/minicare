@@ -10,21 +10,30 @@
  *   note:          附加备注（可选）
  */
 import { request } from '../http'
-import type { ActivityRecord, CreateActivityDto, UpdateActivityDto, PaginationParams, ListResult } from '../types'
+import type { ActivityRecord, CreateActivityDto, UpdateActivityDto } from '../types'
+
+export interface ActivityListParams {
+  before_date?: string
+}
+
+export interface ActivityListResponse {
+  items: ActivityRecord[]
+  nextBeforeDate: string | null
+}
+
+function buildListQuery(babyId: string, params?: ActivityListParams): string {
+  const q: string[] = [`baby_id=${babyId}`]
+  if (params?.before_date) q.push(`before_date=${encodeURIComponent(params.before_date)}`)
+  return q.join('&')
+}
 
 export const activityApi = {
-  /**
-   * 获取活动记录列表（按 record_time 倒序）
-   */
-  list: (
-    familyId: string,
-    babyId: string,
-    params: PaginationParams = {},
-  ): Promise<ListResult<ActivityRecord>> => {
-    const { limit = 20, offset = 0 } = params
-    return request<ListResult<ActivityRecord>>(
-      `/api/family/${familyId}/records/activity?baby_id=${babyId}&limit=${limit}&offset=${offset}`,
-    ).then((items) => items.map((r) => ({ ...r, type: 'activity' })))
+  list: (familyId: string, babyId: string, params?: ActivityListParams): Promise<ActivityListResponse> => {
+    return request<ActivityListResponse>(`/api/family/${familyId}/records/activity?${buildListQuery(babyId, params)}`)
+      .then((res) => ({
+        items: res.items.map((r) => ({ ...r, type: 'activity' })),
+        nextBeforeDate: res.nextBeforeDate,
+      }))
   },
 
   /**

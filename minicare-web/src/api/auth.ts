@@ -86,4 +86,6 @@ export const authApi = {
    * }
    */
   profile: () => request<User>('/api/auth/me'),
+
+  checkToken: () => request<User>('/api/auth/me'),
 }

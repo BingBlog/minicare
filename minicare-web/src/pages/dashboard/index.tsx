@@ -10,10 +10,11 @@
  * ├─ 上排四列（喂养 | 尿布 | 睡眠 | 补剂）
  * └─ 下排四列（活动 | 表现 | 今日节律 | 提醒待办）
  */
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { familyApi, babyApi, recordsApi } from '@/api'
 import { useAppStore } from '@/lib/store'
+import { inferSleepPeriod } from '@/lib/utils'
 import { dateToLocalISO } from '@/pages/records/shared'
 import type { Baby } from '@/api'
 import type { SleepPeriod } from '@/api/types'
@@ -21,7 +22,7 @@ import HeaderBar from './HeaderBar'
 import FeedingColumn from './FeedingColumn'
 import DiaperColumn from './DiaperColumn'
 import SleepColumn from './SleepColumn'
-import SupplementColumn from './SupplementColumn'
+import SupplementQuickEntry from './SupplementQuickEntry'
 import ActivityColumn from './ActivityColumn'
 import SymptomColumn from './SymptomColumn'
 import TimelineColumn from './TimelineColumn'
@@ -30,7 +31,9 @@ import RecordDrawer from './RecordDrawer'
 import type { DrawerRecordType } from './RecordDrawer'
 import { useDashboardData, getTodayStr } from './useDashboardData'
 import { useReminder, createFeedingSource, ReminderOverlay, audioManager } from './reminder'
+import { FeedingModel } from './reminder/sources/feedingSource'
 import type { ReminderSource } from './reminder'
+import { useRecentSupplements } from './useRecentSupplements'
 import AudioUnlockBanner from './AudioUnlockBanner'
 import './dashboard.css'
 
@@ -42,10 +45,10 @@ export default function DashboardPage() {
   const [family, setFamily] = useState(currentFamily)
   const [baby, setBaby] = useState<Baby | null>(currentBaby)
 
-  // 当前查看的日期（YYYY-MM-DD），默认今日
+  const feedingModelRef = useRef<FeedingModel | null>(null)
+
   const [selectedDate, setSelectedDate] = useState<string>(getTodayStr)
 
-  // 初始化家庭和宝宝
   useEffect(() => {
     async function init() {
       try {
@@ -64,6 +67,11 @@ export default function DashboardPage() {
           setCurrentBaby(b)
         }
         setBaby(b)
+
+        if (b?.id && !feedingModelRef.current) {
+          feedingModelRef.current = new FeedingModel(b.id)
+          feedingModelRef.current.load()
+        }
       } catch {
         navigate('/login', { replace: true })
       } finally {
@@ -89,14 +97,33 @@ export default function DashboardPage() {
   // 数据加载 hook
   const data = useDashboardData(family?.id ?? null, baby?.id ?? null, loading, selectedDate)
 
+  const lastAddedDateRef = useRef<string | null>(null)
+  useEffect(() => {
+    if (!data.yesterdayFeeding.length || !baby?.id) return
+    const firstTime = data.yesterdayFeeding[0]?.time
+    if (!firstTime) return
+    const yesterdayStr = firstTime.slice(0, 10)
+    if (lastAddedDateRef.current === yesterdayStr) return
+
+    if (!feedingModelRef.current) {
+      feedingModelRef.current = new FeedingModel(baby.id)
+      feedingModelRef.current.load()
+    }
+    feedingModelRef.current.addDay(data.yesterdayFeeding)
+    lastAddedDateRef.current = yesterdayStr
+  }, [data.yesterdayFeeding, baby?.id])
+
+  const { recentList, loading: recentSuppLoading, refresh: refreshRecent } = useRecentSupplements(family?.id ?? null, baby?.id ?? null)
+
   // 结束睡眠
   const handleEndSleep = useCallback(async (sleepId: string) => {
     if (!family) return
     const sleepRecord = data.sleep.find((r) => r.id === sleepId)
+    const period = sleepRecord ? inferSleepPeriod(sleepRecord.time) : inferSleepPeriod(dateToLocalISO(new Date()))
     await recordsApi.sleep.endSleep(family.id, sleepId, {
       end_time: dateToLocalISO(new Date()),
       quality: 'normal',
-      sleep_period: ((sleepRecord?.detail?.sleep_period as string) ?? 'night') as SleepPeriod,
+      sleep_period: period as SleepPeriod,
     })
     data.refresh()
   }, [family, data])
@@ -128,8 +155,12 @@ export default function DashboardPage() {
 
   // 提醒系统
   const reminderSources = useMemo<ReminderSource[]>(() => [
-    createFeedingSource(() => data.feeding),
-  ], [data.feeding])
+    createFeedingSource(
+      () => data.feeding,
+      () => data.yesterdayFeeding,
+      () => feedingModelRef.current,
+    ),
+  ], [data.feeding, data.yesterdayFeeding])
 
   const isToday = selectedDate === getTodayStr()
   const { active: activeReminder, dismiss: dismissReminder } = useReminder(reminderSources, {
@@ -220,7 +251,15 @@ export default function DashboardPage() {
             <SleepColumn data={data} onAdd={() => openDrawer('sleep')} onEndSleep={handleEndSleep} />
           </div>
           <div className="db-col db-col-supplement">
-            <SupplementColumn data={data} onAdd={() => openDrawer('feeding', 'supplement')} />
+            <SupplementQuickEntry
+              data={data}
+              familyId={family?.id ?? null}
+              babyId={baby?.id ?? null}
+              recentList={recentList}
+              recentLoading={recentSuppLoading}
+              onAdd={() => openDrawer('feeding', 'supplement')}
+              onRecorded={() => { data.refresh(); refreshRecent(); }}
+            />
           </div>
         </div>
 
@@ -236,7 +275,7 @@ export default function DashboardPage() {
             <TimelineColumn data={data} selectedDate={selectedDate} />
           </div>
           <div className="db-col db-col-reminders">
-            <RemindersColumn data={data} selectedDate={selectedDate} onAdd={(type) => openDrawer(type)} />
+            <RemindersColumn data={data} selectedDate={selectedDate} onAdd={(type) => openDrawer(type)} feedingModel={feedingModelRef.current} />
           </div>
         </div>
       </div>

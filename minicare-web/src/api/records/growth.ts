@@ -12,47 +12,30 @@
  * 注意：同一天只允许一条记录，重复提交后端返回 409。
  */
 import { request } from '../http'
-import type { GrowthRecord, CreateGrowthDto, UpdateGrowthDto, PaginationParams, ListResult } from '../types'
+import type { GrowthRecord, CreateGrowthDto, UpdateGrowthDto } from '../types'
+
+export interface GrowthListParams {
+  before_date?: string
+}
+
+export interface GrowthListResponse {
+  items: GrowthRecord[]
+  nextBeforeDate: string | null
+}
+
+function buildListQuery(babyId: string, params?: GrowthListParams): string {
+  const q: string[] = [`baby_id=${babyId}`]
+  if (params?.before_date) q.push(`before_date=${encodeURIComponent(params.before_date)}`)
+  return q.join('&')
+}
 
 export const growthApi = {
-  /**
-   * 获取生长记录列表（按 record_date 倒序，默认 limit=50）
-   *
-   * @example 响应体
-   * [
-   *   {
-   *     "id": "gr1gr2gr3-...",
-   *     "baby_id": "b1b2b3b4-...",
-   *     "recorded_by": "u1u2u3u4-...",
-   *     "record_date": "2026-04-01",
-   *     "weight_g": 8200,
-   *     "height_mm": 700,
-   *     "head_mm": 440,
-   *     "note": "儿科门诊测量",
-   *     "created_at": "2026-04-01T10:00:05.000Z"
-   *   },
-   *   {
-   *     "id": "gr4gr5gr6-...",
-   *     "baby_id": "b1b2b3b4-...",
-   *     "recorded_by": "u1u2u3u4-...",
-   *     "record_date": "2026-03-01",
-   *     "weight_g": 7800,
-   *     "height_mm": 685,
-   *     "head_mm": 435,
-   *     "note": null,
-   *     "created_at": "2026-03-01T09:00:05.000Z"
-   *   }
-   * ]
-   */
-  list: (
-    familyId: string,
-    babyId: string,
-    params: PaginationParams = {},
-  ): Promise<ListResult<GrowthRecord>> => {
-    const { limit = 50, offset = 0 } = params
-    return request<ListResult<GrowthRecord>>(
-      `/api/family/${familyId}/records/growth?baby_id=${babyId}&limit=${limit}&offset=${offset}`,
-    ).then((items) => items.map((r) => ({ ...r, type: 'growth' as const })))
+  list: (familyId: string, babyId: string, params?: GrowthListParams): Promise<GrowthListResponse> => {
+    return request<GrowthListResponse>(`/api/family/${familyId}/records/growth?${buildListQuery(babyId, params)}`)
+      .then((res) => ({
+        items: res.items.map((r) => ({ ...r, type: 'growth' as const })),
+        nextBeforeDate: res.nextBeforeDate,
+      }))
   },
 
   /**

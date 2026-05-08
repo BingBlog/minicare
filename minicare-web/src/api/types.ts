@@ -139,9 +139,9 @@ export type BreastSide = 'left' | 'right' | 'both'
 /** 营养素条目 */
 export interface SupplementItem {
   key: string
-  label?: string
-  dose?: string
-  unit?: string
+  label: string
+  dose: string
+  unit: string
 }
 
 export interface CreateFeedingDto {
@@ -259,16 +259,14 @@ export interface UpdateSleepDto {
 
 export interface SleepRecord extends RecordBase {
   start_time: string
-  end_time?: string | null  // null 表示进行中
-  /**
-   * DDL: sleep_record.status VARCHAR(10)（Migration 008: TINYINT → VARCHAR）
-   * 'ongoing' = 进行中 | 'ended' = 已结束
-   */
+  end_time?: string | null
   status: 'ongoing' | 'ended'
   duration_min?: number | null
   quality?: SleepQuality | null
   sleep_period?: SleepPeriod | null
 }
+
+export type OngoingSleepRecord = SleepRecord
 
 // ── Diaper ───────────────────────────────────────────────────────
 
@@ -310,7 +308,7 @@ export interface CreateDiaperDto {
   poop_type?: PoopType
   /** 屁屁状态 */
   butt_condition?: ButtCondition
-  /** 今日换尿布次数（0~20） */
+  stool_colors?: string[]
   diaper_count?: number
   note?: string
 }
@@ -324,6 +322,7 @@ export interface DiaperRecord extends RecordBase {
   color?: string | null
   poop_type?: PoopType | null
   butt_condition?: ButtCondition | null
+  stool_colors?: string[] | null
   diaper_count?: number | null
 }
 

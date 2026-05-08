@@ -9,45 +9,30 @@
  *   note:         过敏表现、用药、护理等附加信息（前端拼接后传入）
  */
 import { request } from '../http'
-import type { HealthRecord, CreateHealthDto, UpdateHealthDto, PaginationParams, ListResult } from '../types'
+import type { HealthRecord, CreateHealthDto, UpdateHealthDto } from '../types'
+
+export interface HealthListParams {
+  before_date?: string
+}
+
+export interface HealthListResponse {
+  items: HealthRecord[]
+  nextBeforeDate: string | null
+}
+
+function buildListQuery(babyId: string, params?: HealthListParams): string {
+  const q: string[] = [`baby_id=${babyId}`]
+  if (params?.before_date) q.push(`before_date=${encodeURIComponent(params.before_date)}`)
+  return q.join('&')
+}
 
 export const healthApi = {
-  /**
-   * 获取健康记录列表（按 record_time 倒序）
-   *
-   * @example 响应体
-   * [
-   *   {
-   *     "id": "hr1hr2hr3-...",
-   *     "baby_id": "b1b2b3b4-...",
-   *     "recorded_by": "u1u2u3u4-...",
-   *     "record_time": "2026-04-01T08:00:00.000Z",
-   *     "temperature": 38.2,
-   *     "mood": "fussy",
-   *     "note": "过敏表现：皮疹 / 严重程度：轻度 / 用药：维生素D（400IU）",
-   *     "created_at": "2026-04-01T08:00:05.000Z"
-   *   },
-   *   {
-   *     "id": "hr4hr5hr6-...",
-   *     "baby_id": "b1b2b3b4-...",
-   *     "recorded_by": "u1u2u3u4-...",
-   *     "record_time": "2026-04-01T20:00:00.000Z",
-   *     "temperature": 36.8,
-   *     "mood": "happy",
-   *     "note": null,
-   *     "created_at": "2026-04-01T20:00:05.000Z"
-   *   }
-   * ]
-   */
-  list: (
-    familyId: string,
-    babyId: string,
-    params: PaginationParams = {},
-  ): Promise<ListResult<HealthRecord>> => {
-    const { limit = 20, offset = 0 } = params
-    return request<ListResult<HealthRecord>>(
-      `/api/family/${familyId}/records/health?baby_id=${babyId}&limit=${limit}&offset=${offset}`,
-    ).then((items) => items.map((r) => ({ ...r, type: 'health' as const })))
+  list: (familyId: string, babyId: string, params?: HealthListParams): Promise<HealthListResponse> => {
+    return request<HealthListResponse>(`/api/family/${familyId}/records/health?${buildListQuery(babyId, params)}`)
+      .then((res) => ({
+        items: res.items.map((r) => ({ ...r, type: 'health' as const })),
+        nextBeforeDate: res.nextBeforeDate,
+      }))
   },
 
   /**

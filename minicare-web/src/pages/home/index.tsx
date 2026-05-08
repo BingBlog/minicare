@@ -13,7 +13,7 @@
  */
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { familyApi, babyApi, recordsApi } from "@/api";
+import { familyApi, babyApi, recordsApi, authApi } from "@/api";
 import { useAppStore } from "@/lib/store";
 import { useToast } from "@/components/ui/Toast";
 import { FullPageSpinner } from "@/components/ui/LoadingSpinner";
@@ -24,6 +24,7 @@ import FabSheet from "./FabSheet";
 import SleepBanner from "./SleepBanner";
 import FeedingBanner from "./FeedingBanner";
 import GuestHome from "./GuestHome";
+import DailyComparison from "./DailyComparison";
 import RecordActionSheet from "@/pages/records-list/RecordActionSheet";
 import { RECORD_ROUTES, FAB_GROUPS } from "@/lib/constants";
 import { useQuickActionKeys } from "@/lib/useQuickActionKeys";
@@ -70,6 +71,7 @@ export default function HomePage() {
   const filteredFabCount = filteredFabGroups.reduce((acc, g) => acc + g.keys.length, 0);
 
   const [todayRecords, setTodayRecords] = useState<TodayRecord[]>([]);
+  const [yesterdayRecords, setYesterdayRecords] = useState<TodayRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [fabOpen, setFabOpen] = useState(false);
 
@@ -94,10 +96,28 @@ export default function HomePage() {
     }
   };
 
+  const loadYesterdayRecords = async (familyId: string) => {
+    try {
+      const yesterday = dayjs().subtract(1, 'day').format('YYYY-MM-DD');
+      const recs = await recordsApi.today(familyId, yesterday);
+      setYesterdayRecords(recs);
+    } catch {
+      // 昨日无记录属于正常状态，不报错
+    }
+  };
+
   // ── 初始化加载（家庭 → 宝宝 → 今日记录） ─────────────────────────────────
   useEffect(() => {
     async function load() {
       try {
+        try {
+          await authApi.checkToken();
+        } catch {
+          useAppStore.getState().logout();
+          navigate("/login", { replace: true });
+          return;
+        }
+
         // 1. 确保 family 已初始化
         let family = currentFamily;
         if (!family) {
@@ -122,9 +142,10 @@ export default function HomePage() {
           }
         }
 
-        // 3. 并发加载：今日记录 + 进行中睡眠
+        // 3. 并发加载：今日记录 + 昨日记录 + 进行中睡眠
         await Promise.all([
           loadTodayRecords(family.id),
+          loadYesterdayRecords(family.id),
           recordsApi.sleep
             .getOngoing(family.id, baby.id)
             .then((rec) => setOngoingSleep(rec))
@@ -285,6 +306,10 @@ export default function HomePage() {
         <QuickActions
           onMoreClick={() => setFabOpen(true)}
           fabCount={filteredFabCount}
+        />
+        <DailyComparison
+          todayRecords={todayRecords}
+          yesterdayRecords={yesterdayRecords}
         />
         <TodayTimeline
           records={todayRecords}

@@ -3,22 +3,34 @@
  * 统一导出所有记录类型的 API 对象
  */
 import { request } from '../http'
-import type { TodayRecord, ListResult } from '../types'
+import type { TodayRecord, ListResult, RecordItem } from '../types'
 
 export { feedingApi } from './feeding'
+export type { FeedingListParams, FeedingListResponse } from './feeding'
 export { sleepApi } from './sleep'
+export type { SleepListParams, SleepListResponse } from './sleep'
 export { diaperApi } from './diaper'
+export type { DiaperListParams, DiaperListResponse } from './diaper'
 export { activityApi } from './activity'
+export type { ActivityListParams, ActivityListResponse } from './activity'
 export { healthApi } from './health'
+export type { HealthListParams, HealthListResponse } from './health'
 export { growthApi } from './growth'
+export type { GrowthListParams, GrowthListResponse } from './growth'
 export { medicalApi } from './medical'
+export type { MedicalListParams, MedicalListResponse } from './medical'
 export { symptomApi } from './symptom'
+export type { SymptomListParams, SymptomListResponse } from './symptom'
 
-/**
- * 聚合时间轴
- * 路由：GET /api/family/:familyId/records/today[?date=YYYY-MM-DD]
- * date 缺省时服务端默认今日
- */
+export interface DatePaginatedResponse<T = RecordItem> {
+  items: T[]
+  nextBeforeDate: string | null
+}
+
+export interface DateListParams {
+  before_date?: string
+}
+
 export const todayApi = {
   list: (familyId: string, date?: string): Promise<ListResult<TodayRecord>> => {
     const qs = date ? `?date=${encodeURIComponent(date)}` : ''

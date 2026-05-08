@@ -87,6 +87,8 @@ export {
   todayApi,
 }
 
+export type { DatePaginatedResponse, DateListParams } from './records'
+
 // ── TS 类型全量导出 ──────────────────────────────────────────────
 export type {
   // 通用
@@ -116,6 +118,7 @@ export type {
   EndSleepDto,
   CreateSleepDto,
   SleepRecord,
+  OngoingSleepRecord,
   // Diaper
   DiaperType,
   CreateDiaperDto,

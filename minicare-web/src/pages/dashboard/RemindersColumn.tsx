@@ -13,11 +13,13 @@ import { useMemo } from 'react'
 import type { DashboardData } from './useDashboardData'
 import { getTodayStr } from './useDashboardData'
 import type { DrawerRecordType } from './RecordDrawer'
+import { calcNextFeedTimeV3, FeedingModel } from './reminder/sources/feedingSource'
 
 interface Props {
   data: DashboardData
   selectedDate: string
   onAdd: (type: DrawerRecordType) => void
+  feedingModel?: FeedingModel | null
 }
 
 /** 进度条组件：今日 vs 昨日对比 */
@@ -104,7 +106,7 @@ const IconCheck = () => (
   </svg>
 )
 
-export default function RemindersColumn({ data, selectedDate, onAdd }: Props) {
+export default function RemindersColumn({ data, selectedDate, onAdd, feedingModel }: Props) {
   const isToday = selectedDate === getTodayStr()
   const now = new Date()
   const nowMin = now.getHours() * 60 + now.getMinutes()
@@ -119,58 +121,48 @@ export default function RemindersColumn({ data, selectedDate, onAdd }: Props) {
         ? { current: feedings.length, total: data.yesterdayFeedingCount, label: `${feedings.length}/${data.yesterdayFeedingCount} (昨日)` }
         : undefined
 
-      if (feedings.length >= 2) {
-        // 取最近两次喂奶间隔的平均值
-        const recent = feedings.slice(-3)
-        let totalGap = 0
-        let gapCount = 0
-        for (let i = 1; i < recent.length; i++) {
-          const gap = (new Date(recent[i].time).getTime() - new Date(recent[i - 1].time).getTime()) / 60_000
-          if (gap > 0 && gap < 360) { // 忽略超过 6h 的异常间隔
-            totalGap += gap
-            gapCount++
-          }
-        }
-        if (gapCount > 0) {
-          const avgGap = totalGap / gapCount
-          const lastFeedTime = new Date(feedings[feedings.length - 1].time)
-          const lastFeedMin = lastFeedTime.getHours() * 60 + lastFeedTime.getMinutes()
-          const nextFeedMin = lastFeedMin + avgGap
-          const diffMin = Math.round(nextFeedMin - nowMin)
+      const nextFeedTime = calcNextFeedTimeV3(feedings, data.yesterdayFeeding, feedingModel)
+      if (nextFeedTime) {
+        const lastFeedTime = new Date(feedings[feedings.length - 1].time)
+        const lastFeedMin = lastFeedTime.getHours() * 60 + lastFeedTime.getMinutes()
+        const diffMs = nextFeedTime.getTime() - now.getTime()
+        const diffMin = Math.round(diffMs / 60_000)
+        const avgGap = Math.round((nextFeedTime.getTime() - lastFeedTime.getTime()) / 60_000)
 
-          const level: ReminderItem['level'] = diffMin < 0 ? 'urgent' : diffMin < 30 ? 'warn' : 'ok'
-          items.push({
-            id: 'next-feed',
-            level,
-            icon: <IconFeed />,
-            title: diffMin < 0 ? '该喂奶了' : `预计 ${fmtDiff(diffMin)} 喂奶`,
-            desc: `上次 ${fmtElapsed(nowMin - lastFeedMin)}，平均间隔 ${Math.round(avgGap)}分钟`,
-            action: diffMin < 0 ? { label: '记录', type: 'feeding' } : undefined,
-            progress: feedProgress,
-          })
-        }
+        const level: ReminderItem['level'] = diffMin < 0 ? 'urgent' : diffMin < 30 ? 'warn' : 'ok'
+        items.push({
+          id: 'next-feed',
+          level,
+          icon: <IconFeed />,
+          title: diffMin < 0 ? '该喂奶了' : `预计 ${fmtDiff(diffMin)} 喂奶`,
+          desc: `上次 ${fmtElapsed(nowMin - lastFeedMin)}，预计间隔 ${avgGap}分钟`,
+          action: diffMin < 0 ? { label: '记录', type: 'feeding' } : undefined,
+          progress: feedProgress,
+        })
+      } else if (feedings.length === 0) {
+        items.push({
+          id: 'next-feed',
+          level: 'todo',
+          icon: <IconFeed />,
+          title: '等待今日首餐',
+          desc: '记录第一次喂奶后开始预测',
+          action: { label: '记录', type: 'feeding' },
+          progress: feedProgress,
+        })
       } else if (feedings.length === 1) {
         const lastFeedTime = new Date(feedings[0].time)
         const lastFeedMin = lastFeedTime.getHours() * 60 + lastFeedTime.getMinutes()
         const elapsedMin = nowMin - lastFeedMin
         const level: ReminderItem['level'] = elapsedMin > 180 ? 'urgent' : elapsedMin > 120 ? 'warn' : 'ok'
+        const modelGap = feedingModel?.getMedianGap(lastFeedTime.getHours() - (lastFeedTime.getHours() % 2))
+        const gapDesc = modelGap ? `预计间隔约 ${Math.round(modelGap)} 分钟` : '积累数据后自动预测'
         items.push({
           id: 'next-feed',
           level,
           icon: <IconFeed />,
           title: `距上次喂奶 ${fmtElapsed(elapsedMin)}`,
-          desc: '今日仅1次记录，无法预测间隔',
+          desc: gapDesc,
           action: elapsedMin > 120 ? { label: '记录', type: 'feeding' } : undefined,
-          progress: feedProgress,
-        })
-      } else {
-        items.push({
-          id: 'next-feed',
-          level: 'todo',
-          icon: <IconFeed />,
-          title: '今日暂无喂奶记录',
-          desc: '记录第一次喂奶',
-          action: { label: '记录', type: 'feeding' },
           progress: feedProgress,
         })
       }

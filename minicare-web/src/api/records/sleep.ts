@@ -22,9 +22,22 @@ import type {
   EndSleepDto,
   CreateCompleteSleepDto,
   UpdateSleepDto,
-  PaginationParams,
-  ListResult,
 } from '../types'
+
+export interface SleepListParams {
+  before_date?: string
+}
+
+export interface SleepListResponse {
+  items: SleepRecord[]
+  nextBeforeDate: string | null
+}
+
+function buildListQuery(babyId: string, params?: SleepListParams): string {
+  const q: string[] = [`baby_id=${babyId}`]
+  if (params?.before_date) q.push(`before_date=${encodeURIComponent(params.before_date)}`)
+  return q.join('&')
+}
 
 export const sleepApi = {
   /**
@@ -110,15 +123,12 @@ export const sleepApi = {
   /**
    * 获取睡眠记录列表（按 start_time 倒序）
    */
-  list: (
-    familyId: string,
-    babyId: string,
-    params: PaginationParams = {},
-  ): Promise<ListResult<SleepRecord>> => {
-    const { limit = 20, offset = 0 } = params
-    return request<ListResult<SleepRecord>>(
-      `/api/family/${familyId}/records/sleep?baby_id=${babyId}&limit=${limit}&offset=${offset}`,
-    ).then((items) => items.map((r) => ({ ...r, type: 'sleep' })))
+  list: (familyId: string, babyId: string, params?: SleepListParams): Promise<SleepListResponse> => {
+    return request<SleepListResponse>(`/api/family/${familyId}/records/sleep?${buildListQuery(babyId, params)}`)
+      .then((res) => ({
+        items: res.items.map((r) => ({ ...r, type: 'sleep' })),
+        nextBeforeDate: res.nextBeforeDate,
+      }))
   },
 
   /**
