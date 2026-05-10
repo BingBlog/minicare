@@ -39,6 +39,8 @@ export function removeUser(): void {
   Taro.removeStorageSync(USER_KEY)
 }
 
+let isRedirectingToLogin = false
+
 interface RequestOptions {
   method?: 'GET' | 'POST' | 'PATCH' | 'DELETE'
   auth?: boolean
@@ -90,7 +92,12 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
   if (res.statusCode === 401) {
     removeToken()
     removeUser()
-    Taro.reLaunch({ url: '/pages/login/index' })
+    if (!isRedirectingToLogin) {
+      isRedirectingToLogin = true
+      Taro.reLaunch({ url: '/pages/login/index' }).finally(() => {
+        isRedirectingToLogin = false
+      })
+    }
     throw new Error('登录已过期，请重新登录')
   }
 

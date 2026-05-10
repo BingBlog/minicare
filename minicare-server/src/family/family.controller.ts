@@ -46,6 +46,30 @@ export class FamilyController {
     return this.familyService.getMyFamilies(userId);
   }
 
+  @Get('pending-invites')
+  @ApiOperation({ summary: '获取当前用户的待处理邀请列表' })
+  getPendingInvites(@CurrentUser() userId: string) {
+    return this.familyService.getPendingInvites(userId);
+  }
+
+  @Post('pending-invites/:memberId/accept')
+  @ApiOperation({ summary: '接受家庭邀请' })
+  acceptInvite(
+    @Param('memberId') memberId: string,
+    @CurrentUser() userId: string,
+  ) {
+    return this.familyService.acceptInvite(memberId, userId);
+  }
+
+  @Post('pending-invites/:memberId/decline')
+  @ApiOperation({ summary: '拒绝家庭邀请' })
+  declineInvite(
+    @Param('memberId') memberId: string,
+    @CurrentUser() userId: string,
+  ) {
+    return this.familyService.declineInvite(memberId, userId);
+  }
+
   @Get(':familyId/members')
   @UseGuards(FamilyMemberGuard, RoleGuard)
   @ApiOperation({ summary: '获取家庭成员列表（含 pending 状态 + 当前用户角色）' })

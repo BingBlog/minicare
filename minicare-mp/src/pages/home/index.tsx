@@ -2,6 +2,7 @@ import { View, Text } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { authApi, babyApi, familyApi, fetchAppConfig, recordsApi, sleepApi } from '@/api'
+import type { PendingInvite } from '@/api/family'
 import type { OngoingSleepRecord } from '@/api/sleep'
 import { HOME_RECORD_ROUTES } from '@/lib/constants'
 import { navigateToRecord } from '@/lib/navigation'
@@ -19,6 +20,7 @@ import SleepBanner from './SleepBanner'
 import FeedingBanner from './FeedingBanner'
 import RecordActionSheet from './RecordActionSheet'
 import TabBar from '@/components/TabBar/TabBar'
+import InviteModal from '@/components/InviteModal/InviteModal'
 import type { BabyStat, HomeRecord } from './types'
 import { toHomeRecord } from './homeRecords'
 import './index.scss'
@@ -80,6 +82,23 @@ export default function HomePage() {
   // 是否处于游客模式（未登录）
   const [isGuest, setIsGuest] = useState(false)
 
+  // 是否需要建档（已登录但无家庭或无宝宝）
+  const [needsOnboarding, setNeedsOnboarding] = useState(false)
+  const [needsOnboardingReason, setNeedsOnboardingReason] = useState<'no_family' | 'no_baby'>('no_family')
+
+  const [pendingInvites, setPendingInvites] = useState<PendingInvite[]>([])
+  const [inviteModalOpen, setInviteModalOpen] = useState(false)
+
+  const checkPendingInvites = useCallback(async () => {
+    try {
+      const invites = await familyApi.getPendingInvites()
+      if (invites.length > 0) {
+        setPendingInvites(invites)
+        setInviteModalOpen(true)
+      }
+    } catch {}
+  }, [])
+
   useEffect(() => {
     let cancelled = false
     const loadHomeData = async () => {
@@ -92,21 +111,41 @@ export default function HomePage() {
         return
       }
       try {
-        // 先验证 token 在当前后端环境是否有效（防止跨环境 token 残留）
         await authApi.checkToken()
 
         await fetchAppConfig()
         const families = await familyApi.getMine()
         if (!families.length) {
-          if (!cancelled) setBackendStatus('暂无家庭数据，请先完成建档')
+          if (!cancelled) {
+            setNeedsOnboarding(true)
+            setNeedsOnboardingReason('no_family')
+            setLoading(false)
+          }
           return
         }
 
         const fid = families[0].id
-        const [baby, todayRecords] = await Promise.all([
-          babyApi.get(fid),
-          recordsApi.today(fid),
-        ])
+
+        let baby: any
+        try {
+          const storedBaby = Taro.getStorageSync('minicare_baby')
+          if (storedBaby && storedBaby.id) {
+            baby = storedBaby
+          } else {
+            baby = await babyApi.get(fid)
+          }
+        } catch {
+          if (!cancelled) {
+            setFamilyId(fid)
+            familyIdRef.current = fid
+            setNeedsOnboarding(true)
+            setNeedsOnboardingReason('no_baby')
+            setLoading(false)
+          }
+          return
+        }
+
+        const todayRecords = await recordsApi.today(fid)
 
         let ongoing: OngoingSleepRecord | null = null
         try {
@@ -125,7 +164,6 @@ export default function HomePage() {
           setOngoingSleep(ongoing)
           setBackendStatus('')
 
-          // 获取昨日记录用于对比
           recordsApi.today(fid, getYesterdayDateStr())
             .then((yRecs) => { if (!cancelled) setYesterdayRecords(yRecs.map(toHomeRecord)) })
             .catch(() => {})
@@ -133,8 +171,7 @@ export default function HomePage() {
       } catch (err) {
         if (!cancelled) {
           const msg = err instanceof Error ? err.message : '请求失败'
-          if (msg.includes('缺少访问令牌') || msg.includes('Unauthorized') || msg.includes('401')) {
-            Taro.reLaunch({ url: '/pages/login/index' })
+          if (msg.includes('缺少访问令牌') || msg.includes('Unauthorized') || msg.includes('登录已过期')) {
             return
           }
           setBackendStatus(`后端未连通：${msg}`)
@@ -144,27 +181,61 @@ export default function HomePage() {
       }
     }
     loadHomeData()
+    checkPendingInvites()
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [checkPendingInvites])
 
-  // 从子页面返回 / 小程序前台恢复时，刷新家庭列表 + 今日记录
+  // 从子页面返回 / 小程序前台恢复时，刷新家庭列表 + 今日记录 + 检查新邀请
   useDidShow(() => {
     const token = getToken()
     if (!token) return
 
+    if (!inviteModalOpen) {
+      checkPendingInvites()
+    }
+
     familyApi.getMine().then((families) => {
-      if (!families.length) return
+      if (!families.length) {
+        if (!needsOnboarding) {
+          setNeedsOnboarding(true)
+          setNeedsOnboardingReason('no_family')
+        }
+        return
+      }
       const latestFid = families[0].id
+
+      if (needsOnboarding) {
+        babyApi.get(latestFid).then(() => {
+          setNeedsOnboarding(false)
+          setFamilyId(latestFid)
+          familyIdRef.current = latestFid
+          refreshTodayRecords(latestFid)
+        }).catch(() => {
+          setNeedsOnboardingReason('no_baby')
+        })
+        return
+      }
+
       if (latestFid !== familyIdRef.current) {
         setFamilyId(latestFid)
         familyIdRef.current = latestFid
+      }
+
+      const storedBaby = Taro.getStorageSync('minicare_baby')
+      if (storedBaby && storedBaby.id) {
+        if (storedBaby.name !== babyName || storedBaby.birth_date !== birthDate) {
+          setBabyName(storedBaby.name || '宝宝')
+          setBirthDate(storedBaby.birth_date || '')
+        }
+      } else {
         babyApi.get(latestFid).then((baby) => {
           setBabyName(baby.name || '宝宝')
           setBirthDate(baby.birth_date || '')
         }).catch(() => {})
       }
+
       refreshTodayRecords(latestFid)
     }).catch(() => {
       if (familyIdRef.current) refreshTodayRecords(familyIdRef.current)
@@ -254,6 +325,26 @@ export default function HomePage() {
             </View>
           </View>
         </View>
+        <InviteModal
+          invites={pendingInvites}
+          open={inviteModalOpen}
+          onAccept={async () => {
+            setPendingInvites([])
+            setInviteModalOpen(false)
+            const families = await familyApi.getMine()
+            if (families.length > 0) {
+              const fid = families[0].id
+              setFamilyId(fid)
+              familyIdRef.current = fid
+              setNeedsOnboarding(false)
+              refreshTodayRecords(fid)
+            }
+          }}
+          onDecline={() => {
+            setPendingInvites([])
+            setInviteModalOpen(false)
+          }}
+        />
       </View>
     )
   }
@@ -279,10 +370,7 @@ export default function HomePage() {
         </View>
 
         <View className='home-content'>
-          {/* 快捷记录（与登录后同款网格，点击时引导登录） */}
           <GuestQuickActions />
-
-          {/* 登录引导 */}
           <View className='home-guest-login'>
             <Text className='home-guest-login__title'>登录后即可开始记录</Text>
             <Text className='home-guest-login__desc'>使用手机号登录，随时随地记录宝宝的成长点滴</Text>
@@ -295,6 +383,92 @@ export default function HomePage() {
           </View>
         </View>
         <TabBar activeTab='home' />
+        <InviteModal
+          invites={pendingInvites}
+          open={inviteModalOpen}
+          onAccept={async () => {
+            setPendingInvites([])
+            setInviteModalOpen(false)
+            const families = await familyApi.getMine()
+            if (families.length > 0) {
+              const fid = families[0].id
+              setFamilyId(fid)
+              familyIdRef.current = fid
+              setNeedsOnboarding(false)
+              refreshTodayRecords(fid)
+            }
+          }}
+          onDecline={() => {
+            setPendingInvites([])
+            setInviteModalOpen(false)
+          }}
+        />
+      </View>
+    )
+  }
+
+  // ── 已登录但无家庭/宝宝 → 引导建档 ──
+  if (needsOnboarding) {
+    const onboardingUrl = needsOnboardingReason === 'no_baby'
+      ? '/pages/onboarding/index?mode=invited'
+      : '/pages/onboarding/index'
+    return (
+      <View className={cls('home-page')}>
+        <View className='home-hero' style={{ paddingTop: `${getStatusBarHeight() + 8}px` }}>
+          <View className='home-hero__decor home-hero__decor--big' />
+          <View className='home-hero__decor home-hero__decor--small' />
+          <View className='home-hero__head'>
+            <View>
+              <Text className='home-hero__date'>{getTodayDateStr()}</Text>
+              <Text className='home-hero__greeting'>{getGreeting()}</Text>
+            </View>
+          </View>
+          <View className='home-baby-card home-baby-card--guest'>
+            <Text className='home-baby-card__name'>敏宝日记</Text>
+            <Text className='home-baby-card__sub'>记录每一口，呵护每一天</Text>
+          </View>
+          <View className='home-hero__bottom-mask' />
+        </View>
+
+        <View className='home-content'>
+          <View className='home-guest-login'>
+            <Text className='home-guest-login__title'>
+              {needsOnboardingReason === 'no_baby' ? '请创建宝宝档案' : '欢迎加入敏宝日记'}
+            </Text>
+            <Text className='home-guest-login__desc'>
+              {needsOnboardingReason === 'no_baby'
+                ? '你已加入家庭，创建宝宝档案后即可开始记录'
+                : '创建宝宝档案，开始记录宝宝的成长点滴'}
+            </Text>
+            <View
+              className='home-guest-login__btn'
+              onClick={() => Taro.navigateTo({ url: onboardingUrl })}
+            >
+              <Text className='home-guest-login__btn-text'>创建宝宝档案</Text>
+            </View>
+          </View>
+        </View>
+        <TabBar activeTab='home' />
+        <InviteModal
+          invites={pendingInvites}
+          open={inviteModalOpen}
+          onAccept={async () => {
+            setPendingInvites([])
+            setInviteModalOpen(false)
+            const families = await familyApi.getMine()
+            if (families.length > 0) {
+              const fid = families[0].id
+              setFamilyId(fid)
+              familyIdRef.current = fid
+              setNeedsOnboarding(false)
+              refreshTodayRecords(fid)
+            }
+          }}
+          onDecline={() => {
+            setPendingInvites([])
+            setInviteModalOpen(false)
+          }}
+        />
       </View>
     )
   }
@@ -394,6 +568,26 @@ export default function HomePage() {
             .finally(() => {
               setDeletingId(null)
             })
+        }}
+      />
+      <InviteModal
+        invites={pendingInvites}
+        open={inviteModalOpen}
+        onAccept={async () => {
+          setPendingInvites([])
+          setInviteModalOpen(false)
+          const families = await familyApi.getMine()
+          if (families.length > 0) {
+            const fid = families[0].id
+            setFamilyId(fid)
+            familyIdRef.current = fid
+            setNeedsOnboarding(false)
+            refreshTodayRecords(fid)
+          }
+        }}
+        onDecline={() => {
+          setPendingInvites([])
+          setInviteModalOpen(false)
         }}
       />
     </View>

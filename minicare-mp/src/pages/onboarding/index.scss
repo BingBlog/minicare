@@ -133,6 +133,26 @@ $card-shadow: 0 1px 6px rgba(200, 100, 120, 0.07);
   font-size: 16px;
 }
 
+.welcome-page__invite-btn {
+  width: 100%;
+  padding: 14px 0;
+  border-radius: 50px;
+  background: #fff;
+  border: 1.5px solid $primary;
+  text-align: center;
+  margin-top: 12px;
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+.welcome-page__invite-btn-text {
+  color: $primary;
+  font-weight: 600;
+  font-size: 15px;
+}
+
 .welcome-page__skip {
   text-align: center;
   margin-top: 14px;
@@ -193,6 +213,34 @@ $card-shadow: 0 1px 6px rgba(200, 100, 120, 0.07);
   flex: 1;
   overflow-y: auto;
   padding-bottom: 96px;
+}
+
+.onboarding-page__section {
+  margin: 16px 16px 0;
+  background: $card-bg;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: $card-shadow;
+  padding: 14px 16px;
+}
+
+.onboarding-page__section-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: $text-secondary;
+  letter-spacing: 0.3px;
+  margin-bottom: 8px;
+}
+
+.onboarding-page__field {
+  display: flex;
+  align-items: center;
+}
+
+.onboarding-page__input {
+  flex: 1;
+  font-size: 14px;
+  color: $text-primary;
 }
 
 /* 通用节标题 */

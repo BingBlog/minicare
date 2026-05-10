@@ -9,6 +9,7 @@ import { View, Text, Input, Button, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { useEffect, useRef, useState } from 'react'
 import { sendVerificationCode, loginByCode, IS_TEST_MODE } from '@/api/auth'
+import { familyApi, babyApi } from '@/api'
 import { getToken } from '@/api/http'
 import { getStatusBarHeight } from '@/lib/safeArea'
 
@@ -31,7 +32,9 @@ export default function LoginPage() {
   useEffect(() => {
     const token = getToken()
     if (token) {
-      Taro.reLaunch({ url: '/pages/home/index' })
+      setTimeout(() => {
+        Taro.switchTab({ url: '/pages/home/index' })
+      }, 100)
     }
   }, [])
 
@@ -88,14 +91,30 @@ export default function LoginPage() {
     }
     setLoadingLogin(true)
     try {
-      const result = await loginByCode(phone, code, verifyOtpRef.current)
+      await loginByCode(phone, code, verifyOtpRef.current)
       Taro.showToast({ title: '登录成功', icon: 'success' })
-      // 新用户且无已激活家庭 → 引导创建宝宝档案
-      const hasFamily = result.activatedFamilyIds && result.activatedFamilyIds.length > 0
-      if (result.isNewUser && !hasFamily) {
+
+      const [families, pendingInvites] = await Promise.all([
+        familyApi.getMine(),
+        familyApi.getPendingInvites().catch(() => []),
+      ])
+
+      if (!families.length && !pendingInvites.length) {
         Taro.reLaunch({ url: '/pages/onboarding/index' })
-      } else {
+        return
+      }
+
+      if (pendingInvites.length > 0) {
         Taro.reLaunch({ url: '/pages/home/index' })
+        return
+      }
+
+      const fid = families[0].id
+      try {
+        await babyApi.get(fid)
+        Taro.reLaunch({ url: '/pages/home/index' })
+      } catch {
+        Taro.reLaunch({ url: '/pages/onboarding/index?mode=invited' })
       }
     } catch (err) {
       Taro.showToast({ title: err instanceof Error ? err.message : '登录失败', icon: 'none' })

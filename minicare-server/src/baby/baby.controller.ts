@@ -25,7 +25,7 @@ export class BabyController {
 
   @Post()
   @MinRole(FamilyRole.MEMBER)
-  @ApiOperation({ summary: '创建宝宝档案（MVP: 每家庭限 1 个）' })
+  @ApiOperation({ summary: '创建宝宝档案' })
   create(
     @Param('familyId') familyId: string,
     @CurrentUser() userId: string,
@@ -35,9 +35,15 @@ export class BabyController {
   }
 
   @Get()
-  @ApiOperation({ summary: '获取家庭宝宝档案' })
+  @ApiOperation({ summary: '获取家庭宝宝档案（第一个）' })
   getBaby(@Param('familyId') familyId: string) {
     return this.babyService.getBabyByFamily(familyId);
+  }
+
+  @Get('list')
+  @ApiOperation({ summary: '获取家庭所有宝宝档案' })
+  listBabies(@Param('familyId') familyId: string) {
+    return this.babyService.listBabies(familyId);
   }
 
   @Patch(':babyId')

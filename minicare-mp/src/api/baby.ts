@@ -13,7 +13,7 @@ export interface CreateBabyDto {
 
 export const babyApi = {
   get: (familyId: string) => request<Baby>(`/api/family/${familyId}/baby`),
-  /** 创建宝宝档案（每家庭唯一，重复创建返回 409） */
+  list: (familyId: string) => request<Baby[]>(`/api/family/${familyId}/baby/list`),
   create: (familyId: string, data: CreateBabyDto) =>
     request<Baby>(`/api/family/${familyId}/baby`, { method: 'POST', data }),
   update: (familyId: string, babyId: string, data: Partial<{

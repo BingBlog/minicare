@@ -1,5 +1,4 @@
 import {
-  ConflictException,
   Inject,
   Injectable,
   NotFoundException,
@@ -13,19 +12,7 @@ import { CreateBabyDto } from './dto/create-baby.dto';
 export class BabyService {
   constructor(@Inject(DATABASE_POOL) private readonly db: Pool) {}
 
-  /**
-   * 在家庭下创建宝宝档案（MVP 每家庭限 1 个宝宝）
-   */
   async createBaby(familyId: string, createdBy: string, dto: CreateBabyDto) {
-    // MVP 阶段：每家庭限 1 个宝宝
-    const [existing] = await this.db.execute<any[]>(
-      'SELECT id FROM baby_profile WHERE family_id = ?',
-      [familyId],
-    );
-    if (existing.length > 0) {
-      throw new ConflictException('MVP 阶段每个家庭只能创建一个宝宝档案');
-    }
-
     const babyId = uuidv4();
     const allergyTypesJson = dto.allergy_types?.length
       ? JSON.stringify(dto.allergy_types)
@@ -51,12 +38,29 @@ export class BabyService {
       ],
     );
 
-    return this.getBabyByFamily(familyId);
+    return this.getBabyById(babyId, familyId);
   }
 
-  /**
-   * 获取家庭的宝宝档案（MVP 返回第一个）
-   */
+  async listBabies(familyId: string) {
+    const [rows] = await this.db.execute<any[]>(
+      `SELECT id, family_id, name, birth_date, gender,
+              allergy_types, allergy_level,
+              birth_weight_g, birth_height_cm,
+              avatar_url, created_at
+       FROM baby_profile WHERE family_id = ? ORDER BY created_at ASC`,
+      [familyId],
+    );
+    return rows.map((baby: any) => {
+      if (typeof baby.allergy_types === 'string') {
+        try { baby.allergy_types = JSON.parse(baby.allergy_types); } catch { baby.allergy_types = []; }
+      }
+      if (!['male', 'female', 'unknown'].includes(baby.gender)) {
+        baby.gender = 'unknown';
+      }
+      return baby;
+    });
+  }
+
   async getBabyByFamily(familyId: string) {
     const [rows] = await this.db.execute<any[]>(
       `SELECT id, family_id, name, birth_date, gender,

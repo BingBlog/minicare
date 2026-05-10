@@ -47,6 +47,7 @@ export default function ProfilePage() {
   const [user, setUser] = useState<User | null>(null)
   const [currentFamily, setCurrentFamily] = useState<Family | null>(null)
   const [currentBaby, setCurrentBaby] = useState<Baby | null>(null)
+  const [babies, setBabies] = useState<Baby[]>([])
   const [loading, setLoading] = useState(true)
 
   // ── 编辑宝宝档案弹层 ──────────────────────────────────────────
@@ -106,9 +107,18 @@ export default function ProfilePage() {
           // 无宝宝档案时不报错
         }
 
+        let babyList: Baby[] = []
+        try {
+          babyList = await babyApi.list(family.id)
+        } catch {
+          // 列表获取失败时 fallback 到单个
+          babyList = baby ? [baby] : []
+        }
+
         if (!cancelled) {
           setCurrentFamily(family)
           setCurrentBaby(baby)
+          setBabies(babyList)
           setLoading(false)
         }
       } catch {
@@ -249,6 +259,11 @@ export default function ProfilePage() {
     })
   }
 
+  const handleSwitchBaby = (baby: Baby) => {
+    setCurrentBaby(baby)
+    Taro.setStorageSync('minicare_baby', baby)
+  }
+
   // ── SettingsGroup 数据 ────────────────────────────────────────
   const activeCount = members.filter((m) => m.status === 'active' || m.status === undefined).length
   const familyRows: SettingsRow[] = [
@@ -377,7 +392,10 @@ export default function ProfilePage() {
           gender={currentBaby?.gender}
           allergyTypes={currentBaby?.allergy_types}
           allergyLevel={currentBaby?.allergy_level as AllergyLevel | undefined}
+          babies={babies}
+          currentBabyId={currentBaby?.id}
           onEdit={openEdit}
+          onSwitchBaby={handleSwitchBaby}
         />
 
         {/* 宝宝生长数据迷你格 */}

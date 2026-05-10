@@ -115,6 +115,78 @@
   flex-shrink: 0;
 }
 
+.baby-hero__actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.baby-hero__switch-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #fff0f4;
+  color: #f87098;
+}
+
+.baby-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0 20px 16px;
+}
+
+.baby-picker__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 24px;
+  background: #fff;
+  border: 1.5px solid #f0e7ea;
+  transition: all 0.15s;
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+.baby-picker__item--active {
+  background: #fff0f4;
+  border-color: #f87098;
+}
+
+.baby-picker__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #f5f0f2;
+  flex-shrink: 0;
+}
+
+.baby-picker__item--active .baby-picker__avatar {
+  background: linear-gradient(135deg, #f9a8c0, #f87098);
+}
+
+.baby-picker__name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #4a3035;
+}
+
+.baby-picker__check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
 // ── BabyStats ──────────────────────────────────────────────────────
 
 .baby-stats {

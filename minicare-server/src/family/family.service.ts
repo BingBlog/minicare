@@ -92,7 +92,6 @@ export class FamilyService {
    * - 不可邀请自己
    */
   async inviteByPhone(familyId: string, inviterId: string, phone: string) {
-    // 检查邀请人自身手机号
     const [selfRows] = await this.db.execute<any[]>(
       'SELECT phone FROM user_account WHERE id = ?',
       [inviterId],
@@ -101,9 +100,6 @@ export class FamilyService {
       throw new ConflictException('不能邀请自己');
     }
 
-    // 检查该手机号是否已有 active/pending 记录（两种情况）
-    // 1) 已注册用户通过 user_account.phone 关联
-    // 2) 尚未注册通过 invite_phone 直接关联
     const [existing] = await this.db.execute<any[]>(
       `SELECT fm.id, fm.status FROM family_member fm
        LEFT JOIN user_account ua ON fm.user_id = ua.id
@@ -122,7 +118,29 @@ export class FamilyService {
       }
     }
 
-    // 创建 pending 记录（user_id=NULL，待登录激活）
+    const [leftRows] = await this.db.execute<any[]>(
+      `SELECT id FROM family_member
+       WHERE family_id = ? AND invite_phone = ? AND status = 'left'
+       LIMIT 1`,
+      [familyId, phone],
+    );
+
+    if (leftRows.length > 0) {
+      const leftId = leftRows[0].id;
+      const [userRows] = await this.db.execute<any[]>(
+        'SELECT id FROM user_account WHERE phone = ?',
+        [phone],
+      );
+      await this.db.execute(
+        `UPDATE family_member
+         SET user_id = ?, role = 'member', status = 'pending',
+             invited_by = ?, joined_at = NULL
+         WHERE id = ?`,
+        [userRows.length > 0 ? userRows[0].id : null, inviterId, leftId],
+      );
+      return { memberId: leftId, status: 'pending' };
+    }
+
     const memberId = uuidv4();
     await this.db.execute(
       `INSERT INTO family_member (id, family_id, user_id, role, status, invite_phone, invited_by)
@@ -131,6 +149,85 @@ export class FamilyService {
     );
 
     return { memberId, status: 'pending' };
+  }
+
+  /**
+   * 获取当前用户的待处理邀请列表
+   * 通过 user_account.phone 匹配 family_member.invite_phone
+   * 返回 status='pending' 且 user_id IS NULL 的记录（尚未被登录激活的邀请）
+   */
+  async getPendingInvites(userId: string) {
+    const [userRows] = await this.db.execute<any[]>(
+      'SELECT phone FROM user_account WHERE id = ?',
+      [userId],
+    );
+    if (userRows.length === 0 || !userRows[0].phone) return [];
+
+    const phone = userRows[0].phone;
+
+    const [rows] = await this.db.execute<any[]>(
+      `SELECT fm.id, fm.family_id, fg.name AS family_name,
+              inviter.nickname AS inviter_name
+       FROM family_member fm
+       JOIN family_group fg ON fm.family_id = fg.id
+       LEFT JOIN user_account inviter ON fm.invited_by = inviter.id
+       WHERE fm.invite_phone = ? AND fm.status = 'pending'
+         AND NOT EXISTS (
+           SELECT 1 FROM family_member fm2
+           WHERE fm2.family_id = fm.family_id AND fm2.user_id = ? AND fm2.status = 'active'
+         )`,
+      [phone, userId],
+    );
+
+    return rows;
+  }
+
+  /**
+   * 接受邀请（将 pending 记录激活为 active）
+   */
+  async acceptInvite(memberId: string, userId: string) {
+    const [rows] = await this.db.execute<any[]>(
+      'SELECT id, family_id, status FROM family_member WHERE id = ?',
+      [memberId],
+    );
+    if (rows.length === 0) {
+      throw new NotFoundException('邀请不存在');
+    }
+    if (rows[0].status !== 'pending') {
+      throw new ConflictException('邀请已处理');
+    }
+
+    await this.db.execute(
+      `UPDATE family_member
+       SET user_id = ?, status = 'active', joined_at = NOW()
+       WHERE id = ?`,
+      [userId, memberId],
+    );
+
+    return { familyId: rows[0].family_id, success: true };
+  }
+
+  /**
+   * 拒绝邀请（将 pending 记录标记为 left）
+   */
+  async declineInvite(memberId: string, userId: string) {
+    const [rows] = await this.db.execute<any[]>(
+      'SELECT id, status FROM family_member WHERE id = ?',
+      [memberId],
+    );
+    if (rows.length === 0) {
+      throw new NotFoundException('邀请不存在');
+    }
+    if (rows[0].status !== 'pending') {
+      throw new ConflictException('邀请已处理');
+    }
+
+    await this.db.execute(
+      `UPDATE family_member SET status = 'left' WHERE id = ?`,
+      [memberId],
+    );
+
+    return { success: true };
   }
 
   /**
