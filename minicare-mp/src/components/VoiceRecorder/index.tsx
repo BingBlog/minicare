@@ -1,4 +1,5 @@
 import { View, Text } from '@tarojs/components'
+import { useEffect, useRef, useState } from 'react'
 import './index.scss'
 
 interface VoiceRecorderProps {
@@ -17,34 +18,53 @@ export default function VoiceRecorder({
   onCancel,
 }: VoiceRecorderProps) {
   const remaining = maxDuration - duration
+  const [simulatedBars, setSimulatedBars] = useState<number[]>(Array(20).fill(0.1))
+  const animFrameRef = useRef<ReturnType<typeof setInterval>>()
+
+  useEffect(() => {
+    if (state !== 'recording') {
+      if (animFrameRef.current) {
+        clearInterval(animFrameRef.current)
+        animFrameRef.current = undefined
+      }
+      return
+    }
+
+    animFrameRef.current = setInterval(() => {
+      setSimulatedBars((prev) =>
+        prev.map(() => 0.1 + Math.random() * 0.5)
+      )
+    }, 150)
+
+    return () => {
+      if (animFrameRef.current) {
+        clearInterval(animFrameRef.current)
+        animFrameRef.current = undefined
+      }
+    }
+  }, [state])
+
+  const hasRealData = volumeLevels.length > 0
+  const displayBars = hasRealData ? volumeLevels.slice(-20) : simulatedBars
 
   return (
     <View className='voice-recorder' onTouchMove={onCancel}>
       {state === 'recording' && (
         <>
-          <Text className='voice-recorder__status'>正在录音</Text>
+          <Text className='voice-recorder__status'>
+            {duration < 1 ? '请开始说话...' : '正在录音'}
+          </Text>
 
           <View className='voice-recorder__wave'>
-            {volumeLevels.length > 0 ? (
-              <View className='voice-recorder__bars'>
-                {volumeLevels.slice(-20).map((level, idx) => (
-                  <View
-                    key={idx}
-                    className='voice-recorder__bar'
-                    style={{ height: `${Math.max(4, level * 40)}px` }}
-                  />
-                ))}
-              </View>
-            ) : (
-              <View className='voice-recorder__bars'>
-                {Array.from({ length: 20 }).map((_, idx) => (
-                  <View
-                    key={idx}
-                    className='voice-recorder__bar voice-recorder__bar--idle'
-                  />
-                ))}
-              </View>
-            )}
+            <View className='voice-recorder__bars'>
+              {displayBars.map((level, idx) => (
+                <View
+                  key={idx}
+                  className={`voice-recorder__bar${!hasRealData ? ' voice-recorder__bar--sim' : ''}`}
+                  style={{ height: `${Math.max(4, level * 40)}px` }}
+                />
+              ))}
+            </View>
           </View>
 
           <Text className='voice-recorder__countdown'>

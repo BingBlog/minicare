@@ -133,6 +133,7 @@ export default function TabBar({ activeTab }: TabBarProps) {
 
     pressTimerRef.current = setTimeout(() => {
       isLongPressRef.current = true
+      voice.setPressed(true)
       voice.startRecording()
     }, LONG_PRESS_MS)
   }, [voice, isLoggedIn])
@@ -151,6 +152,7 @@ export default function TabBar({ activeTab }: TabBarProps) {
       voice.cancelRecording()
     } else if (deltaX > 50 && !isCancelingRef.current) {
       isStoppedRef.current = true
+      voice.setPressed(false)
       voice.stopRecording()
     }
   }, [voice, isLoggedIn])
@@ -162,6 +164,7 @@ export default function TabBar({ activeTab }: TabBarProps) {
     }
     clearTimeout(pressTimerRef.current)
     if (isLongPressRef.current && !isCancelingRef.current && !isStoppedRef.current) {
+      voice.setPressed(false)
       voice.stopRecording()
     } else if (!isLongPressRef.current) {
       setFabOpen(true)

@@ -271,48 +271,35 @@ export class VoiceService implements OnModuleInit {
     const provider = 'hunyuan-exp'
     const modelName = 'hunyuan-turbos-latest'
     const label = 'hunyuan-turbos'
-    const maxRetries = 1
 
-    for (let attempt = 0; attempt <= maxRetries; attempt++) {
-      try {
-        const ai = (this.cloudbaseAiApp || this.cloudbaseApp).ai()
-        const model = ai.createModel(provider)
+    try {
+      const ai = (this.cloudbaseAiApp || this.cloudbaseApp).ai()
+      const model = ai.createModel(provider)
 
-        const result = await model.generateText({
-          model: modelName,
-          messages: [
-            { role: 'system', content: SYSTEM_PROMPT },
-            { role: 'user', content: text },
-          ],
-          temperature: 0.1,
-        })
+      const result = await model.generateText({
+        model: modelName,
+        messages: [
+          { role: 'system', content: SYSTEM_PROMPT },
+          { role: 'user', content: text },
+        ],
+        temperature: 0.1,
+        maxTokens: 200,
+      })
 
-        this.logger.log(`[${label}] AI 原始响应: ${result.text}`)
-        const parsed = this.parseAiResponse(result.text, text)
+      this.logger.log(`[${label}] AI 原始响应: ${result.text}`)
+      const parsed = this.parseAiResponse(result.text, text)
 
-        if (parsed.recordType) {
-          return parsed
-        }
-
-        this.logger.warn(`[${label}] 返回 recordType=null`)
-        return { recordType: null, fields: {}, confidence: 'low', transcript: text }
-      } catch (err) {
-        const isRetryable = this.isRetryableError(err)
-        const errMsg = (err as Error).message
-
-        if (isRetryable && attempt < maxRetries) {
-          const delay = 1000 * Math.pow(2, attempt)
-          this.logger.warn(`[${label}] 可重试错误 (${errMsg})，${delay}ms 后第 ${attempt + 1} 次重试...`)
-          await this.sleep(delay)
-          continue
-        }
-
-        this.logger.error(`[${label}] NLU 解析失败: ${errMsg}${isRetryable ? '（重试已耗尽）' : '（不可重试错误）'}`)
-        return { recordType: null, fields: {}, confidence: 'low', transcript: text }
+      if (parsed.recordType) {
+        return parsed
       }
-    }
 
-    return { recordType: null, fields: {}, confidence: 'low', transcript: text }
+      this.logger.warn(`[${label}] 返回 recordType=null`)
+      return { recordType: null, fields: {}, confidence: 'low', transcript: text }
+    } catch (err) {
+      const errMsg = (err as Error).message
+      this.logger.error(`[${label}] NLU 解析失败: ${errMsg}`)
+      return { recordType: null, fields: {}, confidence: 'low', transcript: text }
+    }
   }
 
   private parseAiResponse(aiText: string, originalText: string): { recordType: string | null; fields: Record<string, unknown>; confidence: string; transcript: string } {

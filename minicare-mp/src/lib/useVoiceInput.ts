@@ -12,6 +12,7 @@ export interface VoiceFailure {
 
 const MAX_DURATION = 30
 const MIN_DURATION = 1
+const WATCHDOG_INTERVAL = 500
 
 export function useVoiceInput(familyId: string) {
   const [state, setState] = useState<VoiceState>('idle')
@@ -27,11 +28,18 @@ export function useVoiceInput(familyId: string) {
   const cancelledRef = useRef(false)
   const isRecordingRef = useRef(false)
   const pendingStopRef = useRef(false)
+  const watchdogTimerRef = useRef<ReturnType<typeof setInterval>>()
+  const isPressedRef = useRef(true)
+  const hasRealVolumeRef = useRef(false)
 
   const clearTimers = useCallback(() => {
     if (durationTimerRef.current) {
       clearInterval(durationTimerRef.current)
       durationTimerRef.current = undefined
+    }
+    if (watchdogTimerRef.current) {
+      clearInterval(watchdogTimerRef.current)
+      watchdogTimerRef.current = undefined
     }
   }, [])
 
@@ -60,6 +68,8 @@ export function useVoiceInput(familyId: string) {
 
     cancelledRef.current = false
     isRecordingRef.current = true
+    isPressedRef.current = true
+    hasRealVolumeRef.current = false
     setState('recording')
     setDuration(0)
     setVolumeLevels([])
@@ -78,6 +88,12 @@ export function useVoiceInput(familyId: string) {
           manager.stop()
         }
       }, 200)
+
+      watchdogTimerRef.current = setInterval(() => {
+        if (!isPressedRef.current && isRecordingRef.current) {
+          manager.stop()
+        }
+      }, WATCHDOG_INTERVAL)
 
       if (pendingStopRef.current) {
         pendingStopRef.current = false
@@ -156,6 +172,7 @@ export function useVoiceInput(familyId: string) {
           }
           const rms = Math.sqrt(sum / len)
           const normalized = Math.min(rms / 32768 * 5, 1)
+          hasRealVolumeRef.current = true
           setVolumeLevels((prev) => {
             const next = [...prev, normalized]
             return next.length > 40 ? next.slice(-40) : next
@@ -195,6 +212,10 @@ export function useVoiceInput(familyId: string) {
     Taro.vibrateShort({ type: 'light' })
   }, [clearTimers])
 
+  const setPressed = useCallback((pressed: boolean) => {
+    isPressedRef.current = pressed
+  }, [])
+
   const reset = useCallback(() => {
     setState('idle')
     setTranscript('')
@@ -214,6 +235,7 @@ export function useVoiceInput(familyId: string) {
     startRecording,
     stopRecording,
     cancelRecording,
+    setPressed,
     reset,
   }
 }
