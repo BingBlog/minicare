@@ -109,6 +109,7 @@ npm run build:prod         # tsc -b + vite build (production mode)
 - **No emojis** anywhere (code, data, API responses). Use SVG icons: `src/assets/icons/*.svg` (mp) / `src/components/ui/icons.tsx` (web).
 - **Enum labels** centralized in `src/lib/constants.ts` (both mp and web). Never define label maps locally in components.
 - **No `window.confirm/alert/prompt`** (web). Use inline bottom-sheet confirm dialogs. In miniprogram, use `Taro.showModal` or custom components.
+- **Timezone**: 前端传递时间给后端时，绝不使用 `new Date().toISOString()`（输出 UTC 导致 8 小时偏差），必须使用 `dayjs().format('YYYY-MM-DDTHH:mm:ss')` 输出本地时间字符串（不带 Z 后缀）。
 
 ## Deploy
 
