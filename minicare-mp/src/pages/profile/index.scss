@@ -1124,4 +1124,98 @@
   color: #9a8090;
 }
 
+.family-picker-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.family-picker {
+  width: 300px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 24px;
+}
+
+.family-picker__title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #3d2b2e;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.family-picker__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.family-picker__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #fafafa;
+  border: 1.5px solid transparent;
+  transition: all 0.15s;
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+.family-picker__item--active {
+  background: #fff0f4;
+  border-color: #f87098;
+}
+
+.family-picker__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f5f0f2;
+  flex-shrink: 0;
+}
+
+.family-picker__item--active .family-picker__icon {
+  background: linear-gradient(135deg, #f9a8c0, #f87098);
+}
+
+.family-picker__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.family-picker__name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #3d2b2e;
+}
+
+.family-picker__role {
+  font-size: 12px;
+  color: #9a7e82;
+}
+
+.family-picker__check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
 @include ipad.profile;

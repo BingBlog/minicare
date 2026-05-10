@@ -11,7 +11,7 @@ import { recordsApi } from '@/api/records'
 import { babyApi } from '@/api/baby'
 import { familyApi } from '@/api/family'
 import { TABBAR_ICONS } from '@/assets/icons/tabbar'
-import { getToken } from '@/api/http'
+import { getToken, getCurrentFamilyId, setCurrentFamilyId } from '@/api/http'
 import dayjs from 'dayjs'
 import './TabBar.scss'
 
@@ -87,7 +87,11 @@ export default function TabBar({ activeTab }: TabBarProps) {
   useEffect(() => {
     if (!isLoggedIn) return
     familyApi.getMine().then((families) => {
-      if (families.length > 0) setFamilyId(families[0].id)
+      if (families.length > 0) {
+        const fid = getCurrentFamilyId(families)!
+        setCurrentFamilyId(fid)
+        setFamilyId(fid)
+      }
     }).catch(() => {})
   }, [isLoggedIn])
 

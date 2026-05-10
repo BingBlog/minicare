@@ -15,6 +15,7 @@ import { View, Text, Input, Picker } from '@tarojs/components'
 import Taro, { useLoad } from '@tarojs/taro'
 import { useEffect, useRef, useState } from 'react'
 import { babyApi, familyApi, recordsApi } from '@/api'
+import { getCurrentFamilyId, setCurrentFamilyId } from '@/api/http'
 import type { FeedingRecord, CreateFeedingDto, UpdateFeedingDto } from '@/api/feeding'
 import { getStatusBarHeight } from '@/lib/safeArea'
 import { nowTime, nowDate, toLocalISO, isoToLocalDate, isoToLocalTime, addMinutes, timeDiffMinutes } from '@/lib/utils'
@@ -134,7 +135,8 @@ export default function FeedingFormPage() {
         Taro.reLaunch({ url: '/pages/home/index' })
         return
       }
-      const fid = families[0].id
+      const fid = getCurrentFamilyId(families)!
+      setCurrentFamilyId(fid)
       const baby = await babyApi.get(fid)
       setFamilyId(fid)
       setBabyId(baby.id)

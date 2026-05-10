@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { authApi, babyApi, familyApi, fetchAppConfig, recordsApi, sleepApi } from '@/api'
 import type { PendingInvite } from '@/api/family'
 import type { OngoingSleepRecord } from '@/api/sleep'
+import { getCurrentFamilyId, setCurrentFamilyId } from '@/api/http'
 import { HOME_RECORD_ROUTES } from '@/lib/constants'
 import { navigateToRecord } from '@/lib/navigation'
 import { getStatusBarHeight } from '@/lib/safeArea'
@@ -124,7 +125,7 @@ export default function HomePage() {
           return
         }
 
-        const fid = families[0].id
+        const fid = getCurrentFamilyId(families)!
 
         let baby: any
         try {
@@ -204,7 +205,7 @@ export default function HomePage() {
         }
         return
       }
-      const latestFid = families[0].id
+      const latestFid = getCurrentFamilyId(families)!
 
       if (needsOnboarding) {
         babyApi.get(latestFid).then(() => {
@@ -333,7 +334,8 @@ export default function HomePage() {
             setInviteModalOpen(false)
             const families = await familyApi.getMine()
             if (families.length > 0) {
-              const fid = families[0].id
+              const fid = getCurrentFamilyId(families)!
+              setCurrentFamilyId(fid)
               setFamilyId(fid)
               familyIdRef.current = fid
               setNeedsOnboarding(false)
@@ -391,7 +393,8 @@ export default function HomePage() {
             setInviteModalOpen(false)
             const families = await familyApi.getMine()
             if (families.length > 0) {
-              const fid = families[0].id
+              const fid = getCurrentFamilyId(families)!
+              setCurrentFamilyId(fid)
               setFamilyId(fid)
               familyIdRef.current = fid
               setNeedsOnboarding(false)
@@ -457,7 +460,8 @@ export default function HomePage() {
             setInviteModalOpen(false)
             const families = await familyApi.getMine()
             if (families.length > 0) {
-              const fid = families[0].id
+              const fid = getCurrentFamilyId(families)!
+              setCurrentFamilyId(fid)
               setFamilyId(fid)
               familyIdRef.current = fid
               setNeedsOnboarding(false)
@@ -578,7 +582,8 @@ export default function HomePage() {
           setInviteModalOpen(false)
           const families = await familyApi.getMine()
           if (families.length > 0) {
-            const fid = families[0].id
+            const fid = getCurrentFamilyId(families)!
+            setCurrentFamilyId(fid)
             setFamilyId(fid)
             familyIdRef.current = fid
             setNeedsOnboarding(false)

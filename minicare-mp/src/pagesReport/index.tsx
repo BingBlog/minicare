@@ -14,7 +14,7 @@ import GuestReport from './GuestReport'
 import { TabKey, TAB_CONFIG, TIME_RANGES, DEFAULT_RANGE_MAP, LONG_RANGE_LABEL } from './types'
 import TabBar from '@/components/TabBar/TabBar'
 import { getStatusBarHeight } from '@/lib/safeArea'
-import { getToken } from '@/api/http'
+import { getToken, getCurrentFamilyId, setCurrentFamilyId } from '@/api/http'
 import './index.scss'
 
 function calcDateRange(rangeKey: string, birthDate?: string | null) {
@@ -94,7 +94,8 @@ export default function ReportPage() {
       try {
         const families = await familyApi.getMine()
         if (cancelled || !families.length) return
-        const fid = families[0].id
+        const fid = getCurrentFamilyId(families)!
+        setCurrentFamilyId(fid)
 
         const baby = await babyApi.get(fid)
         if (cancelled) return

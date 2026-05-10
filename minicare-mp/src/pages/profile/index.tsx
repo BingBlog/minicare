@@ -15,7 +15,7 @@ import { View, Text, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { useState, useEffect, useCallback } from 'react'
 import { babyApi, familyApi, fetchAppConfig } from '@/api'
-import { removeToken, getToken, getUser } from '@/api/http'
+import { removeToken, getToken, getUser, getCurrentFamilyId, setCurrentFamilyId } from '@/api/http'
 import type { AllergyLevel, AllergyType, FamilyMember, User, Family, Baby } from '@/api'
 
 import BabyHero from './BabyHero'
@@ -46,6 +46,7 @@ export default function ProfilePage() {
   // ── 核心数据状态──────────────────────────────────────────────
   const [user, setUser] = useState<User | null>(null)
   const [currentFamily, setCurrentFamily] = useState<Family | null>(null)
+  const [families, setFamilies] = useState<Family[]>([])
   const [currentBaby, setCurrentBaby] = useState<Baby | null>(null)
   const [babies, setBabies] = useState<Baby[]>([])
   const [loading, setLoading] = useState(true)
@@ -72,6 +73,7 @@ export default function ProfilePage() {
 
   // ── 联系我们弹层 ──────────────────────────────────────────────
   const [contactOpen, setContactOpen] = useState(false)
+  const [familyPickerOpen, setFamilyPickerOpen] = useState(false)
 
   // ── 初始数据加载 ──────────────────────────────────────────────
   useEffect(() => {
@@ -99,7 +101,9 @@ export default function ProfilePage() {
           return
         }
 
-        const family = families[0]
+        const familyId = getCurrentFamilyId(families)!
+        const family = families.find((f) => f.id === familyId) || families[0]
+        setCurrentFamilyId(family.id)
         let baby: Baby | null = null
         try {
           baby = await babyApi.get(family.id)
@@ -116,6 +120,7 @@ export default function ProfilePage() {
         }
 
         if (!cancelled) {
+          setFamilies(families)
           setCurrentFamily(family)
           setCurrentBaby(baby)
           setBabies(babyList)
@@ -264,9 +269,42 @@ export default function ProfilePage() {
     Taro.setStorageSync('minicare_baby', baby)
   }
 
+  const handleSwitchFamily = async (family: Family) => {
+    if (family.id === currentFamily?.id) return
+    setCurrentFamilyId(family.id)
+    setCurrentFamily(family)
+    Taro.setStorageSync('minicare_family', family)
+    Taro.setStorageSync('minicare_current_family_id', family.id)
+    try {
+      const baby = await babyApi.get(family.id)
+      setCurrentBaby(baby)
+      Taro.setStorageSync('minicare_baby', baby)
+    } catch {
+      setCurrentBaby(null)
+      Taro.removeStorageSync('minicare_baby')
+    }
+    try {
+      const babyList = await babyApi.list(family.id)
+      setBabies(babyList)
+    } catch {
+      setBabies([])
+    }
+  }
+
   // ── SettingsGroup 数据 ────────────────────────────────────────
   const activeCount = members.filter((m) => m.status === 'active' || m.status === undefined).length
   const familyRows: SettingsRow[] = [
+    ...(families.length > 1
+      ? [{
+          id: 'switch-family',
+          type: 'arrow' as const,
+          icon: 'home',
+          iconBg: '#FFF0F4',
+          label: '切换家庭',
+          subText: currentFamily?.name,
+          onClick: () => setFamilyPickerOpen(true),
+        }]
+      : []),
     {
       id: 'members',
       type: 'arrow',
@@ -454,6 +492,45 @@ export default function ProfilePage() {
 
       {/* 联系我们弹层 */}
       <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
+
+      {/* 家庭切换弹层 */}
+      {familyPickerOpen && families.length > 1 && (
+        <View className='family-picker-overlay' onClick={() => setFamilyPickerOpen(false)}>
+          <View className='family-picker' onClick={(e) => e.stopPropagation()}>
+            <Text className='family-picker__title'>切换家庭</Text>
+            <View className='family-picker__list'>
+              {families.map((f) => (
+                <View
+                  key={f.id}
+                  className={`family-picker__item ${f.id === currentFamily?.id ? 'family-picker__item--active' : ''}`}
+                  onClick={async () => {
+                    setFamilyPickerOpen(false)
+                    await handleSwitchFamily(f)
+                  }}
+                >
+                  <View className='family-picker__icon'>
+                    <svg viewBox='0 0 24 24' fill='none' stroke={f.id === currentFamily?.id ? '#fff' : '#f87098'} strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round' style={{ width: 18, height: 18 }}>
+                      <path d='M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z' />
+                      <polyline points='9 22 9 12 15 12 15 22' />
+                    </svg>
+                  </View>
+                  <View className='family-picker__info'>
+                    <Text className='family-picker__name'>{f.name}</Text>
+                    <Text className='family-picker__role'>{f.role === 'owner' ? '创建者' : '成员'}</Text>
+                  </View>
+                  {f.id === currentFamily?.id && (
+                    <View className='family-picker__check'>
+                      <svg viewBox='0 0 24 24' fill='none' stroke='#f87098' strokeWidth='3' strokeLinecap='round' strokeLinejoin='round' style={{ width: 16, height: 16 }}>
+                        <polyline points='20 6 9 17 4 12' />
+                      </svg>
+                    </View>
+                  )}
+                </View>
+              ))}
+            </View>
+          </View>
+        </View>
+      )}
 
       {/* 底部导航栏 */}
       <TabBar activeTab='profile' />

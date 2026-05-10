@@ -28,6 +28,7 @@ import Taro, { useLoad } from '@tarojs/taro'
 import { useState, useEffect, useRef } from 'react'
 import dayjs from 'dayjs'
 import { babyApi, familyApi, recordsApi } from '@/api'
+import { getCurrentFamilyId, setCurrentFamilyId } from '@/api/http'
 import { getStatusBarHeight } from '@/lib/safeArea'
 import { nowTime, nowDate, isoToLocalDate, isoToLocalTime, dateToLocalISO, nowLocalISO, buildLocalISOPair, calcDurationMinFromRange, inferSleepPeriod } from '@/lib/utils'
 import type { SleepRecord, SleepQuality } from '@/api/sleep'
@@ -143,7 +144,8 @@ export default function SleepFormPage() {
         Taro.reLaunch({ url: '/pages/home/index' })
         return
       }
-      const fid = families[0].id
+      const fid = getCurrentFamilyId(families)!
+      setCurrentFamilyId(fid)
       const baby = await babyApi.get(fid)
       setFamilyId(fid)
       setBabyId(baby.id)

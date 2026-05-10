@@ -39,6 +39,19 @@ export function removeUser(): void {
   Taro.removeStorageSync(USER_KEY)
 }
 
+const CURRENT_FAMILY_ID_KEY = 'minicare_current_family_id'
+
+export function getCurrentFamilyId(families: { id: string }[]): string | null {
+  if (families.length === 0) return null
+  const stored = Taro.getStorageSync(CURRENT_FAMILY_ID_KEY)
+  if (stored && families.some((f) => f.id === stored)) return stored
+  return families[0].id
+}
+
+export function setCurrentFamilyId(familyId: string): void {
+  Taro.setStorageSync(CURRENT_FAMILY_ID_KEY, familyId)
+}
+
 let isRedirectingToLogin = false
 
 interface RequestOptions {

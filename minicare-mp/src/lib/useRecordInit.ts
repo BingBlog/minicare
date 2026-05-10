@@ -19,6 +19,7 @@
 import Taro, { useLoad } from '@tarojs/taro'
 import { useState, useRef, useCallback } from 'react'
 import { familyApi, babyApi } from '@/api'
+import { getCurrentFamilyId, setCurrentFamilyId } from '@/api/http'
 
 export interface UseRecordInitOptions<TRecord = Record<string, unknown>, TExtra = void> {
   /** 加载单条记录的 API 函数（编辑模式） */
@@ -63,7 +64,8 @@ export function useRecordInit<TRecord = Record<string, unknown>, TExtra = void>(
         Taro.reLaunch({ url: '/pages/home/index' })
         return
       }
-      const fid = families[0].id
+      const fid = getCurrentFamilyId(families)!
+      setCurrentFamilyId(fid)
       const baby = await babyApi.get(fid)
       setFamilyId(fid)
       setBabyId(baby.id)

@@ -10,7 +10,7 @@ import Taro from '@tarojs/taro'
 import { useEffect, useRef, useState } from 'react'
 import { sendVerificationCode, loginByCode, IS_TEST_MODE } from '@/api/auth'
 import { familyApi, babyApi } from '@/api'
-import { getToken } from '@/api/http'
+import { getToken, getCurrentFamilyId, setCurrentFamilyId } from '@/api/http'
 import { getStatusBarHeight } from '@/lib/safeArea'
 
 import './index.scss'
@@ -109,7 +109,8 @@ export default function LoginPage() {
         return
       }
 
-      const fid = families[0].id
+      const fid = getCurrentFamilyId(families)!
+      setCurrentFamilyId(fid)
       try {
         await babyApi.get(fid)
         Taro.reLaunch({ url: '/pages/home/index' })

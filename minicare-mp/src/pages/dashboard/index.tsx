@@ -23,6 +23,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { familyApi, babyApi, recordsApi } from '@/api'
+import { getCurrentFamilyId, setCurrentFamilyId } from '@/api/http'
 import { inferSleepPeriod } from '@/lib/utils'
 import type { RecordFormType } from './types'
 import { useDashboardData, getTodayStr } from './useDashboardData'
@@ -80,8 +81,10 @@ export default function DashboardPage() {
             Taro.redirectTo({ url: '/pages/login/index' })
             return
           }
-          fId = families[0].id
-          Taro.setStorageSync('currentFamily', families[0])
+          fId = getCurrentFamilyId(families)!
+          setCurrentFamilyId(fId)
+          const currentFamily = families.find((f) => f.id === fId) || families[0]
+          Taro.setStorageSync('currentFamily', currentFamily)
         }
 
         if (!bId) {
