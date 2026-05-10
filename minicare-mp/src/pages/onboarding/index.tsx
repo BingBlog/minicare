@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { familyApi, babyApi } from '@/api'
 import type { AllergyLevel } from '@/api'
 import type { PendingInvite } from '@/api/family'
-import { getCurrentFamilyId, setCurrentFamilyId } from '@/api/http'
+import { setCurrentFamilyId, setCurrentBabyId } from '@/api/http'
 import { nowDate } from '@/lib/utils'
 
 import NavBar from '@/components/NavBar/NavBar'
@@ -94,16 +94,14 @@ export default function OnboardingPage() {
       let fid: string
 
       if (isInvited) {
-        const families = await familyApi.getMine()
-        if (!families.length) {
+        const babies = await babyApi.getMine()
+        if (!babies.length) {
           setError('未找到已加入的家庭，请重试')
           setLoading(false)
           return
         }
-        fid = getCurrentFamilyId(families)!
-        const currentFamily = families.find((f) => f.id === fid) || families[0]
-        setCurrentFamilyId(currentFamily.id)
-        Taro.setStorageSync('minicare_family', currentFamily)
+        fid = babies[0].family_id
+        setCurrentFamilyId(fid)
       } else {
         const family = await familyApi.create(familyName.trim() || '我们的家')
         Taro.setStorageSync('minicare_family', family)
@@ -118,6 +116,8 @@ export default function OnboardingPage() {
         allergy_level: allergyLevel || undefined,
       })
       Taro.setStorageSync('minicare_baby', baby)
+      setCurrentFamilyId(fid)
+      setCurrentBabyId(baby.id)
 
       setStep(2)
     } catch (err) {

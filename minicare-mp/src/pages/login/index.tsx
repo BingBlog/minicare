@@ -10,7 +10,7 @@ import Taro from '@tarojs/taro'
 import { useEffect, useRef, useState } from 'react'
 import { sendVerificationCode, loginByCode, IS_TEST_MODE } from '@/api/auth'
 import { familyApi, babyApi } from '@/api'
-import { getToken, getCurrentFamilyId, setCurrentFamilyId } from '@/api/http'
+import { getToken, setCurrentFamilyId, setCurrentBabyId } from '@/api/http'
 import { getStatusBarHeight } from '@/lib/safeArea'
 
 import './index.scss'
@@ -94,12 +94,12 @@ export default function LoginPage() {
       await loginByCode(phone, code, verifyOtpRef.current)
       Taro.showToast({ title: '登录成功', icon: 'success' })
 
-      const [families, pendingInvites] = await Promise.all([
-        familyApi.getMine(),
+      const [babies, pendingInvites] = await Promise.all([
+        babyApi.getMine(),
         familyApi.getPendingInvites().catch(() => []),
       ])
 
-      if (!families.length && !pendingInvites.length) {
+      if (!babies.length && !pendingInvites.length) {
         Taro.reLaunch({ url: '/pages/onboarding/index' })
         return
       }
@@ -109,14 +109,10 @@ export default function LoginPage() {
         return
       }
 
-      const fid = getCurrentFamilyId(families)!
-      setCurrentFamilyId(fid)
-      try {
-        await babyApi.get(fid)
-        Taro.reLaunch({ url: '/pages/home/index' })
-      } catch {
-        Taro.reLaunch({ url: '/pages/onboarding/index?mode=invited' })
-      }
+      const baby = babies[0]
+      setCurrentFamilyId(baby.family_id)
+      setCurrentBabyId(baby.id)
+      Taro.reLaunch({ url: '/pages/home/index' })
     } catch (err) {
       Taro.showToast({ title: err instanceof Error ? err.message : '登录失败', icon: 'none' })
     } finally {

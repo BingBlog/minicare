@@ -111,6 +111,32 @@ export class BabyService {
   /**
    * 更新宝宝档案（可选字段，任意组合）
    */
+  async getMyBabies(userId: string) {
+    const [rows] = await this.db.execute<any[]>(
+      `SELECT bp.id, bp.family_id, bp.name, bp.birth_date, bp.gender,
+              bp.allergy_types, bp.allergy_level,
+              bp.birth_weight_g, bp.birth_height_cm,
+              bp.avatar_url, bp.created_at,
+              fg.name AS family_name,
+              fm.role AS family_role
+       FROM baby_profile bp
+       JOIN family_member fm ON bp.family_id = fm.family_id
+       JOIN family_group fg ON bp.family_id = fg.id
+       WHERE fm.user_id = ? AND fm.status = 'active'
+       ORDER BY bp.created_at ASC`,
+      [userId],
+    );
+    return rows.map((baby: any) => {
+      if (typeof baby.allergy_types === 'string') {
+        try { baby.allergy_types = JSON.parse(baby.allergy_types); } catch { baby.allergy_types = []; }
+      }
+      if (!['male', 'female', 'unknown'].includes(baby.gender)) {
+        baby.gender = 'unknown';
+      }
+      return baby;
+    });
+  }
+
   async updateBaby(babyId: string, familyId: string, dto: Partial<CreateBabyDto>) {
     const fields: string[] = [];
     const values: (string | number | null)[] = [];

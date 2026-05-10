@@ -22,8 +22,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { familyApi, babyApi, recordsApi } from '@/api'
-import { getCurrentFamilyId, setCurrentFamilyId } from '@/api/http'
+import { babyApi, recordsApi } from '@/api'
+import { getStoredFamilyId } from '@/api/http'
 import { inferSleepPeriod } from '@/lib/utils'
 import type { RecordFormType } from './types'
 import { useDashboardData, getTodayStr } from './useDashboardData'
@@ -71,20 +71,13 @@ export default function DashboardPage() {
         const cachedFamily = Taro.getStorageSync('currentFamily')
         const cachedBaby = Taro.getStorageSync('currentBaby')
 
-        let fId = cachedFamily?.id
+        let fId = cachedFamily?.id || getStoredFamilyId()
         let bName = cachedBaby?.name || '宝宝'
         let bId = cachedBaby?.id
 
         if (!fId) {
-          const families = await familyApi.getMine()
-          if (families.length === 0) {
-            Taro.redirectTo({ url: '/pages/login/index' })
-            return
-          }
-          fId = getCurrentFamilyId(families)!
-          setCurrentFamilyId(fId)
-          const currentFamily = families.find((f) => f.id === fId) || families[0]
-          Taro.setStorageSync('currentFamily', currentFamily)
+          Taro.redirectTo({ url: '/pages/login/index' })
+          return
         }
 
         if (!bId) {

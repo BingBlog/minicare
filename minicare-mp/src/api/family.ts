@@ -48,4 +48,9 @@ export const familyApi = {
       `/api/family/pending-invites/${memberId}/decline`,
       { method: 'POST' },
     ),
+  leave: (familyId: string) =>
+    request<{ success: boolean }>(
+      `/api/family/${familyId}/leave`,
+      { method: 'POST' },
+    ),
 }

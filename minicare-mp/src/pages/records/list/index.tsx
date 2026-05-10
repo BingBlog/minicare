@@ -19,7 +19,7 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import { familyApi, babyApi, recordsApi } from '@/api'
 import { getStatusBarHeight } from '@/lib/safeArea'
 import { useIsIPad } from '@/lib/useIsIPad'
-import { getToken, getCurrentFamilyId, setCurrentFamilyId } from '@/api/http'
+import { getToken, getStoredFamilyId } from '@/api/http'
 import TabBar from '@/components/TabBar/TabBar'
 import {
   getRecordTime,
@@ -133,14 +133,12 @@ export default function RecordsListPage() {
       setIsGuest(false)
       setLoading(true)
       try {
-        const families = await familyApi.getMine()
-        if (!families.length) {
+        const familyId = getStoredFamilyId()
+        if (!familyId) {
           if (!cancelRef.current) { setFamily(null); setBaby(null); setLoading(false) }
           return
         }
-        const familyId = getCurrentFamilyId(families)!
-        const fam = families.find((f) => f.id === familyId) || families[0]
-        setCurrentFamilyId(fam.id)
+        const fam = { id: familyId } as Family
         const baby = await babyApi.get(fam.id)
         if (!baby || !baby.id) {
           if (!cancelRef.current) { setFamily(fam); setBaby(null); setLoading(false) }

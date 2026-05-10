@@ -12,6 +12,7 @@ export interface CreateBabyDto {
 }
 
 export const babyApi = {
+  getMine: () => request<Baby[]>('/api/baby/mine'),
   get: (familyId: string) => request<Baby>(`/api/family/${familyId}/baby`),
   list: (familyId: string) => request<Baby[]>(`/api/family/${familyId}/baby/list`),
   create: (familyId: string, data: CreateBabyDto) =>

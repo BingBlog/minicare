@@ -1,10 +1,10 @@
 import { View, Text } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { authApi, babyApi, familyApi, fetchAppConfig, recordsApi, sleepApi } from '@/api'
+import { authApi, babyApi, fetchAppConfig, recordsApi, sleepApi } from '@/api'
 import type { PendingInvite } from '@/api/family'
 import type { OngoingSleepRecord } from '@/api/sleep'
-import { getCurrentFamilyId, setCurrentFamilyId } from '@/api/http'
+import { getStoredFamilyId, setCurrentFamilyId } from '@/api/http'
 import { HOME_RECORD_ROUTES } from '@/lib/constants'
 import { navigateToRecord } from '@/lib/navigation'
 import { getStatusBarHeight } from '@/lib/safeArea'
@@ -115,8 +115,8 @@ export default function HomePage() {
         await authApi.checkToken()
 
         await fetchAppConfig()
-        const families = await familyApi.getMine()
-        if (!families.length) {
+        const fid = getStoredFamilyId()
+        if (!fid) {
           if (!cancelled) {
             setNeedsOnboarding(true)
             setNeedsOnboardingReason('no_family')
@@ -124,8 +124,6 @@ export default function HomePage() {
           }
           return
         }
-
-        const fid = getCurrentFamilyId(families)!
 
         let baby: any
         try {
@@ -197,50 +195,46 @@ export default function HomePage() {
       checkPendingInvites()
     }
 
-    familyApi.getMine().then((families) => {
-      if (!families.length) {
-        if (!needsOnboarding) {
-          setNeedsOnboarding(true)
-          setNeedsOnboardingReason('no_family')
-        }
-        return
+    const latestFid = getStoredFamilyId()
+    if (!latestFid) {
+      if (!needsOnboarding) {
+        setNeedsOnboarding(true)
+        setNeedsOnboardingReason('no_family')
       }
-      const latestFid = getCurrentFamilyId(families)!
+      return
+    }
 
-      if (needsOnboarding) {
-        babyApi.get(latestFid).then(() => {
-          setNeedsOnboarding(false)
-          setFamilyId(latestFid)
-          familyIdRef.current = latestFid
-          refreshTodayRecords(latestFid)
-        }).catch(() => {
-          setNeedsOnboardingReason('no_baby')
-        })
-        return
-      }
-
-      if (latestFid !== familyIdRef.current) {
+    if (needsOnboarding) {
+      babyApi.get(latestFid).then(() => {
+        setNeedsOnboarding(false)
         setFamilyId(latestFid)
         familyIdRef.current = latestFid
-      }
+        refreshTodayRecords(latestFid)
+      }).catch(() => {
+        setNeedsOnboardingReason('no_baby')
+      })
+      return
+    }
 
-      const storedBaby = Taro.getStorageSync('minicare_baby')
-      if (storedBaby && storedBaby.id) {
-        if (storedBaby.name !== babyName || storedBaby.birth_date !== birthDate) {
-          setBabyName(storedBaby.name || '宝宝')
-          setBirthDate(storedBaby.birth_date || '')
-        }
-      } else {
-        babyApi.get(latestFid).then((baby) => {
-          setBabyName(baby.name || '宝宝')
-          setBirthDate(baby.birth_date || '')
-        }).catch(() => {})
-      }
+    if (latestFid !== familyIdRef.current) {
+      setFamilyId(latestFid)
+      familyIdRef.current = latestFid
+    }
 
-      refreshTodayRecords(latestFid)
-    }).catch(() => {
-      if (familyIdRef.current) refreshTodayRecords(familyIdRef.current)
-    })
+    const storedBaby = Taro.getStorageSync('minicare_baby')
+    if (storedBaby && storedBaby.id) {
+      if (storedBaby.name !== babyName || storedBaby.birth_date !== birthDate) {
+        setBabyName(storedBaby.name || '宝宝')
+        setBirthDate(storedBaby.birth_date || '')
+      }
+    } else {
+      babyApi.get(latestFid).then((baby) => {
+        setBabyName(baby.name || '宝宝')
+        setBirthDate(baby.birth_date || '')
+      }).catch(() => {})
+    }
+
+    refreshTodayRecords(latestFid)
   })
 
   // 监听语音录入成功后的刷新事件
@@ -332,9 +326,9 @@ export default function HomePage() {
           onAccept={async () => {
             setPendingInvites([])
             setInviteModalOpen(false)
-            const families = await familyApi.getMine()
-            if (families.length > 0) {
-              const fid = getCurrentFamilyId(families)!
+            const babies = await babyApi.getMine()
+            if (babies.length > 0) {
+              const fid = babies[0].family_id
               setCurrentFamilyId(fid)
               setFamilyId(fid)
               familyIdRef.current = fid
@@ -391,9 +385,9 @@ export default function HomePage() {
           onAccept={async () => {
             setPendingInvites([])
             setInviteModalOpen(false)
-            const families = await familyApi.getMine()
-            if (families.length > 0) {
-              const fid = getCurrentFamilyId(families)!
+            const babies = await babyApi.getMine()
+            if (babies.length > 0) {
+              const fid = babies[0].family_id
               setCurrentFamilyId(fid)
               setFamilyId(fid)
               familyIdRef.current = fid
@@ -458,9 +452,9 @@ export default function HomePage() {
           onAccept={async () => {
             setPendingInvites([])
             setInviteModalOpen(false)
-            const families = await familyApi.getMine()
-            if (families.length > 0) {
-              const fid = getCurrentFamilyId(families)!
+            const babies = await babyApi.getMine()
+            if (babies.length > 0) {
+              const fid = babies[0].family_id
               setCurrentFamilyId(fid)
               setFamilyId(fid)
               familyIdRef.current = fid
@@ -580,9 +574,9 @@ export default function HomePage() {
         onAccept={async () => {
           setPendingInvites([])
           setInviteModalOpen(false)
-          const families = await familyApi.getMine()
-          if (families.length > 0) {
-            const fid = getCurrentFamilyId(families)!
+          const babies = await babyApi.getMine()
+          if (babies.length > 0) {
+            const fid = babies[0].family_id
             setCurrentFamilyId(fid)
             setFamilyId(fid)
             familyIdRef.current = fid

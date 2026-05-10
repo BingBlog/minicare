@@ -57,10 +57,16 @@
 
 .baby-hero {
   display: flex;
-  align-items: center;
-  gap: 16px;
+  flex-direction: column;
+  gap: 12px;
   padding: 16px 20px;
   padding-bottom: 20px;
+}
+
+.baby-hero__main {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 .baby-hero__avatar {
@@ -81,7 +87,6 @@
 }
 
 .baby-hero__name {
-  display: block;
   font-size: 20px;
   font-weight: 800;
   color: #4a3035;
@@ -121,32 +126,28 @@
   flex-shrink: 0;
 }
 
-.baby-hero__switch-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #fff0f4;
-  color: #f87098;
-}
-
 .baby-picker {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 8px;
-  padding: 0 20px 16px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .baby-picker__item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 14px;
-  border-radius: 24px;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 20px;
   background: #fff;
   border: 1.5px solid #f0e7ea;
+  white-space: nowrap;
+  flex-shrink: 0;
   transition: all 0.15s;
 
   &:active {
@@ -159,21 +160,6 @@
   border-color: #f87098;
 }
 
-.baby-picker__avatar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #f5f0f2;
-  flex-shrink: 0;
-}
-
-.baby-picker__item--active .baby-picker__avatar {
-  background: linear-gradient(135deg, #f9a8c0, #f87098);
-}
-
 .baby-picker__name {
   font-size: 13px;
   font-weight: 600;
@@ -184,7 +170,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
 }
 
 // ── BabyStats ──────────────────────────────────────────────────────
@@ -1216,6 +1201,19 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+}
+
+.baby-picker__leave {
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: #fff0f4;
+  flex-shrink: 0;
+}
+
+.baby-picker__leave-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #f05060;
 }
 
 @include ipad.profile;

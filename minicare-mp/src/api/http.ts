@@ -40,6 +40,7 @@ export function removeUser(): void {
 }
 
 const CURRENT_FAMILY_ID_KEY = 'minicare_current_family_id'
+const CURRENT_BABY_ID_KEY = 'minicare_current_baby_id'
 
 export function getCurrentFamilyId(families: { id: string }[]): string | null {
   if (families.length === 0) return null
@@ -50,6 +51,25 @@ export function getCurrentFamilyId(families: { id: string }[]): string | null {
 
 export function setCurrentFamilyId(familyId: string): void {
   Taro.setStorageSync(CURRENT_FAMILY_ID_KEY, familyId)
+}
+
+export function getStoredFamilyId(): string | null {
+  return Taro.getStorageSync(CURRENT_FAMILY_ID_KEY) || null
+}
+
+export function getStoredBabyId(): string | null {
+  return Taro.getStorageSync(CURRENT_BABY_ID_KEY) || null
+}
+
+export function getCurrentBabyId(babies: { id: string }[]): string | null {
+  if (babies.length === 0) return null
+  const stored = Taro.getStorageSync(CURRENT_BABY_ID_KEY)
+  if (stored && babies.some((b) => b.id === stored)) return stored
+  return babies[0].id
+}
+
+export function setCurrentBabyId(babyId: string): void {
+  Taro.setStorageSync(CURRENT_BABY_ID_KEY, babyId)
 }
 
 let isRedirectingToLogin = false

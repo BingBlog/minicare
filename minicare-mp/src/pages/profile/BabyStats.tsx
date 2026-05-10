@@ -1,10 +1,10 @@
 import { View, Text } from '@tarojs/components'
 import { useState, useEffect } from 'react'
 import { recordsApi } from '@/api'
-import type { Baby, Family } from '@/api'
+import type { Baby } from '@/api'
 
 interface BabyStatsProps {
-  currentFamily: Family | null
+  currentFamilyId: string | undefined
   currentBaby: Baby | null
 }
 
@@ -14,15 +14,15 @@ interface StatItem {
   name: string
 }
 
-export default function BabyStats({ currentFamily, currentBaby }: BabyStatsProps) {
+export default function BabyStats({ currentFamilyId, currentBaby }: BabyStatsProps) {
   const [heightMm, setHeightMm] = useState<number | null>(null)
   const [weightG, setWeightG] = useState<number | null>(null)
   const [headMm, setHeadMm] = useState<number | null>(null)
 
   useEffect(() => {
-    if (!currentFamily || !currentBaby) return
+    if (!currentFamilyId || !currentBaby) return
     recordsApi.growth
-      .list(currentFamily.id, currentBaby.id, { limit: 1, offset: 0 })
+      .list(currentFamilyId, currentBaby.id, { limit: 1, offset: 0 })
       .then((records) => {
         const latest = records[0]
         if (!latest) return
@@ -31,7 +31,7 @@ export default function BabyStats({ currentFamily, currentBaby }: BabyStatsProps
         setHeadMm((latest.head_mm as number) ?? null)
       })
       .catch(() => { /* 加载失败时保持默认值 */ })
-  }, [currentFamily, currentBaby])
+  }, [currentFamilyId, currentBaby])
 
   const fmtCm = (mm: number | null): string => {
     if (mm == null) return '—'

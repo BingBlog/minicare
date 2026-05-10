@@ -27,8 +27,8 @@ import { View, Text, Input } from '@tarojs/components'
 import Taro, { useLoad } from '@tarojs/taro'
 import { useState, useEffect, useRef } from 'react'
 import dayjs from 'dayjs'
-import { babyApi, familyApi, recordsApi } from '@/api'
-import { getCurrentFamilyId, setCurrentFamilyId } from '@/api/http'
+import { babyApi, recordsApi } from '@/api'
+import { getStoredFamilyId } from '@/api/http'
 import { getStatusBarHeight } from '@/lib/safeArea'
 import { nowTime, nowDate, isoToLocalDate, isoToLocalTime, dateToLocalISO, nowLocalISO, buildLocalISOPair, calcDurationMinFromRange, inferSleepPeriod } from '@/lib/utils'
 import type { SleepRecord, SleepQuality } from '@/api/sleep'
@@ -138,14 +138,12 @@ export default function SleepFormPage() {
     isEditModeRef.current = initRecordId !== ''
 
     try {
-      const families = await familyApi.getMine()
-      if (!families.length) {
+      const fid = getStoredFamilyId()
+      if (!fid) {
         Taro.showToast({ title: '请先完成建档', icon: 'none' })
         Taro.reLaunch({ url: '/pages/home/index' })
         return
       }
-      const fid = getCurrentFamilyId(families)!
-      setCurrentFamilyId(fid)
       const baby = await babyApi.get(fid)
       setFamilyId(fid)
       setBabyId(baby.id)

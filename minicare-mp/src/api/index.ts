@@ -5,6 +5,6 @@ export type { CreateBabyDto } from './baby'
 export { recordsApi } from './records'
 export { sleepApi } from './sleep'
 export { authApi, loginByCode, sendVerificationCode, IS_TEST_MODE } from './auth'
-export { removeToken, getToken, getUser } from './http'
+export { removeToken, getToken, getUser, getCurrentFamilyId, setCurrentFamilyId, getCurrentBabyId, setCurrentBabyId, getStoredFamilyId, getStoredBabyId } from './http'
 export type { Family, Baby, TodayRecord, RecordItem, User, FamilyMember, AllergyType, AllergyLevel } from './types'
 

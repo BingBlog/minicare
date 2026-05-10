@@ -14,8 +14,8 @@
 import { View, Text, Input, Picker } from '@tarojs/components'
 import Taro, { useLoad } from '@tarojs/taro'
 import { useEffect, useRef, useState } from 'react'
-import { babyApi, familyApi, recordsApi } from '@/api'
-import { getCurrentFamilyId, setCurrentFamilyId } from '@/api/http'
+import { babyApi, recordsApi } from '@/api'
+import { getStoredFamilyId } from '@/api/http'
 import type { FeedingRecord, CreateFeedingDto, UpdateFeedingDto } from '@/api/feeding'
 import { getStatusBarHeight } from '@/lib/safeArea'
 import { nowTime, nowDate, toLocalISO, isoToLocalDate, isoToLocalTime, addMinutes, timeDiffMinutes } from '@/lib/utils'
@@ -129,14 +129,12 @@ export default function FeedingFormPage() {
     setTab(initTab)
     setEditRecordId(initRecordId)
     try {
-      const families = await familyApi.getMine()
-      if (!families.length) {
+      const fid = getStoredFamilyId()
+      if (!fid) {
         Taro.showToast({ title: '请先完成建档', icon: 'none' })
         Taro.reLaunch({ url: '/pages/home/index' })
         return
       }
-      const fid = getCurrentFamilyId(families)!
-      setCurrentFamilyId(fid)
       const baby = await babyApi.get(fid)
       setFamilyId(fid)
       setBabyId(baby.id)

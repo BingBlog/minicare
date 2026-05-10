@@ -18,8 +18,8 @@
  */
 import Taro, { useLoad } from '@tarojs/taro'
 import { useState, useRef, useCallback } from 'react'
-import { familyApi, babyApi } from '@/api'
-import { getCurrentFamilyId, setCurrentFamilyId } from '@/api/http'
+import { babyApi } from '@/api'
+import { getStoredFamilyId } from '@/api/http'
 
 export interface UseRecordInitOptions<TRecord = Record<string, unknown>, TExtra = void> {
   /** 加载单条记录的 API 函数（编辑模式） */
@@ -58,14 +58,12 @@ export function useRecordInit<TRecord = Record<string, unknown>, TExtra = void>(
   const init = useCallback(async (rid: string) => {
     setEditRecordId(rid)
     try {
-      const families = await familyApi.getMine()
-      if (!families.length) {
+      const fid = getStoredFamilyId()
+      if (!fid) {
         Taro.showToast({ title: '请先完成建档', icon: 'none' })
         Taro.reLaunch({ url: '/pages/home/index' })
         return
       }
-      const fid = getCurrentFamilyId(families)!
-      setCurrentFamilyId(fid)
       const baby = await babyApi.get(fid)
       setFamilyId(fid)
       setBabyId(baby.id)

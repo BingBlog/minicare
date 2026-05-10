@@ -28,6 +28,8 @@ export interface Baby {
   birth_weight_g?: number | null
   birth_height_cm?: number | null
   avatar_url?: string | null
+  family_name?: string
+  family_role?: 'owner' | 'member'
 }
 
 export interface User {

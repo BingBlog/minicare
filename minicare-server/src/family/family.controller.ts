@@ -116,6 +116,16 @@ export class FamilyController {
     return this.familyService.removeMember(familyId, memberId, userId);
   }
 
+  @Post(':familyId/leave')
+  @UseGuards(FamilyMemberGuard, RoleGuard)
+  @ApiOperation({ summary: '主动退出家庭（Owner 不可退出）' })
+  leaveFamily(
+    @Param('familyId') familyId: string,
+    @CurrentUser() userId: string,
+  ) {
+    return this.familyService.leaveFamily(familyId, userId);
+  }
+
   @Get(':familyId/records/today')
   @UseGuards(FamilyMemberGuard, RoleGuard)
   @ApiOperation({ summary: '获取指定日期所有记录聚合（时间轴），date 默认今日，格式 YYYY-MM-DD' })

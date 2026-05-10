@@ -294,10 +294,27 @@ export class FamilyService {
     return { success: true };
   }
 
-  /**
-   * 生成（刷新）邀请码
-   * @deprecated 已被手机号邀请流程替代，保留接口用于兼容旧版本
-   */
+  async leaveFamily(familyId: string, userId: string) {
+    const [rows] = await this.db.execute<any[]>(
+      "SELECT id, role, status FROM family_member WHERE family_id = ? AND user_id = ? AND status = 'active'",
+      [familyId, userId],
+    );
+    if (rows.length === 0) {
+      throw new NotFoundException('您不是该家庭的成员');
+    }
+
+    if (rows[0].role === 'owner') {
+      throw new ForbiddenException('家庭创建者不能退出，请先转让或解散家庭');
+    }
+
+    await this.db.execute(
+      "UPDATE family_member SET status = 'left' WHERE id = ?",
+      [rows[0].id],
+    );
+
+    return { success: true };
+  }
+
   async createInviteCode(familyId: string): Promise<{ code: string }> {
     const code = Math.random().toString(36).slice(2, 8).toUpperCase();
     await this.db.execute(
