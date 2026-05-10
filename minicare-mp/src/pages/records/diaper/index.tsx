@@ -55,6 +55,20 @@ export default function DiaperFormPage() {
       if (rec.stool_colors) setColorSelected(new Set(rec.stool_colors))
       if (rec.note) setNote(rec.note)
     },
+    parseOptions: (opts) => {
+      const voiceFields: Record<string, string> = {}
+      for (const [key, value] of Object.entries(opts)) {
+        if (key.startsWith('voice_') && value) {
+          voiceFields[key.replace('voice_', '')] = value
+        }
+      }
+      return voiceFields
+    },
+    onExtraOptions: (voiceFields) => {
+      if (voiceFields.diaper_type && ['wet', 'dirty', 'mixed'].includes(voiceFields.diaper_type)) {
+        setDiaperType(voiceFields.diaper_type as DiaperChip)
+      }
+    },
   })
 
   // ── 通用提交/删除 ──

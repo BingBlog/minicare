@@ -72,6 +72,21 @@ export default function SymptomFormPage() {
       setNote(r.note ?? '')
       if (r.symptoms) setLatestSymptoms(r.symptoms)
     },
+    parseOptions: (opts) => {
+      const voiceFields: Record<string, string> = {}
+      for (const [key, value] of Object.entries(opts)) {
+        if (key.startsWith('voice_') && value) {
+          voiceFields[key.replace('voice_', '')] = value
+        }
+      }
+      return voiceFields
+    },
+    onExtraOptions: (voiceFields) => {
+      const moodMap: Record<string, string> = { happy: 'happy', calm: 'neutral', fussy: 'fussy', crying: 'crying' }
+      const spiritMap: Record<string, string> = { active: 'good', normal: 'good', tired: 'fussy', low: 'lethargic' }
+      if (voiceFields.mood && moodMap[voiceFields.mood]) setMood(moodMap[voiceFields.mood])
+      if (voiceFields.spirit && spiritMap[voiceFields.spirit]) setSpirit(spiritMap[voiceFields.spirit])
+    },
   })
 
   // ── 通用提交/删除 ──

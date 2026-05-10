@@ -36,6 +36,9 @@ export default defineConfig<'webpack5'>(async (merge) => {
       enable: false,
     },
     mini: {
+      miniCssExtractPluginOption: {
+        ignoreOrder: true,
+      },
       postcss: {
         pxtransform: {
           enable: false,

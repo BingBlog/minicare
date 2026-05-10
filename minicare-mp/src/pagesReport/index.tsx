@@ -1,8 +1,3 @@
-/**
- * 数据分析页面（MP 版，与 Web pages/report/index.tsx 对齐）
- *
- * 结构：标题 + Tab 导航 + 时间范围 + 5 个分析 Tab（饮食/尿布/生长/睡眠/健康）
- */
 import { View, Text, ScrollView } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { useState, useCallback, useRef, useEffect } from 'react'
@@ -20,6 +15,7 @@ import { TabKey, TAB_CONFIG, TIME_RANGES, DEFAULT_RANGE_MAP, LONG_RANGE_LABEL } 
 import TabBar from '@/components/TabBar/TabBar'
 import { getStatusBarHeight } from '@/lib/safeArea'
 import { getToken } from '@/api/http'
+import './index.scss'
 
 function calcDateRange(rangeKey: string, birthDate?: string | null) {
   const now = dayjs()
@@ -79,7 +75,6 @@ export default function ReportPage() {
 
   const currentRange = rangeMap[activeTab]
 
-  // Refs 用于在 useDidShow 闭包中读取最新的 state，避免 stale closure
   const activeTabRef = useRef(activeTab)
   const rangeMapRef = useRef(rangeMap)
   useEffect(() => { activeTabRef.current = activeTab }, [activeTab])
@@ -110,7 +105,6 @@ export default function ReportPage() {
         setBabyGender(baby.gender as 'male' | 'female' | null)
         setBabyBirthDate(baby.birth_date)
 
-        // 使用 ref 读取最新的 tab 和 range，避免 stale closure
         const tab = activeTabRef.current
         const range = rangeMapRef.current[tab]
         loadTabData(fid, baby.id, range, tab, baby.birth_date)
@@ -121,7 +115,6 @@ export default function ReportPage() {
 
     init()
 
-    // useDidShow 不支持返回 cleanup，通过 cancelled flag 防止竞态
     return () => { cancelled = true }
   })
 
@@ -181,7 +174,6 @@ export default function ReportPage() {
         <Text style={S.subtitle}>{babyName}的数据洞察</Text>
       </View>
 
-      {/* Tab 导航 */}
       <View style={S.tabWrap}>
         <ScrollView scrollX style={{ whiteSpace: 'nowrap' }}>
           {TAB_CONFIG.map(tab => (
@@ -200,7 +192,6 @@ export default function ReportPage() {
         </ScrollView>
       </View>
 
-      {/* 时间范围 */}
       <View style={S.rangeWrap}>
         <ScrollView scrollX style={{ whiteSpace: 'nowrap' }}>
           {TIME_RANGES.map(range => {
@@ -225,7 +216,6 @@ export default function ReportPage() {
         <Text style={S.rangeText}>{getRangeText(currentRange, babyBirthDate)}</Text>
       </View>
 
-      {/* 内容区 — 使用普通 View，依赖页面原生滚动（Canvas 原生组件无法跟随 ScrollView 滚动）*/}
       <View style={S.contentArea}>
         {activeTab === 'feeding' && <FeedingTab data={feedingData} loading={loading} />}
         {activeTab === 'diaper' && <DiaperTab data={diaperData} loading={loading} />}

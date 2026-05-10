@@ -154,12 +154,10 @@ export default function HomePage() {
     const token = getToken()
     if (!token) return
 
-    // 重新获取家庭列表，检测是否被邀请到新家庭
     familyApi.getMine().then((families) => {
       if (!families.length) return
       const latestFid = families[0].id
       if (latestFid !== familyIdRef.current) {
-        // 家庭发生变化（被邀请到新家庭），重新加载完整数据
         setFamilyId(latestFid)
         familyIdRef.current = latestFid
         babyApi.get(latestFid).then((baby) => {
@@ -169,10 +167,18 @@ export default function HomePage() {
       }
       refreshTodayRecords(latestFid)
     }).catch(() => {
-      // 静默失败，继续使用已有数据
       if (familyIdRef.current) refreshTodayRecords(familyIdRef.current)
     })
   })
+
+  // 监听语音录入成功后的刷新事件
+  useEffect(() => {
+    const handler = () => {
+      if (familyIdRef.current) refreshTodayRecords(familyIdRef.current)
+    }
+    Taro.eventCenter.on('home:refresh', handler)
+    return () => { Taro.eventCenter.off('home:refresh', handler) }
+  }, [refreshTodayRecords])
 
   const stats = useMemo<BabyStat[]>(() => {
     const feedingRecs = records.filter((r) => r.type === 'feeding')

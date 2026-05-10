@@ -22,7 +22,6 @@ const MP_ROUTE_MAP: Record<string, string> = {
 const TAB_BAR_PAGES = new Set([
   '/pages/home/index',
   '/pages/records/list/index',
-  '/pages/report/index',
   '/pages/profile/index',
 ])
 

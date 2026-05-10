@@ -113,10 +113,18 @@ export default function FeedingFormPage() {
     initDoneRef.current = true
     const initTab = (options?.tab as FeedTab | undefined) ?? 'formula'
     const initRecordId = (options?.recordId as string | undefined) ?? ''
-    init(initTab, initRecordId)
+
+    const voiceFields: Record<string, string> = {}
+    for (const [key, value] of Object.entries(options ?? {})) {
+      if (key.startsWith('voice_') && value) {
+        voiceFields[key.replace('voice_', '')] = value
+      }
+    }
+
+    init(initTab, initRecordId, voiceFields)
   })
 
-  const init = async (initTab: FeedTab, initRecordId: string) => {
+  const init = async (initTab: FeedTab, initRecordId: string, voiceFields?: Record<string, string>) => {
     setTab(initTab)
     setEditRecordId(initRecordId)
     try {
@@ -132,12 +140,16 @@ export default function FeedingFormPage() {
       setBabyId(baby.id)
 
       if (!initRecordId) {
-        const last = loadLastFormula(baby.id)
-        if (last) {
-          if (last.milkTypes?.length) setSelectedMilkTypes(new Set(last.milkTypes))
-          if (last.scoops) setScoops((prev) => ({ ...prev, ...last.scoops }))
-          if (last.formulaMl != null) setFormulaMl(last.formulaMl)
-          setLoadedFromLast(true)
+        if (voiceFields && Object.keys(voiceFields).length > 0) {
+          applyVoiceFields(initTab, voiceFields)
+        } else {
+          const last = loadLastFormula(baby.id)
+          if (last) {
+            if (last.milkTypes?.length) setSelectedMilkTypes(new Set(last.milkTypes))
+            if (last.scoops) setScoops((prev) => ({ ...prev, ...last.scoops }))
+            if (last.formulaMl != null) setFormulaMl(last.formulaMl)
+            setLoadedFromLast(true)
+          }
         }
       } else {
         try {
@@ -151,6 +163,25 @@ export default function FeedingFormPage() {
       Taro.showToast({ title: '加载失败', icon: 'none' })
     } finally {
       setLoading(false)
+    }
+  }
+
+  const applyVoiceFields = (initTab: FeedTab, fields: Record<string, string>) => {
+    if (initTab === 'formula' && fields.formula_ml) {
+      const ml = parseInt(fields.formula_ml, 10)
+      if (ml > 0) setFormulaMl(ml)
+    }
+    if (initTab === 'breast') {
+      if (fields.breast_side && ['left', 'right', 'both'].includes(fields.breast_side)) {
+        setBreastSide(fields.breast_side as 'left' | 'right' | 'both')
+      }
+      if (fields.duration_min) {
+        const min = parseInt(fields.duration_min, 10)
+        if (min > 0) setDurationMin(min)
+      }
+    }
+    if (initTab === 'food' && fields.complementary_food) {
+      setFoodList(fields.complementary_food.split(/[,、，]/).filter(Boolean))
     }
   }
 

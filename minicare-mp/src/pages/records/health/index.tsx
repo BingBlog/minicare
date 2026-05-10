@@ -68,15 +68,28 @@ export default function HealthFormPage() {
       if ((r.allergy_symptoms?.length ?? 0) > 0) setAllergyOpen(true)
       if ((r.skin_care?.length ?? 0) > 0) setSkinOpen(true)
     },
-    parseOptions: (opts) => ({
-      expandTemp: opts.expandTemp === 'true',
-      expandAllergy: opts.expandAllergy === 'true',
-      expandSkin: opts.expandSkin === 'true',
-    }),
+    parseOptions: (opts) => {
+      const voiceFields: Record<string, string> = {}
+      for (const [key, value] of Object.entries(opts)) {
+        if (key.startsWith('voice_') && value) {
+          voiceFields[key.replace('voice_', '')] = value
+        }
+      }
+      return {
+        expandTemp: opts.expandTemp === 'true',
+        expandAllergy: opts.expandAllergy === 'true',
+        expandSkin: opts.expandSkin === 'true',
+        voiceFields,
+      }
+    },
     onExtraOptions: (extra) => {
       if (extra.expandTemp) setTempOpen(true)
       if (extra.expandAllergy) setAllergyOpen(true)
       if (extra.expandSkin) setSkinOpen(true)
+      if (extra.voiceFields?.temperature) {
+        setTemperature(extra.voiceFields.temperature)
+        setTempOpen(true)
+      }
     },
   })
 

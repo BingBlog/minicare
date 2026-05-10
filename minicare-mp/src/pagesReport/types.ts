@@ -1,7 +1,3 @@
-/**
- * 报告页类型定义（与 Web pages/report/index.tsx 对齐）
- */
-
 export type TabKey = 'feeding' | 'diaper' | 'growth' | 'sleep' | 'health'
 
 export const TAB_CONFIG: Array<{ key: TabKey; label: string }> = [
