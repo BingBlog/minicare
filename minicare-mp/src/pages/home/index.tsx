@@ -1,16 +1,15 @@
 import { View, Text } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { authApi, babyApi, fetchAppConfig, recordsApi, sleepApi } from '@/api'
+import { authApi, babyApi, familyApi, fetchAppConfig, recordsApi, sleepApi } from '@/api'
 import type { PendingInvite } from '@/api/family'
 import type { OngoingSleepRecord } from '@/api/sleep'
-import { getStoredFamilyId, setCurrentFamilyId } from '@/api/http'
+import { getStoredFamilyId, setCurrentFamilyId, getToken } from '@/api/http'
 import { HOME_RECORD_ROUTES } from '@/lib/constants'
 import { navigateToRecord } from '@/lib/navigation'
 import { getStatusBarHeight } from '@/lib/safeArea'
 import { useIsIPad } from '@/lib/useIsIPad'
 import { getBabyAge, getGreeting, getTodayDateStr, compareTime } from '@/lib/utils'
-import { getToken } from '@/api/http'
 
 import HeroSection from './HeroSection'
 import QuickActions from './QuickActions'
@@ -91,6 +90,7 @@ export default function HomePage() {
   const [inviteModalOpen, setInviteModalOpen] = useState(false)
 
   const checkPendingInvites = useCallback(async () => {
+    if (!getToken()) return
     try {
       const invites = await familyApi.getPendingInvites()
       if (invites.length > 0) {
@@ -117,11 +117,20 @@ export default function HomePage() {
         await fetchAppConfig()
         const fid = getStoredFamilyId()
         if (!fid) {
-          if (!cancelled) {
-            setNeedsOnboarding(true)
-            setNeedsOnboardingReason('no_family')
-            setLoading(false)
-          }
+          if (cancelled) return
+          // 检查是否存在待处理的邀请，有邀请时优先展示邀请弹层
+          try {
+            const invites = await familyApi.getPendingInvites()
+            if (invites.length > 0) {
+              setPendingInvites(invites)
+              setInviteModalOpen(true)
+              setLoading(false)
+              return
+            }
+          } catch {}
+          setNeedsOnboarding(true)
+          setNeedsOnboardingReason('no_family')
+          setLoading(false)
           return
         }
 

@@ -10,7 +10,7 @@ import Taro from '@tarojs/taro'
 import { useEffect, useRef, useState } from 'react'
 import { sendVerificationCode, loginByCode, IS_TEST_MODE } from '@/api/auth'
 import { familyApi, babyApi } from '@/api'
-import { getToken, setCurrentFamilyId, setCurrentBabyId } from '@/api/http'
+import { getToken, setCurrentFamilyId, setCurrentBabyId, getCurrentFamilyId } from '@/api/http'
 import { getStatusBarHeight } from '@/lib/safeArea'
 
 import './index.scss'
@@ -31,7 +31,9 @@ export default function LoginPage() {
 
   useEffect(() => {
     const token = getToken()
-    if (token) {
+    if (!token) return
+    const fid = Taro.getStorageSync('minicare_current_family_id')
+    if (fid) {
       setTimeout(() => {
         Taro.switchTab({ url: '/pages/home/index' })
       }, 100)
@@ -94,10 +96,28 @@ export default function LoginPage() {
       await loginByCode(phone, code, verifyOtpRef.current)
       Taro.showToast({ title: '登录成功', icon: 'success' })
 
-      const [babies, pendingInvites] = await Promise.all([
-        babyApi.getMine(),
-        familyApi.getPendingInvites().catch(() => []),
-      ])
+      let babies: any[] = []
+      let pendingInvites: any[] = []
+      try {
+        ;[babies, pendingInvites] = await Promise.all([
+          babyApi.getMine().catch(async () => {
+            const families = await familyApi.getMine()
+            if (!families.length) return []
+            const fid = getCurrentFamilyId(families)!
+            setCurrentFamilyId(fid)
+            try {
+              const baby = await babyApi.get(fid)
+              return [{ ...baby, family_id: fid, family_name: families.find(f => f.id === fid)?.name, family_role: families.find(f => f.id === fid)?.role }]
+            } catch {
+              return []
+            }
+          }),
+          familyApi.getPendingInvites().catch(() => []),
+        ])
+      } catch {
+        Taro.reLaunch({ url: '/pages/onboarding/index' })
+        return
+      }
 
       if (!babies.length && !pendingInvites.length) {
         Taro.reLaunch({ url: '/pages/onboarding/index' })
