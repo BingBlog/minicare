@@ -78,6 +78,14 @@ export class GrowthService {
     return rows[0];
   }
 
+  async getLatest(babyId: string) {
+    const [rows] = await this.db.execute<any[]>(
+      'SELECT * FROM growth_record WHERE baby_id = ? ORDER BY record_date DESC LIMIT 1',
+      [babyId],
+    );
+    return rows[0] ?? null;
+  }
+
   async update(id: string, dto: UpdateGrowthDto) {
     const [rows] = await this.db.execute<any[]>('SELECT id FROM growth_record WHERE id = ?', [id]);
     if (rows.length === 0) throw new NotFoundException('找不到该生长记录');

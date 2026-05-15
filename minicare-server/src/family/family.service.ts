@@ -388,7 +388,10 @@ export class FamilyService {
           'quality',      quality,
           'status',       status
         ) AS detail
-      FROM sleep_record WHERE baby_id = ? AND DATE(start_time) = ?
+      FROM sleep_record WHERE baby_id = ? AND (
+        (end_time IS NOT NULL AND DATE(end_time) = ?) OR
+        (end_time IS NULL AND DATE(start_time) = ?)
+      )
       UNION ALL
       SELECT 'diaper' AS type, id, record_time AS time, note,
         JSON_OBJECT(
@@ -446,7 +449,7 @@ export class FamilyService {
       babyId, dateStr,  // feeding_formula_record
       babyId, dateStr,  // feeding_food_record
       babyId, dateStr,  // feeding_supplement_record
-      babyId, dateStr,  // sleep
+      babyId, dateStr, dateStr,  // sleep (end_time date + start_time date for ongoing)
       babyId, dateStr,  // diaper
       babyId, dateStr,  // activity
       babyId, dateStr,  // health

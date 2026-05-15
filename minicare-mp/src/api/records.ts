@@ -115,6 +115,7 @@ export const recordsApi = {
     list: (familyId: string, babyId: string, params?: DateListParams) =>
       growthApi.list(familyId, babyId, params as GrowthListParams)
         .then((res) => ({ items: withType('growth', res.items), nextBeforeDate: res.nextBeforeDate })),
+    getLatest: growthApi.getLatest,
     create: (familyId: string, data: CreateGrowthDto) =>
       growthApi.create(familyId, data),
     update: (familyId: string, id: string, data: UpdateGrowthDto) =>

@@ -109,7 +109,7 @@ export const SLEEP_PERIOD_LABELS: Record<string, string> = {
   night: '夜觉',
   morning_nap: '上午觉',
   afternoon_nap: '下午觉',
-  other: '其他',
+  other: '傍晚觉',
 }
 
 export const SLEEP_QUALITY_LABELS: Record<string, string> = {

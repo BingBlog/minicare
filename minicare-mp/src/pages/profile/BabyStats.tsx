@@ -22,9 +22,8 @@ export default function BabyStats({ currentFamilyId, currentBaby }: BabyStatsPro
   useEffect(() => {
     if (!currentFamilyId || !currentBaby) return
     recordsApi.growth
-      .list(currentFamilyId, currentBaby.id, { limit: 1, offset: 0 })
-      .then((records) => {
-        const latest = records[0]
+      .getLatest(currentFamilyId, currentBaby.id)
+      .then((latest) => {
         if (!latest) return
         setHeightMm((latest.height_mm as number) ?? null)
         setWeightG((latest.weight_g as number) ?? null)
@@ -46,7 +45,6 @@ export default function BabyStats({ currentFamilyId, currentBaby }: BabyStatsPro
     { val: fmtCm(heightMm), unit: heightMm != null ? 'cm' : '', name: '身高' },
     { val: fmtKg(weightG),  unit: weightG  != null ? 'kg' : '', name: '体重' },
     { val: fmtCm(headMm),   unit: headMm   != null ? 'cm' : '', name: '头围' },
-    { val: '—',             unit: '',                           name: '稳定期' },
   ]
 
   return (
@@ -56,7 +54,7 @@ export default function BabyStats({ currentFamilyId, currentBaby }: BabyStatsPro
         return (
           <View
             key={stat.name}
-            className={`baby-stats__cell${i < 3 ? ' baby-stats__cell--bordered' : ''}`}
+            className={`baby-stats__cell${i < 2 ? ' baby-stats__cell--bordered' : ''}`}
           >
             <View className={`baby-stats__value${isEmpty ? ' baby-stats__value--empty' : ''}`}>
               <Text>{stat.val}</Text>

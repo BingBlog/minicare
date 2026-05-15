@@ -23,6 +23,7 @@ import { getToken, getStoredFamilyId } from '@/api/http'
 import TabBar from '@/components/TabBar/TabBar'
 import {
   getRecordTime,
+  getRecordDateForGroup,
   getDateKey,
   getDateLabel,
   getRecordType,
@@ -383,7 +384,7 @@ export default function RecordsListPage() {
   const todayKey = getTodayKey()
   const dateMap = new Map<string, RecordItem[]>()
   for (const rec of records) {
-    const dk = getDateKey(getRecordTime(rec))
+    const dk = getDateKey(getRecordDateForGroup(rec))
     if (!dateMap.has(dk)) dateMap.set(dk, [])
     dateMap.get(dk)!.push(rec)
   }

@@ -22,10 +22,16 @@ export interface HomeRecord {
   detail?: Record<string, unknown>
 }
 
+export interface BabyStatPart {
+  text: string
+  small?: boolean
+}
+
 export interface BabyStat {
   val: string | number
   unit: string
   label: string
+  parts?: BabyStatPart[]
 }
 
 export type TimelineSortMode = 'type' | 'time'

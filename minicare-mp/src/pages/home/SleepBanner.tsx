@@ -1,4 +1,5 @@
 import { View, Text } from '@tarojs/components'
+import Taro from '@tarojs/taro'
 import { useEffect, useRef, useState } from 'react'
 import dayjs from 'dayjs'
 import { sleepApi } from '@/api'
@@ -24,20 +25,26 @@ interface SleepBannerProps {
 export default function SleepBanner(props: SleepBannerProps) {
   const { familyId, recordId, startTime, sleepPeriod, onEnded, onBannerClick } = props
 
-  const [elapsedSeconds, setElapsedSeconds] = useState(() =>
-    Math.max(0, dayjs().diff(dayjs(startTime), 'second')),
-  )
+  const [tick, setTick] = useState(0)
   const [ending, setEnding] = useState(false)
 
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
+  const elapsedSeconds = Math.max(0, dayjs().diff(dayjs(startTime), 'second'))
+
   useEffect(() => {
     intervalRef.current = setInterval(() => {
-      setElapsedSeconds((s) => s + 1)
+      setTick((t) => t + 1)
     }, 1000)
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current)
     }
+  }, [])
+
+  useEffect(() => {
+    const onShow = () => setTick((t) => t + 1)
+    Taro.onAppShow(onShow)
+    return () => { Taro.offAppShow(onShow) }
   }, [])
 
   const handleEnd = async (e: { stopPropagation: () => void }) => {
@@ -53,6 +60,7 @@ export default function SleepBanner(props: SleepBannerProps) {
       onEnded()
     } catch {
       setEnding(false)
+      Taro.showToast({ title: '结束失败，请重试', icon: 'none' })
     }
   }
 

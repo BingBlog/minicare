@@ -1,5 +1,5 @@
-import { View, Text } from '@tarojs/components'
-import Taro, { useDidShow } from '@tarojs/taro'
+import { View, Text, Canvas } from '@tarojs/components'
+import Taro, { useDidShow, getCurrentInstance } from '@tarojs/taro'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { authApi, babyApi, familyApi, fetchAppConfig, recordsApi, sleepApi } from '@/api'
 import type { PendingInvite } from '@/api/family'
@@ -10,6 +10,7 @@ import { navigateToRecord } from '@/lib/navigation'
 import { getStatusBarHeight } from '@/lib/safeArea'
 import { useIsIPad } from '@/lib/useIsIPad'
 import { getBabyAge, getGreeting, getTodayDateStr, compareTime } from '@/lib/utils'
+import { generateShareImage, type ShareStats } from '@/lib/shareImage'
 
 import HeroSection from './HeroSection'
 import QuickActions from './QuickActions'
@@ -24,6 +25,32 @@ import InviteModal from '@/components/InviteModal/InviteModal'
 import type { BabyStat, HomeRecord } from './types'
 import { toHomeRecord } from './homeRecords'
 import './index.scss'
+
+// 分享配置 - 转发给好友
+let shareImageUrl = ''
+export function onShareAppMessage() {
+  const baby = Taro.getStorageSync('minicare_baby') || {}
+  const familyId = getStoredFamilyId()
+  const babyName = baby.name || '宝宝'
+
+  return {
+    title: `${babyName}今天的护理记录`,
+    path: `/pages/home/index?familyId=${familyId}&babyId=${baby.id || ''}`,
+    imageUrl: shareImageUrl || undefined,
+  }
+}
+
+// 分享配置 - 分享到朋友圈
+export function onShareTimeline() {
+  const baby = Taro.getStorageSync('minicare_baby') || {}
+  const familyId = getStoredFamilyId()
+
+  return {
+    title: `${baby.name || '宝宝'}今天的护理记录`,
+    query: `familyId=${familyId}&babyId=${baby.id || ''}`,
+    imageUrl: shareImageUrl || undefined,
+  }
+}
 
 export default function HomePage() {
   const isIPad = useIsIPad()
@@ -40,6 +67,20 @@ export default function HomePage() {
   const [familyId, setFamilyId] = useState('')
   const familyIdRef = useRef('')
   const [loading, setLoading] = useState(true)
+  const [babyGrowth, setBabyGrowth] = useState<{ weightKg?: string; heightCm?: string; headCm?: string } | null>(null)
+
+  // 页面加载时，解析 URL 参数
+  useEffect(() => {
+    const instance = getCurrentInstance()
+    const routerParams = instance?.router?.params || {}
+
+    if (routerParams.familyId) {
+      const token = getToken()
+      if (token) {
+        setCurrentFamilyId(routerParams.familyId as string)
+      }
+    }
+  }, [])
 
   /** 获取昨日日期字符串 YYYY-MM-DD */
   const getYesterdayDateStr = useCallback(() => {
@@ -66,6 +107,21 @@ export default function HomePage() {
       setBirthDate(baby.birth_date || '')
       setRecords(todayRecords.map(toHomeRecord))
       setOngoingSleep(ongoing)
+
+      try {
+        const latest = await recordsApi.growth.getLatest(fid, baby.id)
+        if (latest) {
+          const g: { weightKg?: string; heightCm?: string; headCm?: string } = {}
+          if (latest.weight_g != null) g.weightKg = (Number(latest.weight_g) / 1000).toFixed(1)
+          if (latest.height_mm != null) g.heightCm = (Number(latest.height_mm) / 10).toFixed(1)
+          if (latest.head_mm != null) g.headCm = (Number(latest.head_mm) / 10).toFixed(1)
+          setBabyGrowth(Object.keys(g).length > 0 ? g : null)
+        } else {
+          setBabyGrowth(null)
+        }
+      } catch {
+        setBabyGrowth(null)
+      }
 
       // 同时刷新昨日记录（用于对比）
       try {
@@ -172,6 +228,21 @@ export default function HomePage() {
           setOngoingSleep(ongoing)
           setBackendStatus('')
 
+          recordsApi.growth.getLatest(fid, baby.id)
+            .then((latest) => {
+              if (cancelled) return
+              if (latest) {
+                const g: { weightKg?: string; heightCm?: string; headCm?: string } = {}
+                if (latest.weight_g != null) g.weightKg = (Number(latest.weight_g) / 1000).toFixed(1)
+                if (latest.height_mm != null) g.heightCm = (Number(latest.height_mm) / 10).toFixed(1)
+                if (latest.head_mm != null) g.headCm = (Number(latest.head_mm) / 10).toFixed(1)
+                setBabyGrowth(Object.keys(g).length > 0 ? g : null)
+              } else {
+                setBabyGrowth(null)
+              }
+            })
+            .catch(() => {})
+
           recordsApi.today(fid, getYesterdayDateStr())
             .then((yRecs) => { if (!cancelled) setYesterdayRecords(yRecs.map(toHomeRecord)) })
             .catch(() => {})
@@ -255,11 +326,24 @@ export default function HomePage() {
     return () => { Taro.eventCenter.off('home:refresh', handler) }
   }, [refreshTodayRecords])
 
+  // 启用分享菜单
+  useEffect(() => {
+    Taro.showShareMenu({
+      withShareTicket: true,
+      menus: ['shareAppMessage', 'shareTimeline'],
+      success() {
+        console.log('分享菜单启用成功')
+      },
+      fail() {
+        console.log('分享菜单启用失败')
+      }
+    })
+  }, [])
+
   const stats = useMemo<BabyStat[]>(() => {
     const feedingRecs = records.filter((r) => r.type === 'feeding')
     const sleepRecs = records.filter((r) => r.type === 'sleep')
     const diaperRecs = records.filter((r) => r.type === 'diaper')
-    const symptomRecs = records.filter((r) => r.type === 'symptom')
 
     const totalMl = feedingRecs.reduce((acc, r) => {
       const detail = (r.detail as Record<string, unknown> | undefined) ?? {}
@@ -276,11 +360,41 @@ export default function HomePage() {
 
     const sleepStat: BabyStat = (() => {
       if (totalSleepMin <= 0) return { val: '—', unit: '', label: '今日睡眠' }
-      if (totalSleepMin < 60) return { val: `${totalSleepMin}`, unit: '分', label: '今日睡眠' }
       const hour = Math.floor(totalSleepMin / 60)
       const minute = totalSleepMin % 60
-      if (minute === 0) return { val: `${hour}`, unit: 'h', label: '今日睡眠' }
-      return { val: `${hour}h${minute}`, unit: 'm', label: '今日睡眠' }
+      if (hour > 0 && minute > 0) {
+        return {
+          val: `${hour}小时${minute}分`,
+          unit: '',
+          label: '今日睡眠',
+          parts: [
+            { text: String(hour) },
+            { text: '小时', small: true },
+            { text: String(minute) },
+            { text: '分', small: true },
+          ],
+        }
+      }
+      if (hour > 0) {
+        return {
+          val: `${hour}小时`,
+          unit: '',
+          label: '今日睡眠',
+          parts: [
+            { text: String(hour) },
+            { text: '小时', small: true },
+          ],
+        }
+      }
+      return {
+        val: `${minute}分`,
+        unit: '',
+        label: '今日睡眠',
+        parts: [
+          { text: String(minute) },
+          { text: '分', small: true },
+        ],
+      }
     })()
 
     return [
@@ -293,9 +407,6 @@ export default function HomePage() {
       diaperRecs.length > 0
         ? { val: diaperRecs.length, unit: '次', label: '换尿布' }
         : { val: '—', unit: '', label: '换尿布' },
-      symptomRecs.length > 0
-        ? { val: symptomRecs.length, unit: '项', label: '表现' }
-        : { val: '—', unit: '', label: '表现' },
     ]
   }, [records])
 
@@ -312,9 +423,7 @@ export default function HomePage() {
   const handleEndSleep = () => {
     setOngoingSleep(null)
     if (familyId) {
-      babyApi.get(familyId).then(() => {
-        recordsApi.today(familyId).then((recs) => setRecords(recs.map(toHomeRecord)))
-      }).catch(() => {})
+      refreshTodayRecords(familyId)
     }
   }
 

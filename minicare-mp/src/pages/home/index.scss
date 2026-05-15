@@ -93,12 +93,31 @@
   backdrop-filter: blur(2px);
 }
 
+.home-baby-card__name-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.home-baby-card__greeting {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 15px;
+  font-weight: 500;
+}
+
 .home-baby-card__name {
-  display: block;
   color: #fff;
   font-size: 18px;
   font-weight: 700;
   letter-spacing: -0.3px;
+}
+
+.home-baby-card__age {
+  display: block;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 2px;
 }
 
 .home-baby-card__sub {
@@ -123,6 +142,10 @@
   background: rgba(0, 0, 0, 0.1);
 }
 
+.home-stats--3col {
+  grid-template-columns: repeat(3, 1fr);
+}
+
 .home-stats__item {
   background: transparent;
   padding: 8px 6px;
@@ -139,6 +162,12 @@
   font-size: 20px;
   font-weight: 700;
   line-height: 1;
+}
+
+.home-stats__small {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .home-stats__unit {

@@ -191,6 +191,20 @@ export function getRecordTime(rec: Record<string, unknown>): string {
   return (rec.created_at as string) ?? ''
 }
 
+export function getRecordDateForGroup(rec: Record<string, unknown>): string {
+  const end_time = rec.end_time as string | undefined
+  const status = rec.status as string | undefined
+  if (end_time && end_time.includes('-') && status === 'ended') {
+    const startSrc = (rec.start_time as string | undefined) ?? (rec.time as string | undefined) ?? ''
+    if (startSrc) {
+      const startDate = startSrc.slice(0, 10)
+      const endDate = end_time.slice(0, 10)
+      if (startDate !== endDate) return end_time
+    }
+  }
+  return getRecordTime(rec)
+}
+
 /** 返回 HH:mm 展示时间（含纯时间字符串兼容） */
 export function getDisplayTime(rec: Record<string, unknown>): string {
   const recordTime = rec.record_time as string | undefined
