@@ -41,7 +41,7 @@ export default function FeedingBanner({ lastFeedingTime, onRecordClick }: Feedin
           上次 {formatTime(lastFeedingTime)} · 已过去 {formatElapsed(elapsedMins)}
         </Text>
       </View>
-      <Text className='home-inline-banner__action'>记录喂奶</Text>
+      <Text className='home-inline-banner__action--feeding'>记录喂奶</Text>
     </View>
   )
 }

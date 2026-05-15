@@ -45,23 +45,25 @@ export default function HeroSection(props: HeroSectionProps) {
       </View>
 
       <View className='home-baby-card'>
-        <View className='home-baby-card__name-row'>
-          <Text className='home-baby-card__greeting'>{greeting}，</Text>
-          <Text className='home-baby-card__name'>{babyName}</Text>
+        <View className='home-baby-card__info'>
+          <View className='home-baby-card__name-row'>
+            <Text className='home-baby-card__greeting'>{greeting}，</Text>
+            <Text className='home-baby-card__name'>{babyName}</Text>
+          </View>
+          <Text className='home-baby-card__age'>{babyAgeText}</Text>
         </View>
-        <Text className='home-baby-card__age'>{babyAgeText}</Text>
+
+        <View className='home-baby-card__stats'>
+          {stats.map((item) => (
+            <View className='home-baby-card__stat-item' key={item.label} onClick={onStatsClick}>
+              {renderStatValue(item)}
+              <Text className='home-baby-card__stat-label'>{item.label}</Text>
+            </View>
+          ))}
+        </View>
       </View>
 
-      <View className='home-stats home-stats--3col'>
-        {stats.map((item) => (
-          <View className='home-stats__item' key={item.label} onClick={onStatsClick}>
-            {renderStatValue(item)}
-            <Text className='home-stats__label'>{item.label}</Text>
-          </View>
-        ))}
-      </View>
       {banners}
-      <View className='home-hero__bottom-mask' />
     </View>
   )
 }

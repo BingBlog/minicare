@@ -74,9 +74,8 @@ export default function SleepBanner(props: SleepBannerProps) {
         </Text>
       </View>
       <Text
-        className='home-inline-banner__action'
+        className={`home-inline-banner__action--sleep${ending ? ' home-inline-banner__action--sleep--ending' : ''}`}
         onClick={handleEnd}
-        style={{ opacity: ending ? 0.5 : 1 }}
       >
         {ending ? '结束中...' : '结束睡眠'}
       </Text>
