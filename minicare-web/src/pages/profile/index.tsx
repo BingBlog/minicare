@@ -13,11 +13,11 @@
  *
  * 子组件均位于 ./profile/ 目录下
  */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppStore } from "@/lib/store";
 import { removeToken, babyApi, familyApi } from "@/api";
-import type { AllergyLevel, AllergyType, FamilyMember } from "@/api";
+import type { AllergyLevel, AllergyType, FamilyMember, Baby } from "@/api";
 import { useToast } from "@/components/ui/Toast";
 import BabyHero from "./BabyHero";
 import BabyStats from "./BabyStats";
@@ -28,6 +28,7 @@ import BottomSheet from "@/components/ui/BottomSheet";
 import MembersModal from "./MembersModal";
 import ContactModal from "./ContactModal";
 import LoginGuide from "@/components/LoginGuide";
+import BabyPicker from "@/components/ui/BabyPicker";
 
 // ── SettingsGroup 所需的图标（仅在本文件内使用）──────────────────
 
@@ -143,6 +144,21 @@ const IconMonitor = () => (
   </svg>
 );
 
+/** 宝宝图标 */
+const IconBaby = () => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: 18, height: 18, color: "#F0B8C8" }}>
+    <path d="M12 2a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4" />
+    <path d="M5 20a7 7 0 0 1 14 0" />
+  </svg>
+);
+
 /** 邮件图标 */
 const IconMail = () => (
   <svg
@@ -161,7 +177,7 @@ const IconMail = () => (
 // ══ 我的页面主体 ══════════════════════════════════════════════════
 export default function ProfilePage() {
   const navigate = useNavigate();
-  const { token, user, currentBaby, currentFamily, setCurrentBaby, logout } =
+  const { token, user, currentBaby, currentFamily, setCurrentBaby, setCurrentFamily, setAllBabies, allBabies, logout } =
     useAppStore();
   const { showToast, ToastNode } = useToast();
 
@@ -176,6 +192,24 @@ export default function ProfilePage() {
   // ── 编辑宝宝档案弹层状态 ──────────────────────────────────────
   const [editOpen, setEditOpen] = useState(false);
   const [saving, setSaving] = useState(false);
+
+  // ── 多宝宝切换弹层状态 ────────────────────────────────────────
+  const [babyPickerOpen, setBabyPickerOpen] = useState(false);
+
+  // ── 加载所有宝宝列表 ──────────────────────────────────────────
+  useEffect(() => {
+    async function loadBabies() {
+      try {
+        const babies = await babyApi.getMine();
+        setAllBabies(babies);
+      } catch {
+        // 静默失败
+      }
+    }
+    if (token) {
+      loadBabies();
+    }
+  }, [token, setAllBabies]);
 
   // 编辑表单受控字段（打开弹层时从 currentBaby 同步初始值）
   const [editName, setEditName] = useState(currentBaby?.name ?? "");
@@ -203,6 +237,40 @@ export default function ProfilePage() {
   const [contactOpen, setContactOpen] = useState(false);
 
   const [currentUserRole, setCurrentUserRole] = useState<'owner' | 'member'>('member');
+
+  // ── 宝宝切换处理 ──────────────────────────────────────────────
+  const handleSwitchBaby = (baby: Baby) => {
+    if (baby.id === currentBaby?.id) return;
+    setCurrentBaby(baby);
+    const family = { id: baby.family_id, name: baby.family_name || '', role: baby.family_role || 'member', created_at: '', updated_at: '' };
+    setCurrentFamily(family);
+    showToast(`已切换到 ${baby.name}`);
+  };
+
+  // ── 退出家庭处理 ──────────────────────────────────────────────
+  const handleLeaveFamily = async (baby: Baby) => {
+    if (baby.family_role === 'owner') {
+      showToast('家庭创建者不能退出');
+      return;
+    }
+    setBabyPickerOpen(false);
+    setLogoutOpen(false);
+    try {
+      await familyApi.leave(baby.family_id);
+      showToast('已退出该家庭');
+      const remaining = allBabies.filter((b) => b.family_id !== baby.family_id);
+      setAllBabies(remaining);
+      if (remaining.length > 0) {
+        handleSwitchBaby(remaining[0]);
+      } else {
+        setCurrentBaby(null as unknown as Baby);
+        setCurrentFamily(null as unknown as ReturnType<typeof setCurrentFamily> extends (f: infer F) => void ? F : never);
+        navigate('/onboarding', { replace: true });
+      }
+    } catch (e) {
+      showToast(e instanceof Error ? e.message : '操作失败');
+    }
+  };
 
   // ── 编辑弹层操作 ──────────────────────────────────────────────
 
@@ -350,6 +418,17 @@ export default function ProfilePage() {
   /** 家庭分组：家庭成员管理（合并邀请入口）*/
   const activeCount = members.filter((m) => m.status === 'active' || m.status === undefined).length;
   const familyRows: SettingsRow[] = [
+    ...(allBabies.length > 1
+      ? [{
+          id: "switch-baby",
+          type: "arrow" as const,
+          icon: <IconBaby />,
+          iconBg: "#FFF0F4",
+          label: "管理宝宝",
+          subText: currentBaby?.name,
+          onClick: () => setBabyPickerOpen(true),
+        }]
+      : []),
     {
       id: "members",
       type: "arrow",
@@ -437,6 +516,9 @@ export default function ProfilePage() {
           allergyTypes={currentBaby?.allergy_types}
           allergyLevel={currentBaby?.allergy_level as AllergyLevel | undefined}
           onEdit={openEdit}
+          babies={allBabies}
+          currentBabyId={currentBaby?.id}
+          onSwitchBaby={handleSwitchBaby}
         />
 
         {/* 宝宝生长数据迷你格 */}
@@ -553,6 +635,16 @@ export default function ProfilePage() {
         onInviteByPhone={handleInviteByPhone}
         onRemoveMember={handleRemoveMember}
         onClose={closeMembers}
+      />
+
+      {/* ── 宝宝选择弹层 ── */}
+      <BabyPicker
+        open={babyPickerOpen}
+        babies={allBabies}
+        currentBabyId={currentBaby?.id}
+        onSelect={handleSwitchBaby}
+        onLeave={handleLeaveFamily}
+        onClose={() => setBabyPickerOpen(false)}
       />
 
       {/* ── 联系我们弹层 ── */}

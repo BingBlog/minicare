@@ -26,6 +26,10 @@ interface AppState {
   currentBaby: Baby | null
   setCurrentBaby: (baby: Baby) => void
 
+  // 所有宝宝列表（支持多宝宝切换）
+  allBabies: Baby[]
+  setAllBabies: (babies: Baby[]) => void
+
   /**
    * 切换宝宝引导弹层数据
    * 登录激活 pending 邀请后，若用户已有其他家庭，则将新激活的家庭+宝宝存入此处，
@@ -47,7 +51,7 @@ export const useAppStore = create<AppState>()(
       },
       logout: () => {
         localStorage.removeItem('minicare_token')
-        set({ user: null, token: null, currentFamily: null, currentBaby: null, pendingSwitchOptions: [] })
+        set({ user: null, token: null, currentFamily: null, currentBaby: null, allBabies: [], pendingSwitchOptions: [] })
       },
 
       currentFamily: null,
@@ -55,6 +59,9 @@ export const useAppStore = create<AppState>()(
 
       currentBaby: null,
       setCurrentBaby: (baby) => set({ currentBaby: baby }),
+
+      allBabies: [],
+      setAllBabies: (babies) => set({ allBabies: babies }),
 
       pendingSwitchOptions: [],
       setPendingSwitchOptions: (options) => set({ pendingSwitchOptions: options }),
@@ -67,6 +74,7 @@ export const useAppStore = create<AppState>()(
         token: state.token,
         currentFamily: state.currentFamily,
         currentBaby: state.currentBaby,
+        allBabies: state.allBabies,
         // pendingSwitchOptions 不持久化（仅内存状态）
       }),
     }
