@@ -9,6 +9,9 @@ description: minicare 项目构建发布操作手册。包含前端静态托管�
 > 执行部署前读取 `minicare-server/.env.local` 获取 `DB_HOST / DB_PORT / DB_USER / DB_PASS` 的实际值。
 > **`JWT_SECRET` 不通过 EnvParams 传递**，仅通过 CloudBase 控制台设置一次后持久化，避免部署时误覆盖导致全量用户 token 失效。
 
+> 🔧 **部署工具统一使用 `tcb` CLI**（CloudBase CLI 3.x），不使用 MCP 工具。CLI 更稳定、可脚本化、无交互式认证问题。
+> 部署前需确认已登录：`tcb login`，环境 ID：`minicare-cloud-6gqledlle0132cbe`。
+
 ---
 
 ## §1 配置参数表
@@ -27,10 +30,11 @@ description: minicare 项目构建发布操作手册。包含前端静态托管�
 | ------------------ | ------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
 | 构建命令           | `npm run build:staging`                                                         | `npm run build:prod`                                                    |
 | 构建产物路径       | `minicare-web/dist`                                                             | `minicare-web/dist`                                                     |
-| 静态托管 cloudPath | `/staging/`                                                                     | `/`                                                                     |
+| 静态托管 cloudPath | `staging`                                                                       | `.`（根路径）                                                           |
 | 访问地址           | `https://minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com/staging/` | `https://minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com/` |
 | VITE_AUTH_MODE     | `test`（固定验证码 123456）                                                     | `sms`（真实短信）                                                       |
 | 构建成功标志       | 输出 `built in X.XXs`，无 TypeScript error                                      | 同左                                                                    |
+| CLI 上传命令       | `tcb hosting deploy dist staging -e minicare-cloud-6gqledlle0132cbe`            | `tcb hosting deploy dist . -e minicare-cloud-6gqledlle0132cbe`          |
 
 > ✅ 使用 **Hash 路由**（`createHashRouter`），URL 形如 `https://xxx.tcloudbaseapp.com/staging/#/login`，
 > 路由路径在 `#` 之后，不受宿主路径 `/staging/` 影响，无需修改任何路由配置。
@@ -39,48 +43,19 @@ description: minicare 项目构建发布操作手册。包含前端静态托管�
 
 | 属性            | staging                                                                           | production                                                                                  |
 | --------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| 项目目录        | `/Users/bing/Documents/minicare/minicare-server`                             | 同左                                                                                        |
+| 项目目录        | `/Users/bing/Documents/minicare-v1/minicare-server`                               | 同左                                                                                        |
 | 构建命令        | `npm run build`（= `nest build`）                                                 | 同左                                                                                        |
 | 预检命令        | `bash scripts/deploy.sh`                                                          | 同左                                                                                        |
 | CloudRun 服务名 | `minicare-api`                                                                    | `minicare-api-production`                                                                   |
 | serverType      | `container`                                                                       | `container`                                                                                 |
-| 访问域名        | `https://minicare-api-240137-10-1253854169.sh.run.tcloudbase.com`                | `https://www.minicare.top`                |
+| 访问域名        | `https://minicare-api-240137-10-1253854169.sh.run.tcloudbase.com`                | `https://www.minicare.top`                                                                  |
 | DB_NAME         | `minicare_staging`                                                                | `minicare-cloud-6gqledlle0132cbe`                                                           |
 | AUTH_TEST_MODE  | `true`（固定验证码 123456）                                                       | `false`（真实短信）                                                                         |
 | 健康检查端点    | `GET /health`                                                                     | `GET /health`                                                                               |
-
-**完整 manageCloudRun serverConfig（可直接复制）**：
+| CLI 部署命令    | `tcb cloudrun deploy -s minicare-api --port 3000 --force -e minicare-cloud-6gqledlle0132cbe` | `tcb cloudrun deploy -s minicare-api-production --port 3000 --force -e minicare-cloud-6gqledlle0132cbe` |
 
 > 所有环境变量通过 CloudBase 控制台独立管理，部署时不再通过 `EnvParams` 传递。
 > 首次部署前需在控制台设置好全部变量，后续部署只更新代码。
-
-**staging 部署（`minicare-api`）：**
-```
-manageCloudRun(
-  action     = 'deploy',
-  serverName = 'minicare-api',
-  targetPath = '/Users/bing/Documents/minicare/minicare-server',
-  serverType = 'container',
-  serverConfig = {
-    Cpu: 0.5, Mem: 1, MinNum: 0, MaxNum: 5, Port: 3000,
-    OpenAccessTypes: ['OA', 'PUBLIC', 'MINIAPP']
-  }
-)
-```
-
-**production 部署（`minicare-api-production`）：**
-```
-manageCloudRun(
-  action     = 'deploy',
-  serverName = 'minicare-api-production',
-  targetPath = '/Users/bing/Documents/minicare/minicare-server',
-  serverType = 'container',
-  serverConfig = {
-    Cpu: 0.5, Mem: 1, MinNum: 0, MaxNum: 5, Port: 3000,
-    OpenAccessTypes: ['OA', 'PUBLIC', 'MINIAPP']
-  }
-)
-```
 
 > ⚠️ **`AUTH_TEST_MODE` 必须与前端构建目标严格对齐**：
 >
@@ -94,16 +69,17 @@ manageCloudRun(
 | 属性       | 值                                                                                           |
 | ---------- | -------------------------------------------------------------------------------------------- |
 | 函数名     | `keepalive-ping`                                                                             |
-| 函数根目录 | `/Users/bing/Documents/minicare/minicare-server/functions`                              |
+| 函数根目录 | `/Users/bing/Documents/minicare-v1/minicare-server/functions`                                |
 | handler    | `index.main`                                                                                 |
-| 环境变量   | `CLOUDRUN_HEALTH_URL=https://www.minicare.top/health` |
+| 环境变量   | `CLOUDRUN_HEALTH_URL=https://www.minicare.top/health`                                        |
 | 验证标志   | 调用后日志含 `status=200`                                                                    |
+| CLI 命令   | `tcb fn code update keepalive-ping --dir functions -e minicare-cloud-6gqledlle0132cbe`       |
 
 ### 1.5 数据库迁移参数
 
 | 属性         | 值                                                    |
 | ------------ | ----------------------------------------------------- |
-| 迁移脚本路径 | `/Users/bing/Documents/minicare/minicare-server` |
+| 迁移脚本路径 | `/Users/bing/Documents/minicare-v1/minicare-server`   |
 | 迁移文件目录 | `minicare-server/migrations/`                         |
 | 开发库       | `minicare_dev`                                        |
 | Staging 库   | `minicare_staging`                                    |
@@ -121,21 +97,18 @@ manageCloudRun(
 
 ```bash
 # Step 1：构建 staging 版本
-cd /Users/bing/Documents/minicare/minicare-web
+cd /Users/bing/Documents/minicare-v1/minicare-web
 npm run build:staging
 ```
 
 **成功判定**：输出 `built in X.XXs`，无 TypeScript 编译错误。
 
-```
+```bash
 # Step 2：上传到 CloudBase 静态托管 /staging/ 路径
-uploadFiles(
-  localPath  = '/Users/bing/Documents/minicare/minicare-web/dist',
-  cloudPath  = '/staging/'
-)
+tcb hosting deploy dist staging -e minicare-cloud-6gqledlle0132cbe
 ```
 
-**成功判定**：所有文件的 `error` 字段均为 `null`。
+**成功判定**：输出 `✔ Successfully uploaded N file(s)`，`Failed to upload 0 file(s)`。
 
 **验证**：访问 `https://minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com/staging/` 确认页面正常加载，显示「🔧 测试模式」提示条。
 
@@ -143,29 +116,26 @@ uploadFiles(
 
 ```bash
 # Step 1：构建 production 版本
-cd /Users/bing/Documents/minicare/minicare-web
+cd /Users/bing/Documents/minicare-v1/minicare-web
 npm run build:prod
 ```
 
 **成功判定**：输出 `built in X.XXs`，无 TypeScript 编译错误。
 
-```
-# Step 2：上传到 CloudBase 静态托管 / 根路径
-uploadFiles(
-  localPath  = '/Users/bing/Documents/minicare/minicare-web/dist',
-  cloudPath  = '/'
-)
+```bash
+# Step 2：上传到 CloudBase 静态托管根路径
+tcb hosting deploy dist . -e minicare-cloud-6gqledlle0132cbe
 ```
 
-**成功判定**：所有文件的 `error` 字段均为 `null`。
+**成功判定**：输出 `✔ Successfully uploaded N file(s)`，`Failed to upload 0 file(s)`。
 
 **验证**：访问 `https://minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com/` 确认页面正常加载，**无**「测试模式」提示条。
 
 ### 完成报告格式
 
 > ✅ 前端发布完成（staging / production）
-> 构建产物：X 个文件，约 X MB  
-> 上传成功：X 个文件  
+> 构建产物：X 个文件，约 X MB
+> 上传成功：X 个文件
 > 访问地址：[对应地址]
 
 ---
@@ -178,7 +148,7 @@ uploadFiles(
 
 ```bash
 # Step 1：编译 TypeScript
-cd /Users/bing/Documents/minicare/minicare-server
+cd /Users/bing/Documents/minicare-v1/minicare-server
 npm run build
 ```
 
@@ -191,19 +161,27 @@ bash scripts/deploy.sh
 
 **成功判定**：输出「预检通过」，`dist/` < 2MB，不存在 `dist/test/` 目录。若预检失败，**不得继续执行 Step 3**。
 
-```
-# Step 3：CloudRun 部署（参数见 §1.3 完整 manageCloudRun 块，直接复制执行）
-manageCloudRun(...)  ← 使用 §1.3 中的完整参数
-```
-
-**等待**：部署为异步操作，调用后等待完成信号。
-
-```
-# Step 4a：验证版本号更新
-queryCloudRun(action='detail', detailServerName='minicare-api')
+```bash
+# Step 3：CloudRun 部署（staging）
+cd /Users/bing/Documents/minicare-v1/minicare-server
+echo "n" | tcb cloudrun deploy -s minicare-api --port 3000 --force -e minicare-cloud-6gqledlle0132cbe
 ```
 
-**成功判定**：`OnlineVersionInfos[0].VersionName` 比部署前 +1。
+```bash
+# Step 3：CloudRun 部署（production）
+cd /Users/bing/Documents/minicare-v1/minicare-server
+echo "n" | tcb cloudrun deploy -s minicare-api-production --port 3000 --force -e minicare-cloud-6gqledlle0132cbe
+```
+
+> `echo "n"` 用于自动回答「是否启用灰度部署」的交互提示（选择 No，即部署后自动切换流量）。
+> `--force` 跳过二次确认提示。
+
+**等待**：部署为异步操作，CLI 提交后会输出控制台链接，需等待约 2~5 分钟构建完成。
+
+```bash
+# Step 4a：查看 CloudRun 服务状态
+tcb cloudrun list --serviceName minicare-api --json -e minicare-cloud-6gqledlle0132cbe
+```
 
 ```bash
 # Step 4b：验证服务健康（staging）
@@ -212,14 +190,13 @@ curl https://minicare-api-240137-10-1253854169.sh.run.tcloudbase.com/health
 curl https://www.minicare.top/health
 ```
 
-**成功判定**：返回 `{"status":"ok","db":{"host_set":true,"pass_set":true,...}}`  
-若 `db.host_set=false`：环境变量未生效，需在 CloudBase 控制台检查配置。  
+**成功判定**：返回 `{"status":"ok","db":{"host_set":true,"pass_set":true,...}}`
+若 `db.host_set=false`：环境变量未生效，需在 CloudBase 控制台检查配置。
 若超时 30s：CloudRun 冷启动，重试一次。
 
 ### 完成报告格式
 
-> ✅ 后端发布完成（staging / production）  
-> 新版本号：X  
+> ✅ 后端发布完成（staging / production）
 > /health 响应：{"status":"ok","db":{"name":"minicare_staging 或 minicare-cloud-..."}}
 
 ---
@@ -230,38 +207,30 @@ curl https://www.minicare.top/health
 
 ### 步骤
 
-```
+```bash
 # Step 1：上传函数代码
-manageFunctions(
-  action           = 'updateFunctionCode',
-  functionName     = 'keepalive-ping',
-  functionRootPath = '/Users/bing/Documents/minicare/minicare-server/functions',
-  handler          = 'index.main'
-)
+cd /Users/bing/Documents/minicare-v1/minicare-server
+tcb fn code update keepalive-ping --dir functions -e minicare-cloud-6gqledlle0132cbe
 ```
 
-**成功判定**：MCP 工具返回成功状态。
+**成功判定**：CLI 输出更新成功状态。
 
-```
+```bash
 # Step 2：触发调用验证
-manageFunctions(
-  action       = 'invokeFunction',
-  functionName = 'keepalive-ping',
-  params       = {}
-)
+tcb fn invoke keepalive-ping -e minicare-cloud-6gqledlle0132cbe
 ```
 
-**成功判定**：返回结果中 `statusCode = 200`，或查询日志含 `[keepalive] status=200`。
+**成功判定**：返回结果中含 `statusCode = 200`，或日志含 `[keepalive] status=200`。
 
-```
+```bash
 # Step 3（可选）：查询最近日志
-queryFunctions(action='listFunctionLogs', functionName='keepalive-ping', limit=5)
+tcb fn log keepalive-ping --limit 5 -e minicare-cloud-6gqledlle0132cbe
 ```
 
 ### 完成报告格式
 
-> ✅ 云函数发布完成  
-> 函数名：keepalive-ping  
+> ✅ 云函数发布完成
+> 函数名：keepalive-ping
 > 调用验证：status=200
 
 ---
@@ -276,11 +245,11 @@ queryFunctions(action='listFunctionLogs', functionName='keepalive-ping', limit=5
 
 ```bash
 # Step 1：预览待执行迁移（dry-run，不实际执行）
-cd /Users/bing/Documents/minicare/minicare-server
+cd /Users/bing/Documents/minicare-v1/minicare-server
 bash scripts/migrate.sh --dry-run --all-envs
 ```
 
-**展示**：列出待执行的迁移文件列表，告知用户将对开发库、staging 库和生产库执行哪些变更。  
+**展示**：列出待执行的迁移文件列表，告知用户将对开发库、staging 库和生产库执行哪些变更。
 **等待用户明确确认**（必须收到确认才执行 Step 2）。
 
 ```bash
@@ -299,9 +268,9 @@ bash scripts/migrate.sh --status
 
 ### 完成报告格式
 
-> ✅ 数据库迁移完成  
-> 开发库（minicare_dev）：已执行 001~NNN  
-> Staging 库（minicare_staging）：已执行 001~NNN  
+> ✅ 数据库迁移完成
+> 开发库（minicare_dev）：已执行 001~NNN
+> Staging 库（minicare_staging）：已执行 001~NNN
 > 生产库（minicare-cloud-xxx）：已执行 001~NNN
 
 ---
@@ -326,13 +295,13 @@ bash scripts/migrate.sh --status
 
 ### 完成报告格式
 
-> ✅ 全量发布完成  
-> 数据库迁移：✅ dev + staging + 生产库均已最新  
-> 后端服务：✅ 版本号 X，/health OK  
-> 云函数：✅ keepalive-ping status=200  
-> 前端 staging：✅ X 个文件 → /staging/  
-> 前端 production：✅ X 个文件 → /  
-> Staging 地址：https://minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com/staging/  
+> ✅ 全量发布完成
+> 数据库迁移：✅ dev + staging + 生产库均已最新
+> 后端服务：✅ /health OK
+> 云函数：✅ keepalive-ping status=200
+> 前端 staging：✅ X 个文件 → /staging/
+> 前端 production：✅ X 个文件 → /
+> Staging 地址：https://minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com/staging/
 > Production 地址：https://minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com/
 
 ---
@@ -348,5 +317,43 @@ bash scripts/migrate.sh --status
 | `/health` 返回 `db.host_set=false`          | 环境变量未生效                      | 在 CloudBase 控制台检查 CloudRun 服务的环境变量配置                             |
 | 数据库连接超时（upstream-timecost ≈ 30000） | CloudRun 使用了内网地址             | 确认 DB_HOST=`sh-cynosdbmysql-grp-6a0nj6a8.sql.tencentcdb.com`，DB_PORT=`21002` |
 | 生产前端登录失败（400/验证码错误）           | AUTH_TEST_MODE 未设为 false         | 确认 `minicare-api-production` 的环境变量中 `AUTH_TEST_MODE=false`              |
-| 云函数调用返回 error                        | 函数代码错误或环境变量未配          | `queryFunctions(listFunctionLogs)` 查看错误日志                                 |
+| 云函数调用返回 error                        | 函数代码错误或环境变量未配          | `tcb fn log keepalive-ping --error -e minicare-cloud-6gqledlle0132cbe` 查看错误日志 |
 | 迁移执行失败中断                            | SQL 语法错误或字段冲突              | 修复 SQL 文件，重新执行；`schema_migrations` 表中未记录失败的版本，可安全重试   |
+| `tcb` CLI 未登录                            | 认证过期                            | 执行 `tcb login` 重新授权                                                       |
+| `tcb cloudrun deploy` 交互卡住              | 灰度部署确认提示                    | 使用 `echo "n" \|` 管道输入或加 `--force` 跳过确认                              |
+
+---
+
+## §8 CLI 命令速查
+
+```bash
+# 前置：登录
+tcb login
+
+# 前端上传（staging）
+cd minicare-web && tcb hosting deploy dist staging -e minicare-cloud-6gqledlle0132cbe
+
+# 前端上传（production）
+cd minicare-web && tcb hosting deploy dist . -e minicare-cloud-6gqledlle0132cbe
+
+# 后端部署（staging）
+cd minicare-server && echo "n" | tcb cloudrun deploy -s minicare-api --port 3000 --force -e minicare-cloud-6gqledlle0132cbe
+
+# 后端部署（production）
+cd minicare-server && echo "n" | tcb cloudrun deploy -s minicare-api-production --port 3000 --force -e minicare-cloud-6gqledlle0132cbe
+
+# 后端状态查看
+tcb cloudrun list --serviceName minicare-api --json -e minicare-cloud-6gqledlle0132cbe
+
+# 云函数更新
+cd minicare-server && tcb fn code update keepalive-ping --dir functions -e minicare-cloud-6gqledlle0132cbe
+
+# 云函数调用
+tcb fn invoke keepalive-ping -e minicare-cloud-6gqledlle0132cbe
+
+# 云函数日志
+tcb fn log keepalive-ping --limit 20 -e minicare-cloud-6gqledlle0132cbe
+
+# 静态托管文件列表
+tcb hosting list staging -e minicare-cloud-6gqledlle0132cbe
+```

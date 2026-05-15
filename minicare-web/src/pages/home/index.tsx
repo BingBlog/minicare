@@ -117,7 +117,7 @@ export default function HomePage() {
       if (babies.length > 0) {
         setAllBabies(babies);
         const baby = babies[0];
-        const family = { id: baby.family_id, name: baby.family_name || '', role: baby.family_role || 'member', created_at: '', updated_at: '' };
+        const family = { id: baby.family_id, name: baby.family_name || '', role: baby.family_role || 'member', createdAt: '' };
         setCurrentFamily(family);
         setCurrentBaby(baby);
         setNeedsOnboarding(false);

@@ -242,7 +242,7 @@ export default function ProfilePage() {
   const handleSwitchBaby = (baby: Baby) => {
     if (baby.id === currentBaby?.id) return;
     setCurrentBaby(baby);
-    const family = { id: baby.family_id, name: baby.family_name || '', role: baby.family_role || 'member', created_at: '', updated_at: '' };
+    const family = { id: baby.family_id, name: baby.family_name || '', role: baby.family_role || 'member', createdAt: '' };
     setCurrentFamily(family);
     showToast(`已切换到 ${baby.name}`);
   };

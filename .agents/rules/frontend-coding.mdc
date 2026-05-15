@@ -23,17 +23,26 @@ alwaysApply: true
 | 后端数据/接口 | 在静态数据或 API 响应中包含 emoji 字段 | 会被前端渲染，绕过此规则 |
 | 常量/枚举 | 在 `constants.ts`、`*.data.ts` 等文件中存储 emoji | 同上 |
 
-**必须**使用 `src/components/ui/icons.tsx` 中已定义的 SVG 图标组件替代。
+**图标使用方式因平台而异**：
 
-### 图标使用方式
+| 平台 | 图标来源 | 使用方式 |
+|------|---------|---------|
+| Web (`minicare-web`) | `src/components/ui/icons.tsx` | `<IconPill size={12} color="#9B8ED8" />` |
+| MP (`minicare-mp`) | `src/assets/icons/*.svg` + `<Image src={...} />` | 映射集中在 `recordTypeIcons.ts` |
+
+### 图标使用示例
 
 ```tsx
 // ❌ 禁止
 <span>💊 {medName}</span>
 
-// ✅ 正确
+// ✅ 正确（Web）
 import { IconPill } from '@/components/ui/icons'
 <span><IconPill size={12} color="#9B8ED8" /> {medName}</span>
+
+// ✅ 正确（MP）
+import { recordTypeIcons } from '@/lib/recordTypeIcons'
+<Image src={recordTypeIcons.pill} style={{ width: 12, height: 12 }} />
 ```
 
 ### 后端数据禁止携带 emoji
@@ -54,8 +63,11 @@ export const FOOD_CATEGORIES = [
 
 ### 需要新图标时
 
-若现有图标库中没有所需语义图标，**必须先在 `src/components/ui/icons.tsx` 中添加新的 SVG 图标**，
-再在组件中导入使用。图标命名规范：`Icon` + 语义名称（大驼峰），例如 `IconHospital`、`IconThermometer`。
+若现有图标库中没有所需语义图标：
+- **Web**：先在 `src/components/ui/icons.tsx` 中添加新的 SVG 图标组件
+- **MP**：先在 `src/assets/icons/` 中添加新的 SVG 文件，并在 `recordTypeIcons.ts` 中注册映射
+
+图标命名规范：`Icon` + 语义名称（大驼峰），例如 `IconHospital`、`IconThermometer`。
 
 图标设计规范（与现有图标保持一致）：
 - 基于 Lucide 图标集风格，stroke 线条风格
@@ -132,6 +144,8 @@ const SLEEP_PERIOD_LABELS = {  // 不允许！
 | `window.confirm(...)` | 样式无法定制，移动端体验极差，iOS WebView 可能被屏蔽 |
 | `window.alert(...)` | 同上 |
 | `window.prompt(...)` | 同上 |
+
+**小程序端**：使用 `Taro.showModal` 或自定义组件替代。
 
 ### 必须改用内联确认弹层（BottomSheet 风格）
 

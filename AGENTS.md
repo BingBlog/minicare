@@ -6,13 +6,13 @@
 
 | User intent | Skill to read | Type |
 |---|---|---|
-| Develop / modify / fix any feature or module | `.cursor/skills/minicare-dev/SKILL.md` | Dev |
-| Deploy frontend / backend / cloud function / DB migration / full release | `.cursor/skills/minicare-deploy/SKILL.md` | Ops |
-| Design or restyle any UI page or component | `.cursor/skills/minicare-design/SKILL.md` | Design |
-| Write or refine PRD / requirements / user stories / acceptance criteria | `.cursor/skills/prd-doc-writer/SKILL.md` | PM |
-| Design or optimize DB schema / indexes / migrations | `.cursor/skills/database-designer/SKILL.md` | DB |
-| Migrate a Web page to miniprogram (MP) | `.cursor/skills/web-to-mp-page-migration/SKILL.md` | Migration |
-| Any CloudBase operation (auth / DB / storage / functions / CloudRun / AI / Agent) | `.cursor/skills/cloudbase/SKILL.md` | Platform |
+| Develop / modify / fix any feature or module | `.agents/skills/minicare-dev/SKILL.md` | Dev |
+| Deploy frontend / backend / cloud function / DB migration / full release | `.agents/skills/minicare-deploy/SKILL.md` | Ops |
+| Design or restyle any UI page or component | `.agents/skills/minicare-design/SKILL.md` | Design |
+| Write or refine PRD / requirements / user stories / acceptance criteria | `.agents/skills/prd-doc-writer/SKILL.md` | PM |
+| Design or optimize DB schema / indexes / migrations | `.agents/skills/database-designer/SKILL.md` | DB |
+| Migrate a Web page to miniprogram (MP) | `.agents/skills/web-to-mp-page-migration/SKILL.md` | Migration |
+| Any CloudBase operation (auth / DB / storage / functions / CloudRun / AI / Agent) | `.agents/skills/cloudbase/SKILL.md` | Platform |
 
 > `cloudbase/SKILL.md` is a **router** — it dispatches to 20+ sub-skills under `references/` (e.g. `auth-web`, `cloudrun-development`). Always read the router first, then follow its routing table to the correct sub-skill. Never call CloudBase APIs without going through the skill chain.
 
@@ -20,11 +20,13 @@ These 5 project rules are referenced by `opencode.json` and auto-apply to matchi
 
 | Rule file | Scope |
 |---|---|
-| `.cursor/rules/api-conventions.mdc` | API design, routing, DTOs, auth |
-| `.cursor/rules/cloudbase-conventions.mdc` | CloudBase platform, MCP tools, env info |
-| `.cursor/rules/deploy-conventions.mdc` | Build config, deploy scripts, Dockerfile |
-| `.cursor/rules/frontend-coding.mdc` | Icons, enum labels, dialog rules (web + mp) |
-| `.cursor/rules/miniapp-development.mdc` | Miniprogram platform constraints |
+| `.agents/rules/api-conventions.mdc` | API design, routing, DTOs, auth |
+| `.agents/rules/cloudbase-conventions.mdc` | CloudBase platform, CLI tools, env info |
+| `.agents/rules/deploy-conventions.mdc` | Build config, deploy scripts, Dockerfile |
+| `.agents/rules/frontend-coding.mdc` | Icons, enum labels, dialog rules (web + mp) |
+| `.agents/rules/miniapp-development.mdc` | Miniprogram platform constraints |
+
+> ⚠️ **`.agents/` 是 rules 和 skills 的唯一数据源**。`.cursor/`、`.trae/`、`.opencode/` 中的 rules 和 skills 均为 symlink 指向 `.agents/`，**禁止直接编辑这些目录中的文件**。所有修改必须通过 `.agents/rules/` 或 `.agents/skills/` 路径进行。
 
 ---
 
@@ -115,8 +117,8 @@ npm run build:prod         # tsc -b + vite build (production mode)
 
 **Server (CloudRun):**
 1. `cd minicare-server && npm run build && bash scripts/deploy.sh` (pre-check)
-2. Deploy via CloudBase MCP `manageCloudRun(action='deploy', ...)` — **not** `tcb` CLI
-3. Verify: `queryCloudRun(detail)` + `curl /health`
+2. Deploy via `tcb` CLI: `echo "n" | tcb cloudrun deploy -s minicare-api --port 3000 --force -e minicare-cloud-6gqledlle0132cbe`
+3. Verify: `curl /health`
 
 **Miniprogram:**
 1. `cd minicare-mp && npm run build:weapp`

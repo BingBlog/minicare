@@ -1,5 +1,5 @@
 ---
-description: minicare CloudBase 平台使用规范。规定 CloudBase Skill 的引用时机、MCP 工具的调用方式、环境信息、CloudRun/数据库/存储等各类操作的正确工具选择。凡涉及部署、数据库操作、存储、CloudRun 服务查询、CloudBase 环境管理时自动生效。
+description: minicare CloudBase 平台使用规范。规定 CloudBase Skill 的引用时机、CLI 命令的使用方式、环境信息、CloudRun/数据库/存储等各类操作的正确工具选择。凡涉及部署、数据库操作、存储、CloudRun 服务查询、CloudBase 环境管理时自动生效。
 globs:
   - "minicare-server/**"
   - "minicare-web/**"
@@ -25,7 +25,6 @@ alwaysApply: true
 | CloudRun 访问域名（production） | `https://www.minicare.top` |
 | MySQL **公网**地址 | `sh-cynosdbmysql-grp-6a0nj6a8.sql.tencentcdb.com:21002` |
 | MySQL **内网**地址（暂不可用，CloudRun 未配 VPC） | `172.17.0.9:3306` |
-| MySQL 用户 | `bing` |
 
 > ⚠️ **内网地址不可达**：CloudRun 服务尚未配置 VPC（`vpc-mkwdhlzc/subnet-823cr3pt`），
 > 使用 `172.17.0.9` 会导致连接超时 30s 后返回 500，**必须使用公网地址**。
@@ -54,16 +53,7 @@ alwaysApply: true
 
 ### 1.3 本地开发配置
 
-`.env.local` 已配置直连远程 CynosDB 开发库：
-
-```bash
-# minicare-server/.env.local
-DB_HOST=sh-cynosdbmysql-grp-6a0nj6a8.sql.tencentcdb.com
-DB_PORT=21002
-DB_NAME=minicare_dev          # 开发库，与生产隔离
-DB_USER=bing
-DB_PASS=Wb13227560988
-```
+`.env.local` 已配置直连远程 CynosDB 开发库（实际值见 `minicare-server/.env.local`，不在此处明文记录）。
 
 **首次使用空库时注意**：
 - `minicare_dev` 是独立空库，需重新注册账号
@@ -72,65 +62,39 @@ DB_PASS=Wb13227560988
 
 ---
 
-## 二、CloudBase MCP 工具（首选）
+## 二、CloudBase CLI（首选部署工具）
 
-### 工具可用性确认
+### CLI 安装和登录
 
-SOLO 内置 CloudBase MCP 工具，无需额外安装或配置。所有 `mcp_cloudbase_*` 前缀的工具均可直接调用。
+```bash
+# 安装（全局）
+npm install -g @cloudbase/cli
 
-### 认证状态检查
+# 登录
+tcb login
 
-执行任何 CloudBase 操作前，先确认认证和环境绑定：
-
-```
-auth(action='status')
-```
-
-若未绑定环境：
-```
-auth(action='set_env', envId='minicare-cloud-6gqledlle0132cbe')
+# 验证登录状态
+tcb cloudrun list -e minicare-cloud-6gqledlle0132cbe
 ```
 
-### 完整工具清单
+### CLI vs MCP 工具选择
 
-| 工具名 | 用途 |
-|--------|------|
-| `auth` | 登录/登出/查询认证状态/绑定环境/获取临时密钥 |
-| `envQuery` | 查询环境列表、环境详情、安全域名、静态托管配置 |
-| `envDomainManagement` | 管理环境安全域名（添加/删除） |
-| `queryCloudRun` | 查询 CloudRun 服务列表、详情、模板、部署日志 |
-| `manageCloudRun` | 部署/初始化/下载/本地运行/删除 CloudRun 服务 |
-| `querySqlDatabase` | 执行只读 SQL、查询 MySQL 实例信息 |
-| `manageSqlDatabase` | 执行写 SQL/DDL、初始化 Schema、MySQL 实例管理 |
-| `readNoSqlDatabaseStructure` | 查看文档数据库集合列表/结构/索引 |
-| `writeNoSqlDatabaseStructure` | 创建/更新/删除文档数据库集合及索引 |
-| `readNoSqlDatabaseContent` | 查询文档数据库数据 |
-| `writeNoSqlDatabaseContent` | 插入/更新/删除文档数据库数据 |
-| `manageDataModel` | 查询/获取数据模型文档 |
-| `modifyDataModel` | 创建数据模型 |
-| `queryFunctions` | 查询云函数列表、详情、日志、层、触发器 |
-| `manageFunctions` | 创建/更新/调用云函数、管理触发器和层 |
-| `uploadFiles` | 上传文件到静态网站托管（非 COS） |
-| `deleteFiles` | 删除静态托管文件 |
-| `findFiles` | 搜索静态托管文件 |
-| `domainManagement` | 绑定/解绑/查询/修改域名配置 |
-| `queryStorage` | 查询云存储文件列表、文件信息、临时 URL |
-| `manageStorage` | 上传/下载/删除云存储文件（COS 对象） |
-| `queryGateway` | 查询网关域名和访问入口 |
-| `manageGateway` | 创建目标访问入口 |
-| `queryAppAuth` | 查询登录方式、provider、publishable key、client 配置 |
-| `manageAppAuth` | 修改登录方式、provider、client 配置、管理 API key |
-| `queryPermissions` | 查询资源权限、角色、应用用户 |
-| `managePermissions` | 修改资源权限、角色管理、成员与策略增删 |
-| `queryLogs` | 搜索 CLS 日志 |
-| `queryAgents` | 查询 Agent 列表、详情与日志 |
-| `manageAgents` | 创建、更新和删除远端 Agent |
-| `callCloudApi` | 调用腾讯云管控面 API（tcb/scf/cam 等） |
-| `searchWeb` | 联网搜索 |
-| `searchKnowledgeBase` | 搜索 CloudBase 官方知识库和 Skill 文档 |
-| `downloadTemplate` | 下载 CloudBase 项目模板 |
-| `downloadRemoteFile` | 下载远程文件到本地 |
-| `activateInviteCode` | 激活邀请码 |
+> 🔧 **部署操作统一使用 `tcb` CLI**，不使用 MCP 工具。
+> 原因：CLI 更稳定、可脚本化、无交互式认证问题、支持管道输入。
+> MCP 工具（`mcp_cloudbase_*`）仅在需要查询数据库、管理数据模型等非部署场景下使用。
+
+| 场景 | 首选工具 | 说明 |
+|------|---------|------|
+| 部署 CloudRun | `tcb cloudrun deploy` | CLI |
+| 上传静态托管 | `tcb hosting deploy` | CLI |
+| 更新云函数代码 | `tcb fn code update` | CLI |
+| 调用云函数 | `tcb fn invoke` | CLI |
+| 查看云函数日志 | `tcb fn log` | CLI |
+| 查看 CloudRun 状态 | `tcb cloudrun list` | CLI |
+| 查询/执行 SQL | MCP `querySqlDatabase` / `manageSqlDatabase` | MCP（CLI 无等价命令） |
+| 管理 NoSQL 数据 | MCP `readNoSqlDatabaseContent` 等 | MCP |
+| 管理数据模型 | MCP `manageDataModel` | MCP |
+| 管理安全域名 | MCP `envDomainManagement` | MCP |
 
 ---
 
@@ -157,17 +121,12 @@ auth(action='set_env', envId='minicare-cloud-6gqledlle0132cbe')
 
 Skill 文件位于：
 ```
-/Users/bing/Documents/minicare/.cursor/skills/cloudbase/references/<skill-name>/SKILL.md
+.agents/skills/cloudbase/references/<skill-name>/SKILL.md
 ```
 
 例如读取 `cloudrun-development` Skill：
 ```
-read_file('/Users/bing/Documents/minicare/.cursor/skills/cloudbase/references/cloudrun-development/SKILL.md')
-```
-
-也可通过 MCP 工具直接检索：
-```
-searchKnowledgeBase(mode='skill', skillName='cloudrun-development')
+read_file('.agents/skills/cloudbase/references/cloudrun-development/SKILL.md')
 ```
 
 ---
@@ -186,28 +145,25 @@ cd minicare-server && npm run build
 bash scripts/deploy.sh
 ```
 
+```bash
+# Step 3：CLI 部署（staging）
+cd minicare-server
+echo "n" | tcb cloudrun deploy -s minicare-api --port 3000 --force -e minicare-cloud-6gqledlle0132cbe
+
+# Step 3：CLI 部署（production）
+cd minicare-server
+echo "n" | tcb cloudrun deploy -s minicare-api-production --port 3000 --force -e minicare-cloud-6gqledlle0132cbe
 ```
-# Step 3：MCP 工具部署
-# ⚠️ 完整 manageCloudRun 参数见 .cursor/skills/minicare-deploy/SKILL.md §1.3
-# ⚠️ serverConfig 中不得包含 EnvParams，避免覆盖 CloudRun 控制台的环境变量
-manageCloudRun(
-  action     = 'deploy',
-  serverName = 'minicare-api',
-  serverType = 'container',
-  targetPath = '/Users/bing/Documents/minicare/minicare-server',
-  serverConfig = {
-    Cpu: 0.5, Mem: 1, MinNum: 0, MaxNum: 5, Port: 3000,
-    OpenAccessTypes: ['OA', 'PUBLIC', 'MINIAPP']
-  }
-)
-```
+
+> `echo "n"` 用于自动回答「是否启用灰度部署」的交互提示。
+> `--force` 跳过二次确认提示。
+> ⚠️ 部署时不得在 `serverConfig.EnvParams` 中传入环境变量，避免覆盖 CloudRun 控制台的环境变量。
 
 **Step 4：部署后验证（必须执行）**：
 
-```
-# 4a. 确认版本号已更新
-queryCloudRun(action='detail', detailServerName='minicare-api')
-# 观察：OnlineVersionInfos[0].VersionName 应为新版本号（比上次 +1）
+```bash
+# 4a. 查看服务状态
+tcb cloudrun list --serviceName minicare-api --json -e minicare-cloud-6gqledlle0132cbe
 
 # 4b. 调用 /health 端点确认服务正常启动
 curl https://minicare-api-240137-10-1253854169.sh.run.tcloudbase.com/health
@@ -215,40 +171,47 @@ curl https://minicare-api-240137-10-1253854169.sh.run.tcloudbase.com/health
 # 若 db.host_set=false 说明环境变量未生效，需重新部署
 ```
 
-### 4.2 查询/执行 SQL
+### 4.2 前端静态托管部署
 
-**只读 SQL**（`querySqlDatabase`）：
+```bash
+# staging
+cd minicare-web && tcb hosting deploy dist staging -e minicare-cloud-6gqledlle0132cbe
+
+# production
+cd minicare-web && tcb hosting deploy dist . -e minicare-cloud-6gqledlle0132cbe
+```
+
+### 4.3 查询/执行 SQL
+
+**只读 SQL**（MCP 工具）：
 ```
 querySqlDatabase(action='runQuery', sql='SELECT COUNT(*) FROM users')
 ```
 
-**写入/DDL**（`manageSqlDatabase`）：
+**写入/DDL**（MCP 工具）：
 ```
 manageSqlDatabase(action='runStatement', sql='ALTER TABLE ...')
 ```
 
 > ⚠ 写操作不可逆，执行前必须先用 `runQuery` 确认数据状态。
 
-### 4.3 云存储操作
+### 4.4 云存储操作
 
-- 上传到**静态托管**（网站文件）→ `uploadFiles`
-- 上传到 **COS 云存储**（业务文件/图片）→ `manageStorage(action='upload')`
-- 获取临时下载链接 → `queryStorage(action='url', cloudPath='...')`
+- 上传到**静态托管**（网站文件）→ `tcb hosting deploy`
+- 上传到 **COS 云存储**（业务文件/图片）→ MCP `manageStorage(action='upload')`
+- 获取临时下载链接 → MCP `queryStorage(action='url', cloudPath='...')`
 
-### 4.4 环境和服务查询
+### 4.5 环境和服务查询
 
-```
-# 查询环境基本信息
-envQuery(action='info')
+```bash
+# 查询 CloudRun 服务列表
+tcb cloudrun list -e minicare-cloud-6gqledlle0132cbe
 
-# 查询所有 CloudRun 服务
-queryCloudRun(action='list')
-
-# 查询特定服务详情
-queryCloudRun(action='detail', detailServerName='minicare-api')
+# 查询特定服务
+tcb cloudrun list --serviceName minicare-api --json -e minicare-cloud-6gqledlle0132cbe
 ```
 
-### 4.5 云函数操作
+### 4.6 云函数操作
 
 #### 现有云函数清单
 
@@ -290,19 +253,15 @@ queryCloudRun(action='detail', detailServerName='minicare-api')
 
 #### 更新云函数代码的流程
 
-```
+```bash
 # 1. 修改本地文件
-minicare-server/functions/keepalive-ping/index.js
+# minicare-server/functions/keepalive-ping/index.js
 
-# 2. 上传代码（MCP 工具）
-manageFunctions(
-  action           = 'updateFunctionCode',
-  functionName     = 'keepalive-ping',
-  functionRootPath = '/Users/bing/Documents/minicare/minicare-server/functions',
-  handler          = 'index.main'
-)
+# 2. 上传代码（CLI）
+cd minicare-server
+tcb fn code update keepalive-ping --dir functions -e minicare-cloud-6gqledlle0132cbe
 
-# 3. 如需修改环境变量或超时（MCP 工具）
+# 3. 如需修改环境变量或超时（MCP 工具，CLI 暂不支持配置更新）
 manageFunctions(
   action       = 'updateFunctionConfig',
   functionName = 'keepalive-ping',
@@ -311,14 +270,14 @@ manageFunctions(
 )
 
 # 4. 验证
-manageFunctions(action='invokeFunction', functionName='keepalive-ping', params={})
+tcb fn invoke keepalive-ping -e minicare-cloud-6gqledlle0132cbe
 # 期望日志：[keepalive] status=200
 ```
 
 #### 查询云函数日志
 
-```
-queryFunctions(action='listFunctionLogs', functionName='keepalive-ping', limit=20)
+```bash
+tcb fn log keepalive-ping --limit 20 -e minicare-cloud-6gqledlle0132cbe
 ```
 
 ---
@@ -327,25 +286,44 @@ queryFunctions(action='listFunctionLogs', functionName='keepalive-ping', limit=2
 
 | ❌ 禁止 | ✅ 替代方案 |
 |---------|-----------|
-| 使用 `tcb run:deprecated version create` 部署 | `manageCloudRun(action='deploy')` |
-| 使用 `tcb run:deprecated version list` 查询版本 | `queryCloudRun(action='detail')` |
-| 使用 `tcb run service:deploy`（此环境不支持） | `manageCloudRun(action='deploy')` |
+| 使用 `tcb run:deprecated version create` 部署 | `tcb cloudrun deploy` |
+| 使用 MCP `manageCloudRun` 部署 | `tcb cloudrun deploy`（更稳定、可脚本化） |
+| 使用 MCP `uploadFiles` 上传静态托管 | `tcb hosting deploy` |
+| 使用 MCP `manageFunctions` 更新云函数代码 | `tcb fn code update` |
 | 部署时在 `serverConfig.EnvParams` 中传入环境变量 | 环境变量在 CloudBase 控制台独立管理，部署只更新代码 |
 | EnvParams 中使用内网地址 `172.17.0.9` | 使用公网地址 `sh-cynosdbmysql-grp-6a0nj6a8.sql.tencentcdb.com:21002` |
-| 部署后不验证，直接认为成功 | 执行 Step 4a（版本号）+ Step 4b（`/health`） |
-| 硬编码 SecretId / SecretKey 到配置文件 | 使用 MCP 设备码登录（`auth(action='start_auth')`） |
+| 部署后不验证，直接认为成功 | 执行 Step 4a（服务状态）+ Step 4b（`/health`） |
+| 硬编码 SecretId / SecretKey 到配置文件 | 使用 `tcb login` 设备码授权 |
 | 不读 Skill 直接操作 CloudBase API | 先读对应 Skill，确认正确的工具和参数 |
-| 把 `.env.staging` / `.env.production` 当作 CloudRun 线上配置 | 这两个文件不会被 CloudRun 加载；线上实际值以控制台环境变量为准，查看用 `queryCloudRun(detail)`，修改在 CloudBase 控制台操作 |
-| 使用 mcporter CLI 调用 CloudBase 工具 | 直接使用 SOLO 内置的 `mcp_cloudbase_*` 工具 |
+| 把 `.env.staging` / `.env.production` 当作 CloudRun 线上配置 | 这两个文件不会被 CloudRun 加载；线上实际值以控制台环境变量为准 |
+| 在规则文件或文档中明文记录数据库密码 | 实际值仅在 `.env.local`（gitignored）中维护 |
 
 ---
 
-## 六、MCP 工具验证
+## 六、CLI 常用命令速查
 
-若 MCP 工具调用失败，先确认认证状态：
+```bash
+# 登录
+tcb login
 
+# CloudRun 部署
+echo "n" | tcb cloudrun deploy -s minicare-api --port 3000 --force -e minicare-cloud-6gqledlle0132cbe
+
+# CloudRun 状态
+tcb cloudrun list --serviceName minicare-api --json -e minicare-cloud-6gqledlle0132cbe
+
+# 静态托管上传
+tcb hosting deploy dist staging -e minicare-cloud-6gqledlle0132cbe
+
+# 静态托管文件列表
+tcb hosting list staging -e minicare-cloud-6gqledlle0132cbe
+
+# 云函数更新
+tcb fn code update keepalive-ping --dir functions -e minicare-cloud-6gqledlle0132cbe
+
+# 云函数调用
+tcb fn invoke keepalive-ping -e minicare-cloud-6gqledlle0132cbe
+
+# 云函数日志
+tcb fn log keepalive-ping --limit 20 -e minicare-cloud-6gqledlle0132cbe
 ```
-auth(action='status')
-```
-
-若未登录或未绑定环境，按提示完成认证和绑定即可。

@@ -3,6 +3,7 @@ description: minicare 前后端 API 设计约定与规范。涵盖路由设计�
 globs:
   - "minicare-server/src/**/*.ts"
   - "minicare-web/src/api/**/*.ts"
+  - "minicare-mp/src/api/**/*.ts"
 alwaysApply: true
 ---
 
@@ -114,18 +115,16 @@ NestJS 默认错误格式，前端 `request()` 统一通过 `err.message` 获取
 
 ### 请求工具：`request()` 函数
 
-**所有 HTTP 请求必须使用 `src/api/http.ts` 中的 `request<T>()` 函数**，禁止直接使用 `fetch`。
+**所有 HTTP 请求必须使用 `src/api/http.ts` 中的 `request<T>()` 函数**，禁止直接使用 `fetch` 或 `Taro.request`。
 
 ```ts
-import { request } from '@/api/http'
-
 // ✅ 标准调用
 const data = await request<MyType>('/api/path', { method: 'POST', body: JSON.stringify(dto) })
 
 // ✅ 公开接口（无需 JWT）
 const data = await request<MyType>('/api/baby-foods', { auth: false })
 
-// ❌ 禁止直接调用 fetch
+// ❌ 禁止直接调用 fetch 或 Taro.request
 const res = await fetch('/api/path')
 ```
 
@@ -228,7 +227,7 @@ export class CreateFeedingDto {
 }
 ```
 
-### 枚举值用字符串 enum（与数据库 TINYINT 映射分离）
+### 枚举值用字符串 enum（数据库同为 VARCHAR）
 
 ```ts
 // DTO 中用字符串 enum
@@ -237,12 +236,11 @@ export enum FeedType {
   FORMULA       = 'formula',
   COMPLEMENTARY = 'complementary',
 }
-
-// 数据库存 TINYINT，由 service 层做映射转换
-export const FEED_TYPE_TO_INT: Record<string, number> = {
-  breast: 1, formula: 2, complementary: 3,
-};
 ```
+
+> ⚠️ **Migration 008 已将所有枚举字段从 TINYINT 迁移为 VARCHAR**。
+> DTO 和数据库现在使用相同的字符串值，不再需要 TINYINT 映射层。
+> 禁止新增 TINYINT 枚举字段或 `XXX_TO_INT` 映射字典。
 
 ### UpdateDto 所有字段加 `@IsOptional()`
 
@@ -260,11 +258,14 @@ export class UpdateFeedingDto {
 
 | 场景 | 格式 | 示例 |
 |---|---|---|
-| 前端传给后端 | ISO 8601（含时区） | `"2026-04-01T08:00:00.000Z"` |
+| 前端传给后端 | **本地时间字符串**（不带 Z 后缀） | `"2026-04-01T08:00:00"` |
 | 后端存储 | CloudBase DB datetime | 由 service 层处理 |
 | 前端显示 | 本地时间 HH:mm | `isoToLocalTime()` 转换 |
 
+> ⚠️ **禁止使用 `new Date().toISOString()`**：输出 UTC 时间会导致 8 小时偏差。
+> 必须使用 `dayjs().format('YYYY-MM-DDTHH:mm:ss')` 输出本地时间字符串（不带 Z 后缀）。
+
 前端统一使用 `src/pages/records/shared` 中的工具函数：
 - `nowTime()` — 当前本地 HH:mm
-- `nowDate()` — 当前本地 YYYY-MM-DD  
+- `nowDate()` — 当前本地 YYYY-MM-DD
 - `timeToISO(date, time)` — 本地时间组合为 ISO 字符串
