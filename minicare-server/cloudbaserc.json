@@ -1,6 +1,6 @@
 {
   "envId": "minicare-cloud-6gqledlle0132cbe",
   "cloudrun": {
-    "name": "minicare-api-production"
+    "name": "minicare-api"
   }
 }
