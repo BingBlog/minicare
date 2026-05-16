@@ -66,6 +66,7 @@ minicare/docs/
 | [F10-medical.md](features/F10-medical.md) | 医疗记录 | 已完成 |
 | [F11-report.md](features/F11-report.md) | 统计报告 | 已完成 |
 | [F12-family.md](features/F12-family.md) | 家庭共享 | 已完成 |
+| [F13-share.md](features/F13-share.md) | 微信小程序分享功能 | 待开发 |
 
 ---
 
