@@ -194,7 +194,7 @@ function evaluateResult(actual, expected) {
 async function callWithRetry(model, input, maxRetries = 3) {
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
-      return await model.generateText({ model: 'hunyuan-turbos-latest', messages: [{ role: 'system', content: SYSTEM_PROMPT }, { role: 'user', content: input }], temperature: 0.1 })
+      return await model.generateText({ model: 'hy3-preview', messages: [{ role: 'system', content: SYSTEM_PROMPT }, { role: 'user', content: input }], temperature: 0.1 })
     } catch (err) {
       const msg = err.message || ''
       if ((msg.includes('429') || msg.includes('rate')) && attempt < maxRetries) {

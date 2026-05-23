@@ -505,10 +505,10 @@ export class VoiceService {
 
     // 2. CloudBase AI NLU 语义解析
     const ai = this.cloudbaseApp.ai()
-    const model = ai.createModel('hunyuan-exp')
+    const model = ai.createModel('hunyuan-v3')
 
     const result = await model.generateText({
-      model: 'hunyuan-2.0-instruct-20251111',
+      model: 'hy3-preview',
       messages: [
         { role: 'system', content: SYSTEM_PROMPT },
         { role: 'user', content: text },

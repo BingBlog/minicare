@@ -98,7 +98,11 @@ export function getTimelineRecordDisplay(record: HomeRecord): TimelineRecordDisp
     }
     if (feedType === 'supplement') {
       const suppItems = (d.supplement_items as Array<{ label?: string; dose?: string; unit?: string }> | undefined) ?? []
-      const tags = suppItems.slice(0, 3).map((item) => `${item.label ?? ''}${item.dose ?? ''}${item.unit ?? ''}`.trim()).filter(Boolean)
+      const tags = suppItems.slice(0, 3).map((item) => {
+        const name = item.label ?? ''
+        const hasDose = item.dose != null && item.dose !== ''
+        return hasDose ? `${name} ${item.dose}${item.unit ?? ''}` : name
+      }).filter(Boolean)
       return { label: '营养素', tags, summary: '' }
     }
     if (feedType === 'complementary') {

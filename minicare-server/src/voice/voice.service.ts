@@ -268,9 +268,9 @@ export class VoiceService implements OnModuleInit {
   }
 
   private async nluParse(text: string): Promise<{ recordType: string | null; fields: Record<string, unknown>; confidence: string; transcript: string }> {
-    const provider = 'hunyuan-exp'
-    const modelName = 'hunyuan-turbos-latest'
-    const label = 'hunyuan-turbos'
+    const provider = 'hunyuan-v3'
+    const modelName = 'hy3-preview'
+    const label = 'hy3-preview'
 
     try {
       const ai = (this.cloudbaseAiApp || this.cloudbaseApp).ai()

@@ -411,14 +411,19 @@ export default function HomePage() {
   }, [records])
 
 
-  const lastFeedingRecord = [...records]
-    .filter((r) => {
-      if (r.type !== 'feeding') return false
-      const feedType = r.detail?.feed_type as string | undefined
-      // 排除营养素，只保留真正的喂奶记录
-      return feedType === 'formula' || feedType === 'breast' || feedType === 'complementary'
-    })
-    .sort((a, b) => compareTime(b.time, a.time))[0]
+  const feedingFilter = (r: HomeRecord) => {
+    if (r.type !== 'feeding') return false
+    const feedType = r.detail?.feed_type as string | undefined
+    return feedType === 'formula' || feedType === 'breast' || feedType === 'complementary'
+  }
+
+  const lastFeedingRecord = (() => {
+    const todayFeedings = [...records].filter(feedingFilter).sort((a, b) => compareTime(b.time, a.time))
+    if (todayFeedings.length > 0) return { record: todayFeedings[0], isYesterday: false }
+    const yesterdayFeedings = [...yesterdayRecords].filter(feedingFilter).sort((a, b) => compareTime(b.time, a.time))
+    if (yesterdayFeedings.length > 0) return { record: yesterdayFeedings[0], isYesterday: true }
+    return null
+  })()
 
   const handleEndSleep = () => {
     setOngoingSleep(null)
@@ -612,7 +617,8 @@ export default function HomePage() {
             ) : null}
             {lastFeedingRecord ? (
               <FeedingBanner
-                lastFeedingTime={lastFeedingRecord.time}
+                lastFeedingTime={lastFeedingRecord.record.time}
+                isYesterday={lastFeedingRecord.isYesterday}
                 onRecordClick={() => {
                   navigateToRecord(HOME_RECORD_ROUTES.formula ?? '/records/form/feeding')
                 }}

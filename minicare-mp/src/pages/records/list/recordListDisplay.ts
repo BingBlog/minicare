@@ -120,9 +120,9 @@ export function getRecordListParts(
         const tags: string[] = []
         if (suppItems && suppItems.length > 0) {
           suppItems.forEach((item) => {
-            const pillLabel = item.dose
-              ? `${item.label ?? ''} ${item.dose}${item.unit ?? ''}`
-              : (item.label ?? '')
+            const name = item.label ?? ''
+            const hasDose = item.dose != null && item.dose !== ''
+            const pillLabel = hasDose ? `${name} ${item.dose}${item.unit ?? ''}` : name
             if (pillLabel.trim()) tags.push(pillLabel.trim())
           })
         }
@@ -133,9 +133,9 @@ export function getRecordListParts(
         if (isSupp && suppItems && suppItems.length > 0) {
           const tags: string[] = []
           suppItems.forEach((item) => {
-            const pillLabel = item.dose
-              ? `${item.label ?? ''} ${item.dose}${item.unit ?? ''}`
-              : (item.label ?? '')
+            const name = item.label ?? ''
+            const hasDose = item.dose != null && item.dose !== ''
+            const pillLabel = hasDose ? `${name} ${item.dose}${item.unit ?? ''}` : name
             if (pillLabel.trim()) tags.push(pillLabel.trim())
           })
           return { label: '营养素', tags }

@@ -5,6 +5,7 @@ import { formatTime } from '@/lib/utils'
 
 interface FeedingBannerProps {
   lastFeedingTime: string
+  isYesterday?: boolean
   onRecordClick?: () => void
 }
 
@@ -15,19 +16,20 @@ function formatElapsed(mins: number): string {
   return m > 0 ? `${h} 小时 ${m} 分钟` : `${h} 小时`
 }
 
-export default function FeedingBanner({ lastFeedingTime, onRecordClick }: FeedingBannerProps) {
+export default function FeedingBanner({ lastFeedingTime, isYesterday, onRecordClick }: FeedingBannerProps) {
   const [elapsedMins, setElapsedMins] = useState(() =>
     Math.max(0, dayjs().diff(dayjs(lastFeedingTime), 'minute')),
   )
 
   useEffect(() => {
-    // lastFeedingTime 变化时立即更新，不等待下一个 tick
     setElapsedMins(Math.max(0, dayjs().diff(dayjs(lastFeedingTime), 'minute')))
     const timer = setInterval(() => {
       setElapsedMins(Math.max(0, dayjs().diff(dayjs(lastFeedingTime), 'minute')))
     }, 60_000)
     return () => clearInterval(timer)
   }, [lastFeedingTime])
+
+  const timeLabel = isYesterday ? `昨天 ${formatTime(lastFeedingTime)}` : formatTime(lastFeedingTime)
 
   return (
     <View
@@ -38,7 +40,7 @@ export default function FeedingBanner({ lastFeedingTime, onRecordClick }: Feedin
       <View className='home-inline-banner__content'>
         <Text className='home-inline-banner__title'>距上次喂奶</Text>
         <Text className='home-inline-banner__desc'>
-          上次 {formatTime(lastFeedingTime)} · 已过去 {formatElapsed(elapsedMins)}
+          上次 {timeLabel} · 已过去 {formatElapsed(elapsedMins)}
         </Text>
       </View>
       <Text className='home-inline-banner__action--feeding'>记录喂奶</Text>
