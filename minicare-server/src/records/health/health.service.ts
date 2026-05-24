@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { DATABASE_POOL } from '../../common/database/database.module';
 import { CreateHealthDto, UpdateHealthDto } from './dto/create-health.dto';
 import { toMysqlDatetime, getBeijingToday, addDays } from '../../common/utils/date.util';
+import { TimelineService } from '../timeline/timeline.service';
 
 function parseJson(val: unknown): unknown {
   if (val == null) return null;
@@ -13,7 +14,10 @@ function parseJson(val: unknown): unknown {
 
 @Injectable()
 export class HealthService {
-  constructor(@Inject(DATABASE_POOL) private readonly db: Pool) {}
+  constructor(
+    @Inject(DATABASE_POOL) private readonly db: Pool,
+    private readonly timelineService: TimelineService,
+  ) {}
 
   private mapRow(r: any) {
     return {
@@ -45,6 +49,7 @@ export class HealthService {
         dto.note                       ?? null,
       ],
     );
+    await this.timelineService.upsertFromSource('health', id);
     return { id };
   }
 
@@ -109,6 +114,7 @@ export class HealthService {
     if (setClauses.length > 0) {
       values.push(id);
       await this.db.execute(`UPDATE health_record SET ${setClauses.join(', ')} WHERE id = ?`, values);
+      await this.timelineService.upsertFromSource('health', id);
     }
 
     const [updated] = await this.db.execute<any[]>(
@@ -123,6 +129,7 @@ export class HealthService {
 
   async remove(id: string) {
     await this.db.execute('DELETE FROM health_record WHERE id = ?', [id]);
+    await this.timelineService.removeBySource('health', id);
     return { id };
   }
 }

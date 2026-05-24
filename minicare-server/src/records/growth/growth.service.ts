@@ -4,10 +4,14 @@ import { v4 as uuidv4 } from 'uuid';
 import { DATABASE_POOL } from '../../common/database/database.module';
 import { CreateGrowthDto, UpdateGrowthDto } from './dto/create-growth.dto';
 import { toMysqlDate, getBeijingToday, addDays } from '../../common/utils/date.util';
+import { TimelineService } from '../timeline/timeline.service';
 
 @Injectable()
 export class GrowthService {
-  constructor(@Inject(DATABASE_POOL) private readonly db: Pool) {}
+  constructor(
+    @Inject(DATABASE_POOL) private readonly db: Pool,
+    private readonly timelineService: TimelineService,
+  ) {}
 
   async create(userId: string, dto: CreateGrowthDto) {
     const id = uuidv4();
@@ -42,7 +46,9 @@ export class GrowthService {
       'SELECT id FROM growth_record WHERE baby_id = ? AND record_date = ?',
       [dto.baby_id, dateStr],
     );
-    return { id: rows[0]?.id ?? id };
+    const actualId = rows[0]?.id ?? id;
+    await this.timelineService.upsertFromSource('growth', actualId);
+    return { id: actualId };
   }
 
   async findAll(babyId: string, beforeDate?: string) {
@@ -103,6 +109,7 @@ export class GrowthService {
     if (setClauses.length > 0) {
       values.push(id);
       await this.db.execute(`UPDATE growth_record SET ${setClauses.join(', ')} WHERE id = ?`, values);
+      await this.timelineService.upsertFromSource('growth', id);
     }
 
     const [updated] = await this.db.execute<any[]>('SELECT * FROM growth_record WHERE id = ?', [id]);
@@ -111,6 +118,7 @@ export class GrowthService {
 
   async remove(id: string) {
     await this.db.execute('DELETE FROM growth_record WHERE id = ?', [id]);
+    await this.timelineService.removeBySource('growth', id);
     return { id };
   }
 }

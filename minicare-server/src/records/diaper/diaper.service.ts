@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { DATABASE_POOL } from '../../common/database/database.module';
 import { CreateDiaperDto, UpdateDiaperDto } from './dto/create-diaper.dto';
 import { toMysqlDatetime, getBeijingToday, addDays } from '../../common/utils/date.util';
+import { TimelineService } from '../timeline/timeline.service';
 
 /** JSON 字段解析辅助（mysql2 有时返回字符串） */
 function parseJson(val: unknown): unknown {
@@ -14,7 +15,10 @@ function parseJson(val: unknown): unknown {
 
 @Injectable()
 export class DiaperService {
-  constructor(@Inject(DATABASE_POOL) private readonly db: Pool) {}
+  constructor(
+    @Inject(DATABASE_POOL) private readonly db: Pool,
+    private readonly timelineService: TimelineService,
+  ) {}
 
   async create(userId: string, dto: CreateDiaperDto) {
     const id = uuidv4();
@@ -35,6 +39,7 @@ export class DiaperService {
         dto.note           ?? null,
       ],
     );
+    await this.timelineService.upsertFromSource('diaper', id);
     return { id };
   }
 
@@ -106,11 +111,13 @@ export class DiaperService {
       `UPDATE diaper_record SET ${setClauses.join(', ')} WHERE id = ?`,
       values,
     );
+    await this.timelineService.upsertFromSource('diaper', id);
     return this.findOne(id);
   }
 
   async remove(id: string) {
     await this.db.execute('DELETE FROM diaper_record WHERE id = ?', [id]);
+    await this.timelineService.removeBySource('diaper', id);
     return { id };
   }
 }

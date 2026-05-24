@@ -3,9 +3,10 @@ import { SymptomController } from './symptom.controller';
 import { SymptomService } from './symptom.service';
 import { AuthModule } from '../../auth/auth.module';
 import { FamilyModule } from '../../family/family.module';
+import { TimelineModule } from '../timeline/timeline.module';
 
 @Module({
-  imports: [AuthModule, FamilyModule],
+  imports: [AuthModule, FamilyModule, TimelineModule],
   controllers: [SymptomController],
   providers: [SymptomService],
 })

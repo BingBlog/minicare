@@ -70,6 +70,27 @@
   flex-shrink: 0;
 }
 
+.records-date-selector {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.records-date-selector__calendar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 14px;
+  font-size: 11px;
+  font-weight: 500;
+  background: #F8F2F5;
+  color: #9A8090;
+  border: 1.5px solid #EDE6EA;
+}
+
 .records-filter__chips {
   display: flex;
   align-items: center;

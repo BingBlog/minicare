@@ -16,7 +16,7 @@
 import { View, Text } from '@tarojs/components'
 import Taro, { useDidShow, useReachBottom } from '@tarojs/taro'
 import { useEffect, useRef, useState, useCallback } from 'react'
-import { familyApi, babyApi, recordsApi } from '@/api'
+import { babyApi, recordsApi } from '@/api'
 import { getStatusBarHeight } from '@/lib/safeArea'
 import { useIsIPad } from '@/lib/useIsIPad'
 import { getToken, getStoredFamilyId } from '@/api/http'
@@ -31,15 +31,15 @@ import {
   compareTime,
 } from '@/lib/utils'
 import {
-  ALL_TYPE_KEYS,
   sortDayItems,
   type RecordsSortMode,
-  type RecordTypeKey,
 } from '@/lib/recordsSort'
 import RecordGroup from './RecordGroup'
 import RecordActionSheet from './RecordActionSheet'
 import GuestRecordsList from './GuestRecordsList'
+import RecordsDateSelector from './RecordsDateSelector'
 import type { Family, Baby, RecordItem } from '@/api/types'
+import type { FeedItem, FeedType } from '@/api/records'
 import './index.scss'
 
 
@@ -94,6 +94,35 @@ function buildEditUrl(record: RecordItem): string {
   return ''
 }
 
+function toRecordItemFromFeed(item: FeedItem): RecordItem {
+  const detail = (item.detail ?? {}) as Record<string, unknown>
+  const next: Record<string, unknown> = {
+    id: item.id,
+    type: item.type,
+    note: item.note ?? null,
+    record_time: item.event_time,
+    summary: item.summary,
+    detail,
+    ...detail,
+  }
+
+  if (item.type === 'sleep' && !next.start_time) {
+    next.start_time = item.event_time
+  }
+  if (item.type === 'growth' && !next.record_date) {
+    next.record_date = item.event_time.slice(0, 10)
+  }
+  if (item.type === 'medical' && !next.visit_date) {
+    next.visit_date = item.event_time.slice(0, 10)
+  }
+  return next as RecordItem
+}
+
+function getGroupDateSource(rec: RecordItem, dateFilter: string | null): string {
+  if (dateFilter) return getRecordTime(rec as Record<string, unknown>)
+  return getRecordDateForGroup(rec as Record<string, unknown>)
+}
+
 export default function RecordsListPage() {
   const isIPad = useIsIPad()
   const cls = (base: string) => isIPad ? `${base} is-ipad` : base
@@ -101,6 +130,7 @@ export default function RecordsListPage() {
   const [baby, setBaby] = useState<Baby | null>(null)
   const [records, setRecords] = useState<RecordItem[]>([])
   const [activeFilter, setActiveFilter] = useState('all')
+  const [dateFilter, setDateFilter] = useState<string | null>(null)
   const [sortMode, setSortMode] = useState<RecordsSortMode>('type')
   const [loading, setLoading] = useState(true)
   const [loadingMore, setLoadingMore] = useState(false)
@@ -112,11 +142,8 @@ export default function RecordsListPage() {
   // 是否未登录
   const [isGuest, setIsGuest] = useState(false)
 
-  // 分页状态 — 统一日期分页
-  // 所有类型共用同一个 nextBeforeDate 游标，保证同一时间窗口内数据完整
-  const nextBeforeDateRef = useRef<string | null>(null)
-  // 单类型模式下的日期游标
-  const singleNextDateRef = useRef<string | null>(null)
+  // 分页状态 — 统一 feed 游标
+  const nextCursorRef = useRef<string | null>(null)
   // 标记是否正在加载更多，防止重复触发
   const loadingMoreRef = useRef(false)
 
@@ -166,96 +193,17 @@ export default function RecordsListPage() {
       setLoading(true)
       setHasMore(false)
 
-      // 重置分页状态
-      nextBeforeDateRef.current = null
-      singleNextDateRef.current = null
-
-      // 首屏最少加载条数（确保渲染满屏幕）
-      const MIN_FIRST_SCREEN = 15
-      // 最大回溯轮次（每轮查一个窗口，防止无限循环）
-      const MAX_ROUNDS = 10
-
       try {
-        let allRecs: Record<string, unknown>[] = []
-
-        if (activeFilter === 'all') {
-          let beforeDate: string | undefined = undefined
-          let rounds = 0
-
-          while (rounds < MAX_ROUNDS) {
-            if (cancelled) return
-            const results = await Promise.allSettled(
-              ALL_TYPE_KEYS.map((t) =>
-                recordsApi[t]?.list(family!.id, baby!.id, { before_date: beforeDate } as any) ??
-                  Promise.resolve({ items: [], nextBeforeDate: null }),
-              ),
-            )
-
-            let anyHasMore = false
-            results.forEach((r) => {
-              if (r.status === 'fulfilled') {
-                const val = r.value as any
-                const items = val.items ?? val
-                if (Array.isArray(items) && items.length > 0) {
-                  allRecs = allRecs.concat(items)
-                }
-                if (val.nextBeforeDate) anyHasMore = true
-              }
-            })
-
-            // 更新统一游标（用 feeding 的 nextBeforeDate）
-            const feedingResult = results[ALL_TYPE_KEYS.indexOf('feeding')]
-            if (feedingResult?.status === 'fulfilled') {
-              const feedingVal = feedingResult.value as any
-              nextBeforeDateRef.current = feedingVal.nextBeforeDate ?? null
-            }
-
-            // 停止条件：已累积足够数据 或 没有更多数据了
-            if (allRecs.length >= MIN_FIRST_SCREEN || !anyHasMore) {
-              if (!cancelled) setHasMore(anyHasMore)
-              break
-            }
-
-            // 数据不够且还有更多，继续向前查
-            beforeDate = nextBeforeDateRef.current ?? undefined
-            if (!beforeDate) {
-              if (!cancelled) setHasMore(false)
-              break
-            }
-            rounds++
-          }
-        } else {
-          // 单类型模式
-          const t = activeFilter as RecordTypeKey
-          if (recordsApi[t]) {
-            let beforeDate: string | undefined = undefined
-            let rounds = 0
-
-            while (rounds < MAX_ROUNDS) {
-              if (cancelled) return
-              const res = await recordsApi[t].list(family!.id, baby!.id, { before_date: beforeDate } as any)
-              const val = res as any
-              const items = val.items ?? val
-              const nextDate = val.nextBeforeDate ?? null
-
-              if (Array.isArray(items) && items.length > 0) {
-                allRecs = allRecs.concat(items)
-              }
-
-              // 停止条件：已累积足够数据 或 没有更多数据了
-              if (allRecs.length >= MIN_FIRST_SCREEN || !nextDate) {
-                if (!cancelled) {
-                  setHasMore(nextDate !== null)
-                  singleNextDateRef.current = nextDate
-                }
-                break
-              }
-
-              beforeDate = nextDate
-              rounds++
-            }
-          }
-        }
+        const type = activeFilter === 'all' ? 'all' : activeFilter as FeedType
+        const feedRes = await recordsApi.feed.list(family.id, {
+          baby_id: baby.id,
+          type,
+          limit: 20,
+          ...(dateFilter ? { date: dateFilter } : {}),
+        })
+        const allRecs = feedRes.items.map(toRecordItemFromFeed)
+        nextCursorRef.current = feedRes.nextCursor
+        if (!cancelled) setHasMore(feedRes.hasMore)
 
         // 按时间降序
         allRecs.sort(
@@ -271,94 +219,29 @@ export default function RecordsListPage() {
     }
     load()
     return () => { cancelled = true }
-  }, [family, baby, activeFilter])
+  }, [family, baby, activeFilter, dateFilter])
 
   // 加载更多（触底时调用）
   const loadMore = useCallback(async () => {
     if (!family || !baby || loadingMoreRef.current || !hasMore) return
+    const cursor = nextCursorRef.current
+    if (!cursor) { setHasMore(false); return }
+
     loadingMoreRef.current = true
     setLoadingMore(true)
 
-    // 每次加载更多也累积到一定数量
-    const MIN_LOAD_MORE = 10
-    const MAX_ROUNDS = 10
-
     try {
-      let newRecs: RecordItem[] = []
-
-      if (activeFilter === 'all') {
-        let beforeDate = nextBeforeDateRef.current
-        if (!beforeDate) { setHasMore(false); return }
-
-        let rounds = 0
-        while (rounds < MAX_ROUNDS) {
-          const results = await Promise.allSettled(
-            ALL_TYPE_KEYS.map((t) =>
-              recordsApi[t]?.list(family!.id, baby!.id, { before_date: beforeDate } as any) ??
-                Promise.resolve({ items: [], nextBeforeDate: null }),
-            ),
-          )
-
-          let anyHasMore = false
-          results.forEach((r) => {
-            if (r.status !== 'fulfilled') return
-            const val = r.value as any
-            const items = val.items ?? val
-            if (Array.isArray(items) && items.length > 0) {
-              newRecs = newRecs.concat(items)
-            }
-            if (val.nextBeforeDate) anyHasMore = true
-          })
-
-          // 更新统一游标
-          const feedingResult = results[ALL_TYPE_KEYS.indexOf('feeding')]
-          if (feedingResult?.status === 'fulfilled') {
-            const feedingVal = feedingResult.value as any
-            nextBeforeDateRef.current = feedingVal.nextBeforeDate ?? null
-          } else {
-            nextBeforeDateRef.current = null
-          }
-
-          // 停止条件：累积足够数据 或 没有更多数据
-          if (newRecs.length >= MIN_LOAD_MORE || !anyHasMore) {
-            setHasMore(anyHasMore)
-            break
-          }
-
-          // 数据不够，继续向前
-          beforeDate = nextBeforeDateRef.current
-          if (!beforeDate) { setHasMore(false); break }
-          rounds++
-        }
-      } else {
-        // 单类型模式
-        let beforeDate = singleNextDateRef.current
-        if (!beforeDate) { setHasMore(false); return }
-
-        let rounds = 0
-        const t = activeFilter as RecordTypeKey
-        while (rounds < MAX_ROUNDS) {
-          if (!recordsApi[t]) break
-          const res = await recordsApi[t].list(family!.id, baby!.id, { before_date: beforeDate } as any)
-          const val = res as any
-          const items = val.items ?? val
-          const nextDate = val.nextBeforeDate ?? null
-
-          if (Array.isArray(items) && items.length > 0) {
-            newRecs = newRecs.concat(items)
-          }
-
-          // 停止条件：累积足够数据 或 没有更多数据
-          if (newRecs.length >= MIN_LOAD_MORE || !nextDate) {
-            singleNextDateRef.current = nextDate
-            setHasMore(nextDate !== null)
-            break
-          }
-
-          beforeDate = nextDate
-          rounds++
-        }
-      }
+      const type = activeFilter === 'all' ? 'all' : activeFilter as FeedType
+      const feedRes = await recordsApi.feed.list(family.id, {
+        baby_id: baby.id,
+        type,
+        limit: 20,
+        cursor,
+        ...(dateFilter ? { date: dateFilter } : {}),
+      })
+      const newRecs = feedRes.items.map(toRecordItemFromFeed)
+      nextCursorRef.current = feedRes.nextCursor
+      setHasMore(feedRes.hasMore)
 
       if (newRecs.length > 0) {
         setRecords((prev) => {
@@ -373,7 +256,7 @@ export default function RecordsListPage() {
       setLoadingMore(false)
       loadingMoreRef.current = false
     }
-  }, [family, baby, activeFilter, hasMore])
+  }, [family, baby, activeFilter, dateFilter, hasMore])
 
   // 监听页面触底事件
   useReachBottom(() => {
@@ -384,7 +267,7 @@ export default function RecordsListPage() {
   const todayKey = getTodayKey()
   const dateMap = new Map<string, RecordItem[]>()
   for (const rec of records) {
-    const dk = getDateKey(getRecordDateForGroup(rec))
+    const dk = getDateKey(getGroupDateSource(rec, dateFilter))
     if (!dateMap.has(dk)) dateMap.set(dk, [])
     dateMap.get(dk)!.push(rec)
   }
@@ -480,6 +363,7 @@ export default function RecordsListPage() {
               <Text className='records-filter__count'>共 {records.length} 条</Text>
             )}
           </View>
+          <RecordsDateSelector value={dateFilter} onChange={setDateFilter} />
         </View>
 
         {/* 筛选芯片 */}
@@ -547,8 +431,14 @@ export default function RecordsListPage() {
             <View className='records-status__icon'>
               <Text>--</Text>
             </View>
-            <Text className='records-status__title'>暂无记录</Text>
-            <Text className='records-status__subtitle'>{'点击底部 + 按钮开始记录\n宝宝的每一天'}</Text>
+            <Text className='records-status__title'>
+              {dateFilter ? '该日暂无记录' : '暂无记录'}
+            </Text>
+            <Text className='records-status__subtitle'>
+              {dateFilter
+                ? '可切换日期或点击底部 + 新增记录'
+                : '点击底部 + 按钮开始记录\n宝宝的每一天'}
+            </Text>
           </View>
         ) : (
           <>
@@ -571,7 +461,7 @@ export default function RecordsListPage() {
               </View>
             ) : (
               <View className='records-footer-hint'>
-                <Text>已加载全部记录</Text>
+                <Text>{dateFilter ? '该日记录已全部加载' : '已加载全部记录'}</Text>
               </View>
             )}
           </>

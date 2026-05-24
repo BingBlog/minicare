@@ -7,3 +7,5 @@
 
 # opencode local config (generated from .cursor/ source of truth)
 .opencode/
+
+.workbuddy

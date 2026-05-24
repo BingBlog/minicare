@@ -4,10 +4,14 @@ import { v4 as uuidv4 } from 'uuid';
 import { DATABASE_POOL } from '../../common/database/database.module';
 import { CreateActivityDto, UpdateActivityDto } from './dto/create-activity.dto';
 import { toMysqlDatetime, getBeijingToday, addDays } from '../../common/utils/date.util';
+import { TimelineService } from '../timeline/timeline.service';
 
 @Injectable()
 export class ActivityService {
-  constructor(@Inject(DATABASE_POOL) private readonly db: Pool) {}
+  constructor(
+    @Inject(DATABASE_POOL) private readonly db: Pool,
+    private readonly timelineService: TimelineService,
+  ) {}
 
   async create(userId: string, dto: CreateActivityDto) {
     const id = uuidv4();
@@ -26,6 +30,7 @@ export class ActivityService {
         dto.note         ?? null,
       ],
     );
+    await this.timelineService.upsertFromSource('activity', id);
     return { id };
   }
 
@@ -87,11 +92,13 @@ export class ActivityService {
       `UPDATE activity_record SET ${setClauses.join(', ')} WHERE id = ?`,
       values,
     );
+    await this.timelineService.upsertFromSource('activity', id);
     return this.findOne(id);
   }
 
   async remove(id: string) {
     await this.db.execute('DELETE FROM activity_record WHERE id = ?', [id]);
+    await this.timelineService.removeBySource('activity', id);
     return { id };
   }
 }

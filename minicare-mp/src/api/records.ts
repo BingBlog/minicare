@@ -39,9 +39,62 @@ export interface DateListParams {
   before_date?: string
 }
 
+export type FeedType =
+  | 'feeding'
+  | 'sleep'
+  | 'diaper'
+  | 'activity'
+  | 'health'
+  | 'growth'
+  | 'medical'
+  | 'symptom'
+
+export interface FeedSummary {
+  title: string
+  tags?: string[]
+  value?: string
+  unit?: string
+  theme?: 'pink' | 'warm' | 'purple' | 'fever'
+  active?: boolean
+}
+
+export interface FeedItem {
+  id: string
+  type: FeedType
+  event_time: string
+  note?: string | null
+  summary: FeedSummary
+  detail?: Record<string, unknown>
+}
+
+export interface FeedListParams {
+  baby_id: string
+  limit?: number
+  cursor?: string
+  type?: 'all' | FeedType
+  /** YYYY-MM-DD，按 event_time 自然日筛选 */
+  date?: string
+}
+
+export interface FeedListResponse {
+  items: FeedItem[]
+  nextCursor: string | null
+  hasMore: boolean
+}
+
 export const recordsApi = {
   today: (familyId: string, date?: string) =>
     request<TodayRecord[]>(`/api/family/${familyId}/records/today${date ? `?date=${date}` : ''}`),
+  feed: {
+    list: (familyId: string, params: FeedListParams) => {
+      const query: string[] = [`baby_id=${encodeURIComponent(params.baby_id)}`]
+      if (params.limit != null) query.push(`limit=${params.limit}`)
+      if (params.cursor) query.push(`cursor=${encodeURIComponent(params.cursor)}`)
+      if (params.type) query.push(`type=${encodeURIComponent(params.type)}`)
+      if (params.date) query.push(`date=${encodeURIComponent(params.date)}`)
+      return request<FeedListResponse>(`/api/family/${familyId}/records/feed?${query.join('&')}`)
+    },
+  },
   remove: (familyId: string, type: string, id: string) =>
     request<void>(`/api/family/${familyId}/records/${type}/${id}`, { method: 'DELETE' }),
   feeding: {

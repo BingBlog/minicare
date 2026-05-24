@@ -7,6 +7,7 @@ import {
   UpdateFeedingDto,
 } from './dto/create-feeding.dto';
 import { toMysqlDatetime, getBeijingToday, addDays } from '../../common/utils/date.util';
+import { TimelineService } from '../timeline/timeline.service';
 
 /** JSON 字段解析辅助（mysql2 有时返回字符串） */
 function parseJson(val: unknown) {
@@ -38,7 +39,10 @@ function flattenSupplementItems(items: unknown): unknown {
 
 @Injectable()
 export class FeedingService {
-  constructor(@Inject(DATABASE_POOL) private readonly db: Pool) {}
+  constructor(
+    @Inject(DATABASE_POOL) private readonly db: Pool,
+    private readonly timelineService: TimelineService,
+  ) {}
 
   // ============================================================
   // CREATE
@@ -62,6 +66,7 @@ export class FeedingService {
           dto.note ?? null,
         ],
       );
+      await this.timelineService.upsertFromSource('feeding', id);
       return { id };
     }
 
@@ -91,6 +96,7 @@ export class FeedingService {
           }
         }
       }
+      await this.timelineService.upsertFromSource('feeding', id);
       return { id };
     }
 
@@ -111,6 +117,7 @@ export class FeedingService {
             dto.note ?? null,
           ],
         );
+        await this.timelineService.upsertFromSource('feeding', id);
         return { id };
       }
 
@@ -137,6 +144,7 @@ export class FeedingService {
           [uuidv4(), id, foodName, dto.amount_g ?? null],
         );
       }
+      await this.timelineService.upsertFromSource('feeding', id);
       return { id };
     }
 
@@ -366,6 +374,7 @@ export class FeedingService {
         values.push(id);
         await this.db.execute(`UPDATE feeding_breast_record SET ${setClauses.join(', ')} WHERE id = ?`, values);
       }
+      await this.timelineService.upsertFromSource('feeding', id);
       return this.findOne(id);
     }
 
@@ -394,6 +403,7 @@ export class FeedingService {
           }
         }
       }
+      await this.timelineService.upsertFromSource('feeding', id);
       return this.findOne(id);
     }
 
@@ -409,6 +419,7 @@ export class FeedingService {
           values.push(id);
           await this.db.execute(`UPDATE feeding_supplement_record SET ${setClauses.join(', ')} WHERE id = ?`, values);
         }
+        await this.timelineService.upsertFromSource('feeding', id);
         return this.findOne(id);
       }
 
@@ -434,6 +445,7 @@ export class FeedingService {
           );
         }
       }
+      await this.timelineService.upsertFromSource('feeding', id);
       return this.findOne(id);
     }
 
@@ -450,6 +462,7 @@ export class FeedingService {
     await this.db.execute('DELETE FROM feeding_formula_record  WHERE id = ?', [id]);
     await this.db.execute('DELETE FROM feeding_food_record     WHERE id = ?', [id]);
     await this.db.execute('DELETE FROM feeding_supplement_record WHERE id = ?', [id]);
+    await this.timelineService.removeBySource('feeding', id);
     return { id };
   }
 }

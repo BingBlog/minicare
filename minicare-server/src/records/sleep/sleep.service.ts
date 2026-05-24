@@ -11,6 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { DATABASE_POOL } from '../../common/database/database.module';
 import { StartSleepDto, EndSleepDto, UpdateSleepDto, CreateCompleteSleepDto } from './dto/create-sleep.dto';
 import { toMysqlDatetime, getBeijingToday, addDays } from '../../common/utils/date.util';
+import { TimelineService } from '../timeline/timeline.service';
 
 /**
  * DDL: sleep_record.status VARCHAR(10)  ongoing=进行中  ended=已结束
@@ -20,7 +21,10 @@ const SLEEP_STATUS = { ONGOING: 'ongoing', ENDED: 'ended' } as const;
 
 @Injectable()
 export class SleepService {
-  constructor(@Inject(DATABASE_POOL) private readonly db: Pool) {}
+  constructor(
+    @Inject(DATABASE_POOL) private readonly db: Pool,
+    private readonly timelineService: TimelineService,
+  ) {}
 
   /**
    * 开始计时（创建 status='ongoing' 的记录）
@@ -49,6 +53,7 @@ export class SleepService {
         dto.note         ?? null,
       ],
     );
+    await this.timelineService.upsertFromSource('sleep', id);
     return { id, status: 'ongoing' };
   }
 
@@ -97,6 +102,7 @@ export class SleepService {
         sleepId,
       ],
     );
+    await this.timelineService.upsertFromSource('sleep', sleepId);
 
     return { id: sleepId, duration_min: safeDurationMin, status: 'ended' };
   }
@@ -138,6 +144,7 @@ export class SleepService {
         dto.note ?? null,
       ],
     );
+    await this.timelineService.upsertFromSource('sleep', id);
     return { id, duration_min: safeDurationMin, status: 'ended' as const };
   }
 
@@ -267,6 +274,7 @@ export class SleepService {
       `UPDATE sleep_record SET ${setClauses.join(', ')} WHERE id = ?`,
       values,
     );
+    await this.timelineService.upsertFromSource('sleep', sleepId);
 
     const [updated] = await this.db.execute<any[]>('SELECT * FROM sleep_record WHERE id = ?', [sleepId]);
     const r = updated[0];
@@ -284,6 +292,7 @@ export class SleepService {
     }
 
     await this.db.execute('DELETE FROM sleep_record WHERE id = ?', [sleepId]);
+    await this.timelineService.removeBySource('sleep', sleepId);
     return { id: sleepId, deleted: true };
   }
 }
