@@ -2,29 +2,18 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { Pool } from 'mysql2/promise';
 import { DATABASE_POOL } from '../common/database/database.module';
+import { SleepService } from '../records/sleep/sleep.service';
+import { SleepQuality } from '../records/sleep/dto/create-sleep.dto';
 
-/**
- * TasksService — 定时任务
- *
- * 任务列表：
- * 1. 睡眠超时检查（每 10 分钟）：ongoing 睡眠超过 16h 自动关闭，防止忘记结束计时
- * 2. DB 保活 ping（每 8 分钟）：Serverless MySQL 10 分钟无连接自动暂停，主动 ping 防止冷启动（R-2 风险缓解）
- *
- * TODO: 辅食新食物观察期提醒（food_observation 表状态检查）
- */
 @Injectable()
 export class TasksService {
   private readonly logger = new Logger(TasksService.name);
 
-  constructor(@Inject(DATABASE_POOL) private readonly db: Pool) {}
+  constructor(
+    @Inject(DATABASE_POOL) private readonly db: Pool,
+    private readonly sleepService: SleepService,
+  ) {}
 
-  /**
-   * 每 8 分钟执行一次 SELECT 1，防止 MySQL Serverless 自动暂停
-   * 对应 INFRA R-2 风险（自动启停）的缓解措施
-   *
-   * 使用 getConnection() 显式获取连接以确保不复用已失效的缓存连接，
-   * 避免 CynosDB Serverless 服务端主动断连后出现 ETIMEDOUT。
-   */
   @Cron('0 */8 * * * *')
   async keepDatabaseAlive() {
     let conn: import('mysql2/promise').PoolConnection | null = null;
@@ -39,23 +28,30 @@ export class TasksService {
     }
   }
 
-  /**
-   * 每 10 分钟检查超时睡眠记录（status='ongoing' 超过 16 小时）
-   * 自动标记为 'ended'，防止用户忘记结束计时导致数据异常
-   */
   @Cron(CronExpression.EVERY_10_MINUTES)
   async checkSleepTimeout() {
     try {
-      const [result] = await this.db.execute(
-        `UPDATE sleep_record
-         SET status = 'ended', end_time = DATE_ADD(start_time, INTERVAL 16 HOUR),
-             duration_min = 960, note = CONCAT(IFNULL(note, ''), ' [系统自动关闭: 超过16小时]')
-         WHERE status = 'ongoing'
-           AND start_time < DATE_SUB(NOW(), INTERVAL 16 HOUR)`,
+      const [rows] = await this.db.execute<any[]>(
+        `SELECT id FROM sleep_record
+         WHERE status = 'ongoing' AND start_time < DATE_SUB(NOW(), INTERVAL 16 HOUR)`,
       );
-      const affected = (result as any).affectedRows;
-      if (affected > 0) {
-        this.logger.warn(`睡眠超时检查：自动关闭 ${affected} 条超时记录`);
+
+      if (rows.length === 0) return;
+
+      for (const row of rows) {
+        try {
+          const endTime = new Date();
+          const endTimeStr = `${endTime.getFullYear()}-${String(endTime.getMonth() + 1).padStart(2, '0')}-${String(endTime.getDate()).padStart(2, '0')}T${String(endTime.getHours()).padStart(2, '0')}:${String(endTime.getMinutes()).padStart(2, '0')}:${String(endTime.getSeconds()).padStart(2, '0')}`;
+
+          await this.sleepService.endSleep(row.id, {
+            end_time: endTimeStr,
+            quality: SleepQuality.POOR,
+            note: '[系统自动关闭: 超过16小时]',
+          });
+          this.logger.warn(`睡眠超时检查：自动关闭记录 ${row.id}`);
+        } catch (err: any) {
+          this.logger.error(`自动关闭睡眠记录 ${row.id} 失败: ${err.message}`);
+        }
       }
     } catch (err: any) {
       this.logger.error('睡眠超时检查失败:', err.message);

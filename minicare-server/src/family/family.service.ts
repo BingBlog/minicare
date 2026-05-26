@@ -386,11 +386,13 @@ export class FamilyService {
           'duration_min', duration_min,
           'sleep_period', sleep_period,
           'quality',      quality,
-          'status',       status
+          'status',       status,
+          'start_time',   start_time,
+          'end_time',     end_time
         ) AS detail
       FROM sleep_record WHERE baby_id = ? AND (
-        (end_time IS NOT NULL AND DATE(end_time) = ?) OR
-        (end_time IS NULL AND DATE(start_time) = ?)
+        (status = 'ended' AND DATE(start_time) = ?) OR
+        (status = 'ongoing' AND DATE(start_time) <= ?)
       )
       UNION ALL
       SELECT 'diaper' AS type, id, record_time AS time, note,
@@ -449,7 +451,7 @@ export class FamilyService {
       babyId, dateStr,  // feeding_formula_record
       babyId, dateStr,  // feeding_food_record
       babyId, dateStr,  // feeding_supplement_record
-      babyId, dateStr, dateStr,  // sleep (end_time date + start_time date for ongoing)
+      babyId, dateStr, dateStr,  // sleep (ended: start_time date; ongoing: start_time <= date)
       babyId, dateStr,  // diaper
       babyId, dateStr,  // activity
       babyId, dateStr,  // health
