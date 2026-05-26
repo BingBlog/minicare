@@ -17,7 +17,7 @@ import { View, Text } from '@tarojs/components'
 import Taro, { useDidShow, useReachBottom } from '@tarojs/taro'
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { babyApi, recordsApi } from '@/api'
-import { getStatusBarHeight } from '@/lib/safeArea'
+import { getStatusBarHeight, getCapsuleRightPadding } from '@/lib/safeArea'
 import { useIsIPad } from '@/lib/useIsIPad'
 import { getToken, getStoredFamilyId } from '@/api/http'
 import TabBar from '@/components/TabBar/TabBar'
@@ -144,8 +144,11 @@ export default function RecordsListPage() {
 
   // 分页状态 — 统一 feed 游标
   const nextCursorRef = useRef<string | null>(null)
+  const hasMoreRef = useRef(false)
   // 标记是否正在加载更多，防止重复触发
   const loadingMoreRef = useRef(false)
+  /** 首屏/切换筛选后短暂屏蔽触底，避免内容不足一屏时误触发 onReachBottom */
+  const blockReachBottomRef = useRef(true)
 
   // 初始化加载 family + baby（useDidShow 保证 tabBar 切换回来时也能刷新）
   const cancelRef = useRef(false)
@@ -184,48 +187,86 @@ export default function RecordsListPage() {
     return () => { cancelRef.current = true }
   })
 
-  // 加载记录（依赖 family / baby / activeFilter）— 首次加载，重置分页
+  const releaseReachBottomBlock = useCallback(() => {
+    setTimeout(() => {
+      blockReachBottomRef.current = false
+    }, 200)
+  }, [])
+
+  const resetPagination = useCallback(() => {
+    blockReachBottomRef.current = true
+    nextCursorRef.current = null
+    hasMoreRef.current = false
+    loadingMoreRef.current = false
+    setHasMore(false)
+  }, [])
+
+  const handleDateFilterChange = useCallback((date: string | null) => {
+    resetPagination()
+    setDateFilter(date)
+  }, [resetPagination])
+
+  const handleActiveFilterChange = useCallback((key: string) => {
+    resetPagination()
+    setActiveFilter(key)
+    setShowMore(false)
+  }, [resetPagination])
+
+  // 加载记录（依赖 family / baby / activeFilter / dateFilter）— 首屏加载，重置分页
   useEffect(() => {
     if (!family || !baby) return
     let cancelled = false
+    resetPagination()
 
     async function load() {
       setLoading(true)
-      setHasMore(false)
 
       try {
         const type = activeFilter === 'all' ? 'all' : activeFilter as FeedType
         const feedRes = await recordsApi.feed.list(family.id, {
           baby_id: baby.id,
           type,
-          limit: 20,
+          ...(!dateFilter ? { limit: 20 } : {}),
           ...(dateFilter ? { date: dateFilter } : {}),
         })
         const allRecs = feedRes.items.map(toRecordItemFromFeed)
-        nextCursorRef.current = feedRes.nextCursor
-        if (!cancelled) setHasMore(feedRes.hasMore)
+        nextCursorRef.current = dateFilter ? null : feedRes.nextCursor
+        const more = dateFilter ? false : (feedRes.hasMore && !!feedRes.nextCursor)
+        hasMoreRef.current = more
+        if (!cancelled) setHasMore(more)
 
-        // 按时间降序
         allRecs.sort(
           (a, b) => compareTime(getRecordTime(b), getRecordTime(a)),
         )
 
         if (!cancelled) setRecords(allRecs as RecordItem[])
       } catch {
-        if (!cancelled) setRecords([])
+        if (!cancelled) {
+          setRecords([])
+          hasMoreRef.current = false
+          setHasMore(false)
+        }
       } finally {
-        if (!cancelled) setLoading(false)
+        if (!cancelled) {
+          setLoading(false)
+          releaseReachBottomBlock()
+        }
       }
     }
     load()
     return () => { cancelled = true }
-  }, [family, baby, activeFilter, dateFilter])
+  }, [family, baby, activeFilter, dateFilter, resetPagination, releaseReachBottomBlock])
 
-  // 加载更多（触底时调用）
+  // 加载更多（触底时调用；单日筛选且首屏不足一页时不应误触发）
   const loadMore = useCallback(async () => {
-    if (!family || !baby || loadingMoreRef.current || !hasMore) return
+    if (dateFilter) return
+    if (!family || !baby || loadingMoreRef.current || !hasMoreRef.current) return
     const cursor = nextCursorRef.current
-    if (!cursor) { setHasMore(false); return }
+    if (!cursor) {
+      hasMoreRef.current = false
+      setHasMore(false)
+      return
+    }
 
     loadingMoreRef.current = true
     setLoadingMore(true)
@@ -241,7 +282,9 @@ export default function RecordsListPage() {
       })
       const newRecs = feedRes.items.map(toRecordItemFromFeed)
       nextCursorRef.current = feedRes.nextCursor
-      setHasMore(feedRes.hasMore)
+      const more = feedRes.hasMore && !!feedRes.nextCursor
+      hasMoreRef.current = more
+      setHasMore(more)
 
       if (newRecs.length > 0) {
         setRecords((prev) => {
@@ -256,10 +299,11 @@ export default function RecordsListPage() {
       setLoadingMore(false)
       loadingMoreRef.current = false
     }
-  }, [family, baby, activeFilter, dateFilter, hasMore])
+  }, [family, baby, activeFilter, dateFilter])
 
-  // 监听页面触底事件
   useReachBottom(() => {
+    if (dateFilter) return
+    if (blockReachBottomRef.current || loading) return
     loadMore()
   })
 
@@ -316,6 +360,7 @@ export default function RecordsListPage() {
 
   // ── 加载中 / 无家庭宝宝 ──
   const safeAreaStyle = { paddingTop: `${getStatusBarHeight()}px` }
+  const filterHeadStyle = { paddingRight: `${getCapsuleRightPadding()}px` }
 
   if (isGuest) {
     return (
@@ -356,14 +401,14 @@ export default function RecordsListPage() {
       {/* ── 筛选栏 ── */}
       <View className='records-filter'>
         {/* 标题行 */}
-        <View className='records-filter__head'>
+        <View className='records-filter__head' style={filterHeadStyle}>
           <View className='records-filter__title-wrap'>
             <Text className='records-filter__title'>宝宝记录</Text>
             {!loading && (
               <Text className='records-filter__count'>共 {records.length} 条</Text>
             )}
           </View>
-          <RecordsDateSelector value={dateFilter} onChange={setDateFilter} />
+          <RecordsDateSelector value={dateFilter} onChange={handleDateFilterChange} />
         </View>
 
         {/* 筛选芯片 */}
@@ -372,7 +417,7 @@ export default function RecordsListPage() {
             <View
               key={opt.key}
               className={`records-filter__chip ${activeFilter === opt.key ? 'records-filter__chip--active' : ''}`}
-              onClick={() => { setActiveFilter(opt.key); setShowMore(false) }}
+              onClick={() => handleActiveFilterChange(opt.key)}
             >
               <Text>{opt.label}</Text>
             </View>
@@ -391,7 +436,7 @@ export default function RecordsListPage() {
               <View
                 key={opt.key}
                 className={`records-filter__chip ${activeFilter === opt.key ? 'records-filter__chip--active' : ''}`}
-                onClick={() => { setActiveFilter(opt.key); setShowMore(false) }}
+                onClick={() => handleActiveFilterChange(opt.key)}
               >
                 <Text>{opt.label}</Text>
               </View>

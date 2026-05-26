@@ -19,11 +19,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
   padding: 16px 18px 12px;
 }
 
 .records-filter__title-wrap {
   display: flex;
+  flex: 1;
+  min-width: 0;
   align-items: baseline;
   gap: 7px;
 }

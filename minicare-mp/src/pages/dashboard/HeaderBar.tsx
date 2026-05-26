@@ -12,6 +12,7 @@ import {
   formatDateLabel,
   buildDashboardDateOptions,
 } from '@/lib/dateUtils'
+import { getCapsuleRightPadding } from '@/lib/safeArea'
 
 function formatTime(d: Date): string {
   const hh = String(d.getHours()).padStart(2, '0')
@@ -42,7 +43,7 @@ export default function HeaderBar({ babyName, selectedDate, onDateChange, soundE
       // 顶栏最小高度 = 胶囊按钮高度 + 上下间距
       const headerHeight = menuBtn.height + (menuBtn.top - statusBarHeight) * 2
       // 右侧需要避让的宽度 = 屏幕宽度 - 胶囊按钮左边界 + 一些间距
-      const rightWidth = sysInfo.windowWidth - menuBtn.left + 8
+      const rightWidth = getCapsuleRightPadding()
       return { paddingTop, headerHeight, rightWidth }
     } catch {
       return { paddingTop: 0, headerHeight: 0, rightWidth: 0 }

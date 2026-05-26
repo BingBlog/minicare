@@ -42,11 +42,44 @@ export class FeedService {
 
   async list(query: FeedQueryDto): Promise<FeedListResponse> {
     const filterDate = this.resolveFilterDate(query.date);
+    if (filterDate) {
+      return this.listSingleDate(query, filterDate);
+    }
     if (this.feedReadSource !== 'union') {
       const timelineResult = await this.tryListFromTimeline(query, filterDate);
       if (timelineResult) return timelineResult;
     }
     return this.listFromUnion(query, filterDate);
+  }
+
+  /**
+   * 单日筛选固定一次性返回整天数据，不走分页/游标。
+   * 这样前端无需触底加载，且旧版本误传 cursor 也不会继续翻页。
+   */
+  private async listSingleDate(query: FeedQueryDto, filterDate: string): Promise<FeedListResponse> {
+    const type = (query.type ?? 'all') as FeedFilterType;
+    if (this.feedReadSource !== 'union') {
+      try {
+        const rows = await this.queryTimelineSameDayRows(query.baby_id, type, null, filterDate);
+        return {
+          items: rows.map((row) => this.mapTimelineRow(row)),
+          nextCursor: null,
+          hasMore: false,
+        };
+      } catch (err: any) {
+        if (!(err?.code === 'ER_NO_SUCH_TABLE' || err?.errno === 1146)) {
+          throw err;
+        }
+      }
+    }
+
+    const { baseSql, baseParams } = this.buildBaseQuery(type, query.baby_id);
+    const rows = await this.querySameDayRows(baseSql, baseParams, null, filterDate);
+    return {
+      items: rows.map((row) => this.mapRow(row)),
+      nextCursor: null,
+      hasMore: false,
+    };
   }
 
   private async listFromUnion(query: FeedQueryDto, filterDate?: string): Promise<FeedListResponse> {

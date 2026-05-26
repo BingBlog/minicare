@@ -55,3 +55,17 @@ export function getNavBarHeight(): number {
 export function useNavBarPaddingTop(): string {
   return `${getStatusBarHeight()}px`
 }
+
+/**
+ * 右侧需避让微信胶囊按钮的 padding（px）
+ * 用于 Tab 页自定义顶栏、标题行右侧操作区等
+ */
+export function getCapsuleRightPadding(): number {
+  try {
+    const menuBtn = Taro.getMenuButtonBoundingClientRect()
+    const sysInfo = Taro.getSystemInfoSync()
+    return Math.max(0, sysInfo.windowWidth - menuBtn.left + 8)
+  } catch {
+    return 96
+  }
+}
