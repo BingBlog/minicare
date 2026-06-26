@@ -81,11 +81,15 @@ const SUBTYPE_MP_ROUTES: Record<string, string> = {
 function buildEditUrl(record: RecordItem): string {
   const type = getRecordType(record)
   const feedType = (record as Record<string, unknown>).feed_type as string | undefined
+  const complementaryFood = (record as Record<string, unknown>).complementary_food as string | undefined
   const recordId = record.id
 
   // 已迁移的子类型（feeding 表单支持）
   if (feedType) {
-    const subRoute = SUBTYPE_MP_ROUTES[feedType]
+    const resolvedFeedType = feedType === 'complementary'
+      ? (complementaryFood === '营养素' ? 'supplement' : 'food')
+      : feedType
+    const subRoute = SUBTYPE_MP_ROUTES[resolvedFeedType]
     if (subRoute) return `${subRoute}&recordId=${encodeURIComponent(recordId)}`
   }
 
@@ -138,6 +142,7 @@ export default function RecordsListPage() {
   const [showMore, setShowMore] = useState(false)
   const [selectedRecord, setSelectedRecord] = useState<RecordItem | null>(null)
   const [actionOpen, setActionOpen] = useState(false)
+  const [refreshTick, setRefreshTick] = useState(0)
 
   // 是否未登录
   const [isGuest, setIsGuest] = useState(false)
@@ -186,6 +191,14 @@ export default function RecordsListPage() {
     init()
     return () => { cancelRef.current = true }
   })
+
+  useEffect(() => {
+    const refreshHandler = () => setRefreshTick((prev) => prev + 1)
+    Taro.eventCenter.on('records:refresh', refreshHandler)
+    return () => {
+      Taro.eventCenter.off('records:refresh', refreshHandler)
+    }
+  }, [])
 
   const releaseReachBottomBlock = useCallback(() => {
     setTimeout(() => {
@@ -255,7 +268,7 @@ export default function RecordsListPage() {
     }
     load()
     return () => { cancelled = true }
-  }, [family, baby, activeFilter, dateFilter, resetPagination, releaseReachBottomBlock])
+  }, [family, baby, activeFilter, dateFilter, refreshTick, resetPagination, releaseReachBottomBlock])
 
   // 加载更多（触底时调用；单日筛选且首屏不足一页时不应误触发）
   const loadMore = useCallback(async () => {
@@ -288,7 +301,10 @@ export default function RecordsListPage() {
 
       if (newRecs.length > 0) {
         setRecords((prev) => {
-          const merged = [...prev, ...newRecs]
+          // 按 id 去重，防止后端同日补齐逻辑导致边界数据重叠
+          const existingIds = new Set(prev.map(r => r.id))
+          const uniqueNew = newRecs.filter(r => !existingIds.has(r.id))
+          const merged = [...prev, ...uniqueNew]
           merged.sort((a, b) => compareTime(getRecordTime(b), getRecordTime(a)))
           return merged
         })

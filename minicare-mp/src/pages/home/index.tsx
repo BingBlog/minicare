@@ -1,9 +1,10 @@
 import { View, Text, Canvas } from '@tarojs/components'
 import Taro, { useDidShow, getCurrentInstance } from '@tarojs/taro'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { authApi, babyApi, familyApi, fetchAppConfig, recordsApi, sleepApi } from '@/api'
+import { authApi, babyApi, familyApi, fetchAppConfig, foodObservationApi, recordsApi, sleepApi } from '@/api'
 import type { PendingInvite } from '@/api/family'
 import type { OngoingSleepRecord } from '@/api/sleep'
+import type { FoodObservation } from '@/api'
 import { getStoredFamilyId, setCurrentFamilyId, getToken } from '@/api/http'
 import { HOME_RECORD_ROUTES } from '@/lib/constants'
 import { navigateToRecord } from '@/lib/navigation'
@@ -19,6 +20,7 @@ import TodayTimeline from './TodayTimeline'
 import DailyComparison from './DailyComparison'
 import SleepBanner from './SleepBanner'
 import FeedingBanner from './FeedingBanner'
+import AllergyProgressBar from './AllergyProgressBar'
 import RecordActionSheet from './RecordActionSheet'
 import TabBar from '@/components/TabBar/TabBar'
 import InviteModal from '@/components/InviteModal/InviteModal'
@@ -68,6 +70,7 @@ export default function HomePage() {
   const familyIdRef = useRef('')
   const [loading, setLoading] = useState(true)
   const [babyGrowth, setBabyGrowth] = useState<{ weightKg?: string; heightCm?: string; headCm?: string } | null>(null)
+  const [foodObservations, setFoodObservations] = useState<FoodObservation[]>([])
 
   // 页面加载时，解析 URL 参数
   useEffect(() => {
@@ -129,6 +132,13 @@ export default function HomePage() {
         setYesterdayRecords(yRecords.map(toHomeRecord))
       } catch {
         // 昨日记录获取失败不影响主流程
+      }
+
+      try {
+        const observations = await foodObservationApi.list(fid, baby.id)
+        setFoodObservations(observations)
+      } catch {
+        setFoodObservations([])
       }
     } catch {
       // 静默失败，保留已有数据
@@ -411,10 +421,11 @@ export default function HomePage() {
   }, [records])
 
 
+  // 喂奶间隔仅受母乳和奶粉影响，辅食/营养素不计入
   const feedingFilter = (r: HomeRecord) => {
     if (r.type !== 'feeding') return false
     const feedType = r.detail?.feed_type as string | undefined
-    return feedType === 'formula' || feedType === 'breast' || feedType === 'complementary'
+    return feedType === 'formula' || feedType === 'breast'
   }
 
   const lastFeedingRecord = (() => {
@@ -624,6 +635,7 @@ export default function HomePage() {
                 }}
               />
             ) : null}
+            <AllergyProgressBar observations={foodObservations} />
           </View>
         }
       />
@@ -659,7 +671,12 @@ export default function HomePage() {
           // feeding 类型需要根据 detail.feed_type 确定子类型路由
           let routeKey = record.type as string
           if (routeKey === 'feeding' && record.detail?.feed_type) {
-            routeKey = record.detail.feed_type as string
+            const feedType = record.detail.feed_type as string
+            if (feedType === 'complementary') {
+              routeKey = record.detail.complementary_food === '营养素' ? 'supplement' : 'food'
+            } else {
+              routeKey = feedType
+            }
           }
           const route = HOME_RECORD_ROUTES[routeKey]
           if (route) {
