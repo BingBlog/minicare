@@ -130,6 +130,9 @@ export function getRecordListParts(
       }
 
       if (feedType === 'complementary') {
+        const foodItems = d.food_items as Array<{ food_name?: string }> | undefined
+        const foodFromItems = (foodItems ?? []).map((item) => item.food_name ?? '').filter(Boolean).join('、')
+        const displayFood = food || foodFromItems
         if (isSupp && suppItems && suppItems.length > 0) {
           const tags: string[] = []
           suppItems.forEach((item) => {
@@ -140,8 +143,8 @@ export function getRecordListParts(
           })
           return { label: '营养素', tags }
         }
-        if (!isSupp && food) {
-          return { label: '辅食', tags: [food] }
+        if (!isSupp && displayFood) {
+          return { label: '辅食', tags: [displayFood] }
         }
       }
 

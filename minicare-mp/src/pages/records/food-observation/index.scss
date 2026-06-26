@@ -1,0 +1,254 @@
+@use '../../../styles/ipad-adapt-mixins' as ipad;
+
+.obs-page {
+  min-height: 100vh;
+  background: #fdf7f5;
+  font-family: -apple-system, 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+}
+
+.obs-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 0;
+  color: #9a7e82;
+  font-size: 14px;
+}
+
+.obs-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: #fdf7f5;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.obs-nav__back {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.obs-nav__back-arrow {
+  color: #3d2b2e;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.obs-nav__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #3d2b2e;
+}
+
+.obs-nav__spacer {
+  width: 36px;
+}
+
+.obs-body {
+  padding-bottom: 40px;
+}
+
+.obs-filters {
+  display: flex;
+  gap: 8px;
+  padding: 8px 16px 12px;
+  white-space: nowrap;
+}
+
+.obs-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: #fff;
+  border: 1px solid #e8d8dc;
+  flex-shrink: 0;
+}
+
+.obs-filter-chip--active {
+  background: #fff0f4;
+  border-color: #f87098;
+}
+
+.obs-filter-chip__text {
+  font-size: 13px;
+  font-weight: 600;
+  color: #9a7e82;
+}
+
+.obs-filter-chip--active .obs-filter-chip__text {
+  color: #f87098;
+}
+
+.obs-list {
+  padding: 0 12px;
+}
+
+.obs-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 6px rgba(200, 100, 120, 0.08);
+}
+
+.obs-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.obs-card__food {
+  font-size: 16px;
+  font-weight: 700;
+  color: #3d2b2e;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.obs-card__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+
+.obs-card__matrix {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.obs-card__dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.obs-card__dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid #e8d8dc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fdf7f5;
+}
+
+.obs-card__dot--filled {
+  background: #f87098;
+  border-color: #f87098;
+}
+
+.obs-card__dot--filled-safe {
+  background: #2a9e70;
+  border-color: #2a9e70;
+}
+
+.obs-card__dot--filled-suspected {
+  background: #e07a00;
+  border-color: #e07a00;
+}
+
+.obs-card__dot--filled-allergic {
+  background: #e8305a;
+  border-color: #e8305a;
+}
+
+.obs-card__dot-text {
+  font-size: 9px;
+  font-weight: 700;
+  color: #b0a0a4;
+  line-height: 1;
+}
+
+.obs-card__dot--filled .obs-card__dot-text {
+  color: #fff;
+}
+
+.obs-card__dot--filled-safe .obs-card__dot-text {
+  color: #fff;
+}
+
+.obs-card__dot--filled-suspected .obs-card__dot-text {
+  color: #fff;
+}
+
+.obs-card__dot--filled-allergic .obs-card__dot-text {
+  color: #fff;
+}
+
+.obs-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.obs-card__progress {
+  font-size: 12px;
+  color: #9a7e82;
+  font-weight: 500;
+}
+
+.obs-card__date {
+  font-size: 11px;
+  color: #b0a0a4;
+}
+
+.obs-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 40px;
+}
+
+.obs-empty__icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #f5eef0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.obs-empty__icon-text {
+  font-size: 28px;
+  color: #c8a8b0;
+}
+
+.obs-empty__title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #9a7e82;
+  margin-bottom: 6px;
+}
+
+.obs-empty__subtitle {
+  font-size: 13px;
+  color: #b0a0a4;
+  text-align: center;
+  line-height: 1.5;
+}
+
+@include ipad.food-observation;

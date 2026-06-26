@@ -258,6 +258,11 @@ export default function FeedingFormPage() {
     setFoodList((prev) => (prev.includes(t) ? prev : [...prev, t]))
     setFoodInput('')
   }
+  const quickAddFood = (foodName: string) => {
+    const t = foodName.trim()
+    if (!t) return
+    setFoodList((prev) => (prev.includes(t) ? prev : [...prev, t]))
+  }
   const removeFood = (idx: number) => setFoodList((prev) => prev.filter((_, i) => i !== idx))
 
   // -----------------------------------------------------------------------
@@ -299,6 +304,8 @@ export default function FeedingFormPage() {
       }
 
       Taro.showToast({ title: isEditMode ? '记录已更新' : '记录已保存', icon: 'success' })
+      Taro.eventCenter.trigger('home:refresh')
+      Taro.eventCenter.trigger('records:refresh')
       setTimeout(() => Taro.navigateBack(), 1000)
     } catch (err) {
       Taro.showToast({ title: err instanceof Error ? err.message : '保存失败', icon: 'none' })
@@ -311,6 +318,8 @@ export default function FeedingFormPage() {
     try {
       await recordsApi.feeding.remove(familyId, editRecordId)
       Taro.showToast({ title: '记录已删除', icon: 'success' })
+      Taro.eventCenter.trigger('home:refresh')
+      Taro.eventCenter.trigger('records:refresh')
       setTimeout(() => Taro.navigateBack(), 800)
     } catch { Taro.showToast({ title: '删除失败', icon: 'none' }) }
   }
@@ -418,7 +427,14 @@ export default function FeedingFormPage() {
 
         {/* 辅食 */}
         {tab === 'food' && (
-          <FoodSection foodList={foodList} inputValue={foodInput} onInputChange={setFoodInput} onAdd={addFood} onRemove={removeFood} />
+          <FoodSection
+            foodList={foodList}
+            inputValue={foodInput}
+            onInputChange={setFoodInput}
+            onAdd={addFood}
+            onRemove={removeFood}
+            onQuickAdd={quickAddFood}
+          />
         )}
 
         {/* 备注 */}

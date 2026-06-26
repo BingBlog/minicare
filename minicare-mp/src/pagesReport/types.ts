@@ -1,4 +1,4 @@
-export type TabKey = 'feeding' | 'diaper' | 'growth' | 'sleep' | 'health'
+export type TabKey = 'feeding' | 'diaper' | 'growth' | 'sleep' | 'health' | 'allergy'
 
 export const TAB_CONFIG: Array<{ key: TabKey; label: string }> = [
   { key: 'growth', label: '生长' },
@@ -6,6 +6,7 @@ export const TAB_CONFIG: Array<{ key: TabKey; label: string }> = [
   { key: 'sleep', label: '睡眠' },
   { key: 'diaper', label: '尿布' },
   { key: 'health', label: '健康' },
+  { key: 'allergy', label: '排敏' },
 ]
 
 export const TIME_RANGES: Array<{ key: string; label: string; days: number }> = [
@@ -23,6 +24,7 @@ export const DEFAULT_RANGE_MAP: Record<TabKey, string> = {
   growth: 'birth',
   sleep: '30',
   health: '30',
+  allergy: '30',
 }
 
 export const LONG_RANGE_LABEL: Record<string, string> = {

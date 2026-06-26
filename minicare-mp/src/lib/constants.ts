@@ -199,3 +199,36 @@ export const ROLE_ICON_COLOR: Record<string, string> = {
   owner:  '#fff',
   member: '#4A90D9',
 }
+
+export const OBSERVATION_STATUS_LABELS: Record<string, string> = {
+  observing: '观察中',
+  paused: '已停用',
+  safe: '已耐受',
+  suspected: '疑似过敏',
+  allergic: '确认过敏',
+}
+
+export const OBSERVATION_STATUS_CFG: Record<string, { label: string; bg: string; color: string }> = {
+  observing: { label: '观察中', bg: '#FFF8EC', color: '#DDB870' },
+  paused: { label: '已停用', bg: '#F5F0F2', color: '#9A8090' },
+  safe: { label: '已耐受', bg: '#E4F8F0', color: '#2A9E70' },
+  suspected: { label: '疑似过敏', bg: '#FFF3E0', color: '#E07A00' },
+  allergic: { label: '确认过敏', bg: '#FFE8EF', color: '#E8305A' },
+}
+
+export const REACTION_LEVEL_LABELS: Record<string, string> = {
+  none: '无反应',
+  mild: '轻度',
+  moderate: '中度',
+  severe: '重度',
+}
+
+export const REACTION_FLAGS_LABELS: Record<string, string> = {
+  rash: '皮疹',
+  vomit: '呕吐',
+  diarrhea: '腹泻',
+  blood_stool: '血便',
+  wheeze: '喘息',
+  face_swelling: '面部肿胀',
+  other: '其他',
+}

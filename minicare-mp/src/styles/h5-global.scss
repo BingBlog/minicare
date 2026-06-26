@@ -1,0 +1,31 @@
+html,
+body,
+#app {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #f6f1f3;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    'PingFang SC',
+    'Hiragino Sans GB',
+    'Microsoft YaHei',
+    'Noto Sans CJK SC',
+    sans-serif;
+}
+
+#app {
+  margin: 0 auto;
+  max-width: 500PX;
+  width: min(100vw, 500PX);
+  background: #fdf7f5;
+}
+
+@media screen and (min-width: 500PX) {
+  html {
+    font-size: 50PX !important;
+  }
+}

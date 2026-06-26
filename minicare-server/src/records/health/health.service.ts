@@ -3,6 +3,7 @@ import { Pool } from 'mysql2/promise';
 import { v4 as uuidv4 } from 'uuid';
 import { DATABASE_POOL } from '../../common/database/database.module';
 import { CreateHealthDto, UpdateHealthDto } from './dto/create-health.dto';
+import { LinkObservationDto } from './dto/link-observation.dto';
 import { toMysqlDatetime, getBeijingToday, addDays } from '../../common/utils/date.util';
 import { TimelineService } from '../timeline/timeline.service';
 
@@ -131,5 +132,45 @@ export class HealthService {
     await this.db.execute('DELETE FROM health_record WHERE id = ?', [id]);
     await this.timelineService.removeBySource('health', id);
     return { id };
+  }
+
+  async linkObservation(id: string, dto: LinkObservationDto) {
+    const [rows] = await this.db.query<any[]>('SELECT id, note FROM health_record WHERE id = ? LIMIT 1', [id]);
+    if (!rows[0]) throw new NotFoundException('找不到该健康记录');
+
+    const [obsRows] = await this.db.query<any[]>(
+      'SELECT id, status FROM food_observation WHERE id = ? LIMIT 1',
+      [dto.observation_id],
+    );
+    if (!obsRows[0]) throw new NotFoundException('找不到排敏任务');
+
+    await this.db.execute(
+      `UPDATE health_record
+       SET observation_id = ?, food_name_snapshot = ?, reaction_source = 'manual'
+       WHERE id = ?`,
+      [dto.observation_id, dto.food_name_snapshot ?? null, id],
+    );
+    await this.timelineService.upsertFromSource('health', id);
+
+    const shouldSync = !!dto.sync_status;
+    if (shouldSync) {
+      const targetStatus = dto.target_status ?? 'suspected';
+      await this.db.execute(
+        `UPDATE food_observation
+         SET status = ?,
+             reaction_note = COALESCE(reaction_note, ?),
+             last_status_changed_at = NOW(),
+             updated_at = NOW()
+         WHERE id = ?`,
+        [targetStatus, rows[0].note ?? null, dto.observation_id],
+      );
+    }
+
+    return {
+      id,
+      observation_id: dto.observation_id,
+      sync_status: shouldSync,
+      target_status: shouldSync ? (dto.target_status ?? 'suspected') : undefined,
+    };
   }
 }

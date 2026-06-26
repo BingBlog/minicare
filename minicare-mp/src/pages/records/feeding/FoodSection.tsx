@@ -1,4 +1,5 @@
 import { View, Text, Input } from '@tarojs/components'
+import { COMMON_FOOD_GROUPS } from './types'
 
 interface Props {
   foodList: string[]
@@ -6,6 +7,7 @@ interface Props {
   onInputChange: (v: string) => void
   onAdd: () => void
   onRemove: (idx: number) => void
+  onQuickAdd: (foodName: string) => void
 }
 
 export default function FoodSection({
@@ -14,10 +16,36 @@ export default function FoodSection({
   onInputChange,
   onAdd,
   onRemove,
+  onQuickAdd,
 }: Props) {
   return (
     <>
       <View className='feed-section-label'><Text>辅食记录</Text></View>
+      {/* 常见辅食清单 */}
+      <View className='feed-card'>
+        <View className='feed-food-presets'>
+          {COMMON_FOOD_GROUPS.map((group) => (
+            <View key={group.key} className='feed-food-presets__group'>
+              <Text className='feed-food-presets__title'>{group.label}</Text>
+              <View className='feed-food-presets__chips'>
+                {group.items.map((item) => {
+                  const selected = foodList.includes(item)
+                  return (
+                    <View
+                      key={item}
+                      className={`feed-food-presets__chip${selected ? ' is-active' : ''}`}
+                      onClick={() => onQuickAdd(item)}
+                    >
+                      <Text className='feed-food-presets__chip-text'>{item}</Text>
+                    </View>
+                  )
+                })}
+              </View>
+            </View>
+          ))}
+        </View>
+      </View>
+
       {/* 已添加 */}
       {foodList.length > 0 && (
         <View className='feed-card'>

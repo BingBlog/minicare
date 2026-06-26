@@ -2,7 +2,7 @@ import { View, Text, ScrollView } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { useState, useCallback, useRef, useEffect } from 'react'
 import dayjs from 'dayjs'
-import { babyApi, familyApi } from '@/api'
+import { babyApi, familyApi, foodObservationApi } from '@/api'
 import { reportApi } from '@/api/report'
 import type { DailyFeedingData, DailyDiaperData, DailySleepData, DailyHealthData, GrowthRecord } from '@/api/report'
 import { FeedingTab } from './tabs/FeedingTab'
@@ -10,6 +10,7 @@ import { DiaperTab } from './tabs/DiaperTab'
 import { GrowthTab } from './tabs/GrowthTab'
 import { SleepTab } from './tabs/SleepTab'
 import { HealthTab } from './tabs/HealthTab'
+import { AllergyTab } from './tabs/AllergyTab'
 import GuestReport from './GuestReport'
 import { TabKey, TAB_CONFIG, TIME_RANGES, DEFAULT_RANGE_MAP, LONG_RANGE_LABEL } from './types'
 import TabBar from '@/components/TabBar/TabBar'
@@ -70,6 +71,7 @@ export default function ReportPage() {
   const [sleepData, setSleepData] = useState<DailySleepData[] | null>(null)
   const [healthData, setHealthData] = useState<DailyHealthData[] | null>(null)
   const [growthData, setGrowthData] = useState<GrowthRecord[] | null>(null)
+  const [allergyData, setAllergyData] = useState<import('@/api').FoodObservation[] | null>(null)
   const [loading, setLoading] = useState(false)
   const [isGuest, setIsGuest] = useState(false)
 
@@ -130,6 +132,7 @@ export default function ReportPage() {
         case 'sleep':   { const r = await reportApi.getSleepChartData(fid, params); setSleepData(r.daily); break }
         case 'health':  { const r = await reportApi.getHealthChartData(fid, params); setHealthData(r.daily); break }
         case 'growth':  { const r = await reportApi.getGrowthChartData(fid, params); setGrowthData(r.records); break }
+        case 'allergy': { const r = await foodObservationApi.list(fid, bid); setAllergyData(r); break }
       }
     } catch (e) {
       console.error('[report] load error', e)
@@ -139,7 +142,7 @@ export default function ReportPage() {
 
   const handleTabChange = useCallback((tab: TabKey) => {
     setActiveTab(tab)
-    setFeedingData(null); setDiaperData(null); setSleepData(null); setHealthData(null); setGrowthData(null)
+    setFeedingData(null); setDiaperData(null); setSleepData(null); setHealthData(null); setGrowthData(null); setAllergyData(null)
     if (familyId && babyId) loadTabData(familyId, babyId, rangeMap[tab], tab, babyBirthDate)
   }, [familyId, babyId, rangeMap, babyBirthDate, loadTabData])
 
@@ -221,6 +224,7 @@ export default function ReportPage() {
         {activeTab === 'growth' && <GrowthTab data={growthData} loading={loading} babyGender={babyGender} babyBirthDate={babyBirthDate} />}
         {activeTab === 'sleep' && <SleepTab data={sleepData} loading={loading} />}
         {activeTab === 'health' && <HealthTab data={healthData} loading={loading} />}
+      {activeTab === 'allergy' && <AllergyTab data={allergyData} loading={loading} />}
       </View>
 
       <TabBar activeTab='report' />

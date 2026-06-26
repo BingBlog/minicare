@@ -5,6 +5,7 @@ import { JwtGuard } from '../../auth/jwt.guard';
 import { FamilyMemberGuard } from '../../family/family-member.guard';
 import { RoleGuard } from '../../family/role.guard';
 import { CreateHealthDto, UpdateHealthDto } from './dto/create-health.dto';
+import { LinkObservationDto } from './dto/link-observation.dto';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { MinRole, FamilyRole } from '../../common/decorators/min-role.decorator';
 
@@ -37,6 +38,12 @@ export class HealthController {
   @ApiOperation({ summary: '更新健康记录' })
   update(@Param('id') id: string, @Body() dto: UpdateHealthDto) {
     return this.healthService.update(id, dto);
+  }
+
+  @Patch(':id/link-observation') @MinRole(FamilyRole.MEMBER)
+  @ApiOperation({ summary: '关联排敏任务（可选同步状态）' })
+  linkObservation(@Param('id') id: string, @Body() dto: LinkObservationDto) {
+    return this.healthService.linkObservation(id, dto);
   }
 
   @Delete(':id') @MinRole(FamilyRole.MEMBER)

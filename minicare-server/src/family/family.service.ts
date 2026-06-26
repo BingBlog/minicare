@@ -370,7 +370,17 @@ export class FamilyService {
       UNION ALL
       SELECT 'feeding' AS type, id, record_time AS time, note,
         JSON_OBJECT(
-          'feed_type', 'complementary'
+          'feed_type', 'complementary',
+          'complementary_food', (
+            SELECT GROUP_CONCAT(fi.food_name SEPARATOR '、')
+            FROM feeding_food_item fi
+            WHERE fi.record_id = feeding_food_record.id
+          ),
+          'amount_g', (
+            SELECT MAX(fi.amount_g)
+            FROM feeding_food_item fi
+            WHERE fi.record_id = feeding_food_record.id
+          )
         ) AS detail
       FROM feeding_food_record WHERE baby_id = ? AND DATE(record_time) = ?
       UNION ALL

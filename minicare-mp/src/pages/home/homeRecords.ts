@@ -106,7 +106,9 @@ export function getTimelineRecordDisplay(record: HomeRecord): TimelineRecordDisp
       return { label: '营养素', tags, summary: '' }
     }
     if (feedType === 'complementary') {
-      const food = (d.complementary_food as string | undefined) ?? ''
+      const foodItems = (d.food_items as Array<{ food_name?: string }> | undefined) ?? []
+      const foodFromItems = foodItems.map((item) => item.food_name ?? '').filter(Boolean).join('、')
+      const food = (d.complementary_food as string | undefined) ?? foodFromItems
       const amount = Number(d.amount_g ?? 0)
       return { label: food === '营养素' ? '营养素' : '辅食', tags: food ? [food] : [], summary: amount > 0 ? `${amount}g` : '' }
     }

@@ -22,7 +22,7 @@ export function useVoiceInput(familyId: string) {
   const [duration, setDuration] = useState(0)
   const [volumeLevels, setVolumeLevels] = useState<number[]>([])
 
-  const recorderManager = useRef(Taro.getRecorderManager())
+  const recorderManager = useRef<ReturnType<typeof Taro.getRecorderManager> | null>(null)
   const startTimeRef = useRef(0)
   const durationTimerRef = useRef<ReturnType<typeof setInterval>>()
   const cancelledRef = useRef(false)
@@ -41,6 +41,22 @@ export function useVoiceInput(familyId: string) {
       clearInterval(watchdogTimerRef.current)
       watchdogTimerRef.current = undefined
     }
+  }, [])
+
+  const getRecorderManager = useCallback(() => {
+    if (process.env.TARO_ENV !== 'weapp') {
+      return null
+    }
+
+    if (!recorderManager.current) {
+      try {
+        recorderManager.current = Taro.getRecorderManager()
+      } catch {
+        return null
+      }
+    }
+
+    return recorderManager.current
   }, [])
 
   const requestRecordPermission = useCallback(async (): Promise<boolean> => {
@@ -63,6 +79,12 @@ export function useVoiceInput(familyId: string) {
   }, [])
 
   const startRecording = useCallback(async () => {
+    const manager = getRecorderManager()
+    if (!manager) {
+      Taro.showToast({ title: '当前环境暂不支持语音录入', icon: 'none' })
+      return
+    }
+
     const hasPermission = await requestRecordPermission()
     if (!hasPermission) return
 
@@ -76,8 +98,6 @@ export function useVoiceInput(familyId: string) {
     setParseResult(null)
     setFailure(null)
     setTranscript('')
-
-    const manager = recorderManager.current
 
     manager.onStart(() => {
       startTimeRef.current = Date.now()
@@ -192,25 +212,34 @@ export function useVoiceInput(familyId: string) {
     })
 
     Taro.vibrateShort({ type: 'medium' })
-  }, [familyId, requestRecordPermission, clearTimers])
+  }, [familyId, requestRecordPermission, clearTimers, getRecorderManager])
 
   const stopRecording = useCallback(() => {
+    const manager = getRecorderManager()
+    if (!manager) return
+
     if (isRecordingRef.current) {
-      recorderManager.current.stop()
+      manager.stop()
     } else {
       pendingStopRef.current = true
     }
-  }, [])
+  }, [getRecorderManager])
 
   const cancelRecording = useCallback(() => {
+    const manager = getRecorderManager()
+    if (!manager) {
+      setState('idle')
+      return
+    }
+
     cancelledRef.current = true
     isRecordingRef.current = false
     pendingStopRef.current = false
     clearTimers()
-    recorderManager.current.stop()
+    manager.stop()
     setState('idle')
     Taro.vibrateShort({ type: 'light' })
-  }, [clearTimers])
+  }, [clearTimers, getRecorderManager])
 
   const setPressed = useCallback((pressed: boolean) => {
     isPressedRef.current = pressed

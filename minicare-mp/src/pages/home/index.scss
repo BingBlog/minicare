@@ -634,6 +634,11 @@
   box-shadow: 0 4px 16px rgba(248, 144, 80, 0.18);
 }
 
+.home-inline-banner--allergy {
+  border-left: 3px solid #ddb870;
+  box-shadow: 0 4px 16px rgba(221, 184, 112, 0.18);
+}
+
 .home-inline-banner__dot {
   width: 8px;
   height: 8px;
@@ -647,6 +652,10 @@
 
 .home-inline-banner__dot--feeding {
   background: #f8a070;
+}
+
+.home-inline-banner__dot--allergy {
+  background: #ddb870;
 }
 
 .home-inline-banner__content {
@@ -693,6 +702,33 @@
   padding: 6px 12px;
   flex-shrink: 0;
   white-space: nowrap;
+}
+
+.home-inline-banner__content-inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.home-inline-banner__tag {
+  display: inline-block;
+  font-size: 11px;
+  color: #7a5a60;
+  background: #fff8ec;
+  border-radius: 6px;
+  padding: 2px 8px;
+}
+
+.home-inline-banner__tag--more {
+  background: #f5f0f2;
+  color: #9a8090;
+}
+
+.home-inline-banner__arrow {
+  color: #c0a8ad;
+  font-size: 14px;
+  flex-shrink: 0;
 }
 
 .home-tabbar {
