@@ -215,16 +215,27 @@
 
 .health-temp__value-wrap {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 2px;
   min-width: 50px;
   justify-content: center;
 }
 
 .health-temp__value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 32px;
   font-size: 18px;
   font-weight: 700;
-  color: #4A3035;
+  color: #4a3035;
+  text-align: center;
+}
+
+.health-temp__placeholder {
+  color: #c0a8b0;
+  font-weight: 400;
 }
 
 .health-temp__unit {
