@@ -10,7 +10,8 @@ type SourceType =
   | 'health'
   | 'symptom'
   | 'growth'
-  | 'medical';
+  | 'medical'
+  | 'medication';
 
 @Injectable()
 export class TimelineService {
@@ -88,6 +89,7 @@ export class TimelineService {
     if (sourceType === 'health') return this.loadHealthPayload(sourceId);
     if (sourceType === 'symptom') return this.loadSymptomPayload(sourceId);
     if (sourceType === 'growth') return this.loadGrowthPayload(sourceId);
+    if (sourceType === 'medication') return this.loadMedicationPayload(sourceId);
     return this.loadMedicalPayload(sourceId);
   }
 
@@ -396,6 +398,31 @@ export class TimelineService {
         visit_type: r.visit_type,
         hospital: r.hospital,
         diagnosis: r.diagnosis,
+      }),
+    };
+  }
+
+  private async loadMedicationPayload(sourceId: string) {
+    const [rows] = await this.db.query<any[]>(
+      `SELECT id, baby_id, medication_name, dose, record_time, note
+       FROM medication_record WHERE id = ? AND deleted_at IS NULL LIMIT 1`,
+      [sourceId],
+    );
+    if (!rows[0]) return null;
+    const r = rows[0];
+    return {
+      babyId: r.baby_id,
+      eventTime: r.record_time,
+      note: r.note ?? null,
+      summaryTitle: '用药',
+      summaryTagsJson: r.medication_name ? JSON.stringify([r.medication_name]) : null,
+      summaryValue: r.dose ?? null,
+      summaryUnit: null,
+      summaryTheme: 'purple',
+      summaryActive: false,
+      detailJson: JSON.stringify({
+        medication_name: r.medication_name,
+        dose: r.dose,
       }),
     };
   }

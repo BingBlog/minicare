@@ -11,6 +11,7 @@ import formula from './formula.svg'
 import growth from './growth.svg'
 import health from './health.svg'
 import medical from './medical.svg'
+import medication from './medication.svg'
 import sleep from './sleep.svg'
 import supplement from './supplement.svg'
 import symptom from './symptom.svg'
@@ -28,6 +29,7 @@ export const RECORD_TYPE_ICON_SRC: Record<string, string> = {
   health,
   temperature,
   medical,
+  medication,
   symptom,
   supplement,
 }

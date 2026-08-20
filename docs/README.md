@@ -44,6 +44,8 @@ minicare/docs/
 │   ├── F10-medical.md     ← 医疗记录
 │   ├── F11-report.md      ← 统计报告（ECharts 截图模式）
 │   ├── F12-family.md      ← 家庭共享（手机号邀请）
+│   ├── F13-share.md       ← 微信小程序分享
+│   ├── F14-medication.md  ← 用药记录（独立模块：药品清单+服药打卡）
 │   ├── UX-quickactions-redesign.md ← 首页快捷操作设计
 │   └── UX-records-list-redesign.md ← 记录列表展示规范
 └── cr-mvp.md              ← 代码评审报告
@@ -68,6 +70,7 @@ minicare/docs/
 | [F11-report.md](features/F11-report.md) | 统计报告 | 已完成 |
 | [F12-family.md](features/F12-family.md) | 家庭共享 | 已完成 |
 | [F13-share.md](features/F13-share.md) | 微信小程序分享功能 | 待开发 |
+| [F14-medication.md](features/F14-medication.md) | 用药记录（独立模块） | 已完成 |
 
 ---
 

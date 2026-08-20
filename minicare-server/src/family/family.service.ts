@@ -512,6 +512,13 @@ export class FamilyService {
           'diagnosis', diagnosis
         ) AS detail
       FROM medical_record WHERE baby_id = ? AND visit_date = ?
+      UNION ALL
+      SELECT 'medication' AS type, id, record_time AS time, note,
+        JSON_OBJECT(
+          'medication_name', medication_name,
+          'dose', dose
+        ) AS detail
+      FROM medication_record WHERE baby_id = ? AND deleted_at IS NULL AND DATE(record_time) = ?
       ORDER BY time DESC
     `;
 
@@ -527,6 +534,7 @@ export class FamilyService {
       babyId, dateStr,  // symptom
       babyId, dateStr,  // growth
       babyId, dateStr,  // medical
+      babyId, dateStr,  // medication
     ];
 
     const [rows] = await this.db.execute<any[]>(sql, params);

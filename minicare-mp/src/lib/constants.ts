@@ -19,6 +19,7 @@ export const RECORD_TYPE_CFG: Record<string, RecordTypeCfg> = {
   growth: { label: '生长', bg: '#E4F8F0', color: '#2A9E70' },
   symptom: { label: '表现', bg: '#FFF9E0', color: '#E8960A' },
   medical: { label: '医疗', bg: '#E6EEFF', color: '#2E60C8' },
+  medication: { label: '用药', bg: '#F0EFFF', color: '#6C5CE7' },
   supplement: { label: '营养素', bg: '#FFF8E0', color: '#E8A000' },
 }
 
@@ -35,24 +36,25 @@ export const ALL_QUICK_ACTION_KEYS = [
   'health',
   'growth',
   'medical',
+  'medication',
 ] as const
 
 export const GLOBAL_FAB_GROUPS: { label: string; keys: string[] }[] = [
   { label: '喂食', keys: ['formula', 'breast', 'food'] },
   { label: '日常护理', keys: ['diaper', 'sleep', 'temperature', 'symptom'] },
   { label: '日常补录', keys: ['supplement', 'activity'] },
-  { label: '健康档案', keys: ['health', 'growth', 'medical'] },
+  { label: '健康档案', keys: ['health', 'growth', 'medical', 'medication'] },
 ]
 
 export const FAB_GROUPS: { label: string; keys: string[] }[] = [
   { label: '日常补录', keys: ['supplement', 'activity'] },
-  { label: '健康档案', keys: ['health', 'growth', 'medical'] },
+  { label: '健康档案', keys: ['health', 'growth', 'medical', 'medication'] },
 ]
 
 export const DEFAULT_QUICKACTION_KEYS_BY_AGE: Record<string, string[]> = {
   '0-5m': ['formula', 'breast', 'diaper', 'sleep', 'temperature', 'symptom', 'supplement', 'activity'],
-  '6-11m': ['formula', 'breast', 'food', 'diaper', 'sleep', 'temperature', 'symptom', 'supplement'],
-  '12m+': ['food', 'breast', 'formula', 'sleep', 'diaper', 'temperature', 'symptom', 'activity'],
+  '6-11m': ['formula', 'breast', 'food', 'diaper', 'sleep', 'temperature', 'symptom', 'medication'],
+  '12m+': ['food', 'breast', 'formula', 'sleep', 'diaper', 'temperature', 'medication', 'activity'],
 }
 
 export const FAB_SUBTITLES: Record<string, string> = {
@@ -68,6 +70,7 @@ export const FAB_SUBTITLES: Record<string, string> = {
   symptom: '精神状态 · 心情状态',
   growth: '身高 · 体重 · 头围',
   medical: '儿保 · 过敏检查 · 就诊',
+  medication: '常用药清单 · 单次服药打卡',
 }
 
 /** Home 页内记录入口的目标路由（与 web RECORD_ROUTES 对齐）。 */
@@ -86,6 +89,7 @@ export const HOME_RECORD_ROUTES: Record<string, string> = {
   growth: '/records/form/growth',
   medical: '/records/form/medical',
   symptom: '/records/form/symptom',
+  medication: '/records/form/medication',
 }
 
 /**
@@ -103,6 +107,7 @@ export const HOME_RECORD_MP_ROUTES: Record<string, string> = {
   '/records/form/medical': '/pages/records/medical/index',
   '/records/form/activity': '/pages/records/activity/index',
   '/records/form/symptom': '/pages/records/symptom/index',
+  '/records/form/medication': '/pages/records/medication/index',
 }
 
 export const SLEEP_PERIOD_LABELS: Record<string, string> = {

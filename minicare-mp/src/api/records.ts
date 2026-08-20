@@ -23,6 +23,8 @@ import { medicalApi } from './medical'
 import type { MedicalRecord, MedicalListParams, CreateMedicalDto, UpdateMedicalDto } from './medical'
 import { symptomApi } from './symptom'
 import type { SymptomRecord, SymptomListParams, CreateSymptomDto, UpdateSymptomDto } from './symptom'
+import { medicationApi } from './medication'
+import type { MedicationRecord, CreateMedicationRecordDto, UpdateMedicationRecordDto } from './medication'
 
 function withType<T extends { id: string }>(type: string, items: T[]): T[] {
   return items.map((r) => ({ ...r, type }))
@@ -204,6 +206,19 @@ export const recordsApi = {
     getOne: (familyId: string, id: string) =>
       symptomApi.getOne(familyId, id),
   },
+  medication: {
+    list: (familyId: string, babyId: string, date?: string) =>
+      medicationApi.listRecords(familyId, babyId, date)
+        .then((items) => withType('medication', items)),
+    create: (familyId: string, data: CreateMedicationRecordDto) =>
+      medicationApi.createRecord(familyId, data),
+    update: (familyId: string, id: string, data: UpdateMedicationRecordDto) =>
+      medicationApi.updateRecord(familyId, id, data),
+    remove: (familyId: string, id: string) =>
+      medicationApi.removeRecord(familyId, id),
+    getOne: (familyId: string, id: string) =>
+      medicationApi.getRecord(familyId, id),
+  },
 }
 
 export type {
@@ -215,6 +230,7 @@ export type {
   GrowthRecord, GrowthListParams, CreateGrowthDto, UpdateGrowthDto,
   MedicalRecord, MedicalListParams, CreateMedicalDto, UpdateMedicalDto,
   SymptomRecord, SymptomListParams, CreateSymptomDto, UpdateSymptomDto,
+  MedicationRecord, CreateMedicationRecordDto, UpdateMedicationRecordDto,
 }
 
 // Re-export for backward compatibility

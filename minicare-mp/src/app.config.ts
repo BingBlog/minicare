@@ -56,6 +56,10 @@ export default {
       pages: ['index'],
     },
     {
+      root: 'pages/records/medication',
+      pages: ['index'],
+    },
+    {
       root: 'pages/records/food-observation',
       pages: ['index', 'detail'],
     },

@@ -12,6 +12,7 @@ export type HomeRecordType =
   | 'medical'
   | 'supplement'
   | 'symptom'
+  | 'medication'
 
 export interface HomeRecord {
   id: string

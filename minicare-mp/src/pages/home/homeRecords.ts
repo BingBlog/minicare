@@ -160,5 +160,11 @@ export function getTimelineRecordDisplay(record: HomeRecord): TimelineRecordDisp
     return { label: '表现', tags: [mood, spirit].filter(Boolean), summary: '' }
   }
 
+  if (record.type === 'medication') {
+    const name = (d.medication_name as string | undefined) ?? ''
+    const dose = (d.dose as string | undefined) ?? ''
+    return { label: '用药', tags: name ? [name] : [], summary: dose }
+  }
+
   return { label: RECORD_TYPE_CFG[record.type]?.label ?? record.type, tags: [], summary: '' }
 }

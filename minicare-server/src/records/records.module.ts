@@ -10,6 +10,7 @@ import { SymptomModule } from './symptom/symptom.module';
 import { ActivityModule } from './activity/activity.module';
 import { GrowthModule } from './growth/growth.module';
 import { MedicalModule } from './medical/medical.module';
+import { MedicationModule } from './medication/medication.module';
 import { FeedModule } from './feed/feed.module';
 import { FoodObservationModule } from './food-observation/food-observation.module';
 
@@ -34,6 +35,7 @@ import { FoodObservationModule } from './food-observation/food-observation.modul
     ActivityModule,
     GrowthModule,
     MedicalModule,
+    MedicationModule,
     FeedModule,
     FoodObservationModule,
   ],

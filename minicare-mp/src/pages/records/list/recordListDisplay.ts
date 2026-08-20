@@ -238,6 +238,13 @@ export function getRecordListParts(
       return { label: '医疗', tags }
     }
 
+    case 'medication': {
+      const name = d.medication_name as string | undefined
+      const note = d.note as string | undefined
+      const tags = [name, note].filter(Boolean) as string[]
+      return { label: '用药', tags }
+    }
+
     default: {
       return { label: RECORD_TYPE_CFG[type]?.label ?? type, tags: [] }
     }
@@ -312,6 +319,14 @@ export function getRecordSummary(
     case 'diaper':
     case 'symptom':
     case 'medical':
+      return null
+
+    case 'medication': {
+      const dose = d.dose as string | undefined
+      if (dose) return { value: dose, theme: 'purple' }
+      return null
+    }
+
     default:
       return null
   }

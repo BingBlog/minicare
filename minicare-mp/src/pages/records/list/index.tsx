@@ -56,6 +56,7 @@ const FILTER_MORE: { key: string; label: string }[] = [
   { key: 'health', label: '健康' },
   { key: 'symptom', label: '表现' },
   { key: 'medical', label: '医疗' },
+  { key: 'medication', label: '用药' },
 ]
 
 /** 记录类型 → MP 表单页路由（仅已迁移的独立页面，不经过中间分发页） */
@@ -68,6 +69,7 @@ const RECORD_FORM_MP_ROUTES: Record<string, string> = {
   activity: '/pages/records/activity/index',
   symptom: '/pages/records/symptom/index',
   medical: '/pages/records/medical/index',
+  medication: '/pages/records/medication/index',
 }
 
 /** 记录子类型 → 已迁移 MP 表单页路由（用于已迁移的 feeding 等类型） */
