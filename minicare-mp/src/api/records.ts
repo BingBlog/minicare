@@ -82,6 +82,8 @@ export interface FeedListResponse {
   items: FeedItem[]
   nextCursor: string | null
   hasMore: boolean
+  /** 符合条件的记录总数（仅首屏返回） */
+  totalCount?: number
 }
 
 export const recordsApi = {

@@ -32,6 +32,8 @@ export interface FeedListResponse {
   items: FeedItem[];
   nextCursor: string | null;
   hasMore: boolean;
+  /** 符合条件的记录总数（仅首屏请求返回，翻页请求为 undefined） */
+  totalCount?: number;
 }
 
 @Injectable()
@@ -42,14 +44,35 @@ export class FeedService {
 
   async list(query: FeedQueryDto): Promise<FeedListResponse> {
     const filterDate = this.resolveFilterDate(query.date);
+    let result: FeedListResponse;
     if (filterDate) {
-      return this.listSingleDate(query, filterDate);
-    }
-    if (this.feedReadSource !== 'union') {
+      result = await this.listSingleDate(query, filterDate);
+    } else if (this.feedReadSource !== 'union') {
       const timelineResult = await this.tryListFromTimeline(query, filterDate);
-      if (timelineResult) return timelineResult;
+      result = timelineResult ?? (await this.listFromUnion(query, filterDate));
+    } else {
+      result = await this.listFromUnion(query, filterDate);
     }
-    return this.listFromUnion(query, filterDate);
+    // 仅首屏（无 cursor）返回总数，供前端展示"共 N 条"
+    if (!query.cursor) {
+      result.totalCount = await this.countTotal(query, filterDate);
+    }
+    return result;
+  }
+
+  /** 统计符合条件（宝宝/类型/日期）的记录总数（基于 timeline 物化表） */
+  private async countTotal(query: FeedQueryDto, filterDate?: string): Promise<number> {
+    const type = (query.type ?? 'all') as FeedFilterType;
+    const params: Array<string | number> = [query.baby_id];
+    const whereClauses = ['baby_id = ?'];
+    if (type !== 'all') {
+      whereClauses.push('source_type = ?');
+      params.push(type);
+    }
+    this.appendDateRangeToWhere(whereClauses, params, filterDate);
+    const sql = `SELECT COUNT(*) AS n FROM record_timeline WHERE ${whereClauses.join(' AND ')}`;
+    const [rows] = await this.db.query<any[]>(sql, params);
+    return Number(rows[0]?.n ?? 0);
   }
 
   /**

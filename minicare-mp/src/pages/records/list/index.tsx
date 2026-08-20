@@ -141,6 +141,7 @@ export default function RecordsListPage() {
   const [loading, setLoading] = useState(true)
   const [loadingMore, setLoadingMore] = useState(false)
   const [hasMore, setHasMore] = useState(false)
+  const [totalCount, setTotalCount] = useState<number | null>(null)
   const [showMore, setShowMore] = useState(false)
   const [selectedRecord, setSelectedRecord] = useState<RecordItem | null>(null)
   const [actionOpen, setActionOpen] = useState(false)
@@ -214,6 +215,7 @@ export default function RecordsListPage() {
     hasMoreRef.current = false
     loadingMoreRef.current = false
     setHasMore(false)
+    setTotalCount(null)
   }, [])
 
   const handleDateFilterChange = useCallback((date: string | null) => {
@@ -248,7 +250,10 @@ export default function RecordsListPage() {
         nextCursorRef.current = dateFilter ? null : feedRes.nextCursor
         const more = dateFilter ? false : (feedRes.hasMore && !!feedRes.nextCursor)
         hasMoreRef.current = more
-        if (!cancelled) setHasMore(more)
+        if (!cancelled) {
+          setHasMore(more)
+          if (feedRes.totalCount != null) setTotalCount(feedRes.totalCount)
+        }
 
         allRecs.sort(
           (a, b) => compareTime(getRecordTime(b), getRecordTime(a)),
@@ -423,7 +428,9 @@ export default function RecordsListPage() {
           <View className='records-filter__title-wrap'>
             <Text className='records-filter__title'>宝宝记录</Text>
             {!loading && (
-              <Text className='records-filter__count'>共 {records.length} 条</Text>
+              <Text className='records-filter__count'>
+                {totalCount != null ? `共 ${totalCount} 条` : `共 ${records.length} 条`}
+              </Text>
             )}
           </View>
           <RecordsDateSelector value={dateFilter} onChange={handleDateFilterChange} />
