@@ -16,7 +16,7 @@
 
 > `cloudbase/SKILL.md` is a **router** — it dispatches to 20+ sub-skills under `references/` (e.g. `auth-web`, `cloudrun-development`). Always read the router first, then follow its routing table to the correct sub-skill. Never call CloudBase APIs without going through the skill chain.
 
-These 5 project rules are referenced by `opencode.json` and auto-apply to matching file patterns — you do not need to manually read them, but their domain rules are binding:
+These 6 project rules are referenced by `opencode.json` and auto-apply to matching file patterns — you do not need to manually read them, but their domain rules are binding:
 
 | Rule file | Scope |
 |---|---|
@@ -25,6 +25,7 @@ These 5 project rules are referenced by `opencode.json` and auto-apply to matchi
 | `.agents/rules/deploy-conventions.mdc` | Build config, deploy scripts, Dockerfile |
 | `.agents/rules/frontend-coding.mdc` | Icons, enum labels, dialog rules (web + mp) |
 | `.agents/rules/miniapp-development.mdc` | Miniprogram platform constraints |
+| `.agents/rules/mp-preview.mdc` | CI preview (miniprogram-ci, IP whitelist, proxy handling) |
 
 > ⚠️ **`.agents/` 是 rules 和 skills 的唯一数据源**。`.cursor/`、`.trae/`、`.opencode/` 中的 rules 和 skills 均为 symlink 指向 `.agents/`，**禁止直接编辑这些目录中的文件**。所有修改必须通过 `.agents/rules/` 或 `.agents/skills/` 路径进行。
 
@@ -112,6 +113,7 @@ npm run build:prod         # tsc -b + vite build (production mode)
 - **Enum labels** centralized in `src/lib/constants.ts` (both mp and web). Never define label maps locally in components.
 - **No `window.confirm/alert/prompt`** (web). Use inline bottom-sheet confirm dialogs. In miniprogram, use `Taro.showModal` or custom components.
 - **Timezone**: 前端传递时间给后端时，绝不使用 `new Date().toISOString()`（输出 UTC 导致 8 小时偏差），必须使用 `dayjs().format('YYYY-MM-DDTHH:mm:ss')` 输出本地时间字符串（不带 Z 后缀）。
+- **Soft delete（软删除原则，硬性约束）**: 所有删除操作一律软删除，**禁止物理 DELETE 业务数据**（Migration 012）。删除 = 标记 `deleted_at = NOW()`，所有查询必须带 `deleted_at IS NULL` 过滤。已落地：`baby_profile`/`family_group` 有 `deleted_at` 列；`family_member` 复用 `status='left'`。新增删除功能时必须：① 目标表加 `deleted_at`（或复用 status）② 查询过滤 ③ 勿删关联记录。例外：测试数据清理、已软删数据的兜底清理可物理删除。
 
 ## Deploy
 

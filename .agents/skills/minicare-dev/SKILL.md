@@ -106,7 +106,7 @@ minicare-server/src/
 
 **唯一权威来源**：`minicare-server/migrations/` 目录，按文件名顺序执行。
 
-> **当前最新迁移**：`007_diaper_butt_condition.sql`（001~007 共 7 个文件）
+> **当前最新迁移**：`012_soft_delete.sql`（001~012 共 12 个文件）
 > 新增迁移文件后，**必须更新本行的「当前最新迁移」字段**。
 
 | 文件 | 变更内容 |
@@ -118,6 +118,11 @@ minicare-server/src/
 | `005_health_structured_fields.sql` | 健康记录结构化字段 |
 | `006_activity_type_varchar.sql` | activity_type 改为 VARCHAR |
 | `007_diaper_butt_condition.sql` | diaper_record 新增 butt_condition 列 |
+| `008_schema_redesign.sql` | 全库重设计：feeding 拆 4 表、枚举 VARCHAR 化 |
+| `009_record_timeline.sql` | record_timeline 物化表 + 数据回填 |
+| `010_sleep_midnight_split.sql` | 睡眠跨午夜拆分 |
+| `011_food_observation_workflow.sql` | 辅食排敏任务工作流（food_observation_log 等） |
+| `012_soft_delete.sql` | **软删除：baby_profile/family_group 加 deleted_at，移除单宝宝唯一键** |
 
 ---
 
@@ -252,6 +257,15 @@ read_file("docs/features/F03-feeding.md")  // 以饮食记录为例
 
 - **仅医疗记录模块**（`MedicalFormPage.tsx` + `medical.service.ts`）支持拍照 OCR 文字提取
 - 其他所有模块的照片输入**仅做附件留档，不做 OCR**
+
+### 软删除原则（硬性约束，Migration 012）
+
+- **所有删除操作一律软删除，禁止物理 DELETE 业务数据**——保留历史数据，避免误删导致数据丢失
+- 删除 = 标记 `deleted_at = NOW()`；`family_member` 复用 `status='left'`
+- **查询必须过滤**：所有按 baby/family 的查询带 `deleted_at IS NULL`；FamilyMemberGuard 已 JOIN `family_group.deleted_at IS NULL`（家庭解散后成员访问被拦截）
+- 新增删除功能时：① 目标表加 `deleted_at`（或复用 status）② 查询过滤 ③ 勿删关联记录
+- 已落地示例：`BabyService.deleteBaby` / `FamilyService.deleteFamily`（仅标记，不物理删除）
+- 例外：测试数据清理可物理删除
 
 ### 视觉核心规范（快速记忆）
 

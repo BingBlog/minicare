@@ -296,6 +296,76 @@ export default function ProfilePage() {
     })
   }
 
+  // ── 删除宝宝（仅创建者，软删除） ──────────────────────────────
+  const handleDeleteBaby = async () => {
+    if (!currentBaby) return
+    Taro.showModal({
+      title: '删除宝宝档案',
+      content: `删除「${currentBaby.name}」后，ta 的档案和全部记录（喂养、睡眠、尿布、健康等）将不再显示，历史数据将归档保留，确定删除吗？`,
+      confirmText: '删除',
+      confirmColor: '#F05060',
+      cancelText: '取消',
+      success: async (res) => {
+        if (!res.confirm) return
+        try {
+          await babyApi.remove(currentBaby.family_id, currentBaby.id)
+          showToast('宝宝档案已删除')
+          setEditOpen(false)
+          const remaining = allBabies.filter((b) => b.id !== currentBaby.id)
+          setAllBabies(remaining)
+          if (remaining.length > 0) {
+            handleSwitchBaby(remaining[0])
+          } else {
+            setCurrentBaby(null)
+            setCurrentBabyId('')
+            setCurrentFamilyId('')
+            Taro.removeStorageSync('minicare_baby')
+            Taro.removeStorageSync('minicare_current_baby_id')
+            Taro.removeStorageSync('minicare_current_family_id')
+          }
+        } catch (e) {
+          showToast(e instanceof Error ? e.message : '操作失败')
+        }
+      },
+    })
+  }
+
+  // ── 解散家庭（仅创建者，软删除） ──────────────────────────────
+  const handleDeleteFamily = async () => {
+    if (!currentBaby) return
+    const familyName = currentBaby.family_name || '该家庭'
+    Taro.showModal({
+      title: '解散家庭',
+      content: `解散「${familyName}」后，家庭内所有宝宝档案和全部记录将不再显示，历史数据将归档保留，确定解散吗？`,
+      confirmText: '解散',
+      confirmColor: '#F05060',
+      cancelText: '取消',
+      success: async (res) => {
+        if (!res.confirm) return
+        try {
+          await familyApi.remove(currentBaby.family_id)
+          showToast('家庭已解散')
+          setMembersOpen(false)
+          const remaining = allBabies.filter((b) => b.family_id !== currentBaby.family_id)
+          setAllBabies(remaining)
+          if (remaining.length > 0) {
+            handleSwitchBaby(remaining[0])
+          } else {
+            setCurrentBaby(null)
+            setCurrentBabyId('')
+            setCurrentFamilyId('')
+            Taro.removeStorageSync('minicare_baby')
+            Taro.removeStorageSync('minicare_current_baby_id')
+            Taro.removeStorageSync('minicare_current_family_id')
+          }
+          setBabyPickerOpen(false)
+        } catch (e) {
+          showToast(e instanceof Error ? e.message : '操作失败')
+        }
+      },
+    })
+  }
+
   // ── SettingsGroup 数据 ────────────────────────────────────────
   const activeCount = members.filter((m) => m.status === 'active' || m.status === undefined).length
   const familyRows: SettingsRow[] = [
@@ -480,6 +550,8 @@ export default function ProfilePage() {
         onSave={handleSave}
         onCancel={() => setEditOpen(false)}
         onCdcHelp={() => showToast('跳转 CDC 评分标准页面')}
+        isOwner={currentBaby?.family_role === 'owner'}
+        onDelete={handleDeleteBaby}
       />
 
 
@@ -488,9 +560,10 @@ export default function ProfilePage() {
         open={membersOpen}
         members={members}
         loading={membersLoading}
-        isOwner={currentUserRole === 'owner'}
+        isOwner={currentUserRole === 'owner' || currentBaby?.family_role === 'owner'}
         onInviteByPhone={handleInviteByPhone}
         onRemoveMember={handleRemoveMember}
+        onDeleteFamily={handleDeleteFamily}
         onClose={() => setMembersOpen(false)}
       />
 

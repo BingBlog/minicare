@@ -1,4 +1,5 @@
 import {
+  ForbiddenException,
   Inject,
   Injectable,
   NotFoundException,
@@ -47,7 +48,7 @@ export class BabyService {
               allergy_types, allergy_level,
               birth_weight_g, birth_height_cm,
               avatar_url, created_at
-       FROM baby_profile WHERE family_id = ? ORDER BY created_at ASC`,
+       FROM baby_profile WHERE family_id = ? AND deleted_at IS NULL ORDER BY created_at ASC`,
       [familyId],
     );
     return rows.map((baby: any) => {
@@ -67,7 +68,7 @@ export class BabyService {
               allergy_types, allergy_level,
               birth_weight_g, birth_height_cm,
               avatar_url, created_at
-       FROM baby_profile WHERE family_id = ? LIMIT 1`,
+       FROM baby_profile WHERE family_id = ? AND deleted_at IS NULL LIMIT 1`,
       [familyId],
     );
     if (rows.length === 0) throw new NotFoundException('尚未创建宝宝档案');
@@ -93,7 +94,7 @@ export class BabyService {
               allergy_types, allergy_level,
               birth_weight_g, birth_height_cm,
               avatar_url, created_at
-       FROM baby_profile WHERE id = ? AND family_id = ?`,
+       FROM baby_profile WHERE id = ? AND family_id = ? AND deleted_at IS NULL`,
       [babyId, familyId],
     );
     if (rows.length === 0) throw new NotFoundException('宝宝档案不存在');
@@ -123,6 +124,7 @@ export class BabyService {
        JOIN family_member fm ON bp.family_id = fm.family_id
        JOIN family_group fg ON bp.family_id = fg.id
        WHERE fm.user_id = ? AND fm.status = 'active'
+         AND bp.deleted_at IS NULL AND fg.deleted_at IS NULL
        ORDER BY bp.created_at ASC`,
       [userId],
     );
@@ -158,5 +160,55 @@ export class BabyService {
     );
 
     return this.getBabyById(babyId, familyId);
+  }
+
+  /**
+   * 删除宝宝档案（软删除，仅 Owner 可操作）
+   *
+   * 原则：全项目删除一律软删除，保留历史数据。
+   * 仅标记 baby_profile.deleted_at = NOW()，该宝宝全部记录（feeding/sleep/.../
+   * record_timeline 等）原样保留在库中；所有查询按 deleted_at IS NULL 过滤，
+   * 前端不再展示。家庭解散时对家庭下所有宝宝执行同样的标记（family.service）。
+   */
+  async deleteBaby(babyId: string, familyId: string, operatorUserId: string) {
+    const conn = await this.db.getConnection();
+    try {
+      await conn.beginTransaction();
+
+      // 校验宝宝属于该家庭
+      const [babyRows] = await conn.execute<any[]>(
+        'SELECT id FROM baby_profile WHERE id = ? AND family_id = ? AND deleted_at IS NULL',
+        [babyId, familyId],
+      );
+      if (babyRows.length === 0) {
+        throw new NotFoundException('宝宝档案不存在');
+      }
+
+      // 校验当前用户是该家庭 owner
+      const [memberRows] = await conn.execute<any[]>(
+        `SELECT fm.role
+         FROM family_member fm
+         JOIN family_group fg ON fg.id = fm.family_id AND fg.deleted_at IS NULL
+         WHERE fm.family_id = ? AND fm.user_id = ? AND fm.status = 'active'`,
+        [familyId, operatorUserId],
+      );
+      if (memberRows.length === 0 || memberRows[0].role !== 'owner') {
+        throw new ForbiddenException('仅家庭创建者可删除宝宝档案');
+      }
+
+      // 软删除：标记时间，不物理删除任何数据
+      await conn.execute(
+        'UPDATE baby_profile SET deleted_at = NOW() WHERE id = ?',
+        [babyId],
+      );
+
+      await conn.commit();
+      return { success: true };
+    } catch (err) {
+      await conn.rollback();
+      throw err;
+    } finally {
+      conn.release();
+    }
   }
 }

@@ -562,6 +562,26 @@
   font-weight: 600;
 }
 
+// 删除宝宝档案（危险操作，仅创建者可见）
+.edit-baby-delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(100% - 32px);
+  margin: 16px 16px 0;
+  padding: 13px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #f05060;
+  border-radius: 16px;
+  background: #fff0f0;
+  transition: transform 0.1s;
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
 // ── MembersModal ──────────────────────────────────────────────────
 
 .members-overlay {
@@ -792,6 +812,26 @@
   border-radius: 16px;
   background: #f5f0f2;
   color: #9a8090;
+  transition: transform 0.1s;
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+// 解散家庭（危险操作，仅创建者可见）
+.members-delete-family {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(100% - 32px);
+  margin: 0 16px 4px;
+  padding: 13px 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #f05060;
+  border-radius: 16px;
+  background: #fff0f0;
   transition: transform 0.1s;
 
   &:active {

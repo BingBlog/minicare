@@ -126,6 +126,21 @@ export class FamilyController {
     return this.familyService.leaveFamily(familyId, userId);
   }
 
+  /**
+   * 解散/删除家庭（级联删除宝宝及全部记录）
+   * 仅 Owner 可操作，删除后不可恢复
+   */
+  @Delete(':familyId')
+  @UseGuards(FamilyMemberGuard, RoleGuard)
+  @MinRole(FamilyRole.OWNER)
+  @ApiOperation({ summary: '解散家庭（级联删除全部宝宝和记录，仅创建者可操作）' })
+  deleteFamily(
+    @Param('familyId') familyId: string,
+    @CurrentUser() userId: string,
+  ) {
+    return this.familyService.deleteFamily(familyId, userId);
+  }
+
   @Get(':familyId/records/today')
   @UseGuards(FamilyMemberGuard, RoleGuard)
   @ApiOperation({ summary: '获取指定日期所有记录聚合（时间轴），date 默认今日，格式 YYYY-MM-DD' })

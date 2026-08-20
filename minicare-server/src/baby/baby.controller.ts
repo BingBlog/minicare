@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -55,5 +56,20 @@ export class BabyController {
     @Body() dto: Partial<CreateBabyDto>,
   ) {
     return this.babyService.updateBaby(babyId, familyId, dto);
+  }
+
+  /**
+   * 删除宝宝档案（级联删除全部记录）
+   * 仅 Owner 可操作
+   */
+  @Delete(':babyId')
+  @MinRole(FamilyRole.OWNER)
+  @ApiOperation({ summary: '删除宝宝档案（级联删除全部记录，仅创建者可操作）' })
+  deleteBaby(
+    @Param('familyId') familyId: string,
+    @Param('babyId') babyId: string,
+    @CurrentUser() userId: string,
+  ) {
+    return this.babyService.deleteBaby(babyId, familyId, userId);
   }
 }

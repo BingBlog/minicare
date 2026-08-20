@@ -28,4 +28,9 @@ export const babyApi = {
       method: 'PATCH',
       data,
     }),
+  remove: (familyId: string, babyId: string) =>
+    request<{ success: boolean }>(
+      `/api/family/${familyId}/baby/${babyId}`,
+      { method: 'DELETE' },
+    ),
 }

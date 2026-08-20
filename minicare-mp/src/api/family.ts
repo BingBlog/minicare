@@ -53,4 +53,9 @@ export const familyApi = {
       `/api/family/${familyId}/leave`,
       { method: 'POST' },
     ),
+  remove: (familyId: string) =>
+    request<{ success: boolean }>(
+      `/api/family/${familyId}`,
+      { method: 'DELETE' },
+    ),
 }

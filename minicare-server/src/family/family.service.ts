@@ -57,7 +57,7 @@ export class FamilyService {
       `SELECT fg.id, fg.name, fg.created_at, fm.role
        FROM family_group fg
        JOIN family_member fm ON fg.id = fm.family_id
-       WHERE fm.user_id = ? AND fm.status = 'active'
+       WHERE fm.user_id = ? AND fm.status = 'active' AND fg.deleted_at IS NULL
        ORDER BY fg.created_at DESC`,
       [userId],
     );
@@ -169,7 +169,7 @@ export class FamilyService {
       `SELECT fm.id, fm.family_id, fg.name AS family_name,
               inviter.nickname AS inviter_name
        FROM family_member fm
-       JOIN family_group fg ON fm.family_id = fg.id
+       JOIN family_group fg ON fm.family_id = fg.id AND fg.deleted_at IS NULL
        LEFT JOIN user_account inviter ON fm.invited_by = inviter.id
        WHERE fm.invite_phone = ? AND fm.status = 'pending'
          AND NOT EXISTS (
@@ -315,6 +315,65 @@ export class FamilyService {
     return { success: true };
   }
 
+  /**
+   * 解散/删除家庭（软删除，仅 Owner 可操作）
+   *
+   * 原则：全项目删除一律软删除，保留历史数据。事务内仅做标记：
+   * 1. family_group.deleted_at = NOW()（家庭不可见）
+   * 2. 家庭下所有宝宝 baby_profile.deleted_at = NOW()（宝宝不可见，记录全部保留）
+   * 3. 所有成员 family_member.status = 'left'（复用既有软删除模式）
+   *
+   * 所有记录数据原样保留在库中；查询统一按 deleted_at IS NULL / status='active' 过滤。
+   * FamilyMemberGuard 同时校验 fg.deleted_at IS NULL，解散后成员的所有接口访问均被拦截。
+   */
+  async deleteFamily(familyId: string, operatorUserId: string) {
+    const conn = await this.db.getConnection();
+    try {
+      await conn.beginTransaction();
+
+      // 校验家庭存在且当前用户是 owner（owner 本身也是 active 成员）
+      const [memberRows] = await conn.execute<any[]>(
+        `SELECT fm.role
+         FROM family_member fm
+         JOIN family_group fg ON fg.id = fm.family_id AND fg.deleted_at IS NULL
+         WHERE fm.family_id = ? AND fm.user_id = ? AND fm.status = 'active'`,
+        [familyId, operatorUserId],
+      );
+      if (memberRows.length === 0) {
+        throw new NotFoundException('您不是该家庭的成员');
+      }
+      if (memberRows[0].role !== 'owner') {
+        throw new ForbiddenException('仅家庭创建者可删除家庭');
+      }
+
+      // 1. 软删家庭
+      await conn.execute(
+        'UPDATE family_group SET deleted_at = NOW() WHERE id = ?',
+        [familyId],
+      );
+
+      // 2. 软删家庭下所有宝宝（记录数据保留）
+      await conn.execute(
+        'UPDATE baby_profile SET deleted_at = NOW() WHERE family_id = ? AND deleted_at IS NULL',
+        [familyId],
+      );
+
+      // 3. 成员标记为 left（含 pending 邀请；已 left 的不动）
+      await conn.execute(
+        "UPDATE family_member SET status = 'left' WHERE family_id = ? AND status IN ('pending', 'active')",
+        [familyId],
+      );
+
+      await conn.commit();
+      return { success: true };
+    } catch (err) {
+      await conn.rollback();
+      throw err;
+    } finally {
+      conn.release();
+    }
+  }
+
   async createInviteCode(familyId: string): Promise<{ code: string }> {
     const code = Math.random().toString(36).slice(2, 8).toUpperCase();
     await this.db.execute(
@@ -332,9 +391,9 @@ export class FamilyService {
    * 供前端 getRecordSummary() 直接消费，无需额外请求。
    */
   async getTodayRecords(familyId: string, date?: string) {
-    // 先取 baby_id（MVP: 每家庭 1 个宝宝）
+    // 先取 baby_id（MVP: 每家庭 1 个宝宝；软删后不可见）
     const [babies] = await this.db.execute<any[]>(
-      'SELECT id FROM baby_profile WHERE family_id = ? LIMIT 1',
+      'SELECT id FROM baby_profile WHERE family_id = ? AND deleted_at IS NULL LIMIT 1',
       [familyId],
     );
     if (babies.length === 0) return [];
@@ -512,7 +571,7 @@ export class FamilyService {
    */
   async joinByCode(userId: string, code: string) {
     const [rows] = await this.db.execute<any[]>(
-      `SELECT id FROM family_group WHERE invite_code = ?`,
+      `SELECT id FROM family_group WHERE invite_code = ? AND deleted_at IS NULL`,
       [code],
     );
 

@@ -3,7 +3,12 @@
 > 功能 ID：P1-002  
 > 优先级：P1  
 > 状态：**已完成** ✅  
-> 最后更新：2026-05-03（对齐小程序实际实现）
+> 最后更新：2026-08-20（解散家庭改为**软删除**：标记 deleted_at + 成员标 left，保留历史数据，Migration 012）
+>
+> **来源**：MVP-PRD.md §3.2.1  
+> 功能 ID：P1-002  
+> 优先级：P1  
+> 最后同步：2026-08-20（更新：解散家庭改为软删除）
 >
 > **数据库架构**（Migration 008）：role 和 status 均为 VARCHAR 类型。
 > 邀请机制已从"邀请码"升级为"手机号邀请"。
@@ -50,6 +55,23 @@
 | `/api/family/:familyId/invite-by-phone` | POST | Owner | 按手机号邀请成员 |
 | `/api/family/:familyId/members/:memberId` | DELETE | Owner | 移除成员/撤销邀请 |
 | `/api/family/:familyId/records/today` | GET | FamilyMember | 今日记录聚合（首页时间轴） |
+| `/api/family/:familyId` | DELETE | Owner | **解散家庭**（级联删除全部宝宝和记录） |
+
+## 解散家庭
+
+在"家庭成员管理"弹层（`MembersModal`）底部提供「解散家庭」入口，**仅家庭创建者（owner）可见**：
+
+- 点击后弹出二次确认，提示家庭内所有宝宝档案和全部记录将**不再显示，历史数据归档保留**
+- 确认后调用 `DELETE /api/family/:familyId`
+- **软删除原则（Migration 012）**：服务端**事务内仅做标记，不物理删除任何数据**：
+  1. `family_group.deleted_at = NOW()`（家庭不可见）
+  2. 家庭下所有宝宝 `baby_profile.deleted_at = NOW()`（宝宝不可见，记录全部保留）
+  3. 全部成员 `family_member.status = 'left'`（复用既有软删除模式，含 pending 邀请）
+- 所有记录数据原样保留；`FamilyMemberGuard` 校验 `fg.deleted_at IS NULL`，解散后成员访问任何家庭接口均被拦截（403）
+- 删除成功后前端切换到其他家庭；若无其他家庭则清空当前状态
+- 普通 member 调用返回 403（`@MinRole(OWNER)` 拦截）
+
+> 背景：用户被邀请加入其他家庭后，自己创建的家庭已无用，需要能解散；软删除保证误删可恢复、历史数据不丢失。
 
 ## DTO
 
@@ -102,6 +124,9 @@
 - [x] Owner 可移除成员/撤销邀请
 - [x] 非 Owner 不可见管理操作
 - [x] 家庭成员共享所有宝宝记录
+- [x] Owner 可解散家庭（二次确认 + 软删除标记，数据归档保留）
+- [x] 非 Owner（member）调用解散接口返回 403
+- [x] 解散后成员访问家庭接口被拦截（403）
 
 ## 相关文件
 

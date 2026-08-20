@@ -40,7 +40,10 @@ export class FamilyMemberGuard implements CanActivate {
     }
 
     const [rows] = await this.db.execute<any[]>(
-      "SELECT id, role FROM family_member WHERE family_id = ? AND user_id = ? AND status = 'active'",
+      `SELECT fm.id, fm.role
+       FROM family_member fm
+       JOIN family_group fg ON fg.id = fm.family_id AND fg.deleted_at IS NULL
+       WHERE fm.family_id = ? AND fm.user_id = ? AND fm.status = 'active'`,
       [familyId, userId],
     );
 
