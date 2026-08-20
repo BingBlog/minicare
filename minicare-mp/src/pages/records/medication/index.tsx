@@ -350,36 +350,37 @@ export default function MedicationPage() {
             {/* 常用药库 */}
             <Text className='medication-sheet__section-label'>常用药库<Text className='medication-sheet__section-hint'>点击添加</Text></Text>
             <View className='medication-card'>
-              <View className='medication-preset-grid'>
-                {MEDICATION_PRESETS.map((p) => {
-                  const exists = medications.some((m) => m.name === p.name)
-                  return (
-                    <View
-                      key={p.name}
-                      className={`medication-preset-chip${exists ? ' medication-preset-chip--added' : ''}`}
-                      onClick={async () => {
-                        if (exists) {
-                          showToast('已在清单中')
-                          return
-                        }
-                        try {
-                          await medicationApi.create(familyId, { baby_id: babyId, ...p })
-                          showToast('已添加')
-                          await refreshMedications()
-                        } catch (e) {
-                          showToast(e instanceof Error ? e.message : '添加失败')
-                        }
-                      }}
-                    >
-                      <View className='medication-preset-chip__icon'>
-                        <Image src={ICON_PILL} style={{ width: 14, height: 14 }} />
-                      </View>
-                      <Text className='medication-preset-chip__name'>{p.name}</Text>
-                      <Text className='medication-preset-chip__dose'>{exists ? '已添加' : p.default_dose}</Text>
+              {MEDICATION_PRESETS.map((p, i) => {
+                const exists = medications.some((m) => m.name === p.name)
+                return (
+                  <View
+                    key={p.name}
+                    className={`medication-preset-row${i > 0 ? ' medication-preset-row--bordered' : ''}`}
+                    onClick={async () => {
+                      if (exists) {
+                        showToast('已在清单中')
+                        return
+                      }
+                      try {
+                        await medicationApi.create(familyId, { baby_id: babyId, ...p })
+                        showToast('已添加')
+                        await refreshMedications()
+                      } catch (e) {
+                        showToast(e instanceof Error ? e.message : '添加失败')
+                      }
+                    }}
+                  >
+                    <View className='medication-preset-row__icon'>
+                      <Image src={ICON_PILL} style={{ width: 13, height: 13 }} />
                     </View>
-                  )
-                })}
-              </View>
+                    <Text className='medication-preset-row__name'>{p.name}</Text>
+                    <Text className='medication-preset-row__dose'>{p.default_dose}</Text>
+                    <View className={`medication-preset-row__add${exists ? ' medication-preset-row__add--added' : ''}`}>
+                      <Text className='medication-preset-row__add-text'>{exists ? '已添加' : '+ 添加'}</Text>
+                    </View>
+                  </View>
+                )
+              })}
             </View>
 
             {/* 新建/编辑表单 */}

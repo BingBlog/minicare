@@ -236,55 +236,67 @@
   color: #f05060;
 }
 
-.medication-preset-grid {
+// 常用药库（紧凑列表行）
+.medication-preset-row {
   display: flex;
-  flex-wrap: wrap;
-  gap: 9px;
-  padding: 12px 0;
-}
-
-.medication-preset-chip {
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 3px;
-  width: 31.5%;
-  padding: 10px 4px;
-  border-radius: 14px;
-  border: 1.5px solid #ece3e6;
-  background: #fdf9fa;
+  gap: 10px;
+  padding: 8px 0;
 }
 
-.medication-preset-chip--added {
-  border-color: #b8f0d8;
-  background: #effaf4;
+.medication-preset-row--bordered {
+  border-top: 0.5px solid #f5eeef;
 }
 
-.medication-preset-chip__icon {
+.medication-preset-row__icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   border-radius: 8px;
   background: #f0efff;
-  margin-bottom: 2px;
+  flex-shrink: 0;
 }
 
-.medication-preset-chip--added .medication-preset-chip__icon {
-  background: #d9f5e6;
+.medication-preset-row__name {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #3d2b2e;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.medication-preset-chip__name {
+.medication-preset-row__dose {
+  font-size: 12px;
+  color: #9a7e82;
+  flex-shrink: 0;
+}
+
+.medication-preset-row__add {
+  flex-shrink: 0;
+  min-width: 60px;
+  text-align: center;
+  padding: 4px 10px;
+  border-radius: 13px;
+  background: #f0efff;
+}
+
+.medication-preset-row__add-text {
   font-size: 12px;
   font-weight: 600;
-  color: #4a3035;
-  text-align: center;
+  color: #6c5ce7;
 }
 
-.medication-preset-chip__dose {
-  font-size: 11px;
-  color: #9a7e82;
+.medication-preset-row__add--added {
+  background: #effaf4;
+}
+
+.medication-preset-row__add--added .medication-preset-row__add-text {
+  color: #1db954;
 }
 
 // 弹层空态
