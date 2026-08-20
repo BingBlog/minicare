@@ -10,6 +10,7 @@ export const FEED_TYPES = [
   'health',
   'growth',
   'medical',
+  'medication',
   'symptom',
 ] as const;
 

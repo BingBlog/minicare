@@ -310,6 +310,7 @@ export class FeedService {
       this.symptomSql(),
       this.growthSql(),
       this.medicalSql(),
+      this.medicationSql(),
     ];
     return {
       baseSql: parts.join(' UNION ALL '),
@@ -332,6 +333,7 @@ export class FeedService {
       symptom: this.symptomSql(),
       growth: this.growthSql(),
       medical: this.medicalSql(),
+      medication: this.medicationSql(),
     };
     const sql = sqlMap[type];
     const feedingPartCount = 4;
@@ -551,6 +553,22 @@ export class FeedService {
     `;
   }
 
+  private medicationSql(): string {
+    return `
+      SELECT
+        id,
+        'medication' AS type,
+        record_time AS event_time,
+        note,
+        JSON_OBJECT(
+          'medication_name', medication_name,
+          'dose', dose
+        ) AS detail_json
+      FROM medication_record
+      WHERE baby_id = ?
+    `;
+  }
+
   private mapRow(row: any): FeedItem {
     const detail = this.parseDetail(row.detail_json);
     return {
@@ -596,6 +614,7 @@ export class FeedService {
     if (type === 'health') return this.buildHealthSummary(detail);
     if (type === 'growth') return this.buildGrowthSummary(detail);
     if (type === 'medical') return this.buildMedicalSummary(detail);
+    if (type === 'medication') return this.buildMedicationSummary(detail);
     if (type === 'symptom') return this.buildSymptomSummary(detail);
     return { title: '记录' };
   }
@@ -680,6 +699,12 @@ export class FeedService {
   private buildMedicalSummary(detail: Record<string, unknown>): FeedSummary {
     const hospital = String(detail.hospital ?? '');
     return { title: '医疗', tags: hospital ? [hospital] : [], theme: 'purple' };
+  }
+
+  private buildMedicationSummary(detail: Record<string, unknown>): FeedSummary {
+    const name = String(detail.medication_name ?? '');
+    const dose = String(detail.dose ?? '');
+    return { title: '用药', tags: name ? [name] : [], value: dose || undefined, theme: 'purple' };
   }
 
   private buildSymptomSummary(detail: Record<string, unknown>): FeedSummary {
