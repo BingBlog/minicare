@@ -270,3 +270,17 @@
 .medication-sheet__btn--disabled {
   opacity: 0.6;
 }
+
+// 删除药品（危险操作，仅编辑模式显示）
+.medication-sheet__delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 14px 20px 0;
+  padding: 12px 0;
+  border-radius: 14px;
+  background: #fff0f0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #f05060;
+}

@@ -180,6 +180,7 @@ export default function MedicationPage() {
         try {
           await medicationApi.remove(familyId, m.id)
           showToast('药品已删除')
+          if (selectedMedId === m.id) setSelectedMedId('')
           await refreshMedications()
         } catch (e) {
           showToast(e instanceof Error ? e.message : '删除失败')
@@ -406,6 +407,14 @@ export default function MedicationPage() {
                 />
               </View>
             </View>
+
+            {/* 删除药品（仅编辑模式，软删除） */}
+            {editingMed ? (
+              <View className='medication-sheet__delete' onClick={() => handleDeleteMed(editingMed)}>
+                <Image src={ICON_X} style={{ width: 13, height: 13, marginRight: 4 }} />
+                删除药品
+              </View>
+            ) : null}
 
             <View className='medication-sheet__actions'>
               <View
