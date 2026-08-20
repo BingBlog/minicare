@@ -313,11 +313,15 @@ export default function MedicationPage() {
             <Text className='medication-sheet__title'>药品清单</Text>
 
             {/* 药品列表 */}
-            <Text className='medication-sheet__section-label'>已添加（{medications.length}）</Text>
+            <Text className='medication-sheet__section-label'>
+              已添加（{medications.length}）
+              <Text className='medication-sheet__section-hint'>点击可编辑</Text>
+            </Text>
             <View className='medication-card'>
               {medications.length === 0 ? (
-                <View className='medication-no-med'>
-                  <Text className='medication-no-med__text'>暂无药品，从下方药库快速添加</Text>
+                <View className='medication-empty'>
+                  <Image src={ICON_PILL} style={{ width: 34, height: 34, opacity: 0.4 }} />
+                  <Text className='medication-empty__text'>暂无药品，从下方药库快速添加</Text>
                 </View>
               ) : (
                 medications.map((m, i) => (
@@ -325,6 +329,9 @@ export default function MedicationPage() {
                     key={m.id}
                     className={`medication-manage-row${i > 0 ? ' medication-manage-row--bordered' : ''}`}
                   >
+                    <View className='medication-manage-row__icon'>
+                      <Image src={ICON_PILL} style={{ width: 16, height: 16 }} />
+                    </View>
                     <View className='medication-manage-row__info' onClick={() => openEditMed(m)}>
                       <Text className='medication-manage-row__name'>{m.name}</Text>
                       {m.default_dose ? (
@@ -341,7 +348,7 @@ export default function MedicationPage() {
             </View>
 
             {/* 常用药库 */}
-            <Text className='medication-sheet__section-label'>常用药库（点击添加）</Text>
+            <Text className='medication-sheet__section-label'>常用药库<Text className='medication-sheet__section-hint'>点击添加</Text></Text>
             <View className='medication-card'>
               <View className='medication-preset-grid'>
                 {MEDICATION_PRESETS.map((p) => {
@@ -364,6 +371,9 @@ export default function MedicationPage() {
                         }
                       }}
                     >
+                      <View className='medication-preset-chip__icon'>
+                        <Image src={ICON_PILL} style={{ width: 14, height: 14 }} />
+                      </View>
                       <Text className='medication-preset-chip__name'>{p.name}</Text>
                       <Text className='medication-preset-chip__dose'>{exists ? '已添加' : p.default_dose}</Text>
                     </View>

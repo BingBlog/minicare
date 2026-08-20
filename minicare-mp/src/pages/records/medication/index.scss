@@ -162,22 +162,42 @@
 }
 
 .medication-sheet__section-label {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   font-size: 13px;
   font-weight: 600;
   color: #7a5a60;
   margin: 14px 20px 8px;
 }
 
+.medication-sheet__section-hint {
+  font-size: 11px;
+  font-weight: 400;
+  color: #c0a8ad;
+}
+
 // ── 药品管理 ──
 .medication-manage-row {
   display: flex;
   align-items: center;
-  padding: 13px 0;
+  padding: 11px 0;
+  gap: 10px;
 }
 
 .medication-manage-row--bordered {
   border-top: 0.5px solid #f5eeef;
+}
+
+.medication-manage-row__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: #f0efff;
+  flex-shrink: 0;
 }
 
 .medication-manage-row__info {
@@ -185,6 +205,7 @@
   display: flex;
   align-items: baseline;
   gap: 8px;
+  min-width: 0;
 }
 
 .medication-manage-row__name {
@@ -202,8 +223,8 @@
 .medication-manage-row__delete {
   display: flex;
   align-items: center;
-  gap: 2px;
-  padding: 5px 10px;
+  gap: 3px;
+  padding: 6px 11px;
   border-radius: 10px;
   background: #fff0f0;
   flex-shrink: 0;
@@ -218,7 +239,7 @@
 .medication-preset-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 9px;
   padding: 12px 0;
 }
 
@@ -226,9 +247,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
-  padding: 8px 14px;
-  border-radius: 12px;
+  gap: 3px;
+  width: 31.5%;
+  padding: 10px 4px;
+  border-radius: 14px;
   border: 1.5px solid #ece3e6;
   background: #fdf9fa;
 }
@@ -238,15 +260,45 @@
   background: #effaf4;
 }
 
+.medication-preset-chip__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  background: #f0efff;
+  margin-bottom: 2px;
+}
+
+.medication-preset-chip--added .medication-preset-chip__icon {
+  background: #d9f5e6;
+}
+
 .medication-preset-chip__name {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   color: #4a3035;
+  text-align: center;
 }
 
 .medication-preset-chip__dose {
   font-size: 11px;
   color: #9a7e82;
+}
+
+// 弹层空态
+.medication-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 22px 0;
+}
+
+.medication-empty__text {
+  font-size: 12px;
+  color: #c0a8ad;
 }
 
 .medication-manage__input {
