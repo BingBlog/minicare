@@ -67,8 +67,16 @@ alwaysApply: false
 - 对改动文件执行 lints 检查，确保无新增诊断。
 - 发布前确认主包体积不超 2MB，总包不超 20MB。
 
+## CI 预览（无需开发者工具）
+
+- 使用 `miniprogram-ci` CLI 实现构建 + 预览二维码生成，无需微信开发者工具 GUI
+- 命令：`cd minicare-mp && npm run preview`（production）或 `npm run preview:staging`
+- 预览前**必须关闭 Clash 系统代理**，脚本已内置 IPv4 强制 + 代理清除
+- 二维码输出到 `.preview/` 目录（不入 git），微信扫码即可预览开发版
+- IP 白名单需在微信公众平台配置，详见 `.agents/rules/mp-preview.mdc`
+
 ## 发布流程
 
 1. `npm run build:weapp` 生产构建
-2. 微信开发者工具上传代码
+2. 微信开发者工具上传代码（或通过 CI 预览先行验证）
 3. 微信公众平台提交审核 → 发布正式版

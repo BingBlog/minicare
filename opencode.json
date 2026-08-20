@@ -5,6 +5,7 @@
     ".agents/rules/cloudbase-conventions.mdc",
     ".agents/rules/deploy-conventions.mdc",
     ".agents/rules/frontend-coding.mdc",
-    ".agents/rules/miniapp-development.mdc"
+    ".agents/rules/miniapp-development.mdc",
+    ".agents/rules/mp-preview.mdc"
   ]
 }

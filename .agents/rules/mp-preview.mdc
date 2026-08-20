@@ -1,0 +1,82 @@
+---
+description: minicare 小程序 CI 预览规范（miniprogram-ci）。涵盖预览命令、代理/IPv6 处理、IP 白名单配置、密钥文件管理。在涉及小程序预览、miniprogram-ci、CI 密钥、二维码生成时自动生效。
+globs:
+  - "minicare-mp/scripts/mp-preview.js"
+  - "minicare-mp/private.*.key"
+  - "minicare-mp/.preview/**"
+  - "minicare-mp/package.json"
+alwaysApply: false
+---
+
+# 小程序 CI 预览规范
+
+> **完整文档见** [`docs/tech/MINIAPP-ci-preview.md`](../../docs/tech/MINIAPP-ci-preview.md)。
+> 本文件为 rules 级精简版，供 AI coding 环境自动生效。
+
+---
+
+## 一、预览命令
+
+```bash
+cd minicare-mp
+npm run preview          # production 模式预览
+npm run preview:staging   # staging 模式预览
+```
+
+脚本 `scripts/mp-preview.js` 内置 IPv4 强制 + 代理清除，无需手动处理。
+
+**远程触发**（通过 WorkBuddy 助理）：在手机 IM 中发 `"帮我预览小程序，运行 npm run preview"`。
+
+---
+
+## 二、代理与 IPv6 约束
+
+- **预览前必须关闭 Clash 系统代理**（只关系统代理即可，无需退出应用）
+- 脚本已内置防护：启动时自动检查 `NODE_OPTIONS --dns-result-order=ipv4first` + 清除代理环境变量；若无 ipv4first 则自动 re-exec 自身
+- 微信公众平台**不支持 IPv6 格式 IP 白名单**，所有请求必须走 IPv4
+
+---
+
+## 三、IP 白名单
+
+当前已配置的白名单 IP（微信公众平台 → 开发设置 → 小程序代码上传 → IP 白名单）：
+
+| IP | 来源 | 用途 |
+|---|---|---|
+| `222.130.223.121` | 直连 IPv4 | **主用**（Clash 关闭时） |
+| `103.169.92.107` | Clash 代理出口 | 备用 |
+
+**获取当前 IP**（先关闭代理）：
+```bash
+unset HTTP_PROXY HTTPS_PROXY ALL_PROXY http_proxy https_proxy all_proxy
+curl -4 -s https://api.ipify.org
+```
+
+**动态 IP 注意**：家用宽带 IP 可能随时变化，报 `invalid ip` 错误时需重新获取并更新白名单。
+
+---
+
+## 四、密钥文件
+
+- 文件名：`private.wxac792556967d5838.key`
+- 位置：`minicare-mp/` 根目录
+- **绝对禁止提交到 git**（已在 `.gitignore` 中排除 `private.*.key`）
+- 下载来源：微信公众平台 → 开发设置 → 小程序代码上传 → 生成密钥
+
+---
+
+## 五、预览产物
+
+- 二维码输出到 `minicare-mp/.preview/preview-<timestamp>.jpg`
+- `.preview/` 目录**不入 git**（已在 `.gitignore` 中排除）
+- 微信扫码即可预览开发版
+
+---
+
+## 六、常见错误速查
+
+| 错误 | 原因 | 解决 |
+|------|------|------|
+| `invalid ip: xxx.xxx.xxx.xxx` | IP 不在白名单 | 将报错 IP 加入白名单 |
+| `invalid ip: 2408:xxxx:xxxx`（IPv6） | 代理导致 IPv6 | 关闭 Clash 系统代理，脚本自动处理 |
+| 密钥文件不存在 | 未下载密钥 | 从微信公众平台下载，放到 `minicare-mp/` 根目录 |

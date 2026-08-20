@@ -98,37 +98,85 @@
 
 .obs-dots {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
 }
 
-.obs-dot {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  display: flex;
+/* 与看板列表页标签样式一致 */
+.obs-day-tag {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
-  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 12px;
+  border: 1px solid #c0a8b0;
   background: #f5eef0;
-  color: #9a7e82;
 }
 
-.obs-dot--done {
+.obs-day-tag--future {
+  background: #f5eef0;
+  border-color: #c0a8b0;
+}
+
+.obs-day-tag--done {
   background: #e4f8f0;
+  border-color: #2a9e70;
+}
+
+.obs-day-tag--current {
+  background: #fff8ec;
+  border-color: #ddb870;
+}
+
+.obs-day-tag--safe {
+  background: #e4f8f0;
+  border-color: #2a9e70;
+}
+
+.obs-day-tag--allergic {
+  background: #ffe0e8;
+  border-color: #e8305a;
+}
+
+.obs-day-tag--suspected {
+  background: #fff0d0;
+  border-color: #e07a00;
+}
+
+.obs-day-tag--paused {
+  background: #f5eef0;
+  border-color: #9a8090;
+}
+
+.obs-day-tag__text {
+  font-size: 11px;
+  font-weight: 600;
+  color: #c0a8b0;
+  line-height: 1;
+}
+
+.obs-day-tag--done .obs-day-tag__text {
   color: #2a9e70;
 }
 
-.obs-dot--current {
-  background: #fff8ec;
+.obs-day-tag--current .obs-day-tag__text {
   color: #ddb870;
-  border: 2px solid #ddb870;
 }
 
-.obs-dot--future {
-  background: #f5eef0;
-  color: #c0a8b0;
+.obs-day-tag--safe .obs-day-tag__text {
+  color: #2a9e70;
+}
+
+.obs-day-tag--allergic .obs-day-tag__text {
+  color: #e8305a;
+}
+
+.obs-day-tag--suspected .obs-day-tag__text {
+  color: #e07a00;
+}
+
+.obs-day-tag--paused .obs-day-tag__text {
+  color: #9a8090;
 }
 
 .obs-status-card {
@@ -184,11 +232,37 @@
   box-shadow: 0 1px 6px rgba(200, 100, 120, 0.08);
 }
 
+.obs-checkin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
 .obs-checkin-title {
   font-size: 15px;
   font-weight: 700;
   color: #3d2b2e;
-  margin-bottom: 16px;
+}
+
+.obs-checkin-date {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  background: #fdf7f5;
+}
+
+.obs-checkin-date-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #f87098;
+}
+
+.obs-checkin-date-arrow {
+  font-size: 11px;
+  color: #f87098;
 }
 
 .obs-field {
@@ -458,6 +532,25 @@
 .obs-log-date {
   font-size: 12px;
   color: #9a7e82;
+}
+
+.obs-log-date--editable {
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: #f5eef0;
+}
+
+.obs-log-date-edit {
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: #fff0f4;
+  border: 1px solid #f87098;
+}
+
+.obs-log-date-edit Text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #f87098;
 }
 
 .obs-log-action {

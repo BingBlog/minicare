@@ -22,6 +22,7 @@ minicare/docs/
 │   ├── INFRA-env-config.md ← 环境配置与部署
 │   ├── INFRA-domain.md    ← 域名绑定
 │   ├── INFRA-ci-cd-gray-release.md ← CI/CD 灰度发布方案
+│   ├── MINIAPP-ci-preview.md ← 小程序 CI 预览方案（miniprogram-ci）
 │   ├── MINIAPP-migration-plan.md ← Web→小程序迁移（已完成，归档）
 │   ├── PWA.md             ← Web PWA 实现（维护模式）
 │   ├── CHART-analysis.md  ← 图表组件技术规格
@@ -78,6 +79,7 @@ minicare/docs/
 | [tech/INFRA-cloudbase.md](tech/INFRA-cloudbase.md) | CloudBase 基建清单 | 已完成 |
 | [tech/INFRA-ops-monitoring.md](tech/INFRA-ops-monitoring.md) | 运维监控体系 | 规划中 |
 | [tech/INFRA-env-config.md](tech/INFRA-env-config.md) | 环境配置（dev/prod） | 已完成 |
+| [tech/MINIAPP-ci-preview.md](tech/MINIAPP-ci-preview.md) | 小程序 CI 预览方案 | 已完成 |
 | [tech/MINIAPP-migration-plan.md](tech/MINIAPP-migration-plan.md) | Web→小程序迁移 | 已完成（归档） |
 | [tech/PWA.md](tech/PWA.md) | Web PWA 实现 | 维护模式 |
 | [tech/CHART-analysis.md](tech/CHART-analysis.md) | 图表组件规格 | 已完成 |
@@ -88,7 +90,7 @@ minicare/docs/
 
 ---
 
-## 开发规范（`.cursor/rules/`）
+## 开发规范（`.agents/rules/`）
 
 | 文件 | 适用场景 |
 |------|---------|
@@ -97,6 +99,7 @@ minicare/docs/
 | `deploy-conventions.mdc` | 构建配置、部署脚本、Dockerfile |
 | `frontend-coding.mdc` | 前端编码规范（图标、枚举、对话框） |
 | `miniapp-development.mdc` | **小程序开发规范**（主平台，优先参考） |
+| `mp-preview.mdc` | 小程序 CI 预览（miniprogram-ci、IP 白名单、代理处理） |
 
 ---
 

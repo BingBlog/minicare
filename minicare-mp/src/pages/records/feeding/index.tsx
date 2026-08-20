@@ -12,14 +12,15 @@
  *  - FoodSection      辅食 Tab
  */
 import { View, Text, Input, Picker } from '@tarojs/components'
-import Taro, { useLoad } from '@tarojs/taro'
+import Taro, { useLoad, useDidShow } from '@tarojs/taro'
 import { useEffect, useRef, useState } from 'react'
-import { babyApi, recordsApi } from '@/api'
-import { getStoredFamilyId } from '@/api/http'
+import { babyApi, recordsApi, foodObservationApi } from '@/api'
+import { getStoredFamilyId, getStoredBabyId } from '@/api/http'
 import type { FeedingRecord, CreateFeedingDto, UpdateFeedingDto } from '@/api/feeding'
 import { getStatusBarHeight } from '@/lib/safeArea'
 import { nowTime, nowDate, toLocalISO, isoToLocalDate, isoToLocalTime, addMinutes, timeDiffMinutes } from '@/lib/utils'
 import type { FeedTab, MilkType } from './types'
+import type { FedFoodInfo } from './FoodSection'
 import { milkTypeOptions, suppItems } from './types'
 import TabSelector from './TabSelector'
 import FormulaSection from './FormulaSection'
@@ -40,26 +41,30 @@ const isoToDate = isoToLocalDate
 const isoToTime = isoToLocalTime
 
 // ---------------------------------------------------------------------------
-// 上次配方缓存 (Taro Storage)
+// 上次配方（远程查询：取该宝宝最近一条配方奶记录）
+// 多人协同场景下，本地缓存会让新加入的家庭成员读到错误的默认值，
+// 改为统一从服务端拉取最新一条 formula 记录作为默认配方。
 // ---------------------------------------------------------------------------
-const LAST_FORMULA_KEY_PREFIX = 'minicare_last_formula_'
-
 interface LastFormulaCache {
   milkTypes: MilkType[]
   scoops: Record<MilkType, number>
   formulaMl: number
 }
 
-function loadLastFormula(babyId: string): LastFormulaCache | null {
+async function fetchLastFormula(familyId: string, babyId: string): Promise<LastFormulaCache | null> {
   try {
-    const raw = Taro.getStorageSync(LAST_FORMULA_KEY_PREFIX + babyId)
-    if (!raw) return null
-    return JSON.parse(raw) as LastFormulaCache
-  } catch { return null }
-}
-
-function saveLastFormula(babyId: string, data: LastFormulaCache) {
-  try { Taro.setStorageSync(LAST_FORMULA_KEY_PREFIX + babyId, JSON.stringify(data)) } catch { /* ignore */ }
+    const res = await recordsApi.feeding.list(familyId, babyId)
+    const lastFormula = res.items.find((r) => r.feed_type === 'formula')
+    if (!lastFormula) return null
+    return {
+      milkTypes: (lastFormula.milk_types ?? []) as MilkType[],
+      scoops: (lastFormula.milk_scoops ?? {}) as Record<MilkType, number>,
+      formulaMl: lastFormula.formula_ml ?? 0,
+    }
+  } catch {
+    // 远程查询失败时静默回退到硬编码默认值，不阻塞表单使用
+    return null
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -105,6 +110,7 @@ export default function FeedingFormPage() {
   // 辅食
   const [foodList, setFoodList] = useState<string[]>([])
   const [foodInput, setFoodInput] = useState('')
+  const [fedFoods, setFedFoods] = useState<FedFoodInfo[]>([])
 
   // -----------------------------------------------------------------------
   // 初始化
@@ -143,7 +149,7 @@ export default function FeedingFormPage() {
         if (voiceFields && Object.keys(voiceFields).length > 0) {
           applyVoiceFields(initTab, voiceFields)
         } else {
-          const last = loadLastFormula(baby.id)
+          const last = await fetchLastFormula(fid, baby.id)
           if (last) {
             if (last.milkTypes?.length) setSelectedMilkTypes(new Set(last.milkTypes))
             if (last.scoops) setScoops((prev) => ({ ...prev, ...last.scoops }))
@@ -163,8 +169,28 @@ export default function FeedingFormPage() {
       Taro.showToast({ title: '加载失败', icon: 'none' })
     } finally {
       setLoading(false)
+      loadFedFoods()
     }
   }
+
+  // 加载排敏观察数据（用于标记已喂养/过敏状态）
+  const loadFedFoods = async () => {
+    const fid = getStoredFamilyId()
+    const bid = getStoredBabyId()
+    if (!fid || !bid) return
+    try {
+      const observations = await foodObservationApi.list(fid, bid)
+      const foods: FedFoodInfo[] = observations.map((obs) => ({
+        foodName: obs.food_name,
+        status: obs.status,
+      }))
+      setFedFoods(foods)
+    } catch { /* 排敏数据加载失败不影响主流程 */ }
+  }
+
+  useDidShow(() => {
+    if (initDoneRef.current) loadFedFoods()
+  })
 
   const applyVoiceFields = (initTab: FeedTab, fields: Record<string, string>) => {
     if (initTab === 'formula' && fields.formula_ml) {
@@ -284,7 +310,15 @@ export default function FeedingFormPage() {
       } else if (tab === 'breast') {
         payload = { baby_id: babyId, feed_type: 'breast', record_time: isoTime, breast_side: breastSide, duration_min: durationMin, note: note || undefined }
       } else if (tab === 'food') {
-        payload = { baby_id: babyId, feed_type: 'complementary', record_time: isoTime, complementary_food: foodList.length > 0 ? foodList.join('、') : '辅食', note: note || undefined }
+        // 提交前自动将输入框中未确认的内容加入列表
+        const pending = foodInput.trim()
+        const finalList = pending ? (foodList.includes(pending) ? foodList : [...foodList, pending]) : foodList
+        if (finalList.length === 0) {
+          setSubmitting(false)
+          Taro.showToast({ title: '请选择或输入至少一种辅食', icon: 'none' })
+          return
+        }
+        payload = { baby_id: babyId, feed_type: 'complementary', record_time: isoTime, complementary_food: finalList.join('、'), note: note || undefined }
       } else {
         const activeItems = suppItems.filter((s) => suppChecked[s.key]).map((s) => ({ key: s.key, label: s.label, dose: suppDose[s.key] || '', unit: s.unit }))
         if (suppOtherName.trim()) activeItems.push({ key: 'other', label: suppOtherName.trim(), dose: suppOtherDose || '', unit: suppOtherUnit || '' })
@@ -298,10 +332,7 @@ export default function FeedingFormPage() {
         await recordsApi.feeding.create(familyId, payload)
       }
 
-      if (!isEditMode && tab === 'formula') {
-        const activeKeys2 = milkTypeOptions.filter((m) => selectedMilkTypes.has(m.key) && scoops[m.key] > 0).map((m) => m.key)
-        saveLastFormula(babyId, { milkTypes: activeKeys2.length > 0 ? activeKeys2 : Array.from(selectedMilkTypes), scoops, formulaMl })
-      }
+      // 上次配方默认值已改为远程查询，提交后服务端即为最新数据，无需再写本地缓存
 
       Taro.showToast({ title: isEditMode ? '记录已更新' : '记录已保存', icon: 'success' })
       Taro.eventCenter.trigger('home:refresh')
@@ -434,6 +465,7 @@ export default function FeedingFormPage() {
             onAdd={addFood}
             onRemove={removeFood}
             onQuickAdd={quickAddFood}
+            fedFoods={fedFoods}
           />
         )}
 

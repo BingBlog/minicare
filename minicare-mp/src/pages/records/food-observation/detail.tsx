@@ -1,4 +1,4 @@
-import { View, Text, Input } from '@tarojs/components'
+import { View, Text, Input, Picker } from '@tarojs/components'
 import Taro, { useLoad } from '@tarojs/taro'
 import { useEffect, useState, useCallback } from 'react'
 import { foodObservationApi } from '@/api'
@@ -53,6 +53,8 @@ export default function FoodObservationDetailPage() {
   const [showReactionFlow, setShowReactionFlow] = useState(false)
   const [reactionLevel, setReactionLevel] = useState<ReactionLevel | null>(null)
   const [submitting, setSubmitting] = useState(false)
+  const [checkinDate, setCheckinDate] = useState(dayjs().format('YYYY-MM-DD'))
+  const [editingLogDate, setEditingLogDate] = useState<string | null>(null)
 
   const fetchData = useCallback(async (fid: string, id: string) => {
     try {
@@ -112,25 +114,30 @@ export default function FoodObservationDetailPage() {
       if (intakeAmount || selectedFlags.size > 0 || note) {
         const currentDay = detail?.current_day ?? 1
         await foodObservationApi.upsertLog(familyId, obsId, currentDay, {
+          record_date: checkinDate,
           intake_amount_g: intakeAmount ? Number(intakeAmount) : undefined,
           reaction_flags: selectedFlags.size > 0 ? Array.from(selectedFlags) : undefined,
           note: note || undefined,
           action: 'continue',
         })
       } else {
-        await foodObservationApi.continueToday(familyId, obsId)
+        await foodObservationApi.upsertLog(familyId, obsId, detail?.current_day ?? 1, {
+          record_date: checkinDate,
+          action: 'continue',
+        })
       }
       Taro.showToast({ title: '记录成功', icon: 'success' })
       setIntakeAmount('')
       setSelectedFlags(new Set())
       setNote('')
+      setCheckinDate(dayjs().format('YYYY-MM-DD'))
       refresh()
     } catch {
       Taro.showToast({ title: '操作失败', icon: 'none' })
     } finally {
       setSubmitting(false)
     }
-  }, [familyId, obsId, submitting, intakeAmount, selectedFlags, note, detail, refresh])
+  }, [familyId, obsId, submitting, intakeAmount, selectedFlags, note, detail, checkinDate, refresh])
 
   const handleMarkReaction = useCallback(async (targetStatus: ObservationStatus) => {
     if (!familyId || !obsId || !reactionLevel || submitting) return
@@ -139,7 +146,7 @@ export default function FoodObservationDetailPage() {
       const currentDay = detail?.current_day ?? 1
       await foodObservationApi.createReaction(familyId, obsId, {
         day_index: currentDay,
-        record_time: dayjs().format('YYYY-MM-DDTHH:mm:ss'),
+        record_time: `${checkinDate}T${dayjs().format('HH:mm:ss')}`,
         allergy_symptoms: selectedFlags.size > 0 ? Array.from(selectedFlags) : undefined,
         allergy_severity: reactionLevel,
         note: note || undefined,
@@ -157,7 +164,24 @@ export default function FoodObservationDetailPage() {
     } finally {
       setSubmitting(false)
     }
-  }, [familyId, obsId, reactionLevel, submitting, detail, selectedFlags, note, refresh])
+  }, [familyId, obsId, reactionLevel, submitting, detail, selectedFlags, note, checkinDate, refresh])
+
+  const handleUpdateLogDate = useCallback(async (dayIndex: number, newDate: string) => {
+    if (!familyId || !obsId || submitting) return
+    setSubmitting(true)
+    try {
+      await foodObservationApi.upsertLog(familyId, obsId, dayIndex, {
+        record_date: newDate,
+      })
+      Taro.showToast({ title: '日期已更新', icon: 'success' })
+      setEditingLogDate(null)
+      refresh()
+    } catch {
+      Taro.showToast({ title: '更新失败', icon: 'none' })
+    } finally {
+      setSubmitting(false)
+    }
+  }, [familyId, obsId, submitting, refresh])
 
   const handleRemoveLog = useCallback(async (dayIndex: number) => {
     if (!familyId || !obsId || submitting) return
@@ -295,13 +319,27 @@ export default function FoodObservationDetailPage() {
               const log = detail.logs.find((l) => l.day_index === dayNum)
               const isDone = !!log && log.action === 'continue'
               const isCurrent = isObserving && dayNum === currentDay
-              let dotCls = 'obs-dot'
-              if (isDone) dotCls += ' obs-dot--done'
-              else if (isCurrent) dotCls += ' obs-dot--current'
-              else dotCls += ' obs-dot--future'
+
+              // 与看板列表页一致的标签样式
+              let tagCls = 'obs-day-tag'
+              let tagText = `D${dayNum}`
+              if (!isObserving) {
+                // 非观察中状态，所有已完成天数统一显示最终状态
+                if (detail.status === 'safe') { tagCls += ' obs-day-tag--safe'; tagText = `D${dayNum} ✓` }
+                else if (detail.status === 'allergic') { tagCls += ' obs-day-tag--allergic'; tagText = `D${dayNum} ✗` }
+                else if (detail.status === 'suspected') { tagCls += ' obs-day-tag--suspected'; tagText = `D${dayNum} !` }
+                else if (detail.status === 'paused') { tagCls += ' obs-day-tag--paused' }
+                else { tagCls += ' obs-day-tag--future' }
+              } else if (isCurrent) {
+                tagCls += ' obs-day-tag--current'
+              } else if (isDone) {
+                tagCls += ' obs-day-tag--done'; tagText = `D${dayNum} ✓`
+              } else {
+                tagCls += ' obs-day-tag--future'
+              }
               return (
-                <View key={dayNum} className={dotCls}>
-                  <Text>{dayNum}</Text>
+                <View key={dayNum} className={tagCls}>
+                  <Text className='obs-day-tag__text'>{tagText}</Text>
                 </View>
               )
             })}
@@ -366,7 +404,20 @@ export default function FoodObservationDetailPage() {
 
         {isObserving && !showReactionFlow && (
           <View className='obs-checkin-card'>
-            <Text className='obs-checkin-title'>{'今日打卡 Day' + currentDay}</Text>
+            <View className='obs-checkin-header'>
+              <Text className='obs-checkin-title'>{'今日打卡 Day' + currentDay}</Text>
+              <Picker
+                mode='date'
+                value={checkinDate}
+                end={dayjs().format('YYYY-MM-DD')}
+                onChange={(e) => setCheckinDate(e.detail.value)}
+              >
+                <View className='obs-checkin-date'>
+                  <Text className='obs-checkin-date-text'>{dayjs(checkinDate).format('MM月DD日')}</Text>
+                  <Text className='obs-checkin-date-arrow'>{'>'}</Text>
+                </View>
+              </Picker>
+            </View>
 
             <View className='obs-field'>
               <Text className='obs-field__label'>摄入量 (g)</Text>
@@ -491,7 +542,25 @@ export default function FoodObservationDetailPage() {
                   <View className='obs-log-content'>
                     <View className='obs-log-header'>
                       <Text className='obs-log-day'>{'Day' + log.day_index}</Text>
-                      <Text className='obs-log-date'>{dayjs(log.record_date).format('MM-DD')}</Text>
+                      {editingLogDate === log.id ? (
+                        <Picker
+                          mode='date'
+                          value={dayjs(log.record_date).format('YYYY-MM-DD')}
+                          end={dayjs().format('YYYY-MM-DD')}
+                          onChange={(e) => handleUpdateLogDate(log.day_index, e.detail.value)}
+                        >
+                          <View className='obs-log-date-edit'>
+                            <Text>{dayjs(log.record_date).format('MM-DD')}</Text>
+                          </View>
+                        </Picker>
+                      ) : (
+                        <Text
+                          className='obs-log-date obs-log-date--editable'
+                          onClick={() => setEditingLogDate(log.id)}
+                        >
+                          {dayjs(log.record_date).format('MM-DD')}
+                        </Text>
+                      )}
                     </View>
                     <View
                       className={`obs-log-action obs-log-action--${actionStyle}`}
