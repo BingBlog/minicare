@@ -331,11 +331,10 @@ export default function MedicationPage() {
                         <Text className='medication-manage-row__dose'>{m.default_dose}</Text>
                       ) : null}
                     </View>
-                    <Image
-                      src={ICON_X}
-                      style={{ width: 14, height: 14 }}
-                      onClick={() => handleDeleteMed(m)}
-                    />
+                    <View className='medication-manage-row__delete' onClick={() => handleDeleteMed(m)}>
+                      <Image src={ICON_X} style={{ width: 12, height: 12 }} />
+                      <Text className='medication-manage-row__delete-text'>删除</Text>
+                    </View>
                   </View>
                 ))
               )}
@@ -407,14 +406,6 @@ export default function MedicationPage() {
                 />
               </View>
             </View>
-
-            {/* 删除药品（仅编辑模式，软删除） */}
-            {editingMed ? (
-              <View className='medication-sheet__delete' onClick={() => handleDeleteMed(editingMed)}>
-                <Image src={ICON_X} style={{ width: 13, height: 13, marginRight: 4 }} />
-                删除药品
-              </View>
-            ) : null}
 
             <View className='medication-sheet__actions'>
               <View

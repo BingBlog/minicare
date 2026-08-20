@@ -198,6 +198,23 @@
   color: #9a7e82;
 }
 
+// 行内删除按钮（每行右侧）
+.medication-manage-row__delete {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  background: #fff0f0;
+  flex-shrink: 0;
+}
+
+.medication-manage-row__delete-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #f05060;
+}
+
 .medication-preset-grid {
   display: flex;
   flex-wrap: wrap;
@@ -269,18 +286,4 @@
 
 .medication-sheet__btn--disabled {
   opacity: 0.6;
-}
-
-// 删除药品（危险操作，仅编辑模式显示）
-.medication-sheet__delete {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 14px 20px 0;
-  padding: 12px 0;
-  border-radius: 14px;
-  background: #fff0f0;
-  font-size: 14px;
-  font-weight: 600;
-  color: #f05060;
 }
