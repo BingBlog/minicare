@@ -38,7 +38,12 @@ export interface FeedListResponse {
 
 @Injectable()
 export class FeedService {
-  private readonly feedReadSource = (process.env.FEED_READ_SOURCE ?? 'union').toLowerCase();
+  /**
+   * 读取源：默认 timeline（物化表，timeline_id 全局唯一、分页稳定、摘要已物化）。
+   * union 为历史回退路径（跨表 id 游标在「同日多条同时间记录」下会死循环），
+   * 可通过环境变量 FEED_READ_SOURCE=union 临时切回。
+   */
+  private readonly feedReadSource = (process.env.FEED_READ_SOURCE ?? 'timeline').toLowerCase();
 
   constructor(@Inject(DATABASE_POOL) private readonly db: Pool) {}
 
