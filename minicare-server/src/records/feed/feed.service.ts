@@ -565,7 +565,7 @@ export class FeedService {
           'dose', dose
         ) AS detail_json
       FROM medication_record
-      WHERE baby_id = ?
+      WHERE baby_id = ? AND deleted_at IS NULL
     `;
   }
 
