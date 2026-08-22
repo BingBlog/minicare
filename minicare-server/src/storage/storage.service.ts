@@ -10,20 +10,27 @@ export class StorageService {
    *
    * 客户端使用 PUT 请求将文件上传到 uploadUrl，完成后将 fileID 存入业务记录。
    *
-   * @param cloudPath 存储路径，如 "symptoms/{babyId}/{recordId}/1.jpg"
+   * @param cloudPath 存储路径，如 "medical/{babyId}/{recordId}/1.jpg"
    */
-  async getUploadUrl(cloudPath: string): Promise<{ fileID: string; uploadUrl: string; cosToken: string }> {
-    const result = await this.tcb.uploadFile({
-      cloudPath,
-      fileContent: Buffer.alloc(0), // 占位，实际文件由客户端直传
-    });
-    // CloudBase Node SDK 的预签名上传 URL 接口
-    // 生产使用 tcb.getUploadFileInfo() 获取 uploadUrl
-    const uploadInfo = await this.tcb.getUploadFileInfo({ cloudPath });
+  async getUploadUrl(cloudPath: string): Promise<{
+    fileID: string
+    uploadUrl: string
+    cosToken: string
+    signature: string
+    cosFileId: string
+  }> {
+    // CloudBase Node SDK v3：getUploadMetadata 获取预签名上传元数据（SDK 无 getUploadFileInfo 方法）
+    const result = await this.tcb.getUploadMetadata({ cloudPath });
+    const data = result?.data;
+    if (!data?.url || !data?.fileId || !data?.authorization) {
+      throw new Error(`获取上传元数据失败: ${JSON.stringify(result)}`);
+    }
     return {
-      fileID: uploadInfo.fileID,
-      uploadUrl: uploadInfo.url,
-      cosToken: uploadInfo.token ?? '',
+      fileID: data.fileId,
+      uploadUrl: data.url,
+      cosToken: data.token ?? '',
+      signature: data.authorization,
+      cosFileId: data.cosFileId ?? '',
     };
   }
 

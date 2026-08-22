@@ -17,7 +17,7 @@ import SubmitBar from '@/components/SubmitBar'
 import PageLoading from '@/components/PageLoading'
 import VisitTypeSection from './VisitTypeSection'
 import BasicInfoSection from './BasicInfoSection'
-import OCRSection from './OCRSection'
+import PhotoSection from './PhotoSection'
 import ResultSection from './ResultSection'
 import MedicationsSection, { type Medication } from './MedicationsSection'
 import FollowUpSection from './FollowUpSection'
@@ -35,6 +35,7 @@ export default function MedicalFormPage() {
   const [resultSummary, setResultSummary] = useState('')
   const [diagnosis, setDiagnosis] = useState('')
   const [medications, setMedications] = useState<Medication[]>([])
+  const [photoIds, setPhotoIds] = useState<string[]>([])
   const [note, setNote] = useState('')
   const [followUpDate, setFollowUpDate] = useState('')
   const [followUpEnabled, setFollowUpEnabled] = useState(false)
@@ -51,6 +52,9 @@ export default function MedicalFormPage() {
       setDiagnosis(r.diagnosis ?? '')
       if (r.medications && r.medications.length > 0) {
         setMedications(r.medications.map((m) => ({ name: m.name, dose: m.dose ?? '' })))
+      }
+      if (r.photo_ids && r.photo_ids.length > 0) {
+        setPhotoIds(r.photo_ids)
       }
       setNote(r.note ?? '')
       if (r.follow_up_date) {
@@ -70,7 +74,7 @@ export default function MedicalFormPage() {
     setMedications((prev) => prev.map((m, idx) => (idx === i ? { ...m, [field]: val } : m)))
   }
 
-  // ── Toast 工具（OCRSection 需要） ──
+  // ── Toast 工具（PhotoSection 需要） ──
   const showToast = (msg: string) => {
     Taro.showToast({ title: msg, icon: 'none', duration: 1500 })
   }
@@ -94,6 +98,7 @@ export default function MedicalFormPage() {
         diagnosis: diagnosis || undefined,
         result_summary: resultSummary || undefined,
         medications: validMeds.length > 0 ? validMeds.map((m) => ({ name: m.name, dose: m.dose || undefined })) : undefined,
+        photo_ids: photoIds.length > 0 ? photoIds : undefined,
         follow_up_date: followUpEnabled && followUpDate ? followUpDate : undefined,
         note: noteArr.join(' / ') || undefined,
       }
@@ -147,9 +152,9 @@ export default function MedicalFormPage() {
           onDoctorChange={setDoctor}
         />
 
-        {/* OCR 上传区 */}
-        <View className='medical-section-label'><Text>上传检查报告（OCR 自动识别）</Text></View>
-        <OCRSection showToast={showToast} />
+        {/* 图片上传区 */}
+        <View className='medical-section-label'><Text>上传检查报告/病历（可选）</Text></View>
+        <PhotoSection babyId={babyId} value={photoIds} onChange={setPhotoIds} showToast={showToast} />
 
         {/* 结果与诊断 */}
         <View className='medical-section-label'><Text>结果与诊断</Text></View>

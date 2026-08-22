@@ -288,127 +288,99 @@
   line-height: 1;
 }
 
-/* ── OCR 上传区 ── */
-.medical-ocr__upload {
+/* ── 图片上传区 ── */
+.medical-photo {
   margin: 0 16px 12px;
+}
+
+.medical-photo__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.medical-photo__item {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #F5EEF0;
+  aspect-ratio: 1;
+}
+
+.medical-photo__thumb {
+  width: 100%;
+  height: 100%;
+}
+
+.medical-photo__thumb--muted {
+  opacity: 0.55;
+}
+
+.medical-photo__mask {
+  position: absolute;
+  inset: 0;
+  background: rgba(61, 43, 46, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.medical-photo__mask-text {
+  font-size: 11px;
+  color: #fff;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.medical-photo__remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.medical-photo__remove-icon {
+  font-size: 14px;
+  color: #fff;
+  line-height: 1;
+}
+
+.medical-photo__add {
+  aspect-ratio: 1;
+  border-radius: 12px;
+  background: #FFF5F8;
+  border: 1.5px dashed #F0B8C8;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
-  border-radius: 16px;
-  background: #FFF5F8;
-  border: 1.5px dashed #F0B8C8;
-  padding: 20px 16px;
+  justify-content: center;
+  gap: 4px;
 }
 
-.medical-ocr__upload--loading {
-  opacity: 0.6;
+.medical-photo__add-icon {
+  width: 24px;
+  height: 24px;
 }
 
-.medical-ocr__camera {
-  width: 32px;
-  height: 32px;
-}
-
-.medical-ocr__title {
-  font-size: 14px;
-  font-weight: 700;
-  color: #F87098;
-}
-
-.medical-ocr__desc {
-  font-size: 12px;
-  color: #9A8090;
-  text-align: center;
-  line-height: 1.6;
-}
-
-.medical-ocr__btn {
-  margin-top: 4px;
-  padding: 8px 20px;
-  border-radius: 8px;
-  background: #F87098;
-  box-shadow: 0 3px 10px rgba(248, 112, 152, 0.3);
-}
-
-.medical-ocr__btn-text {
-  font-size: 13px;
-  font-weight: 600;
-  color: #fff;
-}
-
-/* OCR 结果 */
-.medical-ocr__result {
-  margin: 0 16px 12px;
-  border-radius: 16px;
-  background: #FFF5F8;
-  border: 1.5px solid #F0B8C8;
-  padding: 14px 16px;
-}
-
-.medical-ocr__result-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: #F87098;
-  margin-bottom: 12px;
-  display: block;
-}
-
-.medical-ocr__result-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 0;
-  border-bottom: 0.5px solid #F5EEF0;
-}
-
-.medical-ocr__result-label {
-  font-size: 12px;
-  color: #9A8090;
-}
-
-.medical-ocr__result-value-wrap {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.medical-ocr__result-value {
-  font-size: 13px;
-  font-weight: 600;
-  color: #4A3035;
-}
-
-.medical-ocr__result-edit {
+.medical-photo__add-text {
   font-size: 11px;
   color: #F87098;
-  font-weight: 500;
-}
-
-.medical-ocr__result-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 12px;
-}
-
-.medical-ocr__result-btn {
-  flex: 1;
-  padding: 10px 0;
-  border-radius: 12px;
-  text-align: center;
-  font-size: 13px;
   font-weight: 600;
 }
 
-.medical-ocr__result-btn--secondary {
-  border: 1px solid #E5D8DA;
-  background: #fff;
+.medical-photo__hint {
+  display: block;
+  margin-top: 8px;
+  font-size: 11px;
   color: #9A8090;
-}
-
-.medical-ocr__result-btn--primary {
-  background: #F87098;
-  color: #fff;
+  line-height: 1.6;
 }
 
 /* ── 复查提醒 ── */

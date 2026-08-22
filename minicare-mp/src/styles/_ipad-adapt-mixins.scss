@@ -1883,32 +1883,36 @@
     }
 
 
-    // OCR 上传
-    .is-ipad .medical-ocr__upload {
+    // 图片上传
+    .is-ipad .medical-photo {
       margin: 0 24px 14px;
-      padding: 28px 24px;
-      border-radius: 20px;
     }
 
 
-    .is-ipad .medical-ocr__title {
-      font-size: 18px;
+    .is-ipad .medical-photo__grid {
+      gap: 12px;
     }
 
 
-    .is-ipad .medical-ocr__desc {
-      font-size: 15px;
+    .is-ipad .medical-photo__item,
+    .is-ipad .medical-photo__add {
+      border-radius: 16px;
     }
 
 
-    .is-ipad .medical-ocr__btn {
-      padding: 12px 28px;
-      border-radius: 12px;
+    .is-ipad .medical-photo__add-icon {
+      width: 32px;
+      height: 32px;
     }
 
 
-    .is-ipad .medical-ocr__btn-text {
-      font-size: 16px;
+    .is-ipad .medical-photo__add-text {
+      font-size: 14px;
+    }
+
+
+    .is-ipad .medical-photo__hint {
+      font-size: 13px;
     }
 
 

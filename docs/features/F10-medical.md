@@ -3,10 +3,10 @@
 > 功能 ID：P0-012  
 > 优先级：P0  
 > 状态：**已完成** ✅  
-> 最后更新：2026-05-03（对齐小程序实际实现）
+> 最后更新：2026-08-20（医疗图片由 OCR mock 改为真实图片上传：COS 直传 + photo_ids 留档，不做 OCR）
 >
-> **注意**：OCR 功能前端有入口但尚未完整实现（mock 数据流），
-> 识别结果填入结构化字段，不单独持久化 ocr_text。
+> **注意**：~~OCR 功能前端有入口但尚未完整实现（mock 数据流），识别结果填入结构化字段，不单独持久化 ocr_text。~~
+> 2026-08-20 起医疗记录不再做 OCR：图片仅上传留档（photo_ids 存 CloudBase fileID），结构化字段由用户手动填写。
 
 ## 功能描述
 
@@ -71,19 +71,23 @@
 |------|------|
 | `VisitTypeSection.tsx` | 就诊类型 2 列网格选择 |
 | `BasicInfoSection.tsx` | 日期 + 医院 + 医生 |
-| `OCRSection.tsx` | 拍照上传 + OCR 识别（mock，结果填入结构化字段） |
+| `PhotoSection.tsx` | 图片上传（拍照/相册，COS 直传，≤6 张，预览/删除/失败重试，编辑回显） |
 | `ResultSection.tsx` | 结果摘要 + 诊断结论 |
 | `MedicationsSection.tsx` | 用药列表动态增删 |
 | `FollowUpSection.tsx` | 复查日期开关 + 日期选择器 |
 
-## OCR 流程说明
+## 图片上传流程说明
 
-当前实现为 mock 流程：
-1. 用户拍照/选择图片上传
-2. 前端展示"识别中"加载态
-3. 使用 mock 数据展示识别结果
-4. 用户点"确认信息"将结果填入表单对应字段（result_summary、diagnosis 等）
-5. OCR 文本不作为独立字段存储
+2026-08-20 起医疗记录**不做 OCR**，图片仅留档保存：
+
+1. 用户拍照/从相册选择图片（最多 6 张，选中即传）
+2. 前端调 `POST /api/storage/upload-url` 获取 COS 预签名 URL + fileID
+3. 客户端 `Taro.uploadFile`（PUT）直传 COS
+4. 上传成功后将 fileID 存入 `photo_ids`，随记录一并提交
+5. 编辑记录时按 `photo_ids` 调 `POST /api/storage/download-urls` 拉取临时链接回显
+6. 上传失败可点击重试；删除图片仅从记录中移除（云端文件保留）
+
+> 与 Web 端差异：Web 端仍为 OCR mock 流程（维护模式，待同步）。
 
 ## 验收标准（AC）
 
@@ -91,7 +95,7 @@
 - [x] 基础信息输入（日期/医院/医生）
 - [x] 诊断结论和结果摘要
 - [x] 用药列表动态增删
-- [x] 照片上传（photo_ids）
+- [x] 照片上传（photo_ids，COS 直传留档，不做 OCR；≤6 张，失败重试，编辑回显）
 - [x] 复查日期开关和日期选择
 - [x] 提交后 Toast 提示并返回上一页
 - [x] 支持编辑和删除已有记录
@@ -100,6 +104,9 @@
 
 - 就医表单：`minicare-mp/src/pages/records/medical/index.tsx`
 - 各分区组件：`minicare-mp/src/pages/records/medical/*.tsx`
-- API 模块：`minicare-mp/src/api/records/medical.ts`
+- 图片上传组件：`minicare-mp/src/pages/records/medical/PhotoSection.tsx`
+- 云存储 API：`minicare-mp/src/api/storage.ts`
+- API 模块：`minicare-mp/src/api/medical.ts`
 - 服务端：`minicare-server/src/records/medical/`
+- 云存储服务：`minicare-server/src/storage/`
 - DTO：`minicare-server/src/records/medical/dto/create-medical.dto.ts`

@@ -2,7 +2,7 @@ import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiProperty, ApiTags } from '@nestjs/swagger';
 import { StorageService } from './storage.service';
 import { JwtGuard } from '../auth/jwt.guard';
-import { IsString } from 'class-validator';
+import { IsArray, IsString } from 'class-validator';
 
 class GetUploadUrlDto {
   @ApiProperty({ example: 'symptoms/uuid-baby/uuid-record/1.jpg', description: '存储路径' })
@@ -12,6 +12,8 @@ class GetUploadUrlDto {
 
 class GetDownloadUrlsDto {
   @ApiProperty({ type: [String] })
+  @IsArray()
+  @IsString({ each: true })
   fileIDs: string[];
 }
 

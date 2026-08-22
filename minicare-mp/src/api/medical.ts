@@ -15,6 +15,7 @@ export interface MedicalRecord {
   result_summary?: string | null
   diagnosis?: string | null
   medications?: MedicationItem[] | null
+  photo_ids?: string[] | null
   follow_up_date?: string | null
   note?: string | null
 }
@@ -28,6 +29,7 @@ export interface CreateMedicalDto {
   result_summary?: string
   diagnosis?: string
   medications?: MedicationItem[]
+  photo_ids?: string[]
   follow_up_date?: string
   note?: string
 }

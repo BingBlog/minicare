@@ -747,28 +747,31 @@
     font-size: 14px;
   }
 
-  // 医疗 - OCR 上传
-  .medical-ocr__upload {
+  // 医疗 - 图片上传
+  .medical-photo {
     margin: 0 24px 14px;
-    padding: 28px 24px;
-    border-radius: 20px;
   }
 
-  .medical-ocr__title {
-    font-size: 18px;
+  .medical-photo__grid {
+    gap: 12px;
   }
 
-  .medical-ocr__desc {
-    font-size: 15px;
+  .medical-photo__item,
+  .medical-photo__add {
+    border-radius: 16px;
   }
 
-  .medical-ocr__btn {
-    padding: 12px 28px;
-    border-radius: 12px;
+  .medical-photo__add-icon {
+    width: 32px;
+    height: 32px;
   }
 
-  .medical-ocr__btn-text {
-    font-size: 16px;
+  .medical-photo__add-text {
+    font-size: 14px;
+  }
+
+  .medical-photo__hint {
+    font-size: 13px;
   }
 
   // 医疗 - 复查提醒
