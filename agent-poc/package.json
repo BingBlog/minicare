@@ -1,0 +1,19 @@
+{
+  "name": "agent-poc",
+  "version": "0.1.0",
+  "private": true,
+  "description": "OAK (OpenAgentKernel) POC — 路径 B：成长计划 hunyuan-exp",
+  "type": "module",
+  "scripts": {
+    "demo": "node src/demo.js",
+    "demo:persist": "node src/demo-persist.js"
+  },
+  "engines": {
+    "node": ">=20.19"
+  },
+  "dependencies": {
+    "@cloudbase/open-agent-kernel": "^0.1.1",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  }
+}

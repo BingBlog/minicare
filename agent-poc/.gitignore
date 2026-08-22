@@ -1,0 +1,11 @@
+# 依赖与本地配置
+node_modules/
+dist/
+
+# 密钥文件（含真实 API Key，禁止提交）
+.env.local
+.env.*.local
+
+# 调试产物
+*.log
+.oak/
