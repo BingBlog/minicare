@@ -65,11 +65,22 @@ const RECORD_FORM_MP_ROUTES: Record<string, string> = {
   sleep: '/pages/records/sleep/index',
   diaper: '/pages/records/diaper/index',
   growth: '/pages/records/growth/index',
-  health: '/pages/records/health/index',
   activity: '/pages/records/activity/index',
   symptom: '/pages/records/symptom/index',
   medical: '/pages/records/medical/index',
   medication: '/pages/records/medication/index',
+}
+
+/** health 记录编辑分流：按记录内容路由到体温页或过敏表现页 */
+function buildHealthEditUrl(record: RecordItem, recordId: string): string {
+  // timeline 的 detail 字段已展开到顶层（toRecordItemFromFeed）
+  const temperature = (record as Record<string, unknown>).temperature
+  const allergySymptoms = (record as Record<string, unknown>).allergy_symptoms
+  const hasTemp = temperature != null
+  const hasAllergy = Array.isArray(allergySymptoms) && allergySymptoms.length > 0
+  // 复合记录优先体温页（体温编辑频率更高，PATCH 局部更新不会丢过敏字段）
+  if (hasTemp) return `/pages/records/health/temperature/index?recordId=${encodeURIComponent(recordId)}`
+  return `/pages/records/health/allergy/index?recordId=${encodeURIComponent(recordId)}`
 }
 
 /** 记录子类型 → 已迁移 MP 表单页路由（用于已迁移的 feeding 等类型） */
@@ -94,6 +105,9 @@ function buildEditUrl(record: RecordItem): string {
     const subRoute = SUBTYPE_MP_ROUTES[resolvedFeedType]
     if (subRoute) return `${subRoute}&recordId=${encodeURIComponent(recordId)}`
   }
+
+  // health 已拆分为体温/过敏两个独立页，按记录内容分流
+  if (type === 'health') return buildHealthEditUrl(record, recordId)
 
   const base = RECORD_FORM_MP_ROUTES[type]
   if (base) return `${base}?recordId=${encodeURIComponent(recordId)}`

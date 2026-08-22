@@ -25,6 +25,12 @@ export class MedicalController {
     return this.medicalService.findAll(babyId, beforeDate);
   }
 
+  /** 下次复查提醒（首页展示）：未来最近一条，无则最近过期一条标记 overdue，均无返回 null */
+  @Get('next-follow-up')
+  getNextFollowUp(@Query('baby_id') babyId: string) {
+    return this.medicalService.findNextFollowUp(babyId);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.medicalService.findOne(id);

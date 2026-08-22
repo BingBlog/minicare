@@ -41,7 +41,7 @@ export default {
     },
     {
       root: 'pages/records/health',
-      pages: ['index'],
+      pages: ['temperature/index', 'allergy/index'],
     },
     {
       root: 'pages/records/medical',

@@ -194,6 +194,8 @@ export const recordsApi = {
       medicalApi.remove(familyId, id),
     getOne: (familyId: string, id: string) =>
       medicalApi.getOne(familyId, id),
+    getNextFollowUp: (familyId: string, babyId: string) =>
+      medicalApi.getNextFollowUp(familyId, babyId),
   },
   symptom: {
     list: (familyId: string, babyId: string, params?: DateListParams) =>

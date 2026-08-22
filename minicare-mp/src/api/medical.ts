@@ -9,6 +9,7 @@ export interface MedicalRecord {
   id: string
   baby_id: string
   visit_date: string
+  visit_time?: string | null
   visit_type?: string | null
   hospital?: string | null
   doctor?: string | null
@@ -17,12 +18,14 @@ export interface MedicalRecord {
   medications?: MedicationItem[] | null
   photo_ids?: string[] | null
   follow_up_date?: string | null
+  follow_up_time?: string | null
   note?: string | null
 }
 
 export interface CreateMedicalDto {
   baby_id: string
   visit_date: string
+  visit_time?: string
   visit_type?: string
   hospital?: string
   doctor?: string
@@ -31,6 +34,7 @@ export interface CreateMedicalDto {
   medications?: MedicationItem[]
   photo_ids?: string[]
   follow_up_date?: string
+  follow_up_time?: string
   note?: string
 }
 
@@ -43,6 +47,18 @@ export interface MedicalListParams {
 export interface MedicalListResponse {
   items: MedicalRecord[]
   nextBeforeDate: string | null
+}
+
+/** 下次复查提醒（首页展示）；仅未过期（follow_up_date >= 今天），过期即返回 null */
+export interface NextFollowUp {
+  id: string
+  baby_id: string
+  visit_date: string
+  visit_time?: string | null
+  visit_type?: string | null
+  hospital?: string | null
+  follow_up_date: string
+  follow_up_time?: string | null
 }
 
 function buildListQuery(babyId: string, params?: MedicalListParams): string {
@@ -72,4 +88,8 @@ export const medicalApi = {
 
   getOne: (familyId: string, id: string) =>
     request<MedicalRecord>(`/api/family/${familyId}/records/medical/${id}`),
+
+  /** 下次复查提醒（首页展示）；无复查计划返回 null */
+  getNextFollowUp: (familyId: string, babyId: string) =>
+    request<NextFollowUp | null>(`/api/family/${familyId}/records/medical/next-follow-up?baby_id=${babyId}`),
 }

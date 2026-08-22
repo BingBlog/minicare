@@ -50,4 +50,4 @@ export interface DashboardData {
 }
 
 /** 记录类型（用于跳转到对应表单页） */
-export type RecordFormType = 'feeding' | 'diaper' | 'sleep' | 'activity' | 'health'
+export type RecordFormType = 'feeding' | 'diaper' | 'sleep' | 'activity' | 'temperature' | 'allergy'

@@ -22,7 +22,7 @@ interface VoiceResultSheetProps {
   onTypeSelect: (type: string) => void
 }
 
-const VOICE_QUICK_TYPES = ['formula', 'breast', 'food', 'diaper', 'sleep', 'temperature', 'symptom']
+const VOICE_QUICK_TYPES = ['formula', 'breast', 'food', 'diaper', 'sleep', 'temperature', 'allergy', 'symptom']
 
 const FIELD_DISPLAY: Record<string, string> = {
   formula_ml: '奶量',

@@ -15,6 +15,7 @@ export const RECORD_TYPE_CFG: Record<string, RecordTypeCfg> = {
   diaper: { label: '尿布', bg: '#E4F6FD', color: '#2A9ED4' },
   activity: { label: '活动', bg: '#FFF3E0', color: '#E07A00' },
   health: { label: '健康', bg: '#FFE8EF', color: '#D42060' },
+  allergy: { label: '过敏表现', bg: '#FFE8EF', color: '#D42060' },
   temperature: { label: '体温', bg: '#FFE8EF', color: '#E03050' },
   growth: { label: '生长', bg: '#E4F8F0', color: '#2A9E70' },
   symptom: { label: '表现', bg: '#FFF9E0', color: '#E8960A' },
@@ -33,7 +34,7 @@ export const ALL_QUICK_ACTION_KEYS = [
   'symptom',
   'supplement',
   'activity',
-  'health',
+  'allergy',
   'growth',
   'medical',
   'medication',
@@ -43,12 +44,12 @@ export const GLOBAL_FAB_GROUPS: { label: string; keys: string[] }[] = [
   { label: '喂食', keys: ['formula', 'breast', 'food'] },
   { label: '日常护理', keys: ['diaper', 'sleep', 'temperature', 'symptom'] },
   { label: '日常补录', keys: ['supplement', 'activity'] },
-  { label: '健康档案', keys: ['health', 'growth', 'medical', 'medication'] },
+  { label: '健康档案', keys: ['allergy', 'growth', 'medical', 'medication'] },
 ]
 
 export const FAB_GROUPS: { label: string; keys: string[] }[] = [
   { label: '日常补录', keys: ['supplement', 'activity'] },
-  { label: '健康档案', keys: ['health', 'growth', 'medical', 'medication'] },
+  { label: '健康档案', keys: ['allergy', 'growth', 'medical', 'medication'] },
 ]
 
 export const DEFAULT_QUICKACTION_KEYS_BY_AGE: Record<string, string[]> = {
@@ -64,7 +65,7 @@ export const FAB_SUBTITLES: Record<string, string> = {
   sleep: '计时模式 · 补录模式',
   activity: '大运动 · 精细运动 · 户外活动',
   diaper: '大便次数性状 · 小便次数',
-  health: '体温 · 过敏表现 · 护理',
+  allergy: '皮疹 · 腹泻 · 呼吸急促等表现',
   temperature: '快速记录宝宝体温',
   supplement: '维生素D · 铁剂 · 益生菌 · 钙剂',
   symptom: '精神状态 · 心情状态',
@@ -84,8 +85,8 @@ export const HOME_RECORD_ROUTES: Record<string, string> = {
   sleep_end: '/records/form/sleep',
   diaper: '/records/form/diaper',
   activity: '/records/form/activity',
-  health: '/records/form/health',
-  temperature: '/records/form/health?expandTemp=true',
+  allergy: '/records/form/allergy',
+  temperature: '/records/form/temperature',
   growth: '/records/form/growth',
   medical: '/records/form/medical',
   symptom: '/records/form/symptom',
@@ -103,8 +104,9 @@ export const HOME_RECORD_MP_ROUTES: Record<string, string> = {
   '/records/form/diaper': '/pages/records/diaper/index',
   '/records/form/sleep': '/pages/records/sleep/index',
   '/records/form/growth': '/pages/records/growth/index',
-  '/records/form/health': '/pages/records/health/index',
   '/records/form/medical': '/pages/records/medical/index',
+  '/records/form/allergy': '/pages/records/health/allergy/index',
+  '/records/form/temperature': '/pages/records/health/temperature/index',
   '/records/form/activity': '/pages/records/activity/index',
   '/records/form/symptom': '/pages/records/symptom/index',
   '/records/form/medication': '/pages/records/medication/index',
@@ -154,11 +156,12 @@ export const SPIRIT_LABELS: Record<string, string> = {
 
 export const VISIT_TYPE_LABELS: Record<string, string> = {
   checkup: '儿保检查',
-  allergy: '过敏原检测',
   sick: '就诊记录',
   vaccine: '疫苗接种',
-  blood: '血液检查',
   other: '其他检查',
+  // 已废弃类型（2026-08-22 精简），仅用于老数据列表展示
+  allergy: '过敏原检测',
+  blood: '血液检查',
 }
 
 /** 过敏程度选项配置（含激活颜色） */

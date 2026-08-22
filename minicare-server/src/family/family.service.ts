@@ -506,10 +506,13 @@ export class FamilyService {
         ) AS detail
       FROM growth_record WHERE baby_id = ? AND record_date = ?
       UNION ALL
-      SELECT 'medical' AS type, id, visit_date AS time, note,
+      SELECT 'medical' AS type, id,
+        CONCAT(visit_date, ' ', COALESCE(visit_time, '00:00'), ':00') AS time, note,
         JSON_OBJECT(
+          'visit_type', visit_type,
           'hospital',  hospital,
-          'diagnosis', diagnosis
+          'diagnosis', diagnosis,
+          'visit_time', visit_time
         ) AS detail
       FROM medical_record WHERE baby_id = ? AND visit_date = ?
       UNION ALL

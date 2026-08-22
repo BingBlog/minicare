@@ -1,0 +1,13 @@
+/* 过敏表现页 — 复用健康记录公共样式 + 独立页覆盖 */
+
+@import '../index.scss';
+
+.allergy-page .health-allergy {
+  border-top: none;
+}
+
+.allergy-page__hint {
+  margin: -4px 18px 12px;
+  font-size: 12px;
+  color: #C0A8B0;
+}

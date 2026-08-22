@@ -6,6 +6,7 @@ import {
   IsOptional,
   IsString,
   IsUUID,
+  Matches,
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
@@ -23,14 +24,15 @@ import { Type } from 'class-transformer';
  *   follow_up_date DATE          -- 复查日期（Migration 003）
  */
 
-/** 就诊类型枚举 */
+/**
+ * 就诊类型枚举（2026-08-22 精简：去掉 allergy 过敏原检测 / blood 血液检查，
+ * 两者低频或与 other 重复，老数据读取不受影响，前端编辑时归一为 other）
+ */
 export enum VisitType {
-  CHECKUP = 'checkup',   // 常规体检
-  ALLERGY = 'allergy',   // 过敏专科
-  SICK    = 'sick',      // 生病就诊
+  CHECKUP = 'checkup',   // 儿保检查
+  SICK    = 'sick',      // 就诊记录
   VACCINE = 'vaccine',   // 疫苗接种
-  BLOOD   = 'blood',     // 血液检查
-  OTHER   = 'other',     // 其他
+  OTHER   = 'other',     // 其他检查
 }
 
 /** 单条用药记录 */
@@ -46,9 +48,14 @@ export class CreateMedicalDto {
   @IsDateString()
   visit_date: string;
 
+  @ApiPropertyOptional({ description: '就诊/检查时间（HH:mm，可选）', example: '10:30' })
+  @IsOptional()
+  @Matches(/^([01]\d|2[0-3]):[0-5]\d$/)
+  visit_time?: string;
+
   @ApiPropertyOptional({
     enum: VisitType,
-    description: '就诊类型（checkup/allergy/sick/vaccine/blood/other）',
+    description: '就诊类型（checkup/sick/vaccine/other）',
   })
   @IsOptional()
   @IsEnum(VisitType)
@@ -83,6 +90,11 @@ export class CreateMedicalDto {
   @IsDateString()
   follow_up_date?: string;
 
+  @ApiPropertyOptional({ description: '下次复查时间（HH:mm，可选）' })
+  @IsOptional()
+  @Matches(/^([01]\d|2[0-3]):[0-5]\d$/)
+  follow_up_time?: string;
+
   @ApiPropertyOptional() @IsOptional() @IsString() note?: string;
 }
 
@@ -91,6 +103,11 @@ export class UpdateMedicalDto {
   @IsOptional()
   @IsDateString()
   visit_date?: string;
+
+  @ApiPropertyOptional({ description: '就诊/检查时间（HH:mm，可选）' })
+  @IsOptional()
+  @Matches(/^([01]\d|2[0-3]):[0-5]\d$/)
+  visit_time?: string;
 
   @ApiPropertyOptional({ enum: VisitType })
   @IsOptional()
@@ -119,6 +136,11 @@ export class UpdateMedicalDto {
   @IsOptional()
   @IsDateString()
   follow_up_date?: string;
+
+  @ApiPropertyOptional({ description: '下次复查时间（HH:mm，可选）' })
+  @IsOptional()
+  @Matches(/^([01]\d|2[0-3]):[0-5]\d$/)
+  follow_up_time?: string;
 
   @ApiPropertyOptional() @IsOptional() @IsString() note?: string;
 }

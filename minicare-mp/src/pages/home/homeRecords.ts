@@ -64,6 +64,14 @@ export function toHomeRecord(rec: HomeApiRecord): HomeRecord {
 }
 
 export function getTimelineIconType(record: HomeRecord): string {
+  if (record.type === 'health') {
+    const detail = record.detail ?? {}
+    const temp = detail.temperature
+    const symptoms = detail.allergy_symptoms as string[] | undefined
+    if (temp != null) return 'temperature'
+    if (Array.isArray(symptoms) && symptoms.length > 0) return 'allergy'
+    return 'health'
+  }
   if (record.type !== 'feeding') return record.type
   const feedType = record.detail?.feed_type as string | undefined
   if (feedType === 'formula') return 'formula'
@@ -140,7 +148,19 @@ export function getTimelineRecordDisplay(record: HomeRecord): TimelineRecordDisp
 
   if (record.type === 'health') {
     const temp = d.temperature as number | undefined
-    return { label: '健康', tags: [temp != null && temp >= 37.5 ? '发热' : ''].filter(Boolean), summary: temp != null ? `${temp}℃` : '' }
+    const symptoms = (d.allergy_symptoms as string[] | undefined) ?? []
+    const hasTemp = temp != null
+    const hasAllergy = symptoms.length > 0
+    // 拆页后单维度记录占绝大多数；历史复合记录（体温+过敏同一条）兜底展示
+    const label = hasTemp && !hasAllergy ? '体温' : hasAllergy && !hasTemp ? '过敏表现' : '健康'
+    const tags: string[] = []
+    if (hasTemp && temp >= 37.5) tags.push('发热')
+    if (hasAllergy) {
+      tags.push(...symptoms.slice(0, 2))
+      if (symptoms.length > 2) tags.push(`等${symptoms.length}项`)
+    }
+    const summary = hasTemp ? `${temp}℃` : ''
+    return { label, tags, summary }
   }
 
   if (record.type === 'growth') {

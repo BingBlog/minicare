@@ -30,6 +30,20 @@ export function isoToLocalDate(iso: string): string {
   return dayjs(iso).format('YYYY-MM-DD')
 }
 
+/**
+ * 日期 Picker 输入值：统一截断为 YYYY-MM-DD
+ * 兼容老数据可能返回 '2026-08-22T00:00:00+08:00' 的情况
+ */
+export function toDateInput(value: string): string {
+  return String(value || '').slice(0, 10)
+}
+
+/** 友好日期展示：2026-08-22 → 2026年8月22日 */
+export function toFriendlyDate(value: string): string {
+  const d = dayjs(toDateInput(value))
+  return d.isValid() ? d.format('YYYY年M月D日') : value
+}
+
 /** ISO/日期时间字符串 → 本地时间 HH:mm（等价于 formatTime，语义更明确） */
 export function isoToLocalTime(iso: string): string {
   if (!iso) return ''

@@ -3,12 +3,12 @@
  *
  * 与 Web pages/records/medical/index.tsx 保持 1:1 业务逻辑对齐。
  */
-import { View, Text, Textarea } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { useState } from 'react'
 import { recordsApi } from '@/api'
 import type { MedicalRecord } from '@/api/medical'
-import { nowDate } from '@/lib/utils'
+import { nowDate, nowTime } from '@/lib/utils'
 import { useRecordInit } from '@/lib/useRecordInit'
 import { useRecordSubmit } from '@/lib/useRecordSubmit'
 import RecordNavBar from '@/components/RecordNavBar'
@@ -19,7 +19,6 @@ import VisitTypeSection from './VisitTypeSection'
 import BasicInfoSection from './BasicInfoSection'
 import PhotoSection from './PhotoSection'
 import ResultSection from './ResultSection'
-import MedicationsSection, { type Medication } from './MedicationsSection'
 import FollowUpSection from './FollowUpSection'
 import { useIsIPad } from '@/lib/useIsIPad'
 import './index.scss'
@@ -29,50 +28,39 @@ export default function MedicalFormPage() {
   const cls = (base: string) => isIPad ? `${base} is-ipad` : base
   // ── 表单状态 ──
   const [visitDate, setVisitDate] = useState(nowDate())
+  // 检查时间默认 = 当前填写时间（HH:mm），随记录一起提交
+  const [visitTime, setVisitTime] = useState(nowTime())
   const [visitType, setVisitType] = useState<string>('checkup')
   const [hospital, setHospital] = useState('')
   const [doctor, setDoctor] = useState('')
   const [resultSummary, setResultSummary] = useState('')
   const [diagnosis, setDiagnosis] = useState('')
-  const [medications, setMedications] = useState<Medication[]>([])
   const [photoIds, setPhotoIds] = useState<string[]>([])
-  const [note, setNote] = useState('')
   const [followUpDate, setFollowUpDate] = useState('')
-  const [followUpEnabled, setFollowUpEnabled] = useState(false)
+  const [followUpTime, setFollowUpTime] = useState('')
 
   // ── 通用初始化 ──
   const { loading, familyId, babyId, editRecordId, isEditMode } = useRecordInit<MedicalRecord>({
     loadRecord: (fid, rid) => recordsApi.medical.getOne(fid, rid),
     onRecord: (r) => {
       if (r.visit_date) setVisitDate(r.visit_date)
-      if (r.visit_type) setVisitType(r.visit_type)
+      if (r.visit_time) setVisitTime(r.visit_time)
+      // blood/allergy 已从选项精简，老数据编辑时归一为 other（复用其他检查）
+      if (r.visit_type) setVisitType(r.visit_type === 'blood' || r.visit_type === 'allergy' ? 'other' : r.visit_type)
       setHospital(r.hospital ?? '')
       setDoctor(r.doctor ?? '')
       setResultSummary(r.result_summary ?? '')
       setDiagnosis(r.diagnosis ?? '')
-      if (r.medications && r.medications.length > 0) {
-        setMedications(r.medications.map((m) => ({ name: m.name, dose: m.dose ?? '' })))
-      }
       if (r.photo_ids && r.photo_ids.length > 0) {
         setPhotoIds(r.photo_ids)
       }
-      setNote(r.note ?? '')
-      if (r.follow_up_date) {
-        setFollowUpDate(r.follow_up_date)
-        setFollowUpEnabled(true)
-      }
+      if (r.follow_up_date) setFollowUpDate(r.follow_up_date)
+      if (r.follow_up_time) setFollowUpTime(r.follow_up_time)
     },
   })
 
   // ── 通用提交/删除 ──
   const { submitting, deleteConfirmOpen, setDeleteConfirmOpen, handleSubmit, handleDelete } = useRecordSubmit()
-
-  // ── 用药操作 ──
-  const addMed = () => setMedications((prev) => [...prev, { name: '', dose: '' }])
-  const removeMed = (i: number) => setMedications((prev) => prev.filter((_, idx) => idx !== i))
-  const updateMed = (i: number, field: keyof Medication, val: string) => {
-    setMedications((prev) => prev.map((m, idx) => (idx === i ? { ...m, [field]: val } : m)))
-  }
 
   // ── Toast 工具（PhotoSection 需要） ──
   const showToast = (msg: string) => {
@@ -86,21 +74,17 @@ export default function MedicalFormPage() {
       return true
     },
     execute: async () => {
-      const validMeds = medications.filter((m) => m.name.trim())
-      const noteArr: string[] = []
-      if (note) noteArr.push(note)
-
       const payload = {
         visit_date: visitDate,
+        visit_time: visitTime || undefined,
         visit_type: visitType || undefined,
         hospital: hospital || undefined,
         doctor: doctor || undefined,
         diagnosis: diagnosis || undefined,
         result_summary: resultSummary || undefined,
-        medications: validMeds.length > 0 ? validMeds.map((m) => ({ name: m.name, dose: m.dose || undefined })) : undefined,
         photo_ids: photoIds.length > 0 ? photoIds : undefined,
-        follow_up_date: followUpEnabled && followUpDate ? followUpDate : undefined,
-        note: noteArr.join(' / ') || undefined,
+        follow_up_date: followUpDate || undefined,
+        follow_up_time: followUpDate && followUpTime ? followUpTime : undefined,
       }
       if (isEditMode) {
         await recordsApi.medical.update(familyId, editRecordId, payload)
@@ -145,9 +129,11 @@ export default function MedicalFormPage() {
         <View className='medical-section-label'><Text>基本信息</Text></View>
         <BasicInfoSection
           visitDate={visitDate}
+          visitTime={visitTime}
           hospital={hospital}
           doctor={doctor}
           onVisitDateChange={setVisitDate}
+          onVisitTimeChange={setVisitTime}
           onHospitalChange={setHospital}
           onDoctorChange={setDoctor}
         />
@@ -165,30 +151,14 @@ export default function MedicalFormPage() {
           onDiagnosisChange={setDiagnosis}
         />
 
-        {/* 用药记录 */}
-        <MedicationsSection medications={medications} onAdd={addMed} onRemove={removeMed} onUpdate={updateMed} />
-
         {/* 下次复查提醒 */}
         <View className='medical-section-label'><Text>下次复查提醒（可选）</Text></View>
         <FollowUpSection
           followUpDate={followUpDate}
-          followUpEnabled={followUpEnabled}
+          followUpTime={followUpTime}
           onDateChange={setFollowUpDate}
-          onToggle={() => setFollowUpEnabled(!followUpEnabled)}
+          onTimeChange={setFollowUpTime}
         />
-
-        {/* 备注 */}
-        <View className='medical-section-label'><Text>备注（可选）</Text></View>
-        <View className='medical-card'>
-          <Textarea
-            className='medical-note__input'
-            value={note}
-            onInput={(e) => setNote(e.detail.value)}
-            placeholder='医嘱、注意事项等...'
-            maxlength={500}
-            autoHeight
-          />
-        </View>
       </View>
 
       {/* ── 底部提交栏 ── */}

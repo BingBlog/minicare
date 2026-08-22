@@ -3,7 +3,7 @@ import { Pool } from 'mysql2/promise';
 import { v4 as uuidv4 } from 'uuid';
 import { DATABASE_POOL } from '../../common/database/database.module';
 import { CreateMedicalDto, UpdateMedicalDto } from './dto/create-medical.dto';
-import { toMysqlDate, getBeijingToday, addDays } from '../../common/utils/date.util';
+import { toMysqlDate, getBeijingToday, addDays, formatSqlDate } from '../../common/utils/date.util';
 import { TimelineService } from '../timeline/timeline.service';
 
 @Injectable()
@@ -17,16 +17,17 @@ export class MedicalService {
     const id = uuidv4();
     await this.db.execute(
       `INSERT INTO medical_record
-         (id, baby_id, recorded_by, visit_date,
+         (id, baby_id, recorded_by, visit_date, visit_time,
           visit_type, hospital, doctor, diagnosis,
           result_summary, medications, photo_ids,
-          follow_up_date, note)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          follow_up_date, follow_up_time, note)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         id,
         dto.baby_id,
         userId,
         toMysqlDate(dto.visit_date),
+        dto.visit_time     ?? null,
         dto.visit_type     ?? null,
         dto.hospital       ?? null,
         dto.doctor         ?? null,
@@ -35,6 +36,7 @@ export class MedicalService {
         dto.medications ? JSON.stringify(dto.medications) : null,
         dto.photo_ids   ? JSON.stringify(dto.photo_ids)   : null,
         dto.follow_up_date ? toMysqlDate(dto.follow_up_date) : null,
+        dto.follow_up_time ?? null,
         dto.note           ?? null,
       ],
     );
@@ -47,10 +49,10 @@ export class MedicalService {
     const startDate = addDays(endDate, -7);
 
     const [rows] = await this.db.query<any[]>(
-      `SELECT id, baby_id, recorded_by, visit_date,
+      `SELECT id, baby_id, recorded_by, visit_date, visit_time,
               visit_type, hospital, doctor, diagnosis,
               result_summary, medications, photo_ids,
-              follow_up_date, note, created_at, updated_at
+              follow_up_date, follow_up_time, note, created_at, updated_at
        FROM medical_record
        WHERE baby_id = ? AND visit_date >= ? AND visit_date < ?
        ORDER BY visit_date DESC`,
@@ -75,6 +77,10 @@ export class MedicalService {
   private mapListRow(r: any) {
     return {
       ...r,
+      // mysql2 将 DATE 列解析为 JS Date（UTC 零点），需转回 YYYY-MM-DD，
+      // 否则 DateTransformInterceptor 会输出 '2026-08-22T00:00:00+08:00'
+      visit_date: formatSqlDate(r.visit_date),
+      follow_up_date: r.follow_up_date ? formatSqlDate(r.follow_up_date) : null,
       medications: r.medications
         ? (typeof r.medications === 'string' ? JSON.parse(r.medications) : r.medications)
         : [],
@@ -84,12 +90,36 @@ export class MedicalService {
     };
   }
 
+  /**
+   * 查询下一次复查提醒（首页展示用）
+   *
+   * 只返回未过期的复查计划（follow_up_date >= 今天，取最近一条）；
+   * 过期后不再展示（用户每天打开小程序，过期即视为已错过，无需提醒）；无则返回 null。
+   */
+  async findNextFollowUp(babyId: string) {
+    const today = getBeijingToday();
+    const [rows] = await this.db.query<any[]>(
+      `SELECT id, baby_id, visit_date, visit_time, visit_type, hospital,
+              follow_up_date, follow_up_time
+       FROM medical_record
+       WHERE baby_id = ? AND follow_up_date IS NOT NULL AND follow_up_date >= ?
+       ORDER BY follow_up_date ASC, follow_up_time ASC LIMIT 1`,
+      [babyId, today],
+    );
+    if (!rows[0]) return null;
+    return {
+      ...rows[0],
+      visit_date: formatSqlDate(rows[0].visit_date),
+      follow_up_date: formatSqlDate(rows[0].follow_up_date),
+    };
+  }
+
   async findOne(id: string) {
     const [rows] = await this.db.execute<any[]>(
-      `SELECT id, baby_id, recorded_by, visit_date,
+      `SELECT id, baby_id, recorded_by, visit_date, visit_time,
               visit_type, hospital, doctor, diagnosis,
               result_summary, medications, photo_ids,
-              follow_up_date, note, created_at, updated_at
+              follow_up_date, follow_up_time, note, created_at, updated_at
        FROM medical_record WHERE id = ?`,
       [id],
     );
@@ -97,6 +127,9 @@ export class MedicalService {
     const r = rows[0];
     return {
       ...r,
+      // 同 mapListRow：DATE 列格式化为 YYYY-MM-DD，避免输出带 00:00:00 时间
+      visit_date: formatSqlDate(r.visit_date),
+      follow_up_date: r.follow_up_date ? formatSqlDate(r.follow_up_date) : null,
       medications: r.medications
         ? (typeof r.medications === 'string' ? JSON.parse(r.medications) : r.medications)
         : [],
@@ -114,6 +147,7 @@ export class MedicalService {
     const values: any[] = [];
 
     if (dto.visit_date     !== undefined) { setClauses.push('visit_date = ?');     values.push(toMysqlDate(dto.visit_date)); }
+    if (dto.visit_time     !== undefined) { setClauses.push('visit_time = ?');     values.push(dto.visit_time ?? null); }
     if (dto.visit_type     !== undefined) { setClauses.push('visit_type = ?');     values.push(dto.visit_type ?? null); }
     if (dto.hospital       !== undefined) { setClauses.push('hospital = ?');       values.push(dto.hospital ?? null); }
     if (dto.doctor         !== undefined) { setClauses.push('doctor = ?');         values.push(dto.doctor ?? null); }
@@ -122,6 +156,7 @@ export class MedicalService {
     if (dto.medications    !== undefined) { setClauses.push('medications = ?');    values.push(dto.medications ? JSON.stringify(dto.medications) : null); }
     if (dto.photo_ids      !== undefined) { setClauses.push('photo_ids = ?');      values.push(dto.photo_ids ? JSON.stringify(dto.photo_ids) : null); }
     if (dto.follow_up_date !== undefined) { setClauses.push('follow_up_date = ?'); values.push(dto.follow_up_date ? toMysqlDate(dto.follow_up_date) : null); }
+    if (dto.follow_up_time !== undefined) { setClauses.push('follow_up_time = ?'); values.push(dto.follow_up_time ?? null); }
     if (dto.note           !== undefined) { setClauses.push('note = ?');           values.push(dto.note ?? null); }
 
     if (setClauses.length > 0) {

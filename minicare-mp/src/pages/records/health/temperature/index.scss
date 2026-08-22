@@ -1,0 +1,8 @@
+/* 体温记录页 — 复用健康记录公共样式 + 独立页覆盖 */
+
+@import '../index.scss';
+
+.temp-page .health-temp {
+  border-top: none;
+  padding: 12px 16px;
+}

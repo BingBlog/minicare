@@ -9,7 +9,6 @@ export interface HealthRecord {
   temperature?: number | null
   allergy_symptoms?: string[] | null
   allergy_severity?: Severity | null
-  skin_care?: string[] | null
   note?: string | null
 }
 
@@ -19,7 +18,6 @@ export interface CreateHealthDto {
   temperature?: number
   allergy_symptoms?: string[]
   allergy_severity?: Severity
-  skin_care?: string[]
   note?: string
 }
 

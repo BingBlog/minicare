@@ -348,7 +348,7 @@ flowchart TD
 
 1. 进入医疗记录表单：检查类型、日期、机构、结果摘要、诊断结论（字段与第三章 P0-006 一致）。
 2. 支持**拍照上传**病历 / 报告图 → 与结构化字段一并保存为一条记录。
-3. 可选填写「下次复查」日期 → 写入本地提醒（若 MVP 实现提醒权限）。
+3. 可选填写「下次复查」日期 → ~~写入本地提醒（若 MVP 实现提醒权限）。~~（2026-08-22 调整：不做系统通知，**首页常驻展示「下次复查提醒」横幅**，见 F10-medical.md）
 
 #### 2.4.10 查看统计与导出
 
@@ -1815,7 +1815,9 @@ flowchart TD
 | baby_id         | INTEGER  | 宝宝 ID                                                                            | NOT NULL |
 | recorded_by     | INTEGER  | 记录者成员 ID（关联 family_member 表）                                             | NOT NULL |
 | visit_date      | DATE     | 就诊 / 检查日期                                                                    | NOT NULL |
-| visit_type      | INTEGER  | 记录类型（0 - 儿保检查，1 - 过敏相关检查，2 - 门诊就诊，3 - 自定义）               | NOT NULL |
+| ~~visit_type~~      | ~~INTEGER~~  | ~~记录类型（0 - 儿保检查，1 - 过敏相关检查，2 - 门诊就诊，3 - 自定义）~~               | ~~NOT NULL~~ |
+
+> 注：visit_type 实际落地为 VARCHAR 枚举，2026-08-22 精简为 4 值（checkup/sick/vaccine/other，见 F10-medical.md）。
 | institution     | TEXT     | 就诊机构                                                                           | NULL     |
 | result_summary  | TEXT     | 检查结果摘要（支持多行文本）                                                       | NULL     |
 | diagnosis       | TEXT     | 诊断结论                                                                           | NULL     |

@@ -1,40 +1,55 @@
 /**
- * 医疗记录 - 基本信息输入区域（检查日期、就诊机构、主诊医生）
- * 与 Web pages/records/medical/BasicInfoSection.tsx 1:1 对齐
+ * 医疗记录 - 基本信息输入区域（检查日期、检查时间、就诊机构、主诊医生）
  */
 import { View, Text, Input, Picker } from '@tarojs/components'
-import { nowDate } from '@/lib/utils'
+import { nowDate, toDateInput, toFriendlyDate } from '@/lib/utils'
 
 interface Props {
   visitDate: string
+  visitTime: string
   hospital: string
   doctor: string
   onVisitDateChange: (v: string) => void
+  onVisitTimeChange: (v: string) => void
   onHospitalChange: (v: string) => void
   onDoctorChange: (v: string) => void
 }
 
 export default function BasicInfoSection({
   visitDate,
+  visitTime,
   hospital,
   doctor,
   onVisitDateChange,
+  onVisitTimeChange,
   onHospitalChange,
   onDoctorChange,
 }: Props) {
   return (
     <View className='medical-card'>
-      {/* 检查日期 */}
+      {/* 检查日期 + 检查时间 */}
       <View className='medical-card__row medical-card__row--border'>
         <Text className='medical-card__label'>检查日期</Text>
         <View className='medical-card__picker'>
           <Picker
             mode='date'
-            value={visitDate}
+            value={toDateInput(visitDate)}
             end={nowDate()}
             onChange={(e) => onVisitDateChange(e.detail.value)}
           >
-            <Text className='medical-card__picker-text'>{visitDate}</Text>
+            <Text className='medical-card__picker-text'>{toFriendlyDate(visitDate)}</Text>
+          </Picker>
+        </View>
+      </View>
+      <View className='medical-card__row medical-card__row--border'>
+        <Text className='medical-card__label'>检查时间</Text>
+        <View className='medical-card__picker'>
+          <Picker
+            mode='time'
+            value={visitTime}
+            onChange={(e) => onVisitTimeChange(e.detail.value)}
+          >
+            <Text className='medical-card__picker-text'>{visitTime}</Text>
           </Picker>
         </View>
       </View>

@@ -16,6 +16,8 @@
 
 > `cloudbase/SKILL.md` is a **router** — it dispatches to 20+ sub-skills under `references/` (e.g. `auth-web`, `cloudrun-development`). Always read the router first, then follow its routing table to the correct sub-skill. Never call CloudBase APIs without going through the skill chain.
 
+> **⚠️ 影响面机制（改动任何功能前必做）**：运行 `node .agents/scripts/impact-scan.mjs <功能域关键词>` 扫描该功能域的全部消费点（入口层/表单页/组件/API/展示层/后端/文档），并对照对应 PRD 的「影响面清单」章节逐项核对后再动手；开发完成后同步更新影响面清单。详细流程见 `.agents/skills/minicare-dev/SKILL.md` 步骤 2。
+
 These 6 project rules are referenced by `opencode.json` and auto-apply to matching file patterns — you do not need to manually read them, but their domain rules are binding:
 
 | Rule file | Scope |
@@ -27,7 +29,7 @@ These 6 project rules are referenced by `opencode.json` and auto-apply to matchi
 | `.agents/rules/miniapp-development.mdc` | Miniprogram platform constraints |
 | `.agents/rules/mp-preview.mdc` | CI preview (miniprogram-ci, IP whitelist, proxy handling) |
 
-> ⚠️ **`.agents/` 是 rules 和 skills 的唯一数据源**。`.cursor/`、`.trae/`、`.opencode/` 中的 rules 和 skills 均为 symlink 指向 `.agents/`，**禁止直接编辑这些目录中的文件**。所有修改必须通过 `.agents/rules/` 或 `.agents/skills/` 路径进行。
+> ⚠️ **`.agents/` 是 rules 和 skills 的唯一数据源**。`.cursor/`、`.trae/`、`.opencode/`、`.workbuddy/skills/` 中的 rules 和 skills 均为 symlink 指向 `.agents/`，**禁止直接编辑这些目录中的文件**。所有修改必须通过 `.agents/rules/` 或 `.agents/skills/` 路径进行。
 
 ---
 

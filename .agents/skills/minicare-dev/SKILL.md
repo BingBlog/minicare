@@ -106,7 +106,7 @@ minicare-server/src/
 
 **唯一权威来源**：`minicare-server/migrations/` 目录，按文件名顺序执行。
 
-> **当前最新迁移**：`012_soft_delete.sql`（001~012 共 12 个文件）
+> **当前最新迁移**：`015_follow_up_time.sql`（001~015 共 15 个文件）
 > 新增迁移文件后，**必须更新本行的「当前最新迁移」字段**。
 
 | 文件 | 变更内容 |
@@ -123,6 +123,9 @@ minicare-server/src/
 | `010_sleep_midnight_split.sql` | 睡眠跨午夜拆分 |
 | `011_food_observation_workflow.sql` | 辅食排敏任务工作流（food_observation_log 等） |
 | `012_soft_delete.sql` | **软删除：baby_profile/family_group 加 deleted_at，移除单宝宝唯一键** |
+| `013_medication.sql` | 用药记录模块（medication / medication_record，F14） |
+| `014_medical_visit_time.sql` | medical_record 增加 visit_time（HH:mm，可选） |
+| `015_follow_up_time.sql` | medical_record 增加 follow_up_time（HH:mm，可选，复查提醒用） |
 
 ---
 
@@ -187,9 +190,45 @@ read_file("docs/features/F03-feeding.md")  // 以饮食记录为例
 - **业务规则**（不可跳过，包含临床规则和边界条件）
 - **验收标准（AC）**（对应测试用例）
 - **数据库表字段**（避免字段设计错误）
+- **影响面清单**（该模块的全部消费方，改动前必须逐项核对）
 - **交互示意图**（了解 UI 预期状态）
 
-### 步骤 2：开发实现
+### 步骤 2：影响面扫描（改动任何功能前必做，硬性）
+
+> 背景：一次 health 表单改动曾漏掉首页时间线/记录列表展示层，用户测试才发现。
+> 根因是消费方清单缺失。此步骤强制"先梳理影响面，再动手"。
+
+1. 运行影响面扫描脚本，找出该功能域的全部引用点：
+
+```bash
+node .agents/scripts/impact-scan.mjs <功能域关键词...>
+# 例：node .agents/scripts/impact-scan.mjs health temperature allergy skin_care
+#     node .agents/scripts/impact-scan.mjs feeding formula breast food supplement
+#     node .agents/scripts/impact-scan.mjs sleep
+```
+
+2. 按输出分组（入口层/表单页/组件/API/展示层/常量工具/后端/文档）**逐项核对**，
+   评估本次改动是否影响该消费点，并把影响结论记录在改动说明中。
+3. 对照 PRD「影响面清单」章节检查：清单里有没有本次新增/变更的消费点？
+   有则**先补清单再开发**（清单与代码同步演进，防止下次再漏）。
+4. 常用功能域关键词速查（按需扩展）：
+
+| 功能域 | 关键词 |
+|--------|--------|
+| 健康（体温/过敏） | `health temperature allergy skin_care` |
+| 饮食（含奶粉多选/辅食/补剂） | `feeding formula breast food supplement` |
+| 睡眠 | `sleep` |
+| 尿布 | `diaper` |
+| 表现 | `symptom mood spirit` |
+| 生长 | `growth height weight head` |
+| 医疗 | `medical hospital medications` |
+| 用药 | `medication` |
+| 辅食排敏 | `food_observation reaction` |
+
+> ⚠️ 大小写不敏感匹配（如 `health` 会命中 `HealthRecord` 类型名），扫描结果需人工确认，
+> 可能有少量误报，但**漏报风险远低于误报**——宁可多核对几个文件。
+
+### 步骤 3：开发实现
 
 - UI 原型参考文件路径：`minicare/ui-draft/` 下对应 HTML 文件（见下方映射表）
 - 设计 Token 参考：`.catpaw/skills/minicare-design/design-tokens.md`
@@ -221,13 +260,14 @@ read_file("docs/features/F03-feeding.md")  // 以饮食记录为例
 > 2. **禁止使用 emoji 作为图标**：页面中所有图标必须按照 `ui-draft` 设计稿中对应的 SVG 图标（`icons-sprite.js` / `icons.css`）实现，**严禁用 emoji 符号替代任何功能性或装饰性图标**；
 > 3. **同时激活设计规范 SKILL**：开发或修改任何前端页面时，必须同时读取并遵循 `.catpaw/skills/minicare-design/SKILL.md` 中的视觉规范。
 
-### 步骤 3：同步更新 PRD
+### 步骤 4：同步更新 PRD
 
 若开发过程中业务规则有变更，必须同步更新：
 
 1. 更新 `docs/features/F0x-*.md` 对应章节
-2. 更新文件顶部 `最后同步` 日期
-3. 同步更新 `MVP-PRD.md` 对应章节（`MVP-PRD.md` 是权威来源）
+2. **更新该模块的「影响面清单」章节**：新增/删除的消费点（页面、组件、API、后端服务、展示层）必须同步
+3. 更新文件顶部 `最后同步` 日期
+4. 同步更新 `MVP-PRD.md` 对应章节（`MVP-PRD.md` 是权威来源）
 
 ---
 

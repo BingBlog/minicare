@@ -20,10 +20,12 @@ import TodayTimeline from './TodayTimeline'
 import DailyComparison from './DailyComparison'
 import SleepBanner from './SleepBanner'
 import FeedingBanner from './FeedingBanner'
+import NextFollowUpBanner from './NextFollowUpBanner'
 import AllergyProgressBar from './AllergyProgressBar'
 import RecordActionSheet from './RecordActionSheet'
 import TabBar from '@/components/TabBar/TabBar'
 import InviteModal from '@/components/InviteModal/InviteModal'
+import type { NextFollowUp } from '@/api/medical'
 import type { BabyStat, HomeRecord } from './types'
 import { toHomeRecord } from './homeRecords'
 import './index.scss'
@@ -71,6 +73,7 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true)
   const [babyGrowth, setBabyGrowth] = useState<{ weightKg?: string; heightCm?: string; headCm?: string } | null>(null)
   const [foodObservations, setFoodObservations] = useState<FoodObservation[]>([])
+  const [nextFollowUp, setNextFollowUp] = useState<NextFollowUp | null>(null)
 
   // 页面加载时，解析 URL 参数
   useEffect(() => {
@@ -139,6 +142,13 @@ export default function HomePage() {
         setFoodObservations(observations)
       } catch {
         setFoodObservations([])
+      }
+
+      try {
+        const nf = await recordsApi.medical.getNextFollowUp(fid, baby.id)
+        setNextFollowUp(nf)
+      } catch {
+        setNextFollowUp(null)
       }
     } catch {
       // 静默失败，保留已有数据
@@ -255,6 +265,10 @@ export default function HomePage() {
 
           recordsApi.today(fid, getYesterdayDateStr())
             .then((yRecs) => { if (!cancelled) setYesterdayRecords(yRecs.map(toHomeRecord)) })
+            .catch(() => {})
+
+          recordsApi.medical.getNextFollowUp(fid, baby.id)
+            .then((nf) => { if (!cancelled) setNextFollowUp(nf) })
             .catch(() => {})
         }
       } catch (err) {
@@ -639,6 +653,15 @@ export default function HomePage() {
                 }}
               />
             ) : null}
+            {nextFollowUp ? (
+              <NextFollowUpBanner
+                followUpDate={nextFollowUp.follow_up_date}
+                followUpTime={nextFollowUp.follow_up_time}
+                visitType={nextFollowUp.visit_type}
+                hospital={nextFollowUp.hospital}
+                onRecordClick={() => navigateToRecord('/records/form/medical', nextFollowUp.id)}
+              />
+            ) : null}
             <AllergyProgressBar observations={foodObservations} />
           </View>
         }
@@ -681,6 +704,11 @@ export default function HomePage() {
             } else {
               routeKey = feedType
             }
+          }
+          // health 已拆分为体温/过敏两个独立页，按记录内容分流
+          if (routeKey === 'health') {
+            const detail = (record.detail ?? {}) as Record<string, unknown>
+            routeKey = detail.temperature != null ? 'temperature' : 'allergy'
           }
           const route = HOME_RECORD_ROUTES[routeKey]
           if (route) {

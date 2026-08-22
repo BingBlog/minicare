@@ -639,6 +639,12 @@
   box-shadow: 0 4px 16px rgba(221, 184, 112, 0.18);
 }
 
+.home-inline-banner--followup {
+  border-left: 3px solid #ddb870;
+  box-shadow: 0 4px 16px rgba(221, 184, 112, 0.18);
+}
+
+
 .home-inline-banner__dot {
   width: 8px;
   height: 8px;
@@ -657,6 +663,11 @@
 .home-inline-banner__dot--allergy {
   background: #ddb870;
 }
+
+.home-inline-banner__dot--followup {
+  background: #ddb870;
+}
+
 
 .home-inline-banner__content {
   flex: 1;
@@ -703,6 +714,18 @@
   flex-shrink: 0;
   white-space: nowrap;
 }
+
+.home-inline-banner__action--followup {
+  font-size: 12px;
+  font-weight: 600;
+  color: #DDB870;
+  border: 1.5px solid rgba(221, 184, 112, 0.5);
+  border-radius: 8px;
+  padding: 6px 12px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
 
 .home-inline-banner__content-inner {
   display: flex;

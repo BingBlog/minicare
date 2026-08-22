@@ -3,6 +3,7 @@
  * 小程序端通过 Image 的 src 引用，颜色已写入各 SVG。
  */
 import activity from './activity.svg'
+import allergy from './allergy.svg'
 import breast from './breast.svg'
 import diaper from './diaper.svg'
 import feeding from './feeding.svg'
@@ -27,6 +28,7 @@ export const RECORD_TYPE_ICON_SRC: Record<string, string> = {
   activity,
   growth,
   health,
+  allergy,
   temperature,
   medical,
   medication,

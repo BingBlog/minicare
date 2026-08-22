@@ -377,15 +377,19 @@ export class TimelineService {
 
   private async loadMedicalPayload(sourceId: string) {
     const [rows] = await this.db.query<any[]>(
-      `SELECT id, baby_id, visit_date, visit_type, hospital, diagnosis, note
+      `SELECT id, baby_id, visit_date, visit_time, visit_type, hospital, diagnosis, note
        FROM medical_record WHERE id = ? LIMIT 1`,
       [sourceId],
     );
     if (!rows[0]) return null;
     const r = rows[0];
+    // 有时间则用 visit_time，否则落到当日 00:00:00
+    const eventTime = r.visit_time
+      ? `${r.visit_date} ${r.visit_time}:00`
+      : `${r.visit_date} 00:00:00`;
     return {
       babyId: r.baby_id,
-      eventTime: `${r.visit_date} 00:00:00`,
+      eventTime,
       note: r.note ?? null,
       summaryTitle: '医疗',
       summaryTagsJson: r.hospital ? JSON.stringify([r.hospital]) : null,
@@ -395,6 +399,7 @@ export class TimelineService {
       summaryActive: false,
       detailJson: JSON.stringify({
         visit_date: r.visit_date,
+        visit_time: r.visit_time,
         visit_type: r.visit_type,
         hospital: r.hospital,
         diagnosis: r.diagnosis,

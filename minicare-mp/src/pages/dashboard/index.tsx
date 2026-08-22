@@ -48,7 +48,8 @@ const RECORD_PAGE_MAP: Record<RecordFormType, string> = {
   diaper: '/pages/records/diaper/index',
   sleep: '/pages/records/sleep/index',
   activity: '/pages/records/activity/index',
-  health: '/pages/records/health/index',
+  temperature: '/pages/records/health/temperature/index',
+  allergy: '/pages/records/health/allergy/index',
 }
 
 export default function DashboardPage() {
@@ -247,7 +248,7 @@ export default function DashboardPage() {
             <ActivityColumn data={data} onAdd={() => handleAdd('activity')} />
           </View>
           <View className='db-col-wrap db-col-symptom'>
-            <SymptomColumn data={data} onAdd={() => handleAdd('health')} />
+            <SymptomColumn data={data} onAdd={() => handleAdd('allergy')} />
           </View>
           <View className='db-col-wrap db-col-timeline'>
             <TimelineColumn data={data} selectedDate={selectedDate} />
