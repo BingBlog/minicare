@@ -1,0 +1,474 @@
+Effect of Avoidance on Peanut Allergy after Early Peanut 
+Consumption
+George Du Toit, M.B., B.Ch.,
+Peter H. Sayre, M.D., Ph.D.,
+Graham Roberts, D.M.,
+Michelle L. Sever, M.S.P.H., Ph.D.,
+Kaitie Lawson, M.S.,
+Henry T. Bahnson, M.P.H.,
+Helen A. Brough, M.B., B.S., Ph.D.,
+Alexandra F. Santos, M.D., Ph.D.,
+Kristina M. Harris, Ph.D.,
+Suzana Radulovic, M.D.,
+Monica Basting, M.A.,
+Victor Turcanu, M.D., Ph.D.,
+Marshall Plaut, M.D.,
+Gideon Lack, M.B., B.Ch.
+for the Immune Tolerance Network LEAP-On Study Team*
+Department of Pediatric Allergy, Division of Asthma, Allergy and Lung Biology, King’s College 
+London and Guy’s and St. Thomas’ NHS Foundation Trust, London (G.D.T., H.A.B., A.F .S., S.R., 
+M.B., V.T., G.L.), and the University of Southampton and National Institute for Health Research 
+Respiratory Biomedical Research Unit, Southampton and David Hide Centre, Newport, Isle of 
+Wight (G.R.) — both in the United Kingdom; the Division of Hematology–Oncology, Department 
+of Medicine, University of California, San Francisco, San Francisco (P .H.S.); Rho Federal Systems 
+Division, Chapel Hill, NC (M.L.S., K.L., H.T.B.); and the Immune Tolerance Network (K.M.H.) and 
+the National Institute of Allergy and Infectious Diseases (M.P .), Bethesda, MD
+Abstract
+BACKGROUND: In a randomized trial, the early introduction of peanuts in infants at high risk 
+for allergy was shown to prevent peanut allergy. In this follow-up study, we investigated whether 
+the rate of peanut allergy remained low after 12 months of peanut avoidance among participants 
+Address reprint requests to Dr. Lack at the Children’s Allergy Unit, 2nd Fl., Stairwell B, South Wing, Guy’s and St. Thomas’ NHS 
+Foundation Trust, Westminster Bridge Rd., London SE1 7EH, United Kingdom, or at gideon.lack@kcl.ac.uk.*A complete list of members of the Persistence of Oral Tolerance to Peanut (LEAP-On) Study Team is provided in the Supplementary 
+Appendix, available at NEJM.org.
+Drs. Sayre and Roberts contributed equally to this article.
+The views expressed in this article are those of the authors and do not necessarily represent the official views of the National Institutes 
+of Health.
+Disclosure forms provided by the authors are available with the full text of this article at NEJM.org.
+HHS Public Access
+Author manuscript
+N Engl J Med. Author manuscript; available in PMC 2025 August 08.
+Published in final edited form as:
+N Engl J Med. 2016 April 14; 374(15): 1435–1443. doi:10.1056/NEJMoa1514209.
+Author Manuscript Author Manuscript Author Manuscript Author Manuscript
+who had consumed peanuts during the primary trial (peanut-consumption group), as compared 
+with those who had avoided peanuts (peanut-avoidance group).
+METHODS: At the end of the primary trial, we instructed all the participants to avoid peanuts for 
+12 months. The primary outcome was the percentage of participants with peanut allergy at the end 
+of the 12-month period, when the participants were 72 months of age.
+RESULTS: We enrolled 556 of 628 eligible participants (88.5%) from the primary trial; 550 
+participants (98.9%) had complete primary-outcome data. The rate of adherence to avoidance 
+in the follow-up study was high (90.4% in the peanut-avoidance group and 69.3% in the 
+peanut-consumption group). Peanut allergy at 72 months was significantly more prevalent among 
+participants in the peanut-avoidance group than among those in the peanut-consumption group 
+(18.6% [52 of 280 participants] vs. 4.8% [13 of 270], P<0.001). Three new cases of allergy 
+developed in each group, but after 12 months of avoidance there was no significant increase 
+in the prevalence of allergy among participants in the consumption group (3.6% [10 of 274 
+participants] at 60 months and 4.8% [13 of 270] at 72 months, P = 0.25). Fewer participants in 
+the peanut-consumption group than in the peanut-avoidance group had high levels of Ara h2 (a 
+component of peanut protein)–specific IgE and peanut-specific IgE; in addition, participants in the 
+peanut-consumption group continued to have a higher level of peanut-specific IgG4 and a higher 
+peanut-specific IgG4:IgE ratio.
+CONCLUSIONS: Among children at high risk for allergy in whom peanuts had been introduced 
+in the first year of life and continued until 5 years of age, a 12-month period of peanut avoidance 
+was not associated with an increase in the prevalence of peanut allergy. Longer-term effects are not 
+known. (Funded by the National Institute of Allergy and Infectious Diseases and others; LEAP-On 
+ClinicalTrials.gov number, NCT01366846.)
+PEANUT ALLERGY IS A COMMON AND POtentially life-threatening food allergy for which 
+prevention and treatment strategies are required.1–5 The Learning Early about Peanut 
+Allergy (LEAP) trial showed that among infants at high risk for allergy, the sustained 
+consumption of peanut, beginning in the first 11 months of life, resulted in an 81% lower 
+rate of peanut allergy at 60 months of age than the rate among children who avoided 
+peanuts.6,7 In a study of oral immunotherapy to hen’s egg white, although children achieved 
+unresponsiveness to an oral food challenge with egg, the majority had a reversion to egg 
+allergy 1 month after the cessation of consumption.8 Similar results have been seen with 
+oral immunotherapy with peanuts.9 However, there may be different mechanisms operating 
+in those interventions than in the intervention used in the LEAP trial, and the LEAP trial 
+intervention may result in unresponsiveness that lasts for at least 1 year — a duration of 
+unresponsiveness that is longer than has been observed in other studies.
+Here we report the results of the Persistence of Oral Tolerance to Peanut (LEAP-On) study, 
+which was a 12-month extension of the LEAP trial. We investigated whether participants 
+who had consumed peanut in the primary trial would remain protected against peanut allergy 
+after cessation of peanut consumption for 12 months. The study design represented an 
+opportunity to investigate the mechanisms of loss of protection from allergic responses, with 
+potential implications for other food allergies and immune-mediated diseases.
+Du Toit et al. Page 2
+N Engl J Med. Author manuscript; available in PMC 2025 August 08.
+Author Manuscript Author Manuscript Author Manuscript Author Manuscript
+METHODS
+STUDY DESIGN AND OVERSIGHT
+This follow-up study was a two-group comparison that involved all the eligible participants 
+in the two groups of the primary trial at 72 months of age. The study was conducted at a 
+single site in the United Kingdom. In brief, in the primary trial, 640 infants at high risk for 
+allergy were stratified into two groups on the basis of the results of a skin-prick test with 
+the use of peanut extract (no measurable wheal vs. wheal measuring 1 to 4 mm in diameter). 
+The participants were then randomly assigned to peanut avoidance or consumption until 
+60 months of age, at which time peanut allergy was assessed by means of an oral peanut 
+challenge.6
+The follow-up study was approved by an institutional review board (National Research 
+Ethics Service Committee London–Fulham) and was overseen by the allergy and asthma 
+data and safety monitoring board of the National Institute of Allergy and Infectious 
+Diseases. Written informed consent was obtained for each participant from a parent or 
+guardian. Details of the inclusion and exclusion criteria for this follow-up study are provided 
+in the study protocol, available with the full text of this article at NEJM.org.
+STUDY PROCEDURES
+All the participants in the primary trial who were in the intention-to-treat population (which 
+included all participants who could be assessed for the primary outcome) were eligible for 
+inclusion in the follow-up study. All the participants in the follow-up study were asked to 
+avoid dietary consumption of peanut for 12 months.
+STUDY OUTCOMES
+The primary outcome in the follow-up trial was the percentage of participants with peanut 
+allergy after 12 months of peanut avoidance. Allergy was determined by means of an oral 
+peanut challenge at 72 months (see the protocol). Among study participants for whom the 
+results of the oral peanut challenge were inconclusive or not available, allergic status at 
+72 months was determined as discussed in the Determination of Allergy section in the 
+Supplementary Appendix, available at NEJM.org. Safety outcomes were assessed according 
+to the reports of adverse events in each group.
+IMMUNE MARKERS
+Immune assessments included skin-prick testing and measurements of peanut-specific IgE 
+and IgG4 levels. Information regarding testing methods and skin-prick testing materials has 
+been published previously6 and is included in the Supplementary Appendix. In addition, we 
+assessed the specific IgE responses to peanut protein Ara h2 (IgE responses to this protein 
+are pathognomonic of peanut allergy) by means of the ImmunoCAP Assay (Thermo Fisher 
+Scientific) at all time points in participants who had a peanut-specific IgE level of 0.1 kU per 
+liter or more at at least one time point.
+Du Toit et al. Page 3
+N Engl J Med. Author manuscript; available in PMC 2025 August 08.
+Author Manuscript Author Manuscript Author Manuscript Author Manuscript
+ASSESSMENT OF ADHERENCE
+Adherence to peanut avoidance was assessed with the use of a validated peanut-frequency 
+questionnaire10 at regular intervals (see the protocol). Peanut-protein levels in dust that 
+was collected from the participants’ beds were used as an independent marker of peanut 
+consumption.6,11,12
+STATISTICAL ANALYSIS
+The intention-to-treat analysis included all the enrolled participants in the follow-up study 
+who had a peanut-allergy outcome that could be evaluated. In the follow-up study, the per-
+protocol population included participants who adequately adhered to avoidance of peanut 
+protein over a period of 12 months. Adherence was defined as fulfilling all three of the 
+following criteria: consumption of 2 g or less of peanut on no more than 6 occasions 
+(maximum of once per month); consumption of 1 g of peanut or less on no more than 
+12 occasions (maximum of twice per month); and a cumulative ingestion of no more than 
+18 g of peanut. For analyses that required participants to meet the per-protocol criteria of 
+both the primary trial and the follow-up study, the per-protocol population in the primary 
+trial included participants who had adequate adherence to their randomized assignment to 
+consume or avoid peanuts.6
+The primary analysis was a between-group comparison of the percentage of participants 
+in the intention-to-treat population who had peanut allergy at 72 months; the analysis was 
+performed with the use of a two-tailed chi-square test at the 0.05 level of significance. 
+In a secondary analysis, a paired comparison was made with the use of McNemar’s test 
+at the 0.05 level of significance between the percentages of participants in the peanut-
+consumption group who had peanut allergy at 60 months and at 72 months. Worst-case 
+imputation was performed, which assumed that all participants with missing outcomes in 
+the peanut-consumption group had peanut allergy and all participants with missing outcomes 
+in the peanut-avoidance group did not have peanut allergy. A subgroup analysis was also 
+performed that included only participants who had their primary outcome assessed by means 
+of an oral peanut challenge at 72 months of age (i.e., excluding participants for whom the 
+results of the oral peanut challenge were not available). Data sets for these analyses are 
+accessible through TrialShare, a public website managed by the Immune Tolerance Network 
+(www.itntrialshare.org/LEAPOn.url).
+RESULTS
+ENROLLMENT AND CHARACTERISTICS OF THE PARTICIPANTS
+A total of 628 participants completed the primary trial (314 participants in the peanut-
+avoidance group and 314 in the peanut-consumption group) and had peanut-allergy 
+outcomes that could be evaluated; these participants were eligible to enroll in the follow-up 
+study. From May 26, 2011, to May 29, 2014, we enrolled 556 of these participants (88.5%; 
+282 participants in the peanut-avoidance group and 274 in the peanut-consumption group) 
+in the follow-up study. Of these, 550 participants (280 in the peanut-avoidance group and 
+270 in the peanut-consumption group) had a peanut-allergy outcome that could be evaluated 
+Du Toit et al. Page 4
+N Engl J Med. Author manuscript; available in PMC 2025 August 08.
+Author Manuscript Author Manuscript Author Manuscript Author Manuscript
+in the follow-up study and were included in the intention-to-treat analysis (Fig. S1 in the 
+Supplementary Appendix).
+The mean age of the participants at enrollment was 61.3 months. Of the 64 participants 
+in the primary trial who had peanut allergy, 63 enrolled in the follow-up study. Additional 
+characteristics of the participants in the primary trial who enrolled in the follow-up study 
+and those who did not enroll are provided in Table S1A and S1B in the Supplementary 
+Appendix.
+DETERMINATION OF PEANUT ALLERGY
+Among the 550 participants in the intention-to-treat population, determination of peanut 
+allergy was made by means of an oral peanut challenge in 515 (93.6%). Among the 41 
+participants who did not undergo an oral challenge, we determined on the basis of a 
+diagnostic algorithm that 28 participants had a peanut allergy and 7 were tolerant (Fig. 
+S2 in the Supplementary Appendix). A determination could not be made for 6 participants. 
+Further details regarding these participants who did not have primary-outcome data (and 
+were not included in the intention-to-treat population) are shown in Table S2A and S2B in 
+the Supplementary Appendix.
+ADHERENCE
+A total of 223 of 282 participants who had been assigned to the peanut-avoidance group in 
+the primary trial (79.1%) and 127 of 274 who had been assigned to the peanut-consumption 
+group in the primary trial (46.4%) reported complete peanut avoidance during the follow-
+up period (Table S3 in the Supplementary Appendix). A total of 32 participants in the 
+peanut-avoidance group (11.3%) and 63 in the peanut-consumption group (23.0%) reported 
+consuming some peanut but still met the per-protocol definition; 8 participants in the peanut-
+avoidance group (2.8%) and 65 in the peanut-consumption group (23.7%) consumed too 
+much peanut to meet the per-protocol definition.
+Dust samples from participants’ beds were obtained at month 72 from 180 of 282 
+participants (63.8%) in the peanut-avoidance group and from 171 of 274 (62.4%) in the 
+peanut-consumption group. In the peanut-avoidance group as a whole (those who met 
+the per-protocol criteria for the follow-up study and those who did not), the median 
+concentration of peanut protein in bed dust was 4.1 μg per gram at 60 months, as compared 
+with 4.6 μg per gram at 72 months (Fig. S3 in the Supplementary Appendix). In the 
+peanut-consumption group as a whole, the median concentration declined from 95.2 μg 
+per gram at 60 months to 10.5 μg per gram at 72 months (Fig. S3 in the Supplementary 
+Appendix). Participants in the peanut-consumption group who met the per-protocol criteria 
+for the follow-up study had a greater decline in the concentration than did those in the 
+peanut-consumption group as a whole and also a greater decline than those participants 
+in the peanut-consumption group who did not meet the per-protocol criteria — from 75.9 
+μg per gram to 6.3 μg per gram, which is a level similar to the concentration in the 
+peanut-avoidance group at 60 months.
+Du Toit et al. Page 5
+N Engl J Med. Author manuscript; available in PMC 2025 August 08.
+Author Manuscript Author Manuscript Author Manuscript Author Manuscript
+EVIDENCE FOR UNRESPONSIVENESS TO PEANUT
+At 72 months, among the 550 participants in the intention-to-treat population, 18.6% of 
+the participants in the peanut-avoidance group (52 of 280 participants) and 4.8% of those 
+in the peanut-consumption group (13 of 270) had peanut allergy (P<0.001) (Fig. 1). The 
+findings remained significant in analyses that used worst-case imputation or that excluded 
+participants who did not undergo an oral challenge (P<0.001) (Fig. S4 in the Supplementary 
+Appendix). In the peanut-consumption group, the percentage of participants with peanut 
+allergy was 3.6% (10 of 274 participants) at 60 months and 4.8% (13 of 270) at 72 months 
+(P = 0.25).
+A total of 445 participants met the per-protocol criteria in both the primary trial and the 
+follow-up study. At 72 months, 19.2% of the participants in the peanut-avoidance group 
+had peanut allergy and 2.1% of those in the peanut-consumption group had peanut allergy 
+(P<0.001) (Fig. 1).
+We also assessed the percentage of participants with peanut allergy according to the degree 
+of peanut consumption during the follow-up study among participants who met the per-
+protocol criteria in the primary trial (Table S3 in the Supplementary Appendix). Among 
+participants who reported no peanut consumption during the follow-up study, the percentage 
+of those with allergy was 21.5% (48 of 223 participants) in the peanut-avoidance group and 
+2.4% (3 of 127) in the peanut-consumption group (P<0.001).
+SAFETY
+Overall, more participants in the peanut-avoidance group than in the peanut-consumption 
+group reported adverse events during the follow-up study (252 of 282 participants 
+[89.4%] vs. 221 of 274 [80.7%]). Eczema, lower respiratory tract infection, myopia, and 
+gastroenteritis were reported more frequently among participants in the peanut-avoidance 
+group than among those in the peanut-consumption group (Table S4 in the Supplementary 
+Appendix).
+IMMUNOLOGIC ASSESSMENTS
+As expected, participants with peanut allergy at 72 months had higher levels of Ara h2–
+specific IgE and peanut-specific IgE and larger wheal size on skin-prick testing with peanut 
+extract than participants who did not have peanut allergy (Fig. 2A; and Fig. S5A, S5B, and 
+S5D in the Supplementary Appendix). The mean levels of Ara h2–specific IgE declined 
+significantly in the peanut-consumption group from 30 months to 60 months during the 
+primary trial (P<0.001) (Fig. 2A, and Fig. S5A in the Supplementary Appendix) and 
+remained low at 72 months in the follow-up study. In contrast, the mean levels of Ara 
+h2–specific IgE in the peanut-avoidance group in the primary trial were stable over time 
+and were significantly higher than the levels in the peanut-consumption group at 60 months 
+and at 72 months (P<0.001) (Fig. 2A, and Fig. S5A in the Supplementary Appendix). The 
+mean wheal size on skin-prick testing remained smaller in the peanut-consumption group 
+than in the peanut-avoidance group at month 72 (P<0.001) (Fig. 2A, and Fig. S5B in the 
+Supplementary Appendix).
+Du Toit et al. Page 6
+N Engl J Med. Author manuscript; available in PMC 2025 August 08.
+Author Manuscript Author Manuscript Author Manuscript Author Manuscript
+After the yearlong period of peanut avoidance, the peanut-specific IgG4 levels continued to 
+be higher in the peanut-consumption group than in the peanut-avoidance group (P<0.001) 
+(Fig. 2B, and Fig. S5C in the Supplementary Appendix), despite a decline that started 
+before the participants in the peanut-consumption group stopped eating peanuts. The ratio 
+of peanut-specific IgG4:IgE also continued to be significantly higher in participants in the 
+peanut-consumption group than in those in the peanut-avoidance group (Fig. 2B).
+IMMUNOLOGIC CHANGES IN PARTICIPANTS WHOSE ALLERGY OUTCOME CHANGED
+New allergy developed in three participants in the peanut-consumption group (1.1%) and 
+in three in the peanut-avoidance group (1.1%) between month 60 and month 72 (Fig. 3). 
+The ratio of peanut-specific IgG4:IgE declined between month 60 and month 72 in all six 
+participants (Table S6A in the Supplementary Appendix).
+In addition, four participants in the peanut-avoidance group who had peanut allergy at month 
+60 did not have an allergic status by month 72. Their wheal size on skin-prick testing 
+declined, although other immunologic variables remained stable (Fig. 3, and Table S6B in 
+the Supplementary Appendix).
+DISCUSSION
+This follow-up study showed that the reduction in the prevalence of peanut allergy that 
+was associated with the early introduction and consumption of peanuts until 60 months of 
+age persisted at 72 months of age after 12 months of not eating peanuts. Overall, after the 
+introduction of peanuts in the first year of life, peanut consumption for the following 4 years, 
+and a year of abstinence from peanuts, the peanut-consumption group had a prevalence of 
+peanut allergy that was 74% lower than the prevalence in the peanut-avoidance group, a 
+finding that shows unresponsiveness to peanut after a long period (12 months) of peanut 
+avoidance.
+Among participants in the peanut-consumption group who had not been assessed as having 
+peanut allergy, the small wheal size on skin-prick testing, low levels of Ara h2–specific IgE, 
+and high ratios of peanut-specific IgG4:IgE that were observed at month 60 were maintained 
+after 12 months of not eating peanuts. This observation suggests that their nonallergic status 
+remained stable.
+With respect to the immunologic changes associated with peanut consumption, the timing 
+of the effects on IgG4 levels differed from the timing of the effects on IgE levels. Whereas 
+participants in the peanut-consumption group had elevated peanut-specific IgG4 levels as 
+early as month 12 (Fig. 2B, and Fig S5C in the Supplementary Appendix), a significant 
+decrease in the mean levels of Ara h2–specific IgE had occurred by month 60 and continued 
+to month 72 (Fig. 2B, and Fig. S5A in the Supplementary Appendix). The inhibition of IgE 
+synthesis in the participants in the peanut-consumption group is further reflected by the fact 
+that as compared with participants in the peanut-avoidance group, relatively few participants 
+in the peanut-consumption group had high-level IgE to peanut and to Ara h2, beginning 
+primarily at month 30 and continuing through months 60 and 72. Our data do not allow 
+Du Toit et al. Page 7
+N Engl J Med. Author manuscript; available in PMC 2025 August 08.
+Author Manuscript Author Manuscript Author Manuscript Author Manuscript
+us to distinguish among potential cellular mechanisms, including clonal deletion, immune 
+suppression, or the influence of regulatory cells, that could underlie these changes.
+One of the possibilities we considered was that avoidance after the consumption of peanut 
+might cause the development of new peanut allergy. However, the low incidence of new 
+peanut allergy over the 12-month period of the follow-up study, which was similar in the 
+peanut-avoidance group and the peanut-consumption group, showed that this was not the 
+case. We cannot determine whether, among the few participants in the peanut-consumption 
+group with new-onset allergy, the allergy developed as a result of loss of tolerance to peanut 
+or acquisition of new allergy. The benefit of the intervention was evident even if participants 
+ate some peanut, which shows that intermittent consumption did not lead to a break in 
+tolerance to peanuts.
+Together, these findings show that 4 years of consuming peanut was sufficient to induce 
+stable unresponsiveness to peanut, independent of the level of subsequent consumption 
+of peanut. Our study design did not allow us to determine the minimum duration of 
+consumption that is required to induce such a state. Our findings suggest, however, that 
+peanut consumption should be prolonged in order to reduce ongoing production of IgE 
+specific for peanut and Ara h2. Our findings are also consistent with the observation 
+that durable clinical benefit requires long-term immunotherapy, as has been shown with 
+stinginginsect venom,13 grass pollen,14–16 and oral egg.8
+A strength of the study is that the enrollment rates in the follow-up study were high, with 
+88.5% of the eligible participants from the primary trial enrolled. Children who enrolled in 
+the follow-up study were more likely than those who did not enroll to have allergy or to be 
+sensitized (Table S1A in the Supplementary Appendix). This finding reassures us that we 
+were unlikely to have missed new cases of peanut allergy.
+Overall adherence to the intervention of peanut avoidance in the follow-up study was also 
+high, with 80.0% of the participants (445 of 556 participants) meeting the per-protocol 
+criteria. However, the rates differed between the peanut-avoidance group and the peanut-
+consumption group (90.4% of participants [255 of 282 participants] vs. 69.3% [190 of 274]) 
+(Table S3 in the Supplementary Appendix). Although this finding may be considered a 
+weakness of the study, the per-protocol analysis was adequately powered. Furthermore, this 
+finding enabled us to conclude that intermittent low-dose consumption of peanut during 
+the follow-up study after either prolonged consumption or avoidance during the primary 
+trial did not result in new-onset peanut allergy. Although the low rate of development of 
+new peanut allergy among participants in the peanut-consumption group was reassuring, 
+this result precluded the identification of predictive biomarkers for the acquisition of peanut 
+allergy.
+The LEAP trial and the LEAP-On study together showed that the early introduction of 
+peanut induced unresponsiveness to peanut that persisted after 12 months of avoidance. The 
+effectiveness and safety of this prevention strategy was maintained in children who avoided 
+peanut altogether or who consumed peanut in lesser amounts after 60 months of age. It 
+Du Toit et al. Page 8
+N Engl J Med. Author manuscript; available in PMC 2025 August 08.
+Author Manuscript Author Manuscript Author Manuscript Author Manuscript
+remains to be seen whether the effects of peanut consumption in early life are maintained if 
+peanuts are consumed ad libitum over the course of many years.
+Supplementary Material
+Refer to Web version on PubMed Central for supplementary material.
+Acknowledgments
+Supported by grants (NO1-AI-15416, UM1AI109565, HHSN272200800029C, and UM2AI117870) from the 
+National Institute of Allergy and Infectious Diseases of the National Institutes of Health and by Food Allergy 
+Research and Education, the Medical Research Council and Asthma U.K. Centre, and the U.K. Department of 
+Health through a National Institute for Health Research comprehensive Biomedical Research Centre award to 
+Guy’s and St. Thomas’ NHS Foundation Trust, in partnership with King’s College London and King’s College 
+Hospital NHS Foundation Trust. The clinical trials unit was supported by the National Peanut Board, Atlanta. The 
+U.K. Food Standards Agency provided additional support for the costs of phlebotomy.
+We thank Dr. Daniel Rotrosen and Dr. Gerald Nepom for critical insights and helpful comments; the many nurses, 
+dietitians, doctors, and administrative staff of the Guy’s and St. Thomas’ NHS Foundation Trust Children’s Allergy 
+Service for clinical and logistic assistance over the period of the study; Ms. Poling Lau for administrative support in 
+the preparation of an earlier version of the manuscript; medical colleagues Drs. Tom Marrs and Michael Perkin for 
+medical support; Dr. Kirsty Logan for project-management support; Ms. Lia Weiner and Mr. Agustin Calatroni for 
+statistical support; Mr. Jeremy Wildfire, Mr. Spencer Childress, Mr. Nathan Bryant, Mr. Shane Rosanbalm, and Mr. 
+Ryan Bailey for help with the interactive graphics on the study website (www.itntrialshare.org/LEAPOn.url); and 
+above all, all the children and their families who took part in this study.
+REFERENCES
+1. Nwaru BI, Hickstein L, Panesar SS, et al. The epidemiology of food allergy in Europe: a systematic 
+review and meta-analysis. Allergy 2014;69:62–75. [PubMed: 24205824] 
+2. Panesar SS, Javad S, de Silva D, et al. The epidemiology of anaphylaxis in Europe: a systematic 
+review. Allergy 2013;68:1353–61. [PubMed: 24117770] 
+3. Dhami S, Panesar SS, Roberts G, et al. Management of anaphylaxis: a systematic review. Allergy 
+2014;69:168–75. [PubMed: 24251536] 
+4. Muraro A, Halken S, Arshad SH, et al. EAACI food allergy and anaphylaxis guidelines: primary 
+prevention of food allergy. Allergy 2014;69:590–601. [PubMed: 24697491] 
+5. de Silva D, Geromi M, Panesar SS, et al. Acute and long-term management of food allergy: 
+systematic review. Allergy 2014;69:159–67. [PubMed: 24215577] 
+6. Du Toit G, Roberts G, Sayre PH, et al. Randomized trial of peanut consumption in infants at risk for 
+peanut allergy. N Engl JMed 2015;372:803–13. [PubMed: 25705822] 
+7. Du Toit G, Roberts G, Sayre PH, et al. Identifying infants at high risk of peanut allergy: 
+the Learning Early About Peanut Allergy (LEAP) screening study. J Allergy Clin Immunol 
+2013;131(1):135–43.e1. [PubMed: 23174658] 
+8. Burks AW, Jones SM, Wood RA, et al. Oral immunotherapy for treatment of egg allergy in children. 
+N Engl J Med 2012;367:233–43. [PubMed: 22808958] 
+9. Vickery BP, Scurlock AM, Kulis M, et al. Sustained unresponsiveness to peanut in subjects who 
+have completed peanut oral immunotherapy. J Allergy Clin Immunol 2014;133:468–75. [PubMed: 
+24361082] 
+10. Sofianou-Katsoulis A, Mesher D, Sasieni P, Du Toit G, Fox AT, Lack G. Assessing peanut 
+consumption in a population of mothers and their children in the UK. World Allergy Organ J 
+2011;4:38–44. [PubMed: 23268455] 
+11. Brough HA, Makinson K, Penagos M, et al. Distribution of peanut protein in the home 
+environment. J Allergy Clin Immunol 2013;132:623–9. [PubMed: 23608728] 
+12. Brough HA, Santos AF, Makinson K, et al. Peanut protein in household dust is related to 
+household peanut consumption and is biologically active. J Allergy Clin Immunol 2013;132:630–
+8. [PubMed: 23608730] 
+Du Toit et al. Page 9
+N Engl J Med. Author manuscript; available in PMC 2025 August 08.
+Author Manuscript Author Manuscript Author Manuscript Author Manuscript
+13. Ozdemir C, Kucuksezer UC, Akdis M, Akdis CA. Mechanisms of immunotherapy to wasp and bee 
+venom. Clin Exp Allergy 2011;41:1226–34. [PubMed: 21729181] 
+14. Hatzler L, Panetta V , Lau S, et al. Molecular spreading and predictive value of preclinical IgE 
+response to Phleum pratense in children with hay fever. J Allergy Clin Immunol 2012;130(4):894–
+901.e5. [PubMed: 22841010] 
+15. Durham SR, Walker SM, Varga EM, et al. Long-term clinical efficacy of grass-pollen 
+immunotherapy. N Engl J Med 1999;341:468–75. [PubMed: 10441602] 
+16. Durham SR, Emminger W, Kapp A, et al. Long-term clinical efficacy in grass pollen-induced 
+rhinoconjunctivitis after treatment with SQ-standardized grass allergy immunotherapy tablet. J 
+Allergy Clin Immunol 2010;125(1):131–8.e1. [PubMed: 20109743] 
+Du Toit et al. Page 10
+N Engl J Med. Author manuscript; available in PMC 2025 August 08.
+Author Manuscript Author Manuscript Author Manuscript Author Manuscript
+Figure 1. Primary Outcome.
+The prevalence of peanut allergy at 72 months of age is shown among participants who 
+had a negative result on the skin-prick test (SPT) at the baseline visit in the primary trial, 
+among those who had a positive result at the baseline visit, and in both groups combined. 
+In the primary trial, participants at high risk for allergy had been randomly assigned to 
+consume peanuts beginning in the first 11 months of life (peanut-consumption group) or 
+avoid peanuts (peanut-avoidance group). Panel A shows the prevalence of peanut allergy 
+at 60 months of age among only the participants in the primary trial who enrolled in the 
+Du Toit et al. Page 11
+N Engl J Med. Author manuscript; available in PMC 2025 August 08.
+Author Manuscript Author Manuscript Author Manuscript Author Manuscript
+follow-up study. Panel B shows the prevalence of peanut allergy at 72 months of age among 
+participants in the follow-up study who were included in the intention-to-treat analysis (i.e., 
+all enrolled participants in the follow-up study who had a peanut-allergy outcome that could 
+be evaluated). Panel C shows the prevalence of peanut allergy at 72 months of age among 
+participants who met the per-protocol criteria in both the primary trial and the follow-up 
+study. The main per-protocol criterion in the primary trial was adequate adherence to the 
+randomized assignment to consume or avoid peanuts; the main per-protocol criterion in the 
+follow-up study was adequate adherence to avoidance of peanut protein over a period of 12 
+months.
+Du Toit et al. Page 12
+N Engl J Med. Author manuscript; available in PMC 2025 August 08.
+Author Manuscript Author Manuscript Author Manuscript Author Manuscript
+Figure 2. Immunologic Outcomes in the Peanut-Avoidance and Peanut-Consumption Groups, 
+from Baseline to 72 Months of Age.
+Data are shown for participants who met the per-protocol criteria for both the primary 
+trial and the follow-up study. Panel A shows the Ara h2–specific and peanut-specific IgE 
+titers and wheal sizes on skin-prick testing for peanut. (Ara h2 is a component of peanut 
+protein.) The level of Ara h2–specific IgE was assessed in all available participants who 
+had a peanut-specific IgE level that was greater than or equal to 0.1 kU per liter at any 
+visit (approximately 60% of the participants). Panel B shows peanut-specific IgG4 levels 
+and IgG4:IgE ratios. The solid black lines show the group mean over the course of the 
+Du Toit et al. Page 13
+N Engl J Med. Author manuscript; available in PMC 2025 August 08.
+Author Manuscript Author Manuscript Author Manuscript Author Manuscript
+study period. The thin red lines represent the trajectory among participants who had a 
+peanut allergy at 72 months of age. Dots represent individual participants (blue indicates 
+that the participant did not have peanut allergy, and red indicates allergy at 72 months). 
+The gray shading represents the density of the distribution of the dots for participants who 
+met the per-protocol criteria for both the primary trial and the follow-up study. The density 
+of the distribution facilitates visual comparisons over time and between groups, which is 
+not easily achievable with display of the individual dots alone, owing to a large amount 
+of over-plotting. The log10 of the ratio of peanut-specific IgG4:IgE was calculated after 
+peanut-specific IgE levels were converted from kilo unit per liter to nanograms per milliliter 
+with the use of the formula (IgG4 ÷ [IgE × 2.4]).
+Du Toit et al. Page 14
+N Engl J Med. Author manuscript; available in PMC 2025 August 08.
+Author Manuscript Author Manuscript Author Manuscript Author Manuscript
+Figure 3. Immunologic Outcomes According to Differing or Stable Allergy Status between 
+Months 60 and 72.
+Participants were categorized as “stayed allergic,” “stayed tolerant,” “became allergic,” or 
+“no longer allergic.” Shown are the Ara h2–specific IgE antibody levels, peanut-specific IgE 
+level, wheal size on skin-prick testing for peanut, peanut-specific IgG4 level, and IgG4:IgE 
+ratios at the five assessments during the primary trial and the follow-up study. Data are 
+shown only for participants who met the per-protocol criteria in both the primary trial and 
+the follow-up study. At month 72, a total of 46 participants in the peanut-avoidance group 
+and 1 in the peanut-consumption group were determined by the investigators to be still 
+Du Toit et al. Page 15
+N Engl J Med. Author manuscript; available in PMC 2025 August 08.
+Author Manuscript Author Manuscript Author Manuscript Author Manuscript
+allergic, 202 in the peanut-avoidance group and 186 in the peanut-consumption group were 
+still not allergic, 3 in the peanut-avoidance group and 3 in the peanut-consumption group 
+became allergic, and 4 in the peanut-avoidance group and 0 in the peanut-consumption 
+group no longer had allergy. Lines represent population means. The log10 of the ratio of 
+peanut-specific IgG4:IgE was calculated after peanut-specific IgE levels were converted 
+from kilo unit per liter to nanograms per milliliter with the use of the formula (IgG4 ÷ [IgE 
+× 2.4]).
+Du Toit et al. Page 16
+N Engl J Med. Author manuscript; available in PMC 2025 August 08.
+Author Manuscript Author Manuscript Author Manuscript Author Manuscript
