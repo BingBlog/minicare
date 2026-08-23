@@ -300,7 +300,7 @@ CREATE TABLE IF NOT EXISTS `knowledge_base` (
 
 #### 2.3.2 数据来源与条目化（2026-08-23 更新：MinerU 云端 pipeline + 自研切块 + TokenHub 向量）
 
-**解析层（已完成前置）**：MinerU 云端精准解析 API（`file-urls/batch` 本地上传，`model_version=pipeline` + `language=ch`），产物存 `docs/敏宝知识库/minerU解析版本/{国内,国际}/<文档名>/`（每份：`<文档名>.md` + `*_content_list.json`[bbox+page_idx] + `images/`）。
+**解析层（已完成前置）**：MinerU 云端精准解析 API（`file-urls/batch` 本地上传，`model_version=pipeline` + `language=ch`），产物存 `docs/knowledge/source/mineru-parsed/{国内,国际}/<文档名>/`（每份：`<文档名>.md` + `*_content_list.json`[bbox+page_idx] + `images/`）。
 - ⚠️ **引擎必须用 pipeline 而非 vlm**：实测 vlm 对双栏医学期刊剂量数字识别不稳定（严重过敏共识 9 处数字丢失）；pipeline 文字层保真（仅 1 处真缺失）。
 
 **切块层（自研，2026-08-23 定稿）**：`minicare-kb/chunking/pipeline.py`（~170 行）——标题层级修复（`## 一、`→h2 / `## （一）`→h3，含 HTML 无前缀标题推断）→ 表格抽取独立成块（`<table>` HTML 全文，占位符 `[[TABLE_n]]`）→ 章节/子节切块（header_path 继承）→ 超长章节（>1200 字符）按段落降级。行为对齐 LlamaIndex NodeParser 思路；初版曾选 LlamaIndex，实测其 ElementNodeParser 不兼容 MinerU 单行 HTML 表格故自研；31 个 pytest 锁定。差距（后续按效果补齐）：无 overlap / 无父子树 / 表格无 LLM 摘要。

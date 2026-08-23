@@ -183,7 +183,7 @@ class Chunk:
 ### 5.1 解析（mineru/）
 
 ```
-输入：源文件目录（docs/敏宝知识库/源文件/{国内,国际}）
+输入：源文件目录（docs/knowledge/source/raw/{国内,国际}）
 流程：
   1. 扫描目录：.pdf（pipeline 引擎）/ .html（MinerU-HTML 引擎）分组
   2. POST /api/v4/file-urls/batch（≤50 个/批，language=ch）
@@ -287,8 +287,8 @@ python3 -m venv .venv && .venv/bin/pip install -e ".[dev]"
 
 # 一键全流程（断点续跑：已解析/已切块的自动跳过）
 .venv/bin/kb-pipeline pipeline \
-  --source docs/敏宝知识库/源文件 \
-  --out docs/敏宝知识库/minerU解析版本 \
+  --source docs/knowledge/source/raw \
+  --out docs/knowledge/source/mineru-parsed \
   --chunks var/chunks.jsonl
 
 # 分步

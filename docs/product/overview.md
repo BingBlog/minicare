@@ -282,10 +282,10 @@ docs/
 | `docs/DEV-PLAN.md` | 开发计划与进度跟踪 |
 | `docs/features/` | 各功能模块详细规格（业务规则 + 验收标准） |
 | `docs/tech/` | 技术方案（CloudBase 基建、DB schema、图表规格） |
-| `MVP-MRD.md` | 市场需求文档（市场分析、竞品、运营策略） |
-| `MVP-PRD.md` | 完整 PRD（已归档，权威规格见 docs/features/） |
-| `1-5-year-plan.md` | 1-5 年成本收益评估 |
-| `minicare-research.md` | CMPA 市场调研（用户画像、流行病学数据） |
+| `docs/business/MVP-MRD.md` | 市场需求文档（市场分析、竞品、运营策略） |
+| `docs/business/MVP-PRD.md` | 完整 PRD（已归档，权威规格见 docs/features/） |
+| `docs/business/1-5-year-plan.md` | 1-5 年成本收益评估 |
+| `docs/archive/minicare-research.md` | CMPA 市场调研（用户画像、流行病学数据） |
 
 ---
 

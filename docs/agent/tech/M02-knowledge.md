@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `knowledge_base` (
 | 脚本 | 输入 | 输出 |
 |---|---|---|
 | `sync-kb-articles.mjs` | docs/wechat-articles/*.md（8 篇） | 解析 YAML frontmatter（title/tags/category/disclaimer）→ 按小节切条目 → 入库（kb_id=Wx-NN-N，evidence_level=edu，risk_level 按内容） |
-| `import-kb-guidelines.mjs` | docs/敏宝知识库/minerU解析版本/国内\|国际/&lt;文档名&gt;/*.md + *_content_list.json（P1 核心 3-4 份，P4 全量） | 清洗→切块→页码锚定→数字校验→元数据标注（evidence_level/region/age）→ 入库 |
+| `import-kb-guidelines.mjs` | docs/knowledge/source/mineru-parsed/国内\|国际/&lt;文档名&gt;/*.md + *_content_list.json（P1 核心 3-4 份，P4 全量） | 清洗→切块→页码锚定→数字校验→元数据标注（evidence_level/region/age）→ 入库 |
 | `gen-embeddings.mjs` | 全量 active 条目 | 混元 hunyuan-embedding 生成 → 写回 `embedding` BLOB（离线，仅此脚本调用 embedding API） |
 
 - 幂等：按 kb_id upsert；status=2 归档停用，不物理删除。
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `knowledge_base` (
 
 - **引擎**：MinerU 云端精准解析 API（`POST /api/v4/file-urls/batch` 本地上传 → 轮询 → 下载 zip），**`model_version=pipeline` + `language=ch`**；
   - ⚠️ **不要用 vlm**：实测 vlm 引擎对双栏医学期刊的剂量数字识别不稳定（严重过敏共识 9 处数字丢失，含 0.5mg/次、25% 等关键值）；pipeline 文字层保真，同文档仅 1 处真缺失。符合 MinerU 官方"医疗/法律文档建议 pipeline（低幻觉）"建议。
-- **存储**：`docs/敏宝知识库/minerU解析版本/{国内,国际}/<文档名>/`，每份保留：
+- **存储**：`docs/knowledge/source/mineru-parsed/{国内,国际}/<文档名>/`，每份保留：
   - `<文档名>.md`（full.md 重命名：标题层级 + `<table>` HTML 表格 + `<sup>` 引用标记 + `![]()` 图片引用）
   - `*_content_list.json`（元素级 bbox + page_idx，页码溯源锚点；v2/layout/model/origin.pdf 为中间产物不保留）
   - `images/`（表格/图片裁剪，P1 图注生成用）
@@ -160,7 +160,7 @@ async function hybridSearch(query, topK = 5, filters = {}) {
 
 ## 7. 测试与验证
 
-- 召回评测：`minicare-kb/scripts/eval-recall-exact.py`（精确 Recall@10，gold 条目经 `var/kb_mapping.json` 映射判定）跑 `docs/敏宝知识库/召回测试集-种子50题.md`，Recall@10 ≥ 90% 为上线闸门；基线见 `minicare-kb/docs/RECALL-REPORT.md`（97.8% 达标）。⚠️ 勿用"关键信息字面命中率"口径评估质量（指标失真，已弃用）。
+- 召回评测：`minicare-kb/scripts/eval-recall-exact.py`（精确 Recall@10，gold 条目经 `var/kb_mapping.json` 映射判定）跑 `docs/knowledge/召回测试集-种子50题.md`，Recall@10 ≥ 90% 为上线闸门；基线见 `minicare-kb/docs/RECALL-REPORT.md`（97.8% 达标）。⚠️ 勿用"关键信息字面命中率"口径评估质量（指标失真，已弃用）。
 - 空库降级：knowledge_base 空 → search_knowledge 返回未找到 → 回答"未收录建议就医"；
 - 来源完整性：回答的 sources 事件条目与检索结果一一对应。
 

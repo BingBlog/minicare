@@ -289,7 +289,7 @@ npx -y gitnexus@latest detect-changes
 1. 更新 `docs/features/F0x-*.md` 对应章节
 2. **更新该模块的「影响面清单」章节**：新增/删除的消费点（页面、组件、API、后端服务、展示层）必须同步
 3. 更新文件顶部 `最后同步` 日期
-4. 同步更新 `MVP-PRD.md` 对应章节（`MVP-PRD.md` 是权威来源）
+4. 同步更新 `docs/business/MVP-PRD.md` 对应章节（`docs/business/MVP-PRD.md` 是权威来源）
 
 ---
 
@@ -351,7 +351,7 @@ npx -y gitnexus@latest detect-changes
 更新 PRD 模块文档时，在文件顶部 `最后同步` 字段后追加变更摘要：
 
 ```markdown
-> 来源：MVP-PRD.md §3.2.1  
+> 来源：docs/business/MVP-PRD.md §3.2.1  
 > 功能 ID：P0-002  
 > 优先级：P0  
 > 最后同步：2026-03-30（更新：奶粉多选+含乳糖勾选交互逻辑）
@@ -387,7 +387,7 @@ npx -y gitnexus@latest detect-changes
 - `minicare/docs/tech/DB-02-schema.md` — 完整建表说明（指向 migrations 权威）
 - `minicare/docs/tech/DB-03-mock-data.md` — Mock 数据示例
 - `minicare/minicare-server/migrations/` — **权威 DDL 目录（001~007）**
-- `minicare/MVP-PRD.md` — 完整 PRD（权威来源）
+- `minicare/docs/business/MVP-PRD.md` — 完整 PRD 存档（已归档，现行权威规格见 docs/features/ + docs/prd/）
 - `.catpaw/skills/minicare-deploy/SKILL.md` — 发布操作手册（含 EnvParams 等敏感参数，不提交 git）
 - `.catpaw/skills/minicare-design/SKILL.md` — 视觉风格指南（UI 页面开发时同时激活）
 - `minicare/docs/DEV-PLAN.md` — 开发计划与进度跟踪

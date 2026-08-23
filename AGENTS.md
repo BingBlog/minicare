@@ -117,6 +117,15 @@ npm run build:prod         # tsc -b + vite build (production mode)
 - **Timezone**: 前端传递时间给后端时，绝不使用 `new Date().toISOString()`（输出 UTC 导致 8 小时偏差），必须使用 `dayjs().format('YYYY-MM-DDTHH:mm:ss')` 输出本地时间字符串（不带 Z 后缀）。
 - **Soft delete（软删除原则，硬性约束）**: 所有删除操作一律软删除，**禁止物理 DELETE 业务数据**（Migration 012）。删除 = 标记 `deleted_at = NOW()`，所有查询必须带 `deleted_at IS NULL` 过滤。已落地：`baby_profile`/`family_group` 有 `deleted_at` 列；`family_member` 复用 `status='left'`。新增删除功能时必须：① 目标表加 `deleted_at`（或复用 status）② 查询过滤 ③ 勿删关联记录。例外：测试数据清理、已软删数据的兜底清理可物理删除。
 
+## 文档管理规范（2026-08-23 起强制）
+
+- **根目录禁放文档**：根目录只允许 `README.md` 与 `AGENTS.md`；任何新增 .md 文档一律进 `docs/` 对应分类目录
+- **索引同步（硬性）**：新增/移动/删除 docs/ 下任何文档，**必须同步更新 `docs/README.md` 的索引与状态列**；docs 变更后检查是否影响 `minicare-dev` SKILL 的引用路径
+- **命名规范**：英文小写 + 前缀编号（`TECH-NNN-*` / `INFRA-*` / `DB-NN-*` / `FNN-*` / `PRD-NNN` / `REVIEW-*` / `MNN-*`），**禁止中文文件名**
+- **生命周期**：文档 frontmatter 标注 `status: draft | active | superseded | archived`，修改后更新 `updated` 日期；被取代的文档标 `superseded` 或移入 `docs/archive/`，不物理删除
+- **知识库**：资料在 `docs/knowledge/`（source/ = 原始文献，research/ = 调研），管线工程在 `minicare-kb/`，二者引用用完整路径
+- **文档归属速查**：商业/战略 → `docs/business/`；产品 → `docs/product/`；PRD → `docs/prd/`（注册表 `docs/PRD_REGISTRY.md`）；功能规格 → `docs/features/`；技术方案 → `docs/tech/`；智能体模块 → `docs/agent/`；硬件 → `docs/hardware/`；审查复盘 → `docs/reviews/`；数据分析 → `docs/analytics/`；公众号文章 → `docs/wechat-articles/`
+
 ## Deploy
 
 **Server (CloudRun):**
@@ -131,7 +140,7 @@ npm run build:prod         # tsc -b + vite build (production mode)
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
 
-This project is indexed by GitNexus as **minicare** (9305 symbols, 15872 relationships, 201 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
+This project is indexed by GitNexus as **minicare** (9764 symbols, 16698 relationships, 195 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
 
 > Index stale? Run `node .gitnexus/run.cjs analyze` from the project root — it auto-selects an available runner. No `.gitnexus/run.cjs` yet? `npx gitnexus analyze` (npm 11 crash → `npm i -g gitnexus`; #1939).
 
