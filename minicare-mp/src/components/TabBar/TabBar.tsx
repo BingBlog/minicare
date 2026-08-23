@@ -400,6 +400,14 @@ export default function TabBar({ activeTab }: TabBarProps) {
         onClose={() => setFabOpen(false)}
         groups={GLOBAL_FAB_GROUPS}
         onSelect={(key) => {
+          if (key === 'agent_chat') {
+            Taro.navigateTo({ url: '/pages/chat/index' })
+            return
+          }
+          if (key === 'agent_diary') {
+            Taro.navigateTo({ url: '/pages/diary/index' })
+            return
+          }
           const route = HOME_RECORD_ROUTES[key] ?? '/records'
           navigateToRecord(route)
         }}

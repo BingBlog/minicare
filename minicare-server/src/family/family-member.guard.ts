@@ -33,7 +33,7 @@ export class FamilyMemberGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const userId: string = request.user?.sub;
     const familyId: string =
-      request.params?.familyId ?? request.body?.family_id;
+      request.params?.familyId ?? request.body?.family_id ?? request.query?.family_id;
 
     if (!familyId) {
       throw new ForbiddenException('缺少 family_id 参数');

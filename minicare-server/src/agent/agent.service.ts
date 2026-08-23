@@ -4,7 +4,7 @@
  * 职责：SSE 帧级透传 /chat、REST JSON 透传、baby 归属校验、ctx 注入。
  * 不解析不缓存上游业务内容；所有鉴权在 controller 层（JwtGuard + FamilyMemberGuard）。
  */
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
 import { Pool } from 'mysql2/promise';
 import { DATABASE_POOL } from '../common/database/database.module';
@@ -22,6 +22,20 @@ export interface ChatDto {
   message: string;
   images?: Array<{ fileId: string; mimeType?: string }>;
   model?: string;
+}
+
+export interface SaveDiaryDto {
+  family_id: string;
+  baby_id: string;
+  diary_date: string; // YYYY-MM-DD
+  content: string;
+  photo_ids?: string[];
+}
+
+export interface UpdateDiaryDto {
+  family_id: string;
+  content?: string;
+  photo_ids?: string[];
 }
 
 @Injectable()
@@ -135,5 +149,116 @@ export class AgentService {
       throw new Error(`agent /health 返回 ${resp.status}`);
     }
     return resp.json();
+  }
+
+  // ── 日记 REST（M5 §4，直接查 baby_diary 表，JWT 已鉴权）──────────────────
+
+  private static readonly DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+  private static readonly MONTH_RE = /^\d{4}-\d{2}$/;
+
+  /** 每天一篇 upsert（UNIQUE(baby_id, diary_date) 冲突即覆盖，前端已确认） */
+  async saveDiary(dto: SaveDiaryDto, authorId: string) {
+    if (!AgentService.DATE_RE.test(dto.diary_date)) {
+      throw new Error('diary_date 格式必须为 YYYY-MM-DD');
+    }
+    const id = randomUUID();
+    const photoIds = dto.photo_ids?.length ? dto.photo_ids.join(',') : null;
+    await this.db.execute(
+      `INSERT INTO baby_diary (id, baby_id, family_id, diary_date, author_id, content, photo_ids)
+       VALUES (?, ?, ?, ?, ?, ?, ?)
+       ON DUPLICATE KEY UPDATE
+         content = VALUES(content), photo_ids = VALUES(photo_ids),
+         author_id = VALUES(author_id), updated_at = NOW()`,
+      [id, dto.baby_id, dto.family_id, dto.diary_date, authorId, dto.content, photoIds],
+    );
+    // 返回该日日记 id（upsert 后查回）
+    const [rows] = await this.db.execute<any[]>(
+      'SELECT id FROM baby_diary WHERE baby_id = ? AND diary_date = ?',
+      [dto.baby_id, dto.diary_date],
+    );
+    return { id: rows[0]?.id ?? id };
+  }
+
+  /** 单天日记（无 → null） */
+  async getDiaryDetail(babyId: string, date: string) {
+    if (!AgentService.DATE_RE.test(date)) {
+      throw new Error('date 格式必须为 YYYY-MM-DD');
+    }
+    const [rows] = await this.db.execute<any[]>(
+      `SELECT id, baby_id, family_id, diary_date, author_id, content, photo_ids, created_at, updated_at
+       FROM baby_diary WHERE baby_id = ? AND diary_date = ?`,
+      [babyId, date],
+    );
+    const row = rows[0] ?? null;
+    if (!row) return null;
+    return { ...row, photo_ids: row.photo_ids ? row.photo_ids.split(',') : [] };
+  }
+
+  /** 按月列表（倒序，含首句摘要 + 首图） */
+  async listDiary(babyId: string, month: string) {
+    if (!AgentService.MONTH_RE.test(month)) {
+      throw new Error('month 格式必须为 YYYY-MM');
+    }
+    const [rows] = await this.db.execute<any[]>(
+      `SELECT id, baby_id, diary_date, content, photo_ids, created_at, updated_at
+       FROM baby_diary WHERE baby_id = ? AND DATE_FORMAT(diary_date, '%Y-%m') = ?
+       ORDER BY diary_date DESC`,
+      [babyId, month],
+    );
+    return rows.map((r) => {
+      const photos = r.photo_ids ? r.photo_ids.split(',') : [];
+      return {
+        id: r.id,
+        baby_id: r.baby_id,
+        diary_date: r.diary_date,
+        excerpt: r.content.replace(/\s+/g, ' ').slice(0, 60),
+        first_photo: photos[0] ?? null,
+        photo_count: photos.length,
+        created_at: r.created_at,
+        updated_at: r.updated_at,
+      };
+    });
+  }
+
+  /** 编辑日记（content/photo_ids 覆盖，author_id 更新为编辑人）；校验归属家庭 */
+  async updateDiary(id: string, familyId: string, dto: UpdateDiaryDto, authorId: string) {
+    const [rows] = await this.db.execute<any[]>(
+      'SELECT id FROM baby_diary WHERE id = ? AND family_id = ?',
+      [id, familyId],
+    );
+    if (rows.length === 0) throw new NotFoundException('日记不存在');
+
+    const setClauses: string[] = [];
+    const values: any[] = [];
+    if (dto.content !== undefined) {
+      setClauses.push('content = ?');
+      values.push(dto.content);
+    }
+    if (dto.photo_ids !== undefined) {
+      setClauses.push('photo_ids = ?');
+      values.push(dto.photo_ids.length ? dto.photo_ids.join(',') : null);
+    }
+    if (setClauses.length > 0) {
+      setClauses.push('author_id = ?', 'updated_at = NOW()');
+      values.push(authorId, id);
+      await this.db.execute(`UPDATE baby_diary SET ${setClauses.join(', ')} WHERE id = ?`, values);
+    }
+    return { id };
+  }
+
+  /** 追加照片（去重）；校验归属家庭 */
+  async appendDiaryPhotos(id: string, familyId: string, photoIds: string[], authorId: string) {
+    const [rows] = await this.db.execute<any[]>(
+      'SELECT photo_ids FROM baby_diary WHERE id = ? AND family_id = ?',
+      [id, familyId],
+    );
+    if (rows.length === 0) throw new NotFoundException('日记不存在');
+    const existing = rows[0].photo_ids ? rows[0].photo_ids.split(',') : [];
+    const merged = [...new Set([...existing, ...photoIds])];
+    await this.db.execute(
+      'UPDATE baby_diary SET photo_ids = ?, author_id = ?, updated_at = NOW() WHERE id = ?',
+      [merged.length ? merged.join(',') : null, authorId, id],
+    );
+    return { id, photo_ids: merged };
   }
 }

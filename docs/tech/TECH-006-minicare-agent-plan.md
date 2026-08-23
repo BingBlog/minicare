@@ -157,7 +157,7 @@ minicare-agent/
 │   └── prompts/system.js            # systemPrompt 构造（角色/检索先行/引用/免责/日记/图片规则）
 ├── scripts/
 │   ├── sync-kb-articles.mjs / import-kb-guidelines.mjs / gen-embeddings.mjs
-│   └── eval-recall.mjs
+│   └── （召回评测见 minicare-kb/scripts/eval-recall-exact.py，精确 Recall@10 口径）
 └── test/  (knowledge.recall.test.mjs / e2e.http)
 ```
 
@@ -488,11 +488,14 @@ minicare-mp/src/pages/diary/detail.tsx  # 日记详情/编辑（配图上传）
 - ✅ 验收：数据查询准确（端到端实测模型触发 query_baby_data）；越权 403（日记 REST 实测）；"7 月总结"卡片 + 生长百分位 agent 侧可输出；日记 save 覆盖 id 不变、照片去重、detail/list 回读一致
 - ⏳ 待续：P2 部署；P3 页面
 
-#### P3 对话页与日记页（5-6 人日）
-1. pages/chat 分包：SSE 消费、气泡/流式、**语音输入**（复用 TECH-001 链路）、**图片发送**（压缩直传 + 气泡）、**周报/月报快捷按钮**、来源/数据条/护栏卡片；
-2. pages/diary 分包：列表/详情/编辑（含配图上传、覆盖确认弹窗）；
-3. 入口（FAB「问敏宝助手」+ 首页「宝宝日记」）。
-- 验收：真机端到端文字/语音/图片对话；周报/月报一键生成；日记生成→编辑→保存→回看闭环；模拟器降级可用。
+#### P3 对话页与日记页（5-6 人日，✅ 2026-08-23 完成）
+1. ✅ pages/chat 分包：SSE 消费（enableChunked + onChunkReceived 手写解析 + 完整响应降级）、气泡/流式、语音输入（useChatVoice 复用 TECH-001 转写链路）、图片发送（压缩直传 COS）、周报/月报快捷按钮、来源卡片/工具状态、日记草稿保存入口、会话本地恢复（conversationId + 消息缓存）、停止生成、宝宝切换（=新会话）、新会话清空、入口守卫（游客/无宝宝）、服务未就绪横幅；
+2. ✅ pages/diary 分包：列表（按月倒序 + 月份切换 + 首图）、详情/编辑（文字 + 配图上传 COS + 覆盖确认）、「写日记/重新生成」跳对话页预置消息（preset=diary）、编辑中退出保护；
+3. ✅ 入口：FAB 菜单顶部固定「问敏宝助手/宝宝日记」+ 首页今日日记卡片（有日记→摘要入口，无→写日记引导）+ app.config 分包注册。
+- ✅ 验收（weapp-automator 真机走查通过）：首页卡片→chat 预置日记生成；FAB 两入口跳转；文字对话知识问答端到端（含工具状态/流式）；日记列表页渲染；停止生成。
+- ⚠️ **P3 实测新增观察（agent 侧，非前端问题）**：DeepSeek 模型在工具调用后偶发**重复调用工具**（回答完成后再输出"我查一下知识库…"并再次触发 search_knowledge/generate_diary），导致 SSE 流迟迟不结束——前端"停止"按钮已兜底；根治方向（P4）：agent prompt 增加"回答完成后不得再次调用工具"约束或 OAK 侧限制单轮工具调用次数。
+  - ✅ **已修复（2026-08-23）**：`routes/chat.js` 工具循环防护（同一工具 ≤2 次、单轮总调用 ≤3 次，超限 respondToolUse 返回"已达上限，直接回答"）+ `prompts/system.js` 工具纪律约束（9-12 条）；curl 实测知识问答/日记生成/数据查询三类场景 tool_call 均收敛为 1 次且 done 正常到达；前端配套：工具名去重显示 + 停止按钮 ≥15s 显示耗时。
+- ⚠️ markdown 渲染：**已落地（2026-08-23）**——自研轻量 `components/MarkdownText`（零依赖：标题/加粗/斜体/行内代码/列表/引用/表格/分隔线，主题暖色系），assistant 气泡已接入；流式增量解析按内容 memo。
 
 #### P4 打磨上线（3-4 人日）
 1. 权威指南 19 份全量条目化 + 医学评审（抽审 10%）；

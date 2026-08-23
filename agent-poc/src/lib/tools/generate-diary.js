@@ -1,0 +1,83 @@
+/**
+ * generate_diary 工具（M5 日记素材聚合）
+ *
+ * 聚合宝宝某一天的记录概览、当天图片素材，供模型生成每日日记。
+ * 生活事件 MVP 简化：模型从会话上下文（FlexDB transcript）总结，不单独建事件表。
+ */
+import { z } from 'zod'
+import { queryMetric, METRICS, METRIC_LABELS } from '../query.js'
+import { getDb } from '../db.js'
+
+export const GENERATE_DIARY_TOOL = {
+  name: 'generate_diary',
+  description:
+    '聚合宝宝某一天的记录概览与当天图片素材，用于生成每日日记。用户要求"写日记/写今天的日记/记录今天"时调用，先聚合素材再动笔。',
+  parameters: z.object({
+    date: z.string().describe('YYYY-MM-DD，默认今天'),
+  }),
+}
+
+/** 当天记录概览（各维 days=1，list） */
+async function dayRecords(babyId, date) {
+  const out = []
+  for (const metric of METRICS) {
+    const res = await queryMetric(babyId, metric, 1, 'list')
+    if (res.hasData) {
+      out.push({ metric, label: METRIC_LABELS[metric], count: res.count, rows: res.rows.slice(0, 5) })
+    }
+  }
+  return out
+}
+
+/** 当天图片：从带 photo_ids 的记录表收集（MVP：medical/symptom；JSON 列解析） */
+async function dayPhotos(babyId, date) {
+  const db = getDb()
+  if (!db) return []
+  const sources = [
+    { table: 'medical_record', timeCol: 'visit_date' },
+    { table: 'symptom_record', timeCol: 'record_time' },
+  ]
+  const photos = []
+  for (const src of sources) {
+    try {
+      const [rows] = await db.query(
+        `SELECT photo_ids FROM ${src.table} WHERE baby_id=? AND ${src.timeCol} BETWEEN ? AND DATE_ADD(?, INTERVAL 1 DAY) AND photo_ids IS NOT NULL LIMIT 10`,
+        [babyId, `${date} 00:00:00`, `${date} 00:00:00`],
+      )
+      for (const r of rows) {
+        let ids = []
+        try {
+          ids = JSON.parse(r.photo_ids)
+        } catch {
+          /* 忽略坏 JSON */
+        }
+        for (const fid of Array.isArray(ids) ? ids : []) {
+          if (typeof fid === 'string' && fid) photos.push({ fileId: fid, source: 'record' })
+        }
+      }
+    } catch (e) {
+      console.error(`[diary] 查 ${src.table} 图片失败:`, e.message)
+    }
+  }
+  return photos
+}
+
+export async function executeGenerateDiary(input, ctx) {
+  const babyId = ctx?.babyId
+  if (!babyId) return JSON.stringify({ ok: false, error: '缺少 babyId 上下文' })
+  const date = input?.date && /^\d{4}-\d{2}-\d{2}$/.test(input.date) ? input.date : new Date().toISOString().slice(0, 10)
+  try {
+    const [records, photos] = await Promise.all([dayRecords(babyId, date), dayPhotos(babyId, date)])
+    return JSON.stringify({
+      ok: true,
+      date,
+      records,
+      photos,
+      chatEvents: [], // MVP：模型从会话上下文总结生活事件，可靠性靠 prompt 约束
+      note: '生活事件请只写用户明确提到的事实，不要编造；若当天有提到活动但无照片，可在末尾提醒补充照片。',
+    })
+  } catch (e) {
+    console.error('[diary] ERROR:', e?.stack || e)
+    return JSON.stringify({ ok: false, error: (e?.message || String(e)).slice(0, 300) })
+  }
+}

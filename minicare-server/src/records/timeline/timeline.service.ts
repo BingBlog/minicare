@@ -1,6 +1,7 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Pool } from 'mysql2/promise';
 import { DATABASE_POOL } from '../../common/database/database.module';
+import { formatSqlDate } from '../../common/utils/date.util';
 
 type SourceType =
   | 'feeding'
@@ -352,13 +353,16 @@ export class TimelineService {
     );
     if (!rows[0]) return null;
     const r = rows[0];
+    // mysql2 将 DATE 列解析为 JS Date 对象，直接模板拼接会产出
+    // "Sat Aug 22 2026 00:00:00 GMT+0800 (China Standard Time)" 导致 event_time 写入失败
+    const recordDate = formatSqlDate(r.record_date);
     const tags = [
       r.height_mm != null ? `${(Number(r.height_mm) / 10).toFixed(1)}cm` : '',
       r.weight_g != null ? `${(Number(r.weight_g) / 1000).toFixed(2)}kg` : '',
     ].filter(Boolean);
     return {
       babyId: r.baby_id,
-      eventTime: `${r.record_date} 00:00:00`,
+      eventTime: `${recordDate} 00:00:00`,
       note: r.note ?? null,
       summaryTitle: '生长',
       summaryTagsJson: tags.length ? JSON.stringify(tags) : null,
@@ -367,7 +371,7 @@ export class TimelineService {
       summaryTheme: 'purple',
       summaryActive: false,
       detailJson: JSON.stringify({
-        record_date: r.record_date,
+        record_date: recordDate,
         height_mm: r.height_mm,
         weight_g: r.weight_g,
         head_mm: r.head_mm,
@@ -383,28 +387,52 @@ export class TimelineService {
     );
     if (!rows[0]) return null;
     const r = rows[0];
+    // mysql2 将 DATE 列解析为 JS Date 对象，直接模板拼接会产出
+    // "Sat Aug 22 2026 00:00:00 GMT+0800 (China Standard Time) 11:33:00"，
+    // MySQL CAST 为 NULL → event_time NOT NULL 违反 → 物化写入失败（2026-08-22 实证）
+    const visitDate = formatSqlDate(r.visit_date);
     // 有时间则用 visit_time，否则落到当日 00:00:00
     const eventTime = r.visit_time
-      ? `${r.visit_date} ${r.visit_time}:00`
-      : `${r.visit_date} 00:00:00`;
+      ? `${visitDate} ${r.visit_time}:00`
+      : `${visitDate} 00:00:00`;
+    // summary_tags 存最终展示文案：就诊类型 + 医院 + 诊断（对齐 TECH-002 §7 蓝图）
+    const tags = [
+      r.visit_type ? this.visitTypeLabel(r.visit_type) : '',
+      r.hospital ?? '',
+      r.diagnosis ?? '',
+    ].filter(Boolean);
     return {
       babyId: r.baby_id,
       eventTime,
       note: r.note ?? null,
       summaryTitle: '医疗',
-      summaryTagsJson: r.hospital ? JSON.stringify([r.hospital]) : null,
+      summaryTagsJson: tags.length ? JSON.stringify(tags) : null,
       summaryValue: null,
       summaryUnit: null,
       summaryTheme: 'purple',
       summaryActive: false,
       detailJson: JSON.stringify({
-        visit_date: r.visit_date,
+        visit_date: visitDate,
         visit_time: r.visit_time,
         visit_type: r.visit_type,
         hospital: r.hospital,
         diagnosis: r.diagnosis,
       }),
     };
+  }
+
+  private visitTypeLabel(type: string): string {
+    // 与 minicare-mp/src/lib/constants.ts VISIT_TYPE_LABELS 保持一致
+    const labels: Record<string, string> = {
+      checkup: '儿保检查',
+      sick: '就诊记录',
+      vaccine: '疫苗接种',
+      other: '其他检查',
+      // 已废弃类型（2026-08-22 精简），仅用于老数据列表展示
+      allergy: '过敏原检测',
+      blood: '血液检查',
+    };
+    return labels[type] ?? type;
   }
 
   private async loadMedicationPayload(sourceId: string) {

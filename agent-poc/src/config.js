@@ -13,6 +13,8 @@
  *   MODEL_VISION        默认 deepseek-v4-flash-vision-exp
  *   PORT                默认 3000
  *   OAK_DEBUG           =1 时开启 Claude SDK 调试日志
+ *   DB_HOST/DB_PORT/DB_NAME/DB_USER/DB_PASSWORD  知识库只读连接（可选，缺省检索降级）
+ *   TOKENHUB_API_KEY    运行时 query 向量化（可选，缺省仅 FULLTEXT 检索）
  */
 import { readFileSync } from 'node:fs'
 import { homedir } from 'node:os'
@@ -61,6 +63,15 @@ export function getTcbCredentials() {
 }
 
 export function loadConfig() {
+  const db = process.env.DB_HOST && process.env.DB_NAME && process.env.DB_USER && process.env.DB_PASSWORD
+    ? {
+        host: process.env.DB_HOST,
+        port: Number(process.env.DB_PORT || 3306),
+        name: process.env.DB_NAME,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+      }
+    : null
   return {
     envId: process.env.TCB_ENV_ID || DEFAULT_ENV_ID,
     port: Number(process.env.PORT || 3000),
@@ -70,6 +81,8 @@ export function loadConfig() {
     modelDefault: process.env.MODEL_DEFAULT || 'deepseek-v4-flash',
     modelVision: process.env.MODEL_VISION || 'deepseek-v4-flash-vision-exp',
     oakDebug: process.env.OAK_DEBUG === '1',
+    db,
+    tokenHubKey: process.env.TOKENHUB_API_KEY || null,
   }
 }
 

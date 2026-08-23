@@ -75,7 +75,7 @@ export function setCurrentBabyId(babyId: string): void {
 let isRedirectingToLogin = false
 
 interface RequestOptions {
-  method?: 'GET' | 'POST' | 'PATCH' | 'DELETE'
+  method?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE'
   auth?: boolean
   data?: unknown
   timeoutMs?: number
@@ -102,10 +102,16 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
     })
   } catch (err) {
     const errMsg = (err as { errMsg?: string })?.errMsg ?? ''
+    // 请求被主动中止（开发者工具终止会话 / 页面销毁 / 小程序切后台时，
+    // 微信框架会 abort 所有挂起的请求）。属正常生命周期行为，静默处理，
+    // 避免向上抛出形成 unhandled rejection 误报（MiniProgramError）。
+    if (errMsg.includes('abort')) {
+      return undefined as T
+    }
     if (errMsg.includes('timeout')) {
       throw new Error(`请求超时（>${timeoutMs}ms）：请确认本地后端已启动并可访问 ${API_BASE_URL}`)
     }
-    if (errMsg.includes('fail') || errMsg.includes('abort')) {
+    if (errMsg.includes('fail')) {
       throw new Error(`网络请求失败：${errMsg}`)
     }
     // wx.request 底层异常（如 Failed to fetch）——给出可操作的诊断信息

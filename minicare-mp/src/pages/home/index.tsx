@@ -5,6 +5,7 @@ import { authApi, babyApi, familyApi, fetchAppConfig, foodObservationApi, record
 import type { PendingInvite } from '@/api/family'
 import type { OngoingSleepRecord } from '@/api/sleep'
 import type { FoodObservation } from '@/api'
+import { agentDiaryApi, type DiaryDetail } from '@/api/agent'
 import { getStoredFamilyId, setCurrentFamilyId, getToken } from '@/api/http'
 import { HOME_RECORD_ROUTES } from '@/lib/constants'
 import { navigateToRecord } from '@/lib/navigation'
@@ -22,6 +23,7 @@ import SleepBanner from './SleepBanner'
 import FeedingBanner from './FeedingBanner'
 import NextFollowUpBanner from './NextFollowUpBanner'
 import AllergyProgressBar from './AllergyProgressBar'
+import TodayDiaryCard from './TodayDiaryCard'
 import RecordActionSheet from './RecordActionSheet'
 import TabBar from '@/components/TabBar/TabBar'
 import InviteModal from '@/components/InviteModal/InviteModal'
@@ -74,6 +76,8 @@ export default function HomePage() {
   const [babyGrowth, setBabyGrowth] = useState<{ weightKg?: string; heightCm?: string; headCm?: string } | null>(null)
   const [foodObservations, setFoodObservations] = useState<FoodObservation[]>([])
   const [nextFollowUp, setNextFollowUp] = useState<NextFollowUp | null>(null)
+  const [todayDiary, setTodayDiary] = useState<DiaryDetail | null>(null)
+  const [diaryLoading, setDiaryLoading] = useState(false)
 
   // 页面加载时，解析 URL 参数
   useEffect(() => {
@@ -93,6 +97,21 @@ export default function HomePage() {
     const d = new Date()
     d.setDate(d.getDate() - 1)
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+  }, [])
+
+  /** 今日日记摘要（首页卡片，失败静默） */
+  const loadTodayDiary = useCallback(async (fid: string, bid: string) => {
+    const d = new Date()
+    const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+    setDiaryLoading(true)
+    try {
+      const item = await agentDiaryApi.detail(fid, bid, today)
+      setTodayDiary(item)
+    } catch {
+      setTodayDiary(null)
+    } finally {
+      setDiaryLoading(false)
+    }
   }, [])
 
   /** 刷新今日记录 & 进行中睡眠（页面从子页面返回时复用） */
@@ -144,6 +163,8 @@ export default function HomePage() {
         setFoodObservations([])
       }
 
+      loadTodayDiary(fid, baby.id)
+
       try {
         const nf = await recordsApi.medical.getNextFollowUp(fid, baby.id)
         setNextFollowUp(nf)
@@ -153,7 +174,7 @@ export default function HomePage() {
     } catch {
       // 静默失败，保留已有数据
     }
-  }, [getYesterdayDateStr])
+  }, [getYesterdayDateStr, loadTodayDiary])
 
   // 是否处于游客模式（未登录）
   const [isGuest, setIsGuest] = useState(false)
@@ -266,6 +287,8 @@ export default function HomePage() {
           recordsApi.today(fid, getYesterdayDateStr())
             .then((yRecs) => { if (!cancelled) setYesterdayRecords(yRecs.map(toHomeRecord)) })
             .catch(() => {})
+
+          loadTodayDiary(fid, baby.id)
 
           recordsApi.medical.getNextFollowUp(fid, baby.id)
             .then((nf) => { if (!cancelled) setNextFollowUp(nf) })
@@ -667,6 +690,7 @@ export default function HomePage() {
         }
       />
       <View className='home-content'>
+        <TodayDiaryCard diary={todayDiary} loading={diaryLoading} />
         <QuickActions
           birthDate={birthDate}
           onMoreClick={() => Taro.eventCenter.trigger('tabbar:openFab')}

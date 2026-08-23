@@ -1,6 +1,8 @@
 # M5 · 每日日记（技术方案）
 
-> 模块：M5 ｜ 状态：规划中 ｜ 优先级：P2（生成）/ P3（页面）
+> 模块：M5 ｜ 状态：**P2 已落地（生成侧 + REST） + P3 页面已落地（2026-08-23）** ｜ 优先级：P2（生成）/ P3（页面）
+> **2026-08-23 P2 完成**：agent-poc `lib/tools/generate-diary.js`（当天记录概览 + 当天记录图片素材）；迁移 **018_baby_diary.sql**（dev 已执行）；日记 REST 在 minicare-server `src/agent/`（save/detail/list/update/photos，JwtGuard + FamilyMemberGuard + baby 归属，FamilyMemberGuard 已支持 query.family_id），本地端到端实测：upsert 覆盖 id 不变、照片去重、越权 403。小程序页面 P3 跟进。
+> **2026-08-23 P3 完成**：`pages/diary`（列表/详情/编辑/配图）+ `pages/chat` 日记草稿保存入口（generate_diary 轮 done 后显示「保存为今天的日记」→ 底部弹层编辑 → save，当天已有日记先确认）+ 首页今日日记卡片。生成入口统一走对话页预置消息 `?preset=diary`（自动发送"帮我写今天的日记"）。注意：agent 侧实测模型偶发重复调用 generate_diary 导致流不结束，前端"停止"兜底（TECH-006 P3 观察）。
 
 ## 1. 技术设计概览
 

@@ -160,7 +160,7 @@ async function hybridSearch(query, topK = 5, filters = {}) {
 
 ## 7. 测试与验证
 
-- 召回评测：`scripts/eval-recall.mjs` 跑 `docs/敏宝知识库/召回测试集-种子50题.md`，Recall@10 ≥ 90% 为上线闸门；
+- 召回评测：`minicare-kb/scripts/eval-recall-exact.py`（精确 Recall@10，gold 条目经 `var/kb_mapping.json` 映射判定）跑 `docs/敏宝知识库/召回测试集-种子50题.md`，Recall@10 ≥ 90% 为上线闸门；基线见 `minicare-kb/docs/RECALL-REPORT.md`（97.8% 达标）。⚠️ 勿用"关键信息字面命中率"口径评估质量（指标失真，已弃用）。
 - 空库降级：knowledge_base 空 → search_knowledge 返回未找到 → 回答"未收录建议就医"；
 - 来源完整性：回答的 sources 事件条目与检索结果一一对应。
 

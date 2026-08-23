@@ -24,6 +24,14 @@ export default {
       pages: ['index'],
     },
     {
+      root: 'pages/chat',
+      pages: ['index'],
+    },
+    {
+      root: 'pages/diary',
+      pages: ['index', 'detail'],
+    },
+    {
       root: 'pages/records/feeding',
       pages: ['index'],
     },

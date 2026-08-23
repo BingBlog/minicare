@@ -1,6 +1,7 @@
 # M4 · 总结分析与生长曲线（技术方案）
 
-> 模块：M4 ｜ 状态：规划中 ｜ 优先级：P2
+> 模块：M4 ｜ 状态：**P2 已落地** ｜ 优先级：P2
+> **2026-08-23 P2 完成**：agent-poc `lib/tools/analyze-baby-data.js`（trend 首尾 3 天均值对比 + 极差比；summary 跨维聚合；growth 百分位）+ `lib/growth.js`（中国 2023 儿科生长参考，与小程序 growth-standards 同源）。生长数据不足（<2 次测量）明确返回 hasData:false。
 
 ## 1. 技术设计概览
 

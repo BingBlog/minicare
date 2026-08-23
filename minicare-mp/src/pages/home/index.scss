@@ -1123,3 +1123,61 @@
 
 @include ipad.home;
 
+
+/* ── 今日日记入口卡片（P3）── */
+.home-diary-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+}
+
+.home-diary-card__badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f9c8a0, #f89870);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.home-diary-card__badge--empty {
+  background: linear-gradient(135deg, #f9a8c0, #f87098);
+}
+
+.home-diary-card__badge-text {
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.home-diary-card__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.home-diary-card__title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #3d2b2e;
+}
+
+.home-diary-card__excerpt {
+  font-size: 11px;
+  color: #9a7e82;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.home-diary-card__more {
+  font-size: 12px;
+  color: #e8507a;
+  flex-shrink: 0;
+}

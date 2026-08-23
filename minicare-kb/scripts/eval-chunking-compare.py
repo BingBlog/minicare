@@ -6,6 +6,8 @@ D: LlamaIndex 切块 + 4b
 （B: LlamaIndex+0.6b 需 0.6b 开通后付费，暂缺）
 
 指标：关键信息命中率（key_info 关键词在向量 top10 命中）+ Recall@10（KB 映射，仅自研切块可用）
+⚠️ 关键信息命中率仅用于本脚本横向对比切块/embedding 方案，不得作为知识库质量评估口径
+（该指标已确认失真弃用，质量评估一律用精确 Recall@10：scripts/eval-recall-exact.py）
 """
 from __future__ import annotations
 

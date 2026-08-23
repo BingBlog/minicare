@@ -1,6 +1,6 @@
 # agent-poc · OAK 最小 POC（DeepSeek + 知识库工具 + 多用户会话）
 
-> 状态：**核心链路验证通过 + P0 基础服务完成**（2026-08-23）
+> 状态：**P0~P3 全部完成**（2026-08-23，P0 基础服务 + P1 知识库 + P2 数据/日记 + P3 小程序对话/日记页）
 > 模型方案：**DeepSeek 官方 API（Anthropic 兼容端点）**——已实测可用
 > 关联调研：[TECH-005-oak-source-analysis.md](../docs/tech/TECH-005-oak-source-analysis.md)
 > 生产方案：[TECH-006-minicare-agent-plan.md](../docs/tech/TECH-006-minicare-agent-plan.md)（v2.0）
@@ -96,8 +96,10 @@ const agent = createAgent({
 ## 生产化待办（按 TECH-006 执行计划）
 
 - [x] **P0 基础服务**：目录分层 / token 鉴权 / ctx 注入 / /chat SSE / /health /diag / 视觉链路实测 / server 代理模块 / 会话恢复（自管历史）
-- [ ] **P0 剩余**：CloudRun 部署 `minicare-agent`（需 AGENT_INTERNAL_TOKEN 生成）、容器内视觉附件链路复测
-- [ ] **P1 知识库**：迁移 017_knowledge_base + 混合检索（FULLTEXT + embedding + RRF），替换内存检索
-- [ ] **P2 数据与日记**：只读 DB 连接 + query/analyze/generate_diary 工具 + 日记 REST
-- [ ] **P3 小程序**：对话页/日记页分包
+- [x] **P0 部署**：CloudRun `minicare-agent` 已上线（版本 002，100% 流量）；EnvParams 五项（DEEPSEEK_API_KEY/TCB 三件套/AGENT_INTERNAL_TOKEN）；`/health` ready=true（⚠️ MinNum=0 冷启动首次请求可能 503）
+- [ ] **P0 剩余**：容器内视觉附件链路复测
+- [x] **P1 知识库（2026-08-23）**：`lib/db.js` MySQL 只读连接池 + `lib/embeddings.js` TokenHub query 向量化 + `search-knowledge.js` 重写为 hybridSearch（FULLTEXT ngram + 向量余弦 + RRF k=60，topK=5）+ 工具参数扩展（riskLevel/category）+ review 条目过滤（REGEXP，规避 MySQL LIKE `[..]` 字符类）；**精确 Recall@10 = 97.8%（44/45）闸门通过**（`scripts/eval-recall-exact.mjs`）
+  - 数据：1586 条已入 dev 库；⚠️ **生产库（minicare-cloud-6gqledlle0132cbe）尚无 knowledge_base 表**，需执行 017 迁移 + 导入 + embedding 拷贝后，云端 EnvParams 补 DB_*/TOKENHUB_API_KEY 并重新部署
+- [x] **P2 数据查询、总结与日记（2026-08-23）**：`lib/query.js`（7 维度 × list/sum/avg/count/trend，ctx.babyId 注入）+ `lib/growth.js`（中国 2023 生长参考，与小程序同源）+ `lib/tools/query-baby-data.js` / `analyze-baby-data.js` / `generate-diary.js` 三工具 + 工具注册表（lib/tools/index.js）+ chat 按名分发；迁移 `018_baby_diary.sql`（dev 已执行）；**日记 REST 完成**（minicare-server src/agent/：save/detail/list/update/photos）；**端到端实测**：模型触发 query_baby_data 基于结果作答、日记 upsert 覆盖 id 不变、照片去重、越权 403
+- [x] **P3 小程序（2026-08-23）**：对话页 `pages/chat`（SSE 流式/语音/图片/工具状态/来源卡片/日记草稿）+ 日记页 `pages/diary`（按月列表/编辑/配图/重新生成）+ 首页今日日记卡片 + FAB 双入口 + MarkdownText 组件 + 会话本地恢复；automator 走查通过，端到端可用
 - [ ] **P4 打磨**：全量知识库 + 医学评审 + 评测 + 监控 + TCR 秒级部署

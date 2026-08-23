@@ -106,7 +106,7 @@ minicare-server/src/
 
 **唯一权威来源**：`minicare-server/migrations/` 目录，按文件名顺序执行。
 
-> **当前最新迁移**：`015_follow_up_time.sql`（001~015 共 15 个文件）
+> **当前最新迁移**：`018_baby_diary.sql`（001~018 共 18 个文件）
 > 新增迁移文件后，**必须更新本行的「当前最新迁移」字段**。
 
 | 文件 | 变更内容 |
@@ -126,6 +126,9 @@ minicare-server/src/
 | `013_medication.sql` | 用药记录模块（medication / medication_record，F14） |
 | `014_medical_visit_time.sql` | medical_record 增加 visit_time（HH:mm，可选） |
 | `015_follow_up_time.sql` | medical_record 增加 follow_up_time（HH:mm，可选，复查提醒用） |
+| `016_timeline_backfill.sql` | record_timeline 全量重刷回填：修复 medical/growth 物化缺失（日期拼接 bug）、medication 历史回填、medical summary_tags 补全（就诊类型/医院/诊断）、清理 medication 孤儿行 |
+| `017_knowledge_base.sql` | 敏宝知识条目库（M2 知识问答，agent 知识库，FULLTEXT ngram + embedding BLOB） |
+| `018_baby_diary.sql` | 宝宝每日日记（M5 日记生成，baby_id+diary_date 唯一每天一篇） |
 
 ---
 
@@ -197,21 +200,38 @@ read_file("docs/features/F03-feeding.md")  // 以饮食记录为例
 
 > 背景：一次 health 表单改动曾漏掉首页时间线/记录列表展示层，用户测试才发现。
 > 根因是消费方清单缺失。此步骤强制"先梳理影响面，再动手"。
+> 双路扫描：**impact-scan 脚本（字段级）+ GitNexus 图谱（符号级）**，互补覆盖。
 
-1. 运行影响面扫描脚本，找出该功能域的全部引用点：
+1. **字段级扫描**（找业务字段/路由/枚举的全部引用）：
 
 ```bash
 node .agents/scripts/impact-scan.mjs <功能域关键词...>
 # 例：node .agents/scripts/impact-scan.mjs health temperature allergy skin_care
-#     node .agents/scripts/impact-scan.mjs feeding formula breast food supplement
-#     node .agents/scripts/impact-scan.mjs sleep
 ```
 
-2. 按输出分组（入口层/表单页/组件/API/展示层/常量工具/后端/文档）**逐项核对**，
+2. **符号级查询**（找函数/组件/类的调用链与影响半径，GitNexus 知识图谱）：
+
+```bash
+# 改动前查影响面（MCP 工具已接入 WorkBuddy 时优先用 impact/context 工具）
+npx -y gitnexus@latest impact <符号名>       # 上游依赖（谁调用它）
+npx -y gitnexus@latest context <符号名>      # 360° 视图：callers/callees/流程
+# 提交前检查：本次 git 改动命中了哪些符号/流程
+npx -y gitnexus@latest detect-changes
+```
+
+   风险分级（GitNexus impact 输出按深度评估）：
+
+| 深度 | 风险 | 含义 |
+|------|------|------|
+| d=1 | **WILL BREAK** | 直接调用方/引用方，必须逐一核对 |
+| d=2 | LIKELY AFFECTED | 间接依赖，重点检查 |
+| d=3 | MAY NEED TESTING | 传递影响，抽查 |
+
+3. 按输出分组（入口层/表单页/组件/API/展示层/常量工具/后端/文档）**逐项核对**，
    评估本次改动是否影响该消费点，并把影响结论记录在改动说明中。
-3. 对照 PRD「影响面清单」章节检查：清单里有没有本次新增/变更的消费点？
+4. 对照 PRD「影响面清单」章节检查：清单里有没有本次新增/变更的消费点？
    有则**先补清单再开发**（清单与代码同步演进，防止下次再漏）。
-4. 常用功能域关键词速查（按需扩展）：
+5. 常用功能域关键词速查（按需扩展）：
 
 | 功能域 | 关键词 |
 |--------|--------|
@@ -227,6 +247,8 @@ node .agents/scripts/impact-scan.mjs <功能域关键词...>
 
 > ⚠️ 大小写不敏感匹配（如 `health` 会命中 `HealthRecord` 类型名），扫描结果需人工确认，
 > 可能有少量误报，但**漏报风险远低于误报**——宁可多核对几个文件。
+> 图谱维护：git post-commit hook 已自动增量更新（.git/hooks/post-commit，后台异步），
+> 也可手动 `npx -y gitnexus@latest analyze`；图谱落后时 impact 输出会提示 stale。
 
 ### 步骤 3：开发实现
 

@@ -1,6 +1,12 @@
 # M1 · 对话会话与语音输入（技术方案）
 
-> 模块：M1 ｜ 状态：规划中 ｜ 优先级：P0（服务端）/ P3（UI）
+> 模块：M1 ｜ 状态：**P3 页面已落地（2026-08-23）** ｜ 优先级：P0（服务端）/ P3（UI）
+>
+> **2026-08-23 P3 完成**：`pages/chat` 分包落地——SSE 消费（`api/agent.ts` chatStream：enableChunked + onChunkReceived 手写解析，ArrayBuffer→UTF-8 用 escape/decodeURIComponent，完整响应降级走同一解析器）、气泡/流式光标、语音输入（`useChatVoice` 复用 voiceApi.parse 转写回填，发送前可编辑）、图片发送（`lib/uploadImage.ts` 公共压缩直传）、周报/月报快捷按钮（预置消息触发 analyze）、来源卡片/工具状态、日记草稿保存入口、会话本地恢复（storage 缓存 conversationId + 消息，图片只存 fileID 恢复时拉临时 URL）、停止生成、宝宝切换=新会话、新会话清空、入口守卫、服务未就绪横幅。**实测观察**：DeepSeek 偶发回答完成后再次调用工具致流不结束，前端"停止"兜底；根治（P4）在 agent prompt 约束单轮工具次数。
+>
+> **2026-08-23 markdown 渲染落地**：`components/MarkdownText`（零依赖自研，支持 ##标题/**加粗**/*斜体*/`行内代码`/-·有序列表/>引用/|表格|/---分隔线，暖色主题对齐 minicare 视觉），assistant 气泡接入，用户消息保持纯文本；流式期间按内容 memo 避免重复解析。
+>
+> **2026-08-23 工具循环修复**：DeepSeek 偶发"回答完成后再次调用工具"导致流不结束 → `routes/chat.js` 增加工具循环防护（同工具 ≤2 次、总调用 ≤3 次，超限 respondToolUse 返回"已达上限，直接基于已有信息回答"）+ `prompts/system.js` 工具纪律约束；curl 实测三类场景（知识问答/日记生成/数据查询）tool_call 均收敛 1 次、done 正常；前端配套工具名去重 + 停止按钮耗时显示。
 
 ## 1. 技术设计概览
 

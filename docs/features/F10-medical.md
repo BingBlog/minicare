@@ -98,7 +98,7 @@
 | 消费点 | 展示内容 | 数据来源 |
 |--------|----------|----------|
 | 今日时间线（首页） | label「医疗」+ 就诊类型标签（如「儿保检查」） | `GET /records/today` → medical detail.`visit_type`（已补齐，`family.service.ts getTodayRecords`） |
-| 记录列表页 | label「医疗」+ 类型/医院/诊断 tags | feed 接口 → medical detail.`visit_type`（`feed.service.ts medicalSql` + 物化表回填均含） |
+| 记录列表页 | label「医疗」+ 类型/医院/诊断 tags | feed 接口 → `record_timeline` 物化 summary_tags（016 迁移已补全展示文案：就诊类型 label + 医院 + 诊断；`timeline.service.ts loadMedicalPayload` 同步输出） |
 | 表单页编辑回显 | 就诊类型选中态（blood/allergy 归一为 other） | `getOne` 接口 |
 
 > 前端标签映射统一走 `minicare-mp/src/lib/constants.ts` 的 `VISIT_TYPE_LABELS`（含废弃类型 allergy/blood 兜底展示）。

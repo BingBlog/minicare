@@ -17,6 +17,21 @@ export function internalToken(config) {
   return (req, res, next) => {
     // /health 放行（CloudRun 探活，M8 tech §3.1）
     if (req.path === '/health') return next()
+
+    // ctx 可选：带了就校验结构（生产由 minicare-server 注入；本地联调无 token 也解析）
+    const raw = req.get('x-agent-ctx')
+    if (raw) {
+      try {
+        const ctx = JSON.parse(Buffer.from(raw, 'base64').toString('utf8'))
+        if (ctx.userId && !isUuid(ctx.userId)) return res.status(400).json({ error: 'bad ctx: userId must be UUID' })
+        if (ctx.familyId && !isUuid(ctx.familyId)) return res.status(400).json({ error: 'bad ctx: familyId must be UUID' })
+        if (ctx.babyId && !isUuid(ctx.babyId)) return res.status(400).json({ error: 'bad ctx: babyId must be UUID' })
+        req.ctx = ctx
+      } catch {
+        return res.status(400).json({ error: 'bad ctx: invalid base64 JSON' })
+      }
+    }
+
     if (!config.internalToken) {
       console.warn('[middleware] AGENT_INTERNAL_TOKEN 未配置，已跳过鉴权（生产必须配置）')
       return next()
@@ -29,20 +44,6 @@ export function internalToken(config) {
     const b = Buffer.from(config.internalToken)
     if (a.length !== b.length || !timingSafeEqual(a, b)) {
       return res.status(401).json({ error: 'unauthorized' })
-    }
-
-    // ctx 可选：带了就校验结构（生产由 minicare-server 注入）
-    const raw = req.get('x-agent-ctx')
-    if (raw) {
-      try {
-        const ctx = JSON.parse(Buffer.from(raw, 'base64').toString('utf8'))
-        if (ctx.userId && !isUuid(ctx.userId)) return res.status(400).json({ error: 'bad ctx: userId must be UUID' })
-        if (ctx.familyId && !isUuid(ctx.familyId)) return res.status(400).json({ error: 'bad ctx: familyId must be UUID' })
-        if (ctx.babyId && !isUuid(ctx.babyId)) return res.status(400).json({ error: 'bad ctx: babyId must be UUID' })
-        req.ctx = ctx
-      } catch {
-        return res.status(400).json({ error: 'bad ctx: invalid base64 JSON' })
-      }
     }
     next()
   }
