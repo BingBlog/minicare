@@ -1,0 +1,5715 @@
+WORLD ALLERGY ORGANIZATION
+
+WAO White Book on Allergy
+
+# World Allergy Organization (WAO) White Book on Allergy
+
+# WAO White Book on Allergy
+
+## Editors
+
+Prof. Ruby Pawankar, MD, PhD WAO President Elect (2010-2011) Allergy and Rhinology Nippon Medical School 1-1-5 Sendagi, Bunkyo-ku Tokyo 113-8603 JAPAN
+
+Prof. Stephen T. Holgate, BSc, MD, DSc, FMed Sci Member, WAO Board of Directors (2010-2011) Medical Research Council Clinical Professor of Immunopharmacology Infection, Inflammation and Immunity School of Medicine University of Southampton Level F, South Block Southampton General Hospita Tremona Road Southampton SO16 6YD United Kingdom
+
+Prof. Giorgio Walter Canonica, MD WAO Past President (2010-2011) Allergy & Respiratory Diseases Department of Internal Medicine University of Genoa Padiglione Maragliano, Largo Rosanna Benzi 10 1-16132 Genoa ITALY
+
+Prof. Richard F. Lockey, MD WAO President (2010-2011) Division of Allergy & Immunology Joy McCann Culverhouse Chair in Allergy & Immunology University of South Florida College of Medicine James Haley Veterans Administration Medical Center (111D) 13000 Bruce B. Downs Boulevard Tampa, Florida 33612 USA
+
+## Acknowledgement
+
+On behalf of the World Allergy Organization (WAO), the editors and authors of the WAO White Book on Allergy express their gratitude to the charity, Asthma, Allergy, Inflammation Research (AAIR) and Asian Allergy Asthma Foundation (AAAF) for their support in the production of this publication.
+
+The Editors of the White book extend their gratitude to His Excellency Dr. APJ Abdul Kalam, Former President of India and Madame Ilora Finlay Baronness of the House of Lords for their Forewords to the White Book and to the International Primary Care Respiratory Group (IPCRG) and European Federation of Allergy and Airways Diseases Patients ‘Associations (EFA) for their supporting statements.
+
+The editors also wish to thank the many experts around the world who have contributed to the completion of this book. Both the editors and authors also thank WAO staff members, Charu Malik and Karen Henley, for their editorial assistance, and Sofia Dorsano, for her technical assistance, in preparing the White Book.
+
+ISBN-10 0615461824   
+ISBN-13 9780615461823
+
+Copyright 2011 World Allergy Organization (WAO). All rights reserved.   
+No part of this publication may be reproduced in any form without the written consent of the World Allergy Organization.   
+This book is not for sale.
+
+World Allergy Organization 555 East Wells Street Suite 1100 Milwaukee, Wisconsin 53202 United States of America
+
+Phone: +1 414 276 1791 Fax: +1 414 276 3349 Email: info@worldallergy.org Website : www.worldallergy.org
+
+Printed in the United Kingdom, 2011
+
+# World Allergy Organization (WAO) White Book on Allergy
+
+Editors
+
+Ruby Pawankar
+
+Giorgio Walter Canonica
+
+Stephen T. Holgate
+
+Richard F. Lockey
+
+WACO
+
+WORLD ALLERGY ORGANIZATION
+
+A World Federation of Allergy, Asthma & Clinical Immunology Societies
+
+# Foreword by His Excellency Dr. APJ Abdul Kalam, Former President of India
+
+Allergic diseases are increasing worldwide with unprecedented complexity and severity. Children bear the greatest burden of allergic deseases. The most common allergic conditions in children are food allergies, eczema, and asthma. The precise causes of this increase in allergic diseases are not fully understood but as the numbers of afflicted people increase, so does the research and development, and progress is being made.
+
+Allergy should be recognized as a public health problem and efforts should be made towards its prevention and optimal treatment. To achieve this, public awareness should be increased and efforts should be made towards proper education and training for more integrated and holistic approach to the diagnosis and management of allergic diseases.
+
+The White Book on Allergy is an important initiative by the World Allergy Organization calling on international and national health care policy makers to address early identification of symptoms, early diagnosis and appropriate strategies to manage and control allergies to avoid worsening of severe allergic disease to people at risk and to improve practice in this clinical field of medicine for the benefit of those suffering from the consequences of allergies. I congratulate the World Allergy Organization for initiating this timely and much needed document and wish them all success in its impact and implementation.
+
+![](images/2672d9d8e5f6bb838d5f2c68c48799a9e9f69fe1bf18e4f15db0656a10154fec.jpg)
+
+HE. Dr. APJ Abdul Kalam
+
+Former, President of India
+
+New Delhi, India
+
+# Foreword by Baroness Finlay, House of Lords, United Kingdom
+
+I am delighted to have an opportunity of adding my strongest support to the principles laid out in this World Allergy Organization White Book on Allergy. Indeed, many of the recommendations align with those of a recent report on Allergy Services that I was asked to chair in 2006 for the UK House of Lords Committee on Science Technology (http://www.publications.parliament. uk/pa/ld200607/ldselect/ldsctech/166/166i.pdf). The scope of the Report encompassed an assessment of recent trends of allergy prevalence, the social and economic burdens that allergic disorders cause, current allergy treatments and research strategies, and policies which impact upon allergy patients such as housing standards, food labelling and the work and school environments. As with the White Book, our report came at a time when the prevalence of allergic disorders in this country has been claimed to have reached epidemic proportions. Although it is unlikely that a cure for all forms of allergy will be found in the near future, we have made a number of recommendations which we believe will contribute to the prevention, treatment and management of allergic disorders. Our main conclusions and recommendations were:
+
+1) There is a need for Allergy centres where specialist, high quality diagnostic and treatment services that are accessible to the public. Once a diagnosis is obtained and a treatment plan developed at the allergy centre, the patient’s disease can often be managed back in primary or general secondary care. However, patients with severe or complex allergic conditions may need long-term follow-up from specialists in the allergy centre.
+
+Allergen immunotherapy by injection should always be carried out by specialists within the allergy centre because of the risk of anaphylaxis. Collaboration between clinicians in primary, secondary and tertiary care is key to improving the diagnosis and management of people with allergic conditions. Once established, the allergy centre in each geographical region should encourage and co-ordinate the training of local GPs and other healthcare workers in allergy. In a “hub and spokes” model, the allergy centre, or “hub,” would act as a central point of expertise with outreach clinical services, education and training provided to doctors and nurses in primary and secondary care, the “spokes.” In this way, knowledge regarding the diagnosis and management of allergic conditions would be disseminated throughout the region.
+
+The allergy centre should also act as a lead in providing public information and advice. Specialists at the centre should work in collaboration with allergy charities, schools and local businesses to provide education and training courses for allergy patients; their families; school staff and employers; in how to prevent and treat allergic conditions.
+
+2) Because of the lack of knowledge of health professionals in the diagnosis and treatment of allergic diseases, we recommended that those responsible for medical training strengthen the input of clinical allergy to the undergraduate and postgraduate training of internists and primary care physicians as well of those of nurses.
+
+3) Although high quality research into cellular and molecular mechanisms of allergy is advancing, the factors contributing to allergy development and the “allergy epidemic,” are poorly understood. It is imperative that further research should focus on the environmental factors, such as early allergen exposure, which may contribute to the inception, prevention or exacerbation of allergic disorders. We were concerned that the knowledge gained from cellular and molecular research in allergy was not being translated into clinical practice and was identified as an area of unmet need that required greater priority.
+
+Immunotherapy is a valuable resource in the prophylactic treatment of patients with life-threatening allergies, or whose allergic disease does not respond to other medication. Although initially expensive, immunotherapy can prevent a symptomatic allergic response for many years, and may prevent the development of additional allergic conditions, so its wider use could potentially result in significant long-term savings for health services. Full cost-benefit analyses of the potential health, social and economic value of immunotherapy treatment needs to be conducted so the case for its use and funding can be strengthened.
+
+4) We recognised the appreciable impact that allergic rhinitis has on student performance in schools and examinations. Indeed, we wished to encourage health professionals to interface more closely with schools to ensure children with allergic disease receive optimal care. We support the use of individual care plans for children with medical needs. However, we were concerned that many teachers and support staff within schools are not appropriately educated in how to deal with allergic emergencies and should take urgent remedial action to improve this training where required. We were especially concerned about the lack of clear guidance regarding the use of autoinjectors of adrenaline on children with anaphylactic shock in the school environment.
+
+5) We considered that controlled trials should be conducted involving multiple interventions to examine the effect of ventilation, humidity and mite-reduction strategies on allergy development and control. As climate change and air pollution may significantly impact upon the development of allergic disease, we supported greater effort to take account of the interlinkages between air quality, climate change and human health.
+
+6) Vague defensive warnings on food product labels for consumers with food allergy can lead to dangerous confusion and an unnecessary restriction of choice. We recommend that the responsible government agencies should ensure the needs of food-allergic consumers are clearly recognised during any review of food labelling legislation. Many teenagers and young adults with food allergies sometimes take dangerously high risks when buying food. We considered that the relevant government agencies, charities and other stakeholders should explore novel ways to educate young people about allergy and the prevention of anaphylaxis.
+
+As sensitivities to various allergens vary widely, the setting of standardised threshold levels for package labelling is potentially dangerous for consumers with allergies. Instead, we considered that food labels should clearly specify the amount of each allergen, and if it is contained within the products, we wish to discourage vague defensive warnings. The phrases “hypoallergenic” and “dermatologically tested” are almost meaningless, as they only demonstrate a low potential for the products to be a topical irritant. Such products should warn those with a tendency to allergy that they may still get a marked reaction to such products.
+
+8) In various parts of the world, traditional and complementary medical interventions for treating allergic disease are available and frequently accessed by the public, but the evidence base for this is poor. We recommend that robust research into the use of complementary diagnostic tests and treatments for allergy should examine the holistic needs of the patient, assessing not only the clinical improvement of allergy symptoms, but also analysing the impact of these methods upon patient wellbeing. Such trials should have clear hypotheses, validated outcome measures, and risk-benefit and cost-effectiveness comparisons made with conventional treatments.
+
+9) We were also concerned that the results of allergy self-testing kits available to the public are being interpreted without the advice of appropriately trained healthcare personnel, and that the IgG food antibody test is being used to diagnose food intolerance in the absence of stringent scientific evidence. We recommend that further research into the relevance of IgG antibodies in food intolerance together with and the necessary controlled clinical trials should be conducted.
+
+Although my task was to direct our activity to issues relevant to allergy as occurs in the United Kingdom, nevertheless, it is remarkable how closely our recommendations from the House of Lords Report that I chaired resonate with those of the Allergy White Book. Following the presentation of our Report to the UK Government, I was asked to establish an Implementation Group by the Royal Colleges of Physicians and Pathologists (http:// bookshop.rcplondon.ac.uk/details.aspx?e=317). I would like to suggest that following the launch of the Allergy White Book by the WAO, implementation groups are established in each country and by the WAO as a whole to monitor uptake of the recommendations and their impact, to improve practice for the benefit of patients with allergy.
+
+I wish to use this opportunity to congratulate the WAO for initiating this timely Report, all those who have contributed to its content and especially those in different countries whose allergy societies have contributed their own experiences. I wish you every success in its impact and uptake.
+
+Baroness Ilora Finlay   
+House of Lords   
+Westminster   
+London, UK
+
+# Supporting Statement by the International Primary Care Respiratory Group
+
+Authors
+
+Dermot Ryan: General Practitioner, Woodbrook Medica Center, Loughborough, LE11 1NH, UK.
+
+Osman Yusuf: Director (Research) IPCRG; Chief Consultant, The Allergy & Asthma Institute, Pakistan.
+
+Marianne Stubbe Ostergaard: Associate Professor of. General Practice, University of Copenhagen, Blegdamsvej 3; DK-2200 N, Copenhagen, Denmark
+
+Miguel Román-Rodríguez: President IPCRG: Son Pisa Primary Care Centre. IB-Salut Family Medicine Training Unit, Mallorca, Baleares, Spain
+
+## About the International Primary Care Respiratory Group (www.theipcrg.org)
+
+The IPCRG provides a forum for its constituent national groups encompassing different health systems models and socioeconomic status ranging from those that have a complete health care system to those where the state plays little part in the provision of health care. It represents international primary care perspectives in respiratory medicine trying to raise standards of care in individual countries and globally, through collaborative research, innovation and dissemination of best practice and education. It co-publishes with the UK Primary Care Respiratory Society (PCRS) the Primary Care Respiratory Journal http://www.thepcrj.org/, a free online, Medline listed journal.
+
+The IPCRG is an associate member of WAO with which organization it has many areas of overlap given the allergic etiology of many common respiratory disorders.
+
+## The primary care perspective on respiratory allergies
+
+## Introduction
+
+Although there are differences among countries, the incidence and prevalence of asthma and rhinitis is increasing worldwide. These differences in some countries could be due to underreporting or a lack of awareness of these diseases in deference to more important socioeconomic medical problems. However, in general, patients with asthma are inadequately managed and asthma and rhinitis are both under-recognized1 for their impact on the health and decreased quality of life of those afflicted. In addition, studies to assess prevalence and care delivery show that there is a large variation among countries in the delivery of care to those suffering from asthma and allergy2. What is common among several countries, however, is that the majority of patients who seek medical advice for allergy and asthma are seen initially in primary care3 because there are inadequate numbers of trained allergists to meet the needs of so many patients4.
+
+The most common reasons for presentation to primary care are respiratory symptoms, encompassing both acute infections and long-term conditions such as asthma, rhinitis, and chronic obstructive pulmonary disease (COPD). Asthma and asthma attacks are often triggered by allergies. It is, therefore, important that primary care physicians also assess the allergic triggers of these diseases. However, proper diagnosis and treatment for allergy and asthma are limited by the inadequate state of allergy knowledge within primary care. (The WAO estimate of allergy prevalence of the whole population by country ranges between 10 - 40%).III Allergy training at the undergraduate level is almost non-existent in several countries, paired with little exposure to post-graduate allergy training except for physicians pursuing a career in allergy. It is not surprising that allergists obtain superior outcomes with asthma sufferers compared to the primary care physicians who see the majority of the patients.
+
+## Unmet Needs
+
+Management of Allergy: The limited data available suggest that a structured approach to care delivery has a positive impact on outcomes, and at reduced costs. A systematic approach to disease management has been undertaken in Finland in the area of asthma which has delivered decreased morbidity, mortality and, of particular interest to governments worldwide, decreased costs, both direct and indirect. This program is being further developed to reduce the impact of allergic disease.5 The United Kingdom Royal College of Physicians published a document, “Allergy the Unmet Need” in 20036 which provides descriptions of prevalence of allergic disease as well as current service delivery and training needs pertaining to allergy care. This study may be used as a model of assessment by countries wishing to adopt a structured approach to care delivery or similar solutions for optimal patient care. These solutions, of course, need to be country-specific and will depend on national health care delivery systems.
+
+Research in Allergy: Extensive research is needed at the Primary Care level for the diagnosis, prevention, treatment and management of all types of respiratory and related allergies in both developed and developing / low and middle income countries (LMIC). The International Primary Care Respiratory Group (www.theipcrg.org) focuses on such research needs, and has produced a comprehensive document detailing the needs for developed and LMIC.7
+
+Awareness of allergic problems: Governments globally need to be made aware of the morbidity currently caused by respiratory and allergic disorders and associated costs. Some of these costs may as yet be poorly quantified, particularly the costs of presenteeism (when someone is present at work but with reduced productivity due to a disease or the treatment for that disease), as well as absenteeism. With the proper awareness of the scope of the problem, governments need to ensure that the training, skills and infrastructure exist with which to develop and provide effective and efficient care delivery.
+
+## 1. Training in Allergy: The WAO has led the way in
+
+describing the minimum allergy curriculum requirements at the undergraduate level8. Introducing a structured allergy curriculum into undergraduate training may, of course, take several years to make a significant impact. However, given that allergy is so prevalent, allergy training in some form, even modular, should be considered an essentia part of general professional training for all physicians.
+
+2. GPs with a special interest: A further possibility is to create a cohort of General Practitioners with a special interest in allergy with the joint task of developing and providing a clinical service in primary care at the same time as raising skills within their community9. To date there is only one recorded incidence of this innovative proposal having reached fruition, but it was a success.10
+
+3. Guidelines in Allergy: Regularly produced and updated international and national allergic respiratory diseases guidelines will help to promote high quality care in primary care, Primary Care physicians need to be appropriately represented on these guideline committees to ensure that they are grounded in what is realistic and achievable.
+
+## References
+
+1. Bauchau V, Durham SR. Prevalence and rate of diagnosis of allergic rhinitis in Europe. Eur Respir J. 2004 Nov;24(5):758-64.
+
+2. Rabe KF, Adachi M, Lai CK, Soriano JB, Vermeire PA, Weiss KB, Weiss ST Worldwide severity and control of asthma in children and adults: the global asthma insights and reality surveys. J Allergy Clin Immunol. 2004 Jul;114(1):40-7
+
+3. Ryan D, van Weel C, Bousquet J, Toskala E, Ahlstedt S, Palkonen S, van den Nieuwenhof L, Zuberbier T, Wickman M, Fokkens W. Primary care: the cornerstone of diagnosis of allergic rhinitis. Allergy. 2008 Aug;63(8):981-9.
+
+4. Enrico Compalati, Martin Penagos, Henley Karen, G. Walter Canonica. Prevalence Survey by the World Allergy Organization. Allergy Clin Immunol Int: J World Allergy Org, vol. 19, no. 3, pp. 82-90
+
+5. Haahtela T, von Hertzen L, Mäkelä M, Hannuksela M; Allergy Programme Working Group. Finnish Allergy Programme 2008-2018- time to act and change the course. Allergy. 2008 Jun;63(6):634-45.
+
+6. ‘Allergy: The Unmet Need’ – a blueprint for better patient care’ Royal College of Physicians 2003.
+
+7. Pinnock H, Thomas M, Tsiligianni I et al. The International Primary Care Research Group Research Needs Statement 2010. PCRJ June 2010, 19, Supple 1, pp 1-20)
+
+8. Potter PC, Warner JO, Pawankar RS, Kaliner MA, Del Giacco A, Rosenwasser L, for the WAO Specialty and Training Council. Recommendations for Competency in Allergy Training for Undergraduates Qualifying as Medical Practitioners: A World Allergy Organization Position Paper. World Allergy Organization J. 2009;2(8):150-189).
+
+9. Ryan D, Levy M, Morris A, Sheikh A, Walker S. Management of allergic problems in primary care: time for a rethink? Prim Care Respir J. 2005 Aug;14(4):195-203. Epub 2005 Jul 11)
+
+10. Levy ML, Walker S, Woods A, Sheikh A. Service evaluation of a UK primary care-based allergy clinic: quality improvement report. Prim Care Resp J. 2009;18:313–319.
+
+# Supporting Statement by EFA for WAO White Book on Allergy
+
+![](images/b7df96f2def72ece2cd9513968c34905ee6786a4e5b452b9367fe4866ccbc18c.jpg)
+
+The European Federation of Allergy and Airways Diseases Patients’ Associations (EFA) congratulates the World Allergy Organization (WAO) for leading the effort in developing this first global WHITE BOOK on Allergy, since it brings the discussion about allergy back in Europe to the public mind and highlights the negative impact on the quality of life of people with allergies and the huge burden on national economic systems!
+
+While allergy does not enjoy the same level of public and governmental attention as other chronic diseases like cancer or cardiovascular diseases, it is certainly the most pervasive disorder globally. Allergic conditions pose a major public health problem, as it is documented in this WAO WHITE BOOK and publications of other leading bodies. They respect no national frontiers. One major risk is that allergic diseases often are not perceived as serious chronic diseases and therefore are not diagnosed early enough and not treated consequently. Due to this underestimation the global community often ignores allergy and does not act appropriately, even if the increase in global prevalence is such that between 20-30% of the world´s population suffers from some form of allergic disease.
+
+In Europe, one in four children is allergic and it is documented that 87 million people suffer from allergies. 40% of patients with allergic rhinitis have asthma and up to 80-90% of asthmatics have also allergic rhinitis. This one airway concept needs to be better understood by the lay public since allergic rhinitis and asthma greatly impact the daily life of patients and their families, as well as their performance at school, work or social activities.
+
+Taking into consideration the rising prevalence of allergies, EFA decided in 2009 to go global. EFA built the Global Allergy and Asthma Patient Platform (GAAPP). During the World Allergy Congress 2009 ( the official congress of WAO) GAAPP announced the “Declaration of Buenos Aires” on the rights and responsibilities of people with allergies, signed and supported by patient organisations and patient supporters around the world.
+
+EFA identifies low public awareness of allergies as serious chronic diseases as major issue. Therefore EFA developed a four-year awareness program calling on the media to report the alarming facts of allergies with the aim to raise awareness of respiratory, skin and food allergies as well as anaphylaxis as serious chronic diseases. EFA is also calling on international and national health care policy makers to address early identification of symptoms, early diagnosis and appropriate strategies to manage and control allergies to avoid exacerbations of severe allergies to people at risk, primary care physicians, paediatricians, and pharmacists.
+
+With these activities EFA wants to support the outstanding work of WAO and wishes the WAO WHITE BOOK as much resonance as possible as it will be important to achieve our aims as well.
+
+![](images/f794f97876dd094a34fe15de808e2c6bf507378476241953a40ef2997914ff05.jpg)
+
+![](images/86d69567954448990003073e4fc8fd7235085dfe05b507c820daf8e32152975c.jpg)
+
+<table><tr><td>Introduction and Executive Summary Establishing the need to treat Allergic Diseases as a Global Public Health issue</td><td></td></tr><tr><td>Ruby Pawankar, Giorgio Walter Canonica, Stephen T. Holgate, Richard F. Lockey WAO Declaration of Recommendations</td><td>21</td></tr><tr><td>How to Address Allergic Diseases as a Global Public Health Issue Ruby Pawankar, Giorgio Walter Canonica, Stephen T. Holgate, Richard F. Lockey Chapter 1. The Practice of Allergology</td><td></td></tr><tr><td>Authors: Michael A Kaliner, Sergio Del Giacco Chapter 2. The Burden of Allergic Diseases</td><td>27</td></tr><tr><td>2.1 Rhinitis, Conjunctivitis, and Rhinosinusitis Ruby Pawankar, Mario Sanchez-Borges, Sergio Bonini, Michael A. Kaliner</td><td>27</td></tr><tr><td>2.2 Asthma</td><td>Stephen T. Holgate, Giorgio Walter Canonica, Carlos E. Baena-Cagnani,</td></tr><tr><td>2.3</td><td>Thomas Casale, Myron Zitt, Harold Nelson, Pakit Vichyanond Atopic Eczema and Contact Dermatitis Thomas Bieber, Donald Leung, Juan-Carlos Ivancevich, Yehia El Gamal</td></tr><tr><td>2.4 Anaphylaxis</td><td></td></tr><tr><td>2.5 Food Allergy</td><td>Richard F Lockey, Stephen Kemp, F.Estelle R Simons, Philip Lieberman, Aziz Sheikh</td></tr><tr><td>2.6 Urticaria and Angioedema</td><td>Alessandro Fiocchi, Hugh A. Sampson, Sami L. Bahna, Gideon Lack Torsten Zuberbier, Carsten Bindslev Jensen, Allen P. Kaplan</td></tr><tr><td>2.7 Allergy to Drugs and Biologics</td><td></td></tr><tr><td>Marek L. Kowalski, Pascal Demoly, Werner Pichler, Mario Sanchez- Borges 2.8 Insect allergy</td><td></td></tr><tr><td>Marek Jutel, Takeshi Fukuda, Anthony Frew, Patrizia Bonadonna, Richard F Lockey 2.9 Occupational Allergy</td><td></td></tr><tr><td>Olivier Vandenplas, Margitta Worm, Paul Cullinan, Hae-Sim Park, Roy Gerth van Wijk 2.10 Sports and Allergies</td><td>70</td></tr><tr><td>Sergio Bonini, Kai-Håkon Carlsen, Sergio Del Giacco, William W Storms Chapter 3. Risk Factors for Allergic Disease</td><td>75</td></tr><tr><td>3.1 Genetic aspects John Holloway, lan Yang, Lanny J. Rosenwasser, Stephen T. Holgate</td><td>75</td></tr><tr><td>3.2 Allergens Thomas A. E. Platts-Mills, Bee Wah Lee, Karla Arruda, Fook Tim Chew</td><td></td></tr><tr><td>3.3</td><td>Environmental risk factors: indoor and outdoor pollution</td></tr><tr><td>3.4</td><td>Sara Maio, Sonia Cerrai, Marzia Simoni, Giuseppe Sarno, Sandra Baldacci, Giovanni Viegi Socio-economic factors and environmental injustice</td></tr><tr><td>3.5</td><td>Rosalind J Wright, Michelle J Sternthal Climate Change and Migration</td></tr></table>
+
+## Table of Contents
+
+Chapter 4. Evidence Based Approaches 101   
+to Diagnosis and Management   
+4.1 Diagnosis and identification of causative allergens 101   
+Mario Sanchez Borges, Juan-Carlos Ivancevich, Noel Rodriguez Perez, Ignacio Ansotegui   
+4.2 Pharmacological 106   
+Carlos E Baena-Cagnani, Héctor Badellino   
+4.3 Immunotherapy 110   
+Giovanni Passalacqua, Dennis K. Ledford, Linda Cox, Paul Potter, Giorgio Walter Canonica   
+4.4 Biologicals 116   
+Vesselin Dimov, Jeffrey R Stokes, Thomas B Casale, Stephen T. Holgate   
+4.5 Patient Education 123   
+John O.Warner, Erkka Valovirta   
+4.6 Allergen Avoidance 127   
+Adnan Custovic, Roy Gerth Van Wijk   
+Chapter 5. Prevention of Allergic Diseases 133   
+Tari Haahtela, Leena Von Hertzen, Adnan Custovic   
+Chapter 6. Health Care, Health Economics 139   
+and Medical Education in Allergy   
+6.1 Health Care, Health Economics 139   
+Jay Portnoy, Martyn Partridge   
+6.2 Medical Education in Allergy 142   
+Paul Potter, John O Warner, Ruby Pawankar, Jill A.Warner, Paul Van Cauwenberge, Michael A. Kaliner   
+6.3 Cost Effectiveness of consulting an allergist 147   
+Jose Gereda, Paul Potter, Sergio Del Giacco, Michael A Kaliner   
+Member Society Survey Report 153   
+Author Affiliations 209
+
+# Introduction and Executive Summary
+
+# Allergic Diseases as a Global Public Health Issue
+
+R. Pawankar, GW Canonica, ST.Holgate, RF Lockey
+
+## Introduction
+
+The prevalence of allergic diseases worldwide is rising dramatically in both developed and developing countries. These diseases include asthma; rhinitis; anaphylaxis; drug, food, and insect allergy; eczema; and urticaria (hives) and angioedema. This increase is especially problematic in children, who are bearing the greatest burden of the rising trend which has occurred over the last two decades. In spite of this increase, even in the developed world, services for patients with allergic diseases are fragmented and far from ideal. Very few countries have comprehensive services in this field of medicine.
+
+There are almost no specialized services for patients in many countries, other than care delivered by organ-based specialists such as respiratory physicians, ear, nose and throat specialists (otorhinolaryngologists), and dermatologists. While the care provided in many cases is adequate, such specialists generally view allergy only through their organ of interest, while the vast majority of patients have allergic disease in multiple organs. For example, allergic rhinitis, conjunctivitis, and asthma are three problems which commonly manifest together, yet affect three different organ systems.
+
+Because the prevalence of allergy has increased to such an extent, allergy must be regarded as a major healthcare problem. According to World Health Organization (WHO) statistics, hundreds of millions of subjects in the world suffer from rhinitis and it is estimated that 300 million have asthma, markedly affecting the quality of life of these individuals and their families, and negatively impacting the socio-economic welfare of society.
+
+The provision of allergy care must be led by allergy specialists so that an adequate standard of care is achieved for all patients with these diseases. The lack of such care leads to avoidable morbidity and mortality and to substantial increased and unnecessary cost to health care systems and national budgets. For example, it is estimated by WHO that 250,000 avoidable asthma deaths occur in the world each year. Because so little effort is made to provide clinical services for patients who suffer from allergies, they often seek non-scientifically-based alternative and complementary diagnostic and therapeutic remedies for their ailments. In some countries, patients are repeatedly told that priorities for diagnosis and treatment of allergic disease are determined at the local governmental level, i.e., by “Primary Care Trusts”. However, if representatives at this local level do not understand the prevalence and significance of allergic diseases and their complications, what hope is there for them to choose to provide care for these clinical problems? For example, it is important for a well-trained physician to identify the allergens which cause an allergic disease and to provide patients with the chance to avoid them; the well-trained physician can prescribe appropriate medications, or allergen immunotherapy, a highly effective treatment currently restricted to only a relatively few centres of care throughout the world, despite its proven efficacy. One of the main aspects of good allergy practice is to find the cause and prevent symptoms and disease progression, rather than just rely on medications to suppress the symptoms.
+
+The mission of the World Allergy Organization (WAO) is to be a global resource and advocate in the field of allergy, asthma and clinical immunology, advancing excellence in clinical care through education, research and training as a world-wide alliance of allergy and clinical immunology societies. The Organization presently embraces over 84 regional and national allergy, asthma and clinical immunology society members and affiliated organizations (see home page at www.worldallergy.org).
+
+WAO is greatly concerned about the increasing global burden of allergic diseases. A major focus of the Organization is to create global awareness of allergy and asthma as a major public health problem. The Organization published the first State of World Allergy Report (SOWAR) in 2007, and now presents the first ever global White Book on Allergy.
+
+WAO conducts a wide range of activities to support the global allergy community. This includes the provision of resources and promotions such as World Allergy Week to assist the work of member societies as they lobby for the enhancement of services for the diagnosis and treatment of allergic diseases. WAO offers research fellowships, conducts numerous surveys via its member societies and emphasizes the importance of allergy as a necessary field for research both in disease causation and management. The Organization has published position papers on allergy specialist training and service provision worldwide, and has identified the competencies required by all physicians who treat patients with allergic diseases, asthma, and other clinical immunologic problems. The WAO Position Paper on undergraduate training in allergy proposes that all medical students receive the fundamental knowledge and training to recognize, diagnose, and treat these diseases at the primary level and to know when to refer patients with more complex problems to an allergy/immunology specialist, and a WAO model allergy curriculum is presently being developed to guide undergraduate training.
+
+WAO is in a unique position to provide education about the clinical practice of allergy, synthesizing and disseminating expertise and best practice recommendations from its member societies with well developed services to benefit those in underserved countries. Educational outreach programs, symposia, and lectureships are offered to member societies and health care professionals throughout the world. The WAO Emerging Societies Program helps to create and develop new allergy societies, conducts allergy training schools, and provides educational resources in underserved countries. WAO advises allergy societies about the development and provision of national allergy services and local physician training, drawing on the experience gained over many years by long-established member societies throughout diverse geographic regions.
+
+## PURPOSE
+
+Why is it necessary to recognize allergic diseases as a global public health concern?
+
+• A steady increase in the prevalence of allergic diseases globally has occurred with about 30-40% of the world population now being affected by one or more allergic conditions.
+
+• A high proportion of this increase is occurring in young subjects; thus, as this young population reaches adulthood, the burden of allergic diseases is expected to increase even more.
+
+• Complex allergies involving polysensitization and multiple organ involvement are increasing, with a high morbidity placing a higher demand on health care delivery services.
+
+• It is forecast that allergic problems will increase further as air pollution and the ambient temperature increase. These environmental changes will affect pollen counts, the presence or absence of stinging insects, and the presence or absence of molds associated with allergic diseases.
+
+In many countries, attempts to tackle these problems on a national basis are widely variable and fragmented, resulting in decreased quality of life, increased morbidity and mortality, and considerable cost to patients with allergic diseases.
+
+This White Book outlines the data which indicate that allergy is a major global public health issue, and provides “high level” recommendations to:
+
+• create a more integrated approach to the diagnosis and management of allergic diseases;
+
+• increase public awareness of allergic diseases and their prevention;
+
+• provide greater education at the primary healthcare level and to non-allergy-oriented secondary care specialists;
+
+train medical students and other health care professionals, including nurses and pharmacists, to an appropriate level to enable them to collaborate with different organ-based specialists and allergy specialists in providing integrated care for allergy patients;
+
+● institute environmental control measures by the lowering of indoor and outdoor air pollution, tobacco smoking, and allergen and drug exposures, as appropriate;
+
+encourage a preventative approach to allergic diseases, emphasizing the importance of continued research both in disease causation and management;
+
+• use model projects, for example the Finnish Asthma Program, to disseminate good practice, promote prevention and immune tolerance, and decrease the allergy burden in future years.
+
+## 1. THE BURDEN OF ALLERGIC DISEASE
+
+## Allergic Rhinitis
+
+• Allergic rhinitis (AR) results from an IgE-mediated inflammation of the nasal mucosa.
+
+• The disease currently affects between 10% and 30 % of the population.
+
+• Studies indicate that prevalence rates are increasing worldwide.
+
+• The classification proposed in the Allergic Rhinitis and its Impact on Asthma (ARIA) guidelines is useful for the implementation of treatment.
+
+• AR is a risk factor for asthma.
+
+• Other co-morbidities of AR include: sinusitis, nasa polyposis, conjunctivitis, otitis media with effusion, upper respiratory infections, breathing through the mouth, and sleep disorders.
+
+AR has a significant impact on patients based on the degree of the severity of their symptoms. It has psychological effects, interferes with social interactions, and creates an economic burden not only for the affected subject, but for the family and for the society at large.
+
+• Management is based on patient education, environmental control measures, pharmacotherapy and specific immunotherapy.
+
+## Allergic Conjunctivitis
+
+• Allergic conjunctivitis is an increasingly prevalent allergic disease, with the same clinical gravity as allergic asthma and allergic rhinitis.
+
+The umbrella term “allergic conjunctivitis” includes distinct clinical entities, from mild but disturbing forms due to IgE sensitization to aeroallergens; to forms of keratoconjunctivitis where the severe allergic inflammation, with corneal involvement, is more difficult to diagnose and treat, and may lead to permanent ocular damage and even loss of vision.
+
+## Rhinosinusitis
+
+• Rhinosinusitis (RS) is one of the most common and expensive medical conditions.
+
+• RS occurs in a number of forms, the most common of which are either acute or chronic.
+
+Initial treatment of RS is usually by a primary care physician (PCP) and if unsuccessful, the PCP should refer either to a surgeon or to an allergist for specialized care.
+
+• In the vast majority of cases, RS is controlled by proper medical management without the need for surgery.
+
+• Surgery should only be considered in those patients who are properly managed but in whom a number of medical treatment programs fail.
+
+The Allergist, who is trained in allergy, immunology, microbiology, internal medicine and/or pediatrics combined with an expert knowledge of nasal and sinus anatomy and appropriate pharmacology, is best suited to manage RS.
+
+## Asthma
+
+• Asthma is a life-long chronic inflammatory disorder of the airways, associated with variable structural changes, that affects children and adults of all ages. It is associated with airway hyperresponsiveness and airflow obstruction that is often reversible either spontaneously or with treatment.
+
+• When uncontrolled, asthma can cause death, and can markedly interfere with normal activities, seriously impacting an individual’s quality of life.
+
+• Because of under-diagnosis and inadequate treatment, asthma presents a serious public health problem throughout the world; especially in low and middle income countries.
+
+• Atopy - the genetic predisposition to develop IgEmediated sensitivity to common aeroallergens, is the strongest identifiable predisposing factor to the development of asthma, especially in children.
+
+There was a sharp increase in the prevalence, morbidity, and mortality associated with asthma beginning in the 1960s and 1970s in the so-called “Westernized” countries of the world.
+
+• The prevalence of asthma in different countries varies widely, but the disparity is narrowing due to rising prevalence in low and middle income countries as they adopt a more Western-type lifestyle. It is plateauing in high income countries.
+
+• Inhaled corticosteroids are currently the most effective antiinflammatory medications to treat persistent asthma.
+
+The monetary costs of asthma are substantial and include both direct medical costs and the indirect costs, the latter associated with time lost from work and premature deaths.
+
+• National efforts to tackle asthma as a public health problem, such as the program introduced in Finland, produce remarkable benefits that are reflected in dramatic reductions in deaths and hospital admissions.
+
+• Many barriers exist to a reduction in the worldwide burden of asthma.
+
+• There are unmet diagnostic, therapeutic, educational and financial needs to achieve better worldwide control of asthma.
+
+• More effort is needed to focus on ways to improve the management of asthma by focusing on disease control rather than treating acute episodes. This concept has to be embedded in healthcare programs.
+
+## Atopic Eczema
+
+• An increase in the worldwide prevalence of atopic eczema has been observed.
+
+• Atopic eczema is the most common chronic inflammatory skin disease with a varied clinical spectrum.
+
+• Atopic eczema is often the first manifestation of the atopic patient and early intervention may offer an opportunity to impede or stop the atopic march.
+
+• Atopic eczema represents an important public health issue due to its impact on quality of life and its socio-economic burden.
+
+## Anaphylaxis
+
+• Epinephrine, at appropriate doses, is the drug of choice to treat anaphylaxis.
+
+There is lack of consensus about the definition of anaphylaxis and this lack of consensus in definition contributes to the variability in its identification, treatment and the use of epinephrine.
+
+• The variability and severity of anaphylaxis is somewhat dependent on the route by which the allergen or inciting agent is delivered, i.e. parenteral versus oral administration; the former is commonly associated with more severe reactions.
+
+There is a variety of other terms which describe anaphylaxis which cause confusion, especially with its definition and treatment. These include: generalized systemic reaction; systemic allergic reaction; constitutional reaction; and serious hypersensitivity reaction.
+
+• Anaphylaxis includes both allergic and non-allergic etiologies.
+
+• The term “anaphylactoid” is outdated.
+
+## Food Allergy
+
+• Globally, 220 – 520 million people may suffer from food allergy.
+
+• Food allergy significantly affects the quality of life of sufferers (mainly children).
+
+Stakeholders must be prepared to meet the needs of patients by enhancing the diagnostic process, the traceability of responsible foods, and the availability of substitute foods, assisting hospitalized patients, and preventing mortality.
+
+• Large areas in the world lack legislation on food labelling.
+
+As diagnostic and therapeutic decision strategies are not clear-cut, evidence-based guidelines are necessary for clinicians, patients, governments and industry to deal with the challenge of food allergy. Such guidelines, eg, the WAO recommendation on the Diagnosis and Rationale Against Cow’s Milk Allergy (DRACMA) are available and are ready to be implemented.
+
+• Epidemiologic studies are necessary, in particular, in less developed areas of the world.
+
+• Oral desensitization represents a promising approach to reduce the burden of disease caused by food allergy.
+
+## Urticaria and Angioedema
+
+• Urticaria is a heterogeneous group of disease sub-types characterised by wheals (fleeting elevations of the skin lasting approximately 24 hours) and/or angioedema (deeper swellings of skin and mucus membranes).
+
+Three major categories exist: a) spontaneous occurrence of wheals, associated with acute and chronic urticaria; b) wheals and angioedema elicited by particular stimuli, and in particular physical urticarias: and c) other urticarial disorders such as exercise-induced urticaria.
+
+• Urticaria occurs frequently with a lifetime prevalence above 20%.
+
+• Except for acute urticaria, diagnostic and therapeutic procedures can be complex and referral to a specialist is often required.
+
+• Untreated, chronic urticaria has a severe impact on quality of life and impairs productivity by up to 30%.
+
+• The socio-economic impact of urticaria is great, since it is a disease which primarily occurs in people of working age.
+
+• Moderate to severe urticaria requires specialist treatment. In many health care systems worldwide, access to specialty care is insufficient.
+
+## Allergy to Drugs and Biological Agents
+
+• Adverse drug reactions (ADR) may affect up to 1/10 of the world’s population and affect up to 20% of all hospitalized patients.
+
+• More than 10% of all ADR are unpredictable drug hypersensitivity reactions (DHR).
+
+• Both under-diagnosis and over-diagnosis are common.
+
+• The most common DHR involve antibiotics such as penicillins, cephalosporins, and sulfonamides, and aspirin and other non steroidal anti-inflammatory drugs.
+
+• The clinical spectrum of DHR involves various organs, timing and severity.
+
+DHR can be severe, even life threatening, and are associated with significant mortality rates. Drugs may be responsible for up to 20% of fatalities due to anaphylaxis.
+
+• DHR have a significant socio-economic impact on both direct costs (management of reactions and hospitalizations) and indirect costs (missed work/school days; alternative drugs).
+
+● Diagnostic procedures for DHR should also attempt to identify the underlying mechanisms causing the DHR.
+
+• Diagnosis is critical for DHR management and prevention. Selection of an alternative drug and desensitization is necessary in some cases.
+
+## Insect Allergy
+
+Hymenoptera venom allergy (HVA) is a common global medical problem and refers to subjects who have a sting-induced large local (LL) or systemic allergic reaction (anaphylaxis). A LL reaction is defined as a reaction larger than 10 cm in diameter which lasts over 24 hours in which the signs and symptoms are confined to tissues contiguous with the sting site. Systemic reactions cause generalized signs and symptoms and include a spectrum of manifestations, ranging from mild to life-threatening. Mild systemic reactions may be limited only to the skin and consist of flushing, urticaria, and angioedema. More severe systemic reactions can involve bronchospasm, laryngeal edema, and hypotension. HVA can cause fatal anaphylaxis.
+
+• The morbidity rate is underestimated; fatal reactions may not be appropriately recorded, accounting for this underestimation.
+
+The incidence of positive specific IgE antibodies to venom is high in the general population, but only a fraction of such individuals develop a systemic reaction.
+
+• Fatal reactions occur in up to 50% of individuals who have no documented history of a previous systemic reaction.
+
+• HVA impairs long-term quality of life (QOL) and is the cause of substantial socio-economic problems.
+
+• A subject’s QOL is negatively affected when appropriate diagnosis and education are not achieved and when venom immunotherapy (VIT) (a series of injections of the venom to which the subject is allergic and which essentially cures their disease) is not utilized.
+
+• HVA can be effectively treated with VIT and appropriate venom therapies.
+
+• HVA poses a problem in occupational settings, especially in bee keepers and greenhouse workers.
+
+• HVA has important adverse consequences in terms of employment, earning capacity and leisure and sporting activities.
+
+• HVA has a substantial adverse financial impact on healthcare costs.
+
+## Occupational Allergy
+
+• Occupational allergic diseases represent an important public health issue due to their high prevalence and their socio-economic burden.
+
+● Occupational asthma (OA) contributes significantly to the global burden of asthma, since the condition accounts for approximately 15% of asthma amongst adults.
+
+• Allergic contact dermatitis (ACD) is one of the most common occupational diseases.
+
+Occupational allergic diseases remain largely underrecognized by physicians, patients, and occupational health policy makers.
+
+Occupational allergic diseases can result in long-term health impairment, especially when the diagnostic and avoidance measures are delayed.
+
+Occupational allergic diseases lead to important adverse consequences in terms of healthcare resources, employment, earning capacity and quality of life.
+
+• Occupational allergic diseases are associated with a substantial adverse financial impact for affected workers, insurance or compensation schemes, health services, and employers.
+
+Occupational allergic diseases are, by definition, preventable diseases and their burden should be minimized by appropriate preventative strategies.
+
+## Sports and Allergies
+
+• Moderate and controlled exercise is beneficial for allergic subjects and should be part of their management.
+
+• Vigorous exercise may trigger or exacerbate several allergy syndromes such as bronchospasm, rhinitis, urticaria-angioedema and anaphylaxis.
+
+Allergy diagnosis should be part of the routine medical examination in all professional and amateur athletes, in order to adopt adequate preventative and therapeutic measures for controlling the disease, while avoiding potential symptoms occurring on exercise.
+
+## 2. RISK FACTORS FOR ALLERGIC DISEASE
+
+## The Potential of Genetics in Allergic Diseases
+
+• Allergic disorders are heterogeneous and involve important gene-environmental interactions.
+
+Human genetics has a role to play in understanding susceptibility for disease onset, phenotypes and subphenotypes, severity, response to treatments and natural history.
+
+• Although candidate gene association studies have provided some insight into the role of genes in disease susceptibility, most new information is emerging from hypothesis-free approaches such as genome-wide association studies.
+
+• Many early gene association studies were under-powered and the results have not been confirmed in different populations.
+
+Genetic factors that influence the expression of atopy are different from those that influence disease manifestations or its severity in specific organs.
+
+• Poymorphism of a single gene usually accounts for only a small proportion of the disease phenotype.
+
+Epigenetic influences involving multiple mechanisms, including methylation of CpG islands in gene promoters, histone acetylation, phosphorylation and methylation and a large number of micro RNAs, explain a proportion of the gene-environmental interactions and   
+trans-generational effects.
+
+The genetic epidemiological observations for specific candidate genes in atopy and allergic disease require careful replication, enhanced by international collaboration and the availability of large, well-characterized casecontrol populations for genotyping. The only way to achieve this is to promote greater cooperation among researchers and create multidisciplinary teams including researchers from academia, industry and clinical practice.
+
+## Allergens as Risk Factors for Allergic Diseases
+
+• Sensitization (IgE antibodies) to foreign proteins in the environment is present in up to 40% of the population.
+
+• Such sensitization is strongly associated with exposure for proteins derived from pollens, molds, dust mites and cockroaches.
+
+• For asthma, rhinitis and atopic eczema there is a strong and consistent association between disease and sensitization.
+
+• The association between sensitization to grass pollens and symptoms of hay fever occurring during the grass pollen season provides strong evidence for a causal role of grass pollen in the disease.
+
+## Environmental Risk Factors: Indoor and Outdoor Pollution
+
+• Epidemiological studies show that indoor and outdoor pollution affects respiratory health, including an increased prevalence of asthma and allergic diseases.
+
+Outdoor pollution is associated with substantial mortality; for example in China, outdoor pollution is associated with more than 300,000 deaths annually.
+
+Conservative estimates show that exposure to indoor air pollution may be responsible for almost 2 million deaths per annum in developing countries.
+
+• Exposure to outdoor/indoor pollutants is associated with new onset of asthma, asthma exacerbations, rhinitis, rhinoconjunctivitis, acute respiratory infections, increase of anti-asthmatic drug use, and hospital admissions for respiratory symptoms.
+
+Abatement of the main risk factors for respiratory disease and, in particular, environmental tobacco smoke, indoor biomass fuels and outdoor air pollution, will achieve huge health benefits.
+
+## Socio-economic Factors and Environmental Justice
+
+• The global prevalence, morbidity, mortality and economic burden of asthma have increased over the last 40 years.
+
+• However, the growth and burden of the disease is not uniform. Disparities in asthma morbidity and mortality, with an inverse relationship to social and economic status, are increasingly documented around the world.
+
+Asthma and other atopic disorders may be more concentrated among those of lower socio-economic status because they also bear a disproportionate burden of exposure to suboptimal, unhealthy environmental conditions (e.g. physical, social, and psychological conditions).
+
+Future research needs to pay increased attention to the social, political, and economic forces that result in marginalization of certain populations in disadvantaged areas of the world which may increase exposure to known environmental risk factors contributing to the rising asthma burden.
+
+## Climate Change, Migration and Allergy
+
+The Earth’s temperature is increasing as illustrated by rising sea levels, glaciers melting, warming of the oceans and diminished snow cover in the northern hemisphere.
+
+Climate change coupled with air pollutant exposures may have potentially serious adverse consequences especially for human health in urban and polluted regions.
+
+• High summer temperatures have an impact on rates of acute exacerbation and hospital admission for elderly patients with breathing problems and may cause unexpected death.
+
+• Pollen allergy is frequently used to study the interrelationship between air pollution and respiratory allergy. Climatic factors (temperature, wind speed, humidity, thunderstorms, etc.) can affect both biological and chemical components of this interaction.
+
+Changes in the weather such as thunderstorms during pollen seasons may induce hydration of pollen grains and their fragmentation which generates atmospheric biological aerosols carrying allergens. As a consequence asthma outbreaks can be observed in pollinosis patients.
+
+• Migration from one country to another involves exposure to a new set of pollutants and allergens as well as changes in housing conditions, diet and accessibility to medical services which may affect migrants’ health.
+
+• Atopy and asthma are more prevalent in developed and industrialized countries compared with undeveloped and less affluent countries.
+
+• Migration studies provide information on the role of environmental factors on the development of atopy and asthma.
+
+• Physicians should be aware that environmental and climate changes may enhance the development of allergic diseases and asthma.
+
+Physicians should be aware that migrants, especially from developing to more developed countries, are at increased risk to acquire allergic diseases and asthma and that the effect is age and time-dependent. Early age and longer time increase the likelihood of developing atopy and asthma.
+
+## 3. EVIDENCE BASED APPROACHESTO DIAGNOSIS AND MANAGEMENT
+
+## Diagnosis and Identification of Causative Allergens
+
+• Confirmation of allergy and identification of causative allergens are crucial to correctly manage allergic diseases.
+
+• Precise diagnosis allows the implementation of therapies oriented to the etiologic factors of allergic diseases, such as environmental measures and immunotherapy.
+
+• Diagnosis begins with a detailed medical history and physical examination.
+
+• The identification of a temporal association between symptoms and allergen exposure constitutes the basis for further testing.
+
+• Clinical suspicion is confirmed by means of investigation of IgE antibodies in vivo (skin tests) or in vitro.
+
+• Skin tests should include relevant allergens and the use of standardized allergen extracts.
+
+•	 In vitro testing is especially useful when skin test results do not correlate with the history or cannot be performed.
+
+•	 In vitro tests can be applied to “probability of disease” prediction in food allergy.
+
+• There is a need for increased accessibility to allergy diagnosis and therapies and improved diagnostic methodologies that can substitute in vivo provocation tests for drug and food allergy.
+
+• The use of unproven tests increases the unnecessary costs of allergy diagnosis.
+
+## Pharmacotherapy of Allergic Diseases
+
+• Subjects from all countries, ethnic and socio-economic groups, and ages suffer from allergies.
+
+• Asthma and allergic rhinitis are common health problems that cause major illnesses and disability worldwide.
+
+The strategy to treat allergic diseases is based on: (i) patient education, (ii) environmental control and allergen avoidance, (iii) pharmacotherapy, and (iv) immunotherapy.
+
+• Pharmacotherapy is the mainstay of treatment for allergic diseases because it not only controls symptoms but improves the quality of life.
+
+Primary care physicians play an important role in first line management of allergies. They have to make the initial clinical diagnosis, begin treatment, and monitor the patient.
+
+• Allergy specialists are trained to make a specific diagnosis and treat patients with allergies, particularly those with moderate/severe disease.
+
+• The chronic nature of allergies makes it essential to propose and explain long-term management strategies to patients, health care policy makers, and government authorities.
+
+• In recent decades, a substantial improvement has been made in the efficacy and safety of allergy pharmacotherapy.
+
+• Disease management using evidenced-based practice guidelines has been shown to yield better patient outcomes.
+
+## Allergen Specific Immunotherapy
+
+• Allergen specific immunotherapy is recognized as an effective treatment for respiratory allergy and Hymenoptera venom allergy.
+
+• Subcutaneous Immunotherapy (SCIT) represents the standard modality of treatment. Sublingual Immunotherapy (SLIT) which is now accepted as an alternative to injection immunotherapy, has recently been introduced into clinical practice.
+
+The additional effects of allergen specific immunotherapy, that are lacking with pharmacological treatment, are the long-lasting clinical effects and the alteration of the natural course of the disease. This prevents the new onset of asthma in patients with allergic rhinitis and prevents the onset of new sensitizations.
+
+The mechanisms of action of specific immunotherapy are multiple and complex, and result in a modification of the immunological responses to allergens, with subsequent reduction of the allergic inflammatory reaction. The mechanisms of action of SCIT and SLIT are similar.
+
+• SCIT maintains its beneficial effects for years after it has been discontinued. This long-term or carry over effect also occurs with SLIT.
+
+• SCIT indications, contraindications, limits and practical aspects are defined in numerous guidelines.
+
+• SLIT is considered a viable alternative to SCIT and is used in clinical practice in many countries. A 2009 World Allergy Organization Position Paper further details the indications, contraindications, and methodology of using SLIT.
+
+• New forms of immunotherapy, allergen products, and approaches to food allergy and atopic eczema are under investigation.
+
+## Biological Agents
+
+Research in allergy and immunology has led to a variety of novel therapeutic approaches; some agents are already utilized in clinical practice and more are in clinical trials.
+
+New therapeutic approaches include toll-like receptor agonists, cytokine blockers, specific cytokine receptor antagonists and transcription factor modulators targeting syk kinase, peroxisome proliferator-activated receptor gamma, and nuclear factor kappa B.
+
+• The anti-IgE mAb omalizumab is effective to treat allergic asthma, but the criteria to select patients for this type of therapy are not well-defined.
+
+## Allergy Education for Patients and Families
+
+• The provision of appropriate training and education for patients and families is fundamental to the management of allergic disease.
+
+The evidence base for the efficacy of education and training is relatively weak but it is effective in asthma and, to a lesser extent, eczema and anaphylaxis.
+
+• Different age and ethnicity populations require different educational approaches.
+
+• Modern information technology is valuable, especially to educate younger subjects.
+
+• Education and training programs should contain a written self management action plan.
+
+## Allergen Avoidance
+
+• Effective allergen avoidance leads to an improvement of symptoms in allergic patients.
+
+• Several studies of comprehensive environmenta interventions in asthmatic children report benefits.
+
+• There is little evidence to support the use of a simple single intervention, e.g., only covering bedding, to control dust mite allergen levels.
+
+• Similarly, in mite allergic patients with rhinitis, single mite avoidance measures are not beneficial.
+
+• The following is a guide for a pragmatic approach to allergen avoidance:
+
+– Use a comprehensive environmental intervention to achieve the greatest possible reduction in allergen exposure;
+
+Tailor the intervention to the patient’s allergen sensitization and exposure status;
+
+If unable to assess the level of allergen exposure, use the level of allergen-specific IgE antibodies or the size of skin test wheal as an indicator;
+
+– Start the intervention as early as possible in the natural course of the disease;
+
+Primary prevention strategies aimed at eliminating or reducing exposure to potentially sensitizing agents should be developed and evaluated.
+
+## 4. PREVENTION OF ALLERGIC DISEASES
+
+• The rise in prevalence of allergic diseases has continued in the industrialized world for more than 50 years.
+
+• Sensitization rates to one or more common allergens among school children are currently approaching 40%-50%.
+
+• Strategies used to tackle these problems are thus far ineffective.
+
+Primary prevention is difficult because the reasons for increased sensitization rates are unknown. Also, the mechanisms involved in the progression of sensitization in increasing numbers of individuals resulting in allergic diseases are incompletely understood. Asthma and allergies may have their origin early in life, even in-utero.
+
+• Reliable early markers of IgE-mediated diseases are unavailable.
+
+• Novel research indicates that tolerance is the key to prevention. More research about the mechanisms involved in the development of tolerance should be encouraged. Inadequate or lack of tolerance in allergic individuals appears to link with immune regulatory network deficiencies.
+
+National asthma and allergy plans (e.g. The Finnish Asthma Programme 1994-2004) have concluded that the burden of these community health problems can be reduced. The change for the better is achieved as governments, communities, physicians and other health care professionals, and patient organizations commit to an educational plan to implement best practices for prevention and treatment of allergic diseases.
+
+## 5. HEALTH ECONOMICS, MEDICAL EDUCATION AND COST-EFFECTIVE HEALTH CARE IN ALLERGY
+
+## Health Care Delivery and Health Economics in Allergy
+
+• Asthma and allergic diseases are significant causes of morbidity on a global scale.
+
+• Asthma disproportionately affects minorities and people from lower socio-economic groups.
+
+• The total global cost of care for people with asthma and allergic disorders is disproportionately high despite the relatively low cost per person mainly due to the high prevalence of these disorders.
+
+• The most effective management for these disorders is to teach patients self-management skills.
+
+• Education should focus on training physicians to promote and foster self-management skills in their patients.
+
+## Medical Education in Allergy
+
+The intended outcomes for clinician and healthcare professionals training in allergy are to:
+
+• Produce graduates equipped to further their careers in healthcare and in particular to enhance the number of individuals trained in the mechanisms and management of allergic diseases.
+
+Develop an understanding of the processes involved in improving the management of patients with allergic disease.
+
+• Develop new areas of teaching in response to the advance of scholarship and the needs of vocational training.
+
+• Provide a training in research skills.
+
+• Develop skills and understanding of the more complex components of allergic disease encountered in specific areas of practice.
+
+## The Cost-Effectiveness of Consulting an Allergist
+
+Allergic diseases are chronic conditions with systemic involvement that can affect multiple organs and systems throughout the lifespan of atopic (allergic) subjects.
+
+• In assessing the economic burden of allergic diseases, the costs of several organ-specific diseases need to be aggregated, including the nose (allergic rhinitis), sinuses (rhinosinusitis); lungs (asthma); skin (atopic eczema); and others.
+
+• Cost-effective analyses (CEA) assess the comparative effects of one health care intervention over another, under the premise that there is a need to maximize the effectiveness relative to its cost.
+
+• A cost-effective intervention could, if incorrectly used, generate unnecessary costs, provide no benefit and even cause harm.
+
+The allergist is an expert in tailoring therapy to the individual patient and adjusting treatment dosages in more severe or complex cases. The main defining characteristics of allergists are their appreciation of the importance of external triggers in causing diverse diseases; their expertise in both the diagnosis and treatments of multiple system disorders, including the use of allergen avoidance and the selection of appropriate drug and/or immunological therapies; and their knowledge of allergen specific immunotherapy practices.
+
+Misinterpretation of the results of diagnostic tests by nonspecialists can lead to over-diagnosis and inappropriate management which can be harmful for the patient. It may lead to over-prescription of therapy and costly and unnecessary allergen avoidance measures, including exclusion diets that can lead to nutritional deficiency and secondary morbidity. Conversely, the under-appreciation of the severity of asthma can lead to life-endangering under-treatment or the lack of potentially life-altering immunotherapy.
+
+• The cost-effectiveness of allergist consultation will be demonstrated by improved patient outcomes and experiences together with a reduction in unnecessary expenditure by payer, society or patient/family.
+
+# Declaration of the World Allergy Organization
+
+## DECLARATION
+
+In its role as an umbrella organization of national and regional allergy, asthma and clinical immunology societies worldwide, the World Allergy Organization invited all 84 of its member societies to contribute to the White Book by participating in an online survey on the current status and needs of the specialty in their respective country or region. The responses from the Member Societies along with the scientific reviews which are included in the White Book form the basis of the World Allergy Organization Declaration.
+
+## I. Epidemiological Studies Of Allergic Diseases
+
+## Identified Need:
+
+In several parts of the world, there is a paucity of published epidemiological information about the overall prevalence of allergic diseases and, in particular, about specific diseases. For example, there is little or no information about severe asthma; anaphylaxis; food allergy; insect allergy; drug allergy; and complex cases of multi-organ allergic disease. Data concerning some of these disorders are available in a few countries, but only for certain age groups.
+
+## Recommendation:
+
+Every country should undertake epidemiological studies to establish the true burden of allergic diseases; asthma; and primary and secondary immunodeficiency diseases. This is the first essential step in ensuring the provision of adequate physician and healthcare professional services to meet both current and future needs.
+
+## II. Allergens And Environmental Pollutants
+
+## Identified Need:
+
+Evidence-based information about the major indoor and outdoor allergens and pollutants responsible for causing or exacerbating allergic diseases and asthma is either lacking or, when available, is not always universally accessible.
+
+## Recommendation:
+
+Local indoor and outdoor allergens and pollutants which cause and exacerbate allergic diseases should be identified and, where possible, mapped and quantified. Appropriate environmental and occupational preventative measures should be implemented where none exist or as necessary. Strategies proven to be effective in disease prevention should also be implemented.
+
+## III. Availability Of Allergy, Asthma And Clinical Immunology Services (Allergists) And Appropriate Medications
+
+## Identified Need:
+
+There is an increasing need for more allergy specialists and for the existence of local and regional allergy diagnostic and treatment centers in order to facilitate timely referrals for patients with complex allergic diseases. Accessibility to affordable and costeffective therapy and to novel therapies is needed. For example, adrenaline auto-injectors for patients at risk of anaphylaxis; new and more effective medications to treat severe asthma; and access to allergen immunotherapy are lacking in some parts of the world.
+
+## Recommendation:
+
+Public health officials should provide for adequate allergy/ clinical immunology services, including access to specialists and diagnostic and treatment centers. Allergists should be able to prescribe the most cost-effective medication to manage a patient’s disease. Examples include adrenaline auto-injectors to treat anaphylaxis; anti-IgE for severe asthma; a variety of very effective medications to treat chronic urticaria and angioedema, hereditary angioedema, rhinitis, conjunctivitis and asthma.
+
+Allergen-specific immunotherapy is effective in preventing the onset of asthma and is the only available treatment to prevent anaphylaxis and death from bee, wasp, yellow jacket, hornet and ant induced anaphylaxis. Consultations with allergists, timely diagnosis and treatment are necessary to improve longterm patient outcomes and quality of life and to reduce the unnecessary direct and indirect costs to the patient, payer and society.
+
+## IV. Undergraduate And Postgraduate Education For Primary Care Physicians And Pediatricians
+
+## Identified Need:
+
+There is a need for undergraduate and postgraduate training in allergy, asthma and clinical immunology for general practitioners and pediatricians such that primary care physicians and pediatricians may appropriately assist patients with allergic diseases.
+
+## Recommendation:
+
+Allergic diseases are a major cause of morbidity and mortality. Suitable undergraduate and postgraduate training for medical students, physicians, pediatricians and other healthcare professionals will prepare them to recognize allergy as the underlying cause of many common diseases. It will also enable them to manage mild, uncomplicated allergic disorders by targeting the underlying inflammatory mechanisms associated with these diseases. They will learn when and how to refer the more complicated cases for a specialist consultation. Such education at the general practice level is of paramount importance since the vast majority of patients with allergic diseases are cared for by primary care physicians and pediatricians. These clinicians will also be required to comanage such patients with an allergy specialist and should be aware of the role of the allergist/clinical immunologist in investigating, managing and caring for patients with complex allergic problems.
+
+## V. Recognition Of The Specialty And Training Programs
+
+## Identified Need:
+
+Globally, medical education providers need to recognize allergy / clinical immunology as a specialty or sub-specialty, resulting in adequate training programs for optimal patient care.
+
+## Recommendation:
+
+Expertise in allergy and clinical immunology should be an integral part of the care provided by all specialty clinics. Where allergy/clinical immunology training is not presently available or recognized as a specialty, training and national accreditation programs should be instituted to enable selected physicians to receive formal training and the qualifications required to become certified allergists/clinical immunologists. Such programs will also enable general practitioners, including pediatricians, to enhance their capacity to provide for the routine care for patients with allergic diseases.
+
+## VI. Public Awareness Of Allergy, Asthma And Clinical Immunology
+
+## Identified Need:
+
+In most populations around the world, there is a lack of adequate education about, and awareness of, the morbidity and mortality associated with allergic diseases; the often chronic nature of these diseases; the importance of consulting a physician trained in allergy, asthma and clinical immunology; and the medications and treatments available to appropriately treat and prevent these diseases.
+
+## Recommendation:
+
+Public health authorities should target allergic diseases as a major cause of morbidity and potential mortality. They should collaborate with national allergy, asthma and clinical immunology societies and patient support groups to publicize the necessity for general awareness and appropriate care for these diseases.
+
+# Chapter 1.
+
+# The practice of allergology
+
+## The practice of allergology
+
+Michael A Kaliner, Sergio Del Giacco
+
+Allergy is a very common ailment, affecting more than 20% of the populations of most developed countries. The major allergic diseases, allergic rhinitis, asthma, food allergies and urticaria, are chronic, cause major disability, and are costly both to the individual and to their society. Despite the obvious importance of allergic diseases, in general allergy is poorly taught in medical schools and during post-graduate medical education, and many countries do not even recognize the specialties of Allergy or Allergy and Clinical Immunology. As a consequence, many or most allergic patients receive less than optimal care from non-allergists. The World Allergy Organization has recognized these needs and developed worldwide guidelines defining What is an Allergist?1, Requirements for Physician Competencies in Allergy: Key Clinical Competencies Appropriate for the Care of Patients with Allergic or Immunologic Diseases2, and Recommendations for Competency in Allergy Training for Undergraduates Qualifying as Medical Practitioners3. These important position papers have been published worldwide over the past few years, but it is far too soon to see whether they will influence the need for more, better and improved training in allergy worldwide.
+
+An allergist is a physician who, after training in internal medicine or pediatrics, has successfully completed a specialized training period in allergy and immunology. As part of allergy training, all allergists are trained in the relevant aspects of dermatology, pneumonology, otorhinolaryngology, rheumatology and/or pediatrics. Subject to national training requirements, allergists may be also partially or fully trained as clinical immunologists, because of the immune basis of the diseases that they diagnose and treat. In most countries where the allergy, or allergy and clinical immunology, is acknowledged as a full specialty, the duration of the training is four/five years (including the common trunk in internal medicine and/or other disciplines, and two/three years of allergy and clinical immunology); where it is a subspecialty the approved period of training in allergy and clinical immunology will be two/three years after completion of the main specialty. Depending on national accreditation systems, completion of this training will be recognized by a Certificate of Specialized Training in Allergy, in Allergy and Immunology, or in Allergy and Clinical Immunology, awarded by a governing board. In some countries this will follow successful completion of a certification test or a final exam and in other countries by competencies being signed-off by a training supervisor. In some countries the allergist treats both adults and children while in some others, pediatricians, with specialty or sub-specialty in allergy, are competent to treat children.
+
+## The practice of allergy involves the diagnosis and care of patients with:
+
+• Rhino-conjunctivitis, along with nonallergic rhinopathy
+
+• Sinusitis, both acute and chronic, alone or complicated with nasal polyps
+
+• Otitis and Eustachian tube disorders
+
+• Asthma and all its forms including cough-variant asthma and exercise-induced asthma
+
+• Cough from all causes
+
+• Bronchitis, chronic obstructive pulmonary disease (COPD) and emphysema
+
+• Hypersensitivity pneumonitis
+
+• Alveolitis
+
+• Atopic dermatitis/eczema
+
+• Contact dermatitis
+
+• Urticaria and angioedema
+
+• Drug allergy
+
+• Food allergy
+
+• Latex allergy
+
+• Insect allergy and stinging-insect hypersensitivity
+
+• Gastrointestinal reactions resulting from allergy, including eosinophilic esophagitis and gastroenteritis
+
+• Anaphylactic shock
+
+• Immunodeficencies, both congenital and acquired
+
+• Occupational allergic diseases
+
+• Identifying and managing risk factors for progression of allergic diseases — the «allergic march»
+
+• Other specific organ reactions resulting from allergy
+
+• Conditions that may mimic or overlap with allergic disease
+
+• An expert knowledge of the epidemiology and genetics of allergic diseases Immunodeficencies and autoimmune diseases, with special knowledge of regional and local allergens
+
+## As part of the practice of allergy, the allergist should be capable of ordering and interpreting allergy-and immunology-related laboratory tests:
+
+• Evaluating total IgE and allergen specific IgE measurements
+
+• Carrying out appropriate provocation testing for allergic and immunologic disease
+
+• Providing analysis and advice regarding local environmental/airborne allergens and irritants, as well as the analysis and advice regarding ingested allergens/ irritants
+
+• Conducting and/or evaluating tests of pulmonary function and tests of inflammatory markers
+
+• Conducting and/or evaluating tests of nasal function; this may include examination of nose and throat via fiberoptic rhinoscopy and nasal endoscopy
+
+• Specific allergen and venom immunotherapy
+
+• Providing pharmacotherapy of allergic disorders and related diseases including aero-allergens, drugs, venoms, occupational allergens, and food allergens
+
+## Because of the highly specialized training, the allergist can advise both patients and other members of the medical community on:
+
+• The role of effector cells involved in allergic disease (stem cells,
+
+• lymphocytes, mast cells, basophils, eosinophils, neutrophils,
+
+• monocytes, macrophages, dendritic cells)
+
+• The molecules involved in the immunological response (both innate and acquired) including chemical mediators; immunoglobulins; antibodies; complement; cytokines;interleukins; chemokines and their receptors; human leukocyte antigen/major histocompatibility complex (HLA/MHC) antigens
+
+• The main hypersensitivity reactions
+
+• Cell-to-cell interactions
+
+• The scientific in vitro laboratory diagnostic tests for allergy and
+
+their selection and interpretation, including allergenspecific in vitro assays; enzyme-linked immunosorbent assays (ELISAs); Western blotting; tests for inflammatory markers, protein and cellular antigen stimulation tests; histamine release assays
+
+## The allergist is especially competent in performing/interpreting the following:
+
+• Allergic history and physical examination
+
+• Skin testing
+
+• Where necessary, investigating alternative diagnoses
+
+• Environmental modification strategies to reduce allergen exposure
+
+• Specific immunotherapy (allergen vaccines; both oral and injective)
+
+• Immunomodulatory therapy
+
+• Drug desensitization
+
+• Evaluation and treatment of allergic and immunologic competence
+
+• Management and treatment of anaphylactic shock
+
+• Education for patients, caregivers and primary care physicians
+
+## The allergist is especially competent in appropriately providing the following treatments:
+
+• Antihistamines
+
+• Mast cell stabilizers
+
+• Bronchodilators
+
+• Nasal, oral, ocular, topical, and inhaled glucocorticosteroids
+
+• Decongestants
+
+• Leukotriene modifiers
+
+• Phosphodiesterase modifiers, including theophylline
+
+• Adrenergic agonists
+
+• Anticholinergics (oral, topical and inhaled)
+
+• Mucolytics
+
+• Antibiotics
+
+• Adrenaline, epinephrine
+
+• All other pharmacologic and immunologic agents used to treat allergic and immunologic diseases
+
+The allergist is uniquely aware of the pharmacologic properties of the treatments, their limitations and side effects. He/she is also keenly aware of how other medications may affect allergic processes and cause allergic conditions, for example, coughing and angioedema (ACE inhibitors).
+
+## Allergists treat a variety of skin conditions and are expert in the use of:
+
+• Emollients
+
+• Antibiotics
+
+• Topical glucocorticosteroids
+
+• Immune modulators and all other agents and techniques used to manage eczema and other allergic skin disorders
+
+## Part of the current therapeutic arsenal includes:
+
+• Use of immune modulators, such as specific allergen immunotherapy (oral and injective)
+
+• Immunoglobulin replacement used to treat allergic and immunologic disorders
+
+• Monoclonal antibodies, including anti-IgE
+
+## Part of the education of patients involves:
+
+• Instruction on the methods and value of allergenavoidance techniques
+
+• Avoidance diets and nutritional implications of dietary modification
+
+In particular for pediatric patients the allergist should be able to educate the parents, relatives and teachers about ways to optimize the prevention and treatment of allergies in children.
+
+In order to apply all these treatments properly, the allergist must have current and ongoing knowledge of national and international guidelines for the management of allergic and immunologic disorders in adults and children, with particular emphasis on safety and efficacy of all therapies.
+
+The membership of WAO is approximately 35,000 allergists worldwide representing the bulk of the trained allergists globally. In some developed countries such as Japan, Germany and the US, there are 4,000-8,000 trained allergists per country, representing about 1 allergist per 25,000 to 75,000 patients. It is estimated that ideal care would be provided by about 1 allergist per 20,000-50,000 patients, provided that the medical community was trained and competent to provide first and second level care by primary care physicians and other organrelated specialists. On the other hand, there are countries such as Costa Rica with less than 10 allergists and others with even fewer. Thus, the huge number, diversity and importance of patients with allergic diseases is overwhelmed by the inadequacy of the training of the medical community to provide care to these sick and needy patients. It is in part from this pressing need that this White Book on allergy was developed.
+
+## References
+
+1. Del Giacco S, Rosenwasser LJ, Crisci CD, Frew AJ, Kaliner MA, Lee BW, et al. What is an allergist? www.waojournal.org 1:19-20, 2008
+
+2. Kaliner MA, Del Giacco S, Crisci CD, Frew AJ, Liu G, Masparo J, et al. Requirements for Physician Competencies in Allergy: Key Clinica Competencies Appropriate for the Care of Patients with Allergic or Immunologic Diseases: A Position Statement of the World Allergy Organization.
+
+www.waojournal.org 1:42-46, 2008
+
+3. Potter, PC, Warner, JO, Pawankar, RS, Kaliner, MA, Del Giacco, S, Rosenwasser, LJ, et al. Recommendations for Competency in Allergy Training for Undergraduates Qualifying as Medical Practitioners: A Position Paper of the World Allergy Organization. www.waojournal. org 2:150-154, 2009
+
+# Chapter 2.
+
+# The burden of allergic diseases
+
+# Section 2.1. Allergic Rhinitis, Allergic Conjunctivitis, and Rhinosinusitis
+
+Ruby S. Pawankar, Mario Sánchez-Borges, Sergio Bonini, Michael A. Kaliner
+
+## 2.1.1 Allergic Rhinitis
+
+## Key statements
+
+• Allergic rhinitis (AR) results from an IgE-mediated inflammation of the nasal mucosa.
+
+• The disease currently affects between 10% and 30 % of the population.
+
+• Studies indicate that prevalence rates are increasing worldwide.
+
+The classification proposed in the Allergic Rhinitis and its Impact on Asthma (ARIA) guidelines is useful for the implementation of treatment.
+
+• AR is a risk factor for asthma.
+
+• Other co-morbidities of AR include: sinusitis, nasal polyposis, conjunctivitis, otitis media with effusion, upper respiratory infections, breathing through the mouth, and sleep disorders.
+
+AR has a significant impact on patients based on the degree of the severity of their symptoms. It has psychological effects, interferes with social interactions, and creates an economic burden not only for the affected subject, but for the family and for the society at large.
+
+• Management is based on patient education, environmental control measures, pharmacotherapy and specific immunotherapy.
+
+## Introduction
+
+Allergic rhinitis is defined by the presence of nasal congestion, anterior and posterior rhinorrhea, sneezing, and nasal itching secondary to IgE-mediated inflammation of the nasal mucosa. It must be differentiated from other non allergic forms of rhinitis with a similar clinical picture.
+
+Risk factors for the development of AR include a family history of atopic diseases, increased total serum IgE before 6 years of age, higher socio-economic class, and the presence of positive immediate-type hypersensitivity skin tests. The most common causative allergens include pollens, dust mites, molds, and insects.
+
+Atopic subjects inherit a predisposition to produce specific IgE antibodies that bind to high-affinity receptors on mast cells. In the nose, IgE-bound mast cells recognize the allergen and degranulate, releasing preformed mediators (histamine, tryptase, chymase, kininogenase, heparin, and other enzymes). Newly formed mediators including prostaglandin D2 and cysteinyl leukotrienes are released by mast cells, eosinophils, basophils, and macrophages and produce edema, rhinorrhea, mucosal hypertrophy, mucus secretion, and vasodilation leading to nasal obstruction. Stimulation of sensory nerves results in nasal itch, sneezing, and increased congestion. This early allergic response is followed by a late-phase response starting 4 - 8 hours after allergen exposure, which is characterized by congestion, postnasal mucous discharge, hyposmia, and nasal hyperreactivity to non specific environmental stimuli. Repeated mucosal exposure to allergens results in a priming mechanism by which the amount of allergen required to induce an immediate response decreases as a consequence of the influx of inflammatory cells.
+
+## Prevalence
+
+Allergic rhinitis is the most common form of non-infectious rhinitis, affecting between 10% and 30% of all adults and as many as 40% of children. Epidemiologic studies show that the prevalence of AR continues to increase worldwide. The World Health Organization has estimated that 400 million people in the world suffer from AR, and 300 million from asthma.
+
+In the United States of America, the prevalence of AR ranges from 3% to 19%. According to the Centers for Disease Control and Prevention, 23.7 million cases were reported in 1996. Overall, it affects 30 to 60 million individuals annually. In childhood, affected boys outnumber girls, but the sex ratio is about equal in adults. AR develops before the age of 20 years in 80% of cases. Increased prevalence is observed in non whites, in some polluted urban areas, and in first-born children. AR accounts for 16.7 million physician office visits annually.
+
+In Europe, the European Community Respiratory Health Survey established the prevalence of AR as being from 4% to 32%. The International Study on Asthma and Allergies in Childhood (ISAAC) reported the prevalence of allergic rhinitis in Latin America. Their findings are summarized in Table 1.
+
+Clinical Classification and Co-morbidities Table 1 — Prevalence of Rhinitis and Rhinoconjunctivitis in Latin America and the World\*
+<table><tr><td rowspan=2 colspan=1></td><td rowspan=1 colspan=1>Worldwid</td><td rowspan=1 colspan=1>e (%)</td><td rowspan=1 colspan=2>Latin America (%)</td></tr><tr><td rowspan=1 colspan=2>6-7 years old</td><td rowspan=1 colspan=2>13-14 years old</td></tr><tr><td rowspan=1 colspan=1>Rhinitis last 12 months</td><td rowspan=1 colspan=1>20.7</td><td rowspan=1 colspan=1>33.2</td><td rowspan=1 colspan=1>27.9</td><td rowspan=1 colspan=1>37.6</td></tr><tr><td rowspan=1 colspan=1>Rhinoconjunctivitis</td><td rowspan=1 colspan=1>8.3</td><td rowspan=1 colspan=1>15.1</td><td rowspan=1 colspan=1>12.1</td><td rowspan=1 colspan=1>18.5</td></tr><tr><td rowspan=1 colspan=1>Severe rhinitis</td><td rowspan=1 colspan=1>0.6</td><td rowspan=1 colspan=1>1.0</td><td rowspan=1 colspan=1>1.1</td><td rowspan=1 colspan=1>1.1</td></tr></table>
+
+\* ISAAC study, see reference 2.
+
+ARIA (Allergic Rhinitis and its Impact on Asthma), the first ever evidence-based guidelines for allergic rhinitis, proposed a new classification of AR into four categories according to the severity and frequency of the symptoms: 1) Mild intermittent; 2) Mild persistent; 3) Moderate/severe intermittent; and 4) Moderate/ severe persistent.
+
+Patients with AR frequently have symptoms of other allergic diseases, mainly atopic dermatitis, conjunctivitis and asthma. More than 40% of patients with AR have asthma, and more than 80% of asthmatic patients suffer concomitant rhinitis. Also, patients with rhinitis have an increased risk of developing asthma.
+
+Other co-morbidities that are observed with increased frequency in patients with AR include sinusitis, nasal polyposis, upper respiratory infections, otitis media with effusion, breathing through the mouth, sleep disorders, decreased quality of life, and impaired learning and attention in children (Figure 1).
+
+Figure 1. Co-morbidities of allergic rhinitis  
+![](images/eaaabd6bc9472eadb676cb4d00e97c494dd6b358a8815badbc293c6552cf26ef.jpg)
+
+## Severity of Allergic Rhinitis
+
+The severity and duration of symptoms of AR varies in different patients. The classification of AR into mild and moderate/ severe is useful for therapeutic purposes. Severe persistent rhinitis sufferers are those patients whose symptoms are inadequately controlled despite adequate (i.e., effective, safe, and acceptable) pharmacologic treatment based on guidelines.
+
+Bousquet et al have reported that current treatment and allergy diagnosis have no effect on the patient’s assessment of rhinitis severity and that the severity, rather than the duration, had a greater impact on Visual Analogue Scale levels. Therefore, we should consider control of the disease as the main target of management. It is likely that a large proportion of this group of patients may benefit from allergen specific immunotherapy.
+
+## The Burden of Allergic Rhinitis
+
+AR has a significant socio-economic impact on the patient, the patient’s family and society. It affects multiple parameters including quality of life, physical, psychological and social functioning and has financial consequences.
+
+Physical Symptoms: Allergies in America, a survey conducted by telephone involving 2,500 adults with AR, showed that the most common symptoms are congestion, rhinorrhea, nasal and ocular itching, tearing, sneezing, headache, facial and ear pain (Table 2).
+
+Table 2 — Physical and Mental Symptoms of Allergic Rhinitis\*
+<table><tr><td rowspan=1 colspan=1>Physical (%)</td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>Mental (%)</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Stuffed-up nose</td><td rowspan=1 colspan=1>78</td><td rowspan=1 colspan=1>Feels tired</td><td rowspan=1 colspan=1>80</td></tr><tr><td rowspan=1 colspan=1>Runny nose</td><td rowspan=1 colspan=1>62</td><td rowspan=1 colspan=1>Feels miserable</td><td rowspan=1 colspan=1>65</td></tr><tr><td rowspan=1 colspan=1>Postnasal drip</td><td rowspan=1 colspan=1>61</td><td rowspan=1 colspan=1>Feels irritable</td><td rowspan=1 colspan=1>64</td></tr><tr><td rowspan=1 colspan=1>Red itching eyes</td><td rowspan=1 colspan=1>53</td><td rowspan=1 colspan=1>Depression</td><td rowspan=1 colspan=1>36</td></tr><tr><td rowspan=1 colspan=1>Watering eyes</td><td rowspan=1 colspan=1>51</td><td rowspan=1 colspan=1>Embarrassment</td><td rowspan=1 colspan=1>23</td></tr><tr><td rowspan=1 colspan=1>Repeated sneezing</td><td rowspan=1 colspan=1>51</td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Headache</td><td rowspan=1 colspan=1>51</td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Nasal itching</td><td rowspan=1 colspan=1>46</td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Facial pain</td><td rowspan=1 colspan=1>43</td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Ear pain</td><td rowspan=1 colspan=1>30</td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td></tr></table>
+
+\* Allergies in America Survey, see reference 1
+
+Psychological effects: Fatigue, irritability, anxiety, depression, frustration, self-consciousness and lower energy, motivation, alertness, and ability to concentrate, are commonly present in patients with AR (Table 2).
+
+Decreased quality of life: Investigators have used health status questionnaires to assess the quality of life of patients with asthma or rhinitis. While physical functioning was slightly higher in patients with AR compared with patients with asthma, social functioning was lower in the AR group.
+
+Sleep disturbances: Nasal congestion is often associated with sleep-disordered breathing. Up to 57% of adult patients and up to 88% of children with AR have sleep problems, including micro-arousals, leading to daytime fatigue and somnolence, and decreased cognitive functioning. These are accompanied by disorders of learning performance, behaviour and attention in children.
+
+Interference with social interaction: Social isolation, activity limitations, limited visits to friends and family, and an inability to visit open spaces such as parks and closed spaces (restaurants, cinemas), are frequent consequences of AR. Patients are forced to carry handkerchiefs or tissues, and need to rub and blow the nose repeatedly.
+
+Use of medications: On average, patients with AR usually use two or more medicines to treat their AR. Self-medication with over the counter sedating antihistamines results in drowsiness and further impairment of cognitive and motor functions.
+
+Financial burden: It has been demonstrated that patients with AR support two-fold increases in medication costs and 1.8 times the number of visits to health practitioners when compared with matched controls. Expenses for AR include direct and indirect costs (Table 3).
+
+Table 3 — Components of the Financial Burden of Allergic Rhinitis
+<table><tr><td>Direct costs</td><td>Indirect costs</td></tr><tr><td>Physician office visits Laboratory tests Medication Immunotherapy</td><td>Absenteeism Presenteeism (decreased productivity while at work) Impaired productivity (52% of</td></tr></table>
+
+In the United States of America, direct costs for AR increased from \$ 2.7 billion in 1995 to \$7.3 billion in 2002. Indirect costs in 2002 were estimated at \$4.28 billion, with a total amount of \$11.58 billion for that year. Additionally 3.5 million lost workdays and 2 million lost school-days occur annually. On any given day, about ten thousand children are absent from school in the USA because of AR.
+
+## Therapeutic considerations
+
+Treatment modalities recommended for patients with AR are discussed in Chapter 3. According to the ARIA guidelines, the management strategies include four components: 1) Patient education; 2) Prevention of exposure to environmental allergens and irritants; 3) Pharmacological therapies; and 4) Immunotherapy.
+
+The effective first line drugs for AR are non-sedating antihistamines and intranasal corticosteroids. Other drugs with favorable efficacy and safety profiles include leukotriene receptor antagonists, chromones, and topical and oral decongestants. Subcutaneous immunotherapy and sublingual immunotherapy are effective and have preventative as well as long lasting effects on the disease.
+
+In developing countries, there are limitations for the adequate treatment of AR, such as little access to specialized diagnosis and treatment, the small number of allergists, lack of confirmatory in vivo and in vitro diagnostic tests, and the cost of medications or immunotherapy.
+
+Co-morbidities, and especially asthma, must be treated concomitantly with AR. The ARIA guidelines strongly recommend that patients with AR be evaluated for asthma, and that patients with asthma be assessed for AR.
+
+## Unmet Needs
+
+• To define control of AR.
+
+• To define severe AR.
+
+• To define phenotypes and disease heterogeneity.
+
+• Additional therapies for unresponsive patients.
+
+• Pharmaco-economic studies.
+
+• Increased access to diagnosis and treatment, including allergen-specific immunotherapy, in developing countries.
+
+## Recommended Reading
+
+1. Allergies in America. A telephone survey conducted in 2500 adults with allergic rhinitis. Healthstar Communications, Inc., in partnership with Shulman, Ronca and Bucuvalas, Inc. Allergies in America: A landmark survey on nasal allergy sufferers. Executive summary. Florham Park, NJ: Altana Pharma US, Inc., 2006
+
+2. Asher MI. Montefort S, Björksten B, Lai CK, Strachan DP, Weiland SK, Williams H; ISAAC Phase Three Study Group. Worldwide time trends in the prevalence of symptoms of asthma, allergic rhinoconjunctivitis, and eczema in childhood: ISAAC phases one and three repeat multicountry cross-sectional surveys. Lancet 2006; 368: 733-743
+
+3. Björksten B, Clayton T, Ellwood P, Stewart A, Strachan D; ISAAC Phase III Study Group. Worldwide time trends for symptoms of rhinitis and conjunctivitis: Phase III of the International Study of Asthma and Allergies in Childhood. Pediatr Allergy Immunol 2008; 19: 110-124
+
+4. Blaiss MS. Important aspects in management of allergic rhinitis: Compliance, cost, and quality of life. Allergy Asthma Proc 2003; 24: 231-238
+
+5. Bousquet J, Khaltaev N, Cruz A, Denburg J, Fokkens W, Weel CV, et al. ARIA Update. Allergy 2008; 63 (suppl)
+
+6. Bousquet PJ, Combescure C, Neukirch F, Klossek JM, Mèchin H, Daures JP, Bousquet J. Visual analog scales can assess the severity of rhinitis graded according to ARIA guidelines. Allergy 2007; 62: 367-372
+
+7. Bousquet J, Dahl R, Khaltaev N. Global Alliance Against Chronic Respiratory Diseases. Allergy 2007; 62: 216-223
+
+8. Bousquet J, Bullinger M, Fayol C, Marquis P, Valentin B, Burtin B. Assessment of quality of life in patients with perennial allergic rhinitis with the French version of the SF-36 Health Status Questionnaire. J Allergy Clin Immunol 1994; 94: 182-188
+
+9. Crystal-Peters J, Crown WH, Goetzel RZ, Schutt DC. The cost of productivity losses associated with allergic rhinitis. Am J Manag Care 2000; 6: 373-378
+
+10. Guerra S, Sherrill DL, Martinez FD, Barbee RA. Rhinitis as an independent risk factor for adult-onset asthma. J Allergy Clin Immunol 2002; 109: 419-425
+
+11. Heinrich J, Richter K, Frye C, Meyer I, Wolke G, Wjst M, Nowak D, Magnussen H, Wichmann HE. European Community Respiratory Health Survey in Adults (ECRHS). Pneumologie 2002; 56: 297-303
+
+12. Janson C, Anto J, Burney P, Chinn S, De Marco R, Heinrich J, Jarvis D, Kuenzil N, Leynaert B, Luczynska C, Neukirch F, Svanes C, Sunyer J, Wist M; European Community Respiratory Health Survey II. The European Community Respiratory Health Survey: What are the main results so far? Eur Respir J 2001; 18: 598-611
+
+13. Kay GG. The effects of antihistamines on cognition and performance. J Allergy Clin Immunol 2000; 105: S622-S627
+
+14. Lamb CE, Ratner PH, Johnson CE, Ambegaonkar AJ, Joshi AV, Day D, Sampson N, Eng B. Economic impact of workplace productivity losses due to allergic rhinitis compared with select medical conditions in the United States from an employer’s perspective. Curr Med Res Opin 2006; 22: 1203-1210
+
+15. Nathan RA. The burden of allergic rhinitis. Allergy Asthma Proc 2007; 28: 3-9
+
+16. Neffen H, Solé D, Ortiz-Aldana I, Caballero F. Rinitis alérgica en Latinoamerica. Manejo actual y estrategias para la adopción de guías de diagnóstico y tratamiento. Drugs of Today 2009; 45 (Suppl 4): 1-19
+
+17. Scoenwetter WF, Dupclay L Jr., Appajosyula S, Botteman MF, Pashos CL. Economic impact and quality of life burden of allergic rhinitis. Curr Med Res Opin 2004; 20: 305-317
+
+18. Settipane RJ, Hagy GW, Settipane GA. Long-term risk factors for developing asthma and allergic rhinitis: A 23-year follow-up study of college students. Allergy Proc 1994; 15: 21-25
+
+19. Stuck BA, Czajkowski J, Hagner AE, Klimek L, Verse T, Hörmann K, Maurer JT. Changes in daytime sleepiness, quality of life and objective sleep patterns in seasonal allergic rhinitis: A controlled clinical trial. J Allergy Clin Immunol 2004; 113: 663-668
+
+20. Wallace DV, Dykewicz MS, et al. The diagnosis and management of rhinitis: An updated practice parameters. J Allergy Clin Immunol 2008; 122: S1-S84
+
+## 2.1.2 Allergic Conjunctivitis
+
+## Key Statements
+
+• Allergic conjunctivitis is an increasingly prevalent allergic disease, with the same clinical gravity as allergic asthma and allergic rhinitis.
+
+The umbrella term “allergic conjunctivitis” includes distinct clinical entities, from mild but disturbing forms due to IgE sensitization to aeroallergens, to forms of keratoconjunctivitis where the severe allergic inflammation, with corneal involvement, is more difficult to diagnose and treat, and may lead to permanent ocular damage and even loss of vision.
+
+## Introduction
+
+Allergic conjunctivitis is the most common cause of a red eye, affecting more than one billion people globally. There are several clinical forms of allergic conjunctivitis; intermittent or seasonal (SAC), persistent or perennial (PAC), vernal (VKC), atopic (AKC) and induced by contact lenses (CLC).
+
+## Symptoms and Severity
+
+Although some symptoms are similar in all forms (itching – which is typical of allergic conjunctivitis, distinguishing it from other forms of a red eye – redness, tearing and photophobia), the pathophysiology, disease associations, and clinical presentation can differ, for example, the giant papillae in VKC and CLC. The disease severity and management are different in these phenotypes of ocular allergy (Figure 2). While SAC and PAC (very often associated with rhinitis) impair a patient’s quality of life they are mild diseases and are easily controlled by adequate anti-allergic treatment. On the other hand, VKC (occurring alone or more frequently associated with asthma, particularly in young boys before puberty and in some geographical regions with intense natural light) and AKC (typically associated with atopic eczema) are rare but severe clinical entities, in which the involvement of the cornea (vernal and atopic keratoconjunctivitis) is difficult to treat and may eventually cause impairment of visual function.
+
+![](images/f5022d279c9dbb321ccdacc01a1452058ff180c26a9745794c2171ff67a61b33.jpg)
+
+![](images/7b6320c05cd6dee1a4f9bbc806d94111c269baaa31526795f1a9d72cec7500b9.jpg)
+
+![](images/dc0879afe05fc0c5762c1d027234d764346f02b33ffef8e696b14dfef3dd9c3e.jpg)
+
+![](images/94f420045de51538ae2f2d82f8a0d4123887a42c4a973aca8741778f6ee4c834.jpg)  
+Figure 2. Seasonal Allergic Conjunctivitis (A) vs Vernal Keratoconjunctivitis (B,C,D). Note the corneal involvement (B) and the giant papillae at tarsal (C) and limbar (D) level.
+
+The allergist has a central role in the diagnosis of allergic conjunctivitis. Patients with bilateral red itching eyes should always be referred to the allergist not only for skin testing and IgE determination, which may be negative, particularly in some cases of VKC and AKC, but also to evaluate general and ocular clinical symptoms. The allergist can also arrange for more sophisticated tests such as the detection of eosinophils in tears, which is typical of VKC and AKC, or of SAC and PAC during the acute phase. The age of the subject, the clinical association with asthma or eczema, the presence of ocular pain or of an intense photophobia, and a poor response to common anti-allergic treatments should prompt the allergist to consult an ophthalmologist to evaluate the presence of a possible corneal involvement.
+
+## Therapeutic Considerations
+
+An adequate treatment of rhinitis with topical steroids, immunotherapy when indicated, systemic and topical antihistamines (or more recent molecules with a dual antihistaminic and anti-inflammatory action) may easily control SAC and PAC. The corneal involvement in VKC and AKC often requires the use of steroids, with the potential for severe iatrogenic side effects of these drugs in the eye (glaucoma, ulcers).
+
+## Future Research Needs
+
+Research efforts in allergic conjunctivitis should mainly be devoted to the most severe forms of ocular allergy (SOA), in an attempt to clarify their pathophysiology better, to standardize diagnosis, and to suggest new forms of treatment.
+
+## Recommended Reading
+
+1. Bielory L, Bonini Se, Bonini St. Allergic eye disorders. In: Inflammatory mechanisms in allergic disease. B. Zweiman, LB Schwartz Eds. Marcel Dekker, New York 2002, 311-323.
+
+2. Bonini St, Sgrulletta R, Coassin M, Bonini Se. Allergic conjunctivitis: update on its pathophysiology and perspectives for future treatment. In: R. Pawankar et al Eds. Allergy Frontiers: Classification and Pathomechanisms. Springer, Basel 2009, 25-48.
+
+3. Ono SJ, Abelson MB. Allergic conjunctivitis: update on pathophysiology and prospects for future treatment. J Allergy Clin Immunol 2005; 115:118-122.
+
+## 2.1.3 Rhinosinusitis
+
+## Key Statements
+
+• Rhinosinusitis (RS) is one of the most common and expensive medical conditions.
+
+• RS occurs in a number of forms, the most common of which are either acute or chronic.
+
+● Initial treatment of RS is usually by a primary care physician (PCP) and if unsuccessful, the PCP should refer either to a surgeon or to an allergist for specialized care.
+
+• In the vast majority of cases, RS is controlled by proper medical management without the need for surgery.
+
+• Surgery should be considered only in those patients who are properly managed but in whom a number of medical treatment programs fail.
+
+The Allergist, who is trained in allergy, immunology, microbiology, internal medicine and/or pediatrics combined with an expert knowledge of nasal and sinus anatomy and appropriate pharmacology, is best suited to manage RS.
+
+## Introduction
+
+RS affects about 31 million subjects in the US per year and is about midway between rhinitis and asthma in frequency. The annual costs are about the same as for asthma, making RS one of the 10 most costly conditions. The underlying causes of RS are shown in Table 1. Allergic rhinitis and non-allergic rhinopathy are the most common underlying causes, but anatomical abnormalities, sensitivity to nonsteroidal anti-inflammatory drugs (NSAID’s) and immune deficiencies are also frequently found.
+
+Table 4 — The Underlying Causes of Rhinosinusitis  
+Table 5 — The signs and symptoms of acute and chronic RS  
+![](images/e55330815f8f4b4d502d07cb30931d355fc2f81b7a1456d188532611fc6e802d.jpg)  
+From: Kaliner MA: Medical Management of Rhinosinusitis. In: Current Review of Rhinitis, MA Kaliner, Editor, Current Medicine, Philadelphia, 2002, pp.101-112
+
+## Symptoms and Severity
+
+The most common symptoms of acute and chronic RS are shown in Table 5. Patients complaining about these symptoms who are found to have purulent drainage in the nasal cavities or pharynx should be considered as possibly having RS. In most cases, a good history and physical examination, possibly including a rhinoscopic examination, leads the discerning physician to consider RS and initiate empiric treatment. A Computerized Tomography (CT) scan of the sinuses is the “gold standard” for confirming the diagnosis of RS.
+
+The evaluation of RS is quite similar to the approach taken for rhinitis: determining whether the symptoms are acute or chronic; whether the disease involves the nose alone or both the nose and sinuses; whether the patient is allergic or not; whether there is an active infection or an on-going immune inflammatory response; whether to treat empirically or to take cultures from the nose, perform rhinoscopy, order a CT scan, do an immune evaluation, or consult with a surgeon about the need for sinus surgery. These complex evaluations are standard for allergists/ immunologists and are the type of analytic decisions for which the allergist is specifically trained.
+
+## Therapeutic Considerations
+
+If the conclusion is that the patient does have chronic or recurrent RS, the overwhelming majority of patients do very well with careful medical management. The principles of management include medically reducing swelling in the nose, sinus irrigation, topical corticosteroids in the nose and sinuses, appropriate antibiotics, and careful education about the chronic nature of the disease and need for on-going treatment.
+
+In many instances, medical treatment is chronic and on-going, and aimed at controlling symptoms, but is not curative. Thus, some patients prefer the option of a surgical procedure that might eliminate an anatomical obstruction that could be the cause of RS, in the hope of a definitive cure. The current surgical approach to RS is functional endoscopic sinus surgery where the functional ostia which drain the sinuses are identified and enlarged. This approach has an impressive 1-2 year incidence of symptom improvement. However, patients with predisposing diseases that originally led to RS still suffer from these processes and often develop RS again at a later date. Medical management is usually required for on-going symptom relief.
+
+## Co-morbidities of Rhinosinusitis
+
+Asthma patients, particularly those with severe or difficult to manage asthma, often have concomitant sinusitis. In some studies as many as 65% of severe asthmatics have been found to have evidence of RS on CT. Other observations suggest a nearly universal incidence of sinusitis in patients with severe asthma. The evaluation of moderate to severe asthma should routinely involve a careful review for possible sinusitis, as treating the sinuses may ease the severity of asthma remarkably.
+
+About 25% of chronic RS patients develop nasal polyps, which are inflammatory growths extending from the sinuses into the nasal cavities. There are several characteristics that distinguish the chronic RS patient with polyps from those that do not develop polyps. Managing nasal polyps is complex and involves a balance between surgery designed to open the ostia and aggressive medical management with corticosteroids instilled into the nose and sinuses and judicial use of antibiotics and oral corticosteroids.
+
+## Current and Future Needs
+
+It is evident that physicians do not recognize RS because of the subtlety in identifying the spectrum of symptoms as RS and distinguishing this condition from upper respiratory tract infections/colds or other on-going forms of rhinitis. Better teaching of PCPs, earlier referral to allergists and otolaryngologists, and more use of rhinoscopies and CT scans will enhance our recognition of this important disease.
+
+Some leading specialists utilize liquid suspensions of corticosteroids instilled into the sinuses by lavages in treating RS. Availability of approved formulations of suspensions of corticosteroids would help with this treatment choice. As we try to understand RS better, identification of the characteristics of patients who develop RS, or who then develop nasal polyps, will become more evident and allow us to recognize those patients at higher risk. However, studies of the treatment of RS need higher priority both from governmental agencies and from the pharmaceutical industry. As it stands today, very few medications have been studied or approved for the treatment of RS or related conditions (such as polyps).
+
+## Research Needs
+
+Little is known about why some patients with acute RS develop persistent inflammation of the sinuses that can persist for years or even a lifetime. Theories about persistent bacterial infections caused by biofilms, bacterial osteitis, or other conditions need to be explored and proven, or discredited. The possible role of Staphylococcus and Streptococcus in chronic RS need to be explored as does the possible role of chronic fungal infections. The role of specific immune abnormalities in patients with recurrent RS needs exploration, as do the immune mechanisms involved in the normal response to RS. Therapeutic medical and surgical approaches need careful analysis and long term assessments.
+
+## Unmet Needs
+
+A large percentage of the population has undiagnosed RS, or inadequately treated RS. Even after establishing the diagnosis, the appropriate guidelines for medical management have not been established and there appears to be too much surgery, performed too early in the course of the disease. Expert guidelines for the diagnosis and management of RS are needed.
+
+## Recommended Reading
+
+1. Fokkens W, Lund V, Bachert C, Clement P, Helllings P, Holmstrom M, Jones N, Kalogjera L, Kennedy D, Kowalski M, Malmberg H, Mullol J, Passali D, Stammberger H. EAACI Position Paper on Rhinosinusitis and Nasal Polyps Executive Summary. Allergy 60(5):583-601.
+
+2. Slavin RG, Spector SL, Bernstein IL, Kaliner MA, Kennedy DW, Virant FS, Wald ER, Khan DA, Blessing-Moore J, Lang DM, Nicklas RA, Oppenheimer JJ, Portnoy JM, Schuller DE, Tilles SA, Borish L, Nathan RA, Smart BA, Vandewalker ML. The diagnosis and management of sinusitis: A practice parameter update. Journal Allergy Clin Immunol 2005; 116:S13-S47
+
+3. Rosenfeld R, Andes D, Bhattacharyya N, Cheung D, Eisenberg S, Ganiats T, Gelzer A, Hamilos D, Haydon III R, Hudgins P. Clinical practice guideline: Adult sinusitis Otolaryngol-Head Neck Surg 2007; 137 (Suppl 3): S1-S31
+
+4. Zalmanovici A, Yaphe J. Steroids for acute sinusitis. Cochrane Database Syst Rev. 18: CD005149, 2007
+
+5. Rosenfeld R, Singer M, Jones S. Systematic review of antimicrobial therapy in patients with acute rhinosinusitis. Otolaryngol- Head Neck Surg 2007; 137 (Suppl 3): S32-S45.
+
+6. Harvey RJ, Lund VJ. Biofilms and chronic rhinosinusitis: systematic review of evidence, current concepts and directions for research. Rhinology 2007; 45: 3-13.
+
+7. Kaliner MA. Rhinosinusitis and the allergist. Curr Allergy Asthma Rep. 2004; 5:421-4.
+
+## Section 2.2. Asthma
+
+Stephen T. Holgate, Giorgio Walter Canonica, Carlos E. Baena-Cagnani, Thomas B. Casale, Myron Zitt, Harold Nelson, Pakit Vichyanond
+
+## Key Statements
+
+• Asthma is a life-long chronic inflammatory disorder of the airways, associated with variable structural changes, that affects children and adults of all ages. It is associated with airway hyperresponsiveness and airflow obstruction that is often reversible either spontaneously or with treatment.
+
+• When uncontrolled, asthma can cause death, and can markedly interfere with normal activities, seriously impacting an individual’s quality of life.
+
+Because of under-diagnosis and inadequate treatment, asthma presents a serious public health problem throughout the world, especially in low and middle income countries.
+
+Atopy - the genetic predisposition to develop IgE-mediated sensitivity to common aeroallergens - is the strongest identifiable predisposing factor to the development of asthma, especially in children.
+
+• There was a sharp increase in the prevalence, morbidity, and mortality associated with asthma beginning in the 1960’s and 1970’s in the so-called “Westernized” countries of the world.
+
+The prevalence of asthma in different countries varies widely, but the disparity is narrowing due to rising prevalence in low and middle income countries as they adopt a more Western-type lifestyle. It is plateauing in high income countries.
+
+• Inhaled corticosteroids are currently the most effective anti-inflammatory medications to treat persistent asthma.
+
+The monetary costs of asthma are substantial and include both direct medical costs and the indirect costs, the latter associated with time lost from work and premature deaths.
+
+• National efforts to tackle asthma as a public health problem, such as the program introduced in Finland, produce remarkable benefits that are reflected in dramatic reductions in deaths and hospital admissions.
+
+• Many barriers exist to a reduction in the worldwide burden of asthma.
+
+• There are unmet diagnostic, therapeutic, educational and financial needs to achieve better worldwide control of asthma.
+
+• More effort is needed to focus on ways to improve the management of asthma by focusing on disease control rather than treating acute episodes. This concept has to be embedded in healthcare programs.
+
+## Introduction
+
+Asthma is a serious public health problem throughout the world, affecting people of all ages. When uncontrolled, asthma can markedly interfere with normal activities and seriously impact an individual’s quality of life. It is estimated by the World Health Organisation that 300 million individuals have asthma worldwide, and that with current rising trends this will reach 400 million by 2025. Approximately 250,000 people die prematurely each year from asthma, almost all these deaths are avoidable.
+
+## Asthma Definitions and Characteristics
+
+Asthma is a chronic inflammatory disorder of the airways associated with airway hyperresponsiveness and airflow obstruction that is often reversible either spontaneously or with treatment. There is a strong genetic basis for the susceptibility to develop asthma, however, the impact of environmental factors predominates in determining the prevalence of asthma in a particular population. The genetic predisposition to develop IgE mediated sensitivity to common aeroallergens is the strongest identifiable predisposing factor for the development of asthma, especially in children. Other factors include exposure to environmental tobacco smoke, air pollution, early life respiratory viral infections, certain drugs, and stress. It is important to differentiate the asthmatic state of the airways in affected individuals that is caused by on-going chronic inflammation from acute exacerbations triggered by inadequate treatment and a wide range of environmental factors.
+
+## Symptoms
+
+Patients with asthma typically experience recurrent episodes of wheezing, breathlessness, chest tightness and coughing, particularly at night or in the early morning. These symptoms are usually associated with airflow obstruction which is reversible spontaneously or following treatment. The patterns of these symptoms that strongly suggest an asthma diagnosis are variability, relationship to allergen exposures, precipitation by virus infection and non-specific irritants, such as smoke, outdoor air pollutants, fumes, strong smells or exercise, worsening at night, and responding to appropriate asthma therapy. Presence of a positive family history of asthma or other atopic diseases increases the likelihood that the symptoms are due to asthma, but asthma occurring later in life is often of the non-atopic form.
+
+## Inflammation
+
+The clinical spectrum of asthma is highly variable, and different cellular patterns have been observed, but the presence of airway inflammation remains a consistent feature. The histopathologic features of asthma include inflammatory cell infiltration consisting of eosinophils, lymphocytes, activated mast cells and evidence of injury to epithelial cells. A notable feature of asthma is the presence of mast cells within the bundles of airway smooth muscle. Neutrophils predominate in a subset of patients with asthma including some patients with occupational asthma, those with severe asthma, and patients who smoke, but predominantly neutrophilic inflammation is also found in some patients with none of these characteristics. Based on careful pathology studies in well phenotyped patients, their response to treatment, and overall natural history, asthma is now considered to comprise different subtypes or endotypes in which different aspects of the underlying pathology may dominate the clinical expression of the disease.
+
+## Airway Remodeling
+
+In some patients with asthma persistent changes in airway structure occur, including epithelial goblet cell and submucous gland meta- and hyperplasia, sub-epithelial fibrosis, proliferation of nerves and blood vessels and most importantly, smooth muscle hypertrophy. These changes are not prevented nor completely reversed by currently available therapies, including inhaled corticosteroids. Some patients with asthma develop a phenotype in which airflow obstruction is not completely reversible and is favored by increased severity and duration of asthma and tobacco smoking. It is assumed that this reflects the results of airway remodeling.
+
+## Increasing Prevalence
+
+There was a sharp increase in the prevalence, morbidity, and mortality associated with asthma beginning in the 1960’s and 1970’s in the so-called “Westernized” countries of the world. A study from Finland indicated a sharp rise in asthma in young adults beginning about 1960, while in Scotland the prevalence of wheezing in school children doubled from 10% to 20% between 1965 and 1989. In the United States, hospitalizations for asthma began to increase in 1972, deaths attributed to asthma began to rise in 1978, while from 1980 to 1994 the prevalence of individuals reporting physician diagnosed asthma increased from 3% to 5.4%, the increase occurring in all age groups, but greater in children.
+
+The best information on the prevalence of asthma throughout the world was obtained by the International Study of Asthma and Allergies in Childhood (ISAAC). Questionnaires were completed primarily in 1994 and 1995 by 463,801 children aged 13-14 years from 56 countries, and by parents of 257,800 children aged 6-7 years from 38 countries. Asthma was considered to be present if there was a positive response to the question “Have you had wheezing or whistling in the chest in the last 12 months”, translated into the appropriate local language. In the 13-14 year old age group, the indicated prevalence varied more than 15-fold between countries, ranging from 2.1%-4.4% in Albania, China, Greece, Georgia, Indonesia, Romania and Russia to 29.1%-32.2% in Australia, New Zealand, Republic of Ireland and the United Kingdom. Other countries with low prevalence were mostly in Asia, Northern Africa, Eastern Europe and the Eastern Mediterranean regions, and others with high prevalence were in South East Asia, North America and Latin America. Trends for prevalence in the 6-7 year olds was similar to those in the older children with prevalence of wheezing varying from 4.1%-32.1%.
+
+The same survey was conducted 5-10 years later in 56 countries in children 13-14 years of age and 37 countries in children 6-7 years of age. This study, termed ISAAC III, was primarily intended to assess changes in asthma prevalence over time. Overall, there was only a slight increase in asthma prevalence from 13.2% to 13.7% in the 13-14 year olds and from 11.1% to 11.6% in the 6-7 year olds. The most striking change was a decline in prevalence of asthma in the English speaking counties which formerly had had the highest prevalence. Other areas such as Latin American, Eastern Europe and North Africa that already had high to intermediate prevalence continued to show an increase and, with the exception of India, all countries with low prevalence rates in ISAAC I reported increased prevalence in ISAAC III. Thus, overall, the disparity in asthma prevalence found in ISAAC I was found to have diminished, perhaps due to increasing urbanization in developing countries (Figure 3).
+
+![](images/dbfbf9a3fe0576e95398543402007a0d549ef59d4d37864fe8dba499039c1959.jpg)  
+Figure 3 — 12-month prevalence of self-reported asthma symptoms from written questionnaires. From: Worldwide variation in prevalence of symptoms of asthma, allergic rhinoconjunctivitis and atopic eczema: ISAAC. Lancet 1998; 351: 1225-32. Reproduced with permission from Elsevier.
+
+An international assessment of the prevalence of asthma in adults (the European Community Respiratory Health Survey or ECRHS) was conducted between 1991 and 1994. Data were obtained on asthma prevalence in 138,565 subjects 20- 44 years of age from 22 countries mostly in Europe, but also Oceania and North America.
+
+There were 15 countries in which both ISAAC and ECRHS data were available and in these countries there was a strong correlation between the two surveys in the finding for current wheeze. Similar to ISAAC, the ECRHS found a high prevalence of reported asthma symptoms in English-speaking countries, and a high prevalence in Western Europe, with a lower prevalence in Eastern and Southern Europe. Overall, the prevalence of reported wheezing in the adults varied from 4.1% to 32%. Factors considered to underlie the increase in asthma are poorly understood even though connections with the Western-type lifestyle seem to be a common factor. Possibilities include diet, air pollution, exposure to certain environmental chemicals and drugs, virus infection, maternal tobacco smoking and changes in housing type and indoor environment. Most likely multiple factors will interact and these may differ in different countries. An important cause of lateonset asthma is chemical exposure in the workplace.
+
+## Hospitalizations and Mortality
+
+Annual worldwide deaths from asthma have been estimated at 250,000 and mortality does not appear to correlate well with asthma prevalence. Several countries have experienced a decline in asthma deaths that appears to correlate with increasing use of inhaled corticosteroids in those countries. Asthma mortality is most accurately tracked in the 5-34 year old age group, due to absence of confounding diagnoses. Data from the United States, Canada, New Zealand, Australia, Western Europe, Hong Kong and Japan show a rise in the asthma mortality rate from 0.45/100,000 in 1974/5 to a peak of 0.62/100,000 in 1985/6. Since the late 1980’s there has been a widespread and progressive reduction in mortality rates in these countries to a low of 0.23/100,000 in 2004/5. This has coincided with the introduction of national and international asthma management guidelines, although the implementation of these in different countries is highly variable dependent in part on costs and socio-economic conditions.
+
+In the United States nearly a half million hospitalizations occur each year for asthma and, despite declining mortality, hospitalization rates have remained relatively stable over the last decade which must reflect persisting problems with diagnosis and health care provision.
+
+## Treatment Guidelines
+
+Inhaled corticosteroids are currently the most effective antiinflammatory medications for the treatment of persistent asthma. They are effective in reducing asthma symptoms, improving quality of life, improving lung function, decreasing airway hyperresponsiveness, controlling airway inflammation, reducing frequency and severity of exacerbations, and reducing asthma mortality. However, they suppress but do not cure asthma and when discontinued deterioration of clinical control follows within weeks to months in the majority of patients. Most of the benefit of inhaled corticosteroids is achieved in most patients at relatively low doses, however responsiveness varies and some patients, including those who smoke tobacco, may require higher doses. Due to the shallow dose-response to inhaled corticosteroids, patients not controlled on low dose inhaled corticosteroids will usually do better with the addition of another controller medication rather than an increased dose of inhaled corticosteroids. The most effective add-on medications are the long-acting inhaled beta-agonists. Somewhat less effective than long-acting beta-agonists, but still having some additive effect with inhaled corticosteroids, are the leukotriene pathway modifying agents and theophylline.
+
+## Under-diagnosis and Under-treatment
+
+A survey of households in 29 countries in North America, Europe and Asia identified individuals with asthma who were symptomatic in the last year or taking asthma medication. Over 10,000 adults and children with asthma were interviewed. A substantial effect of asthma on patients’ lives was observed, with considerable loss of school and work days, restrictions on lifestyle and requirement for emergency treatment. Despite this burden of asthma, use of anti-inflammatory medication was the exception, ranging from 26% in Western Europe to 9% in Japan. A Norwegian survey in 2006 showed that less than half of children admitted to hospital with asthma had been taking a regular inhaled corticosteroid, and in Turkey this fell to only one fifth of children diagnosed with asthma. In all cases, there is overdependence on short acting bronchodilators to manage acute attacks without considering the benefits of long-term antiinflammatory treatment with topical corticosteroids.
+
+Studies from Europe and America indicate that one third of school-age children with asthma may be undiagnosed. Undiagnosed asthma has also been reported to be common among adults and to be a particular problem in the elderly. Undiagnosed asthma is usually also untreated, although lack of treatment or under-treatment is common even among those who have been diagnosed with asthma. In part, this is because physicians often fail to appreciate the severity of their patients’ asthma, but also because patients are often nonadherent to their prescribed controller medication. The reasons for this are complex and are inadequately dealt with by health professionals.
+
+## Severe Asthma
+
+Severe or difficult-to-treat asthma constitutes around 5-8% of the total asthmatic population. This is defined as asthma with poorly controlled chronic symptoms, episodic exacerbations, persistent and variable airways obstruction, and continued requirement for short acing beta-agonists and high doses of inhaled corticosteroids. Patients with severe asthma may have persistent sputum eosinophilia resistant to high doses of inhaled corticosteroids, or neutrophilic inflammation. It is in these patients that acute exacerbations triggered by environmental factors, including common respiratory virus infections, cause the most difficulty, often leading to unscheduled physician consultation, hospitalization or emergency room treatment.
+
+It follows that the economic burden of asthma disproportionately affects those with the most severe asthma. It is critical in patients presenting with severe asthma that the diagnosis of asthma be confirmed, as misdiagnosis is common in this setting. Comorbidities which could adversely affect their asthma should also be managed.
+
+## Financial Burden
+
+The monetary costs of asthma are substantial and include both direct medical costs (hospitalization, emergency room treatment, doctors visits and medication) and indirect, nonmedical costs (time lost from work and premature deaths).
+
+In a US study, pharmaceuticals constituted the predominant direct cost followed by hospitalizations and doctors’ office visits, which together constituted two thirds of the total costs, while indirect costs were dominated by total cessation of work, followed by missed work days. Compared to patients with mild asthma, the costs in those with moderate asthma were approximately twice as great and costs for patients with severe asthma were 6-fold higher.
+
+A model of disease management that has had a massive effect in abolishing asthma mortality and greatly reducing asthma morbidity has been conducted in Finland (population 5.2 million) over the period 1994-2004. The Finnish program focused on early diagnosis, active anti-inflammatory treatment from the outset of diagnosis, health profession-guided selfmanagement, and effective networking with primary care physicians and pharmacists. This program resulted in a reduction in asthma health costs from a predicted €500-€800 million to €230 million which could be largely attributed to early and more effective use of anti-inflammatory medication, especially inhaled corticosteroids. Such programs need to be implemented in other countries taking account of their differing socio-economic conditions and cultural practices. Finland is now turning its attention to reducing the prevalence of allergy with a range of interventions. Other countries (Australia, Canada, Poland, Tonga and New Zealand) that have developed their own national asthma reduction strategies are reaping rewards and such practices should now be taken up on a worldwide scale.
+
+## Barriers to reducing the worldwide burden of asthma according to the Global Initiative for Asthma (GINA)
+
+1. Poverty, inadequate resources.
+
+2. Low public health priority for asthma compared to other diseases.
+
+3. Poor health care infrastructure.
+
+4. Tendency for care to be acute rather than long-term.
+
+5. Difficulties in implementing guidelines developed in wealthier countries.
+
+6. Limited availability of, and access to, medication due to cost and distribution problems.
+
+7. Lack of patient education, under-use of self-management and use of unproven therapies.
+
+8. Environmental factors including tobacco use, indoor and outdoor air pollution and occupational exposures.
+
+9. Poor patient treatment adherence.
+
+## Unmet Needs
+
+## Diagnostic:
+
+• A greater understanding of different asthma subtypes, their natural history and response to interventions both environmental and therapeutic.
+
+• Defining the mechanisms important to different asthma phenotypes.
+
+• Identifying appropriate bio-markers to assess asthma.
+
+• Further studies of the social and economic burden of asthma.
+
+• Measuring and monitoring the prevalence, morbidity and mortality of asthma throughout the world.
+
+• Defining the role of respiratory virus infections in childhood and adult asthma.
+
+Determining the contribution of host and environmental factors that lead to initiation and persistence of disease and how these interact with genetic susceptibility.
+
+• Making available reasonably priced equipment to document reversible airflow obstruction and bio-markers of inflammation.
+
+## Therapeutic:
+
+• Studies of the cost effectiveness of treatment in different socio-economic settings.
+
+• Improvement in indoor and outdoor air pollution, tobacco smoking and occupational exposures.
+
+• Improved accessibility to essential drugs for the management of asthma in low- and middle-income countries.
+
+• Identification of bio-markers to predict and monitor therapeutic response.
+
+• Development of immunomodulators that affect the development and/or the natural history of asthma.
+
+• Elucidate approaches to improve patient adherence to medical treatment.
+
+## Educational:
+
+• Adapt international asthma guidelines for developing countries to ensure they are practical and realistic in terms of different health care systems.
+
+• Promote cost-effective management approaches which have been proven to reduce morbidity and mortality.
+
+## Financial:
+
+• Address the economic factors which limit the availability of health care.
+
+## Recommended Reading
+
+1. Global Initiative for Asthma. Global Strategy for Asthma Management and Prevention. Updated 2008. www.ginaasthma.com/ GuidelinesResources.asp
+
+2. Expert Panel Report 3: Guidelines for the Diagnosis and Management of Asthma. National Heart, Lung and Blood institute. National Asthma Education and Prevention Program. Full Report 2007. www.nhlbi.nib. gov/guidelines/asthsumm.htr.
+
+3. Worldwide variations in the prevalence of asthma symptoms: the International Study of Asthma and Allergies in Childhood (ISAAC). Asher MI, Anderson HR, Stewart AW, Crane J. Eur Respir J 1998; 12:315-35.
+
+4. Worldwide trends in the prevalence of asthma symptoms: Phase III of the International Study of Asthma and Allergies in Childhood (ISAAC). Pearce N, Ait-Khaled N, Beasley R, Mallol J, Koll U, Mitchel E, Robertson C. Thorax 2007:62:758-66.
+
+5. The global burden of asthma: executive summary of the GINA Dissemination Committee Report. Masoli M, Fabian D, Holt S, Beasley R. Allergy 2004:59:469-78
+
+6. The European Community Respiratory Health Survey: what are the main results so far? Janson C, Anto J, Burney P, Chinn S, de Marco R, Heinrich J, Jarvis D, et al. Eur Respir J 2001;18:596-611.
+
+7. Comparison of asthma prevalence in the ISAAC and the ECRHS. Pearce N, Sunyer J, Cheng S, Chin S, Bjorksten B, Burr M, et al. Eur Respir j 2000;16:420-6.
+
+8. Worldwide severity and control of asthma in children and adults: the global Asthma Insights and Reality surveys. Rabe KF, Adachi M, Lai CKW, Soriano J Vermeire P, Weiss KB, Weiss ST. J Allergy Clin Immunol 2004;114:40-7
+
+9. Wyesinglie M, et al. International trends in asthma mortality rates in the 5-34 year age group: A call for closer surveillance. Chest 2009;135:1045-9.
+
+10. Asthma programme in Finland 1994-2004. Clin Exp Allergy 1996; 26 (Suppl. 1): 1-24.
+
+11. Haahtela T, Klaukka T, Koskela K et al. Asthma programme in Finland: a community problem needs community solutions. Thorax 2001; 56: 806-14.
+
+12. Hahtela T, Tuomisto LE, Pietinalho et al. A 10 year asthma programme in Finland: major change for the better. Thorax 2006; 61: 663-70.
+
+13. Boulet LP, Dorval E, Labrecque M, Turgeon M, Thivierge RL. Towards Excellence in Asthma Management: final report of an eight-year programme aimed at reducing care gaps in asthma management in Quebec. Can Respir J. 2008; 15: 302-10.
+
+## Section 2.3. Atopic Eczema
+
+Thomas Bieber, Donald Leung, Yehia El Gamal, Juan-Carlos Ivancevich
+
+## Key Statements
+
+• An increase in the worldwide prevalence of atopic eczema has been observed.
+
+• Atopic eczema is the most common chronic inflammatory skin disease with a varied clinical spectrum.
+
+• Atopic eczema is often the first manifestation of the atopic patient and early intervention may offer an opportunity to impede or stop the atopic march.
+
+• Atopic eczema represents an important public health issue due to its impact on quality of life and its socio-economic burden.
+
+## Introduction
+
+Atopic Eczema (AE) is a common, paradigmatic, pathophysiologically highly complex, chronic inflammatory skin disease. Due to the very large clinical spectrum of this condition, it is assumed that the clinical phenotype of AE probably represents the expression of chronic inflammation emerging against a complex genetic background, and altered by environmental factors. One of the cardinal signs of AE is dry skin, which reflects a dysfunction of the epidermal barrier. This leads to an increased penetration of environmental allergens through the skin with an increased risk for IgE-mediated sensitization to environmental (e.g. food, pollens, house dust mite) and occupational allergens. This phenomenon is further supported by an underlying chronic inflammation in the skin which has a deep impact on the overall immunological system, thereby catalyzing sensitization. This is particularly true for those patients in whom the disease starts very early against the genetic background of filaggrin mutations, and who exhibit a moderate-to-severe form of this disease. Therefore, it is assumed that at least a subgroup of patients suffering from this disease will eventually develop other atopic diseases (the so called “atopic or allergic march”). This “allergic march” starts with AE, in the course of which sensitization occurs, followed by allergic rhinitis and/or asthma. This natural history of AE opens avenues for intervention at different time points, aiming to control inflammation better, improve skin condition and prevent the emergence of other atopic diseases.
+
+There is strong epidemiological and genetic evidence that AE may represent the initial phase of the so-called allergic march. AE affects up to 20% of children and 2-10% of adults. The increasing prevalence can be linked to the western lifestyle and has a profound impact on the quality of life of patients. AE generates a substantial economic burden. Therefore, a long term management approach is required in children and in adults in order to restore the epidermal barrier function, better control underlying inflammation and, potentially, to prevent the occurrence of the “allergic march”.
+
+## Prevalence and Incidence
+
+With a life time prevalence of 15-30% in children and 2-10% in adults, the incidence of AE has increased by two- to threefold in industrialized countries during the past three decades. AE usually presents during early infancy and childhood but can also persist or start in adulthood. The 12-month prevalence in 11 year-old children has been shown to vary from 1-20% with the highest prevalence typically found in Northern Europe (International Study of Asthma and Allergies in Childhood - ISAAC). In 45% of children, the onset of AE occurs during the first 6 months of life; during the first year 60% of these children are affected, and 85% are affected before the age of five.
+
+The prevalence of AE in rural areas is significantly lower, emphasizing the importance of lifestyle and environment in the mechanisms of atopic disease. Due to modern advances in genetics and immunology, much progress has been made in elucidating the pathophysiology of AE, yet the hygiene hypothesis is still one important and hotly debated feature.
+
+Not all patients suffering from AE exhibit IgE mediated sensitization. According to ISAAC data, the occurrence of sensitization is higher in more developed countries. Only 17% of adult patients in Western countries display increased IgE and specific IgE to environmental allergens. In adults, the vast majority of the patients who suffer from AE, but do not have IgE-mediated sensitization, are females.
+
+About 50% of children who have started the disease in the first weeks or months of life (early onset) will have developed allergen sensitization by the age of 2 years.
+
+## Symptoms
+
+Symptoms of AE considerably vary with age and differ over the course of the disease. The clinical spectrum of AE is wide, ranging from mild forms such as Pityriasis alba (dry depigmented patches) to major forms with erythrodermic rash. The eczema is polymorphic including acute (oozing, crusted, eroded vesicles or papules on erythematous plaques); subacute (thick, pale excoriated plaques); and chronic (lichenified, slightly pigmented, excoriated plaques) forms. Abnormally dry skin and a lowered threshold for itching are important features of AE. All stages of disease are associated with or caused by pruritus. Although pruritus can occur throughout the day, it generally worsens during the night; these paroxysmal attacks of itching cause insomnia, exhaustion, and impaired ability to work. Exacerbation of pruritus and scratching can be caused by diverse trigger factors such as heat and perspiration, wool, emotional stress, foods, alcohol, upper respiratory infections and house dust mites.
+
+Infants present facial and patchy or generalized body eczema. Lesions generally first appear on the cheeks and are characterized by dry and erythematous skin with papulovesicular lesions. Scratching the skin results in inflammatory and crusty erosions. The term “milk crust” or “milk scurf” refers to the occurrence of yellowish crusts on the scalp in infants, resembling scalded milk. Due to persistent pruritus, the infant is uncomfortable and becomes restless and agitated during sleep. In about 50% of patients lesions heal by the end of the second year of life; in some cases they gradually lose their original exudative character and turn into chronic lesions, characterized by lichenification.
+
+![](images/14c08539bb12b5af0a26c823d9f13646e080c309d405b5eeefa0ee0c39e66874.jpg)  
+Figure 4. Severe Atopic Eczema in Childhood
+
+In childhood, from 18 to 24 months onwards, common eczema sites include flexural areas (ante-cubital fossae, neck, wrists, and ankles), the nape of the neck, dorsum of the feet and the hands. They can either develop from the preceding neonatal phase or arise de novo. Rashes usually begin with papules that become hard and lichenified with inflammatory infiltration when they are scratched. The skin around the lips may be inflamed. Frequent licking of the area may lead to small, painful cracks in the perioral skin. Frequent scratching and manipulation of the affected skin causes destruction of melanocytes, resulting in areas of hypo-pigmentation when the inflammation subsides (post-inflammatory hypo-pigmentation). During childhood, eczema may disappear completely for a long phase, leaving sensitive, dry skin.
+
+For unknown reasons, AE may relapse during puberty or adulthood. As in the childhood phase, localized inflammation with lichenification of the flexural areas is the most common pattern in adolescents and adults. Predominant sites are the neck, upper chest, large joint flexures, and backs of the hands. Facial skin is usually affected on the forehead, eyelids, and perioral region.
+
+![](images/abcbd09c2efea407ab8bf32c70c18a7a7fd1b0b10924a15ebf19dbf748427133.jpg)  
+Figure 5. Severe Atopic Eczema in Adulthood
+
+## Consultations and Hospitalizations
+
+Due to its frequency, AE is one the most common reasons for consultations to general practitioners, paediatricians or dermatologists. Its clinical control requires frequent visits and a complex management strategy aimed at improving the skin dryness, reducing chronic inflammation, and improving the quality of life. Severe forms of the disease lead to hospitalization, particularly for small children who may exhibit bacterial or viral super-infections. Eczema herpeticum is a severe complication due to widespread infection with the herpes simplex virus in AE patients at risk, requiring hospitalization and systemic anti-viral therapy.
+
+## Mortality
+
+Although this disease has a high impact on the quality of life, it is not life threatening and therefore figures about mortality are not reported.
+
+## Severity of Disease
+
+The clinical spectrum of AE extends from minimal variants with only dry skin and so-called atopic stigmata to very severe forms including erythroderma (see above). Several scoring systems have been elaborated over the years, which are now widely used in the context of clinical management and clinical trials. According to these scoring systems, only 10% of patients have a severe form of AD, whilst 20% are classified as moderate and 70% as mild.
+
+AE may have a profound impact on the lives of patients’ lives and their families. Social interactions, psychologic adjustments, work success, sexual relationships, and quality of life often are somewhat dependent on the course of disease. Fatigue and loss of concentration, due to insomnia, can provoke behavioural difficulties in childhood. Constant pruritus has a strong impact on the personality of children and may influence their development. Depression and anxiety seem to be the most important factors in adolescence and adult patients due to time consuming therapies and the lack of a “cure”. It has been known for a long time that emotions are capable of triggering AE. Stress increasingly has been recognized as an important trigger factor of AE. Stressful events often have been experienced before exacerbations of AE.
+
+## Drug Use
+
+Emollients and anti-inflammatory drugs are the two main pillars of the clinical management of AE. As an anti-inflammatory drug, topical gluco-corticosteroids (TGS) are still considered as the gold standard in the treatment of AE. However, topical calcineurin inhibitors (TCI) represent new and important alternatives to the use of steroids, particularly in the context of corticophobia. This phobia to TGS and TCI is the main reason for an underuse of anti-inflammatory drugs in this condition as well as the lack of compliance to management guidance. A more proactive management consists of a maintenance treatment by the twice-weekly application of TGS or TCI, leading to a significantly better control of symptoms and a higher quality of life for these patients. Drug consumption, however, is not increased under this regimen compared to the classical reactive management.
+
+## Financial Burden
+
+The economic burden of AE is high: one study estimated the total annual expenditure for AE in the UK at £465 million (€521 million). This included a total annual cost to patients of £297 million (€333 million). A further £125 million (€140 million) were costs incurred by the National Health Service and £43 million (€48 million) were costs to society through lost working days or lost employment opportunities. In Germany, the total average costs for an AE patient have been estimated to be about €4400 (comprising €1450 reimbursed direct costs, €1130 costs not reimbursed, and €1850 in indirect costs).
+
+## Current and Future Needs
+
+Primary prevention strategies should be aimed at identifying and eliminating factors favouring the emergence of sensitization and the subsequent atopic march.
+
+• There is a great need for improved education of parents and patients (AE-schools) for a better compliance to the management of the disease.
+
+• Risk factors as well as early clinical and biological makers for the development of sensitization during the early phase of AE should be investigated.
+
+• Improving the diagnosis and management of AE is crucial for minimizing its impact on the development of sensitization, quality of life and socio-economic consequences.
+
+• The compensation of costs for the basic therapy aimed to restore the epidermal barrier function.
+
+## Unmet Needs
+
+• Educational programs (AE-schools) should be implemented to increase the ability of patients to cope with their disease, and to encourage compliance with long-term management strategies.
+
+• The further development of new anti-inflammatory compounds should be based on the increased knowledge of immunological and genetic information.
+
+• The design of new basic therapeutic approaches should address the issue of a dry skin and be based on our current biochemical understanding of the epidermal barrier function.
+
+• Understanding of the role of autoimmunity in the pathophysiology of AE should lead to the design of new therapeutic approaches.
+
+• Overall, due its genetic and phenotypic complexity, AE should be the focus of a more personalized approach aimed to address the individual aspects of AE in distinct subgroups more specifically, potentially identifying distinct prognoses.
+
+## Research Needs
+
+Long term studies addressing the natural history of the disease based on large cohorts and including genetic and environmental information should provide important insights into the genetic determinants for the development of atopic diseases emerging against the background of AE.
+
+Studies to increase understanding of the interdependency relationship between parents and children affected by the disease may provide new insights into this particular aspect of AE.
+
+## Recommended Reading
+
+1. Asher MI, Montefort S, Bjorksten B et al. Worldwide time trends in the prevalence of symptoms of asthma, allergic rhinoconjunctivitis, and eczema in childhood: ISAAC Phases One and Three repeat multicountry cross-sectional surveys. Lancet 2006; 368: 733-43.
+
+2. Barnetson RS, Rogers M. Childhood atopic eczema. BMJ 2002; 324: 1376-9.
+
+3. Beattie PE, Lewis-Jones MS. A comparative study of impairment of quality of life in children with skin disease and children with other chronic childhood diseases. Br J Dermatol 2006; 155: 145-51.
+
+4. Bieber T. AD. N Engl J Med 2008; 358: 1483-94.
+
+5. Elias PM, Hatano Y, Williams ML. Basis for the barrier abnormality in atopic dermatitis: Outside-inside-outside pathogenic mechanisms. J Allergy Clin Immunol 2008.
+
+6. Emerson RM, Williams HC, Allen BR. Severity distribution of atopic dermatitis in the community and its relationship to secondary referral. Br J Dermatol 1998; 139: 73-6.
+
+7. Fennessy M, Coupland S, Popay J et al. The epidemiology and experience of atopic eczema during childhood: a discussion paper on the implications of current knowledge for health care, public health policy and research. J Epidemiol Community Health 2000; 54: 581-9.
+
+8. Flohr C, Weiland SK, Weinmayr G et al. The role of atopic sensitization in flexural eczema: findings from the International Study of Asthma and Allergies in Childhood Phase Two. J Allergy Clin Immunol 2008; 121: 141-7 e4.
+
+9. Herd RM, Tidman MJ, Prescott RJ et al. The cost of atopic eczema. Br J Dermatol 1996; 135: 20-3.
+
+10. Johansson SG, Bieber T, Dahl R et al. Revised nomenclature for allergy for global use: Report of the Nomenclature Review Committee of the World Allergy Organization, October 2003. J Allergy Clin Immunol 2004; 113: 832-6.
+
+11. Lawson V, Lewis-Jones MS, Finlay AY et al. The family impact of childhood atopic dermatitis: the Dermatitis Family Impact Questionnaire. Br J Dermatol 1998; 138: 107-13.
+
+12. Moore EJ, Williams A, Manias E et al. Eczema workshops reduce severity of childhood atopic eczema. Australas J Dermatol 2009; 50: 100-6.
+
+13. Staab D, Diepgen TL, Fartasch M et al. Age related, structured educational programmes for the management of atopic dermatitis in children and adolescents: multicentre, randomised controlled trial. BMJ 2006; 332: 933-8.
+
+14. Williams H, Stewart A, von Mutius E et al. Is eczema really on the increase worldwide? J Allergy Clin Immunol 2008; 121: 947-54 e15.
+
+15. Williams HC. Clinical practice. Atopic dermatitis. N Engl J Med 2005; 352: 2314-24.
+
+16. Williams HC, Grindlay DJ. What’s new in atopic eczema? An analysis of systematic reviews published in 2007 and 2008. Part 1. Definitions, causes and consequences of eczema. Clin Exp Dermatol 2009.
+
+17. Zuberbier T, Orlow SJ, Paller AS et al. Patient perspectives on the management of atopic dermatitis. J Allergy Clin Immunol 2006; 118: 226-32.
+
+18. Flohr C, Williams H. Epidemiology. In: Atopic dermatitis. Bieber and Leung (editors), Informa Health, 2009
+
+## Section 2.4. Anaphylaxis
+
+Richard F. Lockey, Stephen F. Kemp, F. Estelle R. Simons, Philip L. Lieberman, Aziz Sheikh
+
+## Key Statements
+
+• Epinephrine, at appropriate doses, is the drug of choice to treat anaphylaxis.
+
+• There is lack of consensus about the definition of anaphylaxis and this lack of consensus in definition contributes to the variability in its identification, treatment and the use of epinephrine.
+
+• The variability and severity of anaphylaxis is somewhat dependent on the route by which the allergen or inciting agent is delivered, e.g., parenteral versus oral administration; the former is commonly associated with more severe reactions.
+
+• There is a variety of other terms which describe anaphylaxis and which cause confusion, especially with its definition and treatment. These include: generalized systemic reaction; systemic allergic reaction; constitutional reaction; and serious hypersensitivity reaction.
+
+• Anaphylaxis includes both allergic and non-allergic etiologies.
+
+• The term “anaphylactoid” is outdated.
+
+## Introduction
+
+The World Allergy Organization (WAO) defines anaphylaxis as follows: “allergic anaphylaxis” is immunologically mediated and involves IgE, IgG and immune complexes, whereas “non-allergic anaphylaxis” refers to anaphylaxis from whatever non-immunologic cause and replaces the term “anaphylactoid”. Anaphylaxis, as used in this paper, includes both allergic and non-allergic anaphylaxis1. Although there are separate pathophysiologic mechanisms involved in anaphylaxis, the lack of a consensus definition results in confusion as to how it should be treated, and especially when epinephrine should be administered. Likewise, there are no prospective control studies which define better when epinephrine should be administered and when and if antihistamines and glucocorticosteroids should be given.
+
+## Definition and Use of Epinephrine
+
+There is a lack of consensus about the clinical definition of anaphylaxis. For example, the Second Symposium on the Definition and Management of Anaphylaxis states that “anaphylaxis is a severe, potentially fatal, systemic allergic reaction that occurs suddenly after contact with an allergycausing substance”. It follows with the caveat: “Anaphylaxis is a serious allergic reaction that is rapid in onset and may cause death”. Under the proposed working definition, anaphylaxis is “highly likely” when any one of three criteria is fulfilled within a timescale of a few minutes to several hours:
+
+1. Acute onset of illness with involvement of the skin, mucosal tissue, or both, and at least one of the following: respiratory compromise and/or reduced blood pressure (BP) or associated symptoms of end-organ dysfunction.
+
+2. Two or more of the following occur rapidly after exposure to a likely allergen for a given individual: a) involvement of the skin-mucosal tissue; b) respiratory compromise; c) reduced BP or associated symptoms dysfunction; or d) persistent gastrointestinal symptoms.
+
+3. Reduced BP after exposure to a known allergen for a given individual: a) infants and children: low systolic BP (age specific) or greater than 30% decrease in systolic BP; and b) adults: systolic BP of less than 90 mm Hg or greater than 30% decrease from that subject’s baseline.
+
+4. The authors state that intramuscular epinephrine is the preferred treatment for anaphylaxis, but do not state when it is appropriate to administer epinephrine, taking into account the presenting signs and symptoms associated with the disease2.
+
+A European position paper offers minor modifications to this definition and states that epinephrine “should be administered to a child with an anaphylactic reaction involving any respiratory and/or cardiovascular symptoms or signs; otherwise it is usually not recommended. However, specific management should be tailored to the individual”. It adds the caveat that epinephrine has no absolute contraindication in anaphylaxis treatment3,4. A WAO position paper defines anaphylaxis as “… an acute and potentially lethal multi-system allergic reaction in which some or all of the following signs and symptoms occur: …” and then lists signs and symptoms associated with anaphylaxis. It recommends use of epinephrine administration if there is a temporal relationship between a causative substance and the onset of any systemic signs or symptoms of anaphylaxis. It concludes that epinephrine is currently underutilized and often dosed suboptimally to treat anaphylaxis, is under-prescribed for potential future self-administration, that most of the reasons proposed to withhold its clinical use are flawed, and that the therapeutic benefits of epinephrine exceed the risk when given at appropriate intramuscular doses5.
+
+For decades, consensus guidelines have recommended epinephrine as the drug of choice and the first drug to treat anaphylaxis. Epinephrine in ampoules is deemed by the World Health Organisation to be an essential medication (www.who.int). The WAO survey on essentials for the management of anaphylaxis found that epinephrine in ampoules is universally available for anaphylaxis management6. Some state that properly administered epinephrine has no absolute contraindication in this setting. However, it is commonly administered at different times following the initial onset of the signs and symptoms of anaphylaxis because some physicians believe certain symptoms do not justify its use, while others always use it. High quality outcomes data are lacking, adding to the controversy.
+
+## Epidemiology of Anaphylaxis
+
+Accurate characterization of the epidemiology of anaphylaxis is complicated by inconsistencies in its definition, coding, and the challenges involved in undertaking prospective cohort studies7. Thus, concerns about under-reporting and under-diagnosis of anaphylaxis complicate reliable assessment of its frequency and impact.
+
+Population surveys, case records, hospitalizations, epinephrine dispensings, and mortality statistics have been used to estimate the incidence, lifetime prevalence, morbidity and case fatality ratio associated with anaphylaxis. Of these, population-based studies are most likely to yield the most accurate estimates8. The incidence is estimated to be 80-210 episodes per million person-years7 and this varies by age, gender, geography and socio-economic status. Available data on time trends suggest that its incidence has increased, particularly with respect to anaphylaxis caused by foods and drugs. However, greater awareness, recognition and reporting are other possible explanations. Anaphylaxis probably affects 0.05-2.0% of the population at some point during their lifetime9.
+
+Assessing the risk for severe anaphylaxis is difficult, if not impossible, but the more rapid the onset, the smaller the dose of the causative agent required to trigger reactions, and previous severe reactions are all general markers of potential severe future reactions. Underlying asthma, particularly if poorly controlled, and cardiovascular disease are risk factors for fatal outcomes7,10. Delayed medical attention, especially delayed administration of epinephrine, is another factor implicated in fatal episodes. The overall case fatality ratio (the proportion of anaphylaxis that is fatal) is estimated at less than 1%, or 1-5.5 fatal episodes from anaphylaxis per million of the population annually7.
+
+## Signs and Symptoms of Anaphylaxis
+
+Anaphylaxis can be an explosive, potentially fatal event which can affect any organ system. Manifestations are usually rapid in onset and appear in most instances within minutes to an hour of exposure to the offending agent. If the agent is injected, the reaction usually begins within minutes. After ingestion, there can be a longer time interval between exposure to the culpable agent and the onset of the reaction. However, even after ingestion, reactions usually occur within two hours.
+
+“Biphasic reactions”, manifestations of anaphylaxis which return after an asymptomatic period, are more likely to occur when the event is severe, associated with hypotension, when the responsible agent is ingested, and when the patient has asthma11.
+
+The signs and symptoms of anaphylaxis are included in Table 6. However, with a rapid and severe onset of anaphylaxis, especially if the causative agent has been injected, loss of consciousness and shock can occur suddenly in the absence of any other sign or symptom. Children have more prominent respiratory features during an anaphylactic episode. Fatalities can be due to respiratory tract obstruction and/or shock, with collapse of the cardiovascular system and arrhythmias.
+
+Table 6 — Frequency of Individual Signs and Symptoms in Anaphylactic Events
+<table><tr><td>Signs and Symptoms Percentage of Casest</td></tr><tr><td>Cutaneous: &gt;90 Urticaria (hives) and Angioedema (localized swellings beneath</td></tr><tr><td>the skin, most commonly on the lips and eyes) 85-90 Flush 45-55 Pruritus (itch) without rash 2-5</td></tr><tr><td>Respiratory: 40-60 Dyspnea (shortness of breath), Wheeze, Cough 45-50</td></tr><tr><td>Upper airway angioedema (e.g. swelling in throat) 50-60 Rhinitis (runny nose, nasal congestion) 15-20 Dizziness, syncope (loss of consciousness),</td></tr><tr><td>hypotension (low blood pressure): 30-35</td></tr><tr><td>Abdominal: 25-30 Nausea, Vomiting, Diarrhea, Cramping pain</td></tr><tr><td>Miscellaneous:</td></tr><tr><td>Headache 5-8</td></tr><tr><td></td></tr><tr><td>Substernal pain 4-6</td></tr><tr><td>Seizure 1-2</td></tr></table>
+
+Evidence Basis for Treatment of Anaphylaxis Anaphylaxis treatment recommendations are primarily based on expert consensus and anecdotal evidence. Table 7 lists the basic therapeutic agents used to treat anaphylaxis. Assessment and maintenance of the airway, breathing, circulation, and cognitive function are necessary and patients should be monitored continuously until the problem resolves. Patients should be placed in the recumbent position because suddenly sitting or standing up may be associated with fatal outcomes11. Patients with respiratory distress or vomiting should be placed in a position of comfort.
+
+Table 7 — Therapeutic Agents for Treatment of Anaphylaxis
+<table><tr><td rowspan=1 colspan=1>Agent</td><td rowspan=1 colspan=1>Dose and route ofadministration</td><td rowspan=1 colspan=1>Comments</td></tr><tr><td rowspan=1 colspan=1>Epinephrine 1:1000</td><td rowspan=1 colspan=1>0.2-0.5 mg IM thigh(adult); 0.01 mg/kg[up to 0.3 mg]iM thigh (child)</td><td rowspan=1 colspan=1>Give immediately andrepeat every 5-15 minas needed. Monitor fortoxicity.</td></tr><tr><td rowspan=1 colspan=1>Volume expansionNormal saline</td><td rowspan=1 colspan=1>1-2 litres rapidly IV inadults(5-10ml/kg in first 5min); 30ml/kg in firsthr for children</td><td rowspan=1 colspan=1>Rate is titrated to pulseand blood pressure.Establish IV accesswith the largestcatheter possible.Use administrationsets that permit rapidinfusions. Monitor forvolume overload.</td></tr><tr><td rowspan=1 colspan=1>Antihistaminese.g., diphenhydraminee.g., ranitidine</td><td rowspan=1 colspan=1>25-50 mg IV (adults);1 mg/kg īV up to 50mg (children)1 mg/kg (adults)12.5 – 50 mg infusedover 10 min (children)</td><td rowspan=1 colspan=1>Second-line agents;H1 and H2 agēnts maybe more effective thanH1 agents alone; oraldoses might suffice formilder episodes.</td></tr><tr><td rowspan=1 colspan=1>Corticosteroidse.g., methlyprednisonee.g., prednisone</td><td rowspan=1 colspan=1>1-2 mg/kg/day IV0.5 mg/kg/day PO</td><td rowspan=1 colspan=1>No role in acuteanaphylaxis; exactdose has not beenestablished</td></tr></table>
+
+Abbreviations: IM = intramuscularly; IV = intravenously; PO = orally
+
+Modified from: Kemp SF. Office approach to anaphylaxis: sooner better than later. Am J Med 2007; 120:664-8.
+
+Rigorous comparative studies are lacking, but there is strong expert consensus that epinephrine should be administered as early as possible to treat anaphylaxis5,12. Fatalities result from delayed or inadequate administration of epinephrine and from severe respiratory and/or cardiovascular complications10. There is no absolute contraindication for epinephrine administration to treat anaphylaxis even though it has a relatively narrow therapeutic window5. Subsequent therapeutic interventions depend on the initial response to this medication5.
+
+Studies have not been done during anaphylaxis to compare intramuscular or subcutaneous delivery of epinephrine; however, absorption is more rapid and plasma levels higher in asymptomatic adults and children given epinephrine intramuscularly into the thigh13,14.
+
+The a-adrenergic effect of epinephrine reverses peripheral vasodilation, alleviates mucosal edema and upper airway obstruction as well as hypotension and reduces urticaria/ angioedema. Its b-adrenergic properties increase myocardial contractility and output, cause bronchodilation and suppress mediator release from mast cells and basophils5. These also enhance coronary blood flow.
+
+Epinephrine, 1:10,000 or 1:100,000 volume/volume (v/v) dilutions, should be administered intravenously only in cases of cardiopulmonary arrest or to profoundly hypotensive patients who have failed to respond to intravenous volume replacement and multiple epinephrine injections because of the risk of inducing potentially lethal arrhythmias5.
+
+Oxygen should be administered to patients with progressive anaphylaxis. H and H antihistamines are commonly prescribed for treatment even though they have a slower onset of action than epinephrine and only minimally affect blood pressure. They should not be used alone to treat anaphylaxis11,15. Systemic corticosteroids are traditionally administered, but controlled trials on their effectiveness, as with all other medications used to treat anaphylaxis, are unavailable16.
+
+Hypotensive patients should receive intravenous isotonic solutions and those not responding to treatment may require a vasopressor11.
+
+## Financial Burden
+
+The best estimate from the perspective of a healthcare payer (insurance or health service) of the economic burden of anaphylaxis comes from the Allergy Vigilance Network in France which utilized International Classification of Diseases (ICD) ICD-10 coding data derived from national hospital admissions for 2003-200517. For 402 patients, three work days or classroom days were lost per patient with severe anaphylaxis. The estimated mean total cost per episode per patient was €1,895 for food- and drug-related anaphylaxis, and €4,053 for Hymenoptera sting-related anaphylaxis. The authors acknowledged that these are likely to be underestimates because of under-identification by medical teams unfamiliar with ICD-10 coding and under-reporting of peri-operative anaphylaxis.
+
+There are few studies, all suboptimal, of the long-term costs of anaphylaxis prevention. Krasnick et al demonstrated that daily treatment with corticosteroids and H -antihistamines considerably reduced emergency hospitalizations and the estimated disease-related costs for idiopathic anaphylaxis18.
+
+Epinephrine auto-injectors are universally recommended for patients at risk for recurrent anaphylaxis19; however, they are unavailable or too expensive in many countries and, in the few countries where they are available, they range in price from US \$54.50-\$168.6620.
+
+The cost-effectiveness of providing one or more epinephrine auto-injectors to the estimated 1% of the general population at risk for anaphylaxis recurrence has been questioned. Using cohort simulations, Shaker reported that the incremental costs for prophylactic epinephrine auto-injectors for mild childhood venom anaphylaxis was \$469,459 per year of life saved and \$6,882,470 per death prevented and concluded that this was not cost-effective if the annual venom-associated fatality rate was less than 2 per 100,000 persons at risk21. Considering the paucity of relevant data, ethical questions then arise as to the value society places on an individual human life.
+
+## Current and Future Needs
+
+• A consensus definition of anaphylaxis versus other terms which include: systemic allergic reaction; generalized allergic reaction; constitutional reaction; and severe hypersensitivity reaction.
+
+• More information about when epinephrine should be given to treat anaphylaxis.
+
+• More information about the effectiveness of H and H antihistamines, glucocorticosteroids and other medications to treat anaphylaxis.
+
+• More information as to when a patient should selfadminister, or a caregiver administer, epinephrine for treatment of anaphylaxis.
+
+• Better documentation of risk factors for anaphylaxis, e.g. beta-blockers, ACE inhibitors, and disease entities such as mastocytosis.
+
+• Identification of socio-economic and psychological problems that occur because of anaphylaxis.
+
+Better education of emergency room and other physicians in the appropriate treatment and follow-up of anaphylaxis and the need for urgent referral to an allergist.
+
+• Better education of physicians in prescribing and demonstrating self-administered epinephrine for food and insect-sting allergy.
+
+• More training for first responders to recognize and treat anaphylaxis appropriately
+
+• More appropriate training and literature for patients, families and caregivers of patients with anaphylaxis are necessary.
+
+## Unmet Needs and Research
+
+Studies demonstrating the earliest signs and symptoms of anaphylaxis in both children and adults and correlating symptoms with progression to more serious anaphylaxis.
+
+• Outcome studies on the early versus later use of epinephrine.
+
+• Better data on when epinephrine should be used by the lay individual to treat anaphylaxis.
+
+• Identification of better and more reliable biological markers of anaphylaxis.
+
+• Research concerning both immunologic and nonimmunologic mechanisms which cause anaphylaxis at the genetic, molecular, cellular and clinical levels.
+
+• Identification of animal models for anaphylaxis which better correlate with human anaphylaxis.
+
+• Additional information as to when and if H and/or H antihistamines, corticosteroids, and other drugs should be used to treat anaphylaxis.
+
+• Research into the etiology of biphasic versus uniphasic anaphylaxis.
+
+## References
+
+1. Johansson SGO, Bieber T, Dahl R, et al. A revised nomenclature for allergy for global use: Report of the Nomenclature Review Committee of World Allergy Organization. J Allergy Clin Immunol 2004; 113:832- 836.
+
+2. Sampson HA, Muñoz-Furlong A, Campbell RL, et al. Second symposium on the definition and management of anaphylaxis: summary report - second National Institute of Allergy and Infectious Diseases/Food Allergy and Anaphylaxis Network symposium. J Allergy Clin Immunol 2006;117:391-7.
+
+3. Soar J, Pumphrey R, Cant A, et al. Emergency treatment of anaphylactic reactions - Guidelines for healthcare providers. Resuscitation 2008;77:157-169
+
+4. Muraro A, Roberts G, Clark A, et al. The management of anaphylaxis in childhood: position paper of the European Academy of Allergology and Clinical Immunology. Allergy 2007; 62: 857-871.
+
+5. Kemp SF, Lockey RF, Simons FER; World Allergy Organization ad hoc Committee on Epinephrine in Anaphylaxis. Epinephrine: the drug of choice for anaphylaxis. A statement of the World Allergy Organization [position paper]. Allergy 2008;63:1061-70.
+
+6. Simons FER. World Allergy Organization survey on global availability of essentials for the assessment and management of anaphylaxis by allergy-immunology specialists in health care settings. Ann Allergy Asthma Immunol 2010; 104: 405-12.
+
+7. Chinn DJ, Sheikh A. Epidemiology of anaphylaxis. In: Pawankar R, Holgate ST, Rosenwasser LJ (Eds.). Allergy frontiers: Epigenetics, allergens and risk factors. Tokyo: Springer, 2009: 123-144.
+
+8. Decker WW. Campbell RL, Manivannan V, et al. The etiology and incidence of anaphylaxis in Rochester, Minnesota: A report from the Rochester Epidemiology Project. J Allergy Clin Immunol 2008; 122(6): 1161-1165.
+
+9. Lieberman P, Camargo CA Jr, Bohlke K, et al. Epidemiology of anaphylaxis: Findings of the American College of Allergy, Asthma and Immunology Epidemiology of Anaphylaxis Working Group. Ann Allergy Asthma Immunol 2006;97:596-602.
+
+10. Pumphrey R. Anaphylaxis: Can we tell who is at risk of a fatal reaction? Curr Opin Allergy Clin Immunol 2004;4:285-290.
+
+11. Lieberman P. Anaphylaxis. In: Adkinson NF Jr., Bochner BS, Busse WW, et al., eds. Middleton’s Allergy: Principles and Practice, 7th ed. Philadelphia: Mosby Elsevier; 2009:1027-51.
+
+12. Sheikh A, Shehata YA, Brown SG, Simons FE. Adrenaline for the treatment of anaphylaxis: Cochrane systematic review. Allergy 2009; 64:204-12.
+
+13. Simons FER, Roberts JR, Gu X, Simons KJ. Epinephrine absorption in children with a history of anaphylaxis. J Allergy Clin Immunol 1998; 101:33-7.
+
+14. Simons FER, Gu X, Simons KJ. Epinephrine absorption in adults: Intramuscular versus subcutaneous injection. J Allergy Clin Immuno 2001; 108:871-3.
+
+15. Sheikh A, ten Broek V, Brown SGA, Simons FER. H -antihistamines for the treatment of anaphylaxis: Cochrane systematic review. Allergy 2007; 62:830-37.
+
+16. Choo KJL, Simons FER, Sheikh A. Gluco-corticoids for the treatment of anaphylaxis: Cochrane systematic reviews. Allergy 2010; 65:1205-11.
+
+17. Flabbee J, Petit N, Jay N, Guenard L, Codreanu F, Mazeyrat R, et al. The economic costs of severe anaphylaxis in France: an inquiry carried out by the Allergy Vigilance Network. Allergy 2008; 63:360-5.
+
+18. Krasnick J, Patterson R, Harris KE. Idiopathic anaphylaxis: long-term follow-up, cost, and outlook. Allergy 1996; 51:724-31.
+
+19. Alrasbi M, Sheikh A. Comparison of international guidelines for the emergency medical management of anaphylaxis. Allergy 2007; 62:838-41.
+
+20. Simons FER, for the World Allergy Organization. Epinephrine autoinjectors: first-aid treatment still out of reach for many at risk of anaphylaxis in the community. Ann Allergy Asthma Immunol 2009; 102:403-9.
+
+21. Shaker MS. An economic evaluation of prophylactic self-injectable epinephrine to prevent fatalities in children with mild venom anaphylaxis. Ann Allergy Asthma Immunol 2007; 99:424-8.
+
+## Section 2.5. Food Allergy
+
+Alessandro Fiocchi, Hugh A. Sampson, Sami L. Bahna, Gideon Lack
+
+## Key Statements
+
+• Globally, 220-520 million people may suffer from food allergy.
+
+• Food allergy significantly affects the quality of life of sufferers (mainly children).
+
+Stakeholders must be prepared to meet the needs of patients by enhancing the diagnostic process, the traceability of responsible foods, and the availability of substitute foods, assisting hospitalized patients, and preventing mortality.
+
+• Large areas in the world lack legislation on food labelling.
+
+As diagnostic and therapeutic decision strategies are not clear-cut, evidence-based guidelines are necessary for clinicians, patients, governments and industry to deal with the challenge of food allergy. Such guidelines, e.g., the WAO recommendation on the Diagnosis and Rationale Against Cow’s Milk Allergy (DRACMA) are available and are ready to be implemented.
+
+• Epidemiologic studies are necessary, in particular, in less developed areas of the world.
+
+• Oral desensitization represents a promising approach to reduce the burden of disease caused by food allergy.
+
+## Introduction
+
+Food allergy has a significant socio-economic impact. Prevalence peaks in childhood and the highest incidence occurs during the first year of life, but self-reports of food allergy are also frequent in adulthood1. The disease results in exclusion of children from school canteens and prevents their full participation in school life and society. Mothers of allergic children may have to give up work to look after their children, as many institutions are unwilling or unable to provide for their condition2. This ultimately translates into a significant economic loss for society. Given the current and future public health, social and economic consequences, the prevention and treatment of allergic reactions to foods is a major challenge that must be addressed.
+
+Patients presenting with symptoms linked to food should undergo a diagnostic work-up to identify the offending food and clarify a complex spectrum of disease, which ranges from atopic dermatitis, recurrent vomiting and/or diarrhoea, urticaria (hives), and anaphylaxis, through to bronchial asthma. Causal diagnosis is achieved only with a positive oral food challenge against placebo, followed by a negative, open food challenge, carried out in a facility capable of dealing with cardiopulmonary emergencies3. Once the suspected food allergy is confirmed, dietary management plans can be drawn up in collaboration with the patient and/or parents.
+
+## Prevalence
+
+Around 11-26 million members of the European population are estimated to suffer from food allergy4. If this prevalence is projected onto the world’s population of 6,659,040,000, it translates into 220-520 million people; a huge global health burden. Although we know the worldwide time trends in the prevalence of symptoms of asthma, allergic rhinoconjunctivitis and eczema in childhood, there is no study assessing the prevalence of food allergy and its time trends. The problem is complicated by the fact that only a small proportion of cases of perceived food allergy (i.e., the self-reported feeling that a particular food negatively influences health status) are true IgEmediated food allergies or cell mediated hypersensitivities. In the 1980’s, 30% of women reported that they or some member of their family had an allergy to a food product. From the mid-1990’s, self-reports began to be compared with challengeconfirmed diagnoses; reported incidences between 12.4% and 25% were confirmed at challenge only in 1.5-3.5% of cases, illustrating how much the reported adverse reactions overestimated true food allergy5. This was proven when a prevalence of between 2.3% and 3.6% was confirmed upon challenge in open populations6; only a minority of subjects who reported illness to foods also had a positive skin prick test result to the same food. Thus, we can refer to two separate “food allergy epidemiologies”.
+
+a. Self-reported food allergy: this does not represent the “true” epidemiology of food allergy, but gives an indication of the potential demand for allergy medicine. It is helpful to health service providers in planning for the demand for specialist allergy services, as well as for food industry strategies;
+
+b. Challenge-confirmed food allergy frequency: representing the real clinical dimension of the problem.
+
+Food allergies are a cause of particular concern in young children, where the incidence of food allergy (often lifethreatening) is estimated to be greater in toddlers (5-8%) than in adults (1-2%). The epidemiological knowledge of food allergy is crucial to the design of preventive strategies7.
+
+## Symptoms
+
+Clinical symptoms of food allergy present with a wide range of immunoglobulin (Ig)E- and non-IgE mediated clinical syndromes (Table 8)8. IgE-mediated reactions generally tend to occur immediately or within 1-2 hours of ingestion of a food, whereas non-IgE-mediated reactions present later. Reactions can occur following ingestion, inhalation or contact with foods9.
+
+Table 8 — Presentations of food allergy
+<table><tr><td rowspan=1 colspan=1>IgE-mediated</td><td rowspan=1 colspan=1>Mixed(IgE and non-IgE)</td><td rowspan=1 colspan=1>Non-IgE mediated</td></tr><tr><td rowspan=1 colspan=1>Angioedema</td><td rowspan=1 colspan=1>Eosinophilicgastroènteropathies</td><td rowspan=1 colspan=1>Protein-losingenteropathy</td></tr><tr><td rowspan=1 colspan=1>Nausea and vomiting</td><td rowspan=1 colspan=1>Gastroesophagealreflux</td><td rowspan=1 colspan=1>Dietary proteinproctocolitis</td></tr><tr><td rowspan=1 colspan=1>Rhinoconjunctivitis</td><td rowspan=1 colspan=1>Dietary proteinenterocolitis</td><td rowspan=1 colspan=1>Constipation</td></tr><tr><td rowspan=1 colspan=1>Laryngeal edema</td><td rowspan=1 colspan=1>Colic</td><td rowspan=1 colspan=1>Heiner syndrome</td></tr><tr><td rowspan=1 colspan=1>Systemic Anaphylaxis</td><td rowspan=1 colspan=1>Pulmonaryhemosiderosis</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Oral allergy syndrome</td><td rowspan=1 colspan=1>Urticaria</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>Oral itching andabdominal pain</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>Diarrhea</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>Wheeze, Asthma</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>Atopic dermatitis</td><td rowspan=1 colspan=1></td></tr></table>
+
+Cutaneous manifestations: In addition to causing immediate reactions such as urticaria and angioedema, food allergy plays a pathogenic role in a subset of patients, primarily infants and children, with atopic eczema (AE). Approximately 40% of infants and young children with moderate to severe AE have food allergy, with hen’s egg, cow’s milk, soy and wheat accounting for about 90% of allergenic foods10.
+
+Gastrointestinal manifestations: In the gastrointestinal tract IgE-mediated manifestations include mouth and lip pruritus, abdominal pain, vomiting and diarrhea shortly after ingestion of culprit foods. In non-IgE-mediated manifestations the causal relationship to foods is more difficult to detect. Symptoms in gastroesophageal reflux (GER) associated with food allergy are the same as those observed in primary gastroesophageal reflux disease (GERD). Eosinophilic esophagitis is characterized by eosinophilic inflammation of the esophagus. Foods play a role in allergic eosinophilic esophagitis (AEE) and in allergic eosinophilic gastroenteritis (AEG). Food protein-induced enterocolitis syndrome (FPIES) typically presents with profuse vomiting and diarrhea within 2-3 hours after ingestion of the offending allergen, causing profound dehydration and lethargy in a formula-fed infant. Allergic proctitis usually presents by 6 months of life in breastfed or occasionally formula-fed infants. Studies have shown an improvement in colic symptoms after milk elimination or change of formula, but the pathologica mechanisms of this disease are still unclear. Food allergy has also been suggested as a cause of constipation in infants and children.
+
+Respiratory manifestations: Food allergy may present with a variety of respiratory tract symptoms that generally involve IgE-mediated responses, including rhinorrhea and wheezing. Chronic or isolated asthma or rhinitis induced by food is unusual. Heiner syndrome is a pulmonary disease caused by food sensitivity that primarily affects infants and is mostly caused by cow’s milk. Milk-specific IgE may be detected.
+
+Generalized manifestations: The most severe manifestation of food allergy may be anaphylaxis. With an increasing frequency, this recently re-defined condition11 greatly adds to the burden of food allergy. In the USA, it has been estimated than food allergy is responsible for 30,000 anaphylaxis episodes/ year12, leading to 2,000 hospitalizations and 200 deaths/ year. The mainstay of treatment of these often unpredictable reactions is administration of epinephrine intramuscularly in the thigh. Education of teachers and of health personnel is also necessary in order to ensure the correct use of epinephrine autoinjectors13.
+
+## Consultations
+
+The vast majority of children with food allergy are cared for by general practitioners. Currently, the only treatment available is avoidance of the food/s identified as allergenic for the individual patient. Vigilance regarding ingestion is the only modifiable risk factor which affects all clinical presentations of food-induced allergy (including delayed reactions) and atopic dermatitis. However, a series of practical problems in diet therapy should be afforded at the individual level during outpatient consultation:
+
+1. As children may be extremely sensitive to minute amounts of allergen, and the trigger may be a widely used ingredient in other foods, attention must be paid to food contaminations.
+
+2. Ingestion, skin contact and inhalation can all trigger severe reactions and so as well as dietary avoidance, avoidance of external contact and inhalation is often necessary.
+
+3. Cooking, and especially industrial food processing involving heat treatment, may allow sensitized individuals to tolerate a food which, in its raw form, may have induced a life-threatening reaction. Thus in many cases the avoidance of cooked foods may not be necessary.
+
+4. The most allergenic triggers are ubiquitous and nutritionally valuable proteins, thus, a dieticians’ advice is necessary in the majority of cases.
+
+5. Cross-reactivity is possible, but multiple food allergies are rare. Since extensive elimination diets are seldom necessary, avoidance strategies based on presumed cross-reactions between different proteins are not required.
+
+6. Many infants cease to react clinically to food as they become toddlers. Thus, 90% of infants who are allergic to cow’s milk may tolerate it by the end of their third year, whilst half their peers who are allergic to egg do not react to it at the same age. Up to 80% of patients allergic to peanuts or codfish never outgrow their allergies. Clinically, this translates into the necessity of reviewing all dietary interventions and avoidance strategies with the patient or their parents for clinical re-evaluation on a periodical basis.
+
+## Hospitalization
+
+The major burden of food allergy hospitalizations is from anaphylaxis: in the UK, the admission rates for anaphylaxis increased from 5 to 36 per million of population between 1990 and 200414 and in Australia, hospitalization rates for anaphylaxis increased by 8.8% per year between 1994 and 200415. Such an increase has not been reported in the USA, where between 1993 and 2004 the number of Emergency Department visits for allergic reactions remained stable at 3.8:1,000 people16. Conversely, Hospital discharges with a diagnosis related to food allergy increased significantly from 1998–2000 through 2004–200617.
+
+## Mortality
+
+In the USA it has been estimated that food allergy is responsible for 30,000 anaphylaxis episodes/year, leading to 2,000 hospitalizations and 200 deaths. For children at risk of anaphylaxis the probability of recurrences caused by foods is one every two years, with a mortality of 0.6%-5% for these episodes. Most episodes develop in children with an established diagnosis of food allergy and are thus preventable. Fatalities due to food anaphylaxis happen predominantly away from home which indicates the need to promote public awareness of the problem. Emergency Departments in developed countries may need to be prepared for an increase in this condition in the next few years18.
+
+## Severity of Disease
+
+Apart from mortality, food allergy heavily impinges on the life of sufferers. Food allergy reduces self-esteem, influences the perception of social/emotional roles, influences behavior of children, inhibits family activities, and reduces family cohesion (2). This happens particularly if the disease is associated with high levels of food-specific IgE-antibodies, suggesting that elimination diets contribute to this burden19.
+
+## Drug Use
+
+Food allergy sufferers must use the drugs related to their specific symptoms (asthma, rhinitis, atopic eczema), but the essential drug for treating anaphylaxis symptoms is epinephrine. The main therapeutic challenge for food allergic patients is dietary management. Avoidance is not an easy measure to observe. Teenagers and young adults meet obstacles unshared by their non-allergic peers, thereby curtailing their quality of life. Individuals with food allergy and their families have to be concerned about potential exposures to relevant food allergens in a variety of settings, including restaurants, the work and/or school environment, picnics and parties, and during travel.
+
+Anticipatory guidance measures such as reading of food ingredient labels, concern for cross-contamination, exposure to relevant food allergens in the school setting, other children’s homes, and in a variety of social activities, are extremely important. Labeling is an issue of relevance to food allergic consumers because accidental ingestion of allergens in prepackaged processed foods due to labeling ambiguities is a modifiable risk factor. In the European Union, twelve food items are required by law to appear on food labels: cereals containing gluten, crustaceans, egg, fish, peanut, soy, milk (including lactose), nuts, mustard, sesame seeds, celery, and sulphites >10 mg/kg. In the USA, the Food Allergen Labeling and Consumer Protection Act stipulates that all food products require an ingredient statement, and hidden allergens that previously did not requiring labeling now need to be disclosed. Thus many of the problems with unlabeled, hidden allergens in the food supply may no longer apply and in particular, the risk that unfamiliar names can hide allergenic foods is now minimized.
+
+On both the sides of Atlantic, the regulatory problem is now the opposite concern - whether too many foods containing trace amounts of these allergenic foods are being “over-labeled” and whether this may restrict potentially safe food choices for allergic consumers. The legislation does not require the indication of potential contaminants, but many manufacturers are now indicating “may contain” as a warning of potential contamination during food preparation.
+
+Even in the case of contaminants, excessive eliminations should be avoided. A case in point is lactose, indicated as a possible cause of adverse reactions in children with cow’s milk allergy. The literature does not report a single case of an adverse reaction to lactose ingestion among children with cow’s milk allergy20. Thus, even if lactose per se can determine severe allergic reactions to cow’s milk when inhaled by children with severe cow’s milk allergy21, dietary lactose elimination (translating into a blanket ban for these children of not only lactose-containing foods, but also of many pharmaceutical preparations, and even toothpastes, which may contain this sugar as an excipient, bulking agent or nutritional supplement) is not justified.
+
+## Financial Burden
+
+Children with food allergies present financial challenges to their parents. Parents with food-allergic children are more likely to stop working, reduce their work hours, or incur other financial hardships and to limit overseas vacations. The major financial burden, however, is social. An estimate of the incremental costs attributable to atopic manifestations in children with AE and food allergy, calculated from medical claims with US ICDM-9 diagnosis codes and from pharmacy claims for prescription drugs used to treat asthma, allergic rhinitis, allergic conjunctivitis, or food allergy, found an additional financial burden of \$482 per year for medical services and prescription drugs22. Other costs are sustained by the food industry. In Europe it incurs costs through product recalls running into millions of Euros, together with hidden costs associated with the need for comprehensive allergen management systems of around €30 million for food manufacturing operations alone23.
+
+## Current and Future Needs /Future Directions
+
+Many studies are addressing the issues of possible new treatments and preventive strategies for food allergy, but we only report here the major trends expected to have a socioeconomical impact in the near future.
+
+Tolerance Induction: The possibility of active induction of tolerance in food allergic patients through desensitization protocols has been studied in the past few years. The aim is both to reduce the risk of major reactions and to avoid nutritional restrictions in patients suffering from food allergy. Studies are on-going to evaluate the effectiveness and the safety of oral desensitization under blinded conditions. In many cases, tolerance induced in desensitized children disappears if cow’s milk is not ingested every day in therapeutic doses. If the efficacy of tolerance induction is confirmed in prospective studies, this will represent a breakthrough in the management of such patients24.
+
+Dietary Prevention: Traditionally predicated on the avoidance of food allergens, epidemiological data highlighting the involvement of the intestinal micro-flora in the development of allergic disease have been used to design strategies to interfere with the pathogenesis of food allergy using “success factors”, rather than the exclusion of “risk factors”. Studies on this approach, defined as “proactive” in contrast to the traditional “prohibitionistic” approach, have explored the effect of pro-biotics and/or pre-biotic supplementation on the development of allergy. To date, the initially encouraging results with pro-biotics supplements25 have not been confirmed by further studies26, but the topic is still a matter of active debate, particularly because the infant food industry is extremely interested in this field27.
+
+## Other Relevant Issues for the Near Future
+
+From a global perspective, there are several tasks to be addressed in the field of food allergy in the immediate future:
+
+## Diagnostic:
+
+• Implementation of point-of-care tests to screen for, and diagnose, food allergy at the General Practitioner level.
+
+• Full evaluation of the possibilities offered by nove diagnostic microarray-based technologies.
+
+• Standardization of challenge procedures .
+
+• Education of clinicians in affluent parts of the world in the recognition of possible food allergy symptoms.
+
+This latter need is particularly important in countries experiencing rapid economic development, where a rise in food allergy prevalence is expected due to the linear relationship between gross national product and allergy.
+
+## Therapeutic:
+
+• The availability of controlled food substitutes suitable for children with the major food allergies (egg, wheat, milk, nuts, peanut) is not widespread in all countries.
+
+• Even when available, the choice of food substitutes is not equal in different parts of world: a case in point is milk allergy, where in many countries substitutes are either non-hypoallergenic (e.g. animal milks) or not nutritionally safe .
+
+• The role of tolerance induction; is it still to be considered as “experimental” or should it currently be considered a clinical option?
+
+## Socio-economic:
+
+Food allergy is a modifiable risk and its only form of management is dietary. Success depends on the modification of sources of food-related risk:
+
+• Under-rating the food allergy problem (corrected with medical education).
+
+• Ignoring cross-reacting allergens in other foods (corrected with medical education).
+
+• Unsupportive or uninformed measures arising from the family or school environments (emphasizing the importance of patient/parental education) .
+
+• The social recognition that food allergy is a growing public health problem (including improved manufacturing/ commercial practices and loophole-closing legislation).
+
+Ultimately, the empowerment of patients through education, the guidance of an allergist and dietitian, and support from patients’ associations may provide optimal risk minimization and quality-of-life-enhancing strategies to be implemented through all levels of care, in the absence or failure of other approaches.
+
+All these therapeutic, diagnostic and socio-economic challenges have been incorporated in the 2010 guidelines which national governments have issued for food allergy in general3,28 and the WAO DRACMA guide for cow’s milk allergy29. These evidence based guidelines are of the utmost importance to identify patients suffering from food allergy and to reduce unnecessary dietary treatments.
+
+## Research Needs
+
+• Epidemiological data are needed to improve understanding of the causes and trends of food allergy.
+
+• The development of sensitive prediction indices is also needed to find out which children will outgrow their food allergy, and when.
+
+• Studies are needed on the long-term efficacy of the dietary exclusion of specific food allergens.
+
+Quality of life data, once an unpopular outcome of studies, can now be quantified using estimators or questionnaires adapted for children participating in trials.
+
+• More data are needed on tolerance induction, to clarify appropriate candidates for this approach and to quantify risks.
+
+• The effect of some new drugs (Chinese herbal remedies30 and monoclonal antibodies31) remains an unanswered question in children with food allergy, but could offer an alternative to elimination diets.
+
+## Unmet Needs
+
+Despite over-perception of food allergy in developed countries, the extension and manifestations of the disease at the global level remain poorly explored. Epidemiological data are needed, in particular in developing countries.
+
+The recognition of the importance of the problem is poor, even in the developed world, as the behavior of the medical community in emergency rooms attests: the majority of patients presenting with food anaphylaxis are not adequately treated at this level32.
+
+In this era of managed care, it is also important that different medical (sub) specialties be deployed in a patient-centered, rationale-based manner33, but the final say in terms of diagnosis for all suspected IgE-mediated food allergies should rest with the hospital-based allergist. The difficult nutritional balancing act of reconciling the special needs of the child with food allergy, taking into account the age and stage of development (calorie-, vitamin- and mineral-wise) requires individual dietetic advice. The role of the paediatrician is central to this approach.
+
+Patients with food allergy are in need of a virtuous therapeutic relationship between nutritional compliance, allergy risk minimization and the paramount need for vigilance: success of their elimination diets, the cornerstone of food allergy management, depends on these basic conditions.
+
+## References
+
+1. Steinke M, Fiocchi A, Kirchlechner V, Ballmer-Weber B, Brockow K, Hischenhuber C, Dutta M, Ring J, Urbanek R, Terracciano L, Wezel R; REDALL study consortium. Perceived food allergy in children in 10 European nations. A randomised telephone survey. Int Arch Allergy Immunol. 2007;143:290-5
+
+2. Sicherer SH, Noone SA, Munoz-Furlong A. The impact of childhood food allergy on quality of life. Ann Allergy Asthma Immunol 2001; 87:461-4.
+
+3. NIAID-Sponsored Expert Panel, Boyce JA, Assa’ad A, Burks AW, Jones SM, Sampson HA, Wood RA, Plaut M, Cooper SF, Fenton MJ, Arshad SH, Bahna SL, Beck LA,Byrd-Bredbenner C, Camargo CA Jr, Eichenfield L, Furuta GT, Hanifin JM, Jones C, Kraft M, Levy BD, Lieberman P, Luccioli S, McCall KM, Schneider LC, Simon RA, Simons FE, Teach SJ, Yawn BP, Schwaninger JM. Guidelines for the diagnosis and management of food allergy in the United States: report of the NIAID-sponsored expert panel. J Allergy Clin Immunol. 2010 Dec; 126(6 Suppl): S1-58
+
+4. Mills EN, Mackie AR, Burney P, Beyer K, Frewer L, Madsen C, Botjes E, Crevel RW, van Ree R. The prevalence, cost and basis of food allergy across Europe. Allergy. 2007; 62:717-22
+
+5. Bjornsson E Janson C, Plaschke P, Norrman E, Sjöberg O. Prevalence of sensitization to food allergens in adult Swedes. Ann Allergy, Asthma Immunol 1996; 77:327–32
+
+6. Osterballe M. The clinical relevance of sensitization to pollen-related fruits and vegetables in unselected pollen-sensitized adults. Allergy 2005; 60: 218–25
+
+7. Lack G. Epidemiologic risks for food allergy. J Allergy Clin Immunol. 2008 Jun; 121:1331-6
+
+8. Järvinen KM, Chatchatee P. Mammalian milk allergy: clinical suspicion, cross-reactivities and diagnosis. Curr Opin Allergy Clin Immunol. 2009; 9:251-8
+
+9. Bahna SL. Clinical expressions of food allergy. Ann Allergy Asthma Immunol. 2003; 90:41-4
+
+10. Ellman LK, Chatchatee P, Sicherer SH, Sampson HA. Food hypersensitivity in two groups of children and young adults with atopic dermatitis evaluated a decade apart. Pediatr.Allergy Immunol. 2002; 13:295-8
+
+11. Sampson HA, Munoz-Furlong A, Campbell RL, Adkinson NF Jr, Bock SA, Branum A, et al. Second symposium on the definition and management of anaphylaxis: summary report—Second National Institute of Allergy and Infectious Disease/Food Allergy and Anaphylaxis Network symposium. J Allergy Clin Immunol 2006; 117:391-7
+
+12. Sampson HA. Clinical practice. Peanut allergy. N Eng J Med 2002: 346;1294-9
+
+13. Gold MS, Sainsbury R. First aid management in children who were prescribed an epinephrine autoinjector device (EpiPen). J Allergy Clin Immunol 2000; 106:171-176
+
+14. Gupta R, Sheikh A, Strachan DP, Anderson HR. Time trends in allergic disorders in the UK. Thorax 2007; 62:91-6
+
+15. Poulos LM, Waters AM, Correll PK, Loblay RH, Marks GB. Trends in hospitalizations for anaphylaxis, angioedema, and urticaria in Australia, 1993-1994 to 2004-2005. J Allergy Clin Immunol 2007; 120:878-84
+
+16. Gaeta TJ, Clark S, Pelletier AJ, Camargo CA. National study of US emergency department visits for acute allergic reactions,1993 to 2004. Ann Allergy Asthma Immunol 2007; 98:360-5
+
+17. Branum AM, Lukacs SL. Food allergy among U.S. children: trends in prevalence and hospitalizations. NCHS Data Brief. 2008; 10:1-8
+
+18. Atkins D, Bock SA. Fatal anaphylaxis to foods: epidemiology, recognition, and prevention. Curr Allergy Asthma Rep. 2009; 9:179-85
+
+19. Ostblom E, Egmar AC, Gardulf A, Lilja G, Wickman M. The impact of food hypersensitivity reported in 9-year-old children by their parents on health-related quality of life. Allergy. 2008; 63:211-8
+
+20. Fiocchi A, Restani P, Leo G, Martelli A, Bouygue GR, Terracciano L, Ballabio C, Valsasina R. Clinical tolerance to lactose in children with cow’s milk allergy. Pediatrics. 2003; 112:359-6
+
+21. Nowak-Wegrzyn A, Shapiro GG, Beyer K, Bardina L, Sampson HA. Contamination of dry powder inhalers for asthma with milk proteins containing lactose. J Allergy Clin Immunol. 2004; 113:558-60
+
+22. Suh DC, Sung J, Gause D, Raut M, Huang J, Choi IS. Economic burden of atopic manifestations in patients with atopic dermatitis - analysis of administrative claims. J Manag Care Pharm. 2007; 13:778- 89
+
+23. Crevel R. Industrial dimensions of food allergy. Proc Nutr Soc. 2005; 64:470-4
+
+24. Scurlock AM, Burks AW, Jones SM. Oral immunotherapy for food allergy. Curr Allergy Asthma Rep. 2009; 9:186-93
+
+25. Kalliomaki M. Probiotics and prevention of atopic disease: 4-year follow-up of a randomised placebo-controlled trial. Lancet 2003; 361:1869-71
+
+26. Soh SE, Aw M, Gerez I, Chong YS, Rauff M, Ng YP, Wong HB, Pai N, Lee BW, Shek LP. Probiotic supplementation in the first 6 months of life in at risk Asian infants-effects on eczema and atopic sensitization at the age of 1 year. Clin Exp Allergy. 2009; 39:571-8
+
+27. Arslanoglu S, Moro GE, Schmitt J, Tandoi L, Rizzardi S, Boehm G. Early dietary intervention with a mixture of prebiotic oligosaccharides reduces the incidence of allergic manifestations and infections during the first two years of life. J Nutr. 2008; 138:1091-5
+
+28. NICE guidelines for the assessment of food allergy in primary care Accessible from:http://guidance.nice.org.uk/CG/Wave21/2 Development/Consultation/DraftNICEGuidance/pdf/English; UK NHS, 2010.
+
+29. Fiocchi A, Brozek J, Schunemann HJ, Bahna SL, von Berg A, Beyer K, et al. World Allergy Organization (WAO) Diagnosis and Rationale for Action against Cow’s Milk Allergy (DRACMA) Guidelines. WAO Journal 2010; 3:57-61
+
+30. Kattan JD, Srivastava KD, Zou ZM, Goldfarb J, Sampson HA, Li XM. Pharmacological and immunological effects of individual herbs in the Food Allergy Herbal Formula-2 (FAHF-2) on peanut allergy. Phytother Res. 2008;22:651-9.
+
+31. Mankad VS, Burks AW. Omalizumab : other indications and unanswered questions. Clin Rev Allergy Immunol. 2005;29:17-30
+
+32. Lieberman P, Decker W, Camargo CA Jr, O‘Connor R, Oppenheimer J, Simons FE. SAFE: a multidisciplinary approach to anaphylaxis education in the emergency department. Ann Allergy Asthma Immunol. 2007;98:519-23
+
+33. Cruz NV, Wilson BG, Fiocchi A, Bahna SL; America College of Allergy, Asthma and Immunology Adverse Reactions to Food Committee. Survey of physicians’ approach to food allergy, Part 1: Prevalence and manifestations. Ann Allergy Asthma Immunol. 2007;99:325-33
+
+## Section 2.6. Urticaria
+
+Torsten Zuberbier, Carsten Bindslev-Jensen, Allen P. Kaplan
+
+## Key Statements
+
+• Urticaria is a heterogeneous group of disease sub-types characterised by wheals (fleeting elevations of the skin lasting approximately 24 hours) and/or angioedema (deeper swellings of skin and mucus membranes).
+
+Three major categories exist: a) spontaneous occurrence of wheals, associated with acute and chronic urticaria; b) wheals and angioedema elicited by particular stimuli, and in particular physical urticarias; and c) other urticarial disorders such as exercise-induced urticaria.
+
+• Urticaria occurs frequently, with a lifetime prevalence above 20%.
+
+• Except for acute urticaria, diagnostic and therapeutic procedures can be complex and referral to a specialist is often required.
+
+• Untreated, chronic urticaria has a severe impact on quality of life and impairs productivity by up to 30%.
+
+• The socio-economic impact of urticaria is great, since it is a disease which primarily occurs in people of working age.
+
+● Moderate to severe urticaria requires specialist treatment. In many health care systems worldwide, access to specialty care is insufficient.
+
+## Introduction
+
+Urticaria is a frequent and complex disease with many identifiable subtypes. The individual with chronic urticaria needs specialist treatment which is not available in many areas of the world, hence optimal care may be denied. The majority of prescribed therapies for urticaria (guidelines, recommended and evidence based) are used ‘off-label’ and patients often face problems with reimbursement for care. However, untreated urticaria has a profound and negative impact on quality of life and work performance. Therefore the socio-economic impact of under-treatment is considerable, but potentially avoidable. There are distinct differences between the different sub-types of urticaria and these are discussed separately below.
+
+## Definition
+
+The term urticaria is derived from the Latin name for stinging nettle (Urtica urens). Common names are hives or wheals. The disease is characterised by fleeting elevations of the skin (urticacae, wheals) which can occur anywhere on the body. The typical duration of a single lesion can vary from a few hours to a maximum of 24 hours. However, deeper swelling, called angioedema, can also occur and can last up to 72 hours.
+
+## Eliciting Factors and Underlying
+
+## Mechanisms of Urticaria
+
+Urticaria is a heterogeneous disease. Many different subtypes are distinguishable which have different underlying mechanisms1. Table 1 summarizes features of the various types of urticaria. Urticaria is a common problem and the probability of a single person having an episode during their lifetime is more than 20%. This disease leads to a significant decrease in quality of life, to absenteeism, and to decreased productivity.
+
+Acute urticaria is defined by a maximum duration of 6 weeks. The lifetime prevalence is estimated to be as high as 23%2. However, the prevalence is different in various countries and regions. Annual rates of 0.15% were detected in a survey of a dermatological out-patient clinic in an area south of Berlin (Germany)3. Given the average life expectancy in Germany, a lifetime prevalence of 12% was ascertained. However, it is likely that not all subjects seek medical care, thus a 20% overall lifetime prevalence is more realistic. Women predominate (60%) and the median age for an occurrence of acute urticaria is 31 years. The majority of cases persist for 3-7 days and are primarily associated with viral infections of the upper airway, particularly in children. In approximately 10%, acute urticaria is caused by reactions to drugs; food is a rare cause, accounting for approximately 1% of cases, but can be a cause of severe life-threatening reactions4. Adverse reactions to medications and foods are a more prominent cause in adults.
+
+## Chronic Urticaria
+
+Chronic urticaria is characterized by the spontaneous appearances of wheals for 6 weeks or longer. The prevalence is estimated to be between 0.05-0.5%. The average duration of the disease is 3 to 7 years5. The factors eliciting chronic urticaria are diverse and include autoimmune mechanisms6, 7 in up to 50% of patients and, depending on the region, may be exacerbated by pseudo-allergic reactions to food8, 9 and/or inflammatory or infectious diseases10,11. An exact etiology is not evident for many patients.
+
+Autoimmune reactions are caused by a spontaneously occurring antibody that can activate histamine-containing cells in the skin to initiate an acute response, plus a more persistent “late phase” reaction with individual urticarial lesions lasting from 4-36 hours (mean 8-16 hours). True IgE mediated food allergy is extremely rare as a cause of chronic urticaria. Another important factor to remember is that non-steroidal anti-inflammatory drugs, typified by aspirin (acetylsalicylic acid), can elicit or aggravate this disease.
+
+## Physical Urticaria
+
+Physical urticarias are caused by physical factors1, e.g. mechanical shearing forces or a change in temperature (see Table 9). Young adults are most commonly affected and the average duration of the disease is 4-7 years. Dermatographic urticaria is the most frequent, and accounts for 43% of all physical urticarias3. Shearing mechanical forces, such as scratching the skin, lead to wheals at the point of contact. This happens with common daily activities, such as carrying a handbag over the shoulder, but in more severe cases can be initiated by clothing rubbing on the skin. An overall prevalence rate of 1.5-5% is estimated. The intensity of the disease is highly variable and in some patients only strong skin pressure creates a wheal, while in others daily activities do so, causing severe disability.
+
+Table 9 — Classification of Urticaria subtypes (presenting with wheals and/or angioedema).
+<table><tr><td colspan="1" rowspan="1">Group</td><td colspan="1" rowspan="1">Subgroup</td><td colspan="1" rowspan="1">Definition</td></tr><tr><td colspan="1" rowspan="2">Spontaneousurticaria</td><td colspan="1" rowspan="1">Acute spontaneousurticarià</td><td colspan="1" rowspan="1">spontaneous wheals and/orangioedema &lt; 6 weeks</td></tr><tr><td colspan="1" rowspan="1">Chronic spontaneousurticaria</td><td colspan="1" rowspan="1">spontaneous wheals and/orangioedema &gt; 6 weeks</td></tr><tr><td colspan="1" rowspan="6">Physicalurticaria</td><td colspan="1" rowspan="1">Cold contact urticaria</td><td colspan="1" rowspan="1">eliciting factor: cold objects/ air/fluids/ wind</td></tr><tr><td colspan="1" rowspan="1">Delayed pressureurticaria</td><td colspan="1" rowspan="1">eliciting factor: vertical pressure(wheals arising with a 3 – 12 hiatency)</td></tr><tr><td colspan="1" rowspan="1">Heat contact urticaria</td><td colspan="1" rowspan="1">eliciting factor: localized heat</td></tr><tr><td colspan="1" rowspan="1">Solar urticaria</td><td colspan="1" rowspan="1">eliciting factor: Ultraviolet (UV)and/or visible light</td></tr><tr><td colspan="1" rowspan="1">Urticaria factitia/ dermographicurticaria</td><td colspan="1" rowspan="1">eliciting factor: mechanicalshearing forces(wheals arising after 1 – 5 min)</td></tr><tr><td colspan="1" rowspan="1">Vibratory urticaria /angioedema</td><td colspan="1" rowspan="1">eliciting factor: vibratory forces,e.g. pneumatic hammer</td></tr><tr><td colspan="1" rowspan="4">Otherurticariadisorders</td><td colspan="1" rowspan="1">Aquagenic urticaria</td><td colspan="1" rowspan="1">eliciting factor: water</td></tr><tr><td colspan="1" rowspan="1">Cholinergic urticaria</td><td colspan="1" rowspan="1">elicitation by increase of bodycore temperature due to physicalexercise, spicy food</td></tr><tr><td colspan="1" rowspan="1">Contact urticaria</td><td colspan="1" rowspan="1">elicitation by contact withurticariogenic substance</td></tr><tr><td colspan="1" rowspan="1">Exercise inducedanaphylaxis/urticaria</td><td colspan="1" rowspan="1">eliciting factor: physical exercise</td></tr></table>
+
+## Special Forms of Urticaria
+
+Cholinergic urticaria is the most frequent disorder in the group designated “special forms” of urticaria. The prevalence in young adulthood is 11.2% and in the age group between 26-28 years the incidence is close to 20%12. The mean duration of the disease is 6 years and men and women are equally affected. The typical clinical picture consists of small pin-point sized wheals, elicited by a rapid increase in core body temperature. This can happen due to vigorous exercise or passive warming of the body, e.g. showering, or even after emotional distress. 62% of patients rate the severity as mild, but severe cases can occur which may be accompanied by lacrimation, vomiting, diarrhoea, headaches and/or decreased blood pressure.
+
+## Quality of Life and Impairment of Productivity
+
+Urticaria is a common disease. The epidemiological numbers are the only reference values available, due to the absence of cross sectional studies. A high estimated number of unreported cases must be assumed. Chronic urticaria, physical urticarias and the special forms of urticaria can impair patients’ quality of life and job performance13. The magnitude of these effects corresponds to that seen in subjects with atopic eczema and is more severe than that of patients with psoriasis14, 15. However, impaired productivity is more difficult to assess since such impairment depends not only on the sub-type of urticaria, but also on the individual’s occupation; estimates range from 10- 30%. Occupations involving manual labour present particular problems for subjects with dermatographic urticaria or delayed pressure urticaria. Cold urticaria can cause complete disability for employees, particularly those whose work is out-of-doors.
+
+## Diagnosis and Therapy
+
+The diagnosis and treatment of urticaria requires consideration of all the complex and individually different triggering factors as well as the underlying disease mechanisms. Apart from testing for different physical factors, investigating possible underlying autoimmune reactions can be important1. Since persistent infections or allergic or pseudoallergic reactions are only occasionally the cause of the disease, routine diagnostic investigations should be limited, with more intensive testing recommended only when the patient’s history supports such studies or standard treatment fails. Novel guidelines, including an algorithm for more esoteric diagnostic tests, are available. These include the autologous serum test as well as provocation tests, usually ordered by the specialist. Because of the large diversity of sub-types of urticaria and the possibility of coexisting sub-types in an individual patient, a sophisticated approach can be needed. A detailed diagnostic and therapeutic approach has been outlined in recent guidelines1,15.
+
+## Current and Future Needs
+
+• Urticaria occurs frequently and is a complex disease.
+
+• Chronic and severe forms need the attention of a specialist dermatologist or allergist/immunologist.
+
+• Under-treatment, due to reimbursement problems, needs to be addressed; untreated urticaria leads to unnecessary loss of productivity, grossly outweighing the treatment costs.
+
+• Inappropriate use of corticosteroids for chronic persistent urticaria is a cause of severe, unnecessary disability because of their side effects.
+
+Current guidelines are available which need to be disseminated to general practitioners so that this disease is diagnosed and treated more appropriately; even among specialists, some of the more recent approaches for resistant cases need emphasis.
+
+## Unmet Needs
+
+There are two major health care problems with respect to the diagnosis and therapy of urticaria:
+
+1. The lack of training of many non-specialists in the diagnosis and treatment of this complex disease: in an investigation of complaints consistent with cholinergic urticaria, 8 out of 55 subjects visited a family doctor12 whilst the remaining 47 relied on self-medication or avoidance of eliciting situations to manage the condition. The doctor’s advice was insufficient or inappropriate in the majority of cases. In three cases, subjects were told that therapy for their illness was not available. In three other cases, the doctor prescribed an ineffective local treatment. In one case, prolonged therapy with systemic glucocorticoids was inappropriately given and in only one case did the doctor prescribe guideline-approved therapy with antihistamines.
+
+2. Restraints in reimbursement: many physicians are unsure whether or not guideline-recommended and evidencebased therapy with high dose, non-sedating histamines or alternative treatments will be reimbursed. Although evidence-based, they may not be approved. When viewed worldwide, this varies greatly from nation to nation depending on vastly differing governmental policies. This is a general problem for many dermatological disorders and solutions are needed by those who control health care costs.
+
+## Research Needs
+
+• Future research should address the etiology of chronic spontaneous urticaria where a cause is not evident.
+
+• Further studies of the mechanisms of hive formation are needed.
+
+Hopefully, new therapies will emerge that can interrupt the process at critical stages. Although most “physical” urticarias are responsive to antihistamines (except delayed pressure urticaria), much can be learned if we understand the way a physical stimulus can cause histaminecontaining cells to release histamine and cause hives. Nevertheless, research funds in allergy, in general, are inadequate and, in particular, there is a lack of funding to investigate urticaria and angioedema. Many other common diseases which are often less severe than these diseases, benefit from support whereas urticarias are often not funded for research appropriately, or are simply ignored. Programmes focused solely on urticaria research do not exist.
+
+## References
+
+1. Zuberbier T, Asero R, Bindslev-Jensen C, Canonica GW, Church MK, Giménez-Arnau AM, Grattan CE, Kapp A, Merk HF, Rogala B, Saini S, Sánchez-Borges M, Schmid-Grendelmeier P, Schünemann H, Staubach P, Vena GA, Wedi B, Maurer M. EAACI/GA²LEN/EDF/WAO Guideline: Definition, Classification and Diagnosis of Urticaria. Allergy 2009; 64: 1417-1426.
+
+2. Swinny B. The atopic factor in urticaria. South Med J 1941; 34: 855- 858.
+
+3. Iffländer J. Akute Urtikaria - Ursachen, Verlauf und Therapie. Medizinische Dissertation, Humboldt-Universität zu Berlin 1996.
+
+4. Zuberbier T, Ifflander J, Semmler C, Henz BM. Acute urticaria: clinica aspects and therapeutic responsiveness. Acta Derm Venereol 1996; 76: 295-7.
+
+5. Zuberbier T, Maurer M. Urticaria: current opinions about etiology, diagnosis and therapy. Acta Derm Venereol 2007; 87: 196-205.
+
+6. Maurer M, Metz M, Magerl M, Siebenhaar F, Staubach P. Autoreactive urticaria and autoimmune urticaria. Hautarzt 2004; 55: 350-6.
+
+7. Kaplan AP. Urticaria and Angioedema: Pathogenic mechanism and treatment. J Allergy Clin Immunol. 2004; 114:415-424.
+
+8. Zuberbier T, Chantraine-Hess S, Hartmann K, Czarnetzki BM. Pseudoallergen-free diet in the treatment of chronic urticaria. A prospective study. Acta Derm Venereol 1995; 75: 484-7.
+
+9. Magerl M, Pisarevskaja D, Scheufele R, Zuberbier T, Maurer M. Effectiveness of a Pseudoallergen-Free Diet for Chronic Urticaria: A Prospective Trial. Allergy 2008. 65:1,78-83.
+
+10. Wedi B, Raap U, Kapp A. Chronic urticaria and infections. Curr Opin Allergy Clin Immunol 2004; 4: 387-96.
+
+11. Wedi B, Kapp A. Helicobacter pylori infection in skin diseases: a critical appraisal. Am J Clin Dermatol 2002; 3: 273-82.
+
+12. Zuberbier T, Althaus C, Chantraine-Hess S, Czarnetzki BM. Prevalence of cholinergic urticaria in young adults. J Am Acad Dermatol 1994; 31: 978-81.
+
+13. Maurer M, Ortonne JP, Zuberbier T. Chronic urticaria: a patient survey on quality-of-life, treatment usage and doctor-patient relation. Allergy 2009; 64: 581-8.
+
+14. O‘Donnell BF, Lawlor F, Simpson J, Morgan M, Greaves MW. The impact of chronic urticaria on the quality of life. Br J Dermatol 1997; 136: 197-201.
+
+15. Zuberbier T, Asero R, Bindslev-Jensen C, Canonica GW, Church MK, Giménez-Arnau AM, Grattan CE, Kapp A, Maurer M, Merk HF, Rogala B, Saini S, Sánchez-Borges M, Schmid-Grendelmeier P, Schünemann H, Staubach P, Vena GA, Wedi B. EAACI/GA²LEN/EDF/WAO Guideline: Management of Urticaria. Allergy 2009, 64: 1427-1433.
+
+# Section 2.7. Hypersensitivity to Drugs and Biological Agents
+
+Marek L. Kowalski, Pascal Demoly, Werner J. Pichler, Mario Sanchez-Borges
+
+## Key Statements
+
+• Adverse drug reactions (ADR) may affect up to 1/10 of the world’s population and affect up to 20% of all hospitalized patients.
+
+• More than 10 % of all ADR are unpredictable drug hypersensitivity reactions (DHR).
+
+• Both under-diagnosis and over-diagnosis are common.
+
+• The most common DHR involve antibiotics such as penicillins and cephalosporins, sulfonamides, aspirin and other non steroidal anti-inflammatory drugs.
+
+• The clinical spectrum of DHR involves various organs, timing and severity.
+
+DHR can be severe, even life threatening, and are associated with significant mortality rates. Drugs may be responsible for up to 20% of fatalities due to anaphylaxis.
+
+• DHR have a significant socio-economic impact on both direct costs (management of reactions and hospitalizations) and indirect costs (missed work/school days; alternative drugs).
+
+• Diagnostic procedures for DHR should also attempt to identify the underlying mechanisms causing the DHR.
+
+Diagnosis is critical for DHR management and prevention. Selection of an alternative drug and desensitization is necessary in some cases.
+
+## 2.7.1 Drug Hypersensitivity
+
+## Introduction
+
+Although any drug may potentially induce a hypersensitivity reaction in a susceptible subject, antibiotics and non-steroidal anti-inflammatory drugs are the most common causes. Both organ specific and systemic symptoms of DHR occur, and some reactions may be life-threatening. Both immunological and nonimmunological mechanisms may be involved in the development of DHR.
+
+Diagnosis of DHR by attempting to identify an underlying mechanism requires special expertise, and is costly and time consuming. However, diagnosis of DHR is critical for the proper management of drug-induced reactions, as well as for secondary prevention, prescription of an alternative drug and, in some cases, possible desensitization.
+
+DHR are associated with significant morbidity, prolonged hospitalization, and altered drug-prescribing patterns, and generate a significant economic burden for individuals and society.
+
+Drugs can induce various types of local and systemic hypersensitivity reactions which are not predictable and which may occur in any patient at any stage of drug treatment. The prevalence of DHR varies depending on the specific chemical compound and the population studied. Some DHR are associated with significant morbidity and mortality. The socioeconomic impact of DHR is not known, but seems to be high, and varies from country to country.
+
+## Definitions
+
+In agreement with the nomenclature recommended by the World Allergy Organization, drug hypersensitivity reactions can be objectively defined as reproducible signs or symptoms initiated by a drug at a dose tolerated by normal subjects. Drug-induced hypersensitivity reactions are unpredictable and constitute a significant fraction of Adverse Drug Reactions (Figure 6). The term “drug allergy” should be used only for DHR reactions with a clearly defined immunological (IgE or non-IgE mediated) mechanism whilst “non allergic drug hypersensitivity” should be used to refer to DHR with other pathogenic mechanisms (e.g. aspirin hypersensitivity).
+
+![](images/ee7da680bc7142681b070d04f8d20c586d27b71e8fd269dda311fc01fbdc6a20.jpg)  
+Figure 6. Adverse Drug Reactions and Drug Hypersensitivity
+
+## Symptoms and Severity of Disease
+
+Clinical manifestations of hypersensitivity reactions to drugs are highly variable and can involve multiple organs and systems (Table 10). The most frequent DHR are manifested in the skin with diverse forms such as maculo-papular eruptions, urticaria, angioedema, maculopapular exanthema, fixed drug eruptions, erythema exsudativum multiforme, Stevens Johnson syndrome (SJS), toxic epidermal necrolysis (TEN), contact dermatitis, photosensitivity, purpura and exfoliative dermatitis (ED). Presence of cross-reactivity between different drugs is quite common.
+
+Table 10 — Clinical expression of drug hypersensitivity
+<table><tr><td>Single system involvement</td><td>Multi-system involvement</td></tr><tr><td>– Skin: urticaria, angioedema, maculopapular exanthema, fixed drug eruptions – Respiratory: asthma, acute lung infiltrates, hypersensitivity pneumonitis – Hematologic: eosinophilia, cytopenias (thrombocytopenia, hemolytic anemia, agranulocytosis) – Hepatic: cholestasis, hepatocellular damage — Renal: glomerulonephritis, nephrotic syndrome, acute interstitial nephritis</td><td>– Anaphylaxis – Serum sickness – Drug fever – Drug-induced lupus erythematosus – Vasculitis</td></tr></table>
+
+Severity ranges widely from mild reactions to life-threatening events and death. Both organ-specific and generalized reactions may occur. Even a single drug (e.g. amoxicillin or metamizol) may induce a variety of symptoms involving different immunological and non-immunological mechanisms in different subjects. The timing of an adverse reaction ranges from immediate, occurring within minutes after drug intake, to delayed symptoms which may develop within a few days after ingestion. Drugs that most commonly induce hypersensitivity reactions include: antibiotics (penicillins and cephalosporins); sulfonamides; aspirin and other non steroidal anti-inflammatory drugs (NSAIDs); antituberculous drugs; nitrofurans; anti-malarials; barbiturates; anti-convulsants; anti-hypertensive agents; anti-arrhythmia agents; anti-sera and vaccines; hormones; heavy metals (gold); enzymes; antipsychotic tranquilizers.
+
+## Prevalence
+
+It has been estimated that DHR comprise approximately 10% of all adverse drug reactions (Type B adverse drug reactions). However, the available information requires cautious interpretation because these reactions are rarely accurately classified or definitively diagnosed. Both under-diagnosis (due to under-reporting) and over-diagnosis (due to the over-use of the term ”allergy“) also have to be considered. As an example, a cross-sectional survey of a general adult population (2,309) from Porto, Portugal found a global prevalence of self-reported drug allergy to be 7.8%: 4.5% to penicillins or other ß-lactams, 1.9% to aspirin or other NSAIDs, and 1.5% to all other drugs. A study in 1,426 Portuguese children (mean age 7.3 years) found a 6% prevalence of parent-reported drug allergy, but at the end of the drug allergy work-up, DHR was confirmed in 3 children only. In another review of 5,923 records from a private group pediatric practice in northern Virginia, cutaneous eruptions occurred in 7.3% of children who were given common oral antibiotics.
+
+Drugs are amongst the first three leading causes of anaphylactic reactions. In Rochester, Minnesota 211 cases of anaphylaxis were observed between 1990 and 2000 with an incidence of 49.8 per 100,000 person-years. There was an increase from 46.9 per 100,000 persons in 1990 to 58.9 per 100,000 persons in 2000. In this study, drugs were involved in 13.7 % of all cases of anaphylaxis. In a prospective study of 1,790 patients receiving monthly injections of penicillin G for rheumatic fever, 57 DHR were found (an incidence of 3.2%), including 4 cases of anaphylaxis (incidence 0.2%). The study of Katayama et al in Japan, reporting 337,647 injections of radio-contrast media showed an incidence of 12.7% (0.22% of severe reactions for ionic products and 0.04% for non-ionic products). The world population at risk for penicillin anaphylaxis has been estimated to be from 1.9 million to 27.2 million and for radio-contrast media from 22,000 to 100,000.
+
+Based on the available studies, which may differ in definitions of DHR and methodology, significant differences in the prevalence and spectrum of DHR in different regions of the world should be expected.
+
+## Hospitalizations
+
+ADR may be responsible for as much as 8% of hospital admissions and additionally affect up to 20% of hospitalized patients. However, little is known on the prevalence of DHR among hospitalized patients. A 2-year prospective study, by Thong9 et al, using a network-based electronic notification system (each case was verified by a trained allergist) indicated that the prevalence of drug allergy is much lower. Amongst a total of 90,910 in-patients in Singapore, 366 cases of drug allergy were reported and after verification, 210 cases were classified as drug allergy (0.23%). Cutaneous eruptions were the most common clinical manifestations (95.7%), systemic symptoms occurred in 30% of the cases and serious adverse reactions, such as Stevens-Johnson Syndrome (SJS) or toxic epidermal necrolysis (TEN) occurred in 11 patients (5.2%). Antibiotics and anti-epileptic drugs accounted for 7.5% of the reactions.
+
+## Mortality
+
+Severe cutaneous adverse drug reactions, such as TEN, SJS, exfoliative dermatitis (ED) and drug hypersensitivity syndrome (DHS) are life threatening and have significant mortality rates. Approximately 1 in 1,000 hospital patients suffer from lifethreatening cutaneous drug reactions. The prevalence of SJS or TEN is 2-3 cases per million population per year, the prevalence of DHS is 1 in 10,000, and of ED 0.9 to 35 per 100,000. Mortality is dependent on the drug, subject age and underlying disease. For SJS it is less than 10%, for TEN 30- 40%, for DHS 10-30%, and for ED 20-60%.
+
+In Australia there were 3,019 hospital admissions due to drug-induced anaphylaxis between 1998 and 2005. Drugs were responsible for 20% of fatalities due to anaphylaxis and an additional 38% of deaths were probably caused by other reactions to medications. Risk factors were: age 55-85 years; respiratory or cardiovascular co-morbidities; use of antibiotics; and anesthetic agents. The death rate was 0.65-2% of patients or 1 to 3 per million people. In the United Kingdom, between
+
+1992 and 2001, there were 202 deaths from anaphylaxis, 44% of them attributed to drugs. In Auckland, New Zealand, there were 18 deaths due to anaphylaxis between 1985 and 2005; 56% due to drugs.
+
+Penicillin accounts for approximately 75% of fatal anaphylactic cases in the United States (0.002% of the general population), with 500-1,000 deaths per year. The incidence of non-fatal anaphylaxis to penicillin is 0.7-10% of the general population, or 1.9 million to 27.2 million Americans, and is most common in adults 20-49 years old. Anaphylaxis from radio-contrast media occurs in 0.22-1% and in the USA 900 fatalities were reported in 1975 (0.009% of patients receiving contrast media). With the use of lower osmolarity media, these reactions have decreased to 1 in 168,000 administrations.
+
+## Financial Burden
+
+There are few studies dealing with the economic consequences of DHR. Socio-economic impact comprises both direct costs (management of reactions and hospitalization) and indirect costs (missed work/school days). The major economic costs of DHR can be attributed to their management; these are particularly high in the case of severe generalized reactions. A study done in France found that on average, three work or classroom days were lost per patient with severe anaphylaxis, with a cost of between €1,895 to €5,610 in non-fatal cases (estimated annual cost €4,789,500 for the country). Other significant indirect costs associated with DHR may be related to over diagnosis and/or mishandling of alleged DHR and unjustified substitution of a suspected drug with an alternative, possibly more expensive, more harmful and not necessarily equally effective compound (e.g. penicillins).
+
+## 2.7.2 Hypersensitivity To Biological Agents
+
+Biological agents such as immunoglobulins, vaccines, cytokines, monoclonal antibodies to cytokines or cell surface structures and solubilized receptors, can cause a great variety of adverse side effects quite distinct from side effects caused by low molecular weight drugs.
+
+## Symptoms and Severity Of Disease
+
+Based on the peculiar features of biological agents, adverse side effects of biological agents can be classified into five distinct types:
+
+Type α: Cytokine release syndromes are associated with high concentrations of cytokines in the circulation. Symptoms include: flush, fever, myalgia, arthralgia, capillary leak syndrome, and a fulminant, generalized organ failure.
+
+Type β: True allergic reactions to biological agents involve IgEmediated reactions with a local wheal and flare reaction and even anaphylaxis. Delayed reactions appear > 6hr after the application and appear as serum sickness, thrombocytopenia, and rarely as persisting injection site reactions and exanthema.
+
+Type γ: Side effects may be related to the activity of the biological and cause impaired immune functions (immunodeficiency), or an immune imbalance leading to autoimmune, auto-inflammatory (e.g. eosinophilic or neutrophilic inflammations without auto-antibodies, e.g. psoriasis) or allergic reactions (appearance of atopic dermatitis). All three patterns have been described for anti-TNFα, IFN anti-CTLA4-antibodies and others.
+
+Type δ: Cross-reactivity can be due to expression of the same antigen on different tissue cells or where the antibody reacts with a similar structure. Examples are certain batches of cetuximab (which express galactose-alpha-1,3-galactose), with which pre-formed IgE may react.
+
+Type ε: Comprises non-immunological side effects, like the aggravation of heart failure after anti-TNFα therapy.
+
+## Prevalence Of AHR To Biological Agents
+
+AHRs depend on the biological agent and even the batch of biological agent, e.g. the extent of glycosylation may alter with different conditions of production. Acute infusion reactions occur in 3-5% of patients treated with chimeric antibodies. Anaphylaxis is rare (e.g. 1/3000 with omalizumab).
+
+## Research Needs
+
+• Clarification of the patho-mechanisms of both immunologically and non-immunologically mediated hypersensitivity reactions to specific drugs.
+
+• Identification of allergic determinants for prediction of cross-reactivity.
+
+• Structure–based prediction of potential allergenicity of molecules to be used for new drug development processes.
+
+• Understanding of the role of environmental co-factors (e.g. viruses) affecting development of DHR.
+
+• Identification of genes (genetic polymorphisms) responsible for the development of drug hypersensitivity (susceptibility/tolerance) in individual subjects (genes controlling drug metabolism, receptors, and immune responses).
+
+• Development of new in vitro tests for the diagnosis of DHR.
+
+## Unmet Needs
+
+• Definition of the prevalence of drug hypersensitivity and risk factors (individual, environmental, co-morbidities) associated with DHR in different regions/countries across the world.
+
+• The establishment of multi-national DHR databases to facilitate epidemiologic, risk factor and pharmaco-vigilance analysis.
+
+• Validation and refinement of available in vivo ( skin testing) and in vitro (sIgE, cell activation tests) diagnostic tests.
+
+• Standardization and validation of drug desensitization procedures.
+
+• Assessment of socio-economic impact of various types of DHR in both wealthy and unprivileged populations across the world.
+
+Figure 7. Types of adverse effects of biological agents  
+![](images/1c0ea5296cabfc5442a2ab6410645c1194a6a69b66a0be75e398739831c3be17.jpg)
+
+## Recommended Reading
+
+1. Johansson SG, Hourihane JO, Bousquet J, Bruijnzeel-Koomen C, Dreborg S, Haahtela T, Kowalski ML, Mygind N, Ring J, van Cauwenberge P, van Hage-Hamsten M, Wüthrich B; EAAC (the European Academy of Allergology and Cinical Immunology) nomenclature task force. A revised nomenclature for allergy. An EAAC position statement from the EAACI nomenclature task force. Allergy. 2001 56:813-24. Review. Erratum in: Allergy 2001;56 :1229
+
+2. Johansson SG, Bieber T, Dahl R, Friedmann PS, Lanier BQ, Lockey RF, Motala C, Ortega Martell JA, Platts-Mills TA, Ring J, Thien F, Van Cauwenberge P, Williams HC. Revised nomenclature for allergy for global use: Report of the Nomenclature Review Committee of the World Allergy Organization, October 2003. J Allergy Clin Immunol. 2004; 113:832-6.
+
+3. Demoly P, Viola M, Gomes ER, Romano A. Epidemiology and causes of drug hypersensitivity. Drug Hypersensitivity. Karger. In: Chemical Immunology and Allergy. Pichler WJ; Karger, Basel 2007: p2-17.
+
+4. Gomes E, Cardoso MF, Praça F et al. Self reported drug allergy in a general adult Portuguese population. Clin Exp Allergy 2004; 34:1597- 601.
+
+5. Rebelo Gomes E, Fonseca J, Araujo L, Demoly P. Drug allergy claims in children: from self-reporting to confirmed diagnosis. Clin Exp Allergy 2008;38:191-8.
+
+6. Ibia EO, Schwartz RH, Wiedermann BL. Antibiotic rashes in children: a survey in a private practice setting. Arch Dermatol 2000; 136:849-54.
+
+7. International Rheumatic Fever Study Group. Allergic reactions to longterm benzathine penicillin prophylaxis for rheumatic fever. Lancet 1991; 337:1308-10.
+
+8. Katayama H, Yamaguchi K, Kozuka T, et al. Adverse reactions to ionic and non-ionic contrast media. A report from the Japanese Committee on the Safety of Contrast Media. Radiology 1990; 175:621-8.
+
+9. Thong BY, Leong KP, Tang CY, Chng HH. Drug allergy in a general hospital: results of a novel prospective inpatient reporting system. Ann Allergy Asthma Immunol 2003; 90:342-7.
+
+10. Gruchalla RS. Drug allergy. J Allergy Clin Immunol 2003; 111: S549- 559
+
+11. Neugut AI, Ghatak AT, Miller RL. Anaphylaxis in the United States. An investigation into its epidemiology. Arch Intern Med 2001; 161: 15-21
+
+12. Decker DW, Campbell RL, Manivannan V, et al: The etiology and incidence of anaphylaxis in Rochester, Minnesota: A report from the Rochester Epidemiology Project. J Allergy Clin Immunol 2008; 122: 1161-1165
+
+13. MartinT, Hui LI. Severe cutaneous adverse drug reactions: A review on Epidemiology, etiology, clinical manifestations and pathogenesis. Chin Med J 2008; 121: 756-761
+
+14. Moneret-Vautrin DA, Morisset M, Flabbee J, Beaudovin E, Kanny G. Epidemiology of life-threatening and lethal anaphylaxis: A review. Allergy 2005; 60: 443-451
+
+15. Lieberman P, Camargo CA Jr, Bohlke K, Jick H, Miller RL, Sheikh A, Simons FE. Epidemiology of anaphylaxis: findings of the American College of Allergy, Asthma and Immunology Epidemiology of Anaphylaxis Working Group. Ann Allergy Asthma Immunol 2006; 97: 596-602
+
+16. Flabbee J, Petit N, Jay N, Guénard L, Codreanu F, Mazeyrat R, Kanny G, Moneret-Vautrin DA. The economic costs of severe anaphylaxis in France: an inquiry carried out by the Allergy Vigilance Network. Allergy 2008; 63: 360-365
+
+17. Pichler WJ. Adverse side-effects to biological agents. Allergy. 2006; 61: 912-20
+
+18. Suntharalingam G, Perry MR, Ward S, Brett SJ, Castello-Cortes A, Brunner MD, Panoskaltsis N. Cytokine storm in a phase 1 trial of the anti-CD28 monoclonal antibody TGN1412. N Engl J Med. 2006; 355:1018-28
+
+19. Chung CH, Mirakhur B, Chan E, Le QT, Berlin J, Morse M, Murphy BA, Satinover SM, Hosen J, Mauro D, Slebos RJ, Zhou Q, Gold D, Hatley T, Hicklin DJ, Platts-MillsTA. Cetuximab-induced anaphylaxis and IgE specific for galactose-alpha-1,3-galactose. N Engl J Med. 2008; 358:1109-17
+
+20. Bousquet PJ, Demoly P, Romano A, Aberer W, Bircher A, Blanca M, Brockow K, Pichler W, Torres MJ, Terreehorst I, Arnoux B, Atanaskovic-Markovic M, Barbaud A, Bijl A, Bonadonna P, Burney PG, Caimmi S, Canonica GW, Cernadas J, Dahlen B, Daures JP, Fernandez J, Gomes E, Gueant JL, Kowalski ML, Kvedariene V, Mertes PM, Martins P, Nizankowska-Mogilnicka E, Papadopoulos N, Ponvert C, Pirmohamed M, Ring J, Salapatas M, Sanz ML, Szczeklik A, Van Ganse E, De Weck AL, Zuberbier T, Merk HF, Sachs B, Sidoroff A; Global Allergy, Asthma European Network (GALEN) and Drug Allergy and Hypersensitivity Database (DAHD) and the European Network for Drug Allergy (ENDA). Pharmacovigilance of drug allergy and hypersensitivity using the ENDA-DAHD database and the GA<sup>2</sup>LEN platform. The Galenda Project. Allergy. 2009 Feb; 64(2):194-203
+
+## Section 2.8. Insect Allergy
+
+Marek Jutel, Takeshi Fukuda, Anthony Frew, Patrizia Bonadonna, Richard F. Lockey
+
+## Key Statements
+
+Hymenoptera venom allergy (HVA) is a common global medical problem and refers to subjects who have a sting-induced large local (LL) or systemic allergic reaction (anaphylaxis). A LL reaction is defined as a reaction larger than 10 cm in diameter which lasts over 24 hours in which the signs and symptoms are confined to tissues contiguous with the sting site. Systemic reactions cause generalized signs and symptoms and include a spectrum of manifestations, ranging from mild to life-threatening. Mild systemic reactions may be limited only to the skin and consist of flushing, urticaria, and angioedema. More severe systemic reactions can involve bronchospasm, laryngeal edema, and hypotension. HVA can cause fatal anaphylaxis.
+
+• The morbidity rate is underestimated; fatal reactions may not be appropriately recorded, accounting for this underestimation.
+
+The incidence of positive specific IgE antibodies to venom is high in the general population, but only a fraction of such individuals develop a systemic reaction.
+
+• In up to 50% of individuals who experience a fatal reaction there is no documented history of a previous systemic reaction.
+
+• HVA impairs long-term quality-of-life (QOL) and is the cause of substantial socio-economic problems.
+
+• A subject’s QOL is negatively affected when appropriate diagnosis and education are not achieved and when venom immunotherapy (VIT) (a series of injections of the venom to which the subject is allergic and which essentially cures their disease) is not utilized.
+
+• HVA can be effectively treated with VIT and appropriate venom therapies.
+
+• HVA poses a problem in occupational settings, especially in bee keepers and greenhouse workers.
+
+• HVA has important adverse consequences in terms of employment, earning capacity and leisure and sporting activities.
+
+• HVA has a substantial adverse financial impact on healthcare costs.
+
+## Introduction
+
+Hymenoptera venom allergy (HVA), caused by an IgEmediated allergic reaction, is responsible for significant morbidity and adversely impacts QOL. The reported fatality rate secondary to an allergic systemic reaction, following an insect sting, is relatively low, but fatal events go unrecognized or are not reported accurately. The emotional distress of HVA poses a major problem for allergic individuals and their family, friends and employers.
+
+Hymenoptera belong to the sub-order Aculeate, which comprise the super-families Apoidea (Apis mellifera, Bombus spp.); Vespidae (Vespinae and Polistinae subfamilies); and Formicidae (sub-family Myrmicinea, genera Solenopsis and Pogonomymex). HVA is caused by an IgE-mediated reaction and allergic sensitization to one or more major venom allergens. The most important allergens in honeybee venom are phospholipase A2 (Api m 1) and hyaluronidase (Api m 2). The major allergens in vespid venoms include phospholipase A1 (Ves v 1), hyaluronidase (Ves v 2), and antigen 5 (Ves v 5). Some of the major fire ant venom allergens, derived from Solenopsis richteri and Solenopsis invicta, include Sol r 2 (a phospholipase), Sol i 2 and Sol i 3. Other species of ants also sting and cause allergic reactions. Bee and vespid venoms share 50% of their hyaluronidase sequence identity but the other allergens have distinct antigenic properties.
+
+Table 11 — Vespid species most frequently causing anaphylaxis
+<table><tr><td></td><td colspan="2">Europe</td><td colspan="2">USA</td></tr><tr><td>Genus</td><td>Species</td><td>Popular name</td><td>Species</td><td>Popular name</td></tr><tr><td>Polistes</td><td>P. galicus (dominulus)</td><td>Wasp</td><td>P. annularis P. fuscatus P. exclamans</td><td>Paper wasp</td></tr><tr><td>Vespula</td><td>V. vulgaris V. germanica V. rufa</td><td>Wasp</td><td>V. vulgaris V. germanica V. maculifrons</td><td>Yellow jacket</td></tr><tr><td>Dolichovespula</td><td>D. media D. saxonica</td><td>Wasp</td><td>D. maculata D. aronaria</td><td>Hornet</td></tr><tr><td>Vespa</td><td>V. crabro V. orientalis</td><td>Hornet</td><td>V. crabro</td><td>European hornet</td></tr></table>
+
+Risk factors of HVA can be separated into those conferring a higher risk of stings and those with increased risk of an allergic systemic reaction. The former include: the geographic location; climate; temperature; insect behavior; occupation; leisure and sporting activities; beehives or vespid nests located near dwellings and the workplace. HVA develops more often in the occupational setting, i.e., in bee keepers and greenhouse workers. There is no evidence of a higher risk of an allergic systemic reaction to wasps in atopic subjects; however, atopy may increase the risk and severity of allergic systemic reactions from bees in beekeepers and their families. Most fatalities occur in elderly people with concomitant respiratory and cardiac diseases, as well in individuals with elevated serum tryptase and systemic mastocytosis. Education of subjects and physicians about this problem and VIT are the most effective approach to managing this disease.
+
+HVA is a public health concern because of the risk of morbidity and mortality, impact on QOL, and costs. Up to 26% of the population may develop a large local reaction (LLR) secondary to a sting, while approximately 7.5% have allergic systemic reactions. HVA can also be an occupational problem. Besides its effect on health and QOL, HVA has adverse financial consequences for affected individuals, their employers, and society. Healthcare professionals and subjects are generally unaware of the preventive strategies for this problem and the educational and therapeutic measures necessary to manage it.
+
+## Prevalence and Incidence
+
+HVA is a public health concern because of the high frequency of insect stings and prevalence of life-threatening systemic allergic reactions and death. Depending on the country’s climate, 56.6-94.5% of responders confirm being stung by an Hymenoptera insect at least once during their lifetime. The prevalence of LLR ranges from 2.4-26.4% in the general population and up to 38% in beekeepers.
+
+The prevalence of allergic systemic reactions is between 0.3-7.5% in Europe while in the USA, it is 0.5-3.3%. Allergic systemic reactions are less common in children, ranging from 0.15-0.8%.
+
+Cardiovascular diseases are a risk factor for a life-threatening sting induced allergic systemic reaction. Systemic reactions are more likely to occur in subjects with mast cell disorders. The latest population-based studies indicate that insectinduced allergic systemic reactions are responsible for 7.3-59% of all cases of systemic reactions in these subjects being more frequent in adults than in children.
+
+Table 12 — Epidemiological studies in Europe on prevalence of systemic sting reactions
+<table><tr><td>Country</td><td>Number of subjects</td><td>Systemic réactions (%)</td><td>Reference</td></tr><tr><td>Greece</td><td>480</td><td>3.1</td><td>Grigoreas (Allergy. 1997 52:51-7)</td></tr><tr><td>Italy</td><td>701</td><td>2.7 (10.6)ª</td><td>Incorvaia (Eur Ann Allergy Clin Immunol. 2004 36:372-4)</td></tr><tr><td>Spain</td><td>1175</td><td>0.34ª</td><td>Novembre (Clin Exp Allergy. 1998 ;28:834-8)</td></tr><tr><td>Spain</td><td>1600</td><td>2.3 (42.8) ª</td><td>Fernandez (Clin Exp Allergy. 1999;29:1069-74)</td></tr><tr><td>Turkey</td><td>1064</td><td>2.3 (0.6) ª</td><td>Navarro (J Investig Allergol Clin Immunol. 2004;14:134-41)</td></tr><tr><td>Spain</td><td>709</td><td>5.4 (1.2)ª</td><td>Onbasi (Allergy. 2008 63):246-7)</td></tr><tr><td>Spain</td><td>145</td><td>2.8 (25)b</td><td>Fernandez (Clin Exp Allergy. 2005;35:179-85)</td></tr></table>
+
+a Systemic IV grade reaction (Mueller classification) (%).  
+b Severe systemic reaction (%).
+
+## Symptoms
+
+Local reactions, LLR, systemic toxic reactions, allergic systemic reactions, and unusual reactions can be caused by Hymenoptera stings. Fatal allergic systemic reactions may occur after a single Hymenoptera sting and both LLR and allergic systemic reactions are mediated by IgE. Allergic systemic reactions most commonly result in cutaneous, respiratory, cardiovascular and gastrointestinal symptoms.
+
+Between 1 to 5.8% of HVA subjects have abnormal numbers of mast cells in the skin, bone marrow and various other tissues, and 30% of mastocytosis subjects experience venom-induced systemic allergic reactions. The reason for this increased prevalence is unclear since mastocytosis does not appear to be a risk factor for drug and food-induced allergic systemic reactions.
+
+## Consultations and Hospitalizations
+
+HVA results in a high number of visits to physicians and emergency rooms and hospitalizations. In a multi-centre study of emergency room visits, 87% of subjects with insect-sting allergy versus 53% of subjects with food allergy were admitted to the hospital.
+
+## Mortality
+
+The incidence of insect-sting mortality, secondary to anaphylaxis, ranges from 0.03-0.48 fatalities per million inhabitants per year. At least 40-100 fatal sting reactions occur each year in the USA, however, it is suspected that many sting fatalities go unrecognized or unreported both in the United States and worldwide.
+
+Table 13 — Fatalities following Hymenoptera sting
+<table><tr><td>Country</td><td>Fatalities per 1,000,000 inhabitants/year</td></tr><tr><td>USA</td><td>0.16</td></tr><tr><td>France</td><td>0.48</td></tr><tr><td>Italy</td><td>0.03</td></tr><tr><td>Germany</td><td>0.18</td></tr><tr><td>Switzerland</td><td>0.45</td></tr><tr><td>England</td><td>0.09</td></tr><tr><td>Denmark</td><td>0.25</td></tr><tr><td>Australia</td><td>0.10</td></tr></table>
+
+## Severity of Disease
+
+An allergic systemic reaction secondary to an insect sting is a traumatic event, resulting in emotional stress and impaired QOL. Recurrent insect stings may result in more severe allergic reactions, especially in occupational settings, such as bee keepers or greenhouse workers.
+
+## Drug Use
+
+Avoidance of Hymenoptera stings is difficult, if not impossible, and insect repellents are not effective. HVA subjects should carry an emergency treatment kit to self-administer epinephrine in case they are stung. VIT is a safe, effective treatment to reduce the risk of an allergic systemic reaction on subsequent stings and results in an improved QOL. It is indicated for any patient with an allergic systemic reaction, who has a positive venom skin test or serum venom specific IgE. It is not appropriate to treat LLRs due to the low risk (5%-15%) of an allergic systemic reaction. It is still recommended to carry a selfadministration kit after achieving maintenance doses of VIT. In the United States, individuals who have a cutaneous reaction, i.e., generalized urticaria, pruritus and erythema, and who are15 years or younger, are not provided with VIT because of the low risk of an allergic systemic reaction on re-sting. In Europe, VIT is withheld in all subjects with such reactions, regardless of their age, unless they are beekeepers or at high risk for a sting. However, in the United States, adults with similar cutaneous allergic systemic reactions are prescribed VIT. The ideal length of treatment with VIT is still controversial, although a 5-year course provides long-term protective treatment. Some centers which treat such subjects stop VIT after 3 years whilst others recommend continuing such therapy indefinitely for severe allergic systemic reactions.
+
+## Financial Burden
+
+The socio-economic impact of HVA is unknown, but is considerable in terms of QOL and work productivity. Occupational cases often require job changes to avoid or reduce exposure to stinging insects. In France, the economic costs of anaphylaxis, including the direct costs of treatment, hospitalization, preventive and long-care measures, and the indirect cost, from absenteeism (from all causes, including HVA) are estimated at €4,789,500. The mean total cost, including hospitalization, diagnosis and lost working days was €4,053 per non-fatal HVA episode per patient.
+
+In the USA, the cost of VIT for children experiencing moderate venom associated allergic systemic reactions is \$52,241 per year of life saved (\$494,594 per death prevented). In children with a history of severe HVA-associated allergic systemic reactions, VIT for risk reduction and cure cost \$7,876 and \$2,278 per life year saved, respectively (\$81,747 and \$29,756 per death prevented). Thus, VIT is a cost-effective therapy.
+
+## Current and Future Needs
+
+• There is a need for increased knowledge of the natural history, risk factors and mechanisms which cause HVA.
+
+• There is a need for improved education of subjects and physicians to achieve better primary and secondary prevention of sting-induced allergic systemic reactions.
+
+• More efficacious measures should be developed to reduce the risk of being stung.
+
+• Subjects should be better trained to self-manage allergic systemic reactions via the use of self-administered epinephrine.
+
+• Recognition of emergency treatment of allergic systemic reactions by healthcare professionals should be improved.
+
+• More awareness is necessary among professionals and the public, of the efficacy of VIT .
+
+• Improving QOL should become central in the management of HVA subjects.
+
+• Improving the diagnosis and management of HVA will reduce adverse health and socio-economic consequences.
+
+## Unmet Needs
+
+• Improvement in diagnostic procedures in order to understand which subjects are at risk for mild to moderate versus severe allergic systemic reactions; especially in asymptomatic-sensitized individuals.
+
+Consensus diagnostic and management algorithms for HVA are necessary for general practitioners, pediatricians, emergency room physicians, and allergists/immunologists.
+
+• Appropriate compensation is required for HVA diagnosis and management .
+
+• Use of VIT immunotherapy should be improved to increase convenience and decrease healthcare costs.
+
+• The cost-effectiveness of therapeutic and preventive strategies should be elucidated further to improve reimbursement schemes.
+
+Effective recombinant allergen venom immunotherapy vaccines should be developed because they would be ideal to standardize treatment throughout the world.
+
+## Recommended Reading
+
+1. Bilò MB, Bonifazi F. Advances in Hymenoptera venom immunotherapy Curr Opin Allergy Clin Immunol 2007; 7:567-573
+
+2. Bilò BM, Bonifazi F. Epidemiology of insect-venom anaphylaxis. Curr Opin Allergy Clin Immunol. 2008, 8, 330-7
+
+3. Bonifazi F, Jutel M, Biló BM, Birnbaum J, Muller U, EAACI Interest Group on insect venom hypersensitivity. Prevention and treatment of Hymenoptera venom allergy: guidelines for clinical practice. Allergy. 2005, 60, 1459-70
+
+4. Reichmuth DA, Lockey RF. Clinical aspects of ant allergy. Monograph on Insect Allergy. Levine MI and Lockey RF, Ed. 4th Edition, Dave Lambert Associates, Pittsburgh PA 2003:133-52.
+
+5. Jutel M, Akdis M, Blaser K, Akdis CA. Are regulatory T cells the target of venom immunotherapy? Curr Opin Allergy Clin Immunol. 2005 5(4):365-9
+
+6. Golden DBK, Kelly D, Hamilton RG, Craig TJC. Venom immunotherapy reduces large local reactions to insect stings. J Allergy Clin Immunol 2009;123:1371-5.
+
+7. Severino M, Bonadonna P, Passalacqua G. Large local reactions from stinging insects: from epidemiology to management. Curr Opin Allergy Clin Immunol. 2009; 9:334-7.
+
+8. Muller UR, Haeberli G Use of beta-blockers during immunotherapy for Hymenoptera Venom Allergy J Allergy Clin Immunol 2005;115:606-10.
+
+9. Flabbee J, Petit N, Jay N, Guénard L, Codreanu F, Mazeyrat R, Kanny G, Moneret-Vautrin D A. The economic costs of severe anaphylaxis in France: an inquiry carried out by the Allergy Vigilance Network. Allergy, 2008, 63, 360-365.
+
+# Section 2.9. Occupational Allergy
+
+Olivier Vandenplas, Margitta Worm, Paul Cullinan, Hae Sim Park, Roy Gerth van Wijk
+
+## Key Statements
+
+• Occupational allergic diseases represent an important public health issue due to their high prevalence and their socio-economic burden.
+
+Occupational asthma (OA) contributes significantly to the global burden of asthma, since the condition accounts for approximately 15% of asthma amongst adults.
+
+• Allergic contact dermatitis (ACD) is one of the most common occupational disease.
+
+Occupational allergic diseases remain largely underrecognized by physicians, patients, and occupational health policy makers.
+
+Occupational allergic diseases can result in long-term health impairment, especially when the diagnostic and avoidance measures are delayed.
+
+Occupational allergic diseases lead to important adverse consequences in terms of healthcare resources, employment, earning capacity and quality of life.
+
+• Occupational allergic diseases are associated with a substantial adverse financial impact for affected workers, insurance or compensation schemes, health services, and employers.
+
+● Occupational allergic diseases are, by definition, preventable diseases and their burden should be minimized by appropriate preventative strategies.
+
+## Introduction
+
+A very large number of substances used at work can cause the development of allergic diseases of the respiratory tract (asthma and rhinitis) and the skin (contact urticaria and eczema). The sensitizing agents causing occupational asthma (OA) and rhinitis (OR) encountered in the workplace include high-molecular-weight (glyco) proteins from vegetable and animal origin as well as low-molecular-weight chemicals (Table 14). Proteins and some low-molecular-weight compounds (e.g. platinum salts, reactive dyes, acid anhydrides) induce respiratory allergy through an IgE-mediated mechanism similar to that involved in allergic reactions to common inhalant allergens1. For most low-molecular-weight agents (e.g., isocyanates, persulphate salts, certain types of wood) the immunologic mechanism has not yet been fully characterized.
+
+Table 14 — Principal Agents Causing Occupational Asthma And Rhinitis
+<table><tr><td rowspan=1 colspan=2>Agent</td><td rowspan=1 colspan=1>Occupation/industry</td></tr><tr><td rowspan=1 colspan=3>High-molecular weight agents:</td></tr><tr><td rowspan=1 colspan=1>Cereals, flour</td><td rowspan=1 colspan=1>Wheat, rye, barley,buckwheat</td><td rowspan=1 colspan=1>Flour mills, bakers, pastrymakers</td></tr><tr><td rowspan=1 colspan=1>Latex</td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>Health-care workers,laboratory technicians</td></tr><tr><td rowspan=1 colspan=1>Animals</td><td rowspan=1 colspan=1>Mice, rats, cows, sea foods</td><td rowspan=1 colspan=1>Laboratory workers,farmers, sea foodsprocessing</td></tr><tr><td rowspan=1 colspan=1>Enzymes</td><td rowspan=1 colspan=1>α-amylase, maxatase,alcalase, papain,bromelain, pancreatin</td><td rowspan=1 colspan=1>Baking productsproduction, bakers,detergent production,pharmaceutical industry,food industry</td></tr><tr><td rowspan=1 colspan=1>Low-molecular we</td><td rowspan=1 colspan=2>ight agents:</td></tr><tr><td rowspan=1 colspan=1>Isocyanates</td><td rowspan=1 colspan=1>Toluene diisocyanate(TDI), methylenediphenyl-diisocyanate(MDI), hexamethylenediisocyanate (HDI)</td><td rowspan=1 colspan=1>Polyurethane production,plastic industry, moulding,spray painters</td></tr><tr><td rowspan=1 colspan=1>Metals</td><td rowspan=1 colspan=1>Chromium, nickel, cobalt,platinum</td><td rowspan=1 colspan=1>Metal refinery, metal alloyproduction, electroplating,welding</td></tr><tr><td rowspan=1 colspan=1>Biocides</td><td rowspan=1 colspan=1>Aldehydes, quaternaryammonium compounds</td><td rowspan=1 colspan=1>Health-care workers,cleaners</td></tr><tr><td rowspan=1 colspan=1>Persulfate salts</td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>Hairdressers</td></tr><tr><td rowspan=1 colspan=2>Acid anhydrides Phthalic, trimellitic,maleic, tetrachlorophthalic</td><td rowspan=1 colspan=1>Epoxy resin workers</td></tr><tr><td rowspan=1 colspan=2>Reactive dyes   Reactive black 5,pyrazolone derivatives,vinyl sulphones, carmine</td><td rowspan=1 colspan=1>Textile workers, foodindustry workers</td></tr><tr><td rowspan=1 colspan=2>Woods        Red cedar, iroko, obeche,oak, and others</td><td rowspan=1 colspan=1>Sawmill workers,carpenters, cabinet andfurniture makers</td></tr></table>
+
+Occupational allergic diseases of the skin include contact urticaria and contact dermatitis/eczema. Contact urticaria is an immediate-type IgE-mediated reaction to high-molecularweight proteins while allergic contact dermatitis (ACD) results from a T-cell dependent delayed-type reaction to low-molecularweight chemicals and less frequently to proteins (Table 15).
+
+Table 15 — Principal Agents And Occupations Causing Contact Urticaria And Dermatitis
+<table><tr><td rowspan=1 colspan=1>Occupation</td><td rowspan=1 colspan=1>Allergens</td></tr><tr><td rowspan=1 colspan=2>Contact dermatitis:</td></tr><tr><td rowspan=1 colspan=1>Bakers</td><td rowspan=1 colspan=1>Flavouring, oil, antioxidant</td></tr><tr><td rowspan=1 colspan=1>Building trade workers</td><td rowspan=1 colspan=1>Cement (Cr, Co), rubber, resin, wood</td></tr><tr><td rowspan=1 colspan=1>Caterers, cooks</td><td rowspan=1 colspan=1>Vegetable/fruit, cutlery (Ni), rubber gloves, spice</td></tr><tr><td rowspan=1 colspan=1>Cleaners</td><td rowspan=1 colspan=1>Rubber gloves, nickel, fragrance</td></tr><tr><td rowspan=1 colspan=1>Dental personnel</td><td rowspan=1 colspan=1>Rubber, acrylate, fragrance, mercury</td></tr><tr><td rowspan=1 colspan=1>Electronics assemblers</td><td rowspan=1 colspan=1>Cr, Co, Ni, acrylate, epoxy resin</td></tr><tr><td rowspan=1 colspan=1>Hairdressers</td><td rowspan=1 colspan=1>Dye, rubber, fragrance, Ni, thioglycolate</td></tr><tr><td rowspan=1 colspan=1>Metal workers</td><td rowspan=1 colspan=1>Preservative, Ni, Cr, Co, antioxidant</td></tr><tr><td rowspan=1 colspan=1>Office workers</td><td rowspan=1 colspan=1>Rubber, Ni, dye, glue, copying paper</td></tr><tr><td rowspan=1 colspan=1>Textile workers</td><td rowspan=1 colspan=1>Formaldehyde resin, dye, Ni</td></tr><tr><td rowspan=1 colspan=1>Veterinarians, farmers</td><td rowspan=1 colspan=1>Rubber, antibiotics, plants, preservatives</td></tr><tr><td rowspan=1 colspan=1>Contact urticaria:</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Cooks</td><td rowspan=1 colspan=1>Animal products, wheat, vegetables</td></tr><tr><td rowspan=1 colspan=1>Health-care providers</td><td rowspan=1 colspan=1>Latex</td></tr><tr><td rowspan=1 colspan=1>Hair dressers</td><td rowspan=1 colspan=1>Dyes, latex</td></tr><tr><td rowspan=1 colspan=1>Animal workers</td><td rowspan=1 colspan=1>Animal dander</td></tr></table>
+
+The development of occupational allergic diseases results from the complex interaction between individual susceptibility and exogenous factors. The level of exposure is the most important determinant of IgE sensitization to occupational agents. An allergic background (i.e. atopy) is also a risk factor for the development of IgE sensitization but only to some highmolecular-weight agents. Individual susceptibility factors that are associated with an increased risk of ACD include atopy and genetic factors (e.g. polymorphisms in metabolizing enzymes and cytokines, and mutations leading to filaggrin loss of function). Exogenous factors that can affect the development of ACD include wet work and repetitive exposure to irritants (e.g., detergents, abrasives, cutting fluids etc).
+
+Occupational allergic diseases may lead to long-term health impairment2 and substantial socio-economic consequences3. In addition, these conditions are not always reversible after cessation of exposure to the causal agent4,5. Nevertheless, early and complete avoidance of further exposure to the sensitizing occupational agent remains the most effective therapeutic approach4. Cessation of exposure implies either potentially expensive workplace interventions or relocation of affected workers to non-exposed jobs.
+
+There is accumulating evidence that the workplace environment substantially contributes to the global burden of allergic diseases. Occupational allergic diseases represent a public health concern due to their high prevalence and their socioeconomic impact. Approximately 15% of asthma in adults is attributable to the workplace environment. OR is 2 to 4 times more prevalent than OA and is clearly identified as an early marker for the development of OA. Allergic contact dermatitis is one of the leading causes of occupational diseases. Besides their health consequences, occupational allergic diseases are associated with substantial adverse financial consequences for affected workers, employers, and society as a whole.
+
+## Prevalence and Incidence
+
+OA is considered to account for approximately 25% of respiratory diseases due to the work environment6. It has been estimated that 15% of adult asthma is attributable to allergens encountered in the workplace7.The prevalence of OA among workers exposed to sensitizing agents varies largely according to the nature of the agent and the conditions of exposure at work. Prospective cohort studies reported incidence rates of 0.2-3.5 per 100 person-years in workers exposed to laboratory animals; 4.1 per 100 person-years in bakers; and 1.8 per 100 person-years in dental care apprentices exposed to latex gloves6. Estimates of the incidence of OA in the general population ranged from 17 to 174 new cases per million active workers per year (Table 16), suggesting that the disease is underestimated in most countries. There is little information on the prevalence/incidence of OR in the general population although surveys of workforces exposed to sensitizing agents indicate that OR is 2 to 4 times more common than OA8.
+
+Skin diseases account for 8 to 34% of all occupational diseases9. Estimates of the annual incidence of occupational contact dermatitis in the general population range from 130 to 850 cases per million individuals.
+
+Occupational allergic diseases are likely to be more prevalent and severe in some developing countries than in industrialized countries, since obsolete technologies are still extensively used and occupational diseases are even less recognized as a public health concern10.
+
+Table 16 — Incidence Estimates Of Occupational Asthma Worldwide
+<table><tr><td rowspan=1 colspan=1>Country</td><td rowspan=1 colspan=1>Year</td><td rowspan=1 colspan=1>Incidence of OA(cases per 10⁶workers)</td><td rowspan=1 colspan=1>Reference</td></tr><tr><td rowspan=1 colspan=4>voluntary notification programmes</td></tr><tr><td rowspan=1 colspan=1>UnitedKingdom(SWORD)</td><td rowspan=1 colspan=1>1989-92</td><td rowspan=1 colspan=1>22</td><td rowspan=1 colspan=1>Meredith S et al. Br J Ind Med1991;48:292-8</td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>1992-93</td><td rowspan=1 colspan=1>37</td><td rowspan=1 colspan=1>Meredith S et al.Thorax 1996;51:435-40</td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>1992-97(</td><td rowspan=1 colspan=1>3834-41)*</td><td rowspan=1 colspan=1>McDonald JC et al. Occup EnvironMed 2000;57:823-9</td></tr><tr><td rowspan=1 colspan=4>United States (SENSOR)</td></tr><tr><td rowspan=1 colspan=1>Michigan 1988</td><td rowspan=1 colspan=1>-94</td><td rowspan=1 colspan=1>29</td><td rowspan=1 colspan=1>Rosenman KD et al. J OccupEnviron Med 1997;39:415-25</td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>1995(</td><td rowspan=1 colspan=1>2758-204)§</td><td rowspan=1 colspan=1>Henneberger PK et al. Int J OccupEnviron Health 1999;5:1-8</td></tr><tr><td rowspan=1 colspan=1>California 1993</td><td rowspan=1 colspan=1>-962</td><td rowspan=1 colspan=1>5 (23-27)*</td><td rowspan=1 colspan=1>Reinisch F et al.Am J Ind Med 2001;39:72-83</td></tr><tr><td rowspan=1 colspan=4>Canada</td></tr><tr><td rowspan=1 colspan=1>BritishColumbia</td><td rowspan=1 colspan=1>1991</td><td rowspan=1 colspan=1>92</td><td rowspan=1 colspan=1>Contreras GR et al. Occup EnvironMed 1994;51:710-2</td></tr><tr><td rowspan=1 colspan=1>Quebec(PROPULSE)</td><td rowspan=1 colspan=1>1992-9342</td><td rowspan=1 colspan=1>-79</td><td rowspan=1 colspan=1>Provencher S et al. Occup EnvironMed 1997;54:272-6</td></tr><tr><td rowspan=1 colspan=1>France(ONAP)</td><td rowspan=1 colspan=1>1996-99(</td><td rowspan=1 colspan=1>2422-25)*</td><td rowspan=1 colspan=1>Ameille J et al. Occup EnvironMed 2003;60:136-41</td></tr><tr><td rowspan=1 colspan=1>Italy (PRIOR)</td><td rowspan=1 colspan=1>1996-97(</td><td rowspan=1 colspan=1>2418-30)*</td><td rowspan=1 colspan=1>Bena A et al. Med Lav1999;90:556-71</td></tr><tr><td rowspan=1 colspan=1>South Africa1997(SORDSA)</td><td rowspan=1 colspan=1>-99</td><td rowspan=1 colspan=1>17.5</td><td rowspan=1 colspan=1>Esterhuizen TM et al. S Afr Med J2001;91:509-13</td></tr><tr><td rowspan=1 colspan=1>Belgium  2000</td><td rowspan=1 colspan=1>-02(</td><td rowspan=1 colspan=1>23.519.2-28.8)</td><td rowspan=1 colspan=1>Vandenplas 0 et al. Rev MalRespir 2005;22:421-30</td></tr><tr><td rowspan=1 colspan=4>occupational disease registries</td></tr><tr><td rowspan=1 colspan=1>Finland</td><td rowspan=1 colspan=1>1976</td><td rowspan=1 colspan=1>36</td><td rowspan=1 colspan=1>Keskinen H et al. Clin Allergy1978;8:569-79</td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>1989-95</td><td rowspan=1 colspan=1>174</td><td rowspan=1 colspan=1>Karjalainen A et al. Am J Ind Med2000;37:451-8</td></tr><tr><td rowspan=1 colspan=1>Canada,Quebec</td><td rowspan=1 colspan=1>1986-88</td><td rowspan=1 colspan=1>25</td><td rowspan=1 colspan=1>Lagier F et al. Rev Mal Respir1990;7:337-41</td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>1989-9913</td><td rowspan=1 colspan=1>-24</td><td rowspan=1 colspan=1>Malo JL et al. J Allergy ClinImmunol 2001;108:317-28</td></tr><tr><td rowspan=1 colspan=1>Sweden</td><td rowspan=1 colspan=1>1990-92</td><td rowspan=1 colspan=1>80 (70-90)*</td><td rowspan=1 colspan=1>Toren K et al. Occup Environ Med1996;53:757-61</td></tr><tr><td rowspan=1 colspan=1>Germany</td><td rowspan=1 colspan=1>1995</td><td rowspan=1 colspan=1>51</td><td rowspan=1 colspan=1>Baur et al. Am J Ind Med1998;33:454-62</td></tr></table>
+
+Legend: OA = occupational asthma; \*: 95% confidence interval; §: indirect estimates obtained by “capture-recapture” techniques, SWORD: Surveillance of Work-related and Occupational Respiratory Diseases; SENSOR: Sentinel Event Notification System for Occupational Risks; PROPULSE: Projet Pulmonaire Sentinelle; ONAP: Observatoire National des Asthmes Professionnels; SORDSA: Surveillance of Work-related and Occupational Respiratory Diseases in South Africa.
+
+## Symptoms
+
+Occupational allergic diseases are characterized by the onset of work-related symptoms after an initial symptom-free period of exposure which is necessary for acquiring immunological sensitization to the incriminated occupational agent1. Once initiated, the symptoms recur on re-exposure to the causal agent at concentrations not affecting other similarly exposed individuals.
+
+The relationship between work exposure and the symptoms of OA and OR is often unrecognized for a long time by both affected workers and health-care providers. The diagnosis of OA is usually made 2 to 4 years after the onset of symptoms, and a substantial (though unquantifiable) portion of OA is likely to remain undiagnosed. There is a close association between OA and OR, since the majority of patients with OA also suffer from OR. The symptoms of rhinitis usually precede the development of OA8. OR is associated with a 3 to 5 fold increase in the risk for the development of OA11. Diagnosing OA and OR remains a challenge for the clinician because the diagnostic approach has to be adapted to each agent and occupation, and most often relies on a combination of immunological and physiological tests.
+
+ACD affects the hands, but may involve other uncovered areas of the body, such as the arms, face and neck in workers exposed to dust and fumes or the legs and feet in cement workers. The manifestations of ACD occur within 48 to 96 hours after exposure of the sensitized individual to the causal agent. ACD is difficult to differentiate clinically from irritant contact dermatitis. Patch testing is the key method to identify delayed Type IV sensitization involved in the development of ACD12. Patch testing should be adapted to the patient’s occupation (e.g. preservatives and oils for metal workers, hairdressing series, bakery series) as this may unravel often unrecognized ACD.
+
+## Consultations and Hospitalizations
+
+Work-related asthma is associated with a higher rate of visits to physicians; admissions to an emergency department; and hospitalization than asthma unrelated to work13. Although medical resource utilization decreases after removal from exposure at the causal workplace, there is still an excess rate of visits to physicians and emergency rooms compared to other asthmatics. There is little information on the direct healthcare cost resulting from occupational skin diseases. In the Netherlands, a country with approximately 15 million inhabitants, the direct medical costs related to ACD were estimated at €42 million in 1995.
+
+## Mortality
+
+The mortality due to respiratory diseases among workers with OA is higher than in generally healthy workers but similar to that observed in workers with asthma unrelated to work14. It has been estimated that 38,000 deaths and 1.6 million disabilityadjusted life years (DALYs) result from work-related asthma each year worldwide15.
+
+## Severity of Disease
+
+Subjects with OA experience more asthma exacerbations than other asthmatics when they are exposed to the causal agent and shortly after cessation of exposure13. Subjects with work-related asthma symptoms have a slightly lower quality of life than those with non-occupational asthma; even after removal from exposure to the offending agent16. A worse quality of life seems to be related to unemployment and a lower level of asthma control16. Persistence of exposure to the sensitizing agent is associated with a progressive worsening of asthma, even when the patients are treated with inhaled corticosteroids2,4. Avoidance of exposure to the causal agent is associated with an improvement of asthma, although more than 60% of affected workers remain symptomatic and require anti-asthma medication3. Prolonged exposure after the onset of symptoms and more severe asthma at the time of avoidance are associated with a worse outcome. ACD is also associated with long-term consequences as it has been shown that 30- 80% of affected individuals remain symptomatic even after quitting their job5.
+
+## Drug Use
+
+There is no direct evidence that patients suffering from OA use more anti-asthma medications than those with nonoccupational asthma. Complete avoidance of exposure to the sensitizing agent results in a significant decrease in asthma severity and in health care expenses as compared with persistence of exposure3. Adding the use of inhaled corticosteroids to the removal from exposure to the causative agent may provide a slight improvement in asthma symptoms, quality of life, and airway obstruction, especially when the treatment is initiated early after the diagnosis.
+
+## Financial Burden
+
+It has been estimated that the total cost of OA in the USA was \$1.6 billion US in 1996, including 76% in direct costs (health care expenditures), when assuming that 15% of adult asthma is attributable to workplace exposures17. However, OA is likely to induce higher indirect costs than asthma unrelated to work since the former condition usually requires job changes to either avoid or reduce exposure to the causative agents3. In the UK, the cost to society of an individual case of OA diagnosed in 2003 has been estimated to range from £113,187 to £158,637 per year18.
+
+Follow-up studies of workers with OA have consistently documented that the condition is associated with a high rate of prolonged unemployment, ranging from 14%- 69% and a reduction in work-derived income in 44%-74% of affected workers3. Complete avoidance of exposure to the sensitizing agent, lower level of education, older age, and lack of effective job retraining programs are associated with worse socioeconomic consequences. There are wide disparities between countries regarding the policies governing compensation for OA, but the disease-related loss of income is offset by the financial compensation only in a minority of workers with OA. The socio-economic impact of OR is unknown, but is likely to be substantial in terms of work productivity as can be extrapolated from data available for allergic rhinitis in general18,19.
+
+There is a dearth of information on the psycho-social and economic impacts of ACD20. In Germany the cost of retraining approximates €50,000 to €100,000 per case.
+
+## Current and Future Needs
+
+Primary prevention strategies aimed at reducing or eliminating exposure to potentially sensitizing agents should be developed and evaluated.
+
+• There is a need for improved education of workers and physicians in order to achieve an earlier identification of occupational allergic diseases.
+
+• Risk factors and early clinical and biological markers of occupational allergic diseases should be further identified in order to validate effective surveillance programs of highrisk workforces.
+
+• Socio-economic outcomes should become a central component in the management and prevention of occupational allergic diseases in order to reduce their societal impact.
+
+● Improving the diagnosis and management of occupational allergic diseases is crucial for minimizing their adverse health and socio-economic consequences.
+
+The compensation of occupational allergic diseases should focus on transfer of affected workers to unexposed jobs and more efficient retraining programs.
+
+## Unmet Needs
+
+• Standardization of diagnostic procedures and consensus diagnostic algorithms for OA and OR should be developed between general practitioners, chest physicians, allergists, occupational physicians and compensation agencies.
+
+• Evaluating the cost-effectiveness of preventive measures and compensation systems should become a priority in order to assist policy makers in the implementation of evidence based preventive strategies.
+
+## Research Needs
+
+The impact of environmental interventions on the development of OA in subjects with OR should be prospectively assessed in order to evaluate the costeffectiveness of therapeutic and preventive strategies.
+
+• The specific impact of work-related rhinitis and its contribution to the global burden of rhinitis in the general population remain largely unknown and need to be investigated further.
+
+• The interactions between the skin and airway responses to the workplace environment should be explored further.
+
+## References
+
+1. Maestrelli P, Boschetto P, Fabbri LM, Mapp CE. Mechanisms of occupational asthma. J Allergy Clin Immunol 2009; 123:531-42; quiz 543-4.
+
+2. Nicholson PJ, Cullinan P, Taylor AJ, Burge PS, Boyle C. Evidence based guidelines for the prevention, identification, and management of occupational asthma. Occup Environ Med 2005; 62:290-9.
+
+3. Vandenplas O, Toren K, Blanc PD. Health and socio-economic impact of work-related asthma. Eur Respir J 2003; 22:689-97.
+
+4. Rachiotis G, Savani R, Brant A, MacNeill SJ, Newman Taylor A, Cullinan P. Outcome of occupational asthma after cessation of exposure: a systematic review. Thorax 2007; 62:147-52.
+
+5. Belsito DV. Occupational contact dermatitis: etiology, prevalence, and resultant impairment/disability. J Am Acad Dermatol 2005; 53:303-13.
+
+6. Gautrin D, Newman-Taylor AJ, Nordman H, Malo JL. Controversies in epidemiology of occupational asthma. Eur Respir J 2003; 22:551-9.
+
+7. Balmes J, Becklake M, Blanc P, Henneberger P, Kreiss K, Mapp C, et al. American Thoracic Society Statement: Occupational contribution to the burden of airway disease. Am J Respir Crit Care Med 2003; 167:787-97.
+
+8. Moscato G, Vandenplas O, Gerth Van Wijk R, Malo JL, Quirce S, Walusiak J, et al. Occupational rhinitis. Allergy 2008; 63:969-80.
+
+9. Keegel T, Moyle M, Dharmage S, Frowen K, Nixon R. The epidemiology of occupational contact dermatitis (1990-2007): a systematic review. Int J Dermatol 2009; 48:571-8.
+
+10. Jeebhay MF, Quirce S. Occupational asthma in the developing and industrialised world: a review. Int J Tuberc Lung Dis 2007; 11:122-33.
+
+11. Karjalainen A, Martikainen R, Klaukka T, Saarinen K, Uitti J. Risk of asthma among Finnish patients with occupational rhinitis. Chest 2003; 123:283-8.
+
+12. Gawkrodger DJ. Patch testing in occupational dermatology. Occup Environ Med 2001; 58:823-8.
+
+13. Lemiere C, Forget A, Dufour MH, Boulet LP, Blais L. Characteristics and medical resource use of asthmatic subjects with and without work-related asthma. J Allergy Clin Immunol 2007; 120:1354-9.
+
+14. Liss GM, Tarlo SM, Banks D, Yeung KS, Schweigert M. Preliminary report of mortality among workers compensated for work- related asthma. Am J Ind Med 1999; 35:465-71.
+
+15. Driscoll T, Nelson DI, Steenland K, Leigh J, Concha-Barrientos M, Fingerhut M, et al. The global burden of non-malignant respiratory disease due to occupational airborne exposures. Am J Ind Med 2005; 48:432-45.
+
+16. Vandenplas O. Socio-economic impact of work-related asthma. Expert Rev Pharmacoeconomics Outcome Res 2008; 8:395-400.
+
+17. Leigh JP, Romano PS, Schenker MB, Kreiss K. Costs of occupational COPD and asthma. Chest 2002; 121:264-72.
+
+18. Boyd R, Cowie H, Hurley F, Ayres J. The true cost of occupational asthma in Great Britain. Health and Safety Executive 2006:1-122.
+
+19. Vandenplas O, D’Alpaos V, Van Brussel P. Rhinitis and its impact on work. Curr Opin Allergy Clin Immunol 2008; 8:145-149.
+
+20. Diepgen TL, Kanerva L. Occupational skin diseases. Eur J Dermatol 2006; 16:324-30.
+
+# Section 2.10. Sports and Allergies
+
+Sergio Bonini, Kai-Håkon Carlsen, Sergio Del Giacco, William W Storms
+
+## Key Statements
+
+• Moderate and controlled exercise is beneficial for allergic subjects and should be part of their management.
+
+• Vigorous exercise may trigger or exacerbate several allergy syndromes such as bronchospasm, rhinitis, urticaria-angioedema and anaphylaxis.
+
+• Allergy diagnosis should be part of the routine medical examination in all professional and amateur athletes, in order to adopt adequate preventative and therapeutic measures for controlling the disease, while avoiding potential symptoms occurring on exercise.
+
+## Introduction
+
+The benefits and risks of exercising in allergic subjects are reviewed, in order to come to recommendations to patients, doctors and health policy makers about adequate management of professional and amateur athletes.
+
+## Exercise and Allergic Diseases in the General Population
+
+Physical exercise is at present recommended worldwide for its positive physiological and psychological effects, particularly on the functioning of the cardiovascular, respiratory and muscular systems. On the other hand, strenuous exercise may act as a “stressor”, able to modify the homeostasis of the human body and to influence the immune, endocrine and nervous responses. Thus the following questions arise:
+
+1. What are the effects of physical exercise in the over 25% of amateur and professional athletes suffering from allergic diseases?
+
+2. Is exercise positive or negative for them?
+
+3. Should they exercise, and can they compete at the highest level?
+
+In support of exercise, several studies indicate that allergic patients benefit from exercising and therefore that a regular physical activity should be part of the optimal management of allergic patients. In fact, controlled training and moderate exercise improve fitness and quality of life in subjects with allergic diseases and asthma. Moreover, apart from the positive effects on self perception and growth (especially in allergic children, who are too often kept away from normal physical activities because of their allergies and asthma), exercise can induce weight loss and positive changes in the diet, therefore avoiding overweight or obesity, which represent additional risk factors for asthma in allergic subjects. Reduction in weight is positively associated with an improvement of lung function in asthmatics, whilst asthma itself does not necessarily imply sedentary habits and is not associated with an increase in body fat or reduction of aerobic fitness. Finally, regular training may lead to an improved function of the immune system, adding protection against viral and bacterial infections particularly of the upper airways, which are additional risk factors for exacerbations of respiratory allergy.
+
+In contradiction to the benefits described above, exercise may trigger or exacerbate several hypersensitivity syndromes such as bronchospasm, rhinitis, urticaria/angioedema and even severe systemic reactions (exercise-induced asthma, rhinitis, urticaria, or anaphylaxis). Some types of sports, such as endurance, swimming or winter sports, have been related to an increased risk of developing allergic hypersensitivity syndromes.
+
+In respiratory allergy, the exacerbation of symptoms is likely to be related to the increased ventilation associated with exercise, particularly if this is performed in cold air or in an environment with a high concentration of allergens and pollutants. In fact, some sports result in exposure to specific allergens and pollutants, such as pollens in outdoor sports, mites and molds in indoor sports, chlorine in swimming pools, latex material, horse dander, etc.
+
+## Exercise-related Allergic Symptoms
+
+Exercise–Induced Asthma (EIA) is usually defined as lower airway obstruction with symptoms of cough, wheezing and/or dyspnoea appearing in asthmatics during or immediately after exercise. EIA may occur in almost all asthma patients if untreated or not under control
+
+Exercise may also induce bronchospasm in subjects without clinical asthma (Exercise-Induced bronchospasm, EIB). EIB can be documented with exercise challenge or other indirect surrogate tests (eucapnic voluntary hyperventilation or mannitol)
+
+Exercise-Induced rhinitis (EIR) occurs very frequently in professional and amateur athletes, particularly in winter activities and endurance activities. EIR is often associated with conjunctivitis; nasal/eye itching, aqueous rhinorrea, mucosal inflammation are the typical symptoms
+
+Cutaneous exercise-induced allergic disorders are caused by the release of several inflammatory mediators (such as histamine, leukotrienes and prostaglandins) released by mast cells and eosinophils activated by the combined action of exercise and allergens (normally foods), cold, heat, exposure to solar rays, vibrations and water, or by contact with different substances in the case of contact dermatitis
+
+Exercise-Induced anaphylaxis (EIAn) is the most serious and dangerous phenomenon in the field of exercise and allergy. Clinical manifestations of EIAn can be extremely polymorphic, ranging from pruritus, erythema and urticaria to angio-oedema, gastrointestinal and laryngeal symptoms, bronchospasm and cardio-vascular collapse. Usually EIAn is related to the ingestion of a particular food a few hours before exercising (food-dependent EIAn), while for others (non-food dependent) a clear pathogenesis has not yet been identified.
+
+Hymenoptera venom allergy is a consideration for exercisers in open-air sports and therefore at risk for insect stings
+
+## In conclusion:
+
+• Moderate and controlled exercise appears to be beneficial for allergic subjects and should be part of their management.
+
+Allergy diagnosis should be part of the routine medical examination in all amateur and professional athletes. The physician should identify clinical or sub-clinical sensitizations to help individual athletes to select the best sports for them, and then help the athlete to instigate adequate preventive and therapeutic measures to control the disease and to avoid symptoms occurring on exercise.
+
+## Allergic Diseases in Professional Athletes
+
+Several studies indicate that allergic diseases occur in elite athletes even more frequently than in the general population. Allergic diseases of interest for sports medicine are the same as those mentioned for amateur athletes (asthma and bronchial hyperresponsiveness, allergic rhino-conjunctivitis, exercise induced urticaria, and anaphylaxis). However, their diagnosis and management require special considerations in athletes in order to allow them to reach their best performance whilst respecting current anti-doping regulations. Furthermore, major physical challenges and over-training may cause in athletes a transient immunodeficiency (the so-called “open window” theory), associated with a higher risk of infections, particularly of the upper airways (Upper Respiratory Tract Infection, URTI).
+
+## Asthma and Bronchial Hyperresponsiveness (BHR) in Athletes:
+
+An increasing prevalence of asthma and BHR has repeatedly been reported among top athletes. Asthma and BHR occur most frequently in endurance sports such as cross-country skiing and biathlon, and occur frequently in swimming. They occur more frequently with increasing age in competing athletes. It is believed that the markedly increased ventilation during endurance sports induces epithelial and inflammatory changes in the bronchial mucous membranes. In addition, there is an effect of environmental factors such as the increased inhalation of cold dry air in cross country and biathlon skiers, chlorine in swimmers, and ultrafine particles from freezing machinery in figure skaters and ice hockey players.
+
+![](images/08b8729b9fe8c383cd6d77312caf3722327adfdb93ca0074e4940f83027e80e2.jpg)
+
+Diagnostic and therapeutic procedures in athletes should follow the same guidelines as for the general population. However, since some anti-asthmatic drugs are included in the list of banned doping substances, specific diagnostic procedures must be used in athletes to permit the use of drugs under the regulations. All 2-agonists (except salbutamol and salmeterol by inhalation at therapeutic doses) are prohibited. Their administration requires a declaration of use. For Therapeutic Use Exemption (TUE) for approval for the use of inhaled 2- agonists at the 2008 Beijing Olympics, the athlete was required to satisfy the International Olympic Committee Medical Commission requirements (Table 17).
+
+Table 17 — Therapeutic Use Exemption for β2-agonists
+
+For the use of inhaled steroids, no TUE is needed after 1st of January 2010. A self-declaration about such use is sufficient.
+
+For mild asthma, which is the case for many athletes, the common guidelines cannot be followed, as the use of inhaled 2-agonists requires a positive test for bronchial responsiveness, which requires a moderately severe bronchial hyperresponsiveness corresponding to moderate to severe asthma. As a consequence of this policy, maintained by the International Olympic Committee, Medical Commission (IOC-MC), more athletes are presently using anti-inflammatory treatment, such as inhaled steroids. This is probably to the benefit of the athletes when the pathogenic mechanisms for developing asthma and BHR in athletes are taken into account.
+
+One experience based observation (not investigated in any controlled trial) is that the use of inhaled ipratropium bromide seems to give an added bronchodilation to inhaled 2-agonists in asthmatic endurance athletes, greater than is commonly found in other asthmatics.
+
+## Allergic Rhino-Conjunctivitis in athletes:
+
+Rhino-conjunctivitis is also very common in athletes (”the athlete’s nose”). Allergic rhinitis associated with sensitization to pollen and other seasonal allergens is more frequently reported in summer sports than in winter sports. This may be due to the increased exposure during the plant pollinating months when the competitive events take place.
+
+Non-allergic rhinitis with neutrophilia and prevalent nasal obstruction has been reported in swimmers, while exposure to cold air may be responsible for vasomotor rhinitis in winter sports athletes.
+
+Antihistamines are permitted for use in sports by WADA and IOC-MC. However, first generation molecules should be closely monitored for their potential cardiovascular side-effects and may affect vigilance and performance. Therefore second and third generation antihistamines are usually recommended in sports.
+
+## Exercise Induced Anaphylaxis and Urticaria in athletes:
+
+Exercise induced anaphylaxis and urticaria occur after heavy exercise. Most often the cause is a combination of heavy exercise and food allergy. Alone, neither the exercise nor the food allergy would cause such a reaction, but the combination of food intake and heavy exercise within 1-2 hours from intake causes symptoms. Therefore, diagnosis of food allergy is important in athletes, and a provocation test with the relevant food combined with exercise may be necessary. Exercise induced anaphylaxis should be treated with adrenaline as for ordinary anaphylaxis.
+
+## Recommendations
+
+## For Allergic Subjects:
+
+It is important for allergic individuals to recognize the possible symptoms of allergic rhinitis, asthma, urticaria and anaphylaxis that may be associated with exercise, so that they can seek appropriate treatment to control the symptoms, and continue to exercise. This information can be delivered to the public by doctors, governments, allergy/asthma support groups, etc.
+
+If allergic symptoms occur, the individual should be directed to a physician knowledgeable in the diagnosis and treatment of exercise related allergic conditions. This should be an allergy specialist, but it may also be a primary care doctor,a specialist in respiratory medicine, or a sports medicine physician who has been trained in the management of allergic diseases.
+
+Patients should learn how to prevent these conditions and be educated about the correct treatment. Follow-up care is mandatory, since patients should be treated correctly so that they can continue to exercise.
+
+## For Doctors:
+
+Doctors, especially allergists and respiratory physicians, should be educated in the recognition of exercise-related allergic diseases and they should learn the appropriate diagnostic tests and correct treatment for professional and amateur athletes. In some cases, general practitioners or sports medicine physicians may also be educated to manage these conditions. General practitioners should also become familiar with these conditions because of their high prevalence, and be prepared to refer patients to a specialist. It is important that a comprehensive evaluation is performed for patients to identify accurately the potential triggering factors.
+
+Sports team physicians should learn to recognize the symptoms of allergic exercise-related conditions in athletes, since many athletes may not be aware of their condition.
+
+## For Health Policy Makers:
+
+Health policy makers should be aware of the importance and prevalence of allergic diseases and how they affect physical activity; they should understand that many patients go undiagnosed and therefore are never treated. They should recognize the need for heightened awareness of allergy within the general population so that symptomatic allergic athletes seek diagnosis and treatment. They should develop local policies and regulations to stimulate the education of doctors about the diagnostic work-up and treatment of all allergies and should stimulate research in these areas.
+
+## For Researchers:
+
+Studies are needed to assess the epidemiology, prevalence, and quality-of-life impact of allergic diseases in amateur and professional athletes. Protocols should be developed to evaluate the efficacy and safety of treatment of these conditions and then a practice parameter evidence-based document based on the research results should be produced.
+
+## Acknowledgement
+
+The authors thank Dr. Stefano Del Giacco, MD for his cooperation and suggestions.
+
+## Recommended Reading
+
+1. Schwartz, LB, Delgado, L, Craig, T et al. Exercise-induced hypersensitivity syndromes in recreational and competitive athletes: a PRACTALL consensus report (what the general practitioner should know about sports and allergy) Allergy 2008: 63: 953–961.
+
+2. Carlsen, KH, Anderson, SD, et al. Exercise-induced asthma, respiratory and allergic disorders in elite athletes: epidemiology, mechanisms and diagnosis: Part I of the report from the Joint Task Force of the European Respiratory Society (ERS) and the European Academy of Allergy and Clinical Immunology (EAACI) in cooperation with GA2LEN. Allergy 2008; 63:387-403.
+
+3. Carlsen, KH, Anderson, SD, et al. Treatment of exercise-induced asthma, respiratory and allergic disorders in sports and the relationship to doping: Part II of the report from the Joint Task Force of European Respiratory Society (ERS) and European Academy of Allergy and Clinical Immunology (EAACI) in cooperation with GA2LEN. Allergy 2008; 63: 492-505.
+
+# Chapter 3.
+
+# Risk factors for allergic disease
+
+## Section 3.1. The Potential of Genetics in Allergic Diseases
+
+John W Holloway, Ian A Yang, Lanny J. Rosenwasser, Stephen T Holgate
+
+## Key Statements
+
+• Allergic disorders are heterogeneous and involve important gene-environmental interactions.
+
+• Human genetics has a role to play in understanding susceptibility for disease onset, phenotypes and subphenotypes, severity, response to treatments and natural history.
+
+• Although candidate gene association studies have provided some insight into the role of genes in disease susceptibility, most new information is emerging from hypothesis-free approaches such as genome-wide association studies.
+
+• Many early gene association studies were under-powered and the results have not been confirmed in different populations.
+
+Genetic factors that influence the expression of atopy are different from those that influence disease manifestations or its severity in specific organs.
+
+• Poymorphism of a single gene usually accounts for only a small proportion of the disease phenotype.
+
+Epigenetic influences involving multiple mechanisms, including methylation of CpG islands in gene promoters, histone acetylation, phosphorylation and methylation and a large number of micro RNAs, explain a proportion of the gene-environmental interactions and trans-generational effects.
+
+The genetic epidemiological observations for specific candidate genes in atopy and allergic disease require careful replication, enhanced by international collaboration and the availability of large, well-characterized casecontrol populations for genotyping. The only way to achieve this is to promote greater cooperation among researchers and create multidisciplinary teams including researchers from academia, industry and clinical practice.
+
+## The Heritability, and Approaches to Genetic Studies of Allergic Disease
+
+Allergy and organ-based phenotypes have strong heritability, but the exact genes involved in the expression of different disease phenotypes are only just being revealed. The nature of the individual genes as susceptibility factors for allergic disease have been reviewed elsewhere1,2. Susceptibility to allergic disease is likely to result from the inheritance of many mutant genes. By undertaking research into the genetic basis of these conditions, these mutant genes and their abnormal gene products can be identified solely by the anomalous phenotypes they produce. Identifying the genes that produce these disease phenotypes is providing a greater understanding of disease mechanisms.
+
+Candidate Gene Studies: Single nucleotide polymorphisms (SNPs) in the promoter and coding regions of a wide range of candidate genes have been used for association with indices of atopy and related phenotypes. Candidate genes are selected for analysis based on a wide range of evidence. The clear advantage of this approach is that candidate genes have biological plausibility and often display known functional consequences with potentially important implications for the selected disease of interest. The disadvantages are the limitation to genes of known or postulated involvement in the disease; these limits to our current knowledge lead to the exclusion of entirely novel genes that could influence disease, but can only be identified through hypothesis-free approaches.
+
+To date, there are almost 1000 published studies that describe polymorphism in several hundred known genes of molecules thought to contribute to asthma and allergy phenotypes. However, there are concerns in very many of these association studies of lack of statistical power, whether the cases and controls were appropriately matched, definitions of the phenotypes, population stratification, and correction for multiple statistical testing3. Positive association does not necessarily imply that a genetic variant of a specific allele that has a direct effect on either gene expression or protein function is causal, because of linkage disequilibrium (LD) through which a variant displaying association with a particular disease phenotype may only represent a proxy marker for another indentified genetic variant nearby. Positive association may also be caused by a Type I statistical error. Candidate gene studies have suffered from non-replication due to a combination of poor study design, population stratification, inter-individual differences in LD patterns of different ethnicities, and differing environmental exposures. Genetic association studies may also be limited by under-powered studies and loose definition of phenotypes4.
+
+Positional Cloning by Linkage: Positional cloning is one form of hypothesis-independent approach (i.e., makes no assumptions about which candidate genes may be involved in disease association or in a known causative pathway) and starts with the investigation of families. Markers, randomly spaced throughout the genome, are tested for linkage or coinheritance with disease phenotypes or partial phenotypes. If linkage is found between a particular polymorphic marker and a particular disease phenotype, then further typing of genetic markers (fine mapping) will help in defining the chromosomal location of the causative gene. The genes located in this region can then be examined for possible involvement in the disease process and the presence of disease causing mutations (SNPs) in affected individuals.
+
+While no assumptions are made as to a specific gene involved in susceptibility to the disease in question, it requires extensive molecular genetic analyses to be undertaken that are time consuming and expensive. Many genome-wide screens for atopy and associated diseases have been completed2,5 and reflect the genetic and environmental heterogeneity. Multiple regions of the genome appear to be linked to varying phenotypes with limited replication between cohorts recruited from both similar and different populations. This illustrates the difficulty of identifying susceptibility genes for complex genetic diseases. Different genetic loci show linkage in populations of different ethnicities and different environmental exposures (i.e. stratification). In studies of complex disease, the real challenge has not been the identification of regions of genetic linkage, but rather identification of the precise gene and genetic variant underlying the observed linkage.
+
+## Genome-wide Association (GWAS)
+
+The genetic basis of complex disease has been transformed by technological advances in array-based SNP genotyping technologies and the characterization of millions of SNP variants in the genome. Genome-wide association studies (GWAS) have now revolutionized the study of genetic factors in complex common disease. For more than 150 different human phenotypes GWAS has provided compelling statistical associations for hundreds of different loci in the human genome6.
+
+Genome-wide association studies have been performed with great success in allergic diseases especially for asthma, atopic dermatitis and atopy itself. The first novel asthma susceptibility locus to be identified by GWA contains the ORMDL3 and GSDML genes on Chromosome 17q12-21.17. In this study, 317,000 SNPs in 994 subjects were genotyped for childhood on-set asthma and 1243 non-asthmatic controls. Subsequent studies in ethnically diverse populations have replicated the association between variation in the chromosome 17q21 region (mainly rs7216389) and childhood asthma. A further asthma susceptibility gene has been discovered in a GWAS of 359 asthma cases from the US Childhood Asthma Management Program study and 846 matched controls from the Illumina database. Using a microarray platform of >500,000 SNPs, the strongest region of association was at chromosome 5q12, at the region of the cyclic 3´,5´- AMP phosphodiesterase 4D (PDE4D) gene, involved in regulating airway smooth muscle.
+
+The results from studies performed to date fall a long way short of fully explaining the heritability of common complex disease. Geneticists remain optimistic, as it is believed that this ‘missing heritability’ can be accounted for. The unexpected missing heritability after assessing common genetic variation in the genome has led to the proposal that rare variants of high genetic effect or common copy number variants may be responsible for some of the genetic heritability of common complex diseases8.
+
+## Importance of Environmental Triggers: Gene Environment Interactions
+
+Recent gene-environment studies have focused on functional SNPs in candidate genes that are predicted to play a role in sensing these environmental agents and mediating effects of exposure. To this end, the study of gene-environmental interaction enables us to further understand the pathogenesis of allergic diseases such as asthma, and the determinants of its severity and progression9.
+
+Pattern recognition receptors such as CD14 and Toll-like receptor 4 (TLR4) are involved in the recognition and clearance of bacterial endotoxin (LPS), by activating a cascade of host innate immune responses. Single nucleotide polymorphisms alter the biology of these receptors and influence the early life origins of asthma at a time when the lung is growing rapidly and the immune system is developing. In case-control and familybased studies in atopic subjects, the presence of SNPs in the CD14, TLR4 and other Toll-like receptor genes modified the associations with risk of developing asthma, particularly in the presence of a rural lifestyle10. In another rural and farming study certain alleles in the CD14 promoter region were associated with protection against asthma and allergic disease in the presence of farm milk consumption11.
+
+Exposure and sensitization to house dust mite antigen (e.g. Der P1) is a well-recognised risk factor for atopy and asthma. Sharma et al found an association between SNPs in the transforming growth factor- 1 gene (TGFB1) and asthma phenotypes with these associations being modified by the extent of dust mite exposure, possibly due to differential immune modulation by the TGFB1 SNPs12. Other studies have found conditioning by house dust mite exposure, for associations of interleukin-10 (IL10) SNPs with asthma and dendritic cell associated nuclear protein 1 (DCNP1) SNPs with house dust mite-specific IgE.
+
+The effects of air pollution on asthma susceptibility are also likely to be modified by SNPs in genes encoding inflammatory cytokines and enzymes13. Salam et al observed an ARG1 haplotype, involved in nitric oxide generation interacting with ozone exposure during childhood, and risk of developing asthma14. Glutathione-S-transferase polymorphisms also influence the effects of ambient air pollution on asthma risk during childhood, particularly when controlled for levels of ozone and diesel exhaust particles. Gene-environment interaction has been observed with environmental tobacco smoke and risk of childhood asthma, in relation to the tumour necrosis factor-(TNFA) gene15 and SNPs in the chromosome 17q21 region16.
+
+## Identification of New Models of Pathogenesis
+
+It is possible to group the genes identified as contributing to allergic disease into four groups:
+
+1. Genes that directly modulate responses to environmental exposures. These include components of the innate immune system that interact with levels of microbia exposure to alter risk of developing allergic immune responses. Examples include genes encoding components of the lipopolysaccharide (endotoxin) response pathway such as CD14 and toll-like receptor-4 (TLR4). Others include detoxifying enzymes such as the glutathione-S-transferase and superoxide dismutase genes that modulate exposures involving oxidant stress, such as tobacco smoke and air pollution13.
+
+2. Genes identified through hypothesis-independent genome-wide approaches. These include genes that are involved in maintaining epithelial barrier function at mucosal surfaces and those which communicate the epithelium with the immune system following environmental exposure. For example, polymorphisms in FLG that affect dermal barrier function are associated not only with increased risk of atopic dermatitis but also with increased atopic sensitization. Genes encoding chitinases such as AMCase17 and YKL-4018 are considered to play an important role in modulating allergic inflammation and are produced by the epithelium at increased levels and also by activated macrophages in patients with asthma.
+
+3. Genes that regulate the immune response. Among these genes are included IL13, IL4RA, STAT6, TBX21 (encoding Tbet), HLAG and GATA3 that regulate Th1/Th2 differentiation and effector function, but also others such as IRAKM and PHF11 that influence the level of end organ allergic inflammation.
+
+4. Genes that determine the tissue response to chronic inflammation. Airway wall and dermal remodelling in asthma and atopic dermatitis or the control of airway smooth muscle are good examples and include genes such as ADAM33 expressed in fibroblasts and smooth muscle, PDE4D in smooth muscle (and inflammatory cells), and COL29A1 encoding a novel collagen expressed in the skin and linked to atopic dermatitis.
+
+A number of genetic studies has now provided evidence to support a role for early-life developmental effects in allergic disease. For example, ADAM33, a gene encoding a metalloprotease, was identified in 2002 as an asthma susceptibility gene using a genome-wide positional cloning approach19. The association between SNPs in ADAM33 and asthma susceptibility and airway hyperresponsiveness, and its selective expression in airway smooth muscle cells and fibroblasts, strongly suggests that alterations in its activity may underlie abnormalities in the function of these cells, critical for both smooth muscle responsiveness and airway remodelling. As in adult airways, multiple ADAM33 protein isoforms exist in human embryonic lung when assessed at 8-12 weeks of development20, and polymorphism in ADAM33 is associated with reduced early-life measures of lung function21. This suggests that variability in this gene is acting in utero or in early life to determine lung development. Most recently, a soluble form of ADAM33 has been discovered that promotes angiogenesis in a variety of in vitro and in vivo test systems as well as in human foetal lung.
+
+## Potential Clinical Utility of Greater Understanding of Allergic Disease Genetics
+
+Predicting Disease Onset: One question that is often asked is whether identification of genetic factors can enable more precise prediction of the likelihood of an individual developing allergic disease. The clinical use of family history is a surrogate measure for heritable risk and has some validity22. However, currently we are not in a position to utilize the rapidly accumulating knowledge of genetic variants that influence allergic disease progression in clinical practice. This reflects the complex interactions between different genetic and environmental factors required both to initiate and determine progression of a disease - the predictive value of variation in any one gene is low, with a typical genotype relative risk of 1.1-1.523.
+
+Predicting Asthma Subtypes: A simplistic view of asthma or any other allergic disorder that focuses entirely on Th2 polarization, IgE and target tissue infiltration with mast cells, basophils and eosinophils, fails to take account of locally acting genetic and environmental factors that are required to translate the atopic phenotype in a specific organ to create disease24. Thus the concept is emerging of sub-phenotypes of asthma driven by differing gene-environmental interactions.
+
+Predicting Severe Disease: One area where genetics may play an important role in prediction is in disease severity. The ability to identify those who are most likely to develop severe, persistent disease would allow targeting of preventative treatments to be of significant clinical utility. There is increasing evidence that many genetic disorders are influenced by ‘modifier’ genes that are distinct from the disease susceptibility locus.
+
+Allergic Disease and Personalized Medicine: The increasingly important role of pharmaco-genetics is emerging, with the study of genetic influences on inter-individual variability in treatment responses such as the clinical response to ß -bronchodilators, inhaled corticosteroids and leukotriene modifiers25.
+
+ß -adrenoceptor responses: Naturally occurring polymorphisms in the ß -adrenoceptor gene (ADRB2) alter the function and expression of the $\mathsf { B } _ { 2 } .$ -adrenoceptor and affect response to short and long-acting bronchodilators. A number of non-synonymous SNPs are functional in vitro, including at amino acids at positions 16, 27 and 164, and in the promoter region. Further work is required to fully evaluate the exact role of ADRB2 polymorphisms in the response to bronchodilators in asthmatics, possibly by looking at SNPs along the entire signalling pathway rather than concentrating on the receptor alone26.
+
+Corticosteroid responses: Polymorphisms in corticosteroid pathways may also be clinically important in asthma management. In a large study of 470 adult asthmatics, Tantisira et al screened 131 SNPs in 14 candidate genes involved in corticosteroid activity and proceeded to further validate SNPs of interest in other clinical trials involving 311 children with asthma and 336 adults with asthma. They observed that SNPs in the corticotrophin-releasing hormone receptor 1 (CRHR1) gene were associated with improved lung function (FEV ) response to inhaled corticosteroids after 6 to 8 weeks of treatment in the three clinical trials27. Corticotrophin-releasing hormone serves to increase corticotrophin release from cells of the anterior pituitary, by binding to its receptors, corticotropin-releasing hormone receptors 1 and 2.
+
+Leukotriene modifier responses: A number of SNPs in genes involved in the cysteinyl leukotriene (LT) pathway have been associated with response to leukotriene modifiers28. In a clinical study of the LTR1 antagonist, montelukast, in 252 adult asthmatics, Lima et al found associations of FEV response with SNPs in the 5-lipoxygenase (ALOX5) and multi-drug resistance protein 1 (MRP1) genes and changes in exacerbation rates with SNPs in $\mathsf { L T C } _ { 4 }$ synthase (LTC4S) and $\mathsf { L T A } _ { 4 }$ hydrolase (LTA4H) genes29. Associations with some of these leukotriene pathway genes were also replicated in a different study of montelukast30 and also with the 5-lipoxygenase inhibitor, zileuton31.
+
+## Conclusion
+
+It is clear that, so far, the initial promise of genetics has not yet been realised. However new high throughput technology platforms and associated informatics that have revolutionized the ability to sequence and analyze the human genome have transformed our ability to harness the enormous potential in understanding complex human disease and selecting treatments that are best suited to sub-phenotypes. It is also becoming increasingly apparent that heterogeneity of allergic diseases has a strong geographical basis driven both by genetic, environment and lifestyle factors. It is these fascinating aspects of genetics that will help in the stratification of disease so that prevention and treatment strategies are applied only to those who will benefit.
+
+## References
+
+1. Vercelli D. Discovering susceptibility genes for asthma and allergy. Nat Rev Immunol. 2008; 8:169-82.2.
+
+2. Ober C, Hoffjan S. Asthma genetics 2006: the long and winding road to gene discovery. Genes Immun. 2006; 7: 95-100.
+
+3. Cardon LR, Bell JI. Association study designs for complex disease. Nature Reviews Genetics. 2001; 2: 91-9.
+
+4. Holloway JW, Koppelman GH. Identifying novel genes contributing to asthma pathogenesis. Curr Opin Allergy Clin Immunol. 2007; 7: 69-74.
+
+5. Ober C. Susceptibility genes in asthma and allergy. Curr Allergy Asthma Rep. 2001; 1: 174-9.
+
+6. Hindorff LA, Junkins HA, Mehta JP, Manolio TA. A Catalog of Published Genome-Wide Association Studies. Proc Natl Acad Sci USA. 2009; 106: 9362-7.
+
+7. Moffatt MF, Kabesch M, Liang L, Dixon AL, Strachan D, Heath S, et al. Genetic variants regulating ORMDL3 expression contribute to the risk of childhood asthma. Nature. 2007; 448: 470-3.
+
+8. Frazer KA, Murray SS, Schork NJ, Topol EJ. Human genetic variation and its contribution to complex traits. Nat Rev Genet. 2009; 10: 241-51.
+
+9. Yang IA, Holloway JW. Asthma: advancing gene-environment studies. Clin Exp Allergy. 2007; 37: 1264-6.
+
+10. Smit LA, Siroux V, Bouzigon E, Oryszczyn MP, Lathrop M, Demenais F,
+
+# Section 3.2. Allergens as Risk Factors for Allergic Disease
+
+et al. CD14 and toll-like receptor gene polymorphisms, country living, and asthma in adults. Am J Respir Crit Care Med. 2009; 179: 363-8.
+
+11. Bieli C, Eder W, Frei R, Braun-Fahrlander C, Klimecki W, Waser M, et al. A polymorphism in CD14 modifies the effect of farm milk consumption on allergic diseases and CD14 gene expression. J Allergy Clin Immunol. 2007; 120: 1308-15.
+
+12. Sharma S, Raby BA, Hunninghake GM, Soto-Quiros M, Avila L, Murphy AJ, et al. Variants in TGFB1, dust mite exposure, and disease severity in children with asthma. Am J Respir Crit Care Med. 2009; 179: 356-62.
+
+13. Yang IA, Fong KM, Zimmerman PV, Holgate ST, Holloway JW. Genetic susceptibility to the respiratory effects of air pollution. Thorax. 2008; 63: 555-63.
+
+14. Salam MT, Islam T, Gauderman WJ, Gilliland FD. Roles of arginase variants, atopy, and ozone in childhood asthma. J Allergy Clin Immunol. 2009; 123: 596-602.
+
+15. Wu H, Romieu I, Sienra-Monge JJ, del Rio-Navarro BE, Anderson DM, Dunn EW, et al. Parental smoking modifies the relation between genetic variation in tumor necrosis factor-alpha (TNF) and childhood asthma. Environ Health Perspect. 2007; 115: 616-22.
+
+16. Bouzigon E, Corda E, Aschard H, Dizier MH, Boland A, Bousquet J, et al. 17q21 varaints, Early-Life Smoking Exposure and Early-onset Asthma. N Engl J Med. 2008; 359: 1985-94.
+
+17. Bierbaum S, Nickel R, Koch A, Lau S, Deichmann KA, Wahn U, et al. Polymorphisms and haplotypes of acid mammalian chitinase are associated with bronchial asthma. Am J Respir Crit Care Med. 2005; 172: 1505-9.
+
+18. Ober C, Tan Z, Sun Y, Possick JD, Pan L, Nicolae R, et al. Effect of variation in CHI3L1 on serum YKL-40 level, risk of asthma, and lung function. N Engl J Med. 2008; 358: 1682-91.
+
+19. Van Eerdewegh P, Little RD, Dupuis J, Del Mastro RG, Falls K, Simon J, et al. Association of the ADAM33 gene with asthma and bronchial hyperresponsiveness. Nature. 2002; 418: 426-30
+
+20. Haitchi HM, Powell RM, Shaw TJ, Howarth PH, Wilson SJ, Wilson DI, et al. ADAM33 expression in asthmatic airways and human embryonic lungs. Am J Respir Crit Care Med. 2005; 171: 958-65.
+
+21. Simpson A, Maniatis N, Jury F, Cakebread JA, Lowe LA, Holgate ST, et al. Polymorphisms in a disintegrin and metalloprotease 33 (ADAM33) predict impaired early-life lung function. Am J Respir Crit Care Med. 2005; 172: 55-60.
+
+22. Burke W, Fesinmeyer M, Reed K, Hampson L, Carlsten C. Family history as a predictor of asthma risk. Am J Prev Med. 2003; 24: 160-9.
+
+23. Koppelman GH, te Meerman GJ, Postma DS. Genetic testing for asthma. Eur Respir J. 2008; 32: 775-82.
+
+24. Holloway JW, Yang IA, Holgate ST. Interpatient variability in rates of asthma progression: can genetics provide an answer? J Allergy Clin Immunol. 2008; 121: 573-9.
+
+25. Lima JJ, Blake KV, Tantisira KG, Weiss ST. Pharmacogenetics of asthma. Curr Opin Pulm Med. 2009; 15: 57-62.
+
+26. Hawkins GA, Weiss ST, Bleecker ER. Clinical consequences of ADRbeta2 polymorphisms. Pharmacogenomics. 2008; 9: 349-58.
+
+27. Tantisira KG, Lake S, Silverman ES, Palmer LJ, Lazarus R, Silverman EK, et al. Corticosteroid pharmacogenetics: association of sequence variants in CRHR1 with improved lung function in asthmatics treated with inhaled corticosteroids. Hum Mol Genet. 2004; 13:1353-9.
+
+28. Duroudier NP, Tulah AS, Sayers I. Leukotriene pathway genetics and pharmacogenetics in allergy. Allergy 2009; 64: 823-39.
+
+29. Lima JJ, Zhang S, Grant A, Shao L, Tantisira KG, Allayee H, et al. Influence of leukotriene pathway polymorphisms on response to montelukast in asthma. Am J Respir Crit Care Med. 2006; 173:379-85.
+
+30. Klotsman M, York TP, Pillai SG, Vargas-Irwin C, Sharma SS, van den Oord EJ, et al. Pharmacogenetics of the 5-lipoxygenase biosynthetic pathway and variable clinical response to montelukast. Pharmacogenet Genomics. 2007; 17:189-96.
+
+31. Tantisira KG, Lima J, Sylvia J, Klanderman B, Weiss ST. 5-lipoxygenase pharmacogenetics in asthma: overlap with Cys-leukotriene receptor antagonist loci. Pharmacogenet Genomics. 2009; 19:244-7.
+
+Thomas A. E. Platts-Mills, Bee Wah Lee, L. Karla Arruda, Fook Tim Chew
+
+## Key Statements
+
+• Sensitization (IgE antibodies) to foreign proteins in the environment is present in up to 40% of the population.
+
+• Such sensitization is strongly associated with exposure for proteins derived from pollens, moulds, dust mites and cockroaches.
+
+• For asthma, rhinitis and atopic eczema there is a strong and consistent association between disease and sensitization.
+
+• The association between sensitization to grass pollens and symptoms of hay fever occurring during the grass pollen season provides strong evidence for a causal role of grass pollen in the disease.
+
+## Introduction
+
+The contribution of the major perennial allergens to diseases such as rhinitis, asthma and atopic dermatitis is chronic and generally not obvious to patients or to their physicians. Because of this, the arguments for causality have to be indirect and there are still important questions about the relevance of current allergen exposure to these diseases and to their management.
+
+In Westernized countries “allergic diseases”, affect 10-30% of the population and can cause severe symptoms with major disruption of quality of life. The most common allergic diseases i.e. rhinitis, asthma, and atopic dermatitis are characterized by a high prevalence of sensitization to those allergens that are common in the community1-5. This sensitization can be detected by skin tests or in vitro assays for IgE antibodies. The term allergic (or atopic) implies not only that the patient is sensitized but also that allergens contribute to the disease. Thus, either allergen exposure or sensitization can be referred to as a risk factor for allergic disease. However, the relationship between allergen exposure and disease is by no means simple (Figure 1). Different factors can influence the IgE antibody response including genetics, allergen dose, and early life exposures that may inhibit or enhance the response. Amongst allergic subjects, the development of inflammation (in the nose, lungs or skin) is common, but this again is influenced by a variety of factors. Finally even among individuals, who i) are sensitized; ii) have had continuing exposure; and iii) have developed inflammation there are major individual and temporal differences in the severity of symptoms.
+
+Fig. 1 Allergen Exposure and Sensitization as Risk Factors for Allergic Disease  
+![](images/a65ebdc6e68d010192dc5d06c39c3d59a433cac9c403f0b8a4be1bee8e1b6165.jpg)  
+When considering different inhaled allergens, the most important distinction is that between outdoor allergens (e.g. pollen and moulds) and indoor allergens, (e.g. cat, dog, mite, cockroach and mould) (Table 1) [See www.allergen.org for full lists of allergen sources and purified allergens].
+
+## Outdoor Allergens
+
+Seasonal hay fever became common in Northern Europe and the USA over a 70 year period from 1870 to 1940. This was a period during which several changes occurred; there were major improvements in hygiene, the population became increasingly urban, and there was an increase in heavily pollinating plants such as rye grass and ragweed. In addition to the distinctive and often strictly seasonal pattern of the symptoms, hay fever is also distinguished from perennial rhinitis by the presence of conjunctivitis. This reflects exposure under conditions where the allergen particles are “blown” with sufficient velocity to impact in the eyes which is much less common indoors. The most common outdoor allergens are the pollens of grasses, trees or weeds, each with specific seasons5-8. Characteristically, the higher the exposure to pollen: i) the higher the prevalence of IgE antibodies; ii) the higher the titre of IgE antibodies; and iii) the greater the severity of the seasonal symptoms. Pollen grains release species-specific proteins that act to trigger formation of a pollen tube. Thus rapid release of proteins is a primary function of a pollen grain. Most (but not all) pollens can be distinguished under a microscope.
+
+Mold allergens are also an important cause of sensitization6,9,10. However, there are significant differences between molds and pollens. The seasons for moulds are not tightly defined and in addition, mold spores were “designed” to allow survival over a prolonged dry period. Thus in many cases molds do not release proteins rapidly and, in some cases, the proteins are only expressed after germination of the spore. Fungal spores also vary dramatically in size, from 14 x10 µm which is typical of the Alternaria species, to 2 µm in diameter which is typical of Aspergillus or Penicillium spores. The spores of many genera of molds can be confidently identified, but species definition is less reliable. When comparing pollen grains to fungal spores it is important to recognize that most pollen grains are tenfold greater in diameter than the small fungal spores (i.e. 20 µm compared to 2 µm diameter) which is in the region of 1,000 times greater in volume. Pollen grains are a more effective cause of sensitization on a numerical basis, but the assessment may be quite different if exposure is judged on the basis of the quantity of protein inhaled11.
+
+Exposure to outdoor allergens depends on the number of airborne particles, the time spent outdoors, and the efficiency with which the indoor environment is isolated from the outdoors. Over the last 40 years, air conditioning and heating of homes and offices has “improved” progressively, so that in some countries it is normal to keep windows closed for many months of the year. For hay fever sufferers, and children, this means it is possible to effectively hide from exposure.
+
+## Indoor Allergens
+
+Until 1985, extracts made from house dust were routinely used for skin testing and immunotherapy. Any foreign species that exists indoors can contribute to the allergens found in a house dust extract. Most allergists gave up skin testing with house dust for two reasons. Firstly, there was a sense that we had a better understanding of the major sources of indoor allergens (arguable) and secondly because it appeared to be impossible to standardize ‘house dust” (true). Most of the major sources of indoor allergens are well established i.e. dust mites, cat, dog, rodents, cockroach and a variety of molds1,12. Furthermore, for many of these, there are sensitive immunoassays that can measure the quantity of allergen in a house. Whilst there are some problems with the immunoassays including technical problems in performing them and their detailed specificity, there is no alternative in terms of an “indoor pollen count” [13]. The particles carrying allergens from mites, cockroaches, cats or dogs are not sufficiently distinct to allow counting under a microscope. An indoor airborne particle count is also impossible because the particles carrying mite and cockroach allergens do not remain airborne for more than a few minutes after disturbance. Cat and dog allergens remain airborne for longer periods of time, in keeping with the smaller aerodynamic size14. However it is still not possible to count cat or dog dander particles microscopically.
+
+Tolerance to Cat or Dog Allergens: In multiple studies of sensitization, it has been shown that children raised in a house with an animal are either less likely or no more likely to be sensitized to that animal. Whilst the mechanisms of this “tolerance” are not clear there is evidence that children make IgG and IgG antibodies to cat allergens15,16. What is also clear is that children with IgG and IgG antibodies without IgE antibodies are not at risk for asthma (Figure 1).
+
+Estimates of Exposure to Indoor Allergens: Measurements of proteins in house dust are normally expressed as micrograms/ gram of dust. This allows comparison between houses and between countries. However, using measurements in individual homes assumes that the primary exposure, or the only significant exposure, to indoor allergens occurs in the individuals own home. There is abundant evidence that sensitization to cat and dog allergens can occur outside a child’s own home17. Similarly, it is increasingly likely that sensitization to dust mite allergens can occur from exposure in other homes. Estimates of the quantities of allergens inhaled have been made using a variety of different techniques. For cat or dog allergens, estimates of inhaled allergen range up to one microgram/day, by contrast most estimates of mite or cockroach exposure are 5 - 20 ng/day i.e. 50-fold lower1,12. Comparison of airborne exposure to cat allergens in homes with an animal; without animals; or in schools can be reliable. In contrast, comparison of airborne measurements of mite in different settings is made very difficult because of the difficulty in “standardizing” the level of disturbance (Table I).
+
+Table 1. — Allergens as Risk Factors for Allergic Disease
+<table><tr><td rowspan=1 colspan=3>Category</td><td rowspan=1 colspan=1>Primary Site ofExposure</td><td rowspan=1 colspan=1>Prevalence ofExposure</td><td rowspan=1 colspan=1>Dispersal</td><td rowspan=1 colspan=1>Sensitization</td></tr><tr><td rowspan=1 colspan=7>Inhaled</td></tr><tr><td rowspan=3 colspan=1>OutdoorsMould</td><td rowspan=1 colspan=2>Pollens</td><td rowspan=1 colspan=1>Nose, Eyes</td><td rowspan=1 colspan=1>+++**</td><td rowspan=1 colspan=1>Windborne</td><td rowspan=1 colspan=1>Up to 30% Worldwide</td></tr><tr><td rowspan=1 colspan=2>Spores</td><td rowspan=1 colspan=1>Nose, Eyes</td><td rowspan=1 colspan=1>+++**</td><td rowspan=1 colspan=1>Windborne</td><td rowspan=1 colspan=1>Up to 10% Worldwide</td></tr><tr><td rowspan=1 colspan=2>Algae</td><td rowspan=1 colspan=1>Nose, Eyes</td><td rowspan=1 colspan=1>十</td><td rowspan=1 colspan=1>Windborne</td><td rowspan=1 colspan=1>Rare</td></tr><tr><td rowspan=7 colspan=1>Indoor</td><td rowspan=2 colspan=1>Acarids           DustStorage</td><td rowspan=1 colspan=1>Mite</td><td rowspan=1 colspan=1>Nose, Lungs</td><td rowspan=1 colspan=1>+++*</td><td rowspan=4 colspan=1>Transient AfterDisturbance</td><td rowspan=1 colspan=1>Temperate Zones</td></tr><tr><td rowspan=1 colspan=1>Mite</td><td rowspan=1 colspan=1>Nose, Lungs</td><td rowspan=1 colspan=1>十</td><td rowspan=1 colspan=1>Farming</td></tr><tr><td rowspan=2 colspan=1>Insects</td><td rowspan=1 colspan=1>Cockroach</td><td rowspan=1 colspan=1>Nose, Lungs</td><td rowspan=1 colspan=1>++**</td><td rowspan=1 colspan=1>Widespread</td></tr><tr><td rowspan=1 colspan=1>0thers</td><td rowspan=1 colspan=1>Nose, Lungs</td><td rowspan=1 colspan=1>+</td><td rowspan=1 colspan=1>Locally Common</td></tr><tr><td rowspan=3 colspan=1>Mammals</td><td rowspan=1 colspan=1>Cats</td><td rowspan=1 colspan=1>Nose, Lungs</td><td rowspan=1 colspan=1>++</td><td rowspan=3 colspan=1>Airborne for ManyHours</td><td rowspan=1 colspan=1>Common</td></tr><tr><td rowspan=1 colspan=1>Dogs</td><td rowspan=1 colspan=1>Nose, Lungs</td><td rowspan=1 colspan=1>++</td><td rowspan=1 colspan=1>Common</td></tr><tr><td rowspan=1 colspan=1>Other</td><td rowspan=1 colspan=1>Nose, Lungs</td><td rowspan=1 colspan=1>+</td><td rowspan=1 colspan=1>Dependent uponExposure</td></tr><tr><td rowspan=1 colspan=7>Non-Inhaled</td></tr><tr><td rowspan=1 colspan=1>Foods</td><td rowspan=1 colspan=2>Peanuts, Tree Nuts, Wheat, Soy, Egg, Chicken,etc.</td><td rowspan=1 colspan=1>Oral and/or Skin</td><td rowspan=1 colspan=1>+++</td><td rowspan=1 colspan=1>N/A</td><td rowspan=1 colspan=1>Sensitization Variable;Up to 4%; Not ClearlyRelated to Exposure</td></tr><tr><td rowspan=2 colspan=1>Bites,Stings,etc.</td><td rowspan=1 colspan=2>Hymenoptera</td><td rowspan=1 colspan=1>Skin/Circulation</td><td rowspan=1 colspan=1>十</td><td rowspan=1 colspan=1>N/A</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=2>Ticks</td><td rowspan=1 colspan=1>Skin</td><td rowspan=1 colspan=1>+</td><td rowspan=1 colspan=1>N/A</td><td rowspan=1 colspan=1>Locally Important</td></tr></table>
+
+The values that have been proposed as risk factors or thresholds for sensitization, or disease, need to be interpreted with caution. Threshold values for chemicals are based on known levels of toxicity of the chemicals. Inhaled allergens are not toxic unless the individual becomes sensitized. Thus it is possible to propose thresholds of allergen exposure for sensitization and separate thresholds for symptoms of asthma among sensitized individuals. However, there are some individuals who develop sensitization or symptoms well below these threshold values. Equally, there are large numbers of non-atopic individuals (50- 70% of the population) who develop neither sensitization nor symptoms, even when exposed to levels of indoor or outdoor allergens 50-fold above the threshold values. Although the concept of a risk factor can be used for many different forms of exposure the term has most often been used in relation to either indoor allergen exposure or to sensitization to indoor allergens as a risk factor for asthma.
+
+## Other Allergens: Food, Fungal Colonization, Venom, etc.
+
+Allergens that are not inhaled can play a role in traditionally inhalant diseases as well as producing their own distinct pattern of disease. In some cases, such as food allergy, the symptoms are primarily oral, gastrointestinal or urticarial. However, food allergens may be strikingly regional18. Food allergens can play a major role in atopic dermatitis, and they should be considered in all severe cases19. However, the relevant foods are ubiquitous, so that these foods cannot be considered as a risk factor for the disease. If exposure is universal, it is the immune response that creates the risk.
+
+Stinging insect venom is also a potent allergen and venom exposure is clearly a risk factor for both the IgE response and subsequent anaphylactic responses. There is only a minor overlap between the factors that predispose to inhalant responses and those that predispose to venom reactions.
+
+Fungal colonization of the lungs or the feet has been incriminated in cases of asthma and/or sinusitis. With Aspergillus infection of the lungs, the mechanism by which the fungus contributes to lung disease is relatively obvious. Furthermore, there is increasing evidence that antifungal treatment can help these cases20. On the other hand, it is not clear that colonization is related to increased exposure. Indeed it may be (both for Aspergillus and Trichophyton) that exposure is universal and that it is again the immune response that creates the risk9,10,21.
+
+## Interactions Between Allergens and Other Risk Factors.
+
+A wide range of environmental and lifestyle factors can contribute to “allergic” diseases (Fig 1). Furthermore, it is likely that these factors interact with each other in causing symptoms or exacerbations of disease. Chemical and particulate air pollution can play a major role in some regions of the world and there is good evidence that those effects are exaggerated amongst allergic patients. For air pollution, the effects appear to be directly related to dose, however in some studies the maximum effect appears to be 24 to 48 hours post maximum exposure22. There is very little evidence that an individual immune response to the pollution alters the impact of air pollution.
+
+Human Rhinovirus (HRV): Human Rhinovirus is a special example where there can be a major positive interaction between the virus and pre-existing allergic inflammation23. Experience from both naturally occurring and experimental infections is that HRV causes colds, but has little or no effect on the lungs of non-allergic individuals. In contrast, when allergic asthmatic subjects are challenged with HRV there is a significant up-regulation of eosinophils, increased cough and in 5-10% of cases, an exacerbation of asthma.
+
+## Helminths and Ectoparasites as Causes of IgE Antibody Responses which are not a risk for Allergic Symptoms
+
+In traditional tropical villages, asthma and allergic diseases remain rare, but despite this many or most of the children have markedly elevated total serum IgE. Whilst it is assumed that this IgE is primarily driven by helminth infection, the detailed specificity of the IgE is not known. Thus there is an open question whether the elevated total IgE is irrelevant to allergic disease or whether it interferes with the risk of allergic disease24. Recent evidence has suggested that tick bites can also drive total serum IgE25. Interestingly, in this case, the IgE antibody response may include high titre IgE antibody to the oligosaccharide galactose alpha-1, 3-galactose26. This IgE antibody may give “false positive” serum IgE antibody responses to cat and dog allergens, but very poor skin tests and no symptoms on exposure to cats. These results suggest that, at least in some cases, IgE induced by parasites can actually “block” allergic responses. Equally, it appears that exposure to a parasite either through the gut or skin can induce IgE antibody responses to carbohydrate or protein epitopes which do not induce IgE antibody responses when eaten or inhaled on a soluble protein.
+
+## Current and Future Needs
+
+Over the last twenty years, the major allergens relevant to inhalant allergy have been defined (www.allergen.org). In addition, assays have become available for measuring many of the major allergens in the environment. What is now needed is a better understanding of the way in which these allergens contribute to both the development of allergic disease, and to the symptoms of these diseases. Although there is extensive evidence about asthma, there is still disagreement about the relevance of allergen-specific treatment to the management of asthma. For severe atopic dermatitis the situation is more confusing, because although these patients are the most allergic subjects that we see, there are many physicians who do not recognize the role of allergen exposure in the disease.
+
+## Research Needs
+
+Increasingly the most interesting questions relate to how treatment should be influenced by the phenotype of patients presenting with problematic asthma. To understand this, we need to understand better how the allergic basis of asthma influences the recruitment of other cells to the respiratory tract, including eosinophils and T-cells. In addition, there are research questions about how IgE antibodies influence the biochemical events that occur in the lungs, the most obvious markers being exhaled NO and pH. Equally, we need to understand better how inflammation of the lungs including eNO, eosinophils and BHR influences the response to rhinovirus.
+
+## Unmet Needs
+
+With the availability of accurate quantitative measurements of IgE antibodies and assays for environmental allergens, we should move into a different phase of research. This will focus on understanding the impact of allergen exposure on the skin, nose or lungs. In addition, we urgently need to understand better the interaction between allergic inflammation and colonization with bacteria and fungi. This appears to be relevant to both asthma and atopic dermatitis, but may also be important to understanding chronic sinus disease. Above all, there is a major need to understand the ways in which allergic disease which is normally mild or moderate predisposes to the development of severe disease.
+
+## References
+
+1. Platts-Mills TA, Vervloet D, Thomas WR, Aalberse RC, Chapman MD: Indoor allergens and asthma: Report of the third international workshop. J Allergy Clin Immunol 1997; 100:S2-24.
+
+2. Sporik R, Holgate ST, Platts-Mills TA, Cogswell JJ: Exposure to house-dust mite allergen (der p i) and the development of asthma in childhood. A prospective study. N Engl J Med 1990; 323:502-507.
+
+3. Illi S, von Mutius E, Lau S, Niggemann B, Gruber C, Wahn U: Perennial allergen sensitisation early in life and chronic asthma in children: A birth cohort study. Lancet 2006; 368:763-770.
+
+4. Rullo V, Rizzo M, Arruda L, Sole D, Naspitz C: Daycare centres and schools as sources of exposure to mites, cockroach, and endotoxin in the city of Sao Paulo, Brazil, 2002, pp 582-588, Journal of Allergy & Clinical Immunology, 110(584)
+
+5. Zhang L, Chew FT, Soh SY, Yi FC, Law SY, Goh DY, Lee BW: Prevalence and distribution of indoor allergens in Singapore. Clin Exp Allergy 1997; 27:876-885. Chew FT, Lim SH, Shang HS, Dahlia MD, Goh DY, Lee BW, Tan HT, Tan TK:
+
+6. Evaluation of the allergenicity of tropical pollen and airborne spores in Singapore. Allergy 2000; 55:340-347.
+
+7. Sears MR, Herbison GP, Holdaway MD, Hewitt CJ, Flannery EM, Silva PA: The relative risks of sensitivity to grass pollen, house dust mite and cat dander in the development of childhood asthma. Clin Exp Allergy 1989; 19:419-424.
+
+8. Thommen A: Hay Fever. in A.F. Coca, M. Waltzer, and A.A. Thommen (eds). Asthma and hay fever in theory and practice. Sprinfield, iee. Thomas, 1931,
+
+9. Halonen M, Stern DA, Wright AL, Taussig LM, Martinez FD: Alternaria as a major allergen for asthma in children raised in a desert environment. Am J Respir Crit Care Med 1997; 155:1356-1361.
+
+10. O’Hollaren MT, Yunginger JW, Offord KP, Somers MJ, O’Connell EJ, Ballard DJ, Sachs MI: Exposure to an aeroallergen as a possible precipitating factor in respiratory arrest in young patients with asthma. N Engl J Med 1991; 324:359-363.
+
+11. Esch R BR: Esch R, bush R: Aerobiology of outdoor allergens in Middleton’s Allergy Principles & Practice (seventh edition) by Elsevier, inc., 2009, pp 509-537.
+
+12. Arruda LK: Cockroach allergens. Curr Allergy Asthma Rep 2005; 5:411-416.
+
+13. van Ree R, Chapman MD, Ferreira F, Vieths S, Bryan D, Cromwell O, Villalba M, Durham SR, Becker WM, Cistero Bahima A, Custovic A, et al: The create project: Development of certified reference materials for allergenic products and validation of methods for their quantification. Allergy 2008; 63:310-326.
+
+14. Luczynska CM, Li Y, Chapman MD, Platts-Mills TA: Airborne concentrations and particle size distribution of allergen derived from domestic cats (felis domesticus). Measurements using cascade impactor, liquid impinger, and a two-site monoclonal antibody assay for fel d i. Am Rev Respir Dis 1990; 141:361-367.
+
+15. Hesselmar B, Aberg B, Eriksson B, Bjorksten B, Aberg N: High-dose exposure to cat is associated with clinical tolerance - a modified th2 immune response? Clin Exp Allergy 2003; 33:1681-1685.
+
+16. Platts-Mills T, Vaughan J, Squillace S, Woodfolk J, Sporik R: Sensitisation, asthma, and a modified th2 response in children exposed to cat allergen: A population-based cross-sectional study. Lancet 2001; 357:752-756.
+
+17. Almqvist C, Egmar A, Hedlin G, Lundqvist M, Nordvall S, Pershagen G, Svartengren M, van Hage-Hamstein M, Wickman M: Direct and indirect exposure to pets-risk of sensitization and asthma at 4 years in a birth cohort. Clin Exp Allergy 2003, 33(9), pp 1190-1197.
+
+18. Lim DL, Neo KH, Yi FC, Chua KY, Goh DL, Shek LP, Giam YC, Van Bever HP, Lee BW: Parvalbumin--the major tropical fish allergen. Pediatr Allergy Immunol 2008; 19:399-407
+
+19. Han Y, Chung SJ, Kim J, Ahn K, Lee SI: High sensitization rate to food allergens in breastfed infants with atopic dermatitis. Ann Allergy Asthma Immunol 2009;103:332-336.
+
+20. Denning DW, O’Driscoll BR, Powell G, Chew F, Atherton GT, Vyas A, Miles J, Morris J, Niven RM: Randomized controlled trial of oral antifungal treatment for severe asthma with fungal sensitization: The fungal asthma sensitization trial (fast) study. Am J Respir Crit Care Med 2009;179:11-18.
+
+21. Ward GW, Jr., Woodfolk JA, Hayden ML, Jackson S, Platts-Mills TA: Treatment of late-onset asthma with fluconazole. J Allergy Clin Immunol 1999; 104:541-546.
+
+22. Chew FT, Goh DY, Ooi BC, Saharom R, Hui JK, Lee BW: Association of ambient air-pollution levels with acute asthma exacerbation among children in Singapore. Allergy 1999; 54:320-329.
+
+23. Heymann PW, Carper HT, Murphy DD, Platts-Mills TA, Patrie J, McLaughlin AP, Erwin EA, Shaker MS, Hellems M, Peerzada J, Hayden FG, Hatley TK, Chamberlain R: Viral infections in relation to age, atopy, and season of admission among children hospitalized for wheezing. J Allergy Clin Immunol 2004; 114:239-247.
+
+24. Cooper PJ: Interactions between helminth parasites and allergy. Curr Opin Allergy Clin Immunol 2009; 9:29-37.
+
+25. Commins S, Platts-Mills TAE: Anaphylaxis syndromes related to a new mammalian cross-reactive carbohydrate determinant. JACI 2009; 124:652-657.
+
+26. Chung CH, Mirakhur B, Chan E, Le QT, Berlin J, Morse M, Murphy BA, Satinover SM, Hosen J, Mauro D, Slebos RJ, Zhou Q, Gold D, Hatley T, Hicklin DJ, Platts-Mills TA: Cetuximab-induced anaphylaxis and IgE specific for galactose-alpha-1,3-galactose. N Engl J Med 2008;358: 1109-1117.
+
+# Section 3.3. Environmental risk factors: indoor and outdoor pollution
+
+Sara Maio, Sonia Cerrai, Marzia Simoni, Giuseppe Sarno, Sandra Baldacci, Giovanni Viegi
+
+## Key statements:
+
+• Epidemiological studies show that indoor and outdoor pollution affects respiratory health, including an increased prevalence of asthma and allergic diseases.
+
+Outdoor pollution is associated with substantial mortality; for example in China, outdoor pollution is associated with more than 300,000 deaths annually.
+
+• Conservative estimates show that exposure to indoor air pollution may be responsible for almost two million deaths per annum in developing countries.
+
+Exposure to outdoor/indoor pollutants is associated with new onset of asthma, asthma exacerbations, rhinitis, rhinoconjunctivitis, acute respiratory infections, increase of anti-asthmatic drug use, and hospital admissions for respiratory symptoms.
+
+• Abatement of the main risk factors for respiratory disease and, in particular, environmental tobacco smoke, indoor biomass fuels and outdoor air pollution, will achieve huge health benefits.
+
+## Introduction
+
+• Asthma is a chronic inflammatory airways disease closely associated with atopic diseases like allergic rhinitis that affects adults and children of all ages.
+
+• Asthma and rhinitis are increasing to epidemic proportions with reduced quality of life for patients, lower productivity, and increasing medical costs.
+
+Rapid urbanization and industrialization have increased the population size of those exposed to air pollution. Meanwhile, the prevalence rates of asthma and allergic diseases have risen in industrialized countries. Thus, it is necessary to perform longitudinal epidemiological studies that will be able to provide reliable data on the evolution of the prevalence, severity and management of these diseases and their association with changes in air pollution.
+
+Figure 2. Common anthropogenic pollutants and relative outdoor/indoor sources.  
+![](images/becb02d3b5d1488a4a4db181992f8d622f7306d04641ea5490e17475010bea99.jpg)  
+CO=Carbon oxide, CO =Carbon dioxide, NO =Nitrogen dioxide, PM=Particulate Matter, ETS=Environmental Tobacco Smoke, SO =Sulphur dioxide, VOCs=Volatile Organic Compounds, $\mathrm { { \bar { O } } } _ { 3 }$ =Ozone (secondary pollutant), PAHs=Polycyclic Aromatic Hydrocarbons
+
+We have recently reviewed, on behalf of the Forum of International Respiratory Societies (FIRS), the negative health effects due to air pollution, which range from the perception of bad odors to the increase in mortality1.
+
+Air pollution is particularly hazardous to the health of susceptible sub-populations like children, pregnant women and the elderly or people at higher risk for specific exposure. The respiratory health of children is at higher risk since they inhale a higher volume of air per body weight than adults and their immune defence mechanisms are still evolving. The main air pollutants from anthropogenic activity and their relative sources are summarized in Figure 2.
+
+The exhaust from fuel combustion by automobiles, homes and industries are of particular importance. Other pollutants derive from natural phenomena (e.g. forest fires, volcanic eruptions, soil erosion) and biological allergens (pollens, molds, house dust mites and pets). The extent to which an individual is harmed by air pollution depends on the concentration of the pollutant/s and the duration of exposure.
+
+## Outdoor pollution
+
+Worldwide, the main sources of outdoor pollutants are fuel combustion from vehicular transportation, construction and agricultural operations, power plants and industries, primarily refineries.
+
+Carbon monoxide (CO), nitrogen dioxide (NO ), sulphur dioxide (SO ) and polycyclic aromatic hydrocarbons (PAHs) are primary pollutants since they are directly emitted into the atmosphere, while ozone $\mathrm { ( O } _ { 3 } )$ , that is produced by the reaction of sunlight with air containing hydrocarbons and $\mathsf { N O } _ { 2 } ,$ is classified as secondary pollutant. $\mathrm { O } _ { 3 }$ reacts directly with some hydrocarbons such as aldehydes and thus begins their removal from the air, but the products are themselves key components of smog. Particulate matter (PM) can either be emitted directly into the air (primary PM) or be formed in the atmosphere from gaseous precursors, mainly SO , oxides of nitrogen (NO ), ammonia and non-methane volatile organic compounds (secondary PM). The main effects of common outdoor pollutants are summarized in Figure 3
+
+Figure 3. Main respiratory health effects due to outdoor pollution exposure.  
+![](images/8a110b08ce06b0ff93cdd595fc065aa4f4b4105d29d9da3de43c80606417abbc.jpg)
+
+Rapid urbanization and industrialization throughout the world have increased air pollution and population exposures. At the same time the prevalence of asthma and allergic diseases has risen in industrialized countries, so that most epidemiologic studies focus on possible causalities between air pollution and respiratory disease.
+
+In China, where 1.9 billion tons of coal are combusted each year to meet 70- 75% of energy needs, outdoor pollution is associated with more than 300,000 deaths and 20 million cases of respiratory illnesses annually2.
+
+A large number of epidemiological studies provide evidence for a strong relationship between time exposure and size of response to many outdoor pollutants, especially PM. In the presence of a rapid rise of air pollutant concentration, even a short-term exposure may increase hospital admissions for asthma exacerbations and cause premature mortality, whilst long-term or chronic exposures are associated with morbidity for cardiovascular and respiratory diseases. The potential mechanisms are oxidative stress and lung and systemic inflammation.
+
+A growing number of studies show that children exposed to vehicular traffic have increased risks for respiratory effects such as new onset asthma, asthma symptoms, and rhinitis3, 4. These effects are larger in children living in metropolitan areas than in children living in non-metropolitan areas4.
+
+In Italy, a recent study showed that people living in an urban area (Pisa, Central Italy) also have a higher risk of increased bronchial responsiveness (OR 1.41, CI 95% 1.13-1.76) with respect to people living in a rural area (Po Delta, Northern Italy)5.
+
+Due to the large amount of evidence concerning their harmful effects, PM, ${ \mathsf { N O } } _ { 2 }$ and $\mathrm { { O } } _ { 3 }$ today cause significant public health concerns. The fine particles (aerodynamic diameter < 2.5 µm, $\mathsf { P M } _ { 2 . 5 } )$ and ultrafine particles (aerodynamic diameter < 0.1 µm, $\mathsf { P M } _ { 0 . 1 } )$ that are mainly present in urban areas due to vehicular exhaust, have the capability to reach the alveolar regions.
+
+In children, an increase of one inter-quartile range in the morning maximum (12 µg/m3) and morning mean (6 µg/m3) outdoor $\mathsf { P M } _ { 2 . 5 }$ levels has been shown to be associated with an increase in bronchodilator usage at school6 (Table 2).
+
+As demonstrated from a large cohort study carried out in American metropolitan areas, $\mathrm { O } _ { 3 }$ is significantly associated with an increment of the risk of death from respiratory causes (OR 1.04, 95% CI 1.01–1.07) for an increment of 10 ppb in $\mathrm { { O } } _ { 3 }$ concentration7 (Table 2).
+
+A recent study of a sample including adults from three Swedish cities shows a positive association between levels of ${ \mathsf { N O } } _ { 2 }$ and the incidence of asthma (OR per 10 <sub>μ</sub>g/m³ 1.54, 95% CI 1.00– 2.36)8 (Table 2).
+
+The causal link between exposure to air pollutants and allergies is still debated despite its biological plausibility. Even if respiratory allergic diseases show strong familial association, the rapid rise in the prevalence of these diseases that has occurred in recent decades cannot be explained by genetic factors alone. Allergic diseases are more common in highly developed countries and less common in low-middle income countries. There are suggestions that urban life promotes allergy through an interaction of genetic and environmental factors.
+
+Table 2 — Respiratory disorders caused by $\mathsf { N O } _ { 2 } ,$ CO, $\mathsf { O } _ { 3 }$ and Particulate Matter (OR, 95% CI)
+<table><tr><td rowspan=1 colspan=1>Study</td><td rowspan=1 colspan=1>Country (sample)</td><td rowspan=1 colspan=1>Exposure</td><td rowspan=1 colspan=1>Health outcome</td><td rowspan=1 colspan=1>Measures</td></tr><tr><td rowspan=1 colspan=1>Jerrett M et al, 2009[7]</td><td rowspan=1 colspan=1>United States(general population)</td><td rowspan=1 colspan=1> $0 _ { _ 3 } ( 1 0$ ppb increasing)</td><td rowspan=1 colspan=1>Risk of death from respiratorycauses</td><td rowspan=1 colspan=1>OR (95% CI):1.04 (1.01-1.07)</td></tr><tr><td rowspan=1 colspan=1>Modig L et al, 2009[8]</td><td rowspan=1 colspan=1>Sweden(adults)</td><td rowspan=1 colspan=1> ${ \mathsf { N O } } _ { 2 }$ (10 μg/m³ increasing)</td><td rowspan=1 colspan=1>Incident asthma</td><td rowspan=1 colspan=1>OR (95% CI):1.54 (1.00–2.36)</td></tr><tr><td rowspan=1 colspan=1>Parker JD et al, 2009[9]</td><td rowspan=1 colspan=1>United States(children)</td><td rowspan=1 colspan=1> $0 _ { _ 3 } ( 1 0$ ppb increasing) $\mathsf { P M } _ { 2 . 5 } ( 1 0 $ µg/m³ increasing)</td><td rowspan=1 colspan=1>Respiratory allergy/hay fever</td><td rowspan=1 colspan=1>OR (95% CI):1.20 (1.15-1.26)1.23 (1.10-1.38)</td></tr><tr><td rowspan=1 colspan=1>Hwang BF et al,2006[10]</td><td rowspan=1 colspan=1>Taiwan(schoolchildren)</td><td rowspan=1 colspan=1>SO2 (10 ppb increasing)CO (100 ppb increasing) ${ \mathsf { N O } } _ { \mathrm { x } }$ (10 ppb increasing) $0 _ { _ 3 } ( 1 0$ ppb increasing) $\mathsf { P M } _ { 1 0 }$ (10 µg/m³ increasing)</td><td rowspan=1 colspan=1>Allergic rhinitis prevalence</td><td rowspan=1 colspan=1>OR (95% CI):1.43 (1.25–1.64)1.05 (1.04–1.07)1.11 (1.08–1.15)1.05 (0.98–1.12)1.00 (0.99–1.02)</td></tr><tr><td rowspan=1 colspan=1>Mi YH et al, 2006[14]</td><td rowspan=1 colspan=1>China(children)</td><td rowspan=1 colspan=1> ${ \mathsf { N O } } _ { z }$ (10 μg/m³ increasing)</td><td rowspan=1 colspan=1>Asthma attacksAsthma medicationCurrent asthma</td><td rowspan=1 colspan=1>OR (95% CI):1.50 (1.11-2.02)1.45 (1.08-1.94)1.51 (1.17-1.96)</td></tr><tr><td rowspan=1 colspan=1>Kim CS et al, 2002[15]</td><td rowspan=1 colspan=1>Korea(asthmatic children)</td><td rowspan=1 colspan=1>CO (10 ppb increasing)</td><td rowspan=1 colspan=1>Wheezing attacks</td><td rowspan=1 colspan=1>OR (95% CI):1.12 (1.02-1.28)</td></tr><tr><td rowspan=1 colspan=1>Simoni M et al, 2004[23]</td><td rowspan=1 colspan=1>Italy(general population)</td><td rowspan=1 colspan=1> ${ \mathsf { N O } } _ { 2 }$  $\mathsf { P M } _ { 2 . 5 }$ </td><td rowspan=1 colspan=1>ARIARIWFRI</td><td rowspan=1 colspan=1>OR (95% CI):1.66 (1.08-2.57)1.62 (1.04-2.51)1.39 (1.17-1.66)</td></tr><tr><td rowspan=1 colspan=1>Rabinovitch N et al,2006[6]</td><td rowspan=1 colspan=1>Colorado(asthmatic children)</td><td rowspan=1 colspan=1> $\mathsf { P M } _ { 2 . 5 \mathsf { a } }$  $\mathsf { P M } _ { 2 . 5 \mathsf { b } }$ </td><td rowspan=1 colspan=1>Bronchodilator usageat school</td><td rowspan=1 colspan=1>Percentage increment (95% CI):3.8% (0.2-7.4)2.7% (0.1-5.4)</td></tr></table>
+
+OR, odds ratio; 95% CI, 95% Confidence Interval; ${ \mathsf { N O } } _ { 2 } ,$ nitrogen dioxide; $\mathsf { P M } _ { 2 . 5 } ,$ particulate matter with aerodinamyc diameter <2.5 µm; CO, carbon monoxide; ARI, acute respiratory illnesses; WFRI, chronic bronchitis and/or asthmatic symptoms without fever and ARI.  
+a 12 µg/m3 increasing of morning maximum. b 6 µg/m3 increasing of morning mean.
+
+A study on a large cohort of children (70,000 subjects) showed that respiratory allergy/hay fever is associated with summer $\mathrm { { O } } _ { 3 }$ levels (OR per 10 ppb increment 1.20, 95% CI 1.15-1.26) and $\mathsf { P M } _ { 2 . 5 }$ (OR per 10 $\mu { \sf g } / \mathsf { m } ^ { 3 }$ increment 1.23, 95% CI 1.10-1.38)9 (Table 2). A cross-sectional study on Taiwanese schoolchildren reveals the prevalence of allergic rhinitis to be significantly associated with ${ \mathrm { S O } } _ { 2 }$ (OR 1.43, 95% CI 1.25–1.64), CO (OR 1.05, 95% CI 1.04–1.07), and NO (OR 1.11, 95% CI 1.08– $1 . 1 5 ) ^ { 1 0 }$ (Table 2).
+
+## Indoor Pollution
+
+Studies of human exposure to air pollutants indicate that indoor air pollutant concentrations may be 2-5 fold higher than outdoor levels. These concentrations of indoor pollutants are particularly hazardous since it is estimated that most people spend as much as 90% of their time in confined environments11. Even at low levels, indoor pollutants may have important biological impact due to chronic exposure (e.g. at home/school, in occupational environments)12.
+
+The quality of indoor environments depends on the quality of air that penetrates from outdoors and on the presence of indoor air pollution sources. To improve energy efficiency, modern dwellings are often thermally insulated and scarcely ventilated, but these efficiencies can cause deterioration in the air quality. Moreover, the indoor environment is influenced by the interaction between building systems, construction techniques, contaminant sources and building occupants11.
+
+Conservative estimates show that exposure to indoor air pollution may be responsible for nearly two million deaths per year in developing countries. Many studies have shown associations between the exposure to indoor pollutants and the risk for several respiratory allergic conditions (Figure 4).
+
+Figure 4. Main allergic effects on respiratory health due to indoor pollution exposure.
+<table><tr><td>– Asthma (new-onset, worsening, exacerbations, medications) and asthma-like symptoms</td></tr><tr><td>– Bronchial hyperresponsiveness – Wheezing attacks – Cough/phlegm — Rhino-conjunctivitis – Red/itchy/watery eyes –Sneezing – Nose/mouth/throat irritation — Nasal stuffiness/runny nose</td></tr></table>
+
+The most frequently investigated risk factors for indoor pollution are Environmental Tobacco Smoke (ETS), biomass (wood/coal) fuel, cleaning and washing products, and mold/dampness.
+
+About half of the world’s population, especially those living in developing countries11,13, burns biomass as the main source of fuel for cooking and heating, on open fires or with inefficient stoves and in poorly ventilated rooms. In the poorest countries of the world, the number of people using biomass to heat cooking stoves amounts to over 80% of the population. The combustion process produces a mixture of pollutants, such as CO, NO SO , aldehydes, PAHs and inhalable PM, and represents the most important source of indoor pollutants. Health effects by biomass combustion include respiratory symptoms (such as cough, wheeze), weakening of the immune system and respiratory illness (such as asthma, acute respiratory infections, obstructive lung diseases, lung cancer)13.
+
+The presence of NO sources (e.g. gas appliances) is a risk factor for respiratory symptoms and asthma in children and adults. The association between an increase of 10 µg/m3 of indoor NO and current asthma, asthma exacerbations and asthma medication has been observed in ten naturally ventilated schools in Shanghai14 (Table 2). In addition, the exposure of asthmatic children to indoor carbon oxides is associated with an increased risk for wheezing attacks15 (Table 2).
+
+Other sources of indoor pollutants are building dampness and moulds, associated with approximately 30-50% increases in a variety of respiratory and asthma-related health outcomes. In children, an increased pooled risk for wheeze caused by indoor mould/dampness has been estimated (OR 1.53, 95%CI 1.39-1.68); in the general population the OR for current asthma is 1.56 (95%CI 1.30-1.86)16 (Table 3) Mold exposure is also associated with new onset asthma, or worsening of preexisting asthma (in terms of wheezing, cough, and shortness of breath) in both children and adults12.
+
+Associations between molds and wheezing, asthma, rhinoconjunctivitis, eczema, cough and phlegm seem more evident in children than in adolescents particularly when the exposure occurs early in life. Through the measurement of Population Attributable Risk (% PAR), avoiding an early mold/dampness exposure would abate 6% of wheeze, 7% of asthma or cough/ phlegm and 4% of rhinoconjunctivitis in children and 4% of wheeze and 6% of asthma in adolescents17 (Table 3).
+
+House dust is composed of several organic and inorganic compounds, including fibres, mold spores, pollen grains, insects and mites and their faeces. It is commonly related to sneezing, nose/mouth/throat irritations, nasal stuffiness/runny nose and red/itchy/watery eyes. The principal domestic mite species, Dermatophagoides and Euroglyphus, are particularly abundant in mattresses, bed bases, pillows, carpets or fluffy toys and proliferate in warm (above 20°C) and humid conditions. In developed countries, homes have been insulated for energy efficiency and carpeted, heated, cooled and humidified, thus creating an ideal habitat for indoor allergens11.
+
+An increasing concern relates to cleaning and exposure to Volatile Organic Compounds (VOCs); in fact cleaning activities involve the general population and a large fraction of the workforce worldwide. The exposure can be quite substantial, but knowledge of the potential toxicity of consumer products is limited. During the process of cleaning, individuals are exposed to gases (e.g. formaldehyde and VOCs) and dust; only ventilation can reduce the exposure levels. Little is known about long-term exposure to VOCs at levels generally detected inside dwellings11. In Europe, levels of VOCs in public buildings range from 21.7µg/m3 in Arnhem (Holland); 63.8µg/m3 in Catania (Italy); to 143.7 µg/m3 in Salonicco (Greece)18. VOCs exposure (especially benzene, ethyl-benzene and toluene) seems to be a significant risk factor for asthma19 (Table 3).
+
+Table 3 — Respiratory disorders caused by Environmental Tobacco Smoke (ETS), Volatile Organic Compounds (VOCs) and mold/dampness exposure
+<table><tr><td rowspan=1 colspan=1>Study</td><td rowspan=1 colspan=1>Country (sample)</td><td rowspan=1 colspan=1>Exposure</td><td rowspan=1 colspan=1>Health outcome</td><td rowspan=1 colspan=1>Measures</td></tr><tr><td rowspan=1 colspan=1>Fisk WJ et al, 2007[16]</td><td rowspan=1 colspan=1>Meta-analysis(children)(general population)</td><td rowspan=1 colspan=1>Mold/dampness</td><td rowspan=1 colspan=1>WheezeCurrent asthma</td><td rowspan=1 colspan=1>OR (95% CI):1.53 (1.39-1.68)1.56 (1.30-1.86)</td></tr><tr><td rowspan=1 colspan=1>Simoni M et al, 2005[17]</td><td rowspan=1 colspan=1>Italy(children andàdolescents)ChildrenAdolescents</td><td rowspan=1 colspan=1>Mold</td><td rowspan=1 colspan=1>WheezeCurrent asthmaRhino-conjunctivitisEczemaCurrent cough/phlegmEarly wheezeAsthmaRhino-conjunctivitis</td><td rowspan=1 colspan=1>OR (95% CI):1.98 (1.47-2.66)1.39 (1.00-1.93)1.46 (1.01-2.09)1.44 (1.09-1.91)1.86 (1.19-2.91)1.56 (1.15-2.11)1.62 (1.00-2.62)1.78 (1.30-2.45)</td></tr><tr><td rowspan=1 colspan=1>Rumchev K et al, 2004[19]</td><td rowspan=1 colspan=1>Western Australia(children)</td><td rowspan=1 colspan=1>VOCs (1 mg/m³ increase)VOCs (10 mg/m³ increase)</td><td rowspan=1 colspan=1>Risk of asthma</td><td rowspan=1 colspan=1>OR (95% CI):1.02 (1.02-1.03)1.27 (1.18-1.37)</td></tr><tr><td rowspan=1 colspan=1>Simoni M et al, 2007[20]</td><td rowspan=1 colspan=1>Italy(women, never smoker)</td><td rowspan=1 colspan=1>ETS</td><td rowspan=1 colspan=1>WheezeAttacks of shortness of breathwith wheezeAsthmaAny OLDRhino-conjunctivitis</td><td rowspan=1 colspan=1>OR (95% CI):1.71 (1.04-2.82)1.85 (1.05-3.26)1.50 (1.09-2.08)2.24 (1.40-3.58)1.48 (1.13-1.94)</td></tr><tr><td rowspan=1 colspan=1>Agabiti N et al, 1999[21]</td><td rowspan=1 colspan=1>Italy(children)(adolescents)</td><td rowspan=1 colspan=1>ETS</td><td rowspan=1 colspan=1>AsthmaWheeze</td><td rowspan=1 colspan=1>OR (95% CI):1.34 (1.11-1.62)1.24 (1.07-1.44)</td></tr></table>
+
+OR, odds ratio; 95% CI, 95% Confidence Interval; OLD, obstructive lung diseases.
+
+Environmental Tobacco Smoke (ETS) is linked to several acute and long-term adverse respiratory effects. Some studies showed that women are at higher risk for ETS exposure than men: living with smokers has been related to asthma, attacks of shortness of breath with wheeze, wheeze, current phlegm/ cough and rhinoconjunctivitis20 (Table 3). Epidemiological data are sufficiently consistent to suggest that exposure to ETS is an important risk factor for childhood asthma21 (Table 3). There is convincing evidence that ETS exposure is a risk factor for new onset asthma among both non-smoking adults and children, and for pre-existing asthma exacerbations, increasing the burden of symptoms and morbidity. In children, ETS also increases the risk of middle ear disease, lower respiratory tract illnesses, wheeze, and cough22. ETS is a common source of
+
+## Conclusion
+
+indoor suspended PM, which is related to acute respiratory illnesses and bronchitic/asthmatic symptoms as reported from general population studies in adults23 (Table 2).
+
+Recent epidemiological studies have shown that outdoor and indoor pollution considerably affects respiratory health worldwide. Health care providers and the general community should support public health policy to improve outdoor air quality through programs aimed at abating/reducing pollution emissions. Patient education about the importance of good indoor air quality in the home and workplace is also essential. Guidelines and recommendations on indoor air quality in dwellings are reported in the final document of the Towards Healthy Air in Dwellings in Europe (THADE) project organised by the European Federation of Allergy and Airways Diseases Patients Associations24.
+
+## Current and Future Needs
+
+More research is needed about the long-term effects of outdoor/indoor environments, in order to elucidate the mechanisms by which pollutants induce damage in exposed subjects and on the cost-effectiveness of preventative and remedial measures related to air quality.
+
+• It is important that people be aware of the health risk due to outdoor/indoor pollution (through preventive programs of public health), so that they can try to reduce their personal exposure to these risk factors.
+
+• National and international respiratory and allergological societies, respiratory physicians and allergists, as well as public health professionals, should advocate for a cleaner environment.
+
+## Unmet Needs
+
+A thorough understanding of the reasons behind the increasing prevalence and severity of asthma and allergic rhinitis would be helpful for effective control.
+
+• In spite of the large population size of schoolchildren, few studies have investigated air quality in schools and possible related health problems, including allergic diseases.
+
+• Although there is an increasing concern about cleaning and relative exposure to Volatile Organic Compounds (VOCs), little is known about long-term exposure to VOCs at levels generally detected inside dwellings.
+
+## References
+
+1. Viegi G, Maio S, Pistelli F, Baldacci S, Carrozzi L. Epidemiology of chronic Obstructive pulmonary disease: health effects of air pollution. Respirology 2006; 11:523-532.
+
+2. Millman A, Tang D, Perera FP. Air pollution threatens the health of children in China. Pediatrics 2008; 122:620-628.
+
+3. Migliore E, Berti G, Galassi C, Pearce N, Forastiere F, Calabrese R, Armenio L, Biggeri A, Bisanti L, Bugiani M, Cadum E, Chellini E, Dell’orco V, Giannella G, Sestini P, Corbo G, Pistelli R, Viegi G, Ciccone G; SIDRIA-2 Collaborative Group. Respiratory symptoms in children living near busy roads and their relationship to vehicular traffic: results of an Italian multicenter study (SIDRIA 2). Environ Health 2009; 8:27.
+
+4. Galassi C, De Sario M, Biggeri A, Bisanti L, Chellini E, Ciccone G, Petronio MG, Piffer S, Sestini P, Rusconi F, Viegi G, Forastiere F. Changes in prevalence of asthma and allergies among children and adolescents in Italy: 1994-2002. Pediatrics 2006; 117:34-42.
+
+5. Maio S, Baldacci S, Carrozzi L, Polverino E, Angino A, Pistelli F, Di Pede F, Simoni M, Sherrill D, Viegi G. Urban residence is associated with bronchial hyper-responsiveness in Italian general population samples. Chest 2009; 135:434-441.
+
+6. Rabinovitch N, Strand M, Gelfand EW. Particulate Levels Are Associated with Early Asthma Worsening in Children with Persistent Disease. Am J Respir Crit Care Med 2006; 173:1098-1105.
+
+7. Jerrett M, Burnett RT, Pope CA 3rd, Ito K, Thurston G, Krewski D, Shi Y, Calle E, Thun M. Long-term ozone exposure and mortality. N Engl J Med 2009; 360:1085-1095.
+
+8. Modig L, Torén K, Jansin C, Jarvholm B and Forsberg B. Vehicle exhaust outside the home and onset of asthma among adults. Eur Respir J 2009; 33:1261-1267.
+
+9. Parker JD, Akinbami LJ, Woodruff TJ. Air pollution and childhood respiratory allergies in the United States. Environ Health Perspect 2009; 117:140-147.
+
+10. Hwang BF, Jaakola JJ, Lee YKL, Lin YC, Guo YL. Relation between air pollution and allergic rhinitis in Taiwanese schoolchildren. Respir Res 2006; 7:23.
+
+11. Maio S, Simoni M, Baldacci S, Sherrill D, Viegi G. Indoor air pollution and airway disease. In “Allergy Frontiers: Epigenetic, Allergens and Risk Factors” (Vol.1), R Pawankar, ST Holgate, LJ Rosenwasser Eds., Springer, Tokyo 2009, pp. 387-401.
+
+12. Viegi G, Simoni M, Scognamiglio A, Baldacci S, Pistelli F, Carrozzi L, Annesi-Maesano I. Indoor air pollution and airway disease. Int J Tuberc Lung Dis 2004; 8:1401-1415.
+
+13. Torres-Duque C, Maldonado D, Pérez-Padilla R, Ezzati M, Viegi G; Forum of International Respiratory Studies (FIRS) Task Force on Health Effects of Biomass Exposure. Biomass fuels and respiratory diseases: a review of the evidence. Proc Am Thorac Soc 2008; 5:577-590.
+
+14. Mi Y-H, Norback D, Tao J, Mi Y-L, Ferm M. Current asthma and respiratory symptoms among pupils in Shanghai, China: influence of building ventilation, nitrogen dioxide, ozone, and formaldehyde in classrooms. Indoor Air 2006; 16:454-464.
+
+15. Kim CS, Lim YW, Yang JY, Hong CS, Shin DC. Effects of indoor CO2 concentrations on wheezing attacks in children. Proceedings Indoor Air 2002; 1:492-497.
+
+16. Fisk WJ, Lei-Gomez Q, Mendell MJ. Meta-analyses of the associations of respiratory health effects with dampness and mould in homes. Indoor Air 2007; 17:284-296.
+
+17. Simoni M, Lombardi E, Berti G, Rusconi F, La Grutta S, Piffer S, Petronio MG, Galassi C, Forastiere F, Viegi G and the SIDRIA-2 Collaborative Group. Mould/dampness exposure at home is associated with respiratory disorders in Italian children and adolescents: the SIDRIA-2 Study. Occup Environ Med 2005; 62:616-622.
+
+18. Kotzias D, Geiss O, Tirendi S. Evaluation of total exposure to benzene and formaldehyde in the European countries. Epidemiol Prev 2005; 29:17-21.
+
+19. Rumchev K, Spickett J, Bulsara M, Phillips M, Stick S. Association of domestic exposure to volatile organic compounds with asthma in young children. Thorax 2004; 59:746-751.
+
+20. Simoni M, Baldacci S, Puntoni R, Pistelli F, Farchi S, Lo Presti E, Pistelli R, Corbo G, Agabiti N, Basso S, Matteelli G, Di Pede F, Carrozzi L, Forastiere F, Viegi G. Respiratory symptoms/diseases and environmental tobacco smoke (ETS) in never smoker Italian women. Respir Med 2007; 101:531-538.
+
+21. Agabiti N, Mallone S, Forastiere F, Corbo GM, Ferro S, Renzoni E, Sestini P, Rusconi F, Ciccone G, Viegi G, Chellini E, Piffer S. The impact of parental smoking on asthma and wheezing. SIDRIA Collaborative Group. Studi Italiani sui Disturbi Respiratori nell’Infanzia e l’Ambiente. Epidemiology 1999; 10:692-698.
+
+22. DiFranza JR, Aligne CA, Weitzman M. Prenatal and postnatal environmental tobacco smoke exposure and children’s health. Pediatrics 2004; 113(4 Suppl):1007-1015.
+
+23. Simoni M, Scognamiglio A, Carrozzi L, Baldacci S, Angino A, Pistelli F, Di Pede F, Viegi G. Indoor exposures and acute respiratory effects in two general population samples from a rural and an urban area in Italy. J Expo Anal Environ Epidemiol 2004; 14:144s–152s.
+
+24. Franchi M, Carrer P, Kotzias D, Rameckers EM, Seppänen O, van Bronswijk JE, Viegi G, Gilder JA, Valovirta E. Working towards healthy air in dwellings in Europe. Allergy 2006; 61:864-868.
+
+# 3.4. Socio-economic Factors and Environmental Justice
+
+Rosalind J Wright, Michelle J Sternthal
+
+## Key Statements
+
+• The global prevalence, morbidity, mortality and economic burden of asthma have increased over the last 40 years.
+
+• However, the growth and burden of the disease is not uniform. Disparities in asthma morbidity and mortality, with an inverse relationship to social and economic status, are increasingly documented around the world.
+
+Asthma and other atopic disorders may be more concentrated among those of lower socio-economic status because they also bear a disproportionate burden of exposure to suboptimal, unhealthy environmental conditions (e.g. physical, social, and psychological conditions).
+
+Future research needs to pay increased attention to the social, political, and economic forces that result in marginalization of certain populations in disadvantaged areas of the world which may increase exposure to known environmental risk factors contributing to the rising asthma burden.
+
+## Introduction
+
+Allergic diseases are the most common cause of chronic illness in developed countries. Although rates are lower in developing countries, the prevalence of allergic diseases is steadily rising with documented disparities related to social and economic status1. The economic impact of asthma is considerable, both in terms of direct medical costs (hospital admissions and drugs) and indirect medical costs (time lost from work and premature death)2. For asthmatics in poor households, relatively small health costs can be catastrophic. A recent report found that globally, 150 million people suffer financial catastrophes because of annual healthcare costs, with the problem most severe in low-income countries and populations with growing income inequality3. One study of low-income Brazilian patients with severe asthma found that asthma management consumed 29% of family income and 47% of sufferers lost their jobs because of asthma4.
+
+Among the allergic disorders, asthma has generated the most public health concern since it is responsible for most allergy-induced hospitalizations and may result in fatalities. Additionally, much of what is known about social disparities in allergic diseases relates to asthma. For these reasons, this brief overview will focus primarily on asthma. The global prevalence, morbidity, mortality and economic burden of asthma have increased sharply in the last 40 years5. Approximately 300 million people worldwide currently suffer from asthma. However, the growth and burden of the disease is not uniform. Though asthma prevalence rates are higher in developed countries than in developing countries, most asthma-related deaths occur in low- and lower-middle income countries6.
+
+While there is evidence that asthma severity and morbidity worsen in a graded or linear fashion with decreasing socioeconomic status (SES), studies suggest that the greatest disparities seem concentrated in the very poor7. For instance, in a United States study of healthcare utilization across the country, hospitalization rates for asthma are 87% higher for patients from the poorest communities (residing in areas with a median household income of less than \$38,000) versus those in all other communities (median household income of \$38,000 or above)8. Similarly, persistent disparities in morbidity, hospitalization and exacerbations are found in many other regions of the world9,10. These associations persist, whether SES is measured at the individual level (e.g. personal/family income, occupational position or educational level, financial assets wealth) or at the community level (e.g. average income, employment rates, percent of homes with poor sanitation).
+
+## Asthma Disparities and an Environmental Justice Framework
+
+Traditionally, asthma epidemiology has focused on individuallevel risk factors and family factors. However, these do not fully explain the socio-economic disparities in asthma, evident both within populations and across countries. Studies demonstrating the concentration of racial/ethnic disparities in asthma morbidity among those in extreme poverty, suggest a greater role for differential patterns of social and environmental exposures rather than genetic risk7,11. An environmental justice (EJ) perspective underscoring the role of structural and macro-social forces that shape exposure and vulnerability to diseases may better inform the complex social patterning of asthma11,12. According to this framework, asthma rates are higher and the associated morbidity is greater among the poor because they bear a disproportionate burden of exposure to suboptimal, unhealthy environmental conditions. Upstream social and economic factors determine differential exposures to relevant asthma pathogens and toxicants13. This chapter outlines the pathways through which SES may lead to both asthma development and exacerbation of established disease, with a particular focus on distal social factors that determine exposure to a broad range of environmental and social toxins that may contribute to asthma risk and morbidity.
+
+## Pathways from Poverty to Asthma
+
+## Physical environmental toxicants
+
+Indoor allergens/air pollution: Within developed countries, residential exposures to home allergens (e.g. dust mites, rodent, or cockroach), often more common in poor quality housing, are consistently associated with allergic asthma onset and/or exacerbations. Exposure to outdoor air pollutants, including ozone (O ) and particulate matter (PM) are also known risk factors for asthma morbidity and fatality. These health risks appear to be spatially and socially distributed, with asthma-inducing pathogenic risk factors concentrated in the poorest urban areas in the US as well as worldwide11. Indeed, numerous studies have found that poor individuals are more likely to consume polluted air and water, to reside in noisier, lower-quality and more-crowded homes, and to live in neighbourhoods with greater physical deterioration - all characteristics that may increase exposure to known risk factors for asthma. For lower-income countries, including Mexico, China, and India, the effects of indoor and outdoor pollution on asthma are perhaps even more pronounced5,14. Many residents in these countries rely on biomass fuels (wood, dung, crop residue) for cooking and heating which, when burned, emit high concentrations of particulate emissions that may exacerbate asthma.
+
+Cigarette smoke: The respiratory health effects of smoking have also been well documented. Maternal pre-natal cigarette smoking and post-natal environmental tobacco smoke exposure have been associated with higher risk of asthma in early childhood and greater asthma morbidity, wheeze and respiratory infections in children of all ages. As with other physical exposures, smoking behaviours are socially patterned - within populations, low-income individuals are both more likely to engage in tobacco use and less likely to quit than their higher-income counterparts. Smoking can be viewed as a strategy to cope with negative affect or stress and smoking has been associated with a variety of stressors disproportionately afflicting the poor, including unemployment, minority group status, family disorder, and violence.
+
+Global smoking habits reflect a worrisome pattern with a dramatic rise in developing countries and a decline in developed countries. From an EJ perspective, this shift is directly related to broader political and economic interests. The decline in tobacco use in developed countries motivated tobacco companies to aggressively promote their products in Third World markets. With the relative lack of anti-smoking regulations, the scarcity of anti-smoking campaigns and the low levels of knowledge regarding the health risks of smoking, developing countries have proven especially vulnerable to the sophisticated marketing strategies of tobacco companies15. As a result, from 1970 to 2000, per capita cigarette consumption fell by 14% in developed countries and rose by 46% in developing counties16. This may have substantial impact on future burden of disease in these countries, including asthmarelated morbidity and mortality.
+
+Nutrition and Food Access: Access to healthy and adequate food sources may influence asthma through malnutrition or obesity risk, as both are linked to asthma and allergy17,18. The lack of accessible, healthy food may influence asthma through an increased risk of obesity. Poor, segregated areas in the US are more likely to have retail outlets for tobacco, alcohol, and fast foods, but have significantly fewer grocery stores. In North America, and to a lesser extent, in other developed countries, low-SES neighbourhoods and areas lacking healthy food sources have higher rates of obesity, whereas areas with supermarkets have lower rates19. At the global level, malnutrition remains a major public health problem throughout the developing world, particularly in southern Asia and sub-Saharan Africa. Poor maternal nutrition and associated low birth weight impact respiratory disease including childhood asthma risk. Nutritional deprivation during gestation may result in specific abnormalities in lung development, such as a decreased ratio of lung size to body size. Other studies have found associations between maternal malnutrition during pregnancy and adverse asthma-related immune responses18.
+
+## Social Environmental Toxicants
+
+Psychosocial Stress: The social environment may contribute to asthma risk through upstream social factors that determine differential exposures to relevant asthma pathogens and toxicants and through the differential experiencing of psychological stress which is increasingly linked to the expression of asthma and other allergic disorders20. While a number of theoretical models explaining health disparities have been proposed, the psychosocial stress model may be particularly relevant for allergic disorders involving immunomodulation. Much of the association between SES and health disparities may be determined by increased exposure to acute and chronic stress, compounded by the presence of overburdened or absent social supports, psychological morbidity (i.e. anxiety, depression) and lack of control over one’s life11.
+
+The degree of chronic stress is significantly influenced by the characteristics of the communities in which we live and may be shaped by social processes that are disrupted in the face of chronic poverty - unemployment/underemployment, limited social capital or social cohesion, substandard housing, and high crime/violence exposure rates13. For example, in US studies, violence and urban crime has been considered as an example of how social processes may be impacting health. Social capital is strongly correlated with violent crime rates which impact community resilience by undermining social cohesion. Thus, crime and violence (or the lack of it) can be used as an indicator of collective well-being, social relations, or social cohesion within a community and society. Moreover, studies are beginning to explore the health effects of living in a violent environment, with a chronic pervasive atmosphere of fear and the perceived threat of violence conceptualized as chronic stress. Psychosocial stress due to violence can influence the development and/or exacerbation of asthma through disruption of biological responses (not unlike the body’s response to physical toxins, e.g., air pollution), such as immunomodulation and dysregulation of neuroendocrine function (e.g. cortisol)21. Additionally, exposure to violence may contribute to increased asthma morbidity due to barriers to following asthma treatment plans. Pharmacies may resist operating 24 hours per day due to safety concerns in poorer neighbourhoods.; individuals may be reluctant to travel outside to obtain asthma medication or to visit their doctors. “Socially toxic” environments may exact a psychological and physical toll on residents leaving them vulnerable to diseases such as asthma.
+
+Although the existing research on violence and asthma focuses mostly on the US, the negative consequences of violence likely extend, via similar mechanisms, to developing countries beset with political unrest, warfare, and/or terrorist attacks that increasingly impact civilian populations. The pervasive trauma, stress and psychological impact associated with war-impacted regions may induce psycho-physiological sequelae that contribute to adverse health consequences which may include asthma22. For example, Wright and colleagues23 documented an association between exposure to war-related stressors and incident asthma in older Kuwaitis, following the Iraqi invasion and occupation (1990-91). Further research should explore the relative role of political instability and/or terrorism in explaining disparities in the global burden of disease, including allergic disorders.
+
+Notably, all factors discussed thus far (i.e. allergens, air pollutants, stress) may have effects starting in early development (e.g. even prenatally)24-26 with lasting consequences into adulthood, thus magnifying the public health impact over the life course.
+
+## Access to Care
+
+Insufficient access to care and under-utilization of efficacious medications remain a significant cause of asthma morbidity and mortality worldwide. Within the US, poor, often minority, neighbourhoods tend to have inadequate medical supplies and hospitals in these areas are often characterized by limited resources, staff shortages and outdated equipment. Studies from the US and Canada have found that children with asthma, from low-income families, are less likely to receive prescriptions for inhaled corticosteroids, even those with full prescription insurance27,28. In developing countries, the situation is even starker, as illustrated in Figure 5. In China, for instance, provider resistance to inhaled medication prescriptions, inadequate patient knowledge and lack of affordability has left large segments of the population untreated, resulting in some of the highest case fatality rates in the world5. Likewise, the proportion of Brazilian asthmatics using inhaled corticosteroids ranges from 6-9%, largely due to the cost29. These barriers to care in effect create a “double jeopardy” situation where those most at risk of having more severe asthma, the economically disadvantaged, are also the least likely to receive appropriate treatment.
+
+## Figure 5. World Map of the Proportion of the Population with Access to Essential Drugs
+
+![](images/6c388465850e20c858e42561c65c0689b7d292af780b81952dd2f1febaab3d32.jpg)  
+Figure 5: Adapted from Global Burden of Asthma Report, page 13.   Masoli, Matthew, Fabian, Denise, Holt, Shaun, Beasley, Richard. Global Initiative for Asthma (GINA) 2004.
+
+## Conclusions
+
+While physical characteristics of neighbourhood and housing environments such as air pollution, dampness, dust and the presence of pests are contributors to variations in the risk of allergic disorders including asthma within and across populations, these factors do not fully account for the excess asthma burden; particularly among the very poor. Rather, the data discussed above suggest that the social patterning of asthma reflects differential exposure to pathogenic factors in both the physical and social environment.
+
+## Research Needs
+
+Future research needs to pay increased attention to the social, political and economic forces that result in marginalization of certain populations in disadvantaged regions of the world which may increase exposure to known environmental risk factors.
+
+Populations in communities that experience environmental inequities may be characterized by high levels of poverty, inadequate healthcare access, lack of opportunity and employment, high violence or crime rates, lack of perceived control and hopelessness. It is unlikely that the health problems of these disadvantaged populations can be solved without understanding the potential role of such social determinants of health and intervening on these more distal influences30.
+
+• We also need to understand better how the physical and psychological demands of living in a relatively deprived environment may potentiate an individual’s susceptibility to cumulative exposures across these domains.
+
+• Such research may point to unique interventions to decrease morbidity associated with chronic illnesses such as asthma.
+
+## Unmet Needs
+
+• Future research and policy must explore ways to improve access to health care, perhaps the single greatest cause of preventable asthma morbidity and fatalities worldwide.
+
+• The unaffordable cost of health care, especially in developing countries, can result in a self-perpetuating, downward spiral of poverty and illness, as untreated individuals become too ill to work, further plunging their families into financial ruin.
+
+• For those who do seek care, the financial consequences of paying for medical treatment can be catastrophic. Protecting households from catastrophic health spending requires substantial policy changes that both directly
+
+target the health system financing and also address the broader political and economic barriers to health coverage3.
+
+• Implementing anti-smoking policies and public health interventions in developing countries targeted by the tobacco industry is critical.
+
+Investigations examining socio-economic inequalities in the morbidity and mortality associated with allergic disorders, mainly asthma, have largely been carried out in the US and Europe with more recently evolving research in Latin America31. There is a need for research in other parts of the world to more fully elucidate pathways linking social structure, economics, and disparities in allergic disease.
+
+## References
+
+1. Asher MI, Montefort S, Björkstén B, Lai CK, Strachan DP, Weiland SK, et al. Worldwide time trends in the prevalence of symptoms of asthma, allergic rhinoconjunctivitis, and eczema in childhood: ISAAC Phases One and Three repeat multicountry cross-sectional surveys. Lancet 2006; 368:733-43.
+
+2. Weiss KB, Sullivan SD. The health economics of asthma and rhinitis. Assessing the economic impact. J Allergy Clin Immunol 2001; 107:3-8.
+
+3. Xu K, Evans DB, Carrin G, Aguilar-Rivera AM, Musgrove P, Evans T. Protecting households from catastrophic health spending. Health Aff 2007; 26:972-83.
+
+4. Franco R, Nascimento HF, Cruz AA, Santos AC, Souza-Machado C, Ponte EV, et al. The economic impact of severe asthma to low-income families. Allergy 2009; 64:478-83.
+
+5. Masoli M, Fabian D, Holt S, Beasley R. The global burden of asthma: executive summary of the GINA Dissemination Committee report. Allergy 2004; 59:469-78.
+
+6. Ait-Khaled N, Auregan G, Bencharif N, Mady Camara L, Dagli E, Djankine K, et al. Affordability of inhaled corticosteroids as a potential barrier to treatment of asthma in some developing countries. Int J of Tuberc Lung Dis 2000; 4:268-71.
+
+7. Smith LA, Hatcher-Ross JL, Wertheimer R, Kahn RS. Re-thinking race/ethnicity, income, and childhood asthma: racial/ethnic disparities concentrated among the very poor. Public Health Rep 2005; 120:109.
+
+8. Wier L, Merrill CT, Elixhauser A. Hospital stays among people living in the poorest communities, 2006. Rockville: Agency for Healthcare Research and Quality 2009. HCUP Statistical Brief #73.
+
+9. Basagana X, Sunyer J, Kogevinas M, Zock JP, Duran-Tauleria E, Jarvis D, et al. Socio-economic status and asthma prevalence in young adults: the European community respiratory health survey. Am J Epidemiol 2004; 160:178-88.
+
+10. Ellison-Loschmann L, Sunyer J, Plana E, Pearce N, Zock JP, Jarvis D, et al. Socio-economic status, asthma and chronic bronchitis in a large community-based study. Eur Respir J 2007; 29:897.
+
+11. Wright RJ, Subramanian SV. Advancing a multilevel framework for epidemiologic research on asthma disparities. Chest 2007; 132:757S.
+
+12. Brulle RJ, Pellow DN. Environmental justice: human health and environmental inequalities. Annu Rev Public Health 2006; 27:103-124.
+
+13. Williams DR, Sternthal MJ, Wright RJ. Social determinants: taking the social context of asthma seriously. Pediatrics 2009; 123:S174-84.
+
+14. Bruce N, Perez-Padilla R, Albalak R. Indoor air pollution in developing countries: a major environmental and public health challenge. Bull World Health Organ 2000; 78:1078-92.
+
+15. Stebbins KR. Going like gangbusters: transnational tobacco companies “making a killing” in South America. Med Anthropol Q 2001; 147-70.
+
+16. Guindon GE, Boisclair D. Past, current and future trends in tobacco use. World Health 2003. UC San Francisco: Center for Tobacco Control Research and Education. Retrieved from: http://escholarship. org/uc/item/4q57d5vp.
+
+17. Beuther DA, Sutherland ER. Overweight, obesity, and incident asthma: A meta-analysis of prospective epidemiologic studies. Am J Respir Crit Care Med 2007; 175:661-6.
+
+18. Landgraf MA, Landgraf RG, Carvalho MHC, Fortes ZB. Modulation of lung allergic inflammation and malnutrition. Neuroimmunomodulation 2008; 15:194-206.
+
+19. Cummins S, Macintyre S. Food environments and obesity - neighbourhood or nation? Int J Epidemiol 2006; 35:100-4.
+
+20. Wright RJ. Stress and atopic disorders. J Allergy Clin Immunol 2005; 116:1301-6.
+
+21. Wright RJ. Health effects of socially toxic neighborhoods: the violence and urban asthma paradigm. Clin Chest Med 2006; 27:413-21.
+
+22. Pedersen D. Political violence, ethnic conflict, and contemporary wars: broad implications for health and social well-being. Soc Sci Med 2002; 55175-90.
+
+23. Wright R, Fay M, Suglia, SF, Clark C, Evans J, Dockery D, Behbehani J. War-related stressors are associated with asthma risk among older Kuwaitis following the 1990 Iraqi invasion and occupation. J Epidemio Community Health 2010; 64(7):630-5.
+
+24. Wright RJ. Prenatal maternal stress and early caregiving experiences: implications for childhood asthma risk. Paediatr Perinat Epidemiol 2007; 21:8.
+
+25. Wright RJ. Perinatal stress and early life programming of lung structure and function. Biol Psychol 2010; 84:1;46-56.
+
+26. Peters JL, Suglia SF, Platts-Mills TAE, Hosen J, Gold DR, Wright RJ. Relationships among pre-natal aero-allergen exposure and maternal and cord blood IgE: Project ACCESS. J Allergy Clin Immunol 2009; 123:1041-6.
+
+27. Kozyrskyj AL, Mustard CA, Simons FER. Socio-economic status, drug insurance benefits, and new prescriptions for inhaled corticosteroids in schoolchildren with asthma. Arch Pediatr Adolesc Med 2001; 55:1219-24.
+
+28. Ortega AN, Gergen PJ, Paltiel AD, Bauchner H, Belanger KD, Leaderer BP. Impact of site of care, race, and Hispanic ethnicity on medication use for childhood asthma. Pediatrics 2002; 109:e1.
+
+29. Neffen H, Fritscher C, Cuevas Schacht F, Levy G, Chiarella P, Soriano JB, et al. Asthma control in Latin America: the asthma insights and reality in Latin America (AIRLA) survey. Rev Panam Salud Public 2005; 17:191-7.
+
+30. Wright RJ. Moving towards making social toxins mainstream in children’s environmental health. Curr Opin Pediatr 2009; 21:222.
+
+31. Cooper PJ, Chico ME, Vaca MG, Rodriguez A, Alcântara-Neves NM, Genser B, et al. Risk factors for asthma and allergy associated with urban migration: background and methodology of a cross-sectiona study in Afro-Ecuadorian school children in Northeastern Ecuador (Esmeraldas-SCAALA Study). BMC Pulm Med 2006; 6:24.
+
+# Section 3.5. Climate Change, Migration and Allergy
+
+Gennaro D’Amato, Menachem Rottem
+
+## Key Statements
+
+The earth’s temperature is increasing as illustrated by rising sea levels, glaciers melting, warming of the oceans and diminished snow cover in the northern hemisphere.
+
+Climate change coupled with air pollutant exposures may have potentially serious adverse consequences especially for human health in urban and polluted regions.
+
+• High summer temperatures have an impact on rates of acute exacerbation and hospital admission for elderly patients with breathing problems and may cause unexpected death .
+
+• Pollen allergy is frequently used to study the interrelationship between air pollution and respiratory allergy. Climatic factors (temperature, wind speed, humidity, thunderstorms, etc.) can affect both biological and chemical components of this interaction.
+
+Changes in the weather such as thunderstorms during pollen seasons may induce hydration of pollen grains and their fragmentation which generates atmospheric biological aerosols carrying allergens. As a consequence asthma outbreaks can be observed in pollinosis patients.
+
+• Migration from one country to another involves exposure to a new set of pollutants and allergens as well as changes in housing conditions, diet and accessibility to medical services which may affect migrants’ health.
+
+• Atopy and asthma are more prevalent in developed and industrialized countries compared with undeveloped and less affluent countries.
+
+• Migration studies provide information on the role of environmental factors on the development of atopy and asthma.
+
+• Physicians should be aware that environmental and climate changes may enhance the development of allergic diseases and asthma.
+
+Physicians should be aware that migrants, especially from developing to more developed countries, are at increased risk to acquire allergic diseases and asthma and that the effect is age and time-dependent. Early age and longer time increase the likelihood of developing atopy and asthma.
+
+## Introduction
+
+Atopy and asthma result from the effects of environmental factors on genetically susceptible individuals and different prevalence rates have been documented worldwide. Climate changes and migration may thus have an important impact on the development of allergic diseases and asthma.
+
+Global temperature has risen markedly over the last 30 years due to increases in greenhouse gas emissions, largely from anthropogenic sources, and the warming of the earth’s atmosphere is a real and daunting problem1, 2. It is now widely accepted that the earth’s temperature is increasing, as confirmed by warming of the oceans, rising sea levels, melting of the glaciers, sea ice retreating in the Arctic and diminished snow cover in the northern hemisphere. Moreover, changes are also occurring in the amount, intensity, frequency and type of precipitation as well as the increase of extreme events like heat waves, droughts, floods and hurricanes.
+
+The increase in temperature has also seen a rapid rise in the number of hot days and severe meteorological events such as the 2003 heat wave, where temperatures of 35°C and greater were reached, resulting in around forty thousand excess deaths across Europe. Sea levels have also started to rise as an effect of regression of the polar ice packs. Both events have led to water deprivation in certain areas, often associated with water degradation which potentially could result in population migration and the effects on health that result from mass population movement. As stated in the recent Working Group I Report of the Intergovernmental Panel on Climate Change (IPCC)1; “Most of the observed increase in globally averaged temperatures since the mid-20th century is very likely due to the observed increase in anthropogenic greenhouse gas concentrations”. The key determinants of greenhouse gas emissions are energy production, consumption and efficiency, transport, agriculture and food production, and waste management, and attempts at mitigating climate change will need to address each of these. However, whilst there is some uncertainty about predicting future meteorological trends, whatever interventions may be put in place to ameliorate climate change, it is likely that the world will experience more hot days, fewer frosty days and more periods of heavy rain and consequent flooding. Paradoxically it is likely that there will be more periods of drought.
+
+The prevalence of atopy and asthma varies markedly throughout the world, being more prevalent in affluent and developed countries than in less affluent and developing countries3. While climate changes are relatively slow and affect an existing population, migration involves exposure to a new set of pollutants and allergens, and several socio-economic and cultural issues such as housing conditions, diet and accessibility to medical services. Migrants from developing countries to industrialized countries seem to be at an increased risk for atopy and asthma development. Environmental factors and lifestyle in developed, industrialized cities seem to be associated with this increased risk.
+
+Migration studies provide information on the role of environmental factors on the development of atopy and asthma. As asthma prevalence varies throughout the world, studying the effects of migration may help to identify the reasons for this geographic variation. Study of the incidence and prevalence of atopy and asthma in immigrants can be utilized as a model to understand the interplay between genetic and environmental effects on the development of these diseases.
+
+## The Effect of Climate Changes on Allergic and Respiratory Diseases
+
+A body of evidence suggests that major changes involving the atmosphere and the climate, including global warming induced by human activity, have an impact on the biosphere and human environment4-10. Studies on the effects of climate changes on respiratory allergy are still lacking and current knowledge is provided by epidemiological and experimental studies on the relationship between asthma and environmental factors, like meteorological variables, airborne allergens and air pollution. However, there is also considerable evidence that subjects affected by asthma are at increased risk of developing obstructive airway exacerbations upon exposure to gaseous and particulate components of air pollution. It is not easy to evaluate the impact of climate changes and air pollution on the prevalence of asthma in general and on the timing of asthma exacerbations. However the global rise in asthma prevalence and severity suggests air pollution and climate changes could be contributing. Pollen allergy is frequently used to study the interrelationship between air pollution and rhinitis and bronchial asthma. Epidemiologic studies have demonstrated that urbanization, high levels of vehicle emissions, and westernized lifestyle, are correlated with an increase in the frequency of pollen-induced respiratory allergy prevalent in people who live in urban areas compared to those who live in rural areas. Meteorological factors (temperature, wind speed, humidity, thunderstorms etc) along with their climatologic regimes (warm or cold anomalies and dry or wet periods, etc), can affect both the biological and chemical components of this interaction. In addition, by inducing airway inflammation, air pollution overcomes the mucosal barrier priming allergeninduced responses. In conclusion, climate change might induce negative effects on respiratory allergic diseases. In particular, the increased length and severity of the pollen season, the higher occurrence of heavy precipitation events and the increasing frequency of urban air pollution episodes suggest environmental risk factors will have a stronger effect in the coming decades. The main areas of concern are asthma, rhinosinusitis, COPD and respiratory tract infections, but the extent to which these will be impacted will vary according to the proportion of susceptible individuals in a given population. Areas of greater poverty with limited access to medical services and areas with less well developed medical services including migrating populations and those where population growth is greatest, will suffer more.
+
+## Effect of Climate Change on Pollinosis
+
+Climate changes affect allergenic plants and pollen distribution worldwide. Recent findings in a prairie in North America showed that experimental warming induced an advanced flowering and fruiting phenology for species that began to flower before the peak of summer heat, but delayed reproduction in species that started flowering after the peak temperature. Among the latter species, authors underlined the delayed flowering of ragweed11. With warming over the longer term, changing patterns of plant habitat and species density are likely, with gradual movement northward. However, the change in land use might also play a relevant role, especially for some important allergenic species, such as Graminaceae. Since most of the data come from the analysis of distribution of airborne pollen, these findings are potentially biased by the occurrence of long and medium distance transport episodes of allergenic pollen as shown in several European countries12,13.
+
+Pollinosis is frequently used to study the interrelationship between air pollution and respiratory allergy14-18. Climatic factors (temperature, wind speed, humidity, thunderstorms, etc) can affect both components (biological and chemical) of this interaction19-21. By attaching to the surfaces of pollen grains and plant-derived particles of paucimicronic size, pollutants could modify not only the morphology of these antigen-carrying agents, but also their allergenic potential. In addition, by inducing airway inflammation, which increases airway permeability, pollutants overcome the mucosal barrier and could “prime” allergen-induced responses. There are also observations that a thunderstorm occurring during the pollen season can induce severe asthma attacks in pollinosis patients.
+
+After rupture by thunderstorm, pollen grains may release part of their cytoplasmic content, including inhalable, allergen-carrying paucimicronic particles21,22.
+
+In summary, the relationship between air pollution, pollen exposure and respiratory allergy is based on the current understanding that an individual’s response to air pollution depends on the source and components of the pollution, as well as on climatic agents15. Some air pollution-related episodes of asthma exacerbation are due to climatic factors that favour the accumulation of air pollutants at ground level and some cities are continuously affected by black smog caused by motor vehicles. Air pollution can interact with pollen grains, leading to an increased release of antigens characterized by modified allergenicity. Air pollution can interact with allergen-carrying paucimicronic particles derived from plants. The paucimicronic particles, pollen-originated or not, are able to reach peripheral airways with inhaled air, inducing asthma in sensitized subjects. Air pollution, in particular ozone, PM, and sulfur dioxide, has been shown to have an inflammatory effect on the airways of susceptible subjects, causing increased permeability, easier penetration of pollen allergens into the mucus membranes, and easier interaction with cells of the immune system. There is also evidence that predisposed subjects have increased airway reactivity induced by air pollution, and increased bronchial responsiveness to inhaled pollen allergens. Some components of air pollution seem to have an adjuvant immunologic effect on IgE synthesis in atopic subjects in particular, diesel exhaust particulates which can interact in the atmosphere with pollens or paucimicronic particles.
+
+## Prevalence of Atopic Diseases Among Immigrants and Relevant Risk Factors
+
+The prevalence of atopy and allergy in immigrants has been studied in different countries throughout the world and similar patterns have been described. Allergy and asthma usually develop several years after migration to developed countries23,24 and symptoms increase with time23-29. These progressive changes in the dynamic of allergic and asthmatic symptoms suggest that either a prolonged environmental exposure or other additional risk factors are required for the development of atopy and asthma in migrants. One of the largest studies performed on the trends in the prevalence of atopic disorders was the European Community Respiratory Health Survey30. Rates of asthma symptoms were higher in immigrants and emigrants compared to non-immigrants after controlling for area, sex, age and smoking status. However, bronchial responsiveness and atopy were equally distributed between immigrants, emigrants and non-migrants. Opposed to this multi-ethnic and international study, several studies conducted in Israel on Ethiopian immigrants revealed a more uniform picture31. This enabled investigators to look at a relatively large, but very discrete, population of immigrants which moved from one specific environment to a totally different one. Infections and parasitic diseases were the dominant health problems in the early years. With time, a change in health patterns in this population was observed, in particular a significant increase in allergic diseases and asthma compared to the rates reported at the time of migration to Israel31. The move from the dry climate and rural hills of Ethiopia, to the more urban and industrialized setting of Israel, probably contributed to the increased prevalence of asthma in this population. A more recent large study involving 29,305 subjects compared the prevalence of respiratory symptoms in migrant and non-migrant children in Italy32. The results showed that migrant children had a lower prevalence of asthma symptoms than children born in Italy and that the prevalence increased with the number of years of living in Italy.
+
+Taken together, migration and exposure to different environmental factors have an important role in the development of atopy and asthma, and the prevalence of atopy and asthma in migrants increases with time.
+
+## Sensitization and IgE Levels
+
+In general, IgE levels in migrants from less developed to more developed countries decline and reach approximately the same levels as for the local population after 10 years. The allergic spectrum of sensitivities changes with time of residence after migration26,27,31,33-36. This change in the reactivity to environmental allergens is probably related to changes in lifestyle and habits such as indoor contact with house dust mites, pets, and intensive environmental pollen exposure, and suggests that environmental factors, rather than hereditary differences, determine the IgE status. However, studies in immigrants show that there is also a genetic, and particularly maternal, pattern of inheritance of IgE37,38. These studies show that the immunological status of immigrants is influenced by the new milieu and within a few years, the allergic status of immigrants adapts and/or reacts to the new environment.
+
+Early childhood environmental exposure plays an important role in the risk of developing atopic disorders, and younger children are more susceptible to these effects39,40.
+
+## Atopic Dermatitis in Migrants
+
+Similar to their effect on respiratory allergies, environmental factors may influence the expression of atopic dermatitis (AD) in genetically susceptible persons and are at least as important as genetic factors in determining the expression of $\mathsf { A D } ^ { 4 1 - 4 4 }$
+
+## Atopy and the Hygiene Hypothesis: the Immigrants’ Perspective
+
+Several lines of evidence suggest that infants residing in agricultural environments and farms are relatively protected from the development of atopy and, to a lesser extent, asthma45. This protective effect has been associated with early life exposure to endotoxin, a component of Gram-negative bacteria. Numerous studies have supported this “hygiene hypothesis”, but whether endotoxin confers the protection by itself, or acts as a marker for another environmental exposure, is still unclear. The strongest arguments in favour of the hygiene hypothesis are the numerous studies relating early life day care attendance to a significantly reduced risk of atopy and asthma and the strong association demonstrated between the number of siblings and the occurrence of atopy. In addition, serological immune responses to certain infections, such as hepatitis A and Toxoplasma gondii, suggest a role for such infections, or alternatively for the lack of hygiene, as being protective from the development of allergic immune responses. Surprisingly, therefore, the data on atopic disorders among immigrants is not in agreement with the hygiene hypothesis. As discussed above, immigrants from developing, or undeveloped and poor countries, are not protected from atopy and in fact they tend to develop more allergies and atopic disorders than the loca population. In an attempt to reconcile these conflicting findings, an integrated approach to these issues is suggested: living in less developed countries or in a rural environment confers protection from atopic disorders, as suggested by the hygiene hypothesis, but, moving to industrialized centres in developed countries adds a new and completely different environmental exposure, from which immigrants seem not to be protected. Continuous exposure to new allergens, pollutants, changes in diet and housing conditions, lead to the gradual emergence of atopic disorders. The protection conferred by the past rural environment, does not apply for the new environment, making immigrants more susceptible to atopic disorders.
+
+## Conclusion
+
+Climate changes affect many physical and biological systems that are critical to human health, including the immunologic and respiratory systems46-49. Climate changes interact and affect air pollution and pollinosis which, in turn, increase the frequency and severity of asthma and affect the clinical expression of allergic disease. Climate change affects the timing, distribution, quantity, and quality of aeroallergens and changes the distribution and severity of allergic disease. Climate change alters local weather patterns including minimum and maximum temperature, precipitation and storms, all of which affect the burden of allergic disease. A combined approach is needed comprising primary prevention by greenhouse gas mitigation for stabilizing the climate and secondary prevention by clinica intervention to minimize climate change–related increases in asthma and allergic disease. Climate changes in the future may depend on how rapidly and successfully global mitigation and adaptation strategies are deployed24. The effect of human intervention and efforts to minimize changes in vegetation and aeroallergen exposure remains to be seen.
+
+Immigration to allergy-prevalent countries is associated with a higher prevalence of allergies and asthma in immigrants, as compared to the prevalence of atopy in their countries of origin. The increase in allergy and asthma prevalence is usually not related to ethnicity, but in selected populations genetic factors may play an important role. Studies on immigrants support the notion that in western industrialized countries lifestyle and environmental factors facilitate atopy and asthma. The effect is time-dependent and the development of allergy is influenced by the age at the time of immigration. Compared with the local population, recent immigrants have higher levels of IgE, which gradually decrease to the levels of the general population, and higher prevalence of atopy and allergies. Immigrants and their physicians should be aware of the potential risk for developing allergies and/or asthma. Strategies for primary prevention in high risk atopic individuals and secondary prevention guidelines should be developed both for populations in developing countries, and for immigrants from developing countries to atopy-prevalent developed countries.
+
+## Current and Future Needs
+
+• Physicians should be aware that environmental and climate changes may enhance development of allergic diseases and asthma.
+
+• There is a need to document changes in pollinosis, and changes in the rate of allergic diseases and asthma over time.
+
+• Migration studies to provide information on the role of environmental factors on the development of atopy and asthma.
+
+## Unmet Needs and Proposed Research Recommendations
+
+• Measures to decrease the effects of environmental factors affecting respiratory allergic diseases:
+
+1. Encourage policies to promote access to non-polluting sources of energy, reducing use of fossil fuels
+
+2. Control vehicle emissions
+
+3. Reduce the private traffic in towns and improving public transport
+
+4. Plant non-allergenic trees and grasses in cities
+
+Strategies for primary prevention in high risk atopic individuals and secondary prevention guidelines should be developed both for populations in developing countries as well as for immigrants from developing countries to atopyprevalent developed countries
+
+## References
+
+1. Hegerl GC, Zwiers FW, Braconnot P, Gillett NP, Luo Y, Marengo JA, et al. 2007: Understanding and attributing climate change. In: Solomon S, Qin D, Manning M, Chen Z, Marquis M, Averyt KB, et al, editors. Climate change 2007: the physical science basis. Contribution of the Working Group I to the Fourth AssessmentReport of the Intergovernmental Panel on Climate Change. Cambridge, United Kingdom, and New York: Cambridge University Press.
+
+2. Wilkinson P, Smith KR, Beevers S, Tonne C, Oreszczyn T. Energy, energy efficiency, and the built environment. Lancet. 2007; 370: 1175-87
+
+3. Rottem M, Szyper-Kravitz M, Shoenfeld Y. Atopy and asthma in migrants. Int Arch Allergy Immunol. 2005; 136(2):198-204.
+
+4. Rom, WN, Pinkerton, KE, Martin, WJ, Forastiere F. Global Warming: A Challenge to All American Thoracic Society Members. Am. J. Respir. Crit. Care Med. 2007; 177:1053-1054
+
+5. D’Amato G. Cecchi L. Effects of climate change on environmental factors in respiratory allergic diseases. Clin Exp Allergy. 2008 Aug; 38(8):1264-74.
+
+6. Stafoggia, M, Forastiere, F, Agostini, D, Caranci, N, de’Donato, F, Demaria, M, Michelozzi, P, Miglio, R, Rognoni, M, Russo, A, Perucci, C A. Factors affecting in-hospital heat-related mortality: a multi-city casecrossover analysis. J. Epi Comm Health 2008; 62: 209-215
+
+7. Ayres JG, Forberg B, Annesi-Maesano I, Dey R, Ebi KL, Helms PJ, Medina-ramon M, Menne B, Windt M. and Forestiere F. On behalf of the Environment & Human Health ERS Committee. Eur Respir J 200; 34:2:295-302
+
+8. D’Amato G. Liccardi, M. D’Amato, M. Environmental risk factors (outdoor air pollution and climatic changes) and increased trend of respiratory allergy. J. Invest Allergol Immunol 2000; 10:123-8.
+
+9. D’Amato G, Liccardi M. Cazzola M. Outdoor air pollution and respiratory allergy. In “D’Amato G, Holgate S. Eds “The impact of air pollution on respiratory health”. European Respiratory Monograph,2002
+
+10. D’Amato G. Editorial: Outdoor air pollution, climate and allergic respiratory diseases: evidence of a link. Clin Exp Allergy 2002; 32:1391-1393.
+
+11. Sherry RA, Zhou X, Gu S, Arnone JA 3rd, Schimel DS, Verburg PS, Wallace LL, Luo Y. Divergence of reproductive phenology under climate warming. Proc Natl Acad Sci U S A. 2007 Jan 2; 104(1):198-202.
+
+12. Cecchi L, Morabito M, Domeneghetti MP, Crisci A, Onorari M, Orlandin S. Long-distance transport of ragweed pollen as a potential cause of allergy in central Italy. Annals Allergy Asthma Immunol 2006; 96:86-91
+
+13. Skjøth CA, Smith M, Brandt J, Emberlin J Are the birch trees in Southern England a source of Betula pollen for North London? Int J Biometeorol. 2009 Jan; 53(1):75-86.
+
+14. Skjøth CA, Sommer J, Stach A, Smith M, Brandt J. The long-range transport of birch (Betula) pollen from Poland and Germany causes significant pre-season concentrations in Denmark. Clin Exp Allergy. 2007 Aug; 37(8):1204-12
+
+15. Belmonte J, Alarcón M, Avila A, Scialabba E, Pino D. Long-range transport of beech (Fagus sylvatica L.) pollen to Catalonia (northeastern Spain). Int J Biometeorol. 2008 Sep; 52(7):675-87.
+
+16. D’Amato G, Liccardi, M, ,D’Amato, M, Cazzola, M . Outdoor air pollution, climatic changes and allergic bronchial asthma. Eur Resp J 2002;20:763-776
+
+17. D’Amato G, Cecchi L, Bonini S, Nunes C., Annesi-Maesano I,. Behrendt, H Liccardi G, Popov T, Van Cauwenberge, P. Allergenic pollen and pollen allergy in Europe. Allergy 2007;62:976-90 .
+
+18. D’Amato G. Urban air pollution and plant-derived respiratory allergy: a review. Clin Exp Allergy.2000; 30:628-36.
+
+19. D’Amato G,.Liccardi\_M. Pollinosis and air pollution in the Mediterranean area. Allergy Clin Immunol Intern (ACI Int) 2003;15:73-78.
+
+20. D’Amato G, Liccardi G, D’Amato M, Holgate ST. Environmental risk factors and allergic bronchial asthma. Clin Exp Allergy 2005; 35:1113-1124.
+
+21. D’Amato G, Cecchi L, Liccardi G. Thunderstorm-related asthma: not only grass pollen and spores. J Allergy Clin Immunol 2008; 120;530-2
+
+22. D’Amato G, Liccardi G, Viegi G, Baldacci S. Thunderstorm-associated asthma in pollinosis subjects. British Medical Journal, website (http:// bmj.bmjjournals.com/cgi/eletters/309/6947/131/c) 7 January 2005
+
+23. D’Amato G., Liccardi G, Frenguelli G: Thunderstorm-associated asthma in pollinosis patients. Allergy 2007; 62:11-16.
+
+24. D’Amato G Airborne paucimicronic allergen-carrying particles and seasonal respiratory allergy (Editorial). Allergy 2001; 56:1109-1111
+
+25. Peat JK, Woolcock AJ, Leeder SR, Blackburn CR. Asthma and bronchitis in Sydney schoolchildren. II. The effect of social factors and smoking on prevalence. Am J Epidemiol 1980; 111:728-735.
+
+26. Gibson PG, Henry RL, Shah S, Powell H, Wang H. Migration to a western country increases asthma symptoms but not eosinophilic airway inflammation. Pediatr Pulmonol 2003; 36:209-215.
+
+27. Powell CV, Nolan TM, Carlin JB, Bennett CM, Johnson PD. Respiratory symptoms and duration of residence in immigrant teenagers living in Melbourne, Australia. Arch Dis Child 1999; 81:159-162.
+
+28. Leung RC, Carlin JB, Burdon JG, Czarny D. Asthma, allergy and atopy in Asian immigrants in Melbourne. Med J Aust 1994; 161:418-425.
+
+29. Leung R. Asthma, allergy and atopy in South-east Asian immigrants in Australia. Aust N Z J Med 1994; 24:255-257.
+
+30. Leung R. Asthma and migration. Respirology 1996; 1:123-126.
+
+31. Tedeschi A, Barcella M, Bo GA, Miadonna A. Onset of allergy and asthma symptoms in extra-European immigrants to Milan, Italy: possible role of environmental factors. Clin Exp Allergy 2003; 33:449-454.
+
+32. Tobias A, Soriano JB, Chinn S, Anto JM, Sunyer J, Burney P; European Community Respiratory Health Survey. Symptoms of asthma, bronchial responsiveness and atopy in immigrants and emigrants in Europe. European Community Respiratory Health Survey. Eur Respir J 2001; 18:459-465.
+
+33. Rosenberg R, Vinker S, Zakut H, Kizner F, Nakar S, Kitai E. An unusually high prevalence of asthma in Ethiopian immigrants to Israel. Fam Med 1999; 31:276-279.
+
+34. Migliore E, Pearce N, Bugiani M, Galletti G, Biggeri A, Bisanti L, Caranci N, Dell’Orco V, De Sario M, Sestini P, Piffer S, Viegi G, Forastiere F, Galassi C, Ciccone G; SIDRIA-2 Collaborative Group. Prevalence of respiratory symptoms in migrant children to Italy: the results of SIDRIA-2 study. Allergy. 2007; 62(3):293-300.
+
+35. Kalyoncu AF, Stalenheim G. Survey on the allergic status in a Turkish population in Sweden. Allergol Immunopathol (Madr). 1993; 21:11-14.
+
+36. Kalyoncu AF, Stalenheim G. Serum IgE levels and allergic spectra in immigrants to Sweden. Allergy 1992; 47(4 Pt 1):277-280.
+
+37. Asseyr AF, Businco L. Atopic sensitization in children of Somali immigrants in Italy. J Investig Allergol Clin Immunol. 1994; 4(4):192-196.
+
+38. Dervaderics M, Fust G, Otos M, Barok J, Pataky G. Differences in the sensitization to ragweed pollen and occurrence of late summer allergic symptoms between native and immigrant workers of the nuclear power plant of Hungary. Immunol Invest. 2002; 31:29-40.
+
+39. Geller-Bernstein C. Genetic and environmental determinants in the pathogenesis of allergic diseases. Pediatr Pulmonol 1997; 16:S13-14.
+
+40. Goren AI, Bruderman I. Pulmonary functions and respiratory symptoms and diseases among adult Israelis. Variations by country of origin. Isr J Med Sci 1986; 22:761-765.
+
+41. Hjern A, Rasmussen F, Hedlin G. Age at adoption, ethnicity and atopic disorder: a study of internationally adopted young men in Sweden. Pediatr Allergy Immunol 1999; 10:101-106.
+
+42. Eldeirawi KM, Persky VW. Associations of physician-diagnosed asthma with country of residence in the first year of life and other immigrationrelated factors: Chicago asthma school study. Ann Allergy Asthma Immunol. 2007; 99(3):236-43.
+
+43. Leung R, Ho P. Asthma, allergy, and atopy in three shouth-east Asian populations. Thorax 1994; 49:1205-1210.
+
+44. Waite DA, Eyles EF, Tonkin SL, O’Donnell TV. Asthma prevalence in Tokelauan children in their environments. Clin Allergy 1980; 10:71-75.
+
+45. Williams HC, Pembroke AC, Forsdyke H, Boodoo G, Hay RJ, Burney PGJ. London-born black Caribbean children are at high risk of atopic dermatitis. J Am Acad Dermatol 1995; 32:212-217.
+
+46. Diepgen TL. Atopic dermatitis: the role of environmental and social factors, the European experience. J Am Acad Dermatol. 2001; 45(1 Suppl):S44-8.
+
+47. Eder W, Von Mutius E. Hygiene hypothesis and endotoxin: what is the evidence? Curr Opin Allergy Clin Immunol 2004; 4:113-117.
+
+48. Shea KM, Truckner RT, Weber RW, Peden DB. Climate change and allergic disease. J Allergy Clin Immunol. 2008 Sep; 122(3):443-53.
+
+49. Haines A, Smith KR, Anderson D, Epstein R, McMichael AJ, Roberts I, Wilkinson P, Woodcock J, Woods J. Policies for accelerating access to clean energy, improving health, advancing development, and mitigating climate change. Lancet. 2007; 370: 1264-81.
+
+Chapter 4.
+
+# Evidence based approaches to diagnosis and management
+
+# Section 4.1. Diagnosis and Identification of Causative Allergens.
+
+Mario Sánchez-Borges, Juan Carlos Ivancevich, Noel Rodríguez Pérez, Ignacio Ansotegui
+
+## Key Statements
+
+• Confirmation of allergy and identification of causative allergens are crucial for correct disease management.
+
+● Precise diagnosis allows the implementation of therapies oriented to the etiologic factors of allergic diseases, such as environmental measures and immunotherapy.
+
+• Diagnosis begins with a detailed medical history and physical examination
+
+• The identification of a temporal association between symptoms and allergen exposure constitutes the basis for further testing.
+
+• Clinical suspicion is confirmed by means of investigation of IgE antibodies in vivo (skin tests) or in vitro.
+
+• Skin tests should include relevant allergens and use standardized allergen extracts.
+
+•	 In vitro testing is especially useful when skin test results do not correlate with the history or cannot be performed.
+
+•	 In vitro tests can be applied to ‘probability of disease prediction in food allergy.
+
+There is a need for increased accessibility to allergy diagnosis and therapies and improved diagnostic methodologies that can substitute in vivo provocation tests for drug and food allergy.
+
+• The use of unproven tests increases unnecessary costs of allergy diagnosis.
+
+## Introduction
+
+Allergic diseases are highly prevalent worldwide. Rhinitis and asthma are important public health problems in all countries and a burden for the medical system, and together with atopic eczema, urticaria, angioedema, reactions to foods and drugs, and occupational allergies, have a negative impact on the quality of life of millions of individuals. It is therefore important to implement appropriate diagnostic strategies that confirm the diagnosis, determine its immunological mechanism, and identify the causative allergen. Once the diagnosis has been established and relevant allergens have been identified, it is possible to prescribe targeted therapies, such as allergen avoidance, allergen-specific immunotherapy and anti-IgE therapy.
+
+The optimization of patient care requires a detailed study of the patient’s history; analysis of the possible environmental exposure factors; and the performance of diagnostic in vivo and in vitro tests. However, diagnostic testing is never a substitute for a thorough examination of the patient’s symptoms and medical history. In the absence of an accurate diagnosis, untreated or mistreated symptoms can result in multiple complications or inappropriate treatment. The results of diagnostic tests for allergic disease are especially important for clinical evaluation, decisions to treat, and to determine the need for referral to specialists.
+
+In this chapter the diagnostic methods currently used for the diagnosis of allergic diseases will be discussed.
+
+## Diagnostic Methods in Allergology
+
+The best approach for the correct diagnosis of allergy is based on information collected from a well targeted and detailed medical history and physical examination. Treatment and prophylactic recommendations based exclusively on in vitro tests are misleading, and academic organizations have warned against this “remote practice of allergy”. Once there are sufficient clinical grounds to support a diagnosis of allergy, confirmatory in vivo and in vitro tests are indicated (Table 1).
+
+Table 1 — Methods for the Diagnosis of Allergic Diseases
+<table><tr><td rowspan=1 colspan=1>Method</td><td rowspan=1 colspan=1>Remarks</td></tr><tr><td rowspan=1 colspan=1>Medical history/physical exam</td><td rowspan=1 colspan=1>To correlate symptoms withallergen exposure</td></tr><tr><td rowspan=1 colspan=1>Immediate-type skin tests</td><td rowspan=1 colspan=1>Detection of specific IgE in vivo</td></tr><tr><td rowspan=1 colspan=1>In vitro allergen-specific IgE</td><td rowspan=1 colspan=1>Detection of specific IgE in theserum</td></tr><tr><td rowspan=1 colspan=1>Basophil-based tests</td><td rowspan=1 colspan=1>Allergen-induced basophilactivation or mediator release</td></tr><tr><td rowspan=1 colspan=1>Organ challenge tests</td><td rowspan=1 colspan=1>Reproduction of symptoms withallergen provocation in vivo</td></tr><tr><td rowspan=1 colspan=1>Patch tests</td><td rowspan=1 colspan=1>Diagnosis of contact allergicdermatitis and other non IgE-mediated reactions</td></tr><tr><td rowspan=1 colspan=1>Total serum IgE</td><td rowspan=1 colspan=1>Non-specific marker of allergy</td></tr><tr><td rowspan=1 colspan=1>Serum tryptase</td><td rowspan=1 colspan=1>Marker of anaphylaxis</td></tr><tr><td rowspan=1 colspan=1>Eosinophil cationic protein</td><td rowspan=1 colspan=1>Research tool</td></tr><tr><td rowspan=1 colspan=1>Eosinophils in blood and otherbiological fluids</td><td rowspan=1 colspan=1>Non-specific marker of allergy</td></tr><tr><td rowspan=1 colspan=1>Additional procedures</td><td rowspan=1 colspan=1>Spirometry, bronchoscopy,bronchoprovocation withhistamine or methacholine,bronchoalveolar lavage, peakexpiratory flow (PEF), nitric oxidein exhaled air, rhinolaryngoscopy,CT scan, Magnetic ResonanceImaging, tympanometry,rhinomanomėtry and acousticrhinometry</td></tr><tr><td rowspan=1 colspan=1>Environmental determinations</td><td rowspan=1 colspan=1>Identification and quantitation ofallergens at home or work</td></tr></table>
+
+## Medical History
+
+The diagnostic work-up for allergic diseases begins with taking an accurate clinical history. It is most important to identify a temporal association between symptoms suggestive of allergy and allergen exposures. Depending on the strength and consistency of the findings during the taking of the medical history and physical examination, the clinician will suspect allergy as the probable cause of a patient’s complaints. This diagnostic suspicion is often confirmed by methods that detect specific immune responses. A complete medical history for the purposes of establishing the presence of allergic diseases must include the items shown in Table 2.
+
+Table 2 — Medical History for Diagnosis of Allergy
+<table><tr><td rowspan=1 colspan=1>Main complaint</td></tr><tr><td rowspan=1 colspan=1>Present illness and symptoms: age of onset, suspected cause, specificsituations, locations, seasonal pattern, frequency, duration, relation tospecific triggers or activities, exposures, eating, emotions, menstrualperiod, time of day</td></tr><tr><td rowspan=1 colspan=1>Environmental history: use of air conditioning, detergents, carpets,sources of specific allergens or irritants at home</td></tr><tr><td rowspan=1 colspan=1>Occupations and exposures to allergens or irritants at work</td></tr><tr><td rowspan=1 colspan=1>Personal active or passive tobacco exposure</td></tr><tr><td rowspan=1 colspan=1>Review of previous evaluations and treatments, current managementand response to prior therapy</td></tr><tr><td rowspan=1 colspan=1>Impact of illness: number of lost days from work or school, socialadjustments, limitation of activities, presence of nocturnal symptoms,frequency of unscheduled physician&#x27;s visits, emergency room visitsor hospitalizations, fatigue, sleep disturbances, learning and attentionproblems, absenteeism or presenteeism, and sexual quality of life</td></tr><tr><td rowspan=1 colspan=1>Review of systems: nose, eyes, ears, head, chest, skin andgastrointestinal tract</td></tr><tr><td rowspan=1 colspan=1>Presence of other organ-related diseases and medications</td></tr><tr><td rowspan=1 colspan=1>Psychosocial setting: low self-esteem, shyness, depression, anxiety,hyperactivity</td></tr><tr><td rowspan=1 colspan=1>Past medical history</td></tr><tr><td rowspan=1 colspan=1>Prior drug or food allergies and intolerances</td></tr><tr><td rowspan=1 colspan=1>Family history</td></tr></table>
+
+Table 3 summarizes the signs and organs requiring investigation during the physical examination.
+
+Table 3 — Physical Examination
+<table><tr><td rowspan=1 colspan=1>Vital signs</td><td rowspan=1 colspan=1>Height, weight, blood pressure,respiratory rate, pulse rate,respiratory rate</td></tr><tr><td rowspan=1 colspan=1>Upper respiratory tract</td><td rowspan=1 colspan=1>Pharynx, nose, turbinatehypertrophy, adenoid tissuehypertrophy, septal deviation,mouth breathing, sinuses, polyps</td></tr><tr><td rowspan=1 colspan=1>Ears</td><td rowspan=1 colspan=1>Otitis, Eustachian tube dysfunction</td></tr><tr><td rowspan=1 colspan=1>Eyes</td><td rowspan=1 colspan=1>Conjunctivitis</td></tr><tr><td rowspan=1 colspan=1>Chest</td><td rowspan=1 colspan=1>Signs of bronchial obstruction</td></tr><tr><td rowspan=1 colspan=1>Skin</td><td rowspan=1 colspan=1>Atopic dermatitis, urticaria, othermanifestations of skin allergy tofoods or drugs</td></tr></table>
+
+## In vivo testing
+
+Skin tests are the cornerstone for the identification of causative allergens and selection of therapy, including environmental control and immunotherapy. Skin tests are the most accurate diagnostic tool for demonstrating that a specific allergen has induced an IgE antibody response and are regarded as the gold standard for detection of IgE antibodies.
+
+Skin tests are convenient, simple, biologically relevant, reproducible, easy and rapid to perform, with low cost and high sensitivity. They require a degree of training and experience to interpret the results and correlate them with the history and physical findings. Attention should be given to the selection of allergens to be tested according to the pattern of allergens in the location, as derived from epidemiological studies, and taking into account the stability and concentration of the extracts. Standardized, high quality extracts are required for optimal testing. In addition, they must be performed in allergist clinics with emergency equipment available for the treatment of anaphylaxis.
+
+The tests are usually performed on normal skin on the volar aspect of the forearm or on the upper back, with reading at 15 or 20 minutes after application. The wheal and flare reactions depend on the degree of sensitivity, the number of mast cells, and the potency of the allergenic extract.
+
+To avoid misinterpretation due to false negative and false positive results, a positive control (histamine dihydrochloride or phosphate) and a negative control (glycerosaline diluent) should be included in the test. Skin tests may be performed at any age, but reactions are less pronounced in small children and the elderly. Antihistamines, topical high-potency corticosteroids, tricyclic antidepressants and some tranquilizers may cause false negative results, whereas dermatographism is the most common cause of false positive results.
+
+A positive result does not necessarily mean that the symptoms are due to an IgE-mediated allergy, and therefore it is important to correlate results with history and examination findings. A positive skin test may be helpful in confirming the history, whereas a negative skin test is strong evidence that the disease is not caused by the suspected allergen. This is not always applicable to food allergens, since patients may be reacting to digested products, or there may be a different underlying non-IgE immunologic mechanism, for example, T cell-mediated immunity, which is responsible for the symptoms. For food allergens, a better correlation with positive tests and oral challenge to foods is observed when the test is performed with fresh food (prick -prick).
+
+In summary, skin tests provide evidence of an allergic basis, confirm suspected causes and assess sensitivity to a specific allergen. This information is essential for prescribing immunotherapy and avoidance measures.
+
+## Types of skin tests
+
+Percutaneous: Prick or puncture tests are the most convenient, least expensive and best screening method for detecting specific IgE antibodies. They are highly reproducible when carried out by trained individuals and results will depend on:
+
+1. the device
+
+2. potency and stability of the extracts
+
+3. the depth of the needle puncture and force
+
+4. duration between testing and reading
+
+5. angle of the application device.
+
+Erythema and wheal diameter are measured and a wheal of at least 3 mm greater than a diluent control is generally considered to be positive. Results must be reported in mm to avoid the risk of confusing interpretations by other allergists. Prick tests are more specific, but less sensitive than intracutaneous tests.
+
+Intracutaneous: Generally used when percutaneous tests are negative, despite an adequate history of exposure and symptoms. They are 10,000 times more sensitive than prick tests, show higher rates of false positives, and pose a greater risk of systemic reactions. Some patients exhibit delayed responses after 24 hours or more, the clinical significance of which is presently unknown.
+
+## Organ challenge tests
+
+For some patients and particular allergens, it is important to confirm the diagnosis with provocation tests. These tests should be performed by trained allergists who can do them properly; who know how to interpret and analyze the results, and who have experience in treating adverse reactions. They are indicated when no other diagnostic methods are available, when the results of previous screening tests are not conclusive, and the benefit of the test results outweighs the risk involved. They are contra-indicated in patients with previous severe anaphylaxis or with life-threatening conditions, e.g. Stevens-Johnson syndrome. Challenges may be conducted by conjunctival, nasal, bronchial and oral routes. Due to their complexity and risks, they are employed generally for research purposes, however oral challenges are commonly used to investigate allergy to foods and drugs
+
+Patch tests with a standard battery of reagents are routinely used in the study of patients with a clinical picture suggesting contact dermatitis. Patch tests with foods, although used by some centres, have not been yet standardized.
+
+## In Vitro Testing
+
+Allergen-specific IgE antibody is the most important serological marker used in the diagnosis of allergic disease to confirm sensitization in an individual who has a positive history of exposure. Tests based on mediator release from basophils involve the addition of allergen to whole blood or leukocyte preparations and the subsequent measurement of released mediators (histamine, LTC4). Its usefulness is limited because the technique is difficult to perform and requires viable basophils.
+
+Allergen-specific IgE antibody: The new high binding capacity solid phase matrices, non-isotopic labels for detection of antibodies and standards calibrated to the WHO IgE reference preparation have permitted the development of second (semi-quantitative) and third generation (quantitative) assays with improved precision, accuracy and analytical sensitivity. They are especially indicated in patients with extensive skin inflammation, those who can not abstain from antihistamine therapy, who are uncooperative, or who have a high risk of anaphylaxis. They are more expensive than skin tests and require longer to obtain the results.
+
+The multi-allergen screen test measures IgE antibodies to multiple allergen specificities in one analysis. It is able to detect the presence of all specificities of IgE antibodies in a single blood specimen. Its high negative predictive value is useful to rule out the presence of sensitization in an individual whose clinical history does not suggest IgE-mediated allergic disease. Defined panels of aeroallergens and food allergens relevant to different age groups are used. If positive, a further clinical history and more extensive IgE antibody testing to individual allergens are required. The multi-allergen screen is most cost effective as an allergy screening test, but produces only qualitative results.
+
+Third generation auto-analyzers have allowed accurate, reproducible and quantitative measurements of the levels of IgE antibody with a defined specificity. The present application of in vitro IgE antibody testing includes ‘probability of disease prediction in food allergy. Children with defined levels of specific IgE antibodies in their serum to peanut, egg white, cow’s milk or fish, will have a defined probability of clinical sensitivity. IgE thresholds have been defined for provocation testing below which there is >95% probability that the food challenge will be negative. The upper threshold limits define IgE levels above which a positive food challenge test is >95% likely. Probability disease prediction might also be applied in the future to inhalant allergens.
+
+Since quality assurance is of paramount importance when in vitro assays are used for diagnostic purposes, the ideal situation would be to refer patients (or send their serum samples) to certified laboratories that use a third generation IgE antibody assay to report quantitative results.
+
+Histamine and LTC4 release from basophils: Various in vitro tests based on basophil activation or degranulation have been used for allergy screening. They include:
+
+1. Basophil degranulation by flow cytometry.
+
+2. Cellular allergen stimulation test (FLOW-CAST).
+
+3. Flow cytometry for CD63 or CD203c (BASO test).
+
+These are valuable research tools rarely used in routine diagnosis. They are not sufficiently sensitive and add little to the diagnostic predictive value offered by skin and provocation testing.
+
+## Other Tests Available for the Study of Allergic Diseases
+
+Total serum IgE: Total serum IgE has been traditionally used as a marker for atopy. Approximately half of allergic patients have a total IgE within the normal range. An elevated IgE should stimulate further investigations for specific IgE sensitivity. However, there is great overlap between normal and allergic subjects. Other conditions that are associated with increased serum IgE include helminthic infestations, allergic bronchopulmonary aspergillosis, Buckley’s syndrome (hyper IgE, eosinophilia and recurrent infections), other primary immunodeficiencies, and IgE myeloma.
+
+Serum tryptase: Tryptase released by mast cells is a useful marker of systemic anaphylaxis.
+
+Eosinophil cationic protein: Measured in serum, bronchoalveolar lavage or induced sputum. Presently its use is reserved mostly for research purposes.
+
+Quantification of eosinophils: Increased absolute and differential counts in the blood correlate with the severity of allergic disease. In nasal secretion, it helps in the diagnosis of allergic rhinitis, NARES (non allergic rhinitis with eosinophilia), and in the differential diagnosis of non allergic rhinitis and sinusitis. In sputum, it is useful to assess the response to antiinflammatory treatment of asthma.
+
+Environmental determinations: Primarily used for the identification of relevant allergens for skin tests and in vitro tests, the demonstration and measurement of allergen levels in the air; such as mite; pollen; and mould allergens; is useful to confirm patient exposure and to support environmental contro measures.
+
+## Future Directions and Unmet Needs
+
+• The number of allergy clinics must be increased to improve patient access to skin testing and immunotherapy
+
+• Improved in vitro testing methods with lower costs need to be developed
+
+• New in vitro methods are required to substitute in vivo provocation tests with foods and drugs
+
+• Optimization of microarray technology, in which crude or purified native or recombinant allergens can be spotted in microdot arrays on silica chips to permit extensive panels of specific IgE measurements to be performed with small quantities of serum, is necessary; this method is presently too expensive to be widely used
+
+## Recommended reading
+
+1. Cohn JR, Bahna SL, Wallace DV, Goldstein S, Hamilton RG. AAAAI Work Group Report: Allergy diagnosis in clinical practice. 2006. Available at: //www.aaaai.org/media/resources/academy\_statements/ practice\_papers/allergy\_diagnosis.pdf
+
+2. Bernstein L, Li J, Bernstein D, Hamilton R, Spector S, Tan R. Allergy diagnostic testing: An updated practice parameter. Ann Allergy Asthma Immunol 2008; 100: S1-148
+
+3. Bernstein L. Proceedings of the task force on guidelines for standardizing old and new technologies used for the diagnosis and treatment of allergic diseases. J Allergy Clin Immunol 1988; 82: 487- 526
+
+4. Beyer K, Teuber S. Food allergy diagnostics: Scientific and unproven procedures. Curr Opinion in Allergy Clin Immunol 2005; 5: 261-266
+
+5. Bousquet J, Khaltaev N, Cruz AA, et al. Allergic rhinitis and its impact on asthma (ARIA) 2008 update. Allergy 2008; 63: 8-160
+
+6. Burge HA. An update on pollen and fungal spore aerobiology. J Allergy Clin Immunol 2002; 110: 544-552
+
+7. Chapman MD, Tsay A, Vailes LD. Home allergen monitoring and control improving clinical practice and benefits. Allergy 2001; 56: 604- 610
+
+8. Clement PAR, Gordts F. Consensus report on acoustic rhinometry and rhinomanometry. Rhinology 2005; 43: 169-179
+
+9. Demoly P, Michel F, Bousquet J. In vivo methods for study of allergy: Skin test techniques and interpretation. Middleton E, Reed C, Ellis EF, Adkinson NF, Yunginger JW, Busse WW, eds. Allergy: Principles and practice, CV Mosby Co., 1998
+
+10. Dreborg S, Frew A. Allergen standardization and skin tests. Position paper of the EAACI. Allergy 1993; 48: 48-82
+
+11. Dykewicz MS, Fineman S, Skoner DP, Nicklas R, Lee RE, Blessing-Moore J, Li ST, Bernstein IL, Berger W, Spector S, Schuller DE. Diagnosis and management of rhinitis: Complete guideline of the Joint Task Force on Practice Parameters in Allergy, Asthma and Immunology. Ann Allergy Asthma Immunol 1998; 81: 478-518
+
+12. Green RH, Brightling CE, McKenna S, Hargadon B. Asthma exacerbations and sputum eosinophil counts: A randomized controlled trial. Lancet 2002; 360: 1715-1721
+
+13. Hamilton RG, Adkinson F. Clinical laboratory assessment of IgEdependent hypersensitivity. J Allergy Clin Immunol 2003; 111: S687-701
+
+14. Hamilton RG, Adkinson Jr NF. In vitro assays for IgE mediated sensitivities. J Allergy Clin Immunol 2004; 114: 213-225
+
+15. Homburger HA, Katzman JA. Methods in laboratory immunology; principles and interpretation of laboratory tests for allergy. In: Middleton E, Reed R, Ellis EF, eds. Allergy: Principles and practice. CV Mosby, 1988
+
+16. Naclerio RM, Norman PS, Fish JE. In vivo methods for study of allergy: Mucosal tests, techniques and interpretation. In: Middleton E, Reed R, Ellis EF, eds. Allergy: Principles and practice. CV Mosby, 1988
+
+17. Rance F, Juchet A, Brèmont F, Dutan G. Correlation between skin prick tests using commercial extracts and fresh foods, specific IgE and food challenges. Allergy 1997; 52: 1031-1035
+
+18. Sampson HA. Utility of food specific IgE concentrations in predicting symptomatic food allergy. J Allergy Clin Immunol 2001; 107: 891-896
+
+19. Soderstrom L, Kober A, Ahlstedt S. A further evaluation of the clinical use of specific IgE antibody testing in allergic diseases. Allergy 2003; 58: 921-928
+
+20. Szeinbach SL, Harpe SE, Williams PB, Elhefni H.Testing for allergic disease: Parameters considered and test value. BMC Family Practice 2008; 9: 47-53
+
+# Section 4.2. Pharmacotherapy of Allergic Diseases
+
+Carlos E Baena-Cagnani, Héctor Badellino
+
+## Key statements
+
+• Subjects from all countries, ethnic and socio-economic groups and ages suffer from allergies.
+
+• Asthma and allergic rhinitis are common health problems that cause major illnesses and disability worldwide.
+
+The strategy to treat allergic diseases is based on: (i) patient education; (ii) environmental control and allergen avoidance; (iii) pharmacotherapy; and (iv) immunotherapy.
+
+• Pharmacotherapy is the mainstay of treatment for allergic diseases because it not only controls symptoms, but also improves the quality of life.
+
+Primary care physicians play an important role in the firstline management of allergies. They have to make the initial clinical diagnosis, begin treatment and monitor the patient.
+
+• Allergy specialists are trained to make a specific diagnosis and treat patients with allergies, particularly those with moderate/severe disease.
+
+• The chronic nature of allergies makes it essential to propose and explain long-term management strategies to patients, health care policy makers and government authorities.
+
+In recent decades, a substantial improvement has been made in the efficacy and safety of allergy pharmacotherapy.
+
+• Disease management using evidenced-based practice guidelines has been shown to yield better patient outcomes.
+
+## Introduction
+
+The prevalence of allergic diseases (e.g. asthma, allergic rhinitis, atopic eczema, food allergy, urticaria and anaphylaxis) varies between countries, ages and socio-economic levels and is increasing around the world. Studies such as the International Study of Asthma and Allergies in Childhood (ISAAC) and the European Community Respiratory Health Study (ECRHS) have demonstrated that asthma is a prevalent condition in most countries. These studies suggest that more than 300 million individuals worldwide are affected by asthma and a conservative estimate suggests that allergic rhinitis affects around 400 million people (World Health Organisation statistics). The burden of allergic diseases is huge at both an individual and a familial level. This translates to an increased burden at a national level, making allergies a public health issue. Allergic diseases are complex because both genetic and environmental factors influence disease development. Allergic diseases such as asthma and rhinitis have closely related phenotypes. They show a strong familial and intra-individual clustering, suggesting overlapping disease aetiology. It is clear that the recent increase in the prevalence of allergic rhinitis and asthma cannot be due to a change in the gene pool.
+
+Allergic rhinitis is a major chronic respiratory disease due to its prevalence, impact on quality of life, work/school performance, economic burden and links with asthma and other co-morbidities. Allergic rhinitis is part of the ‘‘allergic march’’ during childhood, but intermittent allergic rhinitis is unusual before two years of age and is most prevalent during school age years. In pre-school children the diagnosis of allergic rhinitis is difficult. Interactions between the lower and the upper airways are well known and have been extensively studied since 1990. Over 80% of asthmatics have rhinitis and 10-40% of patients with rhinitis have asthma. Most patients with asthma have rhinitis, suggesting the concept of “one airway, one disease”, although there are underlying differences between rhinitis and asthma.
+
+Atopic eczema (also known as AE, atopic dermatitis, or eczema) is a chronic recurrent inflammatory disease, characterized by intensely pruritic skin, occurring often in families with other atopic diseases. With a prevalence of 2–5% (around 15% in children and young adults), AE is one of the most common atopic skin diseases.
+
+The socio-economic consequence and impact of allergies is often underestimated and allergic diseases are frequently undertreated, causing substantially elevated direct and indirect costs. Symptom control, improvement in quality of life and rehabilitation to normal (or almost normal) function can be achieved through modern pharmacological treatment.
+
+## Pharmacological Treatment
+
+The treatment of allergic diseases must be a personalized combination between pharmacotherapy, immunotherapy and the provision of education to patients and care-givers. Disease management that follows evidence based practice guidelines yields better patient results, but such guidelines are often complicated and may recommend the use of resources not available in the family practice setting. “Evidence-based medicine” (EBM) is an increasingly important concept which has become a new paradigm in modern clinical medicine. The increasing influence of EBM, due partly to the work of the Cochrane Collaboration, has led the way in setting new standards for developing clinical recommendations.
+
+Goals for the treatment of rhinitis include unimpaired sleep, ability to perform normal daily activities (including work/school attendance), and sport/leisure activities, with no or minimal sideeffects of drugs. The goal of asthma treatment is to achieve and maintain clinical control of symptoms and normal (or near to normal) lung function. This clinical control includes an absence of daytime symptoms, with no limitations of activities including exercise, no nocturnal symptoms, normal or near-normal lung function, and no (or minimal) exacerbations. Pharmacologic treatment should take into account the efficacy, safety and cost-effectiveness of medications, the patient’s preferences, and the presence of co-morbidities.
+
+The following section lists the most commonly used medications for allergic diseases:
+
+H1-antihistamines: H1-blockers or H1-antihistamines are medications that block histamine at the H1-receptor level (neutral antagonists or inverse agonists). Over the past 30 years, pharmacologic research has developed new compounds with minimal sedative effect,- the so-called second-generation H1-antihistamines - in contrast to the first-generation H1- antihistamines which had significant side effects due to their sedative and anti-cholinergic properties. The newer 2nd generation antihistamines (there is not yet a 3rd generation of antihistamines) induce little or no sedation or impairment. They are not anti-cholinergic and have no cardiac-adverse effects. Long-term treatment (years) with oral H1-antihistamines is safe. Some, but not all, oral H1-antihistamines undergo hepatic metabolism via the cytochrome P450 system and are prone to drug interactions. Although cardio-toxicity is not a class effect, in the past there have been major concerns about the arrhythmogenic action of terfenadine, astemizole and high doses of diphenhydramine, which in rare instances have been associated with fatalities. Oral H1-antihistamines have been shown to be safe and effective in young children.
+
+Cetirizine, when compared with placebo, delayed or, in some cases, prevented, the development of asthma in a sub-group of infants with atopic eczema who were sensitized to grass pollen and, to a lesser extent, house dust mite. Further studies are required to substantiate this finding and should focus specifically on sensitized groups.
+
+Oral H1-antihistamines are effective in the treatment of intermittent and persistent rhinitis for all nasal symptoms including nasal obstruction; ocular symptoms; improvement of some asthma outcomes such as reduction in emergency room visits; hospitalization; and improvement in pulmonary function tests in some patients.
+
+Anti-H1 antihistamines are effective and safe as the first line treatment in urticaria, controlling the skin flare and itching. It has recently been proposed that higher doses of antihistamines (up to 4-fold) can help in controlling severe urticaria not responding to usual doses.
+
+The second generation H1-antihistamines have a rapid onset of action with persistence of clinical effects for at least 24 hours, so these drugs can be administered once a day. They do not lead to the development of tachyphylaxis and show a wide therapeutic window (e.g. fexofendine).
+
+Although first-generation oral H1-antihistamines are effective, they are not recommended when second-generation drugs are available because of their sedative and anticholinergic effects.
+
+Intranasal H1-antihistamines are effective at the site of their administration in reducing itching, sneezing, runny nose and nasal congestion. Azelastine at high doses may be more effective than oral H1-antihistamines, but it may have adverse effects such as mild somnolence or bad taste in some patients. Given ocularly, these drugs are effective in relieving allergic eye symptoms, e.g. olopatadine and ketotifen. They can be effective within 20 minutes of administration. Topical H1-antihistamines require twice-a-day dosing. Intranasal glucocorticosteroids are significantly more effective than oral or topical H1-antihistamines for the treatment of allergic rhinitis and, in particular, for nasal congestion. Intra-nasal H1-antihistamines do not appear to improve ocular symptoms.
+
+Glucocorticosteroids: Intranasal glucocorticosteroids are the most efficacious anti-inflammatory medication available for the treatment of allergic and non-allergic rhinitis. The rationale for using intranasal glucocorticosteroids in the treatment of allergic rhinitis is that high drug concentrations can be achieved at receptor sites in the nasal mucosa with a minimal risk of systemic adverse effects. Due to their mechanism of action, efficacy appears after 7-8 hours of dosing, but maximum efficacy may require up to 2 weeks to develop. Intranasal glucocorticosteroids are well tolerated and adverse effects are few in number, mild in severity and have the same incidence as placebo. However, there are differences in safety between molecules, those with low bioavailability being the best tolerated.
+
+Intranasal corticosteroids are the most effective treatment for moderate intermittent and persistent rhinitis, for all nasal symptoms, ocular symptoms, polyposis and sinusitis.
+
+In asthma, inhaled corticosteroids (ICS) are the first line treatment in persistent moderate to severe asthma. ICS show efficacy in reducing symptoms, improving quality of life, improving lung function, decreasing airway hyperresponsiveness, controlling airway inflammation, reducing frequency and severity of exacerbations, and reducing asthma mortality. Inhaled glucocorticosteroids are the most effective controller medications currently available in asthma.
+
+Sometimes add-on therapy with another class of controller medication (mainly long acting beta agonists or montelukast) is recommended to attain clinical control. This strategy is preferred over increasing the dose of inhaled glucocorticosteroids in order to avoid potential adverse effects. However, at the recommended dose ICS have minimal local side effects, no Hypothalamic-Pituitary-Adrenal (HPA) axis effects, and no longterm effect on growth in children.
+
+Long-term oral glucocorticosteroid therapy may be required for severely uncontrolled asthma, particularly in low income countries, but its use is limited by the risk of significant adverse effects. Early oral corticosteroid therapy is also recommended for the management of acute exacerbations of asthma.
+
+For eczema, the topical treatment of choice is a topical steroid. These agents are very effective in the short term, but they inhibit repair of the stratum corneum and may interfere with recovery in the long term.
+
+Decongestants: In the treatment of nasal obstruction in both allergic and non-allergic rhinitis, intranasal decongestants are effective in the short term. However, they do not improve nasal itching, sneezing or rhinorrhea. Systemic side effects with oral decongestants can include irritability, dizziness, headache, tremor, and insomnia, as well as tachycardia and hypertension.
+
+Anti-leukotrienes: Leukotriene receptor antagonists or anti-leukotrienes have been introduced in the last 15 years. In studies carried out on patients with seasonal allergic rhinitis and asthma, montelukast was found to improve nasal and bronchial symptoms. The use of ß-agonists was also reduced with montelukast. Leukotriene receptor antagonists are more effective than placebo, equivalent to oral H1-antihistamines and inferior to intranasal glucocorticosteroids for treating seasonal allergic rhinitis. They may be used as an alternative treatment for adult patients with mild persistent asthma and some patients with aspirin-sensitive asthma respond well to leukotriene modifiers. However, they are less effective than low doses of inhaled glucocorticosteroids. Leukotriene modifiers can also be used as add-on therapy and may reduce the dose of inhaled glucocorticosteroids required by patients with moderate to severe asthma.
+
+Anti-leukotrienes are effective in the management of patients with combined asthma and rhinitis (united airway disease). Leukotriene modifiers are safe and well tolerated, especially in children.
+
+Bronchodilators: There are two kinds of bronchodilators, short-acting b2-agonists and long-acting b2-agonists. Longacting b2-agonists (LABA), including formoterol and salmeterol, should not be used as a mono-therapy in asthma. They are more effective when combined with inhaled glucocorticosteroids. The fixed available combinations improve symptom scores; decrease nocturnal asthma; improve lung function; and reduce the number of exacerbations. Salmeterol and formoterol provide a similar duration of bronchodilation, but formoterol has a more rapid onset of action and may be used for both rescue and maintenance therapy. Therapy with LABAs causes fewer systemic effects (such as cardiovascular stimulation, skeletal muscle tremor, and hypokalemia) than oral therapy. The regular use of rapid-acting b2-agonists in both short and long acting formulations may lead to relative refractoriness to b2-agonists.
+
+Short-acting b2-agonists (SABA) such as salbutamol (also called albuterol) or rapid-acting LABA (formoterol) are the medication of choice for rapid relief of bronchial obstruction, mainly due to airway smooth muscle contraction, during acute exacerbations of asthma and for the pre-treatment of exerciseinduced bronchoconstriction. SABA should be used only on an as-needed basis and the failure to achieve a sustained response during an exacerbation may indicate the need for short term treatment with oral glucocorticosteroids.
+
+Anticholinergics: Inhaled anticholinergics are not recommended for long-term management of asthma in children although they are useful for exacerbations when added to short-acting b2-agonists. They can also be prescribed to decrease watery rhinorrea.
+
+Cromones: The role of disodium cromoglycate and nedocromil sodium in the long term treatment of asthma is limited. Their anti-inflamatory effect is weak and they are less effective than inhaled glucocorticosteroids. Cromoglycate and nedocromil are available as intranasal or ocular preparations. They are modestly effective in treating nasal symptoms and effective in ocular symptoms. They are particularly safe.
+
+Anti IgE: Anti-IgE (omalizumab) is a treatment option limited to patients with elevated serum levels of IgE. Its current indication is for patients with severe allergic asthma who are not controlled by inhaled glucocorticosteroids and it can be used in severe allergic rhinitis. Further investigations are necessary to demonstrate the role of anti-IgE in the treatment of asthma and allergic rhinitis and other IgE-mediated allergic conditions.
+
+Theophylline: Short-acting theophylline may be considered for the relief of asthma symptoms, but this medication has potentially significant adverse effects. Low dose sustained release theophylline shows some anti-inflammatory effects and it has been proposed for use in combination with other controllers such as ICS. Theophylline is an alternative in low income countries.
+
+Adrenaline (Epinephrine): Anaphylaxis is a potentially deadly allergic reaction that has a rapid onset. All cases of anaphylaxis should be treated as an emergency. Patients having anaphylactic reactions should be treated using the airway, breathing, circulation, disability, exposure (ABCDE) approach. Adrenaline (epinephrine) is the first line treatment for the management of anaphylaxis. Immediate treatment with sub-cutaneous or intramuscular adrenaline is the treatment of choice for patients experiencing an episode of anaphylaxis. Auto-injectors of adrenaline are the best choice. Intravenous adrenaline must only be used when the patient is monitored and only by those skilled and experienced in its use. Individuals at high risk of anaphylaxis, where the trigger is difficult to avoid, should carry an adrenaline auto-injector and receive training and support in its use.
+
+## Current and Future Needs/Future Directions
+
+In recent decades an improvement in the medications for the management of allergic diseases has been achieved, nonetheless a significant group of patients are unable to attain adequate symptom control. This fact suggests that therapeutic strategies need to be improved. New technologies have to be used to enhance education and increase compliance, and socioeconomic disparities have to be overcome, but new medications need to be developed that are safer and more effective.
+
+Gaining insight into the molecular mechanisms involved in allergic reactions will facilitate the development of more specific medications.
+
+Medication to prevent the inception of new disease manifestations in allergic patients would be an important way to reduce the burden of these diseases and, in addition, since allergic diseases are chronic, medications demonstrating longterm effects are needed.
+
+## Unmet Needs
+
+• Accessibility to the most effective drugs for the management of allergies is needed, particularly in low and middle-income countries.
+
+• Clear guidelines for the diagnosis and the management of allergic diseases should be provided by World Allergy Organization in association with national, local and regional scientific societies.
+
+• Internationally available guidelines should be adapted for national health care programs.
+
+• The knowledge of general practitioners, pediatricians and other physicians about the correct management of allergic patients should be increased, “using the same language” around the world.
+
+• New investigations of novel medications are needed.
+
+• Studies of the cost-effectiveness of different treatment options are required.
+
+• Strategies should be developed to improve compliance and adherence of patients in respect to different treatment approaches.
+
+Biomarkers to assess the biological effects of pharmacological therapies and to evaluate the prognosis of each patient, need to be identified.
+
+• Development of immunomodulatory drugs will allow the modification of the natural history of allergic diseases.
+
+• Improved knowledge about the links between genes and environment will enable preventative strategies to be employed in early infancy.
+
+• The most cost-effective drugs in each disease should be included in the World Health Organisation’s list of essential drugs .
+
+• Barriers to improved outcomes and disparities such as reduced accessibility and affordability of pharmacotherapies must be removed.
+
+## Recommended reading
+
+1. Global Initiative for Asthma. Global Strategy for Asthma Management and Prevention. Updated 2009. www.ginaasthma.com
+
+2. Expert Panel Report 3: Guidelines for the Diagnosis and Management of Asthma. National Heart, Lung and Blood institute. National Asthma Education and Prevention Programme. Full Report 2007
+
+3. Darsow V, Wollenberg A, et al. ETFAD/EADV Eczema Task Force 2009 position paper on diagnosis and treatment of atopic dermatitis. JEADV 2010; 24:317-328.
+
+4. Cologero C et al. Management of childhood asthma in Western Australia. Journal of Paediatric and Child Health 2009; 45:139-148.
+
+5. Sicherer S, Leung D. Advances in allergic skin disease, anaphylaxis, and hypersensitivity reactions to foods, drugs, and insects in 2009. J Allergy Clin Immunol 2010; 125: 85-97
+
+6. ARIA Update in collaboration with GA<sup>2</sup>LEN 2007.
+
+7. Bousquet J et al. Consensus statements, evidence-based medicine and guidelines in allergic diseases. Allergy 2008; 63: 1-4
+
+8. Van Weel C, Bateman E, Bousquet J et al. Asthma management pocket reference 2008. Allergy 2008; 63: 997-1004
+
+9. Bousquet J et al. GINA Guidelines on asthma and beyond. Allergy 2007; 62: 102-112
+
+10. Zuberbier T, Canonica G et al. EAACI/GA<sup>2</sup>LEN/EDF Guideline: management of urticaria. Allergy 2006; 61: 321-331
+
+# Section 4.3. Allergen-specific Immunotherapy
+
+Giovanni Passalacqua, Dennis Ledford, Linda Cox, Paul Potter, Giorgio Walter Canonica
+
+## Key statements
+
+• Allergen specific immunotherapy is recognized as an effective treatment for respiratory allergy and Hymenoptera venom allergy.
+
+• Subcutaneous Immunotherapy (SCIT) represents the standard modality of treatment. Sublingual Immunotherapy (SLIT), which is now accepted as an alternative to injection immunotherapy, has recently been introduced into clinical practice.
+
+The additional effects of allergen specific immunotherapy, that are currently lacking with pharmacological treatment, are long-lasting clinical effects and alteration of the natural course of the disease. This prevents the new onset of asthma in patients with allergic rhinitis and prevents the onset of new sensitizations.
+
+The mechanisms of action of specific immunotherapy are multiple and complex, and result in a modification of the immunological responses to allergens, with subsequent reduction of the allergic inflammatory reaction. The mechanisms of action of SCIT and SLIT are similar.
+
+• SCIT maintains its beneficial effects for years after it has been discontinued. This long-term or carry-over effect also occurs with SLIT.
+
+• SCIT indications, contraindications, limits and practical aspects are defined in numerous guidelines.
+
+SLIT is considered a viable alternative to SCIT and is used in clinical practice in many countries. A 2009 World Allergy Organization Position Paper provides further details of the indications, contra-indications and methodology of using SLIT.
+
+• New forms of immunotherapy, allergen products and approaches to food allergy and atopic eczema are under investigation.
+
+## Introduction
+
+Allergen specific immunotherapy (SIT) was introduced on an empirical basis about one hundred years ago, with the supposed rationale of vaccinating against “airborne toxins” which were considered to be the cause of seasonal rhinitis. Despite this incorrect rationale, the subcutaneous injection of pollen extracts immediately appeared to be capable of reducing the symptoms of hay fever, and SIT rapidly became a cornerstone of allergy treatment. After the discovery of Immunoglobulin E (IgE), the rationale for the use of SIT become clearer, the mechanisms were investigated, and clinical efficacy began to be assessed in doubleblind placebo-controlled trials starting from the 1960’s. From the 1960’s until the end of the 1980’s there was no significant change in the practice of SIT (which was invariably given by subcutaneous injections - SCIT), apart from the introduction of chemically modified allergens (allergoids).
+
+Although clinicians were already aware of the risks of SIT, in 1986, the British Committee for the Safety of Medicines (CSM) reported 26 deaths due to injection SIT. This provoked the virtual abandonment of SIT, at least in the UK, and prompted a process of intense critical evaluation of the treatment. Twenty years later, the World Health Organisation published a position paper which stated the indications, contraindications, risks and benefits of SCIT and, from this point, SIT was recognized as an effective treatment for respiratory allergy and Hymenoptera venom allergy.
+
+Another important consequence of the appraisal process was the search for safer modalities of immunotherapy, not involving subcutaneous injections. After several years of controlled trials, only the sublingual route (SLIT) achieved a sufficient level of evidence of efficacy to be validated in official document. Nowadays, SLIT is considered a viable alternative to SCIT and is widely used in clinical practice in many countries, except for the USA where, at the time of this publication, no product has been licensed for sublingual use. The latest development in the field of SLIT is the World Allergy Organization Position Paper which details the indications, contraindications and modality of its use. The current frontiers in immunotherapy are new modalities of administration, the use of adjuvants, and recombinant allergens. (Figure 1)
+
+![](images/2a6f4053b0ed52b8fb402a1cf8b71ed83348d91644c98cf2f9fd8bcb16b2a85a.jpg)  
+Figure 1. The History of Injection Immunotherapy (SC
+
+Efficacy and safety: The subcutaneous route of immunotherapy delivery (SCIT) is well established, and its indications, contraindications, limits and practical aspects are well defined in numerous guidelines (Table 4). In recent years, additional studies on the clinical efficacy and safety of SCIT have been published, all confirming the clinical effects in rhinitis and asthma due to mites, grass, birch and ragweed. Interestingly, two clinical studies, one evaluating symptoms upon exposure and one evaluating the response to a nasal provocation test , have demonstrated the dose-dependency of SCIT for clinical efficacy. Due to the large number of studies available, the optimal aintenance doses to be administered are quite well defined for all the major allergens. There are also two meta-analyses of the efficacy of SCIT for both allergic asthma and rhinitis which, despite the heterogeneity of the trials, clearly confirm the overall efficacy of the treatment on symptoms and use of rescue medications.
+
+With respect to safety, a randomized study with grass and birch vaccines found that systemic reactions with SCIT occurred in 3.3% of the injections with grass and in 0.7% of the injections with birch preparations. Post-marketing surveillance reported a rate of systemic reactions of 0.9% of the total doses and 3.7% of patients, whereas another survey on grass pollen SCIT reported an occurrence of systemic reactions in 2% of patients. A retrospective study of 65 patients receiving multiple vaccines and rush immunotherapy (a method of administration where an induction phase of immunotherapy is given in a few hours or days) reported a 38% rate of systemic reactions with one severe episode. Notably, an e-mail survey of more than
+
+17,000 physicians in the USA reported a high rate of errors in administration (wrong patient or wrong dose). The latest survey conducted in Italy in more than 2,000 patients reported a rate of systemic side effects of 4% of patients and 0.1% of doses, with no fatality and only 4 episodes of anaphylaxis. Thus, when SCIT is correctly prescribed and administered, it can be considered a safe treatment. Nonetheless, a remote risk of severe (even fatal) reactions still remains, and it is clear that a fraction of those severe events are not predictable or avoidable.
+
+Mechanisms: After the discovery of the Th1/Th2 subsets, it immediately became clear that SIT is able to restore the relative imbalance and to correct the Th2 biased response. The allergic inflammation, typically accompanied by tissue eosinophilia, is regulated by Th2 lymphocytes that produce a distinct profile of cytokines. Studies over the past decade have confirmed the blunting of allergen-driven Th2 responses, including reductions in IL-4, IL-13, IL-5 and IL-9 either in the periphery and/or within the target organs These changes are associated with an immune deviation in favour of Th1 responses with an overproduction of IFNγ or with the emergence of a population of regulatory T-lymphocytes that produce the inhibitory cytokines IL-10 and/or TGFβ. It is hypothesized that these regulatory T-cells act directly to suppress allergen-specific Th2 responses. The more recent studies have paid special attention to the biological effects of IgG, in particular IgG4. These effects include the IgGdependent ability of post-immunotherapy serum to inhibit the binding of allergen-IgE complexes to B-cells, the blocking of subsequent IgE-facilitated allergen presentation and activation of allergen-specific T-lymphocytes, and the prevention of allergen-IgE dependent activation of peripheral basophils.
+
+Long-lasting effect and prevention: The consequences of the profound immunomodulatory effect of SIT are some additional effects which are not shared by drugs. For instance, it is well known that injection immunotherapy maintains its beneficial effects for years after discontinuation. This longterm or carry-over effect has been described in both open and controlled studies with a number of different allergens. The longlasting effect has been reported to persist for between 3 to 6 years, and a recent follow-up study in 23 children described a 6-year effect after the discontinuation of grass SCIT. Interestingly, the same children were evaluated again after 12 years and persistence of a moderate beneficial effect was still identified. Another additional effect of SCIT is the prevention of the onset of new sensitizations, as reported in two large retrospective studies. Finally, the most intriguing effect of SIT is the capability of interfering with the natural course of the disease, in the prevention of the onset of asthma in patients with allergic rhinitis. This effect was measured in a large randomized, controlled (but not blinded)
+
+study of SCIT (the Preventative Allergy Treatment study, PAT), where pollen immunotherapy reduced the risk of the onset of asthma in children who had allergic rhinitis, but no asthma . This preventative effect was observed to persist in the same patients for two years after the discontinuation of SCIT.
+
+Table 4 — Considerations for the Prescription of Immunotherapy
+<table><tr><td rowspan=1 colspan=1>Ascertained IgE-mediated mechanism</td></tr><tr><td rowspan=1 colspan=1>Confirmed aetiological role of the allergen</td></tr><tr><td rowspan=1 colspan=1>Duration of symptoms</td></tr><tr><td rowspan=1 colspan=1>Response to drug therapy</td></tr><tr><td rowspan=1 colspan=1>Expected effectiveness</td></tr><tr><td rowspan=1 colspan=1>Availability of standardized vaccines</td></tr><tr><td rowspan=1 colspan=1>Contraindications and risks</td></tr><tr><td rowspan=1 colspan=1>Costs</td></tr><tr><td rowspan=1 colspan=1>Compliance of the patient</td></tr></table>
+
+## Sublingual Immunotherapy (SLIT)
+
+Efficacy and safety: SLIT was first described in a DBPC trial in 1986. Since then, 60 trials have been published, and these are reviewed in the WAO Position Paper. The large majority of those trials reported a significant effect on symptoms for the major allergens (i.e. mites, grass, ragweed, Parietaria), whereas only 8 trials provided totally negative results. Some meta-analyses were conducted with various inclusion criteria such as rhinitis only, asthma only, and asthma and rhinitis in children. All the meta-analyses concluded that there was a significant effect of SLIT versus placebo. The reliability of the meta-analyses has recently been questioned, especially on the basis of the large heterogeneity of the studies, but it is also clear that 85% of the controlled trials report consistently positive results and that meta-analysis is the only approach available to provide an overall judgment. The meta-analyses pooled together studies with all allergenic extracts, whereas differences may exist among allergens. To date, there is a single meta-analysis restricted to house dust mite SLIT, showing a significant effect on symptom and medication scores in allergy due to mites.
+
+The recent so-called “big trials” conducted with grass pollen extracts are of particular interest due to the large number of subjects involved (Table 5). The big trials invariably showed an effect of SLIT versus placebo ranging from 25% to more than 50%. The 20% cut-off is unanimously considered the threshold for a clinically relevant effect. In addition, those big trials with a dose-ranging design clearly showed that the clinical effect is dose-dependent; a robust proof of the efficacy according to the GRADE (Grading of Recommendations, Assessment
+
+Table 5 — The “Big Trials” with Grass Extracts
+<table><tr><td rowspan=1 colspan=1>Author/year</td><td rowspan=1 colspan=1>Age range</td><td rowspan=1 colspan=1>PatientNos. A/P</td><td rowspan=1 colspan=1>Allergen</td><td rowspan=1 colspan=1>Duration</td><td rowspan=1 colspan=1>Dose Preparation</td><td rowspan=1 colspan=1>Main positive results over placebo</td></tr><tr><td rowspan=1 colspan=1>Durham 2006</td><td rowspan=1 colspan=1>18-66</td><td rowspan=1 colspan=1>569/2863</td><td rowspan=1 colspan=1>Grassdoses</td><td rowspan=1 colspan=1>6 m</td><td rowspan=1 colspan=1>15 μg (136 pts)150 μg (139 pts)450 μg (294 pts)Phl p 5/monthTablets</td><td rowspan=1 colspan=1>Drug score –28% (0.012)Symptoms –21% (0.002)only with the highest doseQoL improvedNo clinical change with the 2 low doses</td></tr><tr><td rowspan=1 colspan=1>Dahl, 2006</td><td rowspan=1 colspan=1>23-35</td><td rowspan=1 colspan=1>316/318</td><td rowspan=1 colspan=1>Grass</td><td rowspan=1 colspan=1>6 m</td><td rowspan=1 colspan=1>450 μg Phelum pratense5/month.Cumulat. 2.7 mgTablets</td><td rowspan=1 colspan=1>RC symptoms –30% (.001); RC drugs –38%(.001); Well days –52% (.004);</td></tr><tr><td rowspan=1 colspan=1>Didier 2007</td><td rowspan=1 colspan=1>25-47</td><td rowspan=1 colspan=1>472/1563</td><td rowspan=1 colspan=1>Grassdoses</td><td rowspan=1 colspan=1>6 m</td><td rowspan=1 colspan=1>240 μg (157 pt)750 μg (155 pt)1.2 mg (160 pt) /monthTablets</td><td rowspan=1 colspan=1>For 300 and 500IRTotal and individual symptom and drug scores(&lt;.001);RQLQ improved</td></tr><tr><td rowspan=1 colspan=1>Wahn, 2009</td><td rowspan=1 colspan=1>4-17</td><td rowspan=1 colspan=1>139/139</td><td rowspan=1 colspan=1>Grass</td><td rowspan=1 colspan=1>8m</td><td rowspan=1 colspan=1>600 μg major allergen/month.Tablets</td><td rowspan=1 colspan=1>Rhinitis score -28% (.01)Medications -24% (.006)Medication free days (.01)</td></tr><tr><td rowspan=1 colspan=1>0tt, 2009</td><td rowspan=1 colspan=1>20-50</td><td rowspan=1 colspan=1>142/67</td><td rowspan=1 colspan=1>Grass     54</td><td rowspan=1 colspan=1>yseas</td><td rowspan=1 colspan=1>Cumulative 1.5 mgmajor allergy/season</td><td rowspan=1 colspan=1>Combined score and symptom scoresignificantly reduced since 1st season.Symptoms decrease from –33% to 47% (3rdseas)No change med.scores</td></tr><tr><td rowspan=1 colspan=1>Bufe, 2009</td><td rowspan=1 colspan=1>5-16</td><td rowspan=1 colspan=1>126/127</td><td rowspan=1 colspan=1>Grass</td><td rowspan=1 colspan=1>6 m</td><td rowspan=1 colspan=1>450 μg Phelum pratense5/month</td><td rowspan=1 colspan=1>Significant reduction in RC symptom score(-24%), asthma score (-64%), RC medications(-34%), well days (+28%). AIl p&lt;.03</td></tr></table>
+
+Developing and Evaluation) rules.
+
+The safety of SLIT is unanimously recognized to be superior to that of SCIT. It appears that no fatality has been reported with SLIT in 23 years of trials and clinical use. In addition, there are only five reports of anaphylaxis with SLIT in the literature. On the other hand, a report of an anaphylactic reaction to the first grass tablet of SLIT, highlights the importance of giving the first dose under medical supervision. The use of SCIT for children aged five years or younger is normally contraindicated because any reaction may be more severe and difficult to treat in such young children. However, some of the post marketing surveys involved children aged between 3 and 5 years and confirmed that the safety is not impaired in this younger age group. The vast majority of the side effects reported with SLIT are local (oral pruritus, swelling, nausea), mild, and resolve after the first doses, usually within 10 days. The systemic side effects (rhinitis, asthma, urticaria) are described only occasionally.
+
+Mechanisms: Until a few years ago, only limited, often controversial, data on the mechanisms of action of SLIT were available. More recently, investigation has focused specifically on the Th1/Th2 balance and the role of T-reg cells. Two studies reported an increased production of the regulatory cytokine IL-10 after SLIT and another study showed a reduction of the Th2 cytokine IL-13. Savolainen et al demonstrated in vitro that SLIT reduces the expression of IL-5 and enhances the expression of IL-
+
+10 in peripheral blood mononuclear cells (PBMC) stimulated with the allergen. Overall, the clinical effects of SLIT resemble those of SCIT and the data available suggest that the mechanisms of action are somewhat similar. Nevertheless, a more detailed definition of the mechanisms of action of SLIT is mandatory and it will probably represent a major research field. Finally, unique data on bio-distribution in humans are available for SLIT, showing a long-lasting persistence of the allergen in the mouth, with an absent or negligible absorption through the mucosa.
+
+Additional effects: It has been demonstrated that SLIT can also prevent the onset of new sensitizations. In an open, controlled trial, the rate of occurrence of new sensitizations was 5.8% in the active group and 38% in the control group. In addition, in children with rhinitis only, SLIT was demonstrated to be capable of reducing the risk of asthma onset. These results were replicated in a larger randomized open study, involving more than 200 children followed up for three years. Two studies, one in adults and one in children reported that the clinical benefit of SLIT is maintained up to 5 years after the discontinuation. As with SCIT, it is clear that the preventative effects need to be confirmed with a larger number of patients and with robust methodologies. Nonetheless, the preventative effect in addition to the good safety profile suggests SLIT as a promising therapy for the treatment of children.
+
+Controversial Aspects: Due to its relatively recent introduction in clinical practice, it is clear that some aspects of SLIT still need to be elucidated. The most relevant problem is the large variability of the doses used in clinical trials. Indeed, both positive and negative results have been obtained at both low and high doses of allergens; the dose interval for efficacy is reported to range between 2 and 375 times the amount given with SCIT. A clear dose response relationship has only been formally demonstrated for grass extracts, where the optimal dose has been identified as 15 to 25 mcg of major allergen per day, that is roughly 50 times the monthly dose of SCIT. From a clinical point of view, there is no consensus on whether the best regimen is pre-seasonal, co-seasonal, pre-coseasonal or continuous administration. It is true that for pollen allergens the vast majority of the trials have utilized a pre-coseasonal regimen but this cannot be immediately extrapolated to all extracts and to all patients. Similarly, the usefulness of a build-up phase is still a matter of debate. The “no up-dosing” regimen has been shown to be safe enough and some of the big trials have used a “no up-dosing” regimen, but the applicability of this concept to all allergens and patients is not unanimously accepted.
+
+Other controversial aspects are common to both SCIT and SLIT. For instance the allergen and protein content of commercial extracts is highly variable between manufacturers, making the comparison amongst extracts and regimens difficult and representing a major cause of the heterogeneity of studies. Another problem related to the heterogeneity is that the Double Blind Placebo Controlled (DBPC) trials use different methodological designs, variable outcomes and arbitrary selection criteria for patients. There has recently been a great deal of effort to recommend that studies with both SLIT and SCIT should use the same experimental design and that outcomes and patient selection are standardized.
+
+Another problem is the use of mixtures of different allergens, since the majority of patients are polysensitized and it is often necessary to prescribe immunotherapy with multiple extracts. There are a few older studies specifically assessing the effects of allergen mixtures, which showed controversial, and sometimes surprising, results. A recent randomized DBPC trial showed that an immunological response is achieved with a single grass extract, but the same dose combined with 9 other pollen extracts produced only a limited response. In contrast, a SLIT study showed that the co-administration of grass and pollen extracts is more efficacious than a single extract used alone. Two post-marketing surveys performed in adults and children consistently suggested that the use of multiple allergens for SLIT does not increase the rate of side-effects. Finally, there is as yet no universally accepted system for the classification/grading of adverse events due to SIT. To address this need, a WAO taskforce has recently proposed a new grading system which will provide uniformity of assessment and help to standardize the post marketing surveys on the safety of immunotherapy.
+
+## Future Directions
+
+The increasing knowledge on the mechanisms of SIT, associated with the developments in technology in recent years, has opened many new research fields and new opportunities to improve immunotherapy (Figure 2).
+
+![](images/f7b36bbcb368fa09b24dfaadc8a812a3a0cc5a93e6b5e54455b961917395c974.jpg)  
+Figure 2. Perspectives for immunotherapy SCIT/SLIT
+
+One of the most intriguing aspects is the use of SIT for conditions other than respiratory allergy. Due to its good safety profile, SLIT has been studied with favourable results in food allergy due to peanut, peach or hazelnut. Similarly, there are several positive data sets for the use of SLIT in latex allergy in adults and children. Another possible field of application is extrinsic atopic dermatitis where positive results have been obtained with both SLIT and SCIT.
+
+New administration routes have been recently proposed, such as the intra-lymphatic delivery of allergens. In a recent trial, it was shown that intra-lymphatic injection (conducted under echography) achieves the same efficacy of SCIT with only three injections, and maintains its effect for several months. Another recent study has envisaged the possibility of a transdermal administration of allergens prepared as patches, and encouraging results have been obtained in animal models with the needle-free delivery of nanoparticles of allergens. Finally, in the case of mucosal administration of allergens (as happens in SLIT) potential improvement could come from bio-adhesive vehicles which prolong the duration of persistence of the active agent on the mucosa, enhancing immunogenicity.
+
+Adjuvants are non-immunogenic substances that, when coadministered with antigens, enhance their effects. Thus, in the case of SIT, an effective adjuvant would allow a reduction in the amount of allergen to be administered. The bacterial-derived monophosphoril-lipid A (MPLA) is non-toxic, well tolerated and capable of inducing a pronounced Th1 response in humans. There is a double-blind placebo controlled study of SCIT with grass pollen extract adjuvanted with MPLA which has shown a significant improvement in patients with allergic rhinitis with only four injections.
+
+Another potent adjuvant is the prokaryotic DNA (CpG motifs or immunostimulatory sequences-oligodeoxynucleotide), that is recognized by the toll-like receptor 9. A DNA-conjugated allergen, Amb a 1, was prepared for human administration and in a phase II trial, this adjuvanted allergen was shown to induce a significant clinical benefit (reduction of symptoms and medication intake) that was maintained for two pollen seasons after vaccination.
+
+The commercialized extracts for immunotherapy, although standardized, are heterogeneous mixtures of allergenic proteins and non-relevant components. Thanks to advances in molecular biology it is now possible to synthesize many of the allergenic proteins, making it possible to vaccinate with the relevant molecules only. One trial of 4 recombinant grass allergens resulted in a significant decrease in seasonal symptoms and medication requirements compared to placebo treatment. However, another trial reported that the recombinant Bet v 1 allergen does not perform better than the native extract. It is clear that this approach offers unique opportunities to improve SIT, but more conclusive data are needed.
+
+## Concluding Remarks
+
+In the last 20 years there has been an impressive development in the field of allergen immunotherapy. SCIT still represents the standard modality of treatment and its indications, contraindications and optimal doses are well demonstrated. The most important novelty, from a clinical point of view, has been the introduction of SLIT, which is now accepted as a viable alternative to injection immunotherapy. It is true that some points need to be better detailed for SLIT, such as the ideal patient, the extent of the long-lasting effect, and the preventative role. Nevertheless, the clinical efficacy is well demonstrated and has been proven in more than 60 trials.
+
+It is important to remember that SLIT is effective and safe provided that a correct and detailed diagnosis has been made, and that both SCIT and SLIT must be prescribed and administered only by trained physicians. Despite the existence of several official documents, and the capacity to achieve a modification of the natural history of the disease, the perception is that for the number of patients who would benefit from the treatment, SIT is still under-utilized and prescriptions are still limited.
+
+In parallel to the clinical developments of SLIT, the mechanisms of specific desensitization have been clarified with increasing detail. This has prompted the exploration of new opportunities, such as the use of bacterial and DNA adjuvants, peptides and recombinant/engineered allergens. Although these latter approaches are still at the beginning in humans, they represent the frontiers of scientific investigation for the immediate future.
+
+## Unmet Needs
+
+• Optimal dosing regimes for sublingual immunotherapy (SLIT) remain to be established.
+
+Consensus is required on whether the best regimen for delivery of SLIT is pre-seasonal, co-seasonal, precoseasonal or continuous administration.
+
+Studies with both SLIT and SCIT should use the same experimental design to ensure that outcomes and subjects are standardized.
+
+• Studies on the use of single or multiple allergen mixtures in SLIT are required.
+
+A universally accepted system is needed for the classification/grading of adverse events due to immunotherapy administration; a WAO taskforce has recently proposed a new grading system which will provide uniformity of assessment and help to standardize the post marketing surveys on the safety of immunotherapy.
+
+## Recommended Reading
+
+1. World Health Organisation Position Paper. Allergen immunotherapy: therapeutical vaccines for allergic diseases. Bousquet J, Lockey R, Malling HJ edts. Allergy 1998; 53 (suppl 72): 3-13.
+
+2. Bousquet J, Van Cauwenberge P Allergic Rhinitis and its Impact on Asthma (ARIA) WHO Position Paper. J Allergy Clin Immunol 2001; 108 (5 Part 2): S 147-334
+
+3. Canonica GW, Bousquet J, Casale T, Lockey RF edts. WAO Position Paper on sublingual immunotherapy. WAO Journal; 2009;2(11):223-281.
+
+4. Canonica GW, Bousquet J, Casale T, Lockey RF, Baena-Cagnani CE, Pawankar R, Potter PC, Bousquet PJ, Sub-lingual immunotherapy: World Allergy Organization Position Paper 2009. Allergy. 2009 Dec;64 Suppl 91:1-59.
+
+5. Joint task force for practical parameters. Allergen immunotherapy: a practice parameter. American Academy of Allergy, Asthma and Immunology. American College of Allergy, Asthma and Immunology. Ann Allergy Asthma Immunol. 2003; 90(1 Suppl 1):1-40.
+
+6. Alvarez-Cuesta E, Canonica GW, Durham S, Malling HJ, Valovirta E.
+
+Standards for practical allergen-specific immunotherapy. Allergy 2006; 61(supp 82): 1-20
+
+7. Calderon MA, Alves B, Jacobson M, Hurwitz B, Sheikh A, Durham S. Allergen injection immunotherapy for seasonal allergic rhinitis. - The Cochrane Database of Systematic Reviews. Issue 1 2007
+
+8. Eng PA, Borer-Reinhold M, Heijnen IA, Gnehm HP. Twelve-year followup after discontinuation of preseasonal grass pollen immunotherapy in childhood. Allergy 2006; 61: 198-201.
+
+9. Marogna M, Tomassetti D, Bernasconi A, Colombo F, Massolo A, Businco AD, Canonica GW, Passalacqua G, Tripodi S. Preventive effects of sublingual immunotherapy in childhood: an open randomized controlled study. Ann Allergy Asthma Immunol. 2008 Aug;101(2):206-11
+
+10. Compalati E, Penagos M, Tarantini F, Passalacqua G, Canonica GW. Specific immunotherapy for respiratory allergy: state of the art according to current meta-analyses. Ann Allergy Asthma Immunol. 2009 Jan;102(1):22-8.
+
+11. Canonica GW, Baena Cagnani C, Bousquet J, Bousquet PJ, Passalacqua G, Potter P, Lockey RF, Valovirta E. Recommendations for standardization of clinical trials with Allergen Specific Immunotherapy for respiratory allergy. A statement of a World Allergy Organization (WAO) taskforce. Allergy. 2007; 62: 317-24.
+
+12. Lombardi C, Braga M, Incorvaia C, Senna G, Canonica GW, Passalacqua G. Administration regimens for sublingual immunotherapy. What do we know? Allergy 2009; Jun;64(6):849-54.
+
+13. Casale T, Canonica GW, Bousquet J, Cox L, Nelson H, Passalacqua G. Recommendations for Appropriate Sublingual Immunotherapy (SLIT) Clinical Trials: J Allergy Clin Immunol 2009 Oct;124(4):665-70.
+
+14. Cox L, Larenas Linnemann D, Canonica GW, Lockey RF. Speaking a common language. A WAO proposal for the grading of systemic adverse events of SIT. J Allergy Clin Immunol 2009 J Allergy Clin Immunol 2010; Mar;125(3):569-74
+
+15. Senti G, Prinz Vavricka BM, Erdmann I, Diaz MI, Markus R, McCormack SJ, Simard JJ, Wüthrich B, Crameri R, Graf N, Johansen P, Kündig TM. Intralymphatic allergen administration renders specific immunotherapy faster and safer: a randomized controlled trial. Proc Natl Acad Sci U S A. 2008 Nov 18;105(46):17908-12.
+
+16. Senti G, Graf N, Haug S, Rüedi N, von Moos S, Sonderegger T, Johansen P, Kündig TM.Epicutaneous allergen administration as a novel method of allergen-specific immunotherapy. J Allergy Clin Immunol. 2009 Nov;124(5):997-1002.
+
+## Section 4.4. Biological Agents
+
+Vesselin V. Dimov, Jeffrey R Stokes, Thomas B. Casale, Stephen T. Holgate
+
+Disclosure of potential conflict of interest: V. V. Dimov has no relevant consulting arrangements or other conflicts of interest. T. B. Casale has no relevant consulting arrangements; he has received research support through grants awarded to Creighton University from Dynavax, Novartis, Genentech, Amgen, Pfizer, and Schering. J. R. Stokes is on the speakers’ bureau for GlaxoSmithKline.
+
+## Key Statements
+
+• Recent developments in the field of allergy and immunology have led to a variety of novel therapeutic approaches; some agents are already implemented in clinical practice, and even more agents are at the stage of clinical trials.
+
+New therapeutic approaches include toll-like receptor agonists, cytokine blockers, specific cytokine receptor antagonists and transcription factor modulators targeting syk kinase, peroxisome proliferator-activated receptor gamma, and nuclear factor kappa B.
+
+• The anti-IgE mAb omalizumab has a well-documented effectiveness in patients with allergic asthma, but the criteria for selecting the patients who will benefit from it are less established.
+
+## Abbreviations used:
+
+CCR3: Chemokine receptor 3
+
+GM-CSF: Granulocyte-macrophage colony–stimulating factor
+
+mAb: Monoclonal antibody
+
+NF-kB: Nuclear factor kB
+
+PPAR: Peroxisome proliferator-activated receptor
+
+sIL-4R: Soluble IL-4 receptor
+
+TLR: Toll-like receptor
+
+## Introduction
+
+New information about the pathogenesis of allergic and immunologic diseases has led to a variety of novel therapeutic approaches1 . This section reviews of some of these new and potential treatment modalities for patients with asthma and other allergic diseases and the rationale for their utilization, their efficacy, and any adverse events associated wtih them.
+
+Asthma is a chronic inflammatory disease that affects about 300 million people worldwide. Most patients respond reasonably well to the currently available treatments but 5-10% of them have severe disease that responds poorly and another sub-set have steroid resistance or suffer significant side effects from the current treatments. There is also an emerging view that asthma is not a single disease entity but one with varying severity, natural history and response to individual therapies (endotypes)2. New therapeutic approaches discussed in this chapter include toll-like receptor (TLR) agonists, cytokine blockers including monoclonal antibodies (mAb), cytokine receptor antagonists and transcription factor modulators that are important in suppressing key inflammatory pathways. The risk to benefit ratio of these therapeutic approaches will also be discussed (Figure 3).
+
+![](images/acee9131b41d8301212026031dc0aa2b69c50652229b7b981215f869e1de4182.jpg)  
+Figure 3. Risk-benefit ratio of immunomodulators in asthma therapy.
+
+Past experience has shown that agents that are specific for a particular molecule might not be effective in all patients because of the redundancy in the immune system and the heterogeneity of the diseases. Conversely, immunomodulators with upstream actions that lead to a broader spectrum of effects might have more therapeutic utility but higher risks for adverse events.
+
+## Toll-like receptors
+
+Toll-like receptors (TLRs) play an important role in both innate and adaptive immune responses through activation of a number of cells, especially antigen-presenting cells. Therapeutic agents targeting the TLRs can modify the Th1/Th2 cytokine balance and affect allergic diseases. TLR-4 agonists combined with allergen immunotherapy have been tested for the treatment of allergic rhinitis. Four pre-seasonal injections of monophosphoryl lipid A (MPL) a TLR4 agonist, combined with glutaraldehydemodified antigen adsorbed onto L-Tyrosine depot adjuvant to enhance tolerability, reduces symptoms and rescue medication use in seasonal allergic rhinitis patients3.
+
+## TLR9 agonists (immunostimulatory oligonucleotides)
+
+Toll-like receptor (TLR) 9 recognizes synthetic oligodeoxynucleotides (ODN) containing unmethylated deoxycytidyl-deoxyguanosine (CpG) motifs which mimic the immunostimulatory activity of bacterial DNA. B cells activated by TLR9 produce IL-6 and IL-10 whilst inducing B-cell differentiation into plasma cells and triggering Ig isotype switching and antibody production4, 5.
+
+A variety of TLR4 agonists have been examined. In a study of 25 subjects with seasonal allergic rhinitis due to ragweed, six weekly injections of CpG conjugated to Amb 1 (the predominant ragweed allergen), induced improvements in symptoms, rescue medication use and quality of life in the year of treatment and the subsequent year6. This initial report of the combination therapy termed Tolamba® has been followed by large, multicentre clinical trials. Statistically significant improvements in symptom scores in Tolamba® treated patients has not been found in all studies7 which makes the therapeutic future of this agent questionable.
+
+Patients with atopic asthma were treated with an inhaled synthetic oligonucleotide containing immunostimulatory CpG motifs (1018 ISS). Forty subjects (n= 21, 1018 ISS; n= 19, placebo) were enrolled in a randomized, double-blind, placebo-controlled study and received 1018 ISS or placebo by nebulization weekly for 4 weeks. Treatment with 1018 ISS increased expression of interferon (IFN)-gamma and IFNinducible genes, but there was no attenuation of the early or late decrease in $\mathsf { F E V } _ { \tau } ,$ nor a reduction in allergen-induced sputum eosinophils or Th2-related gene expression8.
+
+CYT003-QbG10, another TLR9 agonist, has been used in several small clinical trials for the therapy of allergic rhinitis and asthma. Given subcutaneously on a weekly regimen, CYT003- QbG10 plus house dust mite for 10 weeks led to improvements in both asthma and rhinitis symptoms. CYT003-QbG10 given alone led to a 100-fold increase in median allergen tolerance upon nasal allergen provocation and significantly improved total rhinoconjunctivitis symptom scores9. Currently a large phase IIb study with 300 patients suffering from perennial rhinitis is underway. The data suggest that TLR9 agonists could be valuable as therapy for allergic respiratory disorders, but more research is needed to identify the most effective compounds and those patients most likely to benefit.
+
+## Chemokine CC3 receptor and common beta chain antagonists
+
+The late asthmatic response to an allergen involves an influx of inflammatory cells and may depend on signalling through the chemokine receptor CCR3; cytokines IL-3, IL-5; and granulocyte-macrophage colony–stimulating factor (GM-CSF) which stimulate their respective receptors, composed of a common β-chain and an individual a-chain.
+
+TPI ASM8 contains two modified phosphorothioate antisense oligonucleotides designed to inhibit allergic inflammation by down-regulating human CCR3 and the common β-chain of IL-3, IL-5, and GM-CSF receptors via RNA silencing10,11. Inhaled TPI ASM8 attenuated the allergen-induced increase in target gene mRNA and airway responses in a study of 17 subjects with mild asthma. TPI ASM8 significantly reduced the early asthmatic response with a trend for inhibition of the late asthmatic response (P = 0.08). No serious adverse events were reported and a phase II trial is currently underway. Of importance will be the relevance of the allergen challenge model to clinical asthma.
+
+## Cytokine Blockers
+
+Agents targeting TLRs affect both the innate and adaptive immune system with the potential for broad-ranging effects that might shift the risk/benefit ratio. In contrast, strategies aimed at single or multiple related cytokines might provide a lower risk for adverse events, but may have the propensity to be less efficacious.
+
+Blockers of key TH2 cytokines such as IL-4, IL-5, and IL-13 have been evaluated in human trials for the therapy of allergic diseases.
+
+## Oral synthesis inhibitors
+
+Suplatast tosilate is an oral medication that inhibits the production of IL-4 and IL-5 and decreases the serum IgE level and peripheral eosinophil count12. A study of 53 infants with atopic eczema caused by food allergies suggested that suplatast may be useful for the primary prevention of wheezing and asthma in children13. Suplatast has been shown to improve airway inflammation, hyperresponsiveness, symptoms and peak expiratory flow rates. A potential drawback of this agent is that it must be taken three times a day which could affect patient compliance.
+
+## Anti–IL-4 strategies
+
+IL-4 induces IgE isotype switching and differentiation of naive lymphocytes into Th2 cells through GATA3/STAT6 transcription factors, leading to a subsequent release of additional IL-4, IL-5, and IL-13.
+
+Recombinant human soluble IL-4 receptor (sIL-4R) was evaluated in a study with 62 asthmatic subjects treated with inhaled corticosteroids, that were discontinued at the start of the study14. sIL-4R was dosed weekly through a nebulizer for 12 weeks at three doses and compared with placebo. Only patients receiving the high dose of sIL-4R were able to maintain their lung function and there was no effect on symptoms or asthma exacerbations. Monoclonal antibodies against IL-4 have also failed in patients with asthma. The ineffectiveness of the anti-IL-4 strategies may be due to the redundancy between IL-4 and other cytokines, especially IL-13.
+
+## Anti–IL-5 monoclonal antibodies
+
+IL-5 is the key cytokine required for eosinophil differentiation and survival. Mepolizumab and reslizumab (SCH55700) are the two humanized IL-5 mAbs evaluated in human trials. In trials of severe asthma, these agents failed to reveal efficacy. However in selected patients with high eosinophilia, this approach may be appropriate15,16.
+
+## Mepolizumab
+
+Two recent studies showed a beneficial effect of mepolizumab in patients with a subtype of severe asthma characterized by sputum eosinophilia. Sixty one subjects with refractory eosinophilic asthma and a history of recurrent severe exacerbations received infusions of either mepolizumab (29 subjects), or placebo (32 subjects) at monthly intervals for 1 year1. Mepolizumab was associated with fewer severe exacerbations than placebo over the course of 50 weeks, improvement in quality of life, and lowered eosinophil counts in the blood and sputum. However, there were no effects on symptoms, FEV , or airway hyperresponsiveness. The second study included asthmatic patients with persistent sputum eosinophilia and symptoms despite prednisone treatment18. Nine patients were assigned to receive mepolizumab (administered in five monthly infusions of 750 mg each) and 11 patients to receive placebo. Patients who received mepolizumab had fewer asthma exacerbations, lower prednisone requirements, and a decrease in sputum and blood eosinophils. Both studies showed positive effects with anti-IL-5 monoclonal antibodies, but there are several important caveats. A large number of patients had to be screened to find patients with sputum eosinophil counts greater than 3% which limits the effectiveness to a small subset with uncontrolled asthma. Despite a reduction in exacerbations, meaningful changes in symptoms and spirometry were generally lacking.
+
+Mepolizumab has shown promising results in patients with hypereosinophilic syndrome and it is currently undergoing further evaluation. Both humanized IL-5 mAbs mepolizumab and reslizumab are currently in human phase II and III trials in patients with eosinophilic esophagitis19.
+
+## Anti–IL-13 monoclonal antibodies
+
+IL-13 plays an important role in airway hyperresponsiveness, IgE production, mucus production, secretion of eotaxin, and airway remodelling through pro-fibrotic gene expression in lung fibroblasts. There are several humanized anti IL-13 mAbs under development that are either in phase I or phase II human clinical trials (e.g. MEDI 354, IMA 638, QAX 576) . In a phase I clinica trial of 34 patients with mild asthma, the IL-13 mAb CAT-354, was well tolerated at all doses20. Although not yet published, preliminary reports for some trials have shown relatively weak effects on allergen challenge studies but failed to show efficacy in clinical trials, and further studies are needed to evaluate the utility of this strategy.
+
+Lebrikizumab is a humanized monoclonal antibody that binds specifically to IL-13 and is currently in a phase II clinical trial with asthma patients.
+
+Lebrikizumab. Development Pipeline Home. Verified by Genentech Inc, July 2009. Available at: http://www.gene.com/gene/pipeline/status/ immunology/anti-il13 and http://clinicaltrials.gov/ct2/show/NCT00930163?te rm=Lebrikizumab&rank=1. Accessed July 31, 2009.
+
+## IL-4Ra receptor antagonist
+
+Both IL-4 and IL-13 bind to the IL-4Ra receptor sub-unit, which leads to downstream signalling effects. AMG-317 is a fully humanized mAb against the IL-4R a-receptor sub-unit that was assessed in a randomized, double-blind, placebocontrolled study in patients with uncontrolled asthma21. At the highest dose, there was a median improvement in total serum IgE versus placebo (p<0.05). In an exploratory analysis, the top tertile of the most symptomatic subjects did have some improvements in the clinically monitored parameters at the highest dose of AMG317.
+
+## Pitrakinra
+
+Pitrakinra (Aerovant) is an IL-4 mutein receptor antagonist that inhibits the effects of both IL-4 and IL-13 through the blockade of IL-4Ra .
+
+In a phase IIa trial of asthmatic patients, inhaled Aerovant was administered twice daily for 27 days and resulted in a 72% reduction in the late-phase asthmatic response caused by allergen inhalational challenge22. It also decreased exhaled nitric oxide levels and improved pulmonary function.
+
+Aerovant is currently in a phase IIb double-blind, randomized, placebo-controlled, dose-ranging study which is expected to enroll 500 patients with moderate to severe asthma, who are poorly controlled by the combination of inhaled corticosteroids and long-acting β-agonists23.
+
+Aerovance. Available at: http://www.aerovance.com/news/press-releases/ Press-Releases/Aerovance-Initiates-Phase-IIb-Clinical-Trial-with-AEROVANT-for-the-Treatment-of-Uncontrolled-Asthma-80/. Accessed July 12, 2009.
+
+Aeroderm is a PEGylated mutein of Aerovant, and is being developed as a once-weekly to twice-monthly subcutaneous injectable form of pitrakinra for patients with severe atopic dermatitis. In a phase IIa trial of 25 patients with moderate to severe eczema, the product was administered via subcutaneous injection twice daily for 28 days; it reduced symptom scores, exacerbation days and IgE, and was well tolerated.
+
+[Aeroderm. Available at: http://www.aerovance.com/pipeline/aeroderm.   
+Accessed August 10, 2009].
+
+## IL-2 receptor antagonist
+
+Airway inflammation in asthma is characterized by increased activated CD25 T-cells, IL-2, and soluble IL-2 receptors. Daclizumab is a humanized IgG1 mAb against the IL-2R-a chain (CD25) that is approved for prevention of renal allograft rejection. In adults with moderate to severe persistent asthma uncontrolled with inhaled corticosteroids, daclizumab, dosed every 2 weeks, improved FEV , reduced symptoms and short-acting inhaled ß -agonist use, and increased time to exacerbation24. However clinical benefit took at least 50 days to emerge and even then was partial. However, these results support further evaluation of daclizumab in asthma, but IL-2 is a key cytokine with pleiotropic effects and caution is warranted with therapeutic agents that block it.
+
+## Transcription factor inhibition
+
+Gene expression for pro-inflammatory cytokines and mediators is regulated by transcription factors and they are potential targets for the development of immunomodulatory agents.
+
+## Syk kinase inhibitors
+
+Syk kinase is an intracellular protein that plays a role in mast cell and basophil activation and the release of mast cell mediators. Inhaled R-343, a Syk kinase inhibitor, is in a phase 1 clinical trial for the therapy of allergic asthma25. Intranasal R-112, a predecessor to R-343, resulted in rhinoconjunctivitis symptom improvement in patients with seasonal allergic rhinitis evaluated in a park environment setting26. Again, it will be important to consider what patient populations would best benefit from this approach.
+
+## Peroxisome proliferator-activated receptor gamma agonists
+
+GATA-3 is a key transcription factor in the expression of TH2 cytokines in allergic respiratory diseases. Peroxisome proliferator-activated receptor (PPAR) gamma agonists inhibit GATA-3 expression and TH2-driven inflammation in murine models. Thiazolidinediones are PPAR-gamma agonists that are used for the treatment of non-insulin-dependent diabetes in humans, and allergen induced airway responses have been inhibited in some animal studies and in vitro studies.
+
+There are several ongoing clinical trials evaluating the effects of different PPAR-gamma agonists in asthma, but results have not been published and are pending completion of trials27.
+
+## Anti-IgE monoclonal antibody
+
+Omalizumab is a humanized monoclonal antibody that binds to the Fc portion of IgE, forms soluble immune complexes, and thus prevents the IgE attachment to Fc RI and cross-linking on the cell surface. Omalizumab rapidly decreases the free IgE levels in serum and the expression of FcεRI on basophils, dendritic cells, and monocytes. The efficacy and safety of omalizumab has been established by a number of clinical studies including three phase III trials which included a total of 1405 patients with moderate-to-severe allergic asthma28,29,30.
+
+In all 3 studies, omalizumab reduced asthma exacerbations and had a corticosteroid-sparing effect with a significant number of patients able to decrease their inhaled corticosteroid dose. Fewer asthma symptoms, less rescue medication use, and improved quality of life scores were noted in the omalizumab-treated patients.
+
+Omalizumab reduces the rate of serious asthma exacerbations and the need for unscheduled outpatient visits, emergency room treatment, and hospitalization in patients with moderateto-severe allergic asthma31.
+
+The US Food and Drug Administration (FDA) has approved omalizumab for the treatment of moderate-to-severe persistent perennial allergic asthma in patients 12 years and older. Patient response rate to omalizumab varies between 30 and 50%, with those with more severe disease obtaining the most benefit32. At present there is no biomarker that identifies responders from non-responders and a 16 week clinical trial in which multiple end-points are evaluated is advised before discontinuing treatment on account of lack of efficacy33.
+
+The cost-benefit analyses of anti-IgE use in patients with moderate-to-severe asthma have indicated that this drug is best suited for those patients that are high users of health care, and especially those that have frequent exacerbations34. A review of the data from 57,000 patients treated with omalizumab indicated that post-administration anaphylaxis can occur with any dose and can be delayed beyond 2 hours, with signs and symptoms often lasting many hours35,36. In a recent analysis of more than 7,500 patients with asthma, the incidence of anaphylaxis was 0.14% in omalizumab-treated patients and 0.07% in control patients37. Observation of patients for 2 hours after they received each of the first three injections and for 30 minutes after they received subsequent injections should capture 75% of anaphylactic reactions related to omalizumab; this is the current recommendation of the American Academy of Allergy, Asthma & Immunology/American College of Allergy, Asthma & Immunology Joint Task Force38.
+
+A recent review of the therapeutic potential of omalizumab beyond asthma has indicated a number of other allergic diseases that might improve with this therapy39, including chronic urticaria, drug allergy, allergic rhinitis, atopic eczema, anaphylaxis, eosinophilic disorders and allergic bronchopulmonary aspergillosis. Omalizumab has also been used as an adjuvant to allergen immunotherapy with some success.
+
+In July 2009, the FDA announced that it would be conducting a safety review of the interim findings from an ongoing study of omalizumab (Evaluating the Clinical Effectiveness and Long-Term Safety in Patients with Moderate to Severe Asthma (EXCELS) that suggests an increased number of cardiovascular and cerebrovascular adverse events in a group of patients using the medication.
+
+Early Communication about an Ongoing Safety Review of Omalizumab (marketed as Xolair). U.S. Food and Drug Administration. Available at: http://www.fda.gov/Drugs/DrugSafety/ PostmarketDrugSafetyInformationforPatientsandProviders DrugSafetyInformationforHeathcareProfessionals/ucm172218.htm. Accessed August 10, 2009.
+
+Table 6 — Monoclonal Antibodies and Fusion Proteins in Trials for Treatment of Asthma and Allergic Diseases
+<table><tr><td rowspan=1 colspan=1>Name</td><td rowspan=1 colspan=1>Source</td><td rowspan=1 colspan=1>Target</td><td rowspan=1 colspan=1>Development Status</td></tr><tr><td rowspan=1 colspan=1>0malizumab</td><td rowspan=1 colspan=1>Humanized</td><td rowspan=1 colspan=1>IgE                           F</td><td rowspan=1 colspan=1>DA-approved</td></tr><tr><td rowspan=1 colspan=1>Lumiliximab</td><td rowspan=1 colspan=1>Chimeric                      F</td><td rowspan=1 colspan=1>cεRII (CD23)                   Phase</td><td rowspan=1 colspan=1>II</td></tr><tr><td rowspan=1 colspan=1>Keliximab</td><td rowspan=1 colspan=1>Chimeric</td><td rowspan=1 colspan=1>CD4                          Phase</td><td rowspan=1 colspan=1>II</td></tr><tr><td rowspan=1 colspan=1>Mepolizumab</td><td rowspan=1 colspan=1>Humanized                    IL</td><td rowspan=1 colspan=1>-5                          Phase</td><td rowspan=1 colspan=1>II</td></tr><tr><td rowspan=1 colspan=1>Reslizumab</td><td rowspan=1 colspan=1>Humanized                    IL</td><td rowspan=1 colspan=1>-5                          Phase</td><td rowspan=1 colspan=1>II</td></tr><tr><td rowspan=1 colspan=1>Daclizumab</td><td rowspan=1 colspan=1>Humanized</td><td rowspan=1 colspan=1>IL-2 receptor α-chain (CD25)      Phase</td><td rowspan=1 colspan=1>II</td></tr><tr><td rowspan=1 colspan=1>AMG-317</td><td rowspan=1 colspan=1>Human</td><td rowspan=1 colspan=1>IL-4Rα receptor                Phase</td><td rowspan=1 colspan=1>II</td></tr><tr><td rowspan=1 colspan=1>Pitrakinra (Aerovant)</td><td rowspan=1 colspan=1>Mutein</td><td rowspan=1 colspan=1>IL-4Rα receptor                Phase</td><td rowspan=1 colspan=1>II</td></tr><tr><td rowspan=1 colspan=1>Aeroderm</td><td rowspan=1 colspan=1>PEGylated mutein of Aerovant</td><td rowspan=1 colspan=1>IL-4Rα receptor                Phase</td><td rowspan=1 colspan=1>II</td></tr><tr><td rowspan=1 colspan=1>CAT-354</td><td rowspan=1 colspan=1>Human                       IL</td><td rowspan=1 colspan=1>-13                         Phase</td><td rowspan=1 colspan=1>I</td></tr><tr><td rowspan=1 colspan=1>Lebrikizumab</td><td rowspan=1 colspan=1>Humanized                    IL</td><td rowspan=1 colspan=1>-13                         Phase</td><td rowspan=1 colspan=1>II</td></tr><tr><td rowspan=1 colspan=1>IMA-638</td><td rowspan=1 colspan=1>Humanized                    IL</td><td rowspan=1 colspan=1>-13                         Phase</td><td rowspan=1 colspan=1>II</td></tr><tr><td rowspan=1 colspan=1>QAX 576</td><td rowspan=1 colspan=1>mAb                          IL</td><td rowspan=1 colspan=1>-13                         Phase</td><td rowspan=1 colspan=1>I</td></tr><tr><td rowspan=1 colspan=1>IL-13Rα2-lgFc</td><td rowspan=1 colspan=1>Fusion protein                  IL</td><td rowspan=1 colspan=1>-13                         Animal</td><td rowspan=1 colspan=1>model</td></tr><tr><td rowspan=1 colspan=1>IL-13E13K</td><td rowspan=1 colspan=1>Mutein IL-13                   IL</td><td rowspan=1 colspan=1>-13                         Animal</td><td rowspan=1 colspan=1>model</td></tr><tr><td rowspan=1 colspan=1>GM1E7                        Mouse</td><td rowspan=1 colspan=1>mAb</td><td rowspan=1 colspan=1>IL-13Rα1 receptor               Animal</td><td rowspan=1 colspan=1>model</td></tr><tr><td rowspan=1 colspan=1>IDEC-131 (mAb)</td><td rowspan=1 colspan=1>Humanized</td><td rowspan=1 colspan=1>CD40L                        Phase</td><td rowspan=1 colspan=1>I</td></tr><tr><td rowspan=1 colspan=1>Anti-CD137 mAb</td><td rowspan=1 colspan=1>Rat IgG2α antimouse mAb</td><td rowspan=1 colspan=1>CD137 on T cells</td><td rowspan=1 colspan=1>Animal model</td></tr></table>
+
+## Summary
+
+A plethora of immunomodulators are currently at different stages of clinical development for the therapy of asthma and allergic diseases. Agents that are very specific for a particular molecule might not be effective in all patients because of the redundancy in the immune system and the heterogeneity of the diseases. Immunomodulators with broad upstream actions might have therapeutic utility, but higher risk for adverse events limits their clinical application (Figure 3). Most of the agents included in this chapter are in early phases of clinical development and their place in the therapeutic armamentarium depends on the results of long-term, multi-centre clinical trials assessing their risks and benefits. It is also important to understand that by adopting such selective targets for therapies only selective subpopulations of asthma might benefit.
+
+## Unmet Needs
+
+Further studies are required on the currently available monoclonal antibody agent, Omalizumab, to identify suitable patients for this therapy and to establish its use in a variety of allergic conditions
+
+## Recommended Reading
+
+Casale TB, Stokes JR. Immunomodulators for allergic respiratory disorders.   
+J Allergy Clin Immunol. 2008 Feb;121(2):288-96. Holgate ST, Polosa R. Treatment strategies for allergy and asthma.   
+Nat Rev Immunol. 2008 Mar;8(3):218-30. Epub 2008 Feb 15.
+
+Fanta CH. Asthma. N Engl J Med. 2009 Mar 5;360(10):1002-14.
+
+## References
+
+1. Casale TB, Stokes JR. Immunomodulators for allergic respiratory disorders. J Allergy Clin Immunol. 2008 Feb;121(2):288-96.
+
+2. Anderson G. Endotyping asthma: new insights into key pathogenic mechanisms in a complex, heterogeneous disease. Lancet. 2008 Sep 20;372(9643):1107-19.
+
+3. Fiedler G. et al. Long-Term Efficacy of Short Course Subcutaneous Immunotherapy Containing Monophosphoryl Lipid A Adjuvant Administered in a Clinical Setting. Abstract P1769. Allergy 2008, 63: 612-621.
+
+4. Krieg AM. Therapeutic potential of Toll-like receptor 9 activation. Nat Rev Drug Discov 2006;5:471-84.
+
+5. Kline JN. Eat dirt CpG DNA and immunomodulation of asthma. Proc Am Thorac Soc 2007;4:283-8.
+
+6. Creticos PS, Shroeder JT, Hamilton RG, Balcer-Whaley SL, Khattignavong AP, Lindblad R, et al. Immunotherapy with ragweedtoll-like receptor agonist vaccine for allergic rhinitis. N Engl J Med 2006;355:1445-55.
+
+7. Tulic MK, Fiset PO, Christodoulopoulos P, Vaillancourt P, Desrosiers M, Lavigne F, et al. Amb a 1-immunostimulatory oligodeoxynucleotide conjugate immunotherapy decreases the nasal inflammatory response.J Allergy Clin Immunol 2004;113: 235-41.
+
+8. Gauvreau GM, Hessel EM, Boulet LP, Coffman RL, O’Byrne PM. Immunostimulatory sequences regulate interferon-inducible genes but not allergic airway responses. Am J Respir Crit Care Med 2006;174:15-20.
+
+9. Blaziene A. et al. CYT003-QbG10, A Novel Allergen-independent Immunotherapy, Shown to be Safe and Efficacious in Placebocontrolled Phase II Study. [abstract 19]. Presented at Annual Meeting of The American College of Allergy, Asthma andImmunology, Seattle, Washington, November 06 - 11, 2008.
+
+10. Lamkhioued B, Soussi Gounni A, Hamid Q, Mansour N, Delespesse G, Renzi PM. The CCR-3 receptor is involved in eosinophil differentiation and is upregulated by TH2 cytokines in CD341 progenitor cells. J Immunol 2003;170:537–547.
+
+11. Martinez-Moczygemba M, Huston DP. Biology of common B receptorsignalling cytokines: IL-3, IL-5 and GM-CSF. J Allergy Clin Immunol 2003;112:653–665.
+
+12. Ishiura Y, Fujimura M, Yamamoto H, Nobata K, Ishiguro T, Ogawa H, Myou S. Effect of an orally active Th2 cytokine inhibitor, suplatast on “atopic cough” tosilate. Arzneimittelforschung. 2008; 58(6):297-302.0
+
+13. Yoshihara, S, Ono, M, Yamada, Y, Fukuda, H, Abe, T, Arisaka, O. Early intervention with suplatast tosilate for prophylaxis of pediatric atopic asthma: A pilot study. Pediatric Allergy and Immunology, 2009; 9999, DOI: 10.1111/j.1399-3038.2008.00807.x
+
+14. Borish LC, Nelson HS, Corren J, Bensch G, Busse WW, Whitmore JB, et al. Efficacy of soluble IL-4 receptor for the treatment of adults with asthma. J Allergy Clin Immunol 2001;107:963-70.
+
+15. Kips JC, O’Connor BJ, Langley SJ, Woodcock A, Kerstjens HA, Postma DS, Danzig M, Cuss F, Pauwels RA. Effect of SCH55700, A humanized anti-human interleukin-5 antibody, in severe persistent asthma: a pilot study. Care Med. 2003 Jun 15;167(12):1655-9.
+
+16. Flood-Page P, Swenson C, Faiferman I, Matthews J, Williams M, Brannick L, Robinson D, Wenzel S, Busse W, Hansel TT, Barnes NC; International Mepolizumab Study Group. A study to evaluate safety and efficacy of mepolizumab in patients with moderate persistent asthma. Am J Respir Crit Care Med. 2007 Dec 1;176(11):1062-71.
+
+17. Haldar P, Brightling CE, Hargadon B, Gupta S, Monteiro W, Sousa A, Marshall RP, Bradding P, Green RH, Wardlaw AJ, Pavord ID. Mepolizumab and exacerbations of refractory eosinophilic asthma. N Engl J Med. 2009 Mar 5;360(10):973-84.
+
+18. Nair P, Pizzichini MM, Kjarsgaard M, Inman MD, Efthimiadis A, Pizzichini E, Hargreave FE, O’Byrne PM. Mepolizumab for prednisonedependent asthma with sputum eosinophilia. N Engl J Med. 2009 Mar 5;360(10):985-93.
+
+19. Walsh GM. Reslizumab, a humanized anti-IL-5 mAb for the treatment of eosinophil-mediated inflammatory conditions. Curr Opin Mol Ther. 2009 Jun;11(3):329-36.
+
+20. MedImmune Cambridge - formerly Cambridge Antibody Technology. Available at: http://www.cambridgeantibody.com/data/assets/pdf\_ file/11030/CAT-354\_Mar07.pdf. Accessed January 11, 2008.
+
+21. Corren J. et al. Efficacy and Safety of AMG 317, an IL-4Ra Antagonist, in Atopic Asthmatic Subjects: A Randomized, Double-blind, Placebocontrolled Study. J Allergy Clin Immunol 2009;123:732.
+
+22. Aerovance. Available at: http://www.aerovance.com/press\_132007. html. Accessed June 12, 2009.
+
+23. Aerovance. Available at: http://www.aerovance.com/press\_030209. html. Accessed June 12, 2009.
+
+24. Busse WW, Israel E, Nelson HS, Baker JW, Charous BL, Young DY, Vexler V, Shames RS. Daclizumab Asthma Study Group. Daclizumab improves asthma control in patients with moderate to severe persistent asthma: a randomized, controlled trial. Am J Respir Crit Care Med. 2008 Nov 15;178(10):1002-8.
+
+25. Rigel. Available at: http://ir.rigel.com/phoenix.zhtml?c=120936&p=irol newsArticle&ID=1084738. Accessed June 12, 2009.
+
+26. 26. Meltzer EO, Berkowitz RB, Grossbard EB. An intranasal Sykkinase inhibitor (R112) improves the symptoms of seasonal allergic rhinitis in a park environment. J Allergy Clin Immunol 2005;115:791-6.
+
+27. ClinicalTrials.gov. The Use of Rosiglitazone to Treat Asthma. Creighton University Division of Allergy & Immunology, Omaha, Nebraska. T. Wichman, T. Casale. Available at: http://clinicaltrials.gov/ct2/show/ NCT00614874. Accessed June 12, 2009.
+
+28. Busse W, Corren J, Lanier BQ, McAlary M, Fowler-Taylor A, Cioppa GD, et al. Omalizumab, anti-IgE recombinant humanized monoclona antibody, for the treatment of severe allergic asthma. J Allergy Clin Immunol 2001; 108:184-90.
+
+29. Milgrom H, Berger W, Nayak A, Gupta N, Pollard S, McAlary M, et al. Treatment of childhood asthma with anti-immunoglobulin E antibody (omalizumab). Pediatrics 2001;108:e36.
+
+30. Soler M, Matz J, Townley R, Buhl R, O’Brien J, Fox H, et al. The anti-IgE antibody omalizumab reduces exacerbations and steroid requirement in allergic asthmatics. Eur Respir J 2001;18:254-61.
+
+31. Corren J, Casale TB, Deniz Y, Ashby M. Omalizumab, a recombinant humanized anti-IgE antibody, reduces asthma-related emergency room visits and hospitalizations in patients with allergic asthma. J Allergy Clin Immunol 2003;111: 87-90.
+
+32. Holgate ST, Chuchalin AG, Hebert J, et al. Efficacy and safety of a recombinant anti-immunoglobulin E antibody (omalizumab) in severe allergic asthma. Clin Exp Allergy. 2004;34:632.
+
+33. Holgate S, Buhl R, Bousquet J, Smith N, Panahloo Z, Jimenez P. The use of omalizumab in the treatment of severe allergic asthma: A clinica experience update. Respir Med. 2009 Aug;103(8):1098-113.
+
+34. Wu AC; Paltiel AD; Kuntz KM; Weiss ST; Fuhlbrigge AL. Costeffectiveness of omalizumab in adults with severe asthma: results from the Asthma Policy Model. J Allergy Clin Immunol. 2007 Nov;120(5):1146-52.
+
+35. US Food and Drug Administration statement. Available at: http://www. fda.gov/cder/drug/InfoSheets/HCP/omalizumabHCP.htm. Accessed September 27, 2007.
+
+36. Limb SL, Starke PR, Lee CE, Chowdhury BA.Delayed onset and protracted progression of anaphylaxis after omalizumab administration in patients with asthma.J Allergy Clin Immunol 2007;120:1378-81.
+
+37. Corren J, Casale TB, Lanier B, Buhl R, Holgate S, Jimenez P. Safety and tolerability of omalizumab. Clin Exp Allergy 2009;39: 788-97.
+
+38. Cox L, Platts-Mills TAE, Finegold I, Schwartz LB, Simons FER, Wallace DV. AAAAI/ACAAI Joint Task force Report on omalizumab-associated anaphylaxis. J Allergy Clin Immunol 2007;120:1373-7.
+
+39. Casale TB, Stokes J. Anti-IgE therapy: clinical utility beyond asthma. Allergy Clin Immunol. 2009; 123(4):770-1.e1.
+
+# Section 4.5. Allergy Education For Patients And Families.
+
+John O. Warner and Erkka Valovirta
+
+## Key Statements
+
+• The provision of appropriate training and education for patients and families is fundamental to the management of allergic disease.
+
+The evidence base for the efficacy of education and training is relatively weak but it is effective in asthma and, to a lesser extent, eczema and anaphylaxis.
+
+• Different age and ethnicity populations require different educational approaches.
+
+• Modern information technology can be particularly valuable for education of younger subjects.
+
+• Education and training programs must be supplemented by written action plans.
+
+## Introduction
+
+The paternalistic approach to clinical interactions between doctors, patients and their families is no longer acceptable. Patients and families have every right to expect to participate in making management decisions related to their illness. They require detailed education and training in order to be able to understand their disease and they expect to be empowered to be able to handle the condition effectively in all circumstances. Sadly, all too frequently, clinicians make a diagnosis, prescribe pharmacotherapy and expect patients to comply with their recommendations. The focus should now be on concordance, where there is an agreed and shared responsibility for management between patient, family and clinician. Although relatively limited research has been conducted in this field, that which is available suggests that effective education and training addressing the patient’s and family’s real concerns is a very important adjunct to treatment and can improve outcomes in all allergic diseases.
+
+“If we treat you today we help you today. If we educate you today we help you tomorrow.”
+
+The quotation above is paraphrased from a statement of the World Health Organisation (WHO). They have more recently published the general principles for good chronic care.
+
+This has 10 bullet points which are as follows1:
+
+1. Develop a treatment partnership with the patient
+
+2. Focus on patients’ concerns and priorities
+
+3. Apply the five A’s – Assess, Advise, Agree, Assist, Arrange
+
+4. Educate on disease and support patient’s self-management
+
+5. Organize pro-active follow up
+
+6. Involve “expert patients”, peer educators and support staff
+
+7. Link with community based resources and support
+
+8. Provide written information and treatment plans etc
+
+9. Work as a team
+
+10. Assure continuity of care
+
+It is apparent from this list that education, in order to empower patients and families, is pre-eminent in the principles of good care.
+
+## Asthma
+
+Of all the allergic disease the benefits of education have been best studied in relation to asthma with a number of publications supporting the contention that effective education programmes improve outcomes2-5. A systematic review of all psychoeducational interventions for adults with severe or difficult asthma suggested limited favourable outcomes which only had short term effects in reducing admissions and improving quality of life. Most of the 17 controlled studies reviewed involved small numbers and quality was considered to be poor6. It is clear that a great deal more work is required to establish whether specific educational programmes are beneficial in improving long term outcomes.
+
+Guidelines for the management of asthma combine patient education with personalized action plans, the latter of which have clearly been shown to improve health outcomes7,8. The most successful interventions have been focused on patients with recent exacerbations9,10. These have provided focused information that the clinician feels is important, with an action plan and a so-called self-management programme. The latter is perhaps a misnomer and is better described as an agreed and shared responsibility for management between patient, family and clinician (i.e., a concordance). However, it is clear that such programmes often fail to address the real concerns of patients and their families. There is often a mismatch between the patient’s (or their parent’s) expectations of what should be delivered by the clinician, compared with the clinician’s view of what is required. This is the difference between need and want. Thus an investigation of parental opinions about asthma medication highlighted concerns about side effects and particularly growth retardation, and a wish to discuss alternative therapies, and consider the importance of trigger factors which patient and family might be empowered to avoid11. Whilst education programs can improve knowledge, this does not necessarily translate into changes in behaviour. Satisfaction with the healthcare provider is not a sufficient predictor of adherence with recommended medical treatment. This requires a far more intensive programme addressing the concerns of patients and families and providing training to improve decision making12. A study of factors adversely affecting achievement of asthma control in children identified concordance problems, concerns in relation to schooling, emotional problems, limited knowledge about the disease and its treatment ,and economic factors13. In this study, an educational program was established which directly addressed the concerns which had been identified to have an impact on asthma control individualized for each patient and their family. By comparison with a non-intervention group, there was a significant reduction in emergency room visits, however, there was only a non-significant fall in frequency of asthma symptoms. Whether or not this intensive intervention programme was cost effective was not evaluated13.
+
+## Specific Patient Groups for Education Programmes
+
+It is clear that different patient populations will require different approaches to education. This will relate both to requirements that differ by age, and by ethnicity 9,14. It cannot be assumed that a program shown to be successful in one setting will be deliverable or effective in another15. The use of modern information technology, particularly for education in teenagers and young adults, may prove more effective than traditional face-to-face programs. Involvement of peer groups can also be useful in supporting education of younger subjects.
+
+## Recommended Educational Strategies
+
+There are three levels of educational input. The first comes at the point of diagnosis of asthma. This will be followed by a structured program to support and reinforce the effective delivery of the management strategy. Finally there is a need for education of other caregivers which in the case of children will be school staff, day care workers, relatives etc; for adults this will be friends, relatives and work colleagues.
+
+The content of the initial education session must focus on the nature of the disease being due to chronic airway inflammation with a range of triggers, which hopefully have been identified for each patient. This will facilitate recommendations on avoidance measures to reduce exacerbations. Obviously, the emphasis on the fluctuating nature of the disease will depend on the severity category for the patient concerned. For those with persistent disease it will be important to emphasise the need for daily medication for symptomatic relief and to reduce chronic inflammation. This should be supplemented by a written medication plan and an action plan for dealing with exacerbations. Indeed, the one component of education packages which has consistently been shown to be effective is the use of written action plans16,18. In relation to children, a Cochrane review of action plans has suggested that a symptom-based approach is superior for preventing acute care visits to one that is based on peak flow monitoring17.
+
+The key component of the subsequent structured program should focus on reinforcement of the initial message and support for the patient and family in sustaining the management plan. At this point, problems with concordance will need to be addressed. In this respect the term “compliance” which embodies a paternalistic approach is to be avoided. It suggests that the clinician issues a dictat on management and the patient must follow it, irrespective of their own needs and wants. Concordance signifies an agreement between the patient and professional on the management program. If agreement cannot be reached because of a misunderstanding, it is more likely to be a failure on the part of the health professional rather than of the patient18. One outstanding study involved a controlled trial of interactive educational seminars for paediatricians treating childhood asthma. They had context-specific training in how to help children with asthma with appropriate educational input and reinforcement. Comparing the outcomes in the patients of paediatricians who had appropriate training, with those who had not, revealed a higher frequency of issuing written instructions, a reduction in hospital admissions, and the parents’ view of the paediatricians suggested that they were more attentive, devoted more time to the consultation and provided positive reinforcement. It is interesting to note that the actual consultation times were very similar, indicating that the time was more appropriately used by those who had undergone the context-specific training19.
+
+Finally, the education must be delivered to other care givers. Programs focusing on school based treatment, asthma management education and peer-led initiatives have had some success 20,21. In the McCann study, a whole school approach was employed in which the “intervention schools” received a staff asthma training session, advice on asthma policy, and incorporated an education session for asthmatic children and all their peers within a class into the curriculum. The children in the intervention school required less preventer medication to be prescribed by their general practitioners. There were also improvements in self-esteem and quality of life in relation to physical activity. Interestingly there was deterioration in selfesteem in girls in the non-intervention schools where asthma had been identified but no program of support was initiated. Thus having a school register of those with asthma could have adverse effects unless it is associated with an appropriate intervention. Whilst there was no change in the frequency with which schools developed an asthma management policy, there was a significant improvement in non-asthmatic children’s knowledge of asthma and how it should be managed. The study concluded that the peer education had shown the greatest impact in improving the lot of the asthmatics. This program was delivered by a specially trained school nurse. The approach has subsequently been adopted by Asthma UK and has also been adapted for educational programs in schools for the management of children at risk of anaphylaxis primarily due to food allergy (see www.asthma.org.uk/howwehelp/how\_we\_ help/schools\_early\_years/index.html and www.anaphylaxis. org.uk/information/schools/information-for-schools.as.px)
+
+## Atopic Eczema
+
+There are far fewer published studies on education programs in relation to atopic eczema (AE). Other than one large, rigorously designed trial from Germany, there is limited evidence of the effectiveness of educational and psychological interventions to help in AE management. The conclusion of a systematic review was that more studies were required, particularly to examine cost effectiveness and suitability in different health systems22. The German study evaluated a six week education program in children and adolescents with moderate to severe AE. The program was modified for different age groups and consisted of two-hour sessions once a week provided by a multi-disciplinary team. There were significantly greater improvements in AE after one year in the education program group. There were also improvements in subjective evaluations and in itching behaviour23. A more recent controlled study of structured training of parents and children with AE focusing on coping skills showed improvements in itch/scratch cognitions and ability to cope24.
+
+As with asthma, surveys investigating factors which adversely influence concordance with therapy have identified concerns about topical steroids as being foremost in peoples’ minds. Many preferred the option of going for natural or complementary therapeutic approaches. Additional concerns related to the time- consuming nature of the treatment and, as far as children were concerned, difficulties in maintaining co-operation25,26. The UK National Institute for Health and Clinical Excellence (NICE) produced a comprehensive guideline for the management of AE in children. It concluded that education can play a significant role in improving the success of management programs and, based on the results of the German randomized controlled trial, that it would be highly cost effective. Their recommendations were for a program including face-to-face sessions, and the production of written guidance and action plans with reinforcement at every consultation. In the authors’ experience, an additional component to the education program is to conduct practical sessions with application of all the topical preparations being demonstrated directly on the patient by nurse specialists.
+
+## Anaphylaxis
+
+The principles that underlie education in relation to anaphylaxis are very similar to those associated with asthma. However, in this situation the problem is very much more acute with an urgent need to address instantly the key components of management, namely avoidance of the allergen and training in the use of the rescue treatment which, in the majority of circumstances, will include an auto-injector for epinephrine/ adrenalin27. This has meant that most recommendations have tended to concentrate on a rather dictatorial approach to delivering the information and providing training28. Patients at risk of an anaphylactic reaction need to know exactly which allergen is responsible and how to avoid it. It requires the input of a dietician to help identify food products likely to contain the allergen and where to search for those that are safe to use. They need to be given guidance on recognizing the early symptoms of anaphylaxis so that they can prepare themselves to use emergency medication and call for help. Patients, relatives, friends and those close to them need to fully understand the problem and have training in how to use rescue treatment, including the auto-injector. An action plan must be outlined verbally as well as in graphical form as to how they manage an emergency. There are no randomized trials of action plans in anaphylaxis29. However, an observational study from a large tertiary allergy clinic has shown that an appropriate individualized action plan for self-management can decrease the risk of further reactions30,31.
+
+Assessments of parental knowledge about allergen avoidance and the use of auto-injectors show that there are still major problems. A survey of parental attitudes when purchasing products for children with nut allergy showed that many parents and patients continued risk-taking by either ignoring warning labels on foods or assuming that there was a gradation of risk depending on the wording of warnings, despite the fact that in reality there is no difference32. In relation to the autoinjectors, it is clear that despite appropriate demonstration of use and information about the need to have it available at all times, availability of the emergency kits left a great deal to be desired both in daily life and for instance in schools33. The lack of knowledge about the appropriate use of epinephrine in autoinjectors extends to doctors. A study of medical staff in Australia showed that only 2% of doctors were able to demonstrate the correct steps in the administration of an epinephrine autoinjector perfectly. Thus it is not surprising that there are still major problems with the home management of patients with anaphylaxis.
+
+There is an urgent need in relation to food allergy and anaphylaxis to develop more effective education programmes both for professionals and then for patients and families, and subsequently schools and other environments in which the patients find themselves, to ensure safe management34. For useful information see info@anaphylaxis.eu
+
+## Conclusions
+
+Health professionals must work in partnership with allergic patients and their families to Assess, Advise, Agree, Assist, Arrange (the WHO 5As). Education is fundamental to this process, but unless it facilitates understanding and an appropriate behaviour it will not succeed. The medium in which this education is delivered should be geared to the patient’s age, prior education and understanding, taking account of ethnicity and the technology available. New information technology is enhancing the quality of programs but cannot replace face to face discussion addressing the specific needs of individual patients. Written and agreed management plans have consistently been shown to achieve the best outcomes.
+
+## Current and Future Needs
+
+Education improves knowledge, but has rather less impact on behavior. The most pressing need is to develop strategies which help patients and their families to change their behavior to benefit the management of their allergic problems. Significant investment is required in order to provide educational tools addressing the needs of different populations and providing a multi-faceted approach.
+
+## Research
+
+While whole management strategies which have incorporated education and training have been shown to improve outcomes in asthma, eczema and anaphylaxis, the individual contribution of the training component has rarely been fully assessed. Future research studies should focus on individual education and training programs, added to standard managemen,t in properly controlled trials with monitoring of quality of life and health outcomes.
+
+## Unmet Needs
+
+• There is presently little evidence base for education and training of patients and their families with food induced enteropathies, allergic rhinitis, latex and drug allergies, recurrent and chronic urticaria and angioedema.
+
+• There is no research specifically focused on patients with multi-system allergic disease who require support to manage a combination of problems often involving skin, nose, lungs and sometimes gastrointestinal tract.
+
+The majority of clinicians and allied health professionals lack the necessary training to be efficient trainers, and this important training need should be addressed.
+
+## References
+
+1. World Health Organisation/CDS/IMAI/2004. 3 “General Principles of Good Chronic Care”
+
+2. Gerbart N, Hummelaimk R, Konning J et al. Efficacy of a selfmanagement programme for childhood asthma – a prospective controlled study. Patient Educ Couns 1998; 35: 213-220
+
+3. Holzheimer L, Mohay H, Masters IB. Educating children about asthma: comparing the effectiveness of a developmentally appropriate asthma education videotape and picture book. Child Care Health Dev. 1998; 24: 85-99.
+
+4. Ward A, Willey C, Andraid S. Patient education provided to asthmatic children: a historic cohort study on the implementation of NIH recommendations. J Asthma 2001; 38: 141-147.
+
+5. Woolf FM, Guevara JP, Grum CM et al. Educational interventions for asthma in children Cochrane Database Syst Rev 2003 (1): CD000326.
+
+6. Smith JR, Mugford M, Holland R, Noble MJ, Harrison BDW. Psychoeducational interventions for adults with severe or difficult asthma: a systematic review. J Asthma 2007; 44: 219-241
+
+7. Gibson PG, Powell H, Coughlan J et al. Self-management, education and regular practitioner review for adults with asthma (Cochrane Review) in: Cochrane Library Issue 1 2003; London: John Wiley and Sons Ltd.
+
+8. Osman LM, Calder C, Godden DJ et al. A randomised trial of selfmanagement planning for adult patients admitted to hospital with acute asthma. Thorax 2002; 57: 869-874.
+
+9. Griffiths C, Foster G, Barnes N et al. Specialist nurse intervention to reduce unscheduled asthma care in a deprived multi-ethnic area: the East London randomised controlled trial for high risk asthma (ELECTRA). Brit Med J 2004; 328: 144.
+
+10. Osman LM, Abdalla MI, Beattie JA et al. Reducing hospital admission through computer supported education for asthma patients. Brit Med J 1994; 308: 568-571.
+
+11. Orrell-Valente JK, Jarlsberg LG, Rait MA et al. Parents specific concerns about daily asthma medications for children. J Asthma 2007; 44: 385-390.
+
+12. Hindi-Alexander MC. Decision making in asthma self-management. Chest 1985; 87: 100S – 104S.
+
+13. Walders N, Kercsmar C, Schluchter M, Redline S, Lester Kirchner H and Drotar D. An interdisciplinary intervention for undertreated pediatric asthma. Chest. February 2006; 129: 292-299.
+
+14. Moudgil H, Marshall T, Honeybourne D. Asthma education and quality of life in the community: a randomised controlled study to evaluate the impact on white European and Indian sub-continent ethnic groups from socio-economically deprived areas in Birmingham, UK. Thorax 2000; 55: 177-183.
+
+15. Guendelman S, Meade K, Chen YQ, Benson M. Asthma control and hospitalisations among inner city children: results of a randomised trial. Telemedicine Journal and E Health 2004; 10: 235-244.
+
+16. Gibson PG, Powell H. Written action plans for asthma: an evidence based review of the key components. Thorax 2004; 59: 94-99.
+
+17. Bhogal S, Zemek R, Ducharme FM. Written action plans for asthma in children (Cochrane Review). Cochrane Library Issue 3; 2006. Chester UK, John Wiley & Sons Ltd.
+
+18. Royal Pharmaceutical Society of Great Britain. From compliance to concordance: achieving shared goals in medicine taking. London: The Society 1997.
+
+19. Clark NM, Gong M, Schork MA, Kaciroti N et al. Long-term effects of asthma education for physicians on patient satisfaction and use of health services. Eur Respir J 2000; 16: 15-21.
+
+20. McCann DC, McWhirter J, Coleman H et al. A controlled trial of a school based intervention to improve asthma management. Eur Respir J 2006; 27: 1-8.
+
+21. Halterman J, Szilagyi PG, Yoos HL et al. Benefits of a school based asthma treatment programme in the absence of second hand smoke exposure. Results of a randomised controlled trial. Arch Pediatr Adolesc Med 2004; 158: 460-467.
+
+22. Ersser SJ, Latter S, Sibley A et al. Psychological and educational interventions for atopic eczema in children. Cochrane database. A systematic review. 2007. Issue 3 John Wiley & Sons Ltd.
+
+23. Staab D, Diepgen TL, Fartasch M et al. Age related structured educational programmes for the management of atopic dermatitis in children and adolescents: multi-centre, randomised controlled trial. Brit Med J 2006; 332: 933-938.
+
+24. Kupfer J, Gieler U, Diepgen TL, et al. Structured education programme improves the coping with atopic dermatitis in children and their parents – a multi-centre, randomised controlled trial. J. Psychol Res. Doi 10.1016/j. psychores. 2009.04.014.
+
+25. Fisher G. Compliance problems in paediatric atopic asthma. Australasian J Dermatol 1996; 37: Suppl 1: S10-S13.
+
+26. Charman CR, Morris AD, Williams HC. Topial corticosteroid phobia in patients with atopic eczema. Brit J Dermatol 2000; 142: 931-936.
+
+27. Simons FER Anaphylaxis, killerallergy: Long term management in the community. J. Allergy Clin Immunol. 2006; 117:367-77.
+
+28. Muraro A, Roberts G, Clark A et al. The management of anaphylaxis in childhood: position paper of the European Academy of Allergology and Clinical Immunology. Allergy 2007; 62: 857-871.
+
+29. Choo K, Sheikh A. Action plans for long term management of anaphylaxis: a systematic review of effectiveness. Clin Exp Allergy 2007; 37: 1090-1094.
+
+30. Vickers DW, Maynard L, Ewan PW. Management of children with potential anaphylactic reactions in the community: a training package and proposal for good practice. Clin Exp Allergy 1997; 27: 898-903.
+
+31. Ewan PW, Clark AT. Efficacy of a management plan based on severity assessment in longitudinal and case controlled studies of 747 children with nut allergy: proposal for good practice. Clin Exp Allergy 2005; 37: 751-756.
+
+32. Noimark L, Gardner J, Warner JO. Parents’ attitudes when purchasing products for children with nut allergy: a UK perspective. Pediatr Allergy Immunol 2009; 20: 500-504.
+
+33. Pouessel G, Deschildre A, Castelain C et al. Parental knowledge and use of epinephrine auto-injector for children with food allergy. Pediatr Allergy Immunol 2006; 17: 221-226.
+
+34. Bansal PJ, Marsh R, Patel B, Tobin MC. Recognition, evaluation, and treatment of anaphylaxis in the child care setting. Ann Allergy Asthma Immunol 2005;94:55-9.
+
+## Section 4.6. Allergen Avoidance
+
+## Adnan Custovic and Roy Gerth van Wijk
+
+This chapter is an update of our previously published articles on this topic: Custovic A, Wijk RG. The effectiveness of measures to change the indoor environment in the treatment of allergic rhinitis and asthma: ARIA update (in collaboration with GA2LEN). Allergy 2005; 60:1112-5 and Custovic A. Allergen avoidance. In: Managing Allergy. Eds Custovic A, Platts-Mills TAE. Atlas Medical Publishing, 2009: 225-242.
+
+## Key Statements
+
+• Effective allergen avoidance leads to an improvement of symptoms in allergic patients.
+
+• Several studies of comprehensive environmental interventions in asthmatic children reported benefits.
+
+• For adult asthma there is little evidence to support the use of simple, single interventions (e.g. only covering bedding) to control dust mite allergen levels.
+
+• Similarly, in mite allergic patients with rhinitis, single mite avoidance measures are not beneficial.
+
+• The following should be used to guide a pragmatic approach to allergen avoidance:
+
+Use a comprehensive environmental intervention to achieve the greatest possible reduction in allergen exposure.
+
+Tailor the intervention to the patient’s allergen sensitization and exposure status.
+
+If unable to assess the level of allergen exposure, use the level of allergen-specific IgE antibodies or the size of skin test wheal as an indicator.
+
+Start the intervention as early in the natural history of the disease as possible.
+
+Primary prevention strategies aimed at eliminating or reducing exposure to potentially sensitizing agents should be developed and evaluated.
+
+## Introduction
+
+Exposure to allergen in allergic individuals causes worsening of asthma and rhinitis1-3. However, demonstrating that domestic allergen exposure contributes to the severity of symptoms in susceptible individuals is not the same as demonstrating the benefits of allergen avoidance4.
+
+## Is allergen avoidance effective?
+
+In patients with hay fever, the absence of exposure to pollen outside the season is associated with complete remission of symptoms. Removal of allergic asthmatics from their homes to the low-allergen environment of hospitals or high altitude sanatoria markedly improves asthma control5. Occupational asthma is another informative model; early diagnosis and removal from the workplace where the exposure has occurred, is associated with recovery, whilst long duration of exposure may lead to persistence or progressive deterioration of asthma (even if exposure has ultimately ceased)6. These examples illustrate that complete avoidance of the sensitizing allergen improves symptoms in allergic patients and provide a proof of principle for the benefits of allergen avoidance. However, the challenge is to achieve the same result with simple and practical measures which can be used in patients’ homes.
+
+## Practical Allergen Avoidance Measures Which Can Be Used In Patients’ Homes
+
+How to Avoid Mite Allergens: Reduction of mites and mite allergens can be tackled in a number of ways (Table 7)4,5. The most effective measure to reduce exposure in bed is to cover the mattress, duvet and pillows with covers that are impermeable to mite allergens. Since mites can accumulate on exposed bedding, it should be washed on a hot cycle (above 55°C; whilst low temperature washing removes allergen, dust mites can survive it). Carpets should be removed and replaced by hard flooring (e.g. wood or vinyl). Replacement of fabric covered upholstered furniture with leather or vinyl coverings and replacement of curtains with blinds may contribute to lower personal exposure.
+
+Another approach is to prevent mite growth and survival by controlling indoor humidity (mites require high levels of humidity to survive). This approach depends critically on the type of climate and housing design7.
+
+A major reduction in exposure can only be achieved by a comprehensive environmental control strategy, combining the most effective measures appropriate for the individual patient, household and geographical area; simple, single measures are unlikely to attain the desired effect. A stringent comprehensive environmental control regime can achieve and maintain a low allergen environment over a prolonged period of time8 but is costly and some patients may consider it unacceptable.
+
+Pet Allergen Avoidance: The only way to effectively reduce exposure to cat or dog allergen is not to have one in the home; even after permanent removal of an animal from a home, it can take many months for the allergen reservoir levels to fall9. Short-term and modest reductions in the airborne allergen are achieved by HEPA filter air cleaners, vacuum cleaners with built-in HEPA filters and double thickness bags. Regular pet washing does not significantly reduce personal inhaled allergen exposure when the pet is kept in the home.
+
+Table 7 — Measures to Reduce House Dust Mite Allergen Levels
+<table><tr><td rowspan=1 colspan=1>Measure used individually</td><td rowspan=1 colspan=1>Lowers mite allergen exposure</td><td rowspan=1 colspan=1>Comments from adult&#x27;s studies</td><td rowspan=1 colspan=1>Comments for children&#x27;s studies</td></tr><tr><td rowspan=1 colspan=1>Mite allergen proof encasings ofmattress, pillow and duvet</td><td rowspan=1 colspan=1>Yes</td><td rowspan=7 colspan=1>The largest studies have includedonly encasings and have shownno benefit as a single intervention.Small studies, (e.g. 10 patientsper group) have shown benefit ofsteam cleaning or of package ofmeasures of encasings + smoothfloors + hot washing. Until largerrandomised trials are conductedthe evidence base does not supportrecommendation of a package ofmeasures.</td><td rowspan=7 colspan=1>A large multifaceted interventiontargeting specific sensitizationand exposures within the home(including mites, pets andcockroaches) as well as smokinghas shown a benefit. Positivestudies of encasings plus acaricideexist but numbers of subjects arevery small.</td></tr><tr><td rowspan=1 colspan=1>Hot washing bedding at 550C</td><td rowspan=1 colspan=1>Yes</td></tr><tr><td rowspan=1 colspan=1>Smooth flooring (e.g. wood) andsoft furnishings (e.g. leather)</td><td rowspan=1 colspan=1>Yes (as no dust)</td></tr><tr><td rowspan=1 colspan=1>Liquid nitrogen or steam cleaningof carpets</td><td rowspan=1 colspan=1>Not practical at home (works inlaboratory)</td></tr><tr><td rowspan=1 colspan=1>Acaricides</td><td rowspan=1 colspan=1>Difficult to use in the home asneeds repeat application (works inthe laboratory)</td></tr><tr><td rowspan=1 colspan=1>Air filters, ionisers</td><td rowspan=1 colspan=1>No, but may reduce exposure topet allergen</td></tr><tr><td rowspan=1 colspan=1>Dehumidifiers and centralmechanical ventilation heatrecovery symptoms</td><td rowspan=1 colspan=1>Not in United Kingdom (UK), asoutdoor humidity too high andhomes not air tight</td></tr></table>
+
+![](images/898757dee6a8e3a9ffe990da8bc986e816c1e66137f0d6a85d1d2489f2d2ef7e.jpg)  
+Figure 4. House dust mite control measures for asthma, comparing house dust mite reduction versus control: outcome measure = PC20 (Provocative concentration for 20% fall in FEV1). From Gotzsche P, Johansen H. House dust mite control measures for asthma. Cochrane Database Syst Rev 2008(2):CD001187, with permission.
+
+## Allergen Avoidance in the Treatment of Asthma and Rhinitis
+
+The evidence on the effectiveness of indoor allergen control in asthma and rhinitis is conflicting10.
+
+Systematic Reviews: Updates of the Cochrane metaanalysis of dust mite avoidance studies11 (the most recent one involved 3,002 patients included in 54 trials12) conclude that current methods of mite allergen avoidance should not be recommended to mite sensitive asthmatics (Figure 4). The authors suggest that the most likely explanation for the lack of clinical effect is that the avoidance methods used in the studies did not reduce mite allergen levels sufficiently, as “it seems inherently implausible to suggest that complete removal of a major provoking agent would be ineffective”12. Also, given the fact that mite-sensitive asthmatics are usually sensitized to other allergens, focusing on mite only may not be the right approach.
+
+The Cochrane Airways Group attempted to study the effect of home dehumidification on asthma control13, but only one trial met the inclusion criteria, reflecting poor quality of evidence in this area.
+
+The Cochrane systematic review of mite avoidance measures in the management of perennial allergic rhinitis, carried out in 2001, mirrors the findings from asthma, finding little evidence that the use of simple, single measures leads to a sustained improvement in disease control14. However, only four small trials satisfied the inclusion criteria, all of which were judged to be of poor quality.
+
+The Cochrane Airways Group review which aimed to determine the clinical efficacy of pet allergen control measures in the homes of patients with pet-allergic asthma, concluded that no meta-analysis was possible due to the limited amount of data available15. Since a double-blind, randomized study of pet removal from the home is not feasible, the advice to pet-sensitized pet owners who experience symptoms upon exposure is based upon common sense rather than evidencebased medicine. Based on the clinical experience and observational studies16, it is generally accepted that, amongst pet allergic patients, there should be clinical improvement associated with the absence of contact with the pet.
+
+Beyond Systematic Reviews - Studies in Adults: Two large double-blind, placebo-controlled trials investigated the effectiveness of mite allergen-impermeable mattress, pillow and duvet encasings as a single intervention in adults with asthma and rhinitis17,18. The asthma study recruited more than 1,000 patients who were taking regular inhaled corticosteroids (ICS) and using short-acting bronchodilators daily17. The trial comprised of two periods, each lasting six months: first, with patients on stable inhaled corticosteroids (ICS) treatment and second, with a controlled treatment step-down regime (ICS reduction continued until either all had been discontinued or asthma control deteriorated according to predefined criteria). This study found no benefits for intervention in any of the outcomes (lung function, treatment requirements, symptom scores, quality of life, etc.) (Figure 5)17. Furthermore, the analysis of the sub-group of 130 patients who would be expected to benefit the most from the intervention, by virtue of having high mite-specific IgE and high baseline mite allergen exposure, showed no differences in any of the outcomes between the intervention and control groups.
+
+![](images/d48ef91c37c7fe534f1d02bef831fcf42f504b7ca986fb38890a7d3293df0aa2.jpg)
+
+![](images/69e874a724f115642daa83f9d8613723ecc709a96ca89cfa3e1b63424d2d6a80.jpg)  
+Figure 5. No effect of covering mattress, pillow and quilt with allergen impermeable covers amongst adults with asthma. Mean Morning Peak Expiratory Flow Rate in the Active-Intervention and Control Groups at Base Line, 6 Months, and 12 Months among All Patients (Panel A) and among Mite-Sensitive Patients (Panel B). From Woodcock et al. N Engl J Med, 2003: 349 (3): 225. With permission.
+
+The rhinitis study investigated the effectiveness of mite allergenimpermeable encasings in 279 mite allergic patients aged 8-50 years with perennial rhinitis, all of whom had a positive nasal challenge test to mite extract18. Despite a marked reduction in the level of mattress mite allergen in the active compared to the control group, there was no difference in any of the patientrelated primary or secondary outcome measures between the groups during the 12 month follow-up period18.
+
+Most of the other studies in adults demonstrate that the use of allergen-impermeable covers as a single intervention is clinically ineffective in the management of patients with asthma and rhinitis. Whilst it remains possible that the use of allergen-impermeable covers combined with other mite control measures in a carefully selected sub-group of patients could have some effect, this has not as yet been addressed in an adequately designed study in adults.
+
+Beyond Systematic Reviews - Studies in children: In contrast to most studies in adults, several well designed randomised double-blind placebo controlled studies of allergen-impermeable bed encasings used by asthmatic children, report benefits in terms of a reduction in the dose of ICS or improvement in symptoms or airway reactivity (reviewed in4,5). A much more comprehensive approach to environmental control was adopted by the largest study on the effectiveness of allergen avoidance which studied 937 children from seven US inner city areas with high levels of poverty19. The intervention was tailored using the information on child sensitization and exposure status; it focused on the education of the parent/guardian and included advice on the reduction of passive smoke exposure, if appropriate. Mattress and pillow encasings and a high filtration vacuum cleaner were supplied to all homes and additional products required for the tailored intervention (e.g. air filters) were supplied free of charge19. This comprehensive intervention markedly reduced mite and cat allergen levels in the active group compared to the control group and was associated with an increase of 34 symptom free days over a two-year period (Figure 6)19. The increase in symptomfree days predominantly occurred in those children with larger (>50%) reductions in allergen levels. The health-related benefits were significant within two months and sustained throughout the two-year period. This important study demonstrates that allergen levels can be reduced in poor, inner-city homes and also estimates the size of the potential beneficial effect: an environmental intervention costing \$2000 US per child was associated with an additional 34 symptom-free days over a two-year period which is cost-effective within the context of the US health care system20.
+
+![](images/b6c4670ea8331ece9ffab24c9226c759b958e0b1c1f373d4f24701fcaefc2cd1.jpg)  
+Figure 6. Environmental control is effective amongst children with asthma. Mean Maximal Number of Days with Symptoms for Every Two-Week Period before a Follow-up Assessment during the Two Years of the Study. The difference between the environmental intervention and control group was significant in both the intervention year (P<0.001) and the follow-up year (P<0.001) from Morgan, W. et al. N Engl J Med 2004;351:1068-1080.With permission.
+
+How can the discrepancy be explained between studies of domestic allergen avoidance in children, most of which suggest some benefit and the data from studies in adults, most of which show no improvement in symptom control?
+
+Previously mentioned examples of occupational asthma may offer some clues. In this model, early diagnosis and removal from the workplace where the exposure has occurred is usually associated with recovery, whilst any delay resulting in a long duration of exposure in allergic individuals, typically more than 18-24 months, may lead to persistence and sometimes progressive deterioration of asthma, even if exposure has ultimately ceased. It is tempting to speculate that early detection and immediate cessation of exposure may be important predictors of a favourable effect of environmental control.
+
+## Conclusions
+
+Complete avoidance of offending allergens usually leads to an improvement of symptoms. However, simple physical or chemical methods as single interventions to control mite or pet allergen levels are not effective in adults with established asthma. In contrast, allergen-impermeable bed encasings and comprehensive environmental interventions in asthmatic children have benefits. Until evidence from definitive trials for all age groups and all allergens is available, a pragmatic approach to the environmental control should utilize the following:
+
+• Single avoidance measures are ineffective.
+
+• Use a comprehensive environmental intervention to achieve the greatest possible reduction in persona exposure.
+
+• Tailor the intervention to the patient’s sensitization and exposure status.
+
+• If unable to assess the exposure, use the level of allergenspecific IgE antibodies or the size of skin test wheal as an indicator.
+
+• Start the intervention as early in the natural history of the disease as possible.
+
+• There is a need for definitive trials of allergen avoidance for all age groups and all allergens.
+
+• The impact of environmental interventions on the development of asthma and allergies should be prospectively assessed in order to evaluate the costeffectiveness of preventative strategies.
+
+## Current and Future Needs
+
+● Primary prevention strategies aimed at eliminating or reducing exposure to potentially sensitizing agents should be developed and evaluated.
+
+• Improved education of physicians in order to achieve an earlier identification of allergic diseases: the earlier we start environmental intervention, the greater are the benefits.
+
+## Unmet Needs and Research
+
+• There is a need for definitive trials of allergen avoidance for all age groups and all allergens.
+
+• The impact of environmental interventions on the development of asthma and allergies should be prospectively assessed in order to evaluate the costeffectiveness of preventative strategies.
+
+## Recommended Reading
+
+1. Custovic A, Wijk RG. The effectiveness of measures to change the indoor environment in the treatment of allergic rhinitis and asthma: ARIA update (in collaboration with GA2LEN). Allergy 2005; 60:1112-5.
+
+2. Gotzsche P, Johansen H. House dust mite control measures for asthma. Cochrane Database Syst Rev 2008: CD001187.
+
+3. Woodcock A, Forster L, Matthews E, Martin J, Letley L, Vickers M, Britton J, Strachan D, Howarth P, Altmann D, Frost C, Custovic A. Control of exposure to mite allergen by the use of allergenimpermeable bed covers for adults with asthma. N Engl J Med 2003; 349: 221-232.
+
+4. Terreehorst I, Hak E, Oosting AJ, Tempels-Pavlica Z, de Monchy JG, Bruijnzeel-Koomen CA, Aalberse RC, Gerth van Wijk R. Evaluation of impermeable covers for bedding in patients with allergic rhinitis. N Engl J Med. 2003; 349: 237-46.
+
+5. Morgan WJ, Crain EF, Gruchalla RS, O’Connor GT, Kattan M, Evans R 3rd, Stout J, Malindzak G, Smartt E, Plaut M, Walter M, Vaughn B, Mitchell H; Inner-City Asthma Study Group. Results of a home-based environmental intervention among urban children with asthma. N Eng J Med. 2004; 351: 1068-80
+
+## References
+
+1. Murray CS, Poletti G, Kebadze T, Morris J, Woodcock A, Johnston SL, et al. Study of modifiable risk factors for asthma exacerbations: virus infection and allergen exposure increase the risk of asthma hospita admissions in children. Thorax 2006; 61:376-82.
+
+2. Green RM, Custovic A, Sanderson G, Hunter J, Johnston SL, Woodcock A. Synergism between allergens and viruses and risk of hospital admission with asthma: case-control study. BMJ 2002; 324:763.
+
+3. Lowe LA, Woodcock A, Murray CS, Morris J, Simpson A, Custovic A. Lung function at age 3 years: effect of pet ownership and exposure to indoor allergens. Arch Pediatr Adolesc Med 2004; 158:996-1001.
+
+4. Custovic A, Murray CS, Gore RB, Woodcock A. Controlling indoor allergens. Ann Allergy Asthma Immunol 2002; 88:432-41; quiz 42-3, 529.
+
+5. Custovic A, Simpson A, Chapman MD, Woodcock A. Allergen avoidance in the treatment of asthma and atopic disorders. Thorax 1998; 53:63-72.
+
+6. Chan-Yeung M, Malo JL. Occupational asthma N Engl J Med 1995; 333:107-12.
+
+7. Simpson A, Woodcock A, Custovic A. Housing characteristics and mite allergen levels: to humidity and beyond. Clin Exp Allergy 2001; 31:803-5.
+
+8. Simpson A, Simpson B, Custovic A, Craven M, Woodcock A. Stringent environmental control in pregnancy and early life: the long-term effects on mite, cat and dog allergen. Clin Exp Allergy 2003; 33:1183-9.
+
+9. Wood RA, Chapman MD, Adkinson NF, Jr., Eggleston PA. The effect of cat removal on allergen content in household-dust samples. J Allergy Clin Immunol 1989; 83:730-4.
+
+10. Custovic A, Wijk RG. The effectiveness of measures to change the indoor environment in the treatment of allergic rhinitis and asthma: ARIA update (in collaboration with GA<sup>2</sup>LEN). Allergy 2005; 60:1112-5.
+
+11. Gotzsche PC, Johansen HK, Schmidt LM, Burr ML. House dust mite control measures for asthma. Cochrane Database Syst Rev 2004:CD001187.
+
+12. Gotzsche P, Johansen H. House dust mite control measures for asthma. Cochrane Database Syst Rev 2008:CD001187.
+
+13. Singh M, Bara A, Gibson P. Humidity control for chronic asthma. Cochrane Database Syst Rev 2002:CD003563.
+
+14. Sheikh A, Hurwitz B. House dust mite avoidance measures for perennial allergic rhinitis. Cochrane Database Syst Rev 2001:CD001563.
+
+15. Kilburn S, Lasserson TJ, McKean M. Pet allergen control measures for allergic asthma in children and adults. Cochrane Database Syst Rev 2003:CD002989.
+
+16. Shirai T, Matsui T, Suzuki K, Chida K. Effect of pet removal on pet allergic asthma. Chest 2005; 127:1565-71.
+
+17. Woodcock A, Forster L, Matthews E, Martin J, Letley L, Vickers M, et al. Control of exposure to mite allergen and allergen-impermeable bed covers for adults with asthma. N Engl J Med 2003; 349:225-36.
+
+18. Terreehorst I, Hak E, Oosting AJ, Tempels-Pavlica Z, de Monchy JG, Bruijnzeel-Koomen CA, et al. Evaluation of impermeable covers for bedding in patients with allergic rhinitis. N Engl J Med 2003; 349:237-46.
+
+19. Morgan WJ, Crain EF, Gruchalla RS, O’Connor GT, Kattan M, Evans R, 3rd, et al. Results of a home-based environmenta intervention among urban children with asthma. N Engl J Med 2004; 351:1068-80.
+
+20. Kattan M, Stearns SC, Crain EF, Stout JW, Gergen PJ, Evans R, 3rd, et al. Cost-effectiveness of a home-based environmental intervention for inner-city children with asthma. J Allergy Clin Immunol 2005; 116:1058-63.
+
+# Chapter 5. Prevention of allergic diseases
+
+## Prevention of allergic diseases
+
+Tari Haahtela, Leena von Hertzen, Adnan Custovic
+
+## Key Statements
+
+• The rise in prevalence of allergic diseases has continued in the industrialized world for more than 50 years.
+
+• Sensitization rates to one or more common allergens among school children are currently approaching 40- 50%..
+
+• Strategies used to tackle these problems are thus far ineffective
+
+Primary prevention is difficult because the reasons for increased sensitization rates are unknown. Also, the mechanisms involved in the progression of sensitization in increasing numbers of individuals resulting in allergic diseases are incompletely understood. Asthma and allergies may have their origin early in life, even in-utero.
+
+• Reliable early markers of IgE-mediated diseases are unavailable.
+
+• Novel research indicates that tolerance is the key to prevention. More research about the mechanisms involved in the development of tolerance should be encouraged. Inadequate or lack of tolerance in allergic individuals appears to link with immune regulatory network deficiencies.
+
+National Asthma and Allergy Plans (e.g. The Finnish Asthma Programme 1994-2004) concluded that the burden of these community health problems can be reduced. The change for the better is achieved as governments, communities, physicians and other health care professionals, and patient organizations, commit to an educational plan to implement best practices for prevention and treatment of allergic diseases.
+
+## Introduction
+
+The allergy and asthma epidemic is a major public health issue throughout the world which is on-going in western countries, whereas in some other, less affluent areas, it may have only just begun. Accumulating evidence indicates that allergen avoidance is not the right strategy to reverse the rising prevalence of allergic diseases. Avoidance of inhalant allergens is difficult, if not impossible and the results from avoidance interventions for asthma are not encouraging. Excessive avoidance of foods to which an infant could become allergic in early life, to prevent allergy, can be harmful and even impair or weaken the development of regulatory immune mechanisms. Thus, instead of allergen avoidance, the mechanisms underlying the development and maintenance of tolerance should be elucidated. Symptomatic patients need treatment and allergen avoidance is necessary in some of these cases, but strategies to reduce the allergy burden should focus on prevention and preventative treatment. The options for prevention are outlined in this chapter. The focus is on primary prevention, i.e. how to strengthen tolerance against allergens and prevent sensitization and the development of allergic diseases.
+
+## Primary prevention by allergen avoidance
+
+Seven prospective studies, involving more than 6,700 children in total, have been performed to assess the efficacy of allergen avoidance and dietary interventions on primary prevention of atopy and allergic conditions in high risk children1. Most of the studies used multi-faceted interventions, including physical and chemical measures, to reduce mite allergen levels as well as avoidance of common food and pet allergens. The results are conflicting and confusing. Some studies show clinical benefits, i.e. reduced rates of asthma/wheezing, whereas others report no effect either on asthma, rhinitis or atopic eczema. Unexpectedly, some studies report increased rates of atopy and atopic eczema in the intervention groups1. The results are difficult to interpret because of the differences in study design, the interventions employed, the demographics of study subjects, and outcome measures. The possibility that such interventions are harmful over the long term cannot be excluded.
+
+## WAO Initiative for Allergy Prevention
+
+The Prevention of Allergy and Allergic Asthma initiative was undertaken in 2004 by the World Allergy Organization (WAO) in collaboration with the World Health Organisation (WHO). Guidelines were proposed that provided a sound basis for practical action for authorities, health care professionals, patient organizations and patients to decrease the burden of allergic diseases and asthma at a national level2. The paper was targeted as a model for the development of local guidelines and was based on scientific evidence and the WHO categorization of strength of evidence.
+
+Primary prevention (defined as prevention of sensitization) measured by WAO/WHO, and the strength of evidence are presented in Table 1. The evidence is strongest in showing that there is no need for special diets for breast-feeding mothers. Convincing evidence also indicates that smoking in pregnancy and exposure to environmental tobacco smoke early in life is deleterious with respect to allergies, whereas breast-feeding for 4 to 6 months may prevent or dampen the development of atopic disease later in life, although this is not consistently demonstrated in all studies2. Data on the avoidance of pets in high risk families show that even in genetically predisposed children, tolerance to inhalant allergens may develop providing that there is enough exposure3.
+
+Table 1 — Primary Prevention Measures /WAO 2004
+<table><tr><td>Measure</td><td>Category of Evidence</td></tr><tr><td>1) Smoking and exposure to environmental tobacco smoke should be avoided, particularly during pregnancy and early childhood. Tobacco smoke should be removed from work places.</td><td>(B) (B)</td></tr><tr><td>2) Damp housing conditions should be avoided, and indoor air pollutants reduced.</td><td>(C) (c)</td></tr><tr><td>3) Breast-feeding should be continued until 4-6-months. No special diet is needed for the lactating mother.</td><td>(B) (A)</td></tr><tr><td>4) In high-risk children, exposure to inhalant allergens should be reduced.</td><td>(B)</td></tr><tr><td>Note: the most recent data, however, indicate that even high-risk children may develop tolerance against allergens; the dose-response curve appears to be bell-shaped [3,18].</td><td></td></tr><tr><td>5) Highly irritant agents in occupational settings should be avoided. In case this is not possible, measures to prevent employee exposure should be implemented.</td><td>(C)</td></tr><tr><td>WHO Categories of Evidence A Evidence from meta-analysis of several or at least one randomised controlled trial(s).</td><td></td></tr><tr><td>B Evidence from at least one controlled study without randomisation or from other type of quasi-experimental study, or extrapolated</td><td></td></tr><tr><td>recommendation from category A evidence. C Evidence from non-experimental descriptive studies, such as comparative, correlation and case-control -studies, or extrapolated</td><td></td></tr><tr><td></td><td></td></tr><tr><td>recommendation from category A or B evidence D Expert opinion of the Prevention of Allergy and Allergic Asthma working group or extrapolated recommendation from category A, B or C evidence.</td><td></td></tr></table>
+
+Measures for secondary prevention of the progression of sensitization to allergic disease in the WAO initiative and the strength of evidence are demonstrated in Table 2. Thus far, evidence is equivocal and, for the most part, no direct evidence-based data are available. Reduction of exposure to indoor allergens for sensitized children is recommended to decrease the probability of the onset of allergic diseases. Mono-sensitization to indoor allergens is thought to be the intermediate phase from non-atopy to poly-sensitization and overt allergic disease4, however this is unlikely to be universal. Occurrence of atopic diseases and atopy in general is low, e.g. in Russian Karelia, as shown in repeated surveys5,6 and in generational analyses5, irrespective of the relatively high mono-sensitization rates to house dust mite allergen amongst Russian children.
+
+Table 2 — Secondary Prevention Measures /WAO 2004
+<table><tr><td>Measure Category of Evidence</td></tr><tr><td>1) Atopic eczema in infants and children should be treated to prevent respiratory allergy. (D)</td></tr><tr><td>2) Upper respiratory disease (rhinoconjunctivitis) should be treated to reduce the risk of asthma. (D)</td></tr><tr><td>3) In young children already sensitised to indoor allergens, exposure should be reduced to prevent onset of allergic disease. (B)</td></tr><tr><td>4) Employees should be removed from occupational exposure when they develop symptoms associated</td></tr><tr><td>with occupational allergic sensitization. (C) Categories; see annotations in Table 1.</td></tr></table>
+
+Effective means to prevent allergic diseases are either lacking or are too vague to make a difference. Such preventive measures should be effective, easy to implement and cause no harm, which is difficult to achieve. Active preventive measures are no longer recommended. Giving child-bearing mothers, infants and children pre- and pro-biotics is an interesting idea and the first results of probiotic studies were quite promising7. However, the issue has become controversial as negative results have also been published8,9. Modulation of innate immunity in highrisk infants by microbial, saprophytic components, along with the most important airborne allergens, e.g. grass and birch pollens; and cat and dog danders, may offer promise.
+
+We suggest simple and straightforward definitions for primary and secondary allergy prevention for both practical and clinical purposes:
+
+1. Primary prevention prevents clinical manifestation of allergic diseases, and
+
+2. Secondary prevention prevents progression and exacerbation of allergic diseases.
+
+Secondary and tertiary prevention (treatment of disease) are grouped together.
+
+## Current and Future Directions
+
+## The Finnish Allergy Programme 2008-2018 – A Practical Example
+
+The occurrence of allergic diseases in Finland, in common with many other industrialized and urbanized countries, is increasing. This rise in prevalence has continued for more than 40 years without change10. Sensitization rates to one or more common allergens among Finnish school children are approaching 50%5. The situation for asthma was serious enough to give impetus for a National 10-year Asthma Program, carried out from 1994- 2004. The concrete, pragmatic action plan, with simple goals, resulted in improvements in several outcome measures and showed that a change to the better can be achieved with this kind of public health action plan11. This national asthma plan was designed specifically to prevent asthma exacerbations by improving patient education and proactively guiding selfmanagement. Thus, the primary purpose was secondary prevention, e.g., to halt disease progression. When the asthma program was planned, there was no idea how to implement primary prevention for asthma and thereby reduce the prevalence of this disease.
+
+In the wake of the successful asthma program, a national allergy program to decrease the burden and costs of allergy was considered to be highly desirable. To implement a nationa program, it is necessary to employ universal diagnostic and treatment practices. It is clear that the rising prevalence of allergic disease cannot be reversed by allergen avoidance, and tolerance against allergens must be enhanced. Scientifically validated treatments should be instituted, especially for those individuals with documented and severe allergic diseases. The Finnish Allergy Programme, launched in April 2008, took a step from secondary to primary prevention, i.e. moving away from treatment and more towards prevention. This program is based on the most up-to-date scientific data. Its key element is tolerance.
+
+## Goals and focus: The Finnish Allergy Programme is targeted to:
+
+i. decrease the burden of allergic disease in individuals and society;
+
+ii. decrease costs attributable to allergic diseases; and
+
+iii. improve treatment and control of patients with severe allergies.
+
+It focuses on endorsing health and tolerance. It includes five ambitiously defined goals; the tools to achieve these goals; and an evaluation plan to assess the outcome and process12.
+
+The key messages of the Finnish Allergy Programme are:
+
+1. Endorse health, not allergy
+
+2. Strengthen tolerance
+
+3. Adopt a new attitude to allergy. Avoid allergens only if necessary
+
+4. Recognize and treat severe allergies early. Prevent exacerbations
+
+## 5. Improve air quality. Stop smoking
+
+There is no ‘law of worsening’ in allergy, i.e., mild allergy does not commonly develop into severe allergy; indeed, many children “outgrow” their allergies. Adopting a new attitude, from avoidance to tolerance, was therefore necessary. Patients with severe diseases must be treated more effectively than in the past and, for this reason the Finnish Allergy Programme emphasizes the importance of early recognition and treatment of patients with severe allergies. An important, albeit often neglected issue in allergy is psychological tolerance. Imagined (pseudo-) allergy is common, and the Finnish Allergy Programme wants to reduce this problem by strengthening psychological tolerance through education. Mild allergy can be considered as a personal trait or characteristic rather than a disease that needs specific attention.
+
+For secondary prevention, the Finnish Allergy Programme gives simple and easy-to-use Allergy and Asthma Check Plans, including check points for both the physician/nurse and the patient. As an example, the Check Plan for Adult Asthma is illustrated in Figure 1.
+
+![](images/2cb37b219922f9221386c3decb30cb1af062cbed6999720ee243b295aa461656.jpg)  
+Figure 1. Asthma Check Plan for physicians and other healthcare professionals to ensure that the patient’s condition is under reasonable control (left panel) and for patients to support self-guided management (right panel).
+
+## Research Needs
+
+Tolerance: The issue of tolerance has gained little attention in various guidelines and consensus reports, however great progress has been made to unravel the mechanisms involved in the development of tolerance. Novel research points to the importance of endorsing tolerance as a strategy to prevent, and even treat, allergic diseases. Marked differences in immune functions are exhibited very early in life in children who ultimately develop allergic diseases later in life.
+
+Atopic vs. healthy individuals: Exposure to allergens/ bioparticles does not lead to the development of tolerance in allergic individuals, but instead, results in a prolonged inflammatory response. The crucial players in the balance between peripheral tolerance and allergy, both in mice and men, are regulatory T-cells and IL-10 and TGF-beta cytokines. The question of inadequate or broken tolerance is largely related to an imbalance between different T cell types, i.e. Th1, Th2 and regulatory T-cells. The proportion of regulatory T-cells is markedly diminished or their function impaired in atopic individuals13
+
+How could tolerance be enhanced in the population?: Generational analyses show a progressive increase in the occurrence of asthma and atopy by birth cohorts, underscoring the role of changes in environmental exposure14,15. Accumulating evidence indicates that an environment rich in microbes during childhood reduces the risk of developing atopic disease later in life16. With urbanization, the quantity and diversity of environmental microbiota have decreased dramatically. Continuous stimulation of the innate immune system by commensals and saprophytes is necessary for the proper development and maintenance of mucosal homeostasis and tolerance17,18.
+
+Even an anthroposophic lifestyle is associated with reduced risk of atopic disease, albeit to a lesser extent than the reduction associated with the farm environment. Anthroposophy is characterised by the restricted use of antibiotics, antipyretics and vaccination and frequent consumption of fermented vegetables. Fermented food, e.g. sauerkraut and kefir, traditionally have been widely used in many Eastern European countries, such as Russia, where there is a low risk for allergic disease. Such foods and environments in these countries deserve further study to identify possible immunomodulatory and tolerance enhancing substances.
+
+The authors certainly do not endorse the concept of nonimmunization. Vaccination programs are essential and avoiding or denying vaccinations will cause immense human suffering, which would be much more problematic than the allergy epidemic itself. Likewise, antibiotics, used correctly, are potentially life-saving.
+
+Microbe-based products: A rich literature on probiotics for allergy prevention and treatment is available, but the results are inconsistent and inconclusive. One problem, consistent to many studies, is the short intervention period (commonly 6 months for infants). Consumption of probiotics should probably be continuous for a more enduring effect. In addition to probiotics, products of environmental saprophytes and other micro-organisms could be useful to enhance tolerance. A critical review of the data on the potential use of microbial products for allergy prevention and therapy was published in 2003 by the European Academy of Allergology and Clinical Immunology Task Force Working Group19. None of the microbial products mentioned in this report have been unequivocally proven to prevent or alter the course of allergic diseases.
+
+As allergy prevention/tolerance enhancing products are still futuristic, several ways to enhance tolerance are worth considering. Simple recommendations include consuming microbe-rich (fermented) products, spending time out of doors in the country environment and avoiding allergens only when necessary. Some ways to increase tolerance are outlined in Table 3. The use of specific immunotherapy in allergic individuals to potentially achieve the same goal is comprehensively discussed in several review articles [e.g. in reference 18] and is beyond the scope of this chapter.
+
+Table 3 — Endorsement of immunological tolerance [modified from ref. 18].
+
+<table><tr><td>Non-specific ways to affect innate immunity</td></tr><tr><td>Living on a farm Adherence to anthroposophic lifestyle Use of probiotics Use of other bacteria-containing (fermented) products* Consumption of fresh fruit and vegetables Consumption of farm milk Consumption of kefir* Consumption of healthy diet (Mediterranean, Baltic)</td></tr></table>
+
+## Unmet Needs
+
+Issues to be addressed for future research:
+
+• Identification of the early markers of IgE-mediated diseases. The identification of more powerful immunological markers in high risk children are urgently needed.
+
+• Identification of immunological factors that could explain the differences between individuals who develop poly-sensitization and those who only develop monosensitization.
+
+Identification of immunological factors that could explain the differences in the progression of sensitization to overt allergic disease in individuals and in different populations; sensitization does not necessarily translate into clinical diseases. The mechanisms involved in expression/ suppression of these diseases are poorly understood.
+
+## Conclusions
+
+• An urban environment and indoor life-style appears to lack elements that are necessary for the proper development of tolerance against innocuous allergens/bioparticles.
+
+• The key issue in the development of tolerance may be sufficient exposure, in terms of quantity and diversity, to environmental and commensal microbes.
+
+• Animal models provide encouraging evidence that impaired tolerance can be restored. New kinds of preventative products containing components of different micro-organisms may hold promise for primary prevention.
+
+• A 10-year Allergy Programme to reduce the burden of allergies through education of health professionals and the population has been implemented in Finland. The focus is on prevention, particularly for children, and the main issue will be strengthening tolerance during early life.
+
+For secondary prevention, the early detection of the disease and intervention with adequate antiinflammatory and anti-allergic medications should reduce exacerbations, healthcare use and costs. Proactive selfmanagement, guided by healthcare professionals, is the key to a healthier life for allergic and asthmatic patients.
+
+## Acknowledgements
+
+The authors thank the Academy of Finland (grant no. 122 117), Helsinki University Hospital (grant no.5201), the Juselius Foundation and the Finnish Ministry of Health and Social Affairs for research funding.
+
+## References
+
+1. Simpson A, Custovic A (2009). Prevention of allergic sensitization by environmental control. Current Allergy and Asthma Reports 9:363-69.
+
+2. Johansson SGO, Haahtela T (2004). World Allergy Organization Guidelines for prevention of allergy and allergic asthma. Int Arch Allergy Immunol 135:83- 92
+
+3. Cullinan P, MacNeill SJ, Harris JM, Moffat S, White C, Mills P, Newman Taylor AJ (2004). Early allergen exposure, skin prick responses, and atopic wheeze at age 5 in English children: a cohort study. Thorax 59:855-61
+
+4. Bousquet J, Anto JM, Bachert C, Bousquet PJ, Colombo P, Crameri R, Daëron M, Fokkens W, Leynaert B, Lahoz C, Maurer M, Passalacqua G, Valenta R, van Hage M, van Ree R. (2006). Factors responsible for differences between asymptomatic subjects and patients presenting an IgE sensitization to allergens. A GA2LEN project. Allergy 61:671-80.
+
+5. von Hertzen LC, Mäkela MJ, Petäys T, Jousilahti P, Kosunen TU, Laatikainen T, Vartiainen E,Haahtela T (2006). Growing disparities in atopy between the Finns and the Russians – a comparison of two generations. J Allergy Clin Immunol 117:151-57.
+
+6. Vartiainen E, Vartiainen E, Petäys T, Haahtela T, Jousilahti P, Pekkanen J (2002) Allergic diseases, skin prick test responses and IgE levels in North Karelia, Finland, and the Republic of Karelia, Russia. J Allergy Clin Immunol 109:643-48.
+
+7. Kalliomäki M, Salminen S, Arvilommi H, Kero P, Koskinen P, Isolauri E (2001) Probiotics in primary prevention of atopic disease: a randomised placebo-controlled trial. Lancet 357:1057-59.
+
+8. Taylor AL, Dunstan JA, Prescott SL. (2008). Probiotic supplementation for the first 6 months of life fails to reduce the risk of atopic dermatitis and increases the risk of allergen sensitization in high-risk children: A randomised controlled trial. J Allergy Clin Immunol 119:184-91.
+
+9. Helin T, Haahtela S, Haahtela T (2002) No effect of oral treatment with an intestinal bacterial strain, Lactobacillus rhamnosus (ATCC53103), on birch-pollen allergy: a placebo-controlled double-blind study. Allergy 57:243-46.
+
+10. Latvala J, von Hertzen L, Lindholm H, Haahtela T (2005) Trends in prevalence of asthma and allergy in Finnish young men: a nationwide study from 1966 to 2003. BMJ 330:1186-87.
+
+11. Haahtela T, Tuomisto LE, Pietinalho A, Klaukka T, Erhola M, Kaila M, Nieminen MM, Kontula E, Laitinen LA (2006) A 10-year asthma programme in Finland: major change for the better. Thorax 61:663-70.
+
+12. Haahtela T, von Hertzen L, Mäkelä M, Hannuksela M, The Allergy Programme Working Group (2008). Finnish Allergy Programme 2008- 2018 – time to act and change the course. Allergy 63:634-45.
+
+13. Akdis M, Verhagen J, Taylor A, Karamloo F, Karagiannidis C, Crameri R, Thunberg S, Deniz G, Schmidt-Weber C, Blaser K, Akdis CA (2004) Immune responses in healthy and allergic individuals are characterized by a fine balance between allergen-specific T regulatory 1 and T helper 2 cells. J Exp Med 199;1567-75.
+
+14. Sunyer J, Anto JM, Tobias A, Burney P, for the European Community Respiratory Health Study (ECRHS) (1999) Generational increase of self-reported first attack of asthma in fifteen industrialized countries. Eur Respir J. 14:885-91.
+
+15. Isolauri E, Huurre A, Salminen S, Impivaara O (2004) The allergy epidemic extends beyond the past few decades. Clin Exp Allergy 34:1007-10.
+
+16. von Hertzen L, Haahtela T. (2006) Disconnection of man and the soil – reason for the asthma and atopy epidemic? J Allergy Clin Immunol 117:334-44.
+
+17. Rakoff-Nahoum S, Paglino J, Eslami-Varzaneh F, Edberg S, Medzhitov R (2004) Recognition of commensal microflora by Toll-like receptors is required for intestinal homeostasis. Cell 118:229-41.
+
+18. von Hertzen L, Savolainen J, Hannuksela M, Klaukka T, Lauerma A, Mäkelä MJ, Pekkanen J, Pietinalho A, Vaarala O, Valovirta E, Vartiainen E, Haahtela T (2009) Scientific rationale for the Finnish Allergy Programme 2008-2018: emphasis on prevention and endorsing tolerance. Allergy 64:678-701.
+
+19. Matricardi PM, Björksten B, Bonini S, Bousquet J, Djukanoic R, Dreborg S, Gereda J, Malling HJ, Popov T, Raz E, Renz H, A. Wold for EAACI Task Force 7(2003) Microbial products in allergy prevention and therapy. Allergy 58:461-71.
+
+Chapter 6.
+
+# Health economics, medical education and cost-effective health care in allergy
+
+Section 6.1. Health Care Delivery and Health Economics in Allergy
+
+Jay M. Portnoy, Martyn R. Partridge
+
+## Key Statements
+
+• Asthma and allergic diseases are significant causes of morbidity on a global scale.
+
+• Asthma disproportionately affects minorities and people from lower socio-economic groups.
+
+• The total global cost of care for people with asthma and allergic disorders is disproportionately high despite the relatively low cost per person, mainly due to the high prevalence of these disorders.
+
+• The most effective management for these disorders is to teach patients self-management skills.
+
+• Education should focus on training physicians to promote and foster self-management skills in their patients.
+
+## Introduction
+
+Asthma and allergic diseases account for a significant proportion of the chronic illnesses that afflict human beings. Worldwide, asthma has been described as an epidemic that has increased both in prevalence and incidence over the last 20 years despite improved pharmacotherapy and environmental control. In the same way, allergic diseases such as rhinitis, food allergy, atopic dermatitis and asthma triggered by allergies have also increased. The total burden of these chronic diseases is staggering1.
+
+Recent research has identified the details both of the development and persistence of allergic pathways (otherwise known as the “Atopic March”) and how allergies develop from the earliest periods of life through early childhood and into adulthood. Despite this information, methods for prevention or control have not been widely identified and implemented in clinical practice2.
+
+The purpose of this chapter is to review the burden of asthma and allergic diseases in the human population as treated under various health care systems and the economic burden they place on citizens who experience them. It will also review various interventions that have been proposed and how providers are taught to deliver them.
+
+## The Burden of Disease Under Various Health Care Systems
+
+Asthma is one of the most common medical conditions afflicting both children and adults. In 2005, an estimated 7.7% of the US population or 22.2 million persons had asthma, 6.5 million (8.9%) of which were children and 15.7 million (7.2%) of which were adults3. In childhood, asthma is more common in boys than girls although it is more common in adult women than adult men4. Asthma disproportionately affects African Americans, although Hispanics have lower rates of asthma than non-Hispanic blacks and whites, Puerto Ricans have higher rates of asthma than other Hispanic sub-groups and non-Hispanic whites, as well as higher death rates than other Hispanic sub-groups, non-Hispanic whites and black5, 6.
+
+Data from the International Study of Asthma and Allergies in Childhood (ISAAC) demonstrated that among 463, 801 13- 14 year olds in 56 countries and 257,800 6-7 year olds in 38 countries, there were marked variations in the prevalence of asthma, allergic rhinoconjunctivitis, and atopic-eczema with up to 15-fold differences between countries. The prevalence of wheeze ranged from 2.1-32.2% in the older age group and 4.1-32.1% in the younger age group and was higher in English speaking countries and Latin America 7, 8.
+
+## The Cost of Care for Asthma and Allergic Rhinitis
+
+The economic impact of the diseases being treated must be considered together with the various available interventions when making decisions about patient care. Yet most providers and healthcare systems find it difficult to incorporate health economic information into clinical and resource decision making. Clinical decision makers must be able to understand and to evaluate the evidence related to the economic impact of medical interventions critically. Unfortunately, the quality of the economic data relating to asthma and allergic diseases, particularly in various healthcare delivery systems, is lacking. This means that allocation of resources for asthma and allergic rhinitis primarily depends on expert opinion rather than evidence-based literature9.
+
+Asthma produces a significant burden upon the individual, family and society in terms of physical illness, psychological stress, decreased productivity and cost of care10. It is the major cause of school absenteeism in children, contributing to an estimated 10 million missed school days a year11. In 2003, 10.1 million work days were missed due to asthma by adults 18 years of age and older. This number does not include parents who missed work to care for a sick child with asthma.
+
+In one study of children and adolescents, more than half were inadequately controlled as measured using the Asthma Control Test. Such inadequately controlled asthma significantly affected asthma-specific quality of life (QOL), school productivity and attendance,and work productivity of children and their caregivers. More specifically, caregivers reported missing 1.4 days of work due to their child’s asthma, with the child missing 4.1 school days12.
+
+In 2004, there were 14.7 million outpatient ambulatory visits, 1.8 million emergency room visits and 497,000 hospitalizations for asthma. The highest asthma hospitalization rates among children were for those aged 0-4 years. In 2003, 4,055 persons died of asthma of which the majority were adults 18 and over3.
+
+In terms of monetary costs, asthma in the US in 1998 was estimated to cost 12.7 billion dollars annually; 58% of these costs were direct medical expenditures and 42% were indirect costs such as child care expenses, transportation and loss of workforce participation13. More recent estimates of the annual cost of asthma are nearly \$18 billon per year; with direct costs nearly \$10 billion and hospitalizations representing the single largest portion of direct costs14.
+
+In addition to asthma, it has been estimated that 1 in 5 Americans, or 50 million persons, experience allergies, including nasal allergies, food allergy, drug allergy, atopic eczema, and insect allergy. The incidence of allergic diseases has been increasing in all age groups for the past 20 years. Nasal allergies affect 75%, skin allergies 7%, food and drug allergy 6%, and insect allergy 4% of allergy sufferers, respectively. Some surveys even suggest that atopic eczema imposes an economic burden with overall costs similar to those for treatment of asthma15. The annual cost of such allergies is estimated to be nearly \$7 billion.
+
+The main difficulty with determining the global cost of care for patients with asthma and allergic conditions is that care is delivered in countries with different healthcare delivery systems. These types of healthcare systems include: direct or out-of-pocket payments by patients for their care, governmentprovided care paid for by taxes, public health insurance with services provided by private entities voluntary or private health insurance usually provided by employers, and healthcare provided by charitable organizations.
+
+The United States utilizes an employee/employer-provided private insurance model for many of its working citizens. Seniors and the poor are usually covered by governmentpaid Medicare or Medicaid programs using private providers to deliver care. Most other developed countries such as the Scandinavian countries, France, Germany, the United Kingdom, Israel and Canada use government funded and in some cases government-delivered healthcare models. Direct payment for care is more common in third world countries where government-run health systems are either non-existent or ineffective. Many citizens in the poorest countries receive healthcare from charitable organizations. The cost of healthcare in these different systems varies widely depending on how the costs are determined; how resources are allocated; and what outcomes are considered to be acceptable to its citizens.
+
+Another confounder to identifying the actual cost of care for asthma and allergic diseases is the price of pharmaceuticals. In some countries such as India, patents are granted on the pharmaceutical production processes rather than on the products. As a result, the price of pharmaceutical agents tends to be relatively low, thus rendering the cost of care for patients with allergic disease proportionately low. Other countries that restrict collective bargaining for discounted drug prices tend to have much higher pharmaceutical costs which can contribute a high proportion to the total cost of treatment for allergic diseases.
+
+Hospitalization and emergency department visits represent another cost for these illnesses. Healthcare systems that rely on government funded institutions that are subsidized by taxes, may report lower costs than systems in which hospitals tend to be for-profit entities. As a result, it is very difficult to determine the actual cost of care for a patient with asthma and other allergic diseases given the extreme heterogeneity of healthcare delivery systems.
+
+One way to measure true costs would be to develop normalized metrics that correct for the type of delivery system in which the care is given. Though this has not been systematically done, there is no reason, in principle, why it could not be done. Corrections for variable use of pharmaceutical agents depending on costs and accessibility would also have to be weighted in this model in order to come up with a consistent cost for care delivery.
+
+Another confounder is the cost of overheads in managing healthcare delivery. Countries with single-payer systems tend to have overhead costs that are relatively low because reimbursement involves a single payment system. When multiple payers are present, the situation is much different. In the United States where multiple health plans typically pay for care, each provider must rely on workers who are dedicated exclusively to filing claims for each of the health plans. Health plans themselves have a pool of personnel that receive the claims and determine whether payment will be made. This type of system is fraught with the potential for error and has been estimated to account for 30% of the administrative costs of healthcare delivery in the United States16. Though this cost is not usually included in the individual cost for treatment of specific medical conditions, it should be if a complete accounting of the actual costs of care is to be determined.
+
+## Medical Education to Train Allergy Specialists
+
+The ways in which health care is delivered vary from country to country as do the resources available for treatment of patients with allergic diseases, including allergy specialists. Irrespective of these factors, the aim of a healthcare delivery system is to provide knowledgeable, competent, cost effective care to those with allergic diseases and to do so in a patient centered manner. This requires that there be optimal training of health care professionals as well as regular review of their competencies, enforcement of practice standards according to evidence-based internationally recognized and respected guidelines17 and adequate resources for basic investigations18. Perhaps the most important aspect of care consists of a patient centered approach which elicits patient expectations, fears and concerns, involves a discussion about management options and supports and encourages the patient’s self management of their own condition19.
+
+There are wide differences in the use of different health care professionals in different countries with those with asthma for example, being most likely to be cared for by an allergist in some countries and by primary care physicians in many others. The principles underlying good care, nevertheless, apply to everyone, whether a primary care nurse a lay educator or a specialist. The value of guidelines in the delivery of this care cannot be underestimated and are summarized in Table 1, but all should be designed to be utilized within a partnership of care between patients and health care professionals that acknowledges the importance of self management. These features are summarized in Table 2.
+
+Table 1 — The advantages of basing health care on well constructed evidence based guidelines
+
+Well constructed evidence based guidelines:
+
+– Provide a summary of research for the busy clinician
+
+– Enable standards to be set
+
+– Provide a basis for audit
+
+– Enable students, doctors, nurses and health care assistants to be taught from a common text
+
+– Represent a suitable starting point for patient education
+
+## Table 2 — Key features of an optimal health care professional/patient interaction that leads to successful self management by the patient of their allergic condition
+
+Key features for optimal health care professional/patient interactions:
+
+– Convenient easy to access healthcare
+
+Attentive health care professionals who listen An exploration of patient expectations and a consultation that elicits and addresses any patient concerns
+
+– A doctor or a nurse who immediately addresses patient concerns and who uses an interactive dialogue and wherever possible tailors therapy to lifestyle
+
+– A recognition that as far as possible patients should be trained to manage their own treatment rather than be required to consult the doctor or nurse before making changes
+
+Support of self management in such a way that the patient has a personalised written action plan (adapted where necessary to take account of the problem of health literacy) and the patient has easy access to professional advice when self management necessitates it
+
+## Summary
+
+Given the huge global burden caused by asthma and allergic diseases, it is clear that health care systems need to address the burden aggressively and in a cost-effective manner. It is no longer acceptable for affluent countries to support inefficiencies, as some currently are doing, when so many other countries can’t even provide the bare essentials to their citizens. Evidence-based treatment methods based on recognized guidelines must become the standard for care and new guidelines must be developed for conditions for which they don’t currently exist. In addition, providers need to be trained to provide care that takes advantage of medical knowledge that has been so painstakingly acquired. Ideally, this care should be accompanied by outcomes measures that can be implemented by the providers so that they can learn from their experiences. If these integrated, evidence-based systems of care can be created, the burden of allergic diseases will likely decrease substantially.
+
+## Unmet Needs
+
+• Evidence-based treatment methods founded on recognized guidelines must become the standard for care and new guidelines must be developed for conditions for which they don’t currently exist.
+
+• Providers need to be trained to offer care that takes advantage of the available medical knowledge.
+
+• Care should be accompanied by outcomes measures that can be implemented by providers
+
+## References
+
+1. Pearce N, Ait-Khaled N, Beasley R, Mallol J, Keil U, Mitchell E, et al. Worldwide trends in the prevalence of asthma symptoms: phase III of the International Study of Asthma and Allergies in Childhood (ISAAC). Thorax 2007 Sep;62(9):758-66.
+
+2. Asher I, Baena-Cagnani C, Boner A, Canonica GW, Chuchalin A, Custovic A, et al. World Allergy Organization guidelines for prevention of allergy and allergic asthma. Int Arch Allergy Immunol 2004 Sep; 135(1):83-92.
+
+3. Akinbami L. The state of childhood asthma, United States, 1980-2005. Advance data 2006 Dec 12(381):1-24.
+
+4. Garcia-Marcos Alvarez L, Martinez Torres A, Batlles Garrido J, Morales Suarez-Varela M, Garcia Hernandez G, Escribano Montaner A. International Study of Asthma and Allergies in Childhood (ISAAC) Phase II: Methodology and results of the participation rate in Spain. An Esp Pediatr 2001 Nov; 55(5):400-5.
+
+5. Akinbami LJ, Rhodes JC, Lara M. Racial and ethnic differences in asthma diagnosis among children who wheeze. Pediatrics 2005 May; 115(5):1254-60.
+
+6. Lara M, Akinbami L, Flores G, Morgenstern H. Heterogeneity of childhood asthma among Hispanic children: Puerto Rican children bea a disproportionate burden. Pediatrics 2006 Jan; 117(1):43-53.
+
+7. Worldwide variations in the prevalence of asthma symptoms: the International Study of Asthma and Allergies in Childhood (ISAAC). Eur Respir J 1998 Aug; 12(2):315-35.
+
+8. Worldwide variation in prevalence of symptoms of asthma, allergic rhinoconjunctivitis, and atopic eczema: ISAAC. The International Study of Asthma and Allergies in Childhood (ISAAC) Steering Committee. Lancet 1998 Apr 25;351(9111):1225-32.
+
+9. Sullivan SD, Weiss KB. Health economics of asthma and rhinitis. II. Assessing the value of interventions. J Allergy Clin Immunol 2001 Feb;107(2):203-10.
+
+10. Kwok MY, Walsh-Kelly CM, Gorelick MH, Grabowski L, Kelly KJ. National Asthma Education and Prevention Program severity classification as a measure of disease burden in children with acute asthma. Pediatrics 2006 Apr;117(4 Pt 2):S71-7.
+
+11. O’Connell EJ. The burden of atopy and asthma in children. Allergy 2004 Aug;59 Suppl 78:7-11.
+
+12. Schmier JK, Manjunath R, Halpern MT, Jones ML, Thompson K, Diette GB. The impact of inadequately controlled asthma in urban children on quality of life and productivity. Ann Allergy Asthma Immunol 2007 Mar; 98(3):245-51.
+
+13. Weiss KB, Sullivan SD. The health economics of asthma and rhinitis. I. Assessing the economic impact. J Allergy Clinical Immunol 2001 Jan; 107(1):3-8.
+
+14. Barnes PJ, Jonsson B, Klim JB. The costs of asthma. Eur Respir J1996 Apr;9(4):636-42.
+
+15. Williams H. Atopic Dermatitis. The New England journal of medicine 2005;352.
+
+16. Crossing the Quality Chasm: A New Health System for the 21st Century. Washington DC: Institute of Medicine2001.
+
+17. Global Initiative for Asthma-Global Strategy for Asthma Management and Prevention 2008
+
+18. Finkelstein JA, Lozano P, Streiff KA, Arduino KE, Sisk CA, Wagner EH, et al. Clinical effectiveness research in managed-care systems: lessons from the Pediatric Asthma Care PORT. Patient Outcomes Research Team. Health Serv Res 2002 Jun; 37(3):775-89.
+
+19. Lefevre F, Piper M, Weiss K, Mark D, Clark N, Aronson N. Do written action plans improve patient outcomes in asthma? An evidence-based Analysis. J Fam Pract 2002 Oct; 51(10):842-8.
+
+## Section 6.2. Medical Education in Allergy
+
+Paul C. Potter, John O. Warner, Ruby S. Pawankar, Jill A. Warner, Paul Van Cauwenberge P, Michael A. Kaliner
+
+## Key Statements
+
+The intended outcomes for clinician and healthcare professionals training in allergy are to:
+
+• Produce graduates equipped to further their careers in healthcare and in particular to enhance the number of individuals trained in the mechanisms and management of allergic diseases.
+
+• Develop an understanding of the processes involved in improving the management of patients with allergic disease.
+
+• Develop new areas of teaching in response to the advance of scholarship and the needs of vocational training.
+
+• Provide a training in research skills.
+
+• Develop skills and understanding of the more complex components of allergic disease encountered in specific areas of practice.
+
+## Introduction
+
+Allergic diseases are a significant cause of global morbidity and mortality and a considerable drain on the health budgets of developed and emerging economies (see chapter 5.1, Health Economics).
+
+In view of the high and increasing prevalence of allergic diseases globally (between 2- 30%)1 and a paucity of health service provision in many countries2, the education of health practitioners, departments of health and the public is essential. This education should address the causes, prevention, control and economic burden of allergic diseases which will eventually provide better allergy health care around the globe. For the moment, there is a need to provide comprehensive education at all levels, but in the future medical education programs will need to build knowledge sequentially from undergraduate to postgraduate levels and through continued professional development. The increase in prevalence of allergic disease has been attributed to lifestyle changes such as “Westernization” and education has not kept pace with the improved understanding of causes and consequences. In addition to the need to train medical students, doctors and nurses in the diagnosis and management of the allergic patient, it is also necessary to educate the general public; governments; town planners; industry; pharmacists; school educators; sports authorities; and dieticians about this common public health problem.
+
+The ISAAC data1,2 provides the best available global comparisons of the prevalence of allergic diseases around the world and illustrates that for some countries the problem is greater than for others. However even in low prevalence countries increases are being observed.
+
+The World Allergy Organization conducted a survey on the training of allergy worldwide and reported that currently, there is wide disparity in the level of education and training worldwide. The report emphasized the need for improving patient care through providing better training for undergraduate medical students, primary care physicians and generalists, as well as ensuring that organ-based specialists, who are likely to be dealing with allergic patients, have a higher level of training. A summary of the present situation is highlighted in the White Book Chapter 1, The Practice of Allergy .
+
+The World Allergy Organization has addressed the need for global education in Allergy and has published 2 position statements which provide guidelines for training in Allergy for Medical students3 and for practicing clinicians4.
+
+## Recommendations for Undergraduate Training in Allergy in Medical Schools
+
+As allergic diseases can affect multiple organs, allergy is not usually taught in most medical schools as a separate subject and thus the teaching tends to be fragmented and uncoordinated. Allergic diseases affecting the lungs, skin and nose may be incorporated into the teaching of other diseases affecting these organs, but teaching allergy in this way often ignores the common co-existence of several manifestations in different organs in individual patients. Furthermore, food allergy and intolerance, drug allergy and hypersensitivity, oral allergy syndromes, allergy prevention, regional allergens, the allergic march, venom and inhalant immunotherapy, urticaria and angioedema, and other ‘allergic’ diseases involving eosinophils, mast cells and IgE are not covered at all.
+
+Since the majority of patients with allergic diseases are treated by primary care physicians and in many cases by pharmacists, training of undergraduates in allergy is essential, in line with the Level 1 care competencies recommended by the World Allergy Organization4. The WAO position statement on undergraduate medical training3 specifically addresses this issue and provides a model content and method to be adapted and implemented for the training of medical students in allergic diseases in terms of threshold knowledge and the level of practical skills that are appropriate at a primary care or GP level.
+
+Medical students require a basic knowledge of the normal cellular and molecular pathways of immune response and how this can lead to allergic sensitization and disease. The undergraduate training should be able to provide a working knowledge of the common allergic disorders including allergic rhinitis, allergic conjunctivitis, rhinosinusitis, asthma, urticaria, atopic eczema, food allergy, insect venom allergy, anaphylaxis, occupational allergy, and eosinophilic enteropathies. Knowledge of differential diagnoses of common or important non-allergic conditions which present with similar symptoms and signs is also required. This includes lactose and other sugar intolerances, scromboid fish poisoning, and hereditary angioedema.
+
+It is also important that undergraduate medical students are made aware of the global and regional epidemiology of allergic diseases, the occurrence, pattern and seasonality of important local aeroallergens, and their role in the initiation and promotion of the inflammatory responses underlying allergic diseases. This would include an understanding of the value and indications for diagnostic tests such as skin prick and in vitro IgE measurement to detect specific sensitivities. Students should be familiar with the national and international evidence based guidelines on the management of the common allergic disorders (Global Initiative on Asthma - GINA, Allergic Rhinitis and its Impact on Asthma -ARIA, etc). Age-specific use of medications such as those delivered by inhalers, and monitoring of progress and response to treatment should be included in the program. For more details refer to Potter et al 3.
+
+The World Allergy Organization has also published a ‘Classification’ of allergic diseases5 and has clearly defined “What is an Allergist” in a further position statement. These concise documents should be read by all students training in medicine and other health professions at an undergraduate level.
+
+The WAO position statement on training of medical students recommends that allergy should be a defined part of the medical curriculum with formal lectures, practical sessions, a problem based case study learning approach, and webbased learning, or combinations of these teaching methods. It highlights all the allergy topics which need to be included in the training of medical students during their training curriculum.
+
+The World Allergy Organization recommends the early adoption and implementation of undergraduate education in allergy at medical schools around the world, with the intent to provide better and improved levels of care for allergy sufferers, and in particular to the millions who do not have access to the services of allergy specialists. Whilst the recommendations currently concentrate on medical students there is a need to include education for other health professions. The depth of knowledge they will require in basic mechanisms will be different, but there is an opportunity to economize on educational resource by linking programs with multi-disciplinary sessions.
+
+## Post-Graduate Medical Education
+
+Programs can be designed to be applicable to students with a wide range of background skills who require a detailed understanding of allergic disease and who come into frequent contact with potential allergy sufferers e.g. doctors, nurses, midwives, health visitors, school nurses and scientists.
+
+The first component should offer a sound theoretical background to the principles of the mechanisms and management of allergic disease and a robust practical program in diagnosis and treatment. An introduction to appropriate research methods and practice in order to equip professionals to evaluate research output is also important. By the end of the training program, students should have enhanced their understanding of the immunological mechanisms involved in the generation and manifestation of allergic disease, their skills in diagnosis and interpretation of test results and their management of disease, applying the most up to date and appropriate methods. They will also have developed skills in the use of computing applied to healthcare. They will have gained understanding of research methodology and techniques, design of a research project, data analysis and presentation, literature searching and critical appraisal.
+
+## The intended outcomes of clinician and healthcare professionals training in allergy are to:
+
+• Produce graduates equipped to further their careers in healthcare and in particular to enhance the number of individuals trained in the mechanisms and management of allergic diseases.
+
+• Develop an understanding of the processes involved in improving the management of patients with allergic disease.
+
+• Develop new areas of teaching in response to the advance of scholarship and the needs of vocational training.
+
+• Provide training in research skills.
+
+• Develop skills and understanding of the more complex components of allergic disease encountered in specific areas of practice.
+
+## Students should acquire the following:
+
+## A: Knowledge and understanding of:
+
+• The immune mechanisms involved in allergic disease
+
+• Diagnostic tests available for the presence of allergy
+
+• The most up-to-date treatments for asthma, eczema, rhinitis, food allergy, drug allergy and hypersensitivity, and venom allergy
+
+Differential diagnoses of common or important non-allergic conditions which present with similar symptoms and signs is also required. This includes lactose and other sugar intolerances, scromboid fish poisoning, and hereditary angioedema.
+
+• How to use their knowledge and understanding of immune mechanisms, diagnostic tests and allergy treatments in the management of an allergic patient
+
+• Research methods employed in investigating the processes of allergic disease
+
+• How to apply new research findings to improving the management of allergic patients
+
+• How to build on previous learning to develop a systematic understanding of the knowledge relating to the mechanisms and management of more complex allergic disorders in specific areas of practice
+
+## B: Intellectual (thinking) skills - able to:
+
+• Apply scientific and clinical concepts to the development of new ideas
+
+• Integrate and evaluate information from a variety of sources
+
+• Formulate and test hypotheses
+
+## C: Practical skills – able to:
+
+• Retrieve, sift and select information from a variety of sources
+
+• Perform and interpret common diagnostic tests for allergic disease
+
+• Present a patient situation to peers, other professional workers and relatives
+
+• Manage a pre-determined workload
+
+• Take responsibility for skilled, safe, evaluative, reflective practice involving continual analysis and evaluation of outcomes and appropriate modification of interventions
+
+• Perform specified activities and skills development
+
+• Prioritize, anticipate and refer to higher levels when necessary
+
+• Evaluate research studies and determine their strength and validity
+
+## D: Transferable skills – able to:
+
+Communicate effectively through oral presentations, computer processing and presentations, written reports and scientific publications
+
+• Direct own learning
+
+• Integrate and evaluate information from a variety of sources
+
+• Transfer techniques and solutions from one discipline to another
+
+• Use information and communication technology
+
+• Manage resources and time
+
+• Learn independently with open-mindedness and critical enquiry
+
+• Effectively handle patients/parents presenting multiple symptoms which are not due to allergy
+
+• Learn effectively for the purpose of continuing professional development
+
+• Exercise initiative and personal responsibility
+
+In postgraduate education, it is extremely important that training is offered in a flexible and accessible way that allows individuals to study at a time and place most suited to their lives and commitments. This is most easily achieved by a blended learning structure where face-to-face teaching is provided in short blocks and the majority of learning is web-based. Such programs are beneficial to all education as re-usable teaching objects can be produced that are available for a range of programs and can be adapted to suit the learning needs and level of individual trainees.
+
+## Allied Health Workers
+
+Allied health workers play an important role in the care of allergic patients. However, in most parts of the world, allergy is not included in their training curricula.
+
+Allied health workers particularly in need of allergy education include pharmacists, nurses, dieticians, food scientists and paramedics. These professionals need to learn about the basic underlying mechanisms of the allergic response and the presentation of common allergic diseases such as asthma, rhinitis, food allergy, drug allergy, atopic dermatitis, anaphylaxis and urticaria. In particular they should learn about the importance of specific allergy diagnosis.
+
+Pharmacists should be made aware of new global guidelines for management of asthma and rhinitis, as they are often the first health care worker to be approached by the patient, and of the dangers of sedating antihistamines; they should discourage the use of these medications for allergic rhinitis management. They need to be educated in the appropriate use of generic substitution and drug interactions and need to know when to refer a patient to a doctor for allergy testing.
+
+Dieticians need specific education in the field of food allergy, its diagnosis, cross reacting allergens and “hypo-allergenic” diets and the new approaches to allergy prevention and milk substitutes in infancy.
+
+Paramedics require training in the use of adrenaline in resuscitation for anaphylactic reactions and should be educated about latex allergy and alternative products to use in emergencies.
+
+The allergy nurse plays a vital role in the care of allergic patients in allergy clinics and proper training is required in asthma education (e.g. use of spacers, reliever versus preventer treatment, how to avoid allergens e.g. latex, food, pets, house dust mites, etc) and to understand how allergy impacts on the whole family, the child’s schooling and behavior) and to assist the doctor in identifying adverse reactions to allergy medications. In addition, the allergy nurse plays a vital role in the administration and safety monitoring of allergen immunotherapy as well as the encouragement of compliance in allergy treatments, which are often long term.
+
+Food scientists need to be made aware of the dangers of hidden food allergens and the medical effects resulting from certain food preservatives in some patients. Proper labeling should be mandatory for all processed foods.
+
+Education of allied health workers is best done by trained allergists and such training should be incorporated into the training curricula for these disciplines. The World Allergy Organization Web site provides education materials which can be used for this purpose.
+
+## Wider Education
+
+The distribution of asthma and allergies according to race and socio-economic status is influenced by large inequalitiesin society, since prevalence rates appear to be high in urban and minority populations. These patients are at higher risk to develop allergy and/or asthma and therefore worthy of more focused asthma and allergy education. More emphasis to educate patients, taking into account their diversity, is therefore mandatory with information and practices that are based on, and adapted to, cultural-social class, education and ethnic background. Behavioral factors and family social support also influence levels of treatment adherence, decisions to engage in risk reduction, and care-seeking. The socio-economic burden of allergy and asthma can only be reduced if patients and their families are better informed about these diseases. It is fundamental that new scientific evidence relevant for each target group is disseminated in a language they can understand and in a user-friendly fashion. Patients need simple information on medications; costs and reimbursement; self-treatment; nutrition; environmental factors both indoor and outdoor; primary and secondary prevention; and quality of life. This should be achieved using student-centric teaching methods which employ language and methods appropriate for people with low literacy skills. In this field, future studies should focus on optimizing the potential benefits of educating high risk patients since they are at the highest lethal risk and often consume a disproportionate amount of health care resources.
+
+People with an allergy have to make important decisions when buying food, eating out, purchasing cosmetics, or managing their environment. Food product labeling, although improved, often remains ambiguous. Vague defensive warnings on labels for consumers with food allergy can lead to dangerous confusion and an unnecessary restriction of choice. Social difficulties caused by having a food allergy can sometimes make sufferers reluctant to take the necessary precautions; this is especially the case amongst teenagers. There is a real danger that consumers are being deluged with information, yet it is not provided in a targeted and useful way to the at risk groups. Therefore product labeling needs to be more accurate, and clearer. Parents of allergic children and allergy sufferers should be educated on optimal avoidance measures. It is imperative that environmental health officers, trading standards officers and catering workers are adequately and comprehensively trained in practical allergen management. A program of consistent, practical, high standard training courses should be provided. One such effort is the “InformAll” project which promotes the provision of visible, credible food allergy information sources to a wide variety of stakeholders, including general consumers, the agro-food industry, allergic consumers, health professionals, and regulators. It also contains a searchable database of allergenic foods which contains information such as the clinical symptoms associated with each allergy, the types of foods that contain allergens, and possible cross-reactions.
+
+The indoor environment may play an important role in the development or exacerbation of allergic diseases. Building regulations can have only a limited effect since the behavior of the occupants has a large impact on the conditions inside a house. In general, the public is not aware of the health hazards associated with mismanagement of the indoor environment; especially poor ventilation. It is therefore important that the general public is given adequate advice about how to manage their indoor environment appropriately.
+
+Management of all these factors (food, indoor environment, social diversity) requires a combination of both regulation and education in which a very wide range of bodies including government departments, non-departmental public bodies, local authorities and charities. All these organizations play a role in disseminating information and advice. Policy makers should be assisted to make recommendations and directives from the knowledge of the interaction between the environment and susceptible genes in the onset and progression of allergy and asthma, in order to reduce their burden in all regions. This problem requires an integrated approach and moreover, when directives are made at a global level, they should be harmonized and implemented at the national level.
+
+## Unmet Needs
+
+The early adoption and implementation of undergraduate education in allergy at medical schools around the world is a major unmet need which could provide better and improved levels of care for allergy sufferers, and in particular to the millions who do not have access to the services of allergy specialists.
+
+Policy makers should be assisted to make recommendations and directives based on a knowledge of the interaction between the environment and susceptible genes in the onset and progression of allergy and asthma, in order to reduce the disease burden in all regions.
+
+There is an urgent need to promote education in allergy for all health professions. This should be based on the depth of knowledge they required at each level of health care provision, and will include the basic mechanisms of allergic diseases, their diagnosis and management, and the knowledge of when and how to refer patients to trained specialists.
+
+## References
+
+1. ISAAC Steering Committee. Worldwide variation in prevalence or symptoms of asthma ,allergic rhinitis , conjunctivitis and atopic eczema. (ISAAC). Lancet 1998: 351:2225-2232.
+
+2. Beasley R. The Global Burden of Asthma. Report. Global initiative for Asthma (GINA) 2004 http://www.ginasthma.org.
+
+3. Potter PC, Warner JO, Pawankar R, KalinerM, Del Giacco S, Rosenwasser L. Recommendations for competency in training for undergraduates qualifying as Medical practitioners. A World Allergy Organization Position Statement. World Allergy Organization J. 2009;2(8):150-189.
+
+4. Kaliner M, Del Giacco S, Crisci C, Frew AJ, Liu G, Maspero J, Moon Hee-Bon, Nakagawa T, Potter PC , Rosenwasser L. Singh A Valorvita E, Van Cauwenberge P, Warner JO. Requirements for physician training in allergy. Allergy Clin Immunol Int - Journal of the World Allergy organization 2006 18 (3) 92-97.
+
+5. Johansson et al. Revised nomenclature for Allergy global use: report on the nomenclature review committee of the World Allergy Organization.J Allerg Clin Immunol 2004 ; 113 : 932 -836.
+
+6. Kaliner MA, Lee B-W, Liu, G Maspero J Moon HB, Nakagawa T, Potter PC , Singh A, Valorvita E, Vervloet D, Warner JO., Henley, K.What is an Allergist? A position statement of the WAO Specialty and Training Council. World Allergy Organization J. 2008;1(1):19-20.
+
+# Section 6.3. The Cost-effectiveness of Consulting an Allergist
+
+Jose E. Gereda, Sergio Del Giacco, Paul C. Potter, Michae A. Kaliner, for the World Allergy Organization Specialty and Training Counci
+
+## Acknowledgement:
+
+The authors would like to acknowledge the contribution of Prof. Diana Deleanu for conducting the original literature search, and Karen Henley, Staff Liaison to the Specialty and Training Council, for editorial assistance.
+
+## Key Statements
+
+Allergic diseases are chronic conditions with systemic involvement that can affect multiple organs and systems throughout the lifespan of atopic (allergic) subjects.
+
+In assessing the economic burden of allergic diseases, the costs of several organ-specific diseases need to be aggregated, including the nose (allergic rhinitis), sinuses (rhinosinusitis), lungs (asthma), skin (atopic eczema), and others.
+
+• Cost-effective analyses (CEA) assess the comparative effects of one health care intervention over another, under the premise that there is a need to maximize the effectiveness relative to its cost.
+
+• A cost-effective intervention could, if incorrectly used, generate unnecessary costs, provide no benefit and even cause harm.
+
+The allergist is an expert in tailoring therapy to the individual patient and adjusting treatment dosages in more severe or complex cases. The main defining characteristics of allergists are their appreciation of the importance of external triggers in causing diverse diseases, their expertise in both the diagnosis and treatments of multiple system disorder, including the use of allergen avoidance and the selection of appropriate drug and/or immunological therapies, and their knowledge of allergen specific immunotherapy practices.
+
+Misinterpretation of the results of diagnostic tests by non specialists can lead to over-diagnosis and inappropriate management which can be harmful for the patient. It may lead to over-prescription of therapy and costly and unnecessary allergen avoidance measures, including
+
+exclusion diets that can lead to nutritional deficiency and secondary morbidity. Conversely, the under-appreciation of the severity of asthma can lead to life-endangering under-treatment or the lack of potentially life-altering immunotherapy.
+
+• The cost-effectiveness of allergist consultation will be demonstrated by improved patient outcomes and experiences together with a reduction in unnecessary expenditure by payer, society or patient/family.
+
+## Introduction
+
+The incidence of allergic diseases is increasing globally, and this poses a major burden to health care costs in every country around the world.
+
+Cost-Effective Analyses (CEA) offer decision makers a structured, rational approach to improve the return on resources expended, and to provide an understanding of the collective value underlying their health-care system. CEA are useful to managed care organizations, insurers, health departments and policy makers, clinical guideline developers, benefit managers, patient advocacy groups, the press and the general public1.
+
+Allergist consultation will ensure an accurate diagnosis of allergy as the causation of symptoms and will ensure that the correct therapy is prescribed, based on confirmation of the underlying pathological mechanisms of the patient’s disease. Such expert consultation should help consumers (governmental agencies, insurers or patients/families) and health care providers to make informed resource allocation decisions that improve patients’ experiences and outcomes.
+
+## The Burden of Allergic Diseases
+
+As described in Chapter 2, allergic diseases are among the most common chronic medical problems in both children and adults. Atopy is an individual and/or familial tendency to become sensitized and produce IgE mediated disease after exposure to normally harmless environmental proteins, called allergens. As a consequence of their atopic status, individuals may develop allergic diseases, including rhino-conjunctivitis, asthma, sinusitis, otitis, atopic dermatitis/eczema, contact dermatitis, urticaria, angioedema, gastrointestinal reactions resulting from allergy, food allergy, drug allergy, latex allergy, insect allergy and stinging-insect hypersensitivity, occupational allergic diseases, anaphylaxis, and others2. These diseases can affect one or more organ and systems or be systemic i.e.
+
+behaving as a chronic condition of systemic involvement that affects several organs and systems throughout the lifespan of atopic subject.
+
+The burden of these chronic conditions to patients/families and society is highlighted by their impact on quality of life and their indirect costs. The latter, sometimes called opportunity costs, correspond to the value of resources lost as the result of time absent from work or other usual daily activity as a result of illness3. They include days missed from work, both outside employment and housework; school days lost and the need for the caretaker to refrain from usual daily activities to care for a child, and the loss of future potential earnings as a result of the disease or premature death.
+
+## Assessing the Economic Burden of Allergic Diseases
+
+The economic burden of allergic diseases has become evident as the costs needed to restore an individual to health and to restore individuals/families to full productivity have increased in the past few years. The costs of treatments are divided into direct costs, either medical or non-medical3. Direct medical costs include hospital (inpatient and outpatient) services, physician services, medication, and diagnostic tests. Direct non-medical costs include the costs needed for the provision of medical services such as transportation to and from the health provider,the purchase of home health care such as nebulizers, special diets and help in the home.
+
+The economic burden of allergic diseases is generally assessed by reference to a single organ-specific disease. For example, the estimated annual cost of asthma in the United States in 1998 was 12.7 billion dollars4. Direct cost accounted for 58.2% of the total costs. It includes: 26.2% on hospital fees for inpatient, outpatient and emergency room care; 25.2% on medications and 6.7% on physician services for inpatient and outpatients services. Indirect costs accounted for 41.8% of the total cost and included 20.9% on loss of work and school days, 14.3% on mortality or lost of future potential earnings and 6.6% on housekeeping. The global economic burden of asthma or any other organ-specific disease would be very difficult to assess as different studies use different definitions of cost and resources and there are also country-specific costs.
+
+Disease burden and severity increases when more than one disease co-exists. For example; asthma hospitalization and emergency department visits doubles when allergic rhinitis is untreated or undertreated5. Other comorbid conditions inside or outside the unified airway may include: conjunctivitis, acute or chronic sinusitis, acute or chronic otitis media, serous otitis media, adenoidal hypertrophy, obstructive sleep apnea syndrome, sleep related disorders, learning problems, and others6.
+
+In assessing the economic burden of allergic diseases, several organ-specific disease models need to be aggregated with the risk that various costs, such as secondary care consultations, pharmaceutical interventions, diagnostic and screening tests for instance, could be overestimated or underestimated. It would be better to recognize allergy as a chronic condition with systemic involvement that may affect several organs and systems throughout the lifespan of subjects who either follow the atopic march or in whom being atopic is the most important risk factor for developing related or unrelated diseases, as is the case of subjects with occupational allergic diseases.
+
+## Assessing the Cost-Effectiveness of an Intervention
+
+Cost-effective analyses are designed to assess the comparative effects of one health care intervention over another under the premise that there is a need to maximize the effectiveness relative to its cost. The analysis is based on evidence gathered from studies of populations, including randomized controlled trials, case control studies, observational studies, cohort studies or others. Their results are measured in terms of health care outcomes relevant to the interested audience, whether it is the paying entity or society.
+
+Outcomes used as measurements can be generic or disease specific. The quality-adjusted life year (QALY) is a generic outcome that allows for comparison across populations and illnesses. It combines two dimensions of health, life expectancy and health related quality of life7. Disease specific outcomes, such as the number of symptom-free days (SFD) have been set as a standard outcome measure for asthma8. However disease specific outcomes for each allergic disease have not been developed.
+
+The target audience refers to where the levels of economic impact will be experienced3. From the payer’s perspective, the direct medical costs tend to carry greater weight as they influence their business costs. From the societal perspective, all costs are equally important, including the direct non-medical and the indirect costs. From the individual/family perspective, insurance status and health-care coverage are very important. Under full insurance coverage, indirect costs are the only factors that are important, as they reflect the functioning and quality of life of the individual and family. The rest of the costs (direct medical and non-medical) would be covered by the insurer. However in the absence of insurance, all costs would become equally important.
+
+## Cost-Effective Interventions in Allergic Diseases
+
+The cost-effectiveness registry from the Institute for Clinical Research & Health Policy Studies of Tufts Medical Center reports that up until 2006, the majority of CEA’s had assessed pharmaceutical interventions (45.8%); surgical procedures (14.6%); diagnostic tests (12.1%); medical procedures (11.3%); and screening tests (11.2%)9. Until then little attention had been paid to interventions on delivery of care (8.9%), health education/behavior (8.5%) and others (17.5%).
+
+There are only 10 CEA on allergy or allergic diseases (Table 3) included in the registry9. Most of them assessed the costeffectiveness of a brand name pharmaceutical product or device. These include one on the use of Advair®, a combination therapy (inhaled corticosteroids + long acting beta-agonist) with the GOAL approach for patients with persistent asthma; two on Omalizumab® in adults with severe persistent asthma; two on Grazax® on rhinoconjunctivitis or allergic rhinitis and asthma; and one on the use of Niox Mino® which is a medical device to monitor airway inflammation in asthma. Three studies evaluated the expected benefits of non-brand name interventions; one on the use of inhaled steroids in asthma; a second on allergen specific immunotherapy in allergic rhinitis and asthma; and a third on aspirin desensitization on exacerbations of respiratory diseases. There is no CEA on in-vitro diagnosis or screening tests for allergic diseases.
+
+Table 3 — Articles of Cost-Effective Analysis in Allergy Included in the CEA Registry \*
+<table><tr><td rowspan=1 colspan=1>Intervention Used</td><td rowspan=1 colspan=1>Articles (Author,Journal ànd year ofpublication)</td><td rowspan=1 colspan=1>Article ID</td></tr><tr><td rowspan=1 colspan=1>Advair®</td><td rowspan=1 colspan=1>Briggs, et al. Allergy.2006</td><td rowspan=1 colspan=1>2006-01-02701</td></tr><tr><td rowspan=1 colspan=1>Grazax®</td><td rowspan=1 colspan=1>Nasser, et al. Allergy.2008</td><td rowspan=1 colspan=1>2008-01-04336</td></tr><tr><td rowspan=1 colspan=1>Grazax®</td><td rowspan=1 colspan=1>Bachert, et al. Clin ExpAllergy. 2007</td><td rowspan=1 colspan=1>2007-01-03350</td></tr><tr><td rowspan=1 colspan=1>0malizumab®</td><td rowspan=1 colspan=1>Brown, et al. Allergy.2007</td><td rowspan=1 colspan=1>2007-01-03479</td></tr><tr><td rowspan=1 colspan=1>0malizumab®</td><td rowspan=1 colspan=1>Wu, et al. J Allergy ClinImmunol. 2007</td><td rowspan=1 colspan=1>2007-01-03057</td></tr><tr><td rowspan=1 colspan=1>Niox Mino®</td><td rowspan=1 colspan=1>Price, et al. Allergy.2009</td><td rowspan=1 colspan=1>2009-01-05260</td></tr><tr><td rowspan=1 colspan=1>Inhaled corticosteroids</td><td rowspan=1 colspan=1>Paltiel, et al. J AllergyClin Immunol. 2001</td><td rowspan=1 colspan=1>2001-01-02197</td></tr></table>
+
+<table><tr><td>Specific immunotherapy</td><td>Brüggenjürgen, et al. Ann Allergy Asthma Immunol. 2008</td><td>2008-01-04479</td></tr><tr><td>Aspirin desensitization</td><td>Shaker, et al. J Allergy Clin Immunol. 2008</td><td>2008-01-03131</td></tr><tr><td>Inhaled steroids</td><td>Fuhlbrigge, et al. J Allergy Clin Immunol. 2006</td><td>2006-01-02809</td></tr></table>
+
+(\*):https://research.tuftsnemc.org/cear/Default.aspx
+
+The analyses performed on brand name pharmaceutical interventions provide the best grade of evidence (evidence A) as they are generally performed in randomized controlled trials; however they are not always the most cost-effective. In contrast, one of the most cost-effective interventions is aspirin desensitization, performed by allergists, for secondary cardiovascular prevention in sensitized individuals10. However this analysis was performed in a projection of health care cost and utilizations and therefore used less stringent scientific evidence. Randomized clinical trials could not be used to assess the cost-effectiveness of allergist consultations as the use of placebo and/or randomization is ethically unacceptable in clinical practice or real-life studies. The best scientific methodology would be to utilize the prospective systematic sampling parallel controlled study 11.
+
+## Cost-Effectiveness of an Intervention in Randomized Clinical Trials
+
+Until now, the only placebo controlled randomized clinical trial to assess the cost-effectiveness of a pharmaceutical intervention in an organ-specific allergic disease in different countries using a common disease specific outcome has been the Inhaled Steroid as Regular Therapy in Early Asthma (START) study. In this study 7241 subjects (5 to 66 years) with mild persistent asthma of recent onset were randomized for three years to Pulmicort turbuhaler® or placebo. At the end of the study, subjects in the intervention group experienced an average of 14.1 (SE, 1.3) more SFD’s (p<.001). Also they experienced fewer hospital days (p<.001) and fewer emergency department visits (p<.05) per year12.
+
+Utilizing country-specific unit costs of services from eight different countries, it was concluded that from the payer perspective, the intervention was cost-effective only in Australia; but not in Sweden, Canada, France, Spain, United Kingdom, USA and China13. From the societal perspective, it was cost-effective in Australia, Sweden and Canada, but not in the other five countries. For example, in China, under the payer perspective, the intervention had an additional cost of
+
+US\$2.36 (1.5- 3.4) per day. Under the societal perspective it had an additional cost of US\$1.99 (1.1- 3.1) per day. This comprehensive and uniform study shows that this effective (evidence A) intervention may not be cost-effective and that the cost-effectiveness of an intervention depends on countryspecific costs.
+
+## Cost-Effectiveness of an Intervention in Clinical Practice:
+
+A cost-effective intervention, if used incorrectly in clinical practice, could increase costs; produce no benefit; or could actually cause harm. For example, a recent analysis of the prescription patterns in primary care in the United Kingdom showed that the majority of children with mild asthma, who needed no more than short-acting bronchodilators for asneeded reliever therapy, were unnecessarily prescribed a controller medication14. Furthermore, 14.5% of the prescriptions for newly diagnosed childhood asthma are for combination therapy (inhaled corticosteroids (ICS) + plus long acting betaagonist) or ICS at higher than recommended doses; including >800 mcg (CFC-beclomethasone or equivalent) a day to children less than 5 years of age15. These are prescription patterns that increase costs without offering any benefit to individual/family, society or payer.
+
+## Allergist Integrated Care in a Cost-Effective Approach
+
+An allergist is defined by the WAO2, as a physician who has successfully completed both a specialized training period in allergy and immunology and a training period in either internal medicine, or a sub-specialty of internal medicine such as dermatology; pneumology or otorhinolaryngology; and/or pediatrics. Subject to national training requirements, allergists are also partially or fully trained as clinical immunologists because of the immune basis of the diseases that they diagnose and treat. The main defining characteristics of an allergist are the appreciation of the importance of external triggers in causing diseases, together with expertise in appropriate drug and immunological therapies. This approach to diagnosis and therapy is a core value of the allergy specialist and contrasts the allergist with many of the organ-based specialists whose patient base may overlap with the specialty of allergy.
+
+Allergists are able to provide consultations for patients of primary and secondary care physicians and other health care professionals for simple or complicated questions (Figure 1)16.
+
+![](images/6d17fb40f1e6195855f10db5efce76cc9c00a3a9800a3fc40dd7b0e17d48c6ae.jpg)  
+Modified from (ref 11): Zeiger RS, J Allergy Clin Immunol. 2000 Dec; 106(6):995-1018.  
+Figure 1. The Specialist Scope of Function of the Allergist
+
+Allergist consultation has been shown to be cost-effective when compared to care provided by generalists in a singleorgan disease model, such as asthma11. A facilitated allergist consultation of asthmatics requiring an emergency room (ER) visit led to a significant reduction in both repeated ER visits (50%) and asthma awakening (75%) and also to an improvement in asthma control during the subsequent six months17. Real-life studies of allergen specific immunotherapy prescribed by allergists have confirmed its clinical effectiveness in clinical practice (Table 4). In a large health maintenance organization in the United States, subcutaneous immunotherapy produced a progressive reduction in direct medical costs in up to 33.4% (p<.001) for allergic rhinitis and comorbid conditions (asthma, conjunctivitis and atopic dermatitis) at 18 months18. The benefit became evident within the first 3 months and increased through to the study end. In a prospective parallel controlled study in Italy, a progressive reduction in direct medical cost of up to 22.7% was achieved two years after discontinuation of sub-lingual immunotherapy for asthma19. The greatest (33.8%) cost-reduction was achieved by patients with moderate persistent asthma.
+
+## Table 4 — Benefits of Allergen Specific Immunotherapy for Allergic Rhinitis and/or Asthma
+
+![](images/271cc36c772d30bcbaa6d29ee556f2465faedee44367b01f49a1c1e465e5b83a.jpg)
+
+## Long-term benefits (after discontinuation of treatment)
+
+Maintenance of its short-term benefits. Prevent the development of new allergen sensitization. Prevent the development of asthma
+
+The cost-effectiveness of an allergist consultation is a reflection of the clinical expertise and knowledge needed to match the most appropriate therapeutic intervention with the patient’s disease and severity in a busy clinical practice setting (Figure 2). It also provides an efficient use of resources for the interpretation, performance and selection of needed diagnostic tests on an individual basis. There are excess costs related to the over-ordering of diagnostic tests for allergy; scientifically proven tests such as radioallergosorbent testing for IgE antibodies in serum, will not be required if a careful clinical history, supported by appropriate skin prick testing provides a diagnosis. Misinterpretation of the results of diagnostic tests by non-specialists can lead to over-diagnosis and inappropriate management which can be harmful for the patient. It may lead to over-prescription of therapy and costly and unnecessary allergen avoidance measures; including exclusion diets that can lead to nutritional deficiency and secondary morbidity. Conversely, the under-appreciation of the severity of asthma can lead to life-endangering under-treatment or the lack of potentially life-altering immunotherapy. This emphasizes the importance of the need for the allergy specialist to be recognized as a specialist of complex and, in general, systemic diseases, needing a strong background of internal medicine, pediatrics and basic immunology.
+
+## Cost-effectiveness of an Allergist Consultation:
+
+![](images/1b3a973df84502cdf4f8594e76b257351fed73c306d4b9c6da6701980451217f.jpg)  
+Figure 2. Cost-effectiveness of an Allergist Consultation
+
+The cost-effectiveness of allergists will become increasingly evident, as allergic diseases become recognized as one chronic systemic disease with multi-organ involvement throughout the lifespan of an individual/family and are treated appropriately at the time of initial consultation, resulting in the prevention future disease burden and disease progression22.
+
+In a time when there is a need to maximize effectiveness and reduce costs, and when we are moving from an evidence based model of health-care to a more integrated model in which clinical expertise is needed to bring research evidence together with the clinical situation and local circumstances, fully trained allergists make an important contribution to delivering care for patients with allergic diseases and also for patients with non-allergic diseases, but with symptoms and signs that mimic or overlap with allergic diseases and require a completely different clinical approach 20,21.
+
+The cost-effectiveness of allergist consultations will be evident not only in improving patients’ outcomes and experiences, but also in reducing unnecessary expenditure under any perspective (payer, societal or individual/family).
+
+## Recommended Reading
+
+1. Neumann PJ. Using cost-effective analysis to improve health care; opportunities and barriers. Oxford University Press. New York, 2005
+
+2. World Allergy Organization. A position statement of the WAO Specialty and Training Council. What is an allergist? WAO Journal January 2008; 19- 20.
+
+3. Gergen PJ. Understanding the economic burden of asthma. J Allergy Clin Immunol. 2001 May; 107(5 Suppl):S445-8.
+
+4. Weiss KB, Sullivan SD. The health economics of asthma and rhinitis. I. Assessing the economic impact. J Allergy Clin Immunol. 2001 Jan; 107(1):3-8.
+
+5. Crystal-Peters J, Neslusan C, Crown WH, Torres A. Treating allergic rhinitis in patients with comorbid asthma: the risk of asthma-related hospitalizations and emergency department visits. J Allergy Clin Immunol. 2002 Jan; 109(1):57-62.
+
+6. Sih T, Mion O. Allergic rhinitis in the child and associated comorbidities. Pediatr Allergy Immunol. 2010: 21: e107- 113e.
+
+7. Sculpher M. The use of quality-adjusted life-years in cost-effectiveness studies. Allergy. 2006 May; 61(5):527-30.
+
+8. Sullivan S, Elixhauser A, Buist AS, Luce BR, Eisenberg J, Weiss KB. National Asthma Education and Prevention Program working group report on the cost effectiveness of asthma care. Am J Respir Crit Care Med. 1996 Sep; 154(3 Pt 2):S84-95.
+
+9. Institute for Clinical Research & Health Policy Studies of Tufts Medica Center (https://research.tuftsnemc.org/cear/Default.aspx). Accessed on 09/21/10.
+
+10. Shaker M, Lobb A, Jenkins P, O’Rourke D, Takemoto SK, Sheth S, Burroughs T, Dykewicz MS. An economic analysis of aspirin desensitization in aspirin-exacerbated respiratory disease. J Allergy Clin Immunol. 2008 Jan; 121(1):81-7.
+
+11. Zeiger RS, Schatz M. Effect of allergist intervention on patientcentered and societal outcomes: allergists as leaders, innovators, and educators. J Allergy Clin Immunol. 2000 Dec; 106(6):995-1018.
+
+12. Sullivan SD, Buxton M, Andersson LF, Lamm CJ, Liljas B, Chen YZ, Pauwels RA, Weiss KB. Cost-effectiveness analysis of early intervention with budesonide in mild persistent asthma. J Allergy Clin Immunol. 2003 Dec; 112(6):1229-36.
+
+13. Buxton MJ, Sullivan SD, Andersson LF, Lamm CJ, Liljas B, Busse WW, Pedersen S, Weiss KB. Country-specific cost-effectiveness of early intervention with budesonide in mild asthma. Eur Respir J. 2004 Oct; 24(4):568-74.
+
+14. Turner S, Thomas M, von Ziegenweidt J, Price D. Prescribing trends in asthma: a longitudinal observational study. Arch Dis Child. 2009 Jan; 94(1):16-22.
+
+15. GINA report, Global Strategy for Asthma Management and Prevention [http://www.ginasthma.org]
+
+16. American Academy of Allergy, Asthma & Immunology. Consultation and referral guidelines citing the evidence: how the allergistimmunologist can help. J Allergy Clin Immunol. 2006 Feb; 117(2 Suppl Consultation): S495-523.
+
+17. Zeiger RS, Heller S, Mellon MH, Wald J, Falkoff R, Schatz M. Facilitated referral to asthma specialist reduces relapses in asthma emergency room visits. J Allergy Clin Immunol. 1991 Jun; 87(6):1160-8.
+
+18. Hankin CS, Cox L, Lang D, Bronstone A, Fass P, Leatherman B, Wang Z. Allergen immunotherapy and health care cost benefits for children with allergic rhinitis: a large-scale, retrospective, matched cohort study. Ann Allergy Asthma Immunol. 2010 Jan; 104(1):79-85.
+
+19. Ariano R, Berto P, Incorvaia C, Di Cara G, Boccardo R, La Grutta S, Puccinelli P, Frati F. Economic evaluation of sublingual immunotherapy vs. symptomatic treatment in allergic asthma. Ann Allergy Asthma Immunol. 2009 Sep;103(3):254-9.
+
+20. Haynes RB, Devereaux PJ, Guyatt GH. Clinical expertise in the era of evidence-based medicine and patient choice. ACP J Club. 2002 Mar-Apr; 136(2):A11-4.
+
+21. Equity and excellence - Liberating the NHS. White Paper. National Health Services, United Kingdom. June 2010.
+
+22. Kaliner MA, Del Giacco S, Crisci CD, Frew AJ, Liu G, Masparo J, et al. Requirements for Physician Competencies in Allergy: Key Clinical Competencies Appropriate for the Care of Patients With Allergic or Immunologic Diseases: A Position Statement of the World Allergy Organization. www.waojournal.org. 1:42-46, 2008, February 2008
+
+# Member Societies Survey Report
+
+WAO acknowledges the following respondents who submitted reports on behalf of Member Societies:
+
+<table><tr><td rowspan=1 colspan=1>Albanian Society of Allergology and Clinical ImmunologyEris Mesonjesi</td></tr><tr><td rowspan=1 colspan=1>National Association for Private Algerian AllergistsAbdenour Benyounes</td></tr><tr><td rowspan=1 colspan=1>Argentine Association of Allergy and Clinical ImmunologyLedit. R. F. Ardusso</td></tr><tr><td rowspan=1 colspan=1>Australasian Society of Clinical Immunology and Allergy(ASCIA) Raymond Mullins</td></tr><tr><td rowspan=1 colspan=1>Austrian Society of Allergology and ImmunologyVeronika Maierhofer</td></tr><tr><td rowspan=1 colspan=1>Brazilian Society of Allergy and ImmunopathologyDirceu Solé</td></tr><tr><td rowspan=1 colspan=1>British Society for Allergy and Clinical ImmunologyGlenis Scaddin</td></tr><tr><td rowspan=1 colspan=1>Bulgarian Allergology SocietyVasil Dimitrov</td></tr><tr><td rowspan=1 colspan=1>Canadian Society of Allergy and Clinical ImmunologyStuart Carr</td></tr><tr><td rowspan=1 colspan=1>Chilean Society of Allergy and ImmunologyPaola Toche Pinaud</td></tr><tr><td rowspan=1 colspan=1>Croatian Society of Allergology and Clinical ImmunologyAsja Stipic Markovic</td></tr><tr><td rowspan=1 colspan=1>Cuban Society of Allergy, Asthma and ImmunologyDania Fabré; Mirta Alvarez</td></tr><tr><td rowspan=1 colspan=1>Czech Society of Allergology and Clinical ImmunologyJiri Litzman</td></tr><tr><td rowspan=1 colspan=1>Danish Society for AllergologyPeter Plaschke</td></tr><tr><td rowspan=1 colspan=1>Egyptian Society of Pediatric Allergy and Immunology andEgyptian Society of Allergy and Clinical ImmunologyYehia El-Gamal (ESPAl) and Kamal Maurice Hanna (ESACI)</td></tr><tr><td rowspan=1 colspan=1>Finnish Society of Allergology and ImmunologyPaula Kauppi</td></tr><tr><td rowspan=1 colspan=1>Georgian Association of Allergology and Clinical ImmunologyManana Chikhladze</td></tr><tr><td rowspan=1 colspan=1>German Society for Allergy and Clinical ImmunologyClaus Bachert</td></tr><tr><td rowspan=1 colspan=1>Hellenic Society of Allergology and Clinical ImmunologyDespina Renta; K. Kontou-Fili</td></tr><tr><td rowspan=1 colspan=1>Honduran Society of Allergy and Clinical ImmunologyClaudia Almendarez Flores</td></tr></table>
+
+<table><tr><td rowspan=1 colspan=1>Hungarian Society of Allergology and Clinical ImmunologyMargit Zeher; Kristof Nekam</td></tr><tr><td rowspan=1 colspan=1>Icelandic Society of Allergy and Clinical ImmunologySigurveig Sigurdardottir</td></tr><tr><td rowspan=1 colspan=1>Indian College of Allergy, Asthma and Applied ImmunologyA.B. Singh</td></tr><tr><td rowspan=1 colspan=1>Iranian Society of Asthma &amp; AllergyMohammad Gharagozlou</td></tr><tr><td rowspan=1 colspan=1>Israel Association of Allergy and Clinical ImmunologyMenachem Rottem</td></tr><tr><td rowspan=1 colspan=1>Italian Society for Allergology and Clinical ImmunologyLuigi Fontana</td></tr><tr><td rowspan=1 colspan=1>Japanese Society of AllergologyKazuo Akiyama and Ruby Pawankar</td></tr><tr><td rowspan=1 colspan=1>Jordanian Society of Allergy and ImmunologyHani Ababneh</td></tr><tr><td rowspan=1 colspan=1>Kuwait Society of Allergy and Clinical ImmunologyMona Al-Ahmad</td></tr><tr><td rowspan=1 colspan=1>Latvian Association of AllergistsAntra Bekere</td></tr><tr><td rowspan=1 colspan=1>Lebanese Society of Allergy and ImmunologyElias Khairallah</td></tr><tr><td rowspan=1 colspan=1>Malaysian Society of Allergy and ImmunologyAmir Hamzah Abdul Latiff</td></tr><tr><td rowspan=1 colspan=1>Mexican College of Pediatricians Specialized in Allergy andClinical ImmunologyJose Ortega Martell</td></tr><tr><td rowspan=1 colspan=1>Mongolian Society of AllergologySonomjamts Bayarlah</td></tr><tr><td rowspan=1 colspan=1>Moroccan Society of Allergology and Clinical ImmunologySayah Zineb</td></tr><tr><td rowspan=1 colspan=1>Netherlands Society of AllergologyHans de Groot</td></tr><tr><td rowspan=1 colspan=1>Norwegian Society of Allergology and ImmunopathologyTorgeir Storaas</td></tr><tr><td rowspan=1 colspan=1>Panamanian Association of Allergy and Clinical ImmunologyPaulo Barrera</td></tr><tr><td rowspan=1 colspan=1>Paraguayan Society of Allergy, Asthma and ImmunologyJaime A. Guggiari</td></tr><tr><td rowspan=1 colspan=1>Philippine Society of Allergy, Asthma and ImmunologyRuby N. Foronda</td></tr><tr><td rowspan=1 colspan=1>Polish Society of AllergologyBarbara Rogala</td></tr><tr><td rowspan=1 colspan=1>Portuguese Society of Allergology and Clinical ImmunologyAna Todo-Bom</td></tr></table>
+
+<table><tr><td>Romanian Society of Allergy and Clinical Immunology Diana Deleanu</td><td>Asia Pacific Association of Allergology and Clinical Immunology/ Taiwan Academy of Allergy and Clinical Immunology</td></tr><tr><td>Russian Association of Allergology and Clinical Immunology Rakhim Khaitov</td><td rowspan="2">Jiu-Yao Wang The Allergy, Asthma, and Immunology Society of Thailand</td></tr><tr><td rowspan="2">Allergy and Clinical Immunology Society (Singapore) Bee Wah Lee</td></tr><tr><td>Turkish National Society of Allergy and Clinical Immunology Slovenian Association for Allergology and Clinical Immunology</td></tr><tr><td>Mitja Kosnik Allergy Society of South Africa</td><td>Ömer Kalayci Ukrainian Association of Allergologists and Clinical Immunologists</td></tr><tr><td>Ahmed Ismail Manjra Korean Academy of Allergy, Asthma and Clinical Immunology</td><td>Igor Kaidashev Uruguayan Society of Allergy</td></tr><tr><td>Hae Sim Park Spanish Society of Allergology and Clinical Immunology</td><td rowspan="2">Juan F. Schuhl American Academy of Allergy, Asthma and Immunology, and American College of Allergy, Asthma and Immunology</td></tr><tr><td rowspan="2">Tomás Chivato and Pedro Ojeda Allergy &amp; Immunology Society of Sri Lanka</td></tr><tr><td>Venezuelan Society of Allergy and Immunology Luis Sarmiento</td></tr><tr><td>Shiroma Handunnetti Swedish Association for Allergology</td><td>Zimbabwe Allergy Society</td></tr><tr><td>Teet Pullerits; Pär Gyllfors Swiss Society of Allergology and Immunology</td><td>Elopy Sibanda</td></tr></table>
+
+## QUICK LOOK: Albania
+
+Report by Albanian Society of Allergology and Clinical Immunology
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>3,100,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2001</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>No data is available on prevalence trends because we have only one data point for allergic diseases inAlbania, obtained by the International Study of Asthma and Allergies in Childhood (ISAAC) and ECHRS(European Community Respiratory Health Šurvey in 1994-1997)</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>Estimated figure:20% of adult population30% of childhood population25% of total population</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>House dust mitesCatGrass pollensOliveAlternariaData source: ISAAC</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=2>Allergy Care: Treatment &amp; Training</td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy/clinical immunology</td><td rowspan=1 colspan=1>A separate medical specialty.</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>50Data source: Albanian Society Of Allergology and Clinical Immunology, University Hospital Center Tirana&quot;Mother Teresa”</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>General Practitioners are partly trained, but only for initial care, because they are not trained in these diseases.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>We have allergists only in the urban areas.</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>We need a greater number and a better allocation of allergists ll over the country, so that every city can haveat least one allergist. We needimproved facilities and equipment. General Practitioner training is needed for the follow- up of allergicpatients.More epidemiological studies are needed in order to estimate the real prevalence of allergic diseases inAlbania in 2010. We need to establish the trends of allergic disease prevalence in the country, by comparisonwith the prevalence reported in the last studies conducted in Albania.</td></tr></table>
+
+## QUICK LOOK: Algeria
+
+Report by National Association for Private Algerian Allergists
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>33,769,669</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2008</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private ServicesAsthma has been recognized for three years as a chronic disease, and totally taken over by the state, with alldrugs available.</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>Overall prevalence has increased.– Childhood Asthma - increased– Adult Asthma - increased- Severe Asthma - decreased— Allergic Rhinitis - increased— Atopic Eczema - increased— Anaphylaxis - increased— Food Allergy - increased– Complex, multi-organ allergic disease - increasedData source: Publications and local communications: (Algerian Pédiatric Society,West Algeria Pediatric Society,Algerian Society of Dermatology, Algerian Society of ORL Algerian Society of Asthma and Clinical Immunology)</td></tr><tr><td rowspan=1 colspan=1>Percentage ofpopulation with one or more allergicdiseases</td><td rowspan=1 colspan=1>15% of total population; separate figures for adults and children are not available.Data source: International Study of Asthma and Allergies in Childhood III</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>Dust mitesGrass pollens Cockroach OliveCypressParietariaData source: Local communications</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor)</td><td rowspan=1 colspan=1>Automobile exhaust pollutants</td></tr><tr><td rowspan=1 colspan=1>environmental pollutants that areimplicated in the development orexacerbation of allergic disease</td><td rowspan=1 colspan=1>DustsData source: Official sources: Department of Health, Ministry of Environment, Department of Social Security</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>Data not available</td></tr><tr><td rowspan=1 colspan=2>Allergy Care: Treatment &amp; Training</td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy/clinical immunology</td><td rowspan=1 colspan=1>Upgraded to specialty status in 2007</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>Based on congress participation, it is estimated that a total of approximately 500 specialists and generalistsprovide allergy services throughout Algeria.</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>Specific training in Allergy is provided by our Society and the AlgerianSociety of Asthma and Clinical Immunology during International congresses and workshops.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>Specialist diagnostic tests and venom rush immunotherapy are only available in the academic hospital inAlgiers.</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>We need to take actions to prevent the development of allergic diseases and exacerbations, and betterenvironmental controls.</td></tr></table>
+
+## QUICK LOOK: Argentina
+
+Report by Argentine Association of Allergy and Clinical Immunology
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>36,200,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2001</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and private services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>Childhood Asthma - increasedData source: International Study of Asthma and Allergies in Childhood (comparison of phase I and Il)</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>Estimated percentage:15% of adult population25% of childhood population20% of total populationData Source: ISAAC questionnaire performed in different places in Argentina</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggersthat are implicated in the development orexacerbation of allergic disease</td><td rowspan=1 colspan=1>Dermatophagoides peronyssinus/farinaeBlomia tropicalisGrass pollenWeeds pollen AIternaria sp.Data source: Publications from different regions of Argentina presented at the Argentine Association of Allergyand Clinical Immunology annual meeting</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>The site http://www.ambiente.gov.ar/?idarticulo=5738 provides some information.</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>Allergy Care: Treatment &amp; Training</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy/clinical immunology</td><td rowspan=1 colspan=1>Recognized specialty</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>809Data source: Argentine Association of Allergy and Clinical Immunology census, 2000</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>General practitioners are poorly trained to diagnose and treat allergic diseases.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>There are differences in the diagnostic tests available. Urban areas have better service provision than ruralonesData source: Argentine Association of Allergy and Clinical Immunology</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>The majority of the Schools of Medicine need to improve the training of allergic conditions. We also need tosee improved training in allergic conditions in the majority of post graduate training curricula, mainly for GPsand pediatricians; the current poor level of training means that patients are not properly diagnosed, they arenot well managed, and inadequate treatment is prescribed. Earlier referral of patients for specialist care isneeded because in most cases referrals are presently made too late in the disease.</td></tr></table>
+
+## QUICK LOOK: Australia
+
+Report from the Australasian Society of Clinical Immunology and Allergy (ASCIA)
+
+<table><tr><td colspan="2" rowspan="1">General</td></tr><tr><td colspan="1" rowspan="1">National population</td><td colspan="1" rowspan="1">23,000,000</td></tr><tr><td colspan="1" rowspan="1">Year population figure was reported</td><td colspan="1" rowspan="1">2010</td></tr><tr><td colspan="1" rowspan="1">Health service systems</td><td colspan="1" rowspan="1">Both National and Private Services</td></tr><tr><td colspan="1" rowspan="1">Allergy &amp; Allergic Diseases</td><td colspan="1" rowspan="1"></td></tr><tr><td colspan="1" rowspan="1">Allergic disease prevalence trends</td><td colspan="1" rowspan="1">Allergic diseases in the general population have increased.– Childhood Asthma - increased– Adult Asthma - increased- Severe Asthma - increased– Allergic Rhinitis - increased– Atopic Eczema - increased– Anaphylaxis - increased– Food Allergy - increased– Complex, multi-organ allergic disease - increasedData source: See ASCIA Report which includes literature review and information from governmentsources:http://www.allergy.org.au/content/view/324/76/</td></tr><tr><td colspan="1" rowspan="1">Percentage of population with one or moreallergic diseases</td><td colspan="1" rowspan="1">20% of adult population10% of childhood population30% of total populationData source: http://www.allergy.org.au/content/view/324/76/</td></tr><tr><td colspan="1" rowspan="1">Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td colspan="1" rowspan="1">Dust miteGrass pollensPet allergensPeanutEggData Source: http://www.allergy.org.au/content/view/324/76/</td></tr><tr><td colspan="1" rowspan="1">Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td colspan="1" rowspan="1">Tobacco smokeSO2NO2These pollutants are more implicated in asthma than other allergic diseasesSource: http://www.allergy.org.au/content/view/324/76/</td></tr><tr><td colspan="1" rowspan="1">The annual socio-economic costs ofallergic diseases</td><td colspan="1" rowspan="1">In 2007 it is estimated that:– 4.08 million Australians (19.6% of the population) have at least one allergy, of which 2.23 million (55%) arefemale and 1.85 million (45%) are male;– the highest prevalence of allergies is in the working age population, with 78% of people with allergies aged15 to 64 years (see chart below), and– there are 7.20 million cases of allergy (ie, an average of 1.74 comorbid allergies per person).In 2005, the financial cost of allergies was $9.4 billion. Of this:• $7.1 billion (75.8%) was productivity lost due to:— lower productivity while at work – presenteeism' ($4.2 billion)– absenteeism and lost household productivity (1.7 billion);– lower employment rates ($1.1 billion); and– premature death, including search and hiring costs ($83.7 million);• $1.1 billion (11.9%) was the direct health system expenditure of which:– allergic asthma was an estimated $808 million; and– non-asthma allergy (NAA) was an estimated $307 million; and• $261.5 million (2.8%) was other indirect costs such as aids and home modifications and the bring-forwardof funeral costs; and• $898.1 million (9.6%) was the deadweight loss from transfers including welfare payments (mainly DisabilitySupport Pension and Carer Payment) and taxation forgone. Additionally, the net value of the lost wellbeing(disability and premature death) was a further $21.3 billion. For 156,144 Disability Adjusted Life Years (DALYs).ASClA Access Economics Report 2007 as listed with web link previously In Australia there is a lack of publicand professional appreciation of the impact of allergic and immune disorders on quality of life, and even lessof the economic impact to society and individuals who suffer allergic disease. Raising awareness of theeconomic and health impacts is àn important factor in facilitating the early recognition and control of allergicdisease.</td></tr><tr><td colspan="2" rowspan="1">Allergy Care: Treatment &amp; Training</td></tr><tr><td colspan="1" rowspan="1">Recognition of the specialty of allergy orallergy/clinical immunology</td><td colspan="1" rowspan="1">Allergy and Clinical Immunology is a recognized, separate medical specialty, and this status has not changedin the last 10 years</td></tr><tr><td colspan="1" rowspan="1">Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td colspan="1" rowspan="1">Estimated figure:115Data source: ASCIA National Workforce Study 2007</td></tr><tr><td colspan="1" rowspan="1">General practitioner training in allergydiagnosis and treatment</td><td colspan="1" rowspan="1">There is little allergy/immunology in the undergraduate university curricula, and few opportunities forpostgraduate training in the area once hospital training has been completed. Such education is almostentirely dependent on pharmaceutical company sponsored meetings, although ASCIA does run someGP meetings in conjunction with its annual meeting, and some individual ASClA members run weekendmeetings from time to time.</td></tr><tr><td colspan="1" rowspan="1">Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td colspan="1" rowspan="1">Almost all allergy/immunology services are run in major cities with almost none in rural or remote areasData source: ASCIA National Workforce Study 2007</td></tr><tr><td colspan="1" rowspan="1">Enhancements required for improvedpatient care</td><td colspan="1" rowspan="1">Development of a framework of best practice for management of allergic disease in Australia will be enhancedby:– timely access to specialist allergy/immunology services;– access to early and accurate diagnosis;– access to affordable and cost-effective therapy and novel therapies;– support for community and medical education outside the current paradigm;– support for local research to develop interventional strategies to reduce the burden of disease in thecommunity; and– development of a model of allergy as a chronic disease.</td></tr></table>
+
+## QUICK LOOK: Austria
+
+Report by the Austrian Society of Allergology and Immunology
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>8,376,761</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2009</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends -estimated</td><td rowspan=1 colspan=1>- Childhood Asthma - increased- Adult Asthma - increased- Severe Asthma – remained the same– Allergic Rhinitis - increased– Atopic Eczema – remained the same- Anaphylaxis - increased- Food Allergy - increased– Complex, multi-organ allergic disease – remained the sameSome supporting data is available from the International Study of Asthma and Allergies in Childhood and somefrom 18-year-old males from the Austrian army, but there is no epidemiological data for the country.</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>Estimated figure:20% of adult population40% of childhood population25% of total population</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>Grass pollen Birch pollen Ragweed pollenCatHouse dust miteReference: Heinzerling L, Frew AJ, Bindslev-Jensen C, Bonini S, Bousquet J, Bresciani M, et al. Standard skinprick testing and sensitization to inhalant allergens across Europe - a survey from the GA²LEN network*.Allergy. 2005 0ct;60(10):1287-300.</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>Data not available</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>Data not available</td></tr><tr><td rowspan=1 colspan=1>Allergy Care: Treatment &amp; Training</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy/clinical immunology</td><td rowspan=1 colspan=1>In Austria there is no specialization in allergy/clinical immunology. Allergic patients are mainly treatedby dermatologists and paediatricians, but also by ENT specialists. Patients with asthma are managed bypneumologists and paediatricians with the sub-specialization in paediatric pneumology. Cases of clinicalimmunology (e.g. immune deficiency) are either seen by internists with the specialization of rheumatology orinfectious diseases, or by dermatologists (especially HIV patients)</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>Unknown</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>General practitioners are not trained to diagnose and treat allergic diseases; they usually only prescribesymptomatic treatment, eg, antihistamines.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>In some rural areas of Austria private allergy clinics manage most of the allergy patients. Around Viennafive allergy centers serve around 2.5 million population; in Innsbruck one centre serves around 400,000population, and in Oberpullendorf one centre serves around 50,000 population. In Graz, the Dermatologicdepartment of the Medical University runs a big allergy clinic serving around 500,000 population. Generallyspeaking, as most allergy patients are seen by specialists in dermatology, pediatrics, ENT and pneumology,services are more frequent in densely populated areas.</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>The lack of any national data for allergic diseases is on the one hand based on the lack of a separate medicalspecialty, and the Austrian Society of Allergology and Immunology is trying to change this by creating asubspecialty of allergy and clinical immunology; on the other hand there are insufficiencies and a lack ofnational coordination within the Austrian healthcare system that need to be addressed.</td></tr></table>
+
+## QUICK LOOK: Brazil
+
+Report by the Brazilian Society of Allergy and Immunopathology
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>170,000,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2000</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>International Study of Asthma and Allergies in Childhood data in children and adolescents indicate that theoverall prevalence has increased.Childhood Asthma - increased- Severe Asthma – remained the same– Allergic Rhinitis - increased– Atopic Eczema – increased– Food Allergy - increasedReference: Solé D, Wandalsen GF, Camelo-Nunes IC, Naspitz CK;ISAAC - Brazilian Group. - Prevalence of symptoms of asthma, rhinitis, and atopic eczema among Brazilianchildren and adolescents identified by the International Study of Asthma and Allergies in Childhood (ISAAC) -Phase 3.J Pediatr (Rio J). 2006 Sep-0ct;82(5):341-6. Epub 2006 Aug 28.</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>Data not available for adults30% of childhood populationReference: Solé D, Wandalsen GF, Camelo-Nunes IC, Naspitz CK;ISAAC - Brazilian Group. - Prevalence of symptoms of asthma, rhinitis, and atopic eczema among Brazilianchildren and adolescents identified by the International Study of Asthma and Allergies in Childhood (ISAAC) -Phase 3.J Pediatr (Rio J). 2006 Sep-Oct;82(5):341-6. Epub 2006 Aug 28.)</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>Dermatophagoides pteronyssinusBlomia tropicalisBlatella germanicaPeriplaneta AmericanaDogData source: Revista Brasileira de Alergia e Imunopatologia (Brazilian Journal of Allergy and Immunopathology)</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>Tobacco smokeParticulate matter from automobile exhaust - PM10OzoneData source: Revista Brasileira de Alergia e Imunopatologia (Brazilian Journal of Allergy andImmunopathology)</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>Data not available</td></tr><tr><td rowspan=1 colspan=1>Allergy Care: Treatment &amp; Training</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy/clinical immunology</td><td rowspan=1 colspan=1>Separate medical specialty</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>Estimated figure 900-1,000</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>General practitioners receive training to diagnose and treat allergic diseases during their undergraduatemedical education.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>The great majority of allergy and clinical immunology services are in urban areas.Data source: Brazilian Association of Allergy and Immunopathology</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>The Brazilian Association of Allergy and Immunopathology (BAAl) is one of the biggest allergy societies in LatinAmerica, with an increasing number of board certified members each year. BAAl has grown as one of themost important medical associations in Brazil and is a respected leader in our specialty among physicians.Its role in education has flourished, as seen in the increasing number of participants of the Annual AllergyMeetings. We are committed to enhancing the quality of care to allergic patients, through accreditation ofallergy training programs, and by stimulating scientific and clinical development of our specialty to improvepatient care. The BAAl is keeping up with WAO evidence-based position papers in expanding the role of weltrained allergy specialists.</td></tr></table>
+
+## QUICK LOOK: Bulgaria
+
+Report by Bulgarian Allergology Society
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>7,300,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2011</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>– Childhood Asthma – increased– Adult Asthma – increased– Severe Asthma – increased– Allergic Rhinitis – increased– Atopic Eczema – increased- Anaphylaxis – increased– Food Allergy – increased– Complex Allergy – increasedData source:Allergy and Asthma, Suppl.1, 2000 and Official Reports of President of Society, 2006, 2007-2010</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>30% of adult population33% of childhood population35% of total populationData source:Allergy and Asthma, Suppl.1, 2000 and Official Reports of President of Society, 2006, 2007-2010</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>PollensHouse dust mitesDrugsFoodData source:Allergy and Asthma, Suppl.1, 2000 and Official Reports of President of Society, 2006, 2007-2010</td></tr><tr><td rowspan=1 colspan=1>Major (indoor / outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>Diesel particulatesS02N02Data source:Allergy and Asthma, Suppl.1, 2000 and Official Reports of President of Society, 2006, 2007-2010</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=2>Allergy Care: Treatment &amp; Training</td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy / clinical immunology</td><td rowspan=1 colspan=1>A separately recognized medical specialty</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND / ORallergist / clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>108</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>General Practitioners receive training from specialists at postgraduate level</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy / clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>Allergy services are situated in urban areas</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>Our challenge is to increase the awareness and interest in allergic diseases and our specialty, both within thepopulation and the medical profession; the specialty needs to be marketed to medical students, residents,and fellow specialists.</td></tr></table>
+
+## QUICK LOOK: Canada
+
+Report by Canadian Society of Allergy and Clinical Immunology
+<table><tr><td rowspan=1 colspan=1>General</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>35,000,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2011</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>– Adult Asthma – increased- Severe Asthma – increased- Allergic Rhinitis – increased– Atopic Eczema – increased– Food Allergy – increased– Complex Allergy – increasedData source:ISAAC, various studies</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>Estimated figure:30% of the adult population30% of the childhood population30% of the total population</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>House dust mitesCatRagweedBirch PollenPeanutData Source:Canadian Society of Allergy and Clinical Immunology</td></tr><tr><td rowspan=1 colspan=1>Major (indoor / outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>Tobacco smokeDiesel exhaust particulatesOzoneBy-products of burning natural gas</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>Data not available</td></tr><tr><td rowspan=1 colspan=1>Allergy Care: Treatment &amp; Training</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy / clinical immunology</td><td rowspan=1 colspan=1>A sub-specialty of pediatrics or internal medicine: training and accreditation in Clinical Immunology &amp; Allergy isoffered, but only following accreditation in either Pediatrics or Internal Medicine (therefore sub-specialty ratherthan primary specialty)</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND / ORallergist / clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>Estimated figure: 153</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>General practitioners have minimal allergy/immunology exposure during their training; some undertakeelectives in Cl&amp;A, and may attend allergy-related CME</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy / clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>There is very little rural access to allergy/immunology services; almost all patients must attend urban clinics.</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>There is a need to address the relative paucity of training programs/funding and the insufficient number ofgraduates to replace aging specialist population.The need to balance the substantially higher concentration of accredited allergists in major urban centers(Toronto, Montreal, Vancouver) with the many fewer scattered across rest of country, to ensure that patientshave access to specialists. Canada is an enormous geographic region with minimal local access to accreditedallergists in most areas.Enhanced service provision to reduce the very long waiting lists for many regions.</td></tr></table>
+
+## QUICK LOOK: Chile
+
+Report by Chilean Society of Allergy and Immunology
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>15,116,435</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2002</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and private services</td></tr><tr><td rowspan=1 colspan=2>Allergy &amp; Allergic Diseases</td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>– Childhood Asthma – increased– Adult Asthma – increased– Severe Asthma – increased— Allergic Rhinitis – increased– Atopic Eczema – increased— Anaphylaxis – increased– Food Allergy – increased– Complex Allergy – increasedData source:ISAAC</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>15% of adult population15% of childhood population</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>House dust mitesGrass pollenPlatanus acerifoliaWeedsAnimal dandersData source:Polenes cl</td></tr><tr><td rowspan=1 colspan=1>Major (indoor / outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>Tobacco smokePolycyclic aromatic hydrocarbonsCarbon monoxideSulfur dioxideSmogData source:Ministerio de Salud de Chile 100 GES</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>Data not available</td></tr><tr><td rowspan=1 colspan=2>Allergy Care: Treatment &amp; Training</td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy / clinical immunology</td><td rowspan=1 colspan=1>A separately recognized medical specialty</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND / ORallergist / clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>Estimated figure: 60</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>Uncomplicated cases are diagnosed and treated by general practitioners, who receive their training in allergyat undergraduate level.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy / clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>Only urban areas have good service provision</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>The main challenge is to diffuse our specialty to improve the diagnosis and treatment of allergic disease.It will be necessary to obtain sufficient economic resources for the treatment of the vast majority of allergicpatients.</td></tr></table>
+
+## QUICK LOOK: Croatia
+
+Report by Croatian Society of Allergology and Clinical Immunology
+<table><tr><td colspan="2">General</td></tr><tr><td>National population</td><td>4,438,508</td></tr><tr><td>Year population figure was reported</td><td>2008</td></tr><tr><td>Health service systems</td><td>National and Private Services</td></tr><tr><td>Allergy &amp; Allergic Diseases Allergic disease prevalence trends Published data indicate an overall increase in prevalence.</td><td></td></tr><tr><td rowspan="5"></td><td>Childhood Asthma - increased - Adult Asthma - increased - Allergic Rhinitis - increased – Atopic Eczema - increased According to the epidemiological data collected from 1978 till 2009 the incidence of allergy is increasing. In</td></tr><tr><td>Croatian adults, the results of studies on the prevalence of atopy markers (total IgE, skin test to aeroallergens, and symptoms) collected for the 15-year period 1985- 1999, showed an increasing trend in elevated total IgE and atopic symptoms in males, but not in the female population. References:</td></tr><tr><td>Aberle N, Kljaic Bukvi B, Blekic M, Bardak D, Gudelj A, Cancarevic G, Karvazi M, Vuckovi M. ISAAC Il: Prevalence of allergic diseses and risk factors for asthma in childhood in the region of Brodsko-Posavsaka County. First Congress of Croatian Allergologists and Clinical Immunologists, Book of abstracts, Zagreb, 2009</td></tr><tr><td>Stipic-Markovic A, Cvoriscec B, Pevec B, Radulovic-Pevec M. Increasing incidence of allergy in Croatia. Rad HAZU, 499: 105-116, 2008 Macan J, Varnai VM, Maloca I, Kanceljak-Macan B. Increasing trend in atopy markers prevalence in Croatian</td></tr><tr><td>adult population between 1985- 1999. Clin Exp Allergy 2007; 37 (12):1756 Munivrana H, Vorko-Jovic A, Munivrana S et al. The prevalence of allergic diseases among Croatian school children according to the ISAAC Phase One questionnaire. Med Sci Monit. 2007 Nov;13(11):CR505-509</td></tr><tr><td>Percentage of population with one or more allergic diseases</td><td>Data not available</td></tr><tr><td rowspan="7">in the development or exacerbation of allergic disease</td><td>Dermatophagoides spp Grass pollens Domestic animal epithelia</td></tr><tr><td>Ambrosia trifida</td></tr><tr><td>Tree pollens</td></tr><tr><td>In the Croatian population of adult, allergic patients, Pyroglyphid mites are work-related allergens for fishermen. Non-Pyroglyphid mites are occupational risk factors in various rural environments of Croatia.</td></tr><tr><td>References: Stipic-Markovic A, Cvoriscec B, Pevec B, Radulovic-Pevec M. Increasing incidence of allergy in Croatia. Rad</td></tr><tr><td>HAZU, 499: 105-116, 2008 Stipic-Markovic A, Pevec B, Radulovic-Pevec M, Turkalj M, Zimic L, Cvoriscec B. High prevalence of skin</td></tr><tr><td>sensitization to inhalant allergens in school children from Zagreb, Croatia. Period Biol, 2007; 109: 161- 164 Cvitanovic S, Znaor Lj, Perisic D, Grbic D. Hypersensitivity to pollen allergens on the Adriatic coast. Arh Hig Rada Toksikol, 2004;55:147- 154</td></tr><tr><td>Major (indoor/outdoor) environmental pollutants that are implicated in the development or exacerbation of allergic disease</td><td>Nitrogen dioxide (NO₂) Ozone (03) Airborne particulates Sulphur dioxide (SO₂) Reference:</td></tr><tr><td>The annual socio-economic costs of allergic diseases</td><td>adult patients with respiratory diseases in Zagreb. Dissertation 2009. Data not available</td></tr><tr><td>Allergy Care: Treatment &amp; Training</td><td></td></tr><tr><td>Recognition of the specialty of allergy or allergy/clinical immunology</td><td>Upgraded to specialty status in 2010</td></tr><tr><td>Number of certified allergists AND/OR allergist/clinical immunologists urrently</td><td>Estimated figure - 50</td></tr><tr><td>practicing nationally General practitioner training in allergy</td><td>General practitioners are not trained to diagnose and treat allergic diseases</td></tr><tr><td>diagnosis and treatment Regional differences in allergy/clinical immunology service provision between</td><td>Allergy/clinical immunology services are available only in urban areas of the country</td></tr><tr><td>urban and rural areas Enhancements required for improved patient care</td><td>Allergology in Croatia is faced with technological and societal challenges at the time of approaching full membership to the European Union. A continuous, 55 year long tradition of successful scientific and clinical</td></tr></table>
+
+## QUICK LOOK: Cuba
+
+Report by Cuban Society of Allergy, Asthma and Immunology
+<table><tr><td colspan="2">General</td></tr><tr><td>National population</td><td>11,241,161</td></tr><tr><td>Year population figure was reported</td><td>2010</td></tr><tr><td>Health service systems</td><td>National Health Service</td></tr><tr><td colspan="2">Allergy &amp; Allergic Diseases</td></tr><tr><td rowspan="6">Allergic disease prevalence trends</td><td>- Increased</td></tr><tr><td>– Childhood Asthma – increased</td></tr><tr><td>– Adult Asthma – increased</td></tr><tr><td>- Severe Asthma – no data available</td></tr><tr><td>Data source: http://www.medigraphic.com/pdfs/revalemex/ram-2005/ram053e.pdf</td></tr><tr><td>http://scielo.sld.cu/scielo.php?script=sci_arttext&amp;pid=S0864-21252006000100013&amp;lang=es http://scielo.sld.cu/scielo.php?script=sci_arttext&amp;pid=S1561-30032009000100005&amp;lng=en&amp;nrm=iso&amp;igno re=.html</td></tr><tr><td>allergic diseases Major allergen triggers that are implicated in the development or exacerbation of</td><td>Dust mites Molds</td></tr><tr><td rowspan="4">allergic disease</td><td>Data source:</td></tr><tr><td>http://scielo.sld.cu/scielo.php?pid=S0864-21252010000400007&amp;script=sci_arttext&amp;tlng=en</td></tr><tr><td>http://www.nietoeditores.com.mx/download/alergia/mayo-junio2009/Alergia%203.6%20sensibilizacion.pdf http://www.nietoeditores.com.mx/download/alergia/marzo-abril2009/Alergia%202.3%20SENSIBLIZZACION.pdf http://scielo.sld.cu/scielo.php?script=sci_arttext&amp;pid=S0864-21252005000100013&amp;lng=es&amp;nrm=iso http://</td></tr><tr><td>scielo.sld.cu/scielo.php?script=sci_arttext&amp;pid=S0864-21252005000300022&amp;lng=es&amp;nrm=iso Tobacco smoke</td></tr><tr><td rowspan="4">pollutants that are implicated in the development or exacerbation of allergic disease</td><td>S02</td></tr><tr><td>N02 Data source:</td></tr><tr><td>http://scielo.sld.cu/scielo.php?pid=S1561-30032006000300004&amp;script=sci_arttext&amp;tlng=pt</td></tr><tr><td>http://scielo.sld.cu/scielo.php?pid=S1561-30032001000100001&amp;script=sci_arttext&amp;tlng=en No data available</td></tr><tr><td>The annual socio-economic costs of allergic diseases</td><td></td></tr><tr><td>Allergy Care: Treatment &amp; Training Recognition of the specialty of allergy or</td><td>A separately recognized medical specialty</td></tr><tr><td>allergy / clinical immunology Number of certified allergists AND / OR</td><td>Estimated figure: 220</td></tr><tr><td>allergist / clinical immunologists currently practicing nationally</td><td></td></tr><tr><td>General practitioner training in allergy diagnosis and treatment</td><td>All physicians have completed their studies of the specialty for three years. Before 1990 the program was a first year in Paediatrics or Medicine and two years training in allergy and immunology. Currently all are specialists in allergy (second specialty) with the first specialty in General Medicine, Medicine or Paediatrics.</td></tr><tr><td>Regional differences in allergy / clinical immunology service provision between urban and rural areas Enhancements required for improved</td><td>The differences accord to different levels of care, whether being delivered primary or secondary care providers, not to geographic differences.</td></tr><tr><td rowspan="3">patient care</td><td>The specialty of allergy has increased its qualitative level, and all Cuban citizens have access to this service in the three levels of medical assistance.</td></tr><tr><td>We work with the National Center of Bioproducts developing the allergen vaccines available in all allergy services in our country.</td></tr><tr><td>Allergic diseases are a great health problem in our country because of their high prevalence, costs, and social burden. We need to combine efforts between organizations and societies to perform studies of these diseases and to exchange information and experiences to improve patient care worldwide.</td></tr></table>
+
+## QUICK LOOK: Czech Republic
+
+Report by Czech Society of Allergology and Clinical Immunology
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>10,506,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2010</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>The overall prevalence of allergy has increased.Reference: V Spicak, J Kratenova. Astma a alergie ve stední a východní Evrop. Alergie 2007; 9, Suppl 2,11-14</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>Estimated figure:20% of adult population35% of childhood population25% of total population</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggersthat are implicated in the development orexacerbation of allergic disease</td><td rowspan=1 colspan=1>House dust miteBirch pollen* Grass pollens* MilkEgg whiteData source: Czech pollen information service</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>SO{2NO_{2</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>Data not available</td></tr><tr><td rowspan=1 colspan=1>Allergy Care: Treatment &amp; Training</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy/clinical immunology</td><td rowspan=1 colspan=1>A separate medical specialty.</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologistscurrently practicing nationally</td><td rowspan=1 colspan=1>Estimated figure: 450</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>General practitioners do not receive special training. Skin prick tests are performed exclusively byallergologists. Immunotherapy is performed exclusively by allergologists.</td></tr><tr><td rowspan=1 colspan=1>Regional differencesin allergy/clinical immunology serviceprovision between urban and rural areas</td><td rowspan=1 colspan=1>No major differences are present in service provision between urban and rural areas.</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>No data available</td></tr></table>
+
+## QUICK LOOK: Denmark
+
+Report by Danish Society for Allergology
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>5,033,227</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2010</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>Data indicate an increase in prevalence.- Childhood Asthma - increased- Adult Asthma - increased– Allergic Rhinitis - increased– Atopic Eczema - increasedReference:Linneberg AR, Nielsen NH, Madsen FF, Frølund L, Dirksen A, Jørgensen T. Increasing prevalence of specific IgEagainst aeroallergens in an adult Danish population--two cross-sectional studies in 1990 and 1998. UgeskrLaeger. 2002 Aug 26;164(35):4061- 5. Danish. PubMed - indexed for MEDLINDepartment of Public Health: Public Health Report 2007</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one ormore allergic diseases</td><td rowspan=1 colspan=1>Estimated prevalence:30% of adult population30% of childhood population30% of total populationReference:Linneberg AR, Nielsen NH, Madsen FF, Frølund L, Dirksen A, Jørgensen T. Increasing prevalence of specific IgEagainst aeroallergens in an adult Danish population--two cross-sectional studies in 1990 and 1998. UgeskrLaeger. 2002 Aug 26;164(35):4061- 5. Danish. PubMed - indexed for MEDLINDepartment of Public Health: Public Health Report 2007</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development orexacerbation of allergic disease</td><td rowspan=1 colspan=1>Grass pollen Birch pollen House dust mitesAnimals - cat, dog, horse, rodentsMoldsData source: National Board of Health, Denmark , Advisory Scientific Committee on Environmental Health:Linneberg: Development of airway allergy in Denmark (in Danish)</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>Tobacco smokeExhaust from motor vehicles</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>The total costs/year: 1.9 billion DKK (745 DKK = 100 EURO, year 2000) range 1.4 billion - 2.9 billion DKK. Thedirect costs 1.1 billion DKK and indirèct costs 0.8 billion DK.Reference:Mossing R, Nielsen GD. Cost-of-illness of asthma in Denmark in the year 2000.Ugeskr Laeger. 2003;165(26):2646-9. [Article in Danish]</td></tr><tr><td rowspan=1 colspan=1>Allergy Care: Treatment &amp; Training</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy/clinical immunology</td><td rowspan=1 colspan=1>Allergy and clinical immunology was previously a separate specialty, but it was downgraded to becomean “expert competence” without formal authorization, incorporated into other specialties (eg, respiratorymedicine and dermatology) in 2002</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologistscurrently practicing nationally</td><td rowspan=1 colspan=1>24The number of certified specialists is decreasingData source: Danish Medical Association</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>There is no specific formal training in allergic diseases for General Practitioners, but there is some very limitededucation in Allergology in the general training for GP&#x27;s.</td></tr><tr><td rowspan=1 colspan=1>Regional differencesin allergy/clinical immunology serviceprovision between urban and rural areas</td><td rowspan=1 colspan=1>Most specialists in allergology are located in the three main cities, with only a couple in rural areas.Data source: Danish Medical Association</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care/General comments</td><td rowspan=1 colspan=1>Denmark previously had a very good education and training in allergology and there are still a group of welleducated allergologists, and good scientific work in allergology. Many of the present specialists have only 3- 5 years left before retirement, and only very few have ten or more years left before retirement. The nationalcompetence and knowledge of allergy will be fading out in 5 - 1o years. We already seea growing market for private doctors of various specialties, but without training in allergie diseases, whoare testing allergy patients (paid per test) without the ability to interpret the results of the tests. We are alsoseeing a growing market for non-scientific based “alternative medicine”.</td></tr></table>
+
+## QUICK LOOK: Egypt
+
+Report by Egyptian Society of Pediatric Allergy and Immunology and Egyptian Society of Allergy and Clinical Immunology
+
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>78,700,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2010</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>Allergic disease has increased.– Childhood Asthma - increased- Adult Asthma - increased- Severe Asthma – remained the same- Allergic Rhinitis - increased— Atopic Eczema - increased— Anaphylaxis – remained the same— Food Allergy - increased– Complex, multi-organ allergic disease – increased</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>Estimated figures:7% of adult population20% of childhood population</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that areimplicated in the development orexacerbation of allergic disease</td><td rowspan=1 colspan=1>House dust mites, including Dermatophagoides farinaeCow&#x27;s milk, Cockroach, Aspergillus, Fish</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>Tobacco smokeMotor vehicle exhaustFactory emissions</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>Data not available</td></tr><tr><td rowspan=1 colspan=1>Allergy Care: Treatment &amp; Training</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty ofallergy or allergy/clinical immunology</td><td rowspan=1 colspan=1>Pediatric Allergy: We are currently implementing a separate pediatric allergy/immunology specialty bystarting a Masters Degree in pediatric allergy/immunology at Ain Shams University. This will be followed byimplementing a PhD degree in pediatric allergy/immunology. The Egyptian Medical Syndicate provides twolists of local allergists and immunologists; one concerning pediatrics and one for adults.Adult Allergy: Although there are no university degrees for Allergy yet, the Egyptian medical syndicate andMinistry of Health recognized it in 1994 as a separate specialty. The Allergy specialist should have a Masteror Doctorate degree in one of the following: Pediatrics, general medicine, ENT, Clinical Pathology, MedicalMicrobiology and Immunology, Dermatology. In addition the specialist should provide proof of training at anAllergy center, and be a member of the Egyptian Society of Allergy and Immunology.</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>Estimated figure:350 pediatricians practicing allergy/clinical immunology50-100 physicians practicing adult allergy/clinical immunology</td></tr><tr><td rowspan=1 colspan=1>General practitioner training inallergy diagnosis and treatment</td><td rowspan=1 colspan=1>Allergy is included among the curricula of undergraduate and postgraduate medical teaching in all Egyptianuniversities. There are some training programs of allergy and immunology in University hospitals such as thePediatric Allergy and Immunology Unit, Children&#x27;s Hospital of Ain Shams University, Cairo, Egypt.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>The allergy/clinical immunology service provision is less efficient in ruralareas. The university hospitals are the main referral centers for patients with allergy/immunology diseases.Rural citizens reprešent about 57.4% of the Egyptian population.Data source:Population Estimates by Governorate In Urban /Rural Areas 1/7/2008. Available from: http://www2.sis.gov.eg/VR/egyptinnumber/egyptinfigures/englishtables/44.pdf. Accessed on April 25, 2010.</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>The number of certified allergists/immunologists should be increased to match the needs of our population.The implementation of university degrees in the specialty will enable young Egyptian physicians to becomecertified in allergy/immunology. There are financial limitations to performing field studies and surveys on theprevalence and burden of allergy/immunology disorders.Local conferences, workshops, and scientific meetings are the main source of continuing medical education inallergy/immunology and the contribution of international speakers helps us to improve the state of knowledgeof the Egyptian practitioners who are unable to attend international meetings abroad.There is a great need to convince authorities about the importance of early diagnosis and treatment of allergicdiseases. We need to conduct national studies to detect major triggers and areas with a high incidence ofallergic diseases. Skin tests and other allergy diagnostic procedures must be made widely available. Issuesrelated to immunotherapy practice need to be considered.</td></tr></table>
+
+## QUICK LOOK: Finland
+
+Report by Finnish Society of Allergology and Immunology
+<table><tr><td colspan="4" rowspan="1">General</td></tr><tr><td colspan="1" rowspan="1">National population</td><td colspan="3" rowspan="1">5,300,000</td></tr><tr><td colspan="1" rowspan="1">Year population figure was reported</td><td colspan="3" rowspan="1">2009</td></tr><tr><td colspan="1" rowspan="1">Health service systems</td><td colspan="3" rowspan="1">National and Private Services</td></tr><tr><td colspan="1" rowspan="1">Allergy &amp; Allergic Diseases</td><td colspan="3" rowspan="1"></td></tr><tr><td colspan="1" rowspan="1">Allergic disease prevalence trends</td><td colspan="3" rowspan="1">Childhood Asthma – increased- Adult Asthma - increased- Severe Asthma - decreased- Allergic Rhinitis - increased– Atopic Eczema – remained the sameReferences:Korhonen et al. Hospitalization trends for paediatric asthma in eastern Finland: a 10-yr survey. Eur Respir J2002;19: 1035-9.Latvala J et al. Trends in prevalence of asthma and allergy in Finnish young men: a nationwide study from1966 to 2003. BMJ 2005;330:1186-87.</td></tr><tr><td colspan="1" rowspan="1">Percentage of population with one or moreallergic diseases</td><td colspan="3" rowspan="1">Estimated prevalences of allergic conditions in Finland in the 2000s (modified from Haahtela T. et al.)%Adult asthma                                8-10Childhood asthma                                5Asthma-like symptoms                        5-10Allergic rhinitis (seasonal and perennial)             30Hay fever (pollen allergy)                         20Allergic conjunctivitis                            15Atopic eczema                              10-20Urticaria                                       7Contact dermatitis                            8-10Food allergy (adults)                           2-5Food allergy (children)                         5-10Drug hypersensitivity                             2Insect hypersensitivity                            2Light hypersensitivity                         15-20Allergy to animals                               15At least one positive SPT result (adults)             47Allergy in family                                30Use of asthma or allergy medication (past 12 months) 35Reference:Finnish Allergy Programme 2008-2018--time to act and change the course. Haahtela T, von Hertzen L, MäkeläM, Hannuksela M; Allergy Programme Working Group. Allergy 2008; 63: 634-645.Latvala J et al. Trends in prevalence of asthma and allergy in Finnish young men: a nationwide study from1966 to 2003. BMJ 2005;330:1186-87.</td></tr><tr><td colspan="1" rowspan="1">Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td colspan="3" rowspan="1">Birch pollenTimothy grass pollenDogCatReference: A disparity in the association of asthma, rhinitis, and eczema with allergen-specific IgE betweenFinnish and Russian Karelia. Pekkarinen PT, von Hertzen L, Laatikainen T, Mäkelä MJ, Jousilahti P, KosunenTU, Pantelejev V, Vartiainen E, Haahtela T. Allergy. 2007 Mar; 62(3):281-7.</td></tr><tr><td colspan="1" rowspan="1">Major (indoor/outdoor)environmental pollutants that areimplicated in the development orexacerbation of allergic disease</td><td colspan="3" rowspan="1">DustsMolds: damp and moldy homes and workplacesParticulate matterPower plantsTobacco smokeVehicle exhaust emissions</td></tr><tr><td rowspan="10">The annual socio-economic costs of allergic diseases</td><td colspan="3">Annual costs attributable to allergic diseases in Finland. Loss of productivity not included (data from years 2004 and 2005)</td></tr><tr><td></td><td>Million Euros</td><td>(%)</td></tr><tr><td>Direct costs Hospital days</td><td>11</td><td></td></tr><tr><td>Outpatient visits</td><td>(2.1) 240 (46.2)</td><td></td></tr><tr><td>Medication*</td><td>192 (36.9)</td><td></td></tr><tr><td>Travelling</td><td>12 (2.3)</td><td></td></tr><tr><td>Private sector</td><td></td><td></td></tr><tr><td>cons/treatment Rehabilitation</td><td>10 (1.9) 3 (0.6)</td><td></td></tr><tr><td>Indirect costs</td><td></td><td></td></tr><tr><td>Disability pensions Sickness allowances</td><td>36 10</td><td>(6.9)</td></tr><tr><td></td><td></td><td>(1.9)</td></tr><tr><td>Per diem for patients</td><td>5.7</td><td>(1.1)</td></tr><tr><td>Total</td><td>519.7</td><td>(99.9)</td></tr><tr><td>eczema 6.8%. The rest comes from systemic antihistamines, 9.3% and glucocorticoids, 2.9%. Reference:</td><td></td><td>*Of which medication for asthma comprises 70.3%, for allergic rhinoconjunctivitis 10.7%, and for atopic</td></tr><tr><td>Allergy Care: Treatment &amp; Training</td><td></td><td>tolerance. von Hertzen LC, Savolainen J, Hannuksela M, Klaukka T, Lauerma A, Mäkelä MJ, Pekkanen J, Pietinalho A, Vaarala 0, Valovirta E, Vartiainen E, Haahtela T. Allergy. 2009 May;64(5):678-701. Review.</td><td>Scientific rationale for the Finnish Allergy Programme 2008-2018: emphasis on prevention and endorsing</td></tr><tr><td>Recognition of the specialty of allergy or allergy/clinical</td><td>Not recognized as a separate specialty, having been downgraded to</td><td></td><td></td></tr><tr><td>immunology</td><td></td><td>become part of other specialties (dermatology, otorhinolaryngology, pediatrics and pulmonology)</td><td></td></tr><tr><td>Number of certified allergists AND/OR allergist/clinical immunologists currently practicing nationally</td><td></td><td>Estimated figure: 422 (members of the Finnish Society of Allergology and Immunology)</td><td></td></tr><tr><td>General practitioner training in allergy diagnosis and treatment</td><td>Practitioners, this is obtained during training at undergraduate level.</td><td>A basic understanding (both in diagnostics and care) of allergic diseases is expected from General</td><td></td></tr><tr><td>Regional differences in allergy/clinical immunology service provision between urban and rural areas</td><td>Better clinical services are available in urban areas. Rural parts of the Data source:</td><td>country are lacking continuous clinical services. The fees are usually higher in urban areas.</td><td></td></tr><tr><td>Enhancements required for improved patient care – (v) allocate resources to manage and prevent exacerbations of severe allergies and</td><td>The main goals are to: – (i) prevent the development of allergic symptoms; (ii) increase tolerance against allergens; – (iii) improve the diagnosis of allergies; (iv) decrease work-related allergies;</td><td>Member of the board of the Finnish Society of Allergology and Immunology The national 10-year Finnish Allergy Programme aims to reduce the burden of allergies.</td><td></td></tr></table>
+
+## QUICK LOOK: Georgia
+
+Report by Georgian Association of Allergology and Clinical Immunology
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>5,000,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2009</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=2>Allergy &amp; Allergic Diseases</td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>There has been a documented increase in prevalence of allergic diseases– Childhood Asthma – increased– Adult Asthma – increased- Severe Asthma – increased– Allergic Rhinitis – increased– Atopic Eczema – increased– Anaphylaxis – remained the same– Food Allergy – increased– Complex Allergy – increased</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>18% of adult population24% of childhood population22% of total populationData source:GAACl annual report-2010</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>Ragweed pollenFood/Respiratory allergensHouse dust mites</td></tr><tr><td rowspan=1 colspan=1>Major (indoor / outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>Chemical factoriesApplication of chemicals to grow vegetables and fruit</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>Asthma - $150,000 USAllergic Rhinitis - $140,000 USAtopic Eczema - $40, 000 USAnaphylaxis - $25,000 USFood Allergy - $35,000 USComplex, multi-organ allergic disease - $70,000 US (Is this correct, these figures seem rather low?)</td></tr><tr><td rowspan=1 colspan=2>Allergy Care: Treatment &amp; Training</td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy / clinical immunology</td><td rowspan=1 colspan=1>Upgraded to a separate medical specialty in 1986</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND / ORallergist / clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>72</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy / clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>Yes (please elaborate what the differences are)</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>We need an increase in state funding to improve the quality of care for patients with allergic diseases, and toenhance allergic services in general.</td></tr></table>
+
+## QUICK LOOK: Germany
+
+Report by German Society for Allergy and Clinical Immunology
+
+<table><tr><td rowspan=1 colspan=1>General</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>83,000,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2010</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>Published information confirms that allergic diseases have remained stable.Data source:Bauchau, Durham 2005, Allergy</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>Estimated figure:40% of adult population45% of childhood population40% of total population</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>Timothy grassDermatophagoides pteronnysinusDermatophagoides farinaeBirchCatData Source:Zuberbier, GA2LEN data</td></tr><tr><td rowspan=1 colspan=1>Major (indoor / outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>Tobacco smoke</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>Asthma - $3.5 billion US</td></tr><tr><td rowspan=1 colspan=1>Allergy Care: Treatment &amp; Training</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy / clinical immunology</td><td rowspan=1 colspan=1>Part of another specialty, although there may be an opportunity to upgrade to full specialty status.</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND / ORallergist / clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>Estimated figure: 3,500</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>There is no formal General Practitioner training in allergy diagnosis and treatment; however, there are a fewGeneral Practitioners with an interest in allergy.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy / clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>Specialists are based in the cities.</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>The big challenge for the allergy specialist in Germany is that there is no extra money for diagnostics andtreatment; everything has to be covered by the primary specialty (e.g. ENT, dermatologist etc). Immunotherapylast year dropped by 7%, a downward trend which is expected to continue. Accordingly interest in allergyalso fades, with fewer doctors to pass the exams. Thus we need the decision makers/health authorities andinsurance companies to understand that diagnosis and treatment are necessary to avoid more costs (comorbidasthma etc) in the future, and trained physicians should be supported by adequate reimbursement. We needto promote the importance of insurance companies/health authorities covering the costs of allergic disease,including immunotherapy.There is also a need to show evidence per product for immunotherapy, both SLIT or SCIT. Only products withscientific evidence should be promoted.The specialty needs to be marketed to medical students, residents and fellow specialists. We need a specialty(not just a sub-specialty) of allergy.</td></tr></table>
+
+## QUICK LOOK: Greece
+
+Report by Hellenic Society of Allergology and Clinical Immunology
+<table><tr><td colspan="2" rowspan="1">General</td></tr><tr><td colspan="1" rowspan="1">National population</td><td colspan="1" rowspan="1">11,000,000</td></tr><tr><td colspan="1" rowspan="1">Year population figure was reported</td><td colspan="1" rowspan="1">2011</td></tr><tr><td colspan="1" rowspan="1">Health service systems</td><td colspan="1" rowspan="1">National and Private services</td></tr><tr><td colspan="1" rowspan="1">Allergy &amp; Allergic Diseases</td><td colspan="1" rowspan="1"></td></tr><tr><td colspan="1" rowspan="1">Allergic disease prevalence trends</td><td colspan="1" rowspan="1">- Childhood asthma – increased– Allergic Rhinitis – increasedReferences:Prevalence of asthma among schoolchildren in Patras, Greece: four questionnaire surveys during 1978-2003Anthracopoulos MB, Liolios E, Panagiotakos DB, Triantou K, Priftis KN. Arch Dis Child. 2007 Mar;92(3):209-12.Increasing prevalence of seasonal respiratory allergy among Greek Air Force officers. C.Grigoreas, D.Vourdas.EAACl 1999, Brusells Belgium, 3-7 July 1999. Allergy, vol 54, suppl.52, p.82,1999.Increase in chronic or recurrent rhinitis, rhinoconjunctivitis and eczema among schoolchildren in Greece: threesurveys during 1991-2003. Anthracopoulos MB, Antonogeorgos G, Liolios E, Triga M, Panagiotopoulou E, PriftisKN. Pediatr Allergy Immunol. 2009 Mar;20(2):180-6.Changes in frequency of asthma attributable to atopy, during 23 years (1987-2009), in Greece. Vourdas D,Petalas K, Papathanasiou D, Grigoreas C. EAACI, London, England, June 2010. Allergy, vol 64, suppl.90, p.149,2010</td></tr><tr><td colspan="1" rowspan="1">Percentage of population with one or moreallergic diseases</td><td colspan="1" rowspan="1">Estimated figure:20% of adult population30% of childhood population25% of total populationReferences:Prevalance of atopic sensitization among young adults from different parts of Greece. Grigoreas GC, VourdasVD, Petalas PK, Pappas PD, Karanagnostis KS. XVIII ICACl-World Allergy Organization,Vancouver Canada,7-12September 2003. Allergy and Clinical Immunology International, suppl.No 1, p.194, 2003.Can we be optimistic about asthma in childhood? A Greek cohort study Bacopoulou F, Veltsista A, Vassi I, Gika A,Lekea V, Priftis K, Bakoula C. JAsthma. 2009 Mar;46(2):171-4.Hospitalizations for childhood asthma in Athens, Greece, from 1978 to 2000. Priftis K, Panagiotopoulou-GartaganiP, Tapratzi-Potamianou P, Zachariadi-Xypolita A, Sagriotis A, Saxoni-Papageorgiou P. Pediatr Allergy Immunol.2005 Feb;16(1):82-5.</td></tr><tr><td colspan="1" rowspan="1">Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td colspan="1" rowspan="1">Parietaria pollenGrass pollenOlea europea pollenHouse dust mitesMold spores (primarily alternaria, cladosporium)References:A 10-year aerobiological study (1994-2003) in the Mediterranean island of Crete, Greece: trees, aerobiologicdata, and botanical and clinical correlations. Gonianakis MI, Baritaki MA, Neonakis IK, Gonianakis IM,Kypriotakis Z, Darivianaki E, Bouros D, Kontou-Filli K. Allergy Asthma Proc. 2006 Sep-Oct; 27(5):371-7.Prevalance of atopic sensitization among young adults from different parts of Greece. Grigoreas GC, VourdasVD, Petalas PK, Pappas PD, Karanagnostis KS. XVIII ICACl-World Allergy Organisation,Vancouver Canada, 7-12September 2003. Allergy and Clinical Immunology International,suppl.No 1, p.194.Demesticha, Roumana, Economides, Kompoti, Kontou-Fili. Aeroallergen sensitization in Hellenic patients withrespiratory allergy. Allergy; 55(S): 675, 2000Kontou-Fili K, Palaiologos G, Maniatakou G. Skin test reactivity to various aeroallergens in atopic subjects fromCentral and Southern Greece. Pollinosis in the Mediterranean Area Proceedings; Rocco Curto Edits, Naples,p. 45, 2000Grigoreas CG and Vourdas GD. Frequency of sensitization (positive skin tests) in airborne pollen allergens inpatients with respiratory allergy (nasal conjunctivitis, asthma) Greek Allergology &amp; Clinical Immunology (1996);2:100-8 (in Greek)Kontou-Fili K. Seasonal pattern of airborne inhalant allergens in Athens Greece. Allergy and Clin, Immunol.News 1995, 7 p.136-140</td></tr><tr><td colspan="1" rowspan="1">Major (indoor / outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td colspan="1" rowspan="1">PM10(Particulate Matter &lt; 10 mcm)Photochemical smog (with 1o pollutants: nitrogen oxides, hydrocarbons, carbon monoxide, sulfur dioxide andpollutants: ozone and organic nitrates)References:Grigoropoulos KN, Nastos PT, Ferentinos G, Gialouris A et al (2008). Weather, Ambient Air Pollution andBronchial Asthma in Athens, Greece. Advances in Global Change Research (AGLO), Thomson MC et al (eds)Springer, DordrechtGrigoropoulos KN, Nastos PT, Ferentinos G. Spatial distribution of PM1 and PM10 during Saharan dust episodesin Athens, Greece. Adv Sci Res 2009; 3:59-62Larissi IK, Koukouletsos KV, Moustris KP, Antoniou A, Paliatsos AG. PM10 concentration levels in the greaterAthens area, Greece. Fresen Environ Bull 2010; 19:226-31</td></tr><tr><td colspan="1" rowspan="1">The annual socio-economic costs ofallergic diseases</td><td colspan="1" rowspan="1">No data available</td></tr><tr><td colspan="2" rowspan="1">Allergy Care: Treatment &amp; Training</td></tr><tr><td colspan="1" rowspan="1">Recognition of the specialty of allergy orallergy / clinical immunology</td><td colspan="1" rowspan="1">A separately recognized medical specialty. Allergology was first recognized as a sub-speciality of InternalMedicine or Pediatrics in 1977 and was advancēd to a main medical specialty (2 years common trunk inpediatric or adult medicine) in 1983, to comply with directions from Brussels, aiming to harmonize the systemof medical specialties throughout European Union</td></tr><tr><td colspan="1" rowspan="1">Number of certified allergists AND / ORallergist / clinical immunologists currentlypracticing nationally</td><td colspan="1" rowspan="1">105</td></tr><tr><td colspan="1" rowspan="1">General practitioner training in allergydiagnosis and treatment</td><td colspan="1" rowspan="1">General Practitioners do not receive obligatory training in allergy diagnosis and treatment.</td></tr><tr><td colspan="1" rowspan="1">Regional differences in allergy / clinicalimmunology service provision betweenurban and rural areas</td><td colspan="1" rowspan="1">The majority of certified allergists practice in the large urban centers: Athens, Thessaloniki, Volos, Irakion,Crete, Larissa and others.</td></tr><tr><td colspan="1" rowspan="1">Enhancements required for improvedpatient care</td><td colspan="1" rowspan="1">Allergy patients need to recognize true allergists from “claimed allergists”: i.e, specialists from differentdisciplines, who believe that they can handle even complex allergic problems on the basis of attendingsome lectures or courses. In our country with more than double the number of physicians required forour population, it becomes obvious why such a problem exists. In this regard, our International ScientificOrganizations should help by writing in large print on Membership certificates, that this is not a Specialty Title.More important yet, our patients need to be trained (by allergists too) to recognize alternative witchcraft fromsome modes of alternative medicine that appear to help some patients with mild allergic problems, associatedwith an overload of undue stress.Lastly, there is a major challenge facing Greek allergists, as for all Hellenic physicians: to continue offeringgood services to all patients at a lower cost, due to the recession of our country's economy.</td></tr></table>
+
+## QUICK LOOK: Honduras
+
+Report by Honduran Society of Allergy and Clinical Immunology
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>4,500,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2009</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>- Childhood Asthma – increased— Allergic Rhinitis – increased– Atopic Eczema – increased– Food Allergy – increasedData source: MINISTRY OF HEALTHClinical observations</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>Estimated figure:10% of adult population20% of childhood population30% of total population</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>Major (indoor / outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>Allergy Care: Treatment &amp; Training</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy / clinical immunology</td><td rowspan=1 colspan=1>Recognized as a separate medical specialty</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND / ORallergist / clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>12</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>There is no General Practitioner postgraduate training requirement in allergy diagnosis and treatment.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy / clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>Allergy is only practiced in urban areas and private practice</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>No data available</td></tr></table>
+
+## QUICK LOOK: Hungary
+
+Report by Hungarian Society of Allergology and Clinical Immunology
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>10,000,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2011</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>- Childhood Asthma – increased– Adult Asthma – increased– Severe Asthma – increased– Allergic Rhinitis – increased– Atopic Eczema – increased– Anaphylaxis – remained the same– Food Allergy – remained the same– Complex Allergy – increasedData source:Clinical experience</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>Estimated figure:30% of adult population:20% of childhood population30% of total population</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>Ragweed pollenGrass pollenHouse dust miteMugwort pollenMilk proteinsData source:Annual National Pollen Reports, lectures at scientific meetings, some publications e.g. Allergy 64,1656,2009.</td></tr><tr><td rowspan=1 colspan=1>Major (indoor / outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>No reliable figures on direct and indirect costs of allergic diseases exist</td></tr><tr><td rowspan=1 colspan=1>Allergy Care: Treatment &amp; Training</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy / clinical immunology</td><td rowspan=1 colspan=1>Recognized as a separate medical specialty. Separate specialty enables the physician to practice itindependently of any other specialty, but it is a “secondary” specialty in terms of the necessity of having a firstspecialty: internal medicine or pediatrics or ENT or pulmonology or dermatology or ophthalmology</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND / ORallergist / clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>Estimated figure: 250</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>General practitioners get some basic postgraduate training but in most cases diagnosis and treatment optionsare set and suggested by specialists. Mild cases excluded, long term control and management rests withspecialists as well.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy / clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>Two-thirds of service providers live in cities/areas with medical universities , one-third in towns.</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>The major challenge for Hungary is to collect representative epidemiological data on allergic diseases, allergens,environmental pollutants and age cohorts, and based on those to set up an efficient network of integrated allergyservices covering the whole country.</td></tr></table>
+
+## QUICK LOOK: Iceland
+
+Report by Icelandic Society of Allergy and Clinical Immunology
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>319.180</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2011</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=2>Allergy &amp; Allergic Diseases</td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>2007 data: 6.7% of 20 – 44 year olds had history of asthma in the preceding 12 months and 29.3% reportedallergic rhinitisReference:Sigurkarlsson S et al. The Icelandic Medical Journal, 97; 463-467, 2011</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>Cat danderDog danderGrass pollensBirch pollen</td></tr><tr><td rowspan=1 colspan=1>Major (indoor / outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=2>Allergy Care: Treatment &amp; Training</td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy / clinical immunology</td><td rowspan=1 colspan=1>Recognized as a separate medical specialty</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND / ORallergist / clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>16</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>As part of internal medicine and pediatrics during medical school training students receive lectures in allergy,asthma and clinical immunology. There are no organized courses on allergy diagnosis and treatment duringGeneral Practitioner specialization.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy / clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>Most of the allergy and clinical immunology service is provided in Reykjavik, the capital of Iceland.</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>To reverse the decreasing governmental contribution towards the cost of therapy caused by the economicrecession, which results in an increasing financial burden for patients.</td></tr></table>
+
+## QUICK LOOK: India
+
+Report by Indian College of Allergy, Asthma and Applied Immunology
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>1.1 billion</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>1991</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>Increasing; asthma and rhinitis were reported to be 1%-10%respectively in 1964, but recent reports suggest asthma varying from3-14% percent and rhinitis as more than 20%</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>20% -30 % of total population</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>Major pollens are:Prosopis, Ricinus, Holoptelia, Artemisia, Cynodon, Cedrus, Malotus, Amaranthus, Parthenium, SorghumFungi : Alternaria, Cladosporium, Mucor, Aspergillus, CurvulariaMites, Dermatophagoides farinae, Dermatophagoides pteronyssinusInsects: Cockroaches, honey bee</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>In India woods and cow&#x27;s dung are still used in rural areas as fuel, and cause heavy smoke leading to triggersof allergy and asthma. Other pollutants such as SO, and NO, are reported to be aggravating factors.</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=2>Allergy Care: Treatment &amp; Training</td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy/clinical immunology</td><td rowspan=1 colspan=1>Not recognized as a separate specialty; physicians from pediatrics, pulmonology, dermatology, generalmedicine, otorhinolaryngology, etc,are briefly trained in allergy diagnosis and immunotherapy</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>Estimated number: 300Data source:Based on training program graduation and membership of Indian College of Allergy, Asthma and AppliedImmunology</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>General Physicians do attend and treat allergic cases, by pharmacotherapy only, but trained physicians withpostgraduate qualification provide immunotherapy.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy/clinicalimmunology serviceprovision between urban and rural areas</td><td rowspan=1 colspan=1>Most of the physicians diagnosing allergy either by in-vivo or in-vitro methods are confined to urban areas.</td></tr><tr><td rowspan=1 colspan=1>Enhancementsrequired for improved patient care</td><td rowspan=1 colspan=1>Allergy needs to be part of the graduate and postgraduate curriculum in medical institutions in India. Effortsare underway to introduce diploma courses in allergy at some centers.</td></tr></table>
+
+## QUICK LOOK: Iran
+
+Report by Iranian Society of Asthma & Allergy
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>75,000,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2011</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>Childhood Asthma – increased- Allergic Rhinitis - increasedPublished data indicate that allergic disease prevalence has increased.</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>20% of adult population20% of childhood population20% of total populationData source:Recently published articles especially based on ISAAC questionnaire: A systematic review of recent asthmasymptom surveys in Iranian children Chronic Respiratory Disease, May 2009 6: 109-114,</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>Mites (Dermatophagoides pteronyssinus) Weeds (R.pigweed, Fat hen)Grasses (Timothy, Russian Thistle)Trees (Plane)Data source:A Single Center Study of Clinical and Paraclinical Aspects in Iranian Patients with Allergic Rhinitis Iran JAllergyAsthma Immunol. 2008 Sep;7(3):163-7.</td></tr><tr><td rowspan=1 colspan=1>Major (indoor / outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>S02N02PM10COOzone</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=2>Allergy Care: Treatment &amp; Training</td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy / clinical immunology</td><td rowspan=1 colspan=1>Recognized as a separate medical specialty</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND / ORallergist / clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>Estimated figure: 50</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>Allergic diseases are taught during general medical education, pediatrics, internal medicine courses and alsoreviewed as CME in post-graduate courses.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy / clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>There is better availability of services in urban areas.</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>Improve education of patients and their families about allergies and how to control them.Educate physicians about the current standard guidelines and how to use them.Promote the need for insurance companies to cover the costs of allergic disease.</td></tr></table>
+
+## QUICK LOOK: Israel
+
+Report by Israel Association of Allergy and Clinical Immunology
+<table><tr><td colspan="2" rowspan="1">General</td></tr><tr><td colspan="1" rowspan="1">National population</td><td colspan="1" rowspan="1">7,500,000</td></tr><tr><td colspan="1" rowspan="1">Year population figure was reported</td><td colspan="1" rowspan="1">2010</td></tr><tr><td colspan="1" rowspan="1">Health service systems</td><td colspan="1" rowspan="1">National and Private Services</td></tr><tr><td colspan="1" rowspan="1">Allergy &amp; Allergic Diseases</td><td colspan="1" rowspan="1"></td></tr><tr><td colspan="1" rowspan="1">Allergic disease prevalence trends</td><td colspan="1" rowspan="1">The overall prevalence of allergic diseases has increased.- Childhood Asthma – increased– Adult Asthma – remained the same— Severe Asthma – decreased– Allergic Rhinitis – no data available– Atopic Eczema – increased- Anaphylaxis – remained the same– Food Allergy – remained the same– Complex, multi-organ allergic disease – remained the sameData source: Ministry of Health and Health Medical OrganizationsReferences:Romano-Zelekha 0 et al. Trends in the prevalence of asthma symptoms and allergic diseases in Israeliadolescents: results from a national survey 2003 and comparison with 1997. JAsthma. 2007 Jun;44(5):365-9.Graif Y et al. Prevalence and risk factors for allergic rhinitis and atopic eczema among schoolchildren in Israel:results from a national study. Ann Allergy Asthma Immunol. 2004 Feb;92(2):245-9.</td></tr><tr><td colspan="1" rowspan="1">Percentage of population with one or moreallergic diseases</td><td colspan="1" rowspan="1">Estimated figure:10% of the adult population20% of the childhood population15% of the total populationReferences:Rottem M et al. Hospital admission trends for pediatric asthma: results of a 10 year survey in Israel. Isr MedAssoc J. 2005 Dec;7(12):785-9. Morad M et al. Trends in adolescent asthma in Israel. Int JAdolesc MedHealth. 2004 Apr-Jun;16(2):187-9.Graif Y et al. Prevalence and risk factors for allergic rhinitis and atopic eczema among schoolchildren in Israel:results from a national study. Ann Allergy Asthmā Immunol. 2004 Feb;92(2):245-9.</td></tr><tr><td colspan="1" rowspan="1">Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td colspan="1" rowspan="1">House dust mitesOlive pollenCypress oliveParietaria (pellitory)Grass pollensReferences:Waisel Y et al. Ambrosia: a new impending disaster for the israeli allergic population./sr Med Assoc J. 2008Dec;10(12):856-7.Zeldin Y et al. Safety and efficacy of allergen immunotherapy in the treatment of allergic rhinitis and asthma inreal life.Isr Med Assoc J. 2008 Dec;10(12):869-72.Bibi H et al. Comparison of positive allergy skin tests among asthmatic children from rural and urban areasliving within small geographic area.Ann Allergy Asthma Immunol. 2002 Apr;88(4):416-20.Geller-Bernstein C et al. Pollen allergy in Israel. Pediatr Pulmonol. 2001;Suppl 23:46-7.Geller-Bernstein C et al. Hypersensitivity to pollen of Olea europaea in Israel. Al/lergy. 1996 May;51(5):356-9.</td></tr><tr><td colspan="1" rowspan="1">Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation ofallergic disease</td><td colspan="1" rowspan="1">Nitrous oxidesSulphur dioxideReferences:Garty BZ et al. Emergency room visits of asthmatic children, relation to air pollution, weather, and airborneallergens. Ann Allergy Asthma Immunol. 1998 Dec;81(6):563-70.</td></tr><tr><td colspan="1" rowspan="1">The annual socio-economic costs ofallergic diseases</td><td colspan="1" rowspan="1">The annual direct and indirect costs of Asthma is $250,000,000 US per annumData source: BDO Accountants, Israel</td></tr><tr><td colspan="2" rowspan="1">Allergy Care: Treatment &amp; Training</td></tr><tr><td colspan="1" rowspan="1">Recognition of the specialty of allergy orallergy/clinical immunology</td><td colspan="1" rowspan="1">A separate medical specialty; Allergy and Clinical Immunology was always recognized as a medical specialtyby the Israel Medical Association and Minisry of Health</td></tr><tr><td colspan="1" rowspan="1">Number of certified allergists AND/ORallergist/clinical immunologistscurrently practicing nationally</td><td colspan="1" rowspan="1">100Data source: Israel Association of Allergy and Clinical Immunology registry of members</td></tr><tr><td colspan="1" rowspan="1">General practitioner training in allergydiagnosis and treatment</td><td colspan="1" rowspan="1">General practitioners are taught to recognize allergic conditions and refer patients suspected of allergies tocertified allergists/clinical immunologists for diagnosis and advice. They continue to treat their patients asadvised, with further follow up and treatment in allergy clinics as needed. Allergy testing and immunotherapyare performed only by certified allergists/clinical immunologists.</td></tr><tr><td colspan="1" rowspan="1">Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td colspan="1" rowspan="1">No differences between urban and rural areasData source: Israel Association of Allergy and Clinical Immunology</td></tr><tr><td colspan="1" rowspan="1">Enhancements required for improvedpatient care</td><td colspan="1" rowspan="1">The major challenges in Israel are to:1) Survey the current prevalence of allergy and asthma in Israel;2) Expand the monitoring of pollen counts in different regions of the country;3) Spread knowledge about allergic diseases so that more patients can access proper advice and treatment ;4) Increase the number of allergists/clinical imunnologists to fulfill clinical needs.</td></tr></table>
+
+## QUICK LOOK: Italy
+
+Report by Italian Society for Allergology and Clinical Immunology
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>60,300,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2010</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>- Childhood Asthma – stable– Adult Asthma - increased- Severe Asthma - stable in children – no data available in adults— Allergic Rhinitis - increasing in children and adults– Atopic Eczema – increasingReferences:Renzoni E, Forastiere F, Biggeri A, et al. Differences in parental- and self-report of asthma, riniti and eczemaamong Italian adolescents. SIDRIA collaborative group. Studi Italiani sui Disordini Respiratori dell’infanzia el’Ambiente. Eur Respir J. 1999;14:597-604.Verlato G, Corsico A, Villani S, et al Is the prevalence of adult asthma and allergic rhinitis still increasing?Results of an Italian study. J Allergy Clin Immunol 2003;111:1232-8.Galassi C, Biggeri A, Ciccone G, et al SIDRIA Phase 1 Collaborative Group. Enviroment and respiratory diseasesin childhood: the Italian experience. Int J Occup Environ Health. 2005 ;11:103-6.Galassi C, De Sario M, Biggeri A, et al. Changes in prevalence of asthma and allergies among children andadolescents in Italy: 1994-2002. Pediatrics 2006;117:34-42.De Marco R, see abstract n. 3452 ERS Annual Meeting Barcelona, 18-22 September 2010</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>25% of adult population18% of childhood population21% of total populationData Source:Allergic Rhinitis and its Impact on Asthma (ARIA) Global Initiative on Asthma (GINA)Galassi C, et al Pediatrics 2006, De Marco R, De Marco R, see abstract n. 3452 ERS Annual MeetingBarcelona, 18-22 September 2010</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>House dust mite, Grass pollens, Pets, Ragweed pollen, Tree pollenReferences:Verlato G, Corsico A, Villani S, et al Is the prevalence of adult asthma and allergic rhinitis still increasing?Results of an Italian study. J Allergy Clin Immunol 2003;111:1232-8.Ciprandi G, Alesina R, Ariano R, et al. Characteristics of patients with allergic polysensitization: the POLISMAILstudy. Eur Ann Allergy Clin Immunol 2008;40:77-83.Brunetto B, Brescianini S, Barletta B, et al. Exposure to indoor allergens and association with allergysymptoms of employees in a work environment. Ann Ist Super Sanità 2009;45:415-22.No data available</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>Asthma: $900 US per asthmatic patient per year.Reference:Accordini S, Bugiani M, Arossa W, et al. Poor control increases the economic cost of asthma. A multicentrepopulation-based study. Int Arch Allergy Immunol 2008;141:189-98.</td></tr><tr><td rowspan=1 colspan=1>Allergy Care: Treatment &amp; Training</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy/clinical immunology</td><td rowspan=1 colspan=1>A separate medical specialty</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>No data available, but number is thought to be decreasing.Data Source: MIUR – Ministero Italiano dell’Università e della Ricerca (Italian Ministry of University andResearch)</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>It is possible for GP to attend a Masters course in Allergy, available in a few Italian Universities.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>There are regional differences in reimbursement of specific immunotherapy.</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>We need to increase the number of specialist centers for allergy/clinical immunology, and to improvecommunication between Specialists and General Practitioners.</td></tr></table>
+
+## QUICK LOOK: Japan
+
+Report by Japanese Society of Allergology
+<table><tr><td colspan="2" rowspan="1">General</td></tr><tr><td colspan="1" rowspan="1">National population</td><td colspan="1" rowspan="1">127,515,000</td></tr><tr><td colspan="1" rowspan="1">Year population figure was reported</td><td colspan="1" rowspan="1">2009</td></tr><tr><td colspan="1" rowspan="1">Health service systems</td><td colspan="1" rowspan="1">National and Private Services</td></tr><tr><td colspan="1" rowspan="1">Allergy &amp; Allergic Diseases</td><td colspan="1" rowspan="1"></td></tr><tr><td colspan="1" rowspan="1">Allergic disease prevalence trends</td><td colspan="1" rowspan="1">Overall allergy prevalence has increased.- Childhood Asthma - increased- Adult Asthma - increased– Allergic Rhinitis – increased- Atopic Eczema – remained the same– Anaphylaxis – remained the same– Food Allergy – increased— Complex, multi-organ allergic disease – increasedReferences:Report by Special Committee on Rheumatology and Allergy, Ministry of Health, Labour and Welfare, 2005.http://www.mhlw.go.jp/shingi/2005/10/dl/s1031-6a.pdf (in Japanese).Nishima S, et al. and The Study Group of the Prevalence of Bronchial Asthma, The West Japan Study Group ofBronchial Asthma. [A study on the prevalence of bronchial asthma in school children in westerndistricts of Japan: comparison between the studies in 1982 and in 1992 with the same methods and samedistricts]. Arerugi 1993;42:192-204 (in Japanese).Nishima S, et al. and The Study Group of the Prevalence of Allergic Diseases, The West Japan Study Groupof Allergy in Children. [A study on the prevalence of allergic diseases in school children western districts ofJapan: Comparison between the studies in 1992 and 2002 with the same methods and same districts], NihonShoni Arerugi Gakkaishi 2003;17:255-68 (in Japanese).Nakagawa T, Miyamoto T. Ito K, et al. [Prevalence of bronchial asthma in adult habitants in Fujieda City]. NihonKyobu Shikkan Gakkai Zasshi 1987;25:873-9 (in Japanese)Nakano J, Tajima M, Miyasaka T, et al. [Epidemic survey of adult asthma: change of the prevalence rate inFujieda City]. Arerugi1999;48:1043 (in Japanese). 5) Baba K, et al. [National epidemic survey of allergic rhinitis 2008 : comparisonwith 1998 survey]. Prog Med 2008;28:2001-2012 (in Japanese).Nishima, S, et al. Surveys on the prevalence of pediatric bronchial asthma in Japan: a comparison betweenthe 1982, 1992, and 2002 surveys conducted in the same region using the same methodology. Allergol Int2009;58:37-53.Ebisawa M. [Epidemiology of food allergy (its comparison between Japan and other countries)].Arerugi 2007;56: 10-7 (in Japanese).</td></tr><tr><td colspan="1" rowspan="1">Percentage of population with one or moreallergic diseases</td><td colspan="1" rowspan="1">29% of the adult population35% of the childhood population30% of the total populationReport by Special Committee on Rheumatology and Allergy, Ministry of Health, Labour and Welfare, 2005.http://www.mhlw.go.jp/shingi/2005/10/dl/s1031-6a.pdf (in Japanese).</td></tr><tr><td colspan="1" rowspan="1">Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td colspan="1" rowspan="1">House dust miteJapanese cedar (Cryptomeria japonica) pollenOther pollensFungiAnimal dandersReferences:Miyamoto T, et al. Allergic identity between the common floor mite (Dermatophagoides farinae Hughes, 1961)and house dust as a causative antigen in bronchial asthma. J Allergy 1968;42: 14-28.Maeda Y, et al. A study of sensitization and symptoms in adult asthmatics who keep cat and dog. Arerugi1993;42:691-8(in Japanese).Osuna H, et al. 18 cases of asthma induced by hamster or guinea-pig bred as pets. Arerugi 1997;46:1072-5(in Japanese).Takatori M, et al Airborne fungi during the last ten years in Sagamihara. Arerugi 1994;43:1-8 (in Japanese).</td></tr><tr><td colspan="1" rowspan="1">Major (indoor/outdoor)environmental pollutants that areimplicated in the development orexacerbation of allergic disease</td><td colspan="1" rowspan="1">Diesel exhaust particulatesTobacco smoke Nitrous oxides Sulphur dioxideReferences:Takafuji S, et al. Air pollution and allergy. J Investig Allergol Clin Immunol 2000; 10:5-10.Takizawa R, et al. Increased expression of HLA-DR and CD86 in nasal epithelial cells in allergic rhinitics:antigen presentation to T cells and up-regulation by diesel exhaust particles. Clin Exp Allergy 2007;37:420-33.</td></tr><tr><td colspan="1" rowspan="1">The annual socio-economic costs ofallergic diseases</td><td colspan="1" rowspan="1">Some data available at:Statistics by Ministry of Health, Labour and Welfare, Japan, 2006. http://www.mhlw.go.jp/toukei/saikin/hw/k-iryohi/06/toukei6.html (in Japanese).</td></tr><tr><td colspan="2" rowspan="1">Allergy Care: Treatment &amp; Training</td></tr><tr><td colspan="1" rowspan="1">Recognition of the specialty of allergy orallergy/clinical immunology</td><td colspan="1" rowspan="1">A separately recognized specialty.Allergy is also a subspecialty of Internal Medicine, Pediatrics, Otorhinolaryngology, and Dermatology. In recentyears there has been greater awareness and recognition of the importance of the specialty of allergy.</td></tr><tr><td colspan="1" rowspan="1">Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td colspan="1" rowspan="1">2964; this number is increasing.Data source: List of the certified allergists by Japanese Society of Allergology. Updated on April 21, 2010.</td></tr><tr><td colspan="1" rowspan="1">General practitioner training in allergydiagnosis and treatment</td><td colspan="1" rowspan="1">At undergraduate level there is education of allergy in Japan as part ofother subjects, so the general practitioners are educated in diagnosing and treating allergic diseases.Additionally, Japanese Society of Allergology and Japanese Medical Association conduct training workshopsand seminars to educate the general practitioners.</td></tr><tr><td colspan="1" rowspan="1">Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td colspan="1" rowspan="1">The majority of allergists are in urban areas. The percentage of allergists in the four major urban areas inJapan - Tokyo, Kanagawa, Aichi, and Osaka – is 46% of the total number of the certified allergists.The number of allergists in rural areas is much fewer.</td></tr><tr><td colspan="1" rowspan="1">Enhancements required for improvedpatient care</td><td colspan="1" rowspan="1">More standardized allergens need to be made available in Japan.Protocols for oral immunotherapy for children with food allergy, especially when the children are at home,need to be appropriately addressed. There is no consensus on the diagnosis of drug allergy, and a preventivestrategy for drug allergy is needed.Education on allergic diseases at school for children and their parents are needed, especially to treat foodallergy and anaphylaxis appropriately.Insurance coverage for allergic diseases is insufficient and this needs to be addressed.More education and training for allergists is needed.Most certified allergists practice in urban areas, so there is a need for better allergy services in rural areas.</td></tr></table>
+
+## QUICK LOOK: Jordan
+
+Report by Jordanian Society of Allergy and Immunology
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>6,198,677</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2008</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National, Private and Military Services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one ormore allergic diseases</td><td rowspan=1 colspan=1>Estimated figure20%-30% of total populationData source:Ministry of HealthRoyal Medical Services</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedinthe development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>Olive pollenHouse dust miteNuts Eggs Milk</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor)environmental pollutants that areimplicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>Car Exhaust fumesTobacco smoke (smoking is banned in public places)Cement and potash factoriesDusts</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>$150 Jordanian Dinar per patient, per month (equivalent to $195 US)</td></tr><tr><td rowspan=1 colspan=1>Allergy Care: Treatment &amp; Training</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Recognition of thespecialty of allergy or allergy/clinicalimmunology</td><td rowspan=1 colspan=1>Allergy is a recognized subspecialty of internal medicine and pediatrics.</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>15-20 practitioners, of whom 7 are certified.Dermatologists, pulmonologists, ENT specialists, pediatricians and internists also treat patients with allergies.</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>General Practitioners receive training in allergy at postgraduate level.</td></tr><tr><td rowspan=1 colspan=1>Regional differencesin allergy/clinical immunology serviceprovision between urban and rural areas</td><td rowspan=1 colspan=1>Minimal differences in service provision exist between urban and rural areas.</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>We need to establish a national allergy centre. The country requires a comprehensive and recognized allergy/clinical immunology training program and local allergy trainees. Patient care would be enhanced by controlledresearch in allergy.</td></tr></table>
+
+## QUICK LOOK: Kuwait
+
+Report from Kuwait Society of Allergy and Clinical Immunology
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>3.328.136</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>30 June 2008</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Systems</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>- Childhood Asthma – remained the same– Allergic Rhinitis - increased– Atopic Eczema - increasedReference:Changing Prevalence of Asthma and Allergic Diseases among Kuwaiti Children. An International Study ofAsthma and Allergies in Childhood Study (Phase Ill. Medical Principles and Practice. 2007The findings show that there is a decrease in the self-reported symptoms of allergic diseases over a 5-yearperiod while physician diagnoses of these diseases remained the same over the same period.</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>No studies are available for adults.Since we have a relatively young population, an approximate estimate is that 10%-25 % of the populationhave one or more allergic diseases.For 13-14yrs old (wheeze ever, current wheeze (within the last 12 months), and physician diagnosis of asthmaare 25.9% (24.5 to 27.4), 16.1% (15.8 to 17.4), and 16.8% (15.5 to 18.1) respectively. The prevalence rates(95% Cl) for symptoms of allergic rhinitis (AR) ever, current symptoms of allergic rhinitis (AR), and diagnosisof AR are 43.9% (42.2 to 45.6), 30.7% (29.1 to 32.4) and 17.1% (14.8 to 18.4) respectively. The prevalencerates (95% Cl) for itchy rash ever, current itchy rash, and diagnosis of eczema are 17.5% (16.2 to 18.8),12.6% (11.4 to 13.8). Other age ranges have not been studied.</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development orexacerbation of allergic disease</td><td rowspan=1 colspan=1>SalsolaChenopodium albumBermuda grassDermatophagoides pteronnysinusGerman cockroachesReference:Salsola pollen as a predominant cause of respiratory allergies in KuwaitAnn Allergy Asthma Immunol. 2004;92:262–267</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>Meteorological factors: high humidity, high temperatureReference:Meteorological factors, aeroallergens and asthma-related visits in Kuwait: a 12-month retrospective study AnnSaudi Med 28(6) November-December 2008</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>Data not available</td></tr><tr><td rowspan=1 colspan=1>Allergy Care: Treatment &amp; Training</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy/clinical immunology</td><td rowspan=1 colspan=1>Not recognized, part of another specialty</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>8</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>General Practitioners do not receive training in allergy diagnosis and treatment.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>No clear differences exist between urban and rural areas.</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>Allergic patients would receive a better level of care through enhancement of the training of allergy in theundergraduate and postgraduate medical curriculum, and an increase in the number of trained allergists(probably through the introduction of a national allergy training program). We need to increase the number ofdesignated allergy centers. More epidemiological studies are needed to ascertain the extent of the allergicdisease burden.</td></tr></table>
+
+## QUICK LOOK: Latvia
+
+Report by Latvian Association of Allergists
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>1,900,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2011</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>Major (indoor / outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=2>Allergy Care: Treatment &amp; Training</td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy / clinical immunology</td><td rowspan=1 colspan=1>A separately recognized medical specialty</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND / ORallergist / clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>Estimated figure: 26</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>Latvian Association of Allergists prepares a short course of lectures on allergy diagnostic and treatmentmethods every year.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy / clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>More allergists practice in urban areas.</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>Help patients to understand allergic symptoms and thus improve their quality of life.Provide lectures and seminars for General Practitioners, to enable them to identify allergic patients and makeearlier diagnosis of allergic diseases.We need more allergists working in country areas, because the majority of allergists are working in Riga, thecapital of Latvia.</td></tr></table>
+
+## QUICK LOOK: Lebanon
+
+## Report by Lebanese Society of Allergy and Immunology
+
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>3,500,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>1975</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>Allergy Care: Treatment &amp; Training</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy/clinical immunology</td><td rowspan=1 colspan=1>A separate medical specialty since 1980.</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>30Data Source: Lebanese Society of Allergy and Immunology</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>General Practitioners are not trained to diagnose and treat allergic diseases.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>There are more services in the capital.</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>No data available</td></tr></table>
+
+## QUICK LOOK: Malaysia
+
+Report by Malaysian Society of Allergy and Immunology
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>28,310,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2009</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>– Childhood Asthma – 9.4% (1995), 10% (2001)- Severe Asthma – 1.1% (2001) - childhood– Allergic Rhinitis – 7.5% (1995), 9.8% (2001) - childhood– Atopic Eczema – 13.2% (1995), 15.5% (2001)– Food Allergy – no data availabie; likely to be similar to other countries worldwide for adults, but less forchildren (anecdotal)</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>10% -15.5% of childhood population</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease.</td><td rowspan=1 colspan=1>House dust mitesAnimal danders (cats and dogs) Seafood - anecdotal data</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor)environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease.</td><td rowspan=1 colspan=1>Particulate matter ${ \mathsf { S } } 0 _ { _ { 2 } }$ NO2C0{2</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>US $108 (Annual per-patient direct cost for asthma)</td></tr><tr><td rowspan=1 colspan=1>Allergy Care: Treatment &amp; Training</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy/clinicalimmunology</td><td rowspan=1 colspan=1>Not currently a separate medical specialty or subspecialty. Efforts are in place for allergy/clinical immunologyto be recognized as a separate subspecialty in Malaysia. Currently, the Credentialing Committee of theNational Specialist Register, Academy of Medicine Malaysia, has taken</td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>up the matter and initiatives are underway to form the Clinical Immunology Credentialling Subcommittee(which will include Allergy) and create a training program for paediatricians and physicians.</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>Estimated figure:2</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>Mainly via professional societies conducting short courses but not leading to certification to practice (i.e. onlycertificate of attendance)</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>The limited critical mass of allergists and/or allergist/clinical immunologists has dictated that generalhospitals in urban areas are likely to be the main provider of allergy/clinical immunology healthcare services,rather than rural areas (which may not necessarily seek referral to urban hospitals for allergy/clinicalimmunology cases).</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>Patient care would be enhanced by the recognition of clinical immunology and allergy as a medical (internalmedicine and paediatrics) sub-speciality. Better training in allergy is required at the undergraduate level andfor General Práctitioners. There is a need for more physicians to be trained in allergy.The creation of specialist centers, and epidemiological studies to assess the socio-economic burden ofallergic diseases, are needed.</td></tr></table>
+
+## QUICK LOOK: Mexico
+
+Report by Mexican College of Pediatricians Specialized in Allergy and Clinical Immunology
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>103,000,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2005</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>Data in children and adolescents indicate that overall prevalence is increased– Childhood Asthma - increased– Adult Asthma - increased- Severe Asthma - remained the same- Allergic Rhinitis - increased— Atopic Eczema - increased– Anaphylaxis - remained the same– Food Allergy - remained the same– Complex, multi-organ allergic disease - remained the sameReferences:Worldwide trends in the prevalence of asthma symptoms: phase IIl of the International Study of Asthma andAllergies in Childhood (ISAAC). Thorax 2007;62:758-766Revista Alergia México 2009;56(3):72-79</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>40% of adult population50% of childhood populationReference: Revista Alergia México 2009;56(3):72-79</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development orexacerbation of allergic disease</td><td rowspan=1 colspan=1>Dermatophagoides pteronissinusDermatophagoides farinaeCynodon dactylonLollium perenneAlternaria alternataReference: Revista Alergia México 2009;56(3):72-79</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>OzoneParticulate matter from automobile exhaust $\mathsf { - P M } _ { 2 5 }$ Reference: Environ Health Perspect 2008 Jun;116(6):832-8.</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>Asthma: $35,000,000 USReference:Gallardo Martínez G, Arias Cruz A, González Díaz SN, Galindo Rodríguez G. Costs due to asthma medical carein a group of children from northeastern México. Rev Alerg Mex 2007;54:82-85</td></tr><tr><td rowspan=1 colspan=1>Allergy Care: Treatment &amp; Training</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy/clinical immunology</td><td rowspan=1 colspan=1>A separate medical specialty since 1946</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>570</td></tr><tr><td rowspan=1 colspan=1>General practitionertraining in allergy diagnosis and treatment</td><td rowspan=1 colspan=1>General practitioners receive only very general information during their undergraduate medical training</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>Allergists are concentrated in urban areas</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>The major challenge is to get specialized medical attention to low income populations, especially in ruralareas, and to be able to obtain the new internationally recognized available drugs and immunotherapy.More education is required, targeted appropriately for specialists, pediatricians, general practitioners, alliedhealth workers and patients.</td></tr></table>## QUICK LOOK: Mongolia
+
+Report by Mongolian Society of Allergology
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>2,815,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2011</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>Governmental and Private services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>– Childhood Asthma – increased— Adult Asthma – increased— Severe Asthma – increasedReferences:Prevalence of asthma, allergic rhinoconjunctivitis and allergic sensitization in Mongolia A. Viinanen, S.Munhbayarlah, T. Zevgee, L. Narantsetseg, Ts. Naidansuren, M. Koskenvuo, H. Helenius and E. O. Terho Allergy,Volume 60, Issue 11 Pages 1337–1458Asthma and Allergic rhinitis in Ulaanbaatar, Mongolia. Abstract book, The 8th Asia Pacific Congress of Allergy,Asthma and Clinical Immunology December 6 - 9, 2010, Singapore</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>Estimated figure:24% of adult population18% of childhood population</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>MugwortBirchGrass pollensCat danderHorse danderHouse dust mitesStorage mites</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>SO{2CONO2Diesel Exhaust ParticulatesDust</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=2>Allergy Care: Treatment &amp; Training</td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy / clinical immunology</td><td rowspan=1 colspan=1>Recognized as a separate medical specialty</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND / ORallergist / clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>Estimated figure:28 – 5 Pediatric allergists, 23 General Allergists</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>General practitioners do not make diagnostic tests or treat allergic patients in Mongolia.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy / clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>We have differences in allergy/clinical immunology service provision in urban and rural areas. Allergists workin the third level hospitals and private allergy and asthma clinics in cities.</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>We need to increase the number of allergists who are working in the provinces.Improve education of patients and their families about allergies and how to control them.Promote the need for health insurance system to cover the costs of allergic disease, including immunotherapy.</td></tr></table>
+
+## QUICK LOOK: Morocco
+
+Report by Moroccan Society of Allergology and Clinical Immunology
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>30,000,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2004</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>Overall prevalence is increased.- Childhood Asthma - increased– Adult Asthma - increased– Severe Asthma – remained the same– Allergic Rhinitis - increased– Atopic Eczema - increased– Anaphylaxis - remained the same– Food Allergy - increased– Complex, multi-organ allergic disease – increasedData Source: International Study of Asthma and Allergies in Childhood (ISAAC) study</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>8% of adult population12% of childhood population10% of total populationData Source: International Study of Asthma and Allergies in Childhood (ISAAC) study</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>Dust mites (Dermatophagoides pteronyssinus, Dermatophagoides farinae)Blomia tropicalisGraminae pollenOlive pollenCockroachData Source: Moroccan Society of Allergology and Clinical Immunology</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>Diesel exhaust particulatesData Source: Moroccan Society of Allergology and Clinical Immunology</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>No data available.</td></tr><tr><td rowspan=1 colspan=1>Allergy Care: Treatment &amp; Training</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy/clinical immunology</td><td rowspan=1 colspan=1>Allergy is not a separate specialty, it is part of other specialties such as pneumology, pediatrics, dermatology,otorhinolaryngology.</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>Estimated figure:300</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>Most General Practitioners are able to diagnose and treat asthma, rhinitis and atopic dermatitis. They do notpractice skin tests or specific immunotherapy. They have to refer patients to allergist for that purpose. SMAICregularly organizes workshops for General Practitioners and also participates in meetings of GP&#x27;s in severalcities of Morocco.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>Most allergists practice in large cities mainly Casablanca and Rabat (200). The rest are in other cities. Ruralareas are neighboring urban areas where allergy services are provided, and most patients would have totravel less than 150 miles for an allergy service.</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>We need to include allergy teaching in medical university programs and to recognize allergy as a specialty.The population needs to receive regular information about all aspects of allergy diagnosis, treatment andprevention.</td></tr></table>
+
+## QUICK LOOK: Netherlands
+
+## Report by Netherlands Society of Allergology
+
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>14,000,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2009</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>The overall incidence in allergic diseases has remained stableData Source: General practitioner reported data</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one ormore allergic diseases</td><td rowspan=1 colspan=1>Estimated figure:25% of adult population30% of childhood population25% of total population</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=2 colspan=1>House dust mitesGrass pollensTree pollensCat danderDog danderReferences:Repeated measurements of mite and pet allergen levels in house dust over a time period of 8 years. AntensCJ, Oldenwening M, Wolse A, Gehring U, Smit HA, Aalberse RC, Kerkhof M, Gerritsen J, de Jongste JC,Brunekreef B. Clin Exp Allergy. 2006 Dec;36(12):1525-31.PMID: 17177675 [PubMed - indexed for MEDLINE]House dust mite allergen reduction and allergy at 4 yr: follow up of the PlAMA-study. Corver K, Kerkhof M,Brussee JE, Brunekreef B, van Strien RT, Vos AP, Smit HA, Gerritsen J, Neijens HJ, de Jongste JC. PediatrAllergy Immunol. 2006 Aug;17(5):329-36.PMID: 16846450 [PubMed - indexed for MEDLINE]The effect of prenatal exposure on total IgE at birth and sensitization at twelve months and four years of age:The PIAMA study. Kerkhof M, Wijga A, Smit HA, de Jongste JC, Aalberse RC, Brunekreef B, Gerritsen J, PostmaDS; PIAMA Study Group. Pediatr Allergy Immunol. 2005 Feb;16(1):10-8.PMÍD: 15693906 [PubMed - indexedforMEDLINE]The allergic sensitization in infants with atopic eczema from different countries. de Benedictis FM,Franceschini F, Hill D, Naspitz C, Simons FE, Wahn U, Warner JO, de Longueville M; EPAAC Study Group.Allergy. 2009 Feb;64(2):295-303. Epub 2008 Dec 31.PMID: 19133917 [PubMed - indexed for MEDLINE]</td></tr><tr><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>No published data for the Netherlands</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>Allergy Care: Treatment &amp; Training</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy/clinical immunology</td><td rowspan=1 colspan=1>The specialty of allergy and clinical immunology was downgraded in 1998 to become part of another specialty</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>Estimated figure: 30</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>There is no special training within the General Practitioner training course, education for General Practitionersis only available at post-graduate courses and congresses</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>There is no difference in allergy/clinical immunology service provision between urban and rural areas</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>The challenge will be to train more professionals in the field of allergy; only 2 internal medicine/allergologistsand 3 pediatric/allergologists are in training for the next 3 years.</td></tr></table>
+
+## QUICK LOOK: Norway
+
+Report by Norwegian Society of Allergology and Immunopathology
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>4 888 000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>1.7.2010</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>Allergy prevalence has increased.- Childhood Asthma – lifetime prevalence: 20%, current asthma: 10%Data source: Lodrup Carlsen et al. Asthma in every fifth child in Oslo, Norway: a 10-year follow up of a birthcohort study. Allergy. 2006</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>19% of adult population20% of childhood population20% of total populationReferences:Bakke P, Gulsvik A, Eide GE. Hay fever, eczema and urticaria in southwest Norway. Lifetime prevalencesand association with sex, age, smoking habits, occupational airborne exposures and respiratory symptoms.Allergy. 1990 0ct;45(7):515-22Brogger J, Bakke P, Eide GE, Johansen B, Andersen A, Gulsvik A. Long-term changes in adult asthmaprevalence. Eur Respir J. 2003 Mar;21(3):468-72Lang A, Carlsen KH, Haaland G, Devulapalli CS, Munthe-Kaas M, Mowinckel P, Carlsen K. Severe asthma inchildhood: assessed in 10 year olds in a birth cohort study. Allergy. 2008 Aug;63(8):1054-60</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>Birch pollen Grass pollen Cat</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment orexacerbation of allergic disease</td><td rowspan=1 colspan=1>Diesel exhaust particulatesReference: Samuelsen M, Nygaard UC, Løvik M. Allergy adjuvant effect of particles from wood smoke and roadtraffic. Toxicology, 2008 Apr 18:246(2-3):124-31</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>Data not available</td></tr><tr><td rowspan=1 colspan=2>Allergy Care: Treatment &amp; Training</td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy/clinical immunology</td><td rowspan=1 colspan=1>There has never been any formalization of the field allergology in Norway. At least 4 different specialties dealwith allergic patients (pediatrics, otolaryngology, pulmonology, dermatology, gastroenterology, and others).</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>There are known to be some specialists working in Norway who have obtained certification in allergologyfrom other countries.</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>General practitioners are not specially trained in allergic diseases beyond their education in general medicinewhere allergic diseases are treated together with othēr diseases, such as asthma being taught together withother obstructive lung diseases.</td></tr><tr><td rowspan=1 colspan=1>Regional differencesin allergy/clinical immunology serviceprovision between urban and rural areas</td><td rowspan=1 colspan=1>There are few allergy centers, and they are all situated in the largertowns, and urbanized areas. There are great geographical differences in the availability of immunotherapyservices, and this is more seldom offered in rural areas.</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>The lack of a formalization of allergology may be the reason for the fragmented education about allergicdiseases, for both undergraduate medical students and specialists in Norway. Work should continue towardsthe implementation of physician ‘areas of competence&#x27; in allergology as a super-specialty&#x27;. The competenceshould be linked to service at an allergy center for 1-2 years, and a structured education in allergology.There is a great need for the creation of allergy centers. The goal should be to have at least one allergy centerin each health region.</td></tr></table>
+
+## QUICK LOOK: Panama
+
+Report by Panamanian Association of Allergy and Clinical Immunology
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>3,400,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2010</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>15% of adult population20% of childhood populationData source:ISAAC studied a Panamanian population from Chiriqui (Dr. Gherson Cukier was in charge)</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>House dust mitesCockroachMoldsDog/cat epitheliumGrass pollenData source:Servicio de Allergia e Immunologia Clinica. Complejo Hopsitalario de la Caja de Seguro Socia, Panama.</td></tr><tr><td rowspan=1 colspan=1>Major (indoor / outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=2>Allergy Care: Treatment &amp; Training</td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy / clinical immunology</td><td rowspan=1 colspan=1>Recognized as a separate medical specialty</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND / ORallergist / clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>19.We are training the first ever allergy clinical immunology specialist in Panama, who will complete training in2012.</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>Though we hold continuous medical education lectures sponsored by the pharmaceutical industry, and wehold à National congress every 2-3 years, there is a lack of knowledge within our general practitioners. TheAssociation is only à handful of specialists, and members are concentrated in three of the country&#x27;s nineprovinces.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy / clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>The 23 specialists are all concentrated in 3 provinces, and the indian regions (comarcas) do not have anallergist. The Ministry of Health employs only two allergists in the whole country. The social security systemhas 9 allergists; the rest work in private practice.Data source:Caja de Seguro Social; Ministerio de Salud, APAIC.</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>Our challenge is to increase the awareness and interest in allergic diseases and our specialty, both within thepopulation and the medial profession; the specialty needs to be marketed to medical students, residents andfellow specialists.We need to increase the number of allergists/clinical immunologists in order to provide better coveragethroughout the provinces.We have made history by starting the first allergy and clinical immunology trainingprogram in Panama in 2010.We have have a plan to gradually grow the specialty and society for the better management of allergies in ourcountry.</td></tr></table>
+
+## QUICK LOOK: Paraguay
+
+Paraguayan Society of Allergy, Asthma and Immunology
+<table><tr><td rowspan=1 colspan=1>General</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>6,000,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2005</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private services</td></tr><tr><td rowspan=1 colspan=2>Allergy &amp; Allergic Diseases</td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>– Childhood Asthma – remained the same– Adult Asthma – remained the same- Severe Asthma – decreased– Allergic Rhinitis – increased– Atopic Eczema – remained the same— Anaphylaxis – increased– Food Allergy – increased– Complex Allergy – remained the sameData source:ISAAC</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>30% of adult population42% of childhood populationData source:ISAAC studies in 13-14 year olds</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>Dermatophagoides pteronyssinusDermatophagoides farinaeBlomia tropicalisBlatella GermanicaPeriplaneta AmericanaData source:Sociedad Paraguaya de Alergia, Asma e Inmunologia (SPAAI)</td></tr><tr><td rowspan=1 colspan=1>Major (indoor / outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>Acaros (house dust mites)Tobacco smokeParticulate matter (PM10)N02/S02OzoneData source:Resumen estudio diagnostico calidad del aire Asunción 2010 - Joint initiative of the SPAAl, Petrobras and theUNEP UNEP-based Partnership for Clean Fuels and Vehicles (PCFV)</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>We have no studies of cost in relation to allergic diseases</td></tr><tr><td rowspan=1 colspan=1>Allergy Care: Treatment &amp; Training</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy / clinical immunology</td><td rowspan=1 colspan=1>Recognized as a separate medical specialty</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND / ORallergist / clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>45</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>Very few general physicians are trained to diagnose allergic disease. However, in recent years through severalcourses we are trying to change this situation.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy / clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>A clear difference exists between the quality of allergy services in rural and urban areas. Most allergy servicesare in urban areas.</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>We have a high incidence of allergic disease, especially Allergic Rhinitis in children. However, there is a largedeficit in the training of doctors in immunlogy and allergy. Due to this fact, SPAAl is working to spread thegeneral guidelines of GINA, ARIA, GARD, etc., and would welcome support from the World Allergy Organization,for example, in supporting the presence of speakers in our courses and conferences.</td></tr></table>
+
+## QUICK LOOK: Philippines
+
+Report by Philippine Society of Allergy, Asthma and Immunology
+<table><tr><td colspan="4">General</td></tr><tr><td>National population</td><td colspan="3">99,900,177</td></tr><tr><td>Year population figure was reported</td><td colspan="3">July 2010</td></tr><tr><td>Health service systems</td><td colspan="3">National and Private Services</td></tr><tr><td>Allergy &amp; Allergic Diseases</td><td colspan="3"></td></tr><tr><td>Allergic disease prevalence trends</td><td>Childhood asthma Adult asthma probable</td><td>1998 (ISAAC Phase 1) 2003: (NAES) 2003: (NNHeS) 2006: (ISAAC Phase 3)</td><td>13-14 years old - 12.3%* 13-14 years old - 18.1%* 0-19 years old - 9.2%**</td></tr><tr><td></td><td>Allergic Rhinitis Pediatrics: 2006: (ISAAC Phase 3)</td><td>2003: (NAES) 2010: (NNHeS) 1998: (ISAAC Phase 1) 13-14 years old - 15.3% 13-14 years old - 11%</td><td>13-14 years old - 8.4%* 4.6% definite; 17.6% 20-70+ years - 8.7%**</td></tr><tr><td></td><td>2003: (NNHeS) Adult: 2010: (NNHeS) Atopic Eczema</td><td>Pediatrics and Adult: 1998: (ISAAC Phase 1) 13-14 years old - 5.2%</td><td>0-70+ years - 25% 20-70+ years - 20%</td></tr><tr><td></td><td>2006: (ISAAC Phase 3) * Metromanila area only **Nationwide</td><td></td><td>13-14 years old - 7.8%</td></tr><tr><td>Percentage of population with one or more allergic diseases</td><td colspan="3">Data Source: National Nutrition and Health Survey, 2003, 2010 International Study of Asthma and Allergies in Childhood Phase 1 (1998) and 3 (2006) Food Allergy - Adverse Food Reactions: 20-70+ years old: 12.9% For others, see above</td></tr><tr><td>Major allergen triggers that are implicated in the development or exacerbation of allergic disease</td><td colspan="3">Data Source: National Nutrition and Health Survey, 2010 Only for sensitization (skin prick testing) Indoor Allergens: House Dust Mite 70.4%* Cockroach 44.7%* Dermatophagoides farinae 92%** Dermatophagoides pteronyssinus 91%** Cockroach 55%** Outdoor allergens: Bermuda 14.1% Korskorosan 9.7%</td></tr><tr><td></td><td colspan="3"></td></tr><tr><td></td><td colspan="3">Data Source: *Pring A et al. Clinical profile of pediatric patients with respiratory allergies who underwent skin test for aeroallergens at the allergy clinic (A 5-year retrospective study) (unpublished) **Binas V et al. Sensitization to common aeroallergens in children with allergic respiratory diseases at a tertiary hospital. Philippine Journal of Allergy, Asthma and Immunology. Jan- Apr 2003, 17-23.</td></tr><tr><td colspan="1" rowspan="1">Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td colspan="3" rowspan="1">Smoking in the household when the child was 1-5 years old is a risk factor in the development of asthma: OR1.81 (95% Cl 1.17-2.80) (0.007). Sumpaico M et al for National Asthma Epidemiology Survey. 2003</td></tr><tr><td colspan="1" rowspan="1">The annual socio-economic costs ofallergic diseases</td><td colspan="3" rowspan="1">Data not available</td></tr><tr><td colspan="4" rowspan="1">Allergy Care: Treatment &amp; Training</td></tr><tr><td colspan="1" rowspan="1">Recognition of the specialty of allergy orallergy/clinical immunology</td><td colspan="3" rowspan="1">In the decade prior to 1972, the first graduates from Allergy and Immunology training programs abroadreturned to the Philippines and started their clinical practice. In 1972, these allergists formed the PhilippineSociety of Allergology and Immunology, thus formalizing the existence of the distinct subspecialty in thecountry.</td></tr><tr><td colspan="1" rowspan="1">Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td colspan="3" rowspan="1">96 (2010)Data Source:Philippine Society of Allergy, Asthma and Immunology membership listThe different training centers for Allergy and Immunology take in 1-2 post-residency training fellows everyyear, so this number is increasing.</td></tr><tr><td colspan="1" rowspan="1">General practitioner training in allergydiagnosis and treatment</td><td colspan="3" rowspan="1">Allergy and Immunology is part of the medical curriculum, both in Internal Medicine and Pediatrics in allmedical schools. Medical students are taught how to recognize, diagnose and treat allergic/immunologicdiseases, nd receive sufficient training to prepare them to become primary health care providers.</td></tr><tr><td colspan="1" rowspan="1">Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td colspan="3" rowspan="1">Most allergy/immunology subspecialists (estimated 80%) practice in the National Capital Region (the regionsurrounding Manila, the capital of the country). The rest are scattered throughout the country.Data Source:Philippine Society of Allergy, Asthma and Immunology membership list</td></tr><tr><td colspan="1" rowspan="1">Enhancements required for improvedpatient care</td><td colspan="3" rowspan="1">We need more physicians trained in allergy. This would be facilitated by arranging for new allergists to spendtime studying in centers abroad, and by easier, affordable access for clinicians to information and educationabout allergy, e.g, journals, conferences, etc.Epidemiological studies are required to assess prevalence of allergic diseases on a regular basis.Research grants are needed to support the implementation of management guidelines for allergic diseases.</td></tr></table>
+
+## QUICK LOOK: Poland
+
+Report by Polish Society of Allergology
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>38,173,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2009</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>Allergic diseases have increased.– Childhood Asthma – remained the same– Adult Asthma – remained the same- Severe Asthma – remained the same– Allergic Rhinitis - increased– Atopic Eczema - decreased- Anaphylaxis – increased- Food Allergy – increased- Complex, multi-organ allergic disease – increasedData source: www.ecap.pl and clinical experience</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one ormore allergic diseases</td><td rowspan=1 colspan=1>Estimated figure:30% of adult population40% of childhood population</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>Rye grass pollensHouse dust mites: D. pteronyssinus, D. farinaeAlternaria tenuisCladosporium herbarumWeed pollensTree/birch pollensAnimal danders: Cat, dogCockroachData source: www.ecap.pl</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>Tobacco smokeDiesel exhaust particulatesSO{2NO{2</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>Data not available</td></tr><tr><td rowspan=1 colspan=2>Allergy Care: Treatment &amp; Training</td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy/clinical immunology</td><td rowspan=1 colspan=1>Upgraded to separate medical specialty status in 1981.</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>Estimated figure: 800</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>General Practitioners are trained to diagnose and treat allergic diseases. They collaborate with specialists indealing with allergic/asthmatic patients.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>There are no significant differences in allergy/immunology service between urban and rural areas althoughthere are less allergy units in rural areas.</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>We require greater availability of autoinjectors of adrenaline, which is presently limited by the cost.Greater availability of up-to-date diagnostic procedures for allergy to food additives is needed.</td></tr></table>
+
+## QUICK LOOK: Portugal
+
+Report by the Portuguese Society of Allergology and Clinical Immunology
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>10,700,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2008</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=2>Allergy &amp; Allergic Diseases</td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>Allergy prevalence has increased.– Childhood Asthma - increased— Adult Asthma - increased- Severe Asthma - increased– Allergic Rhinitis - increased— Atopic Eczema - increased— Anaphylaxis - increased— Food Allergy - increased- Complex, multi-organ allergic disease - increasedData source: Scientific publications</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>Estimated figure:25% of adult population30% of childhood population</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>House dust mitesGrass pollensParietaria pollenOlive pollenDog</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>Data not available</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>Data not available</td></tr><tr><td rowspan=1 colspan=2>Allergy Care: Treatment &amp; Training</td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy/clinical immunology</td><td rowspan=1 colspan=1>Separate medical specialty</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>Estimated figure:300Data source: Board of Portuguese Medical Specialists</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>Allergy courses are available for General Practitioners</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>There are more services in urban areasData source: National Health Ministry</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>No data available</td></tr></table>
+
+## QUICK LOOK: Romania
+
+Romanian Society of Allergy and Clinical Immunology
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>21,500,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2010</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>- Childhood Asthma - increased– Adult Asthma - increased- Severe Asthma - increased– Allergic Rhinitis - increased– Atopic Eczema - remained the same– Anaphylaxis - increased– Food Allergy - increased– Complex Allergy - increasedData source:ISAAC and local studies</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>Estimated figure:10% of adult population20% of childhood population20% of total population</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>PollensHouse dust mitesDrugsMoldsAnimal dandersData source:Clinical observations</td></tr><tr><td rowspan=1 colspan=1>Major (indoor / outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>Diesel particulates</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=2>Allergy Care: Treatment &amp; Training</td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy / clinical immunology</td><td rowspan=1 colspan=1>A recognized medical specialty</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND / ORallergist / clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>Estimated figure: 70</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>General Practitioners receive some education from allergy specialists.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy / clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>There are no allergists/clinical immunologists in rural areas.</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>Increased ability to access allergy specialist services.Improvement in diagnostic facilities for allergic patients (mainly for food and drug allergies).Health insurance coverage for immunotherapy.</td></tr></table>
+
+## QUICK LOOK: Russia
+
+Report by Russian Association of Allergology and Clinical Immunology
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>141,000,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2007</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1> Childhood Asthma - increased- Adult Asthma - increasedSevere Asthma - decreased- Allergic Rhinitis - increased- Atopic Eczema - increased– Anaphylaxis - increased– Food Allergy - increased– Complex, multi-organ allergic disease - increasedData Source: Ministry of Public Health of Russian Federation</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>18% of the adult population21% of the childhood population19% of the total populationReference: Bogova AV, Ilina NI, Luss LV. Tendencies in epidemiology of allergic diseases in Russian Federationduring last 10 years (in Russian). Russian Allergy Journal, 2008, no.6, p.3-14.</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>House dust mitesPollensFoodsAnimal allergensDrugsData Source: Ministry of Public Health of Russian Federation</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>Diesel emissionsSulphur dioxideNitrogen dioxideAromatic carbohydrateMineral dustsData Source: Ministry of Public Health of Russian Federation</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=2>Allergy Care: Treatment &amp; Training</td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy/clinical immunology</td><td rowspan=1 colspan=1>A separate medical specialty</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>1700; this number is increasingData source: Ministry of Public Health of Russian Federation</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>General practitioners have minimal knowledge about allergy diagnosis and treatment.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>In rural areas the availability of allergy/clinical immunology service is lower than in urban areas.Data source: Ministry of Public Health of Russian Federation, and Russian Association of Allergology andClinical Immunology</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>For patients: we need to improve the availability of diagnostics and treatment.For service: we need to address the deficit of trained allergologists and allergy departments.</td></tr></table>
+
+## QUICK LOOK: Singapore
+
+Report by Allergy and Clinical Immunology Society (Singapore)
+<table><tr><td colspan="2" rowspan="1">General</td></tr><tr><td colspan="1" rowspan="1">National population</td><td colspan="1" rowspan="1">4,500,000</td></tr><tr><td colspan="1" rowspan="1">Year population figure was reported</td><td colspan="1" rowspan="1">2009</td></tr><tr><td colspan="1" rowspan="1">Health service systems</td><td colspan="1" rowspan="1">National and private services</td></tr><tr><td colspan="1" rowspan="1">Allergy &amp; Allergic Diseases</td><td colspan="1" rowspan="1"></td></tr><tr><td colspan="1" rowspan="1">Allergic disease prevalence trends</td><td colspan="1" rowspan="1">- Childhood Asthma - remained the same- Severe Asthma - decreasing– Allergic Rhinitis - increasing– Atopic Eczema - increasingReferences:Wang XS, Tan TN, Shek LP, Chng SY, Hia CP, Ong NB, Ma S, Lee BW, Goh DY. The prevalence of asthma andallergies in Singapore; data from two ISAAĆ surveys seven years apart. Arch Dis Child. 2004 May;89(5):423-6.Lim DL, Ma S, Wang XS, Cutter J, Chew SK, Lim TK, Lee BW. Trends in sales of inhaled corticosteroids andasthma outcomes in Singapore. Thorax. 2006 Apr;61(4):362-3.Chew HC, Eng P. Asthma fatalities at the Emergency Department of the Singapore General Hospital. Eur JEmerg Med. 2007 Feb;14(1):32-4.Shek LP, Cabrera-Morales EA, Soh SE, Gerez I, Ng PZ, Yi FC, Ma S, Lee BW.A population-based questionnairesurvey on the prevalence of peanut, tree nut, and shellfish allergy in 2 Asian populations. J Allergy ClinImmunol. 2010 Aug;126(2):324-331</td></tr><tr><td colspan="1" rowspan="1">Percentage of population with one or moreallergic diseases</td><td colspan="1" rowspan="1">An estimated 4-5% of adults have asthma12% of children have asthmaData source: International Study of Asthma and Allergies in ChildhoodReferences:Wang XS, Tan TN, Shek LP, Chng SY, Hia CP, Ong NB, Ma S, Lee BW, Goh DY. The prevalence of asthma andallergies in Singapore; data from two ISAAC surveys seven years apart. Arch Dis Child. 2004 May;89(5):423-6.Ng TP. Adult asthma prevalence, morbidity and mortality and their relationships with environmental andmedical care factors in Singapore. Asian Pac J Allergy Immunol. 1999 Sep;17(3):127-35.</td></tr><tr><td colspan="1" rowspan="1">Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td colspan="1" rowspan="1">House dust mitesCockroachesAnimal dandersFood: Young children – eggs and milk; older children and adults - shellfishReferences:Chew FT, Lim SH, Goh DY, Lee BW. Sensitization to local dust-mite fauna in Singapore. Allergy. 1999Nov;54(11):1150-9.Shek LP, Cabrera-Morales EA, Soh SE, Gerez I, Ng PZ, Yi FC, Ma S, Lee BW. A population-based questionnairesurvey on the prevalence of peanut, tree nut, and shellfish allergy in 2 Asian populations. J Allergy ClinImmunol. 2010 Auq;126(2):324-331Thong BY, Cheng YK, Leong KP, Tang CY, Chng HH. Immediate food hypersensitivity among adults attending aclinical immunology/allergy centre in Singapore. Singapore Med J. 2007 Mar;48(3):236-40.Goh DL, Lau YN, Chew FT, Shek LP, Lee BW. Pattern of food-induced anaphylaxis in children of an Asiancommunity. Allergy. 1999 Jan;54(1):84-6.</td></tr><tr><td colspan="1" rowspan="1">Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td colspan="1" rowspan="1">Diesel exhaust emissionsSO2NO{2References:Chew FT, Goh DY, Ooi BC, Saharom R, Hui JK, Lee BW. Association of ambient air-pollution levels with acuteasthma exacerbation among children in Singapore. Allergy. 1999 Apr;54(4):320-9.Chew FT, Ooi BC, Hui JK, Saharom R, Goh DY, Lee BW. Singapore's haze and acute asthma in children. Lancet.1995 Nov 25;346(8987):1427.</td></tr><tr><td colspan="1" rowspan="1">The annual socio-economic costs ofallergic diseases</td><td colspan="1" rowspan="1">The total cost of asthma in Singapore was estimated to be US $33.93 million per annum. This was madeup of US $17.22 million in direct costs and US $16.71 million in indirect costs. Inpatient hospitalizationaccounted for the largest proportion of direct medical expenditure, approximately US $8.55 million. The loss ofproductivity from acute asthma accounted for the largest proportion of the indirect costs at US $12.70 million.The cost estimates did not include premature death due to disease. These estimates represent approximatelyUS $238 per asthmatic person per year or US $11.90 per person per year.Reference: Chew FT, Lee BW. Utilization of healthcare resources for asthma in Singapore: demographicfeatures and trends. Asian Pac J Allergy Immunol. 1998 Jun-Sep;16(2-3):57-68.</td></tr><tr><td colspan="2" rowspan="1">Allergy Care: Treatment &amp; Training</td></tr><tr><td colspan="1" rowspan="1">Recognition of the specialty of allergy orallergy/clinical immunology</td><td colspan="1" rowspan="1">The certifying bodies are looking into subspecialty recognition. The main problem is the small critical mass ofspecialists, not only in allergy and immunology but also in other subspecialties, especially pediatrics.</td></tr><tr><td colspan="1" rowspan="1">Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td colspan="1" rowspan="1">Estimated figure of those trained for at least a year in an institution with a recognized allergy and immunologyprogram: 15. These individuals are not certified because there is no certification process. There are no allergysubspecialty fellowships, and most allergists have done their subspecialty training in overseas institutions.Many physicians with little allergy specialist training practice allergy, eg, dermatologists, otolaryngologists.</td></tr><tr><td colspan="1" rowspan="1">General practitioner training in allergydiagnosis and treatment</td><td colspan="1" rowspan="1">The conditions are very common, and general practitioners manage them at primary level and refer theproblem cases. Allergy training is received as part of the undergraduate curriculum.</td></tr><tr><td colspan="1" rowspan="1">Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td colspan="1" rowspan="1">The country is small and there are no regional differences in service provision.</td></tr><tr><td colspan="1" rowspan="1">Enhancements required for improvedpatient care</td><td colspan="1" rowspan="1">The medical services in Singapore are generally modern and of a high standard. Allergy practice ininstitutions is carried out by specialists and academics, although the bulk of care is conducted at the primarycare level. The greatest challenge is the small critical mass of specialists due to the small population.</td></tr></table>
+
+## QUICK LOOK: Slovenia
+
+Report by Slovenian Association for Allergology and Clinical Immunology
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>1,987,971</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2002</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National Health Service</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>Data not available</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>Grass pollenBirch pollenMite species Hymenoptera venoms AppleData source: Personal experience</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>Data not available</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>Data not available</td></tr><tr><td rowspan=1 colspan=2>Allergy Care: Treatment &amp; Training</td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy/clinical immunology</td><td rowspan=1 colspan=1>Not a separately recognized specialty</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>Estimated figure based on the number of members of the SlovenianAllergology Association - 100</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>General practitioners are trained to diagnose allergic diseases according to clinical history, and to prescribedrugs</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>Most allergy practitioners are located in townsData source: Register of Slovenian Allergology Association</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>No data available</td></tr></table>
+
+## QUICK LOOK: South Africa
+
+Report by Allergy Society of South Africa
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>45,000,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2008</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>Childhood Asthma - increased- Adult Asthma - increased- Severe Asthma – remained the same— Allergic Rhinitis - increased– Atopic Eczema - increased Anaphylaxis – remained the same– Food Allergy – remained the sameData source: International Study of Asthma and Allergy in Childhood</td></tr><tr><td rowspan=1 colspan=1>Percentage ofpopulation with one or more allergicdiseases</td><td rowspan=1 colspan=1>10% of the adult population25% of the childhood populationData source: International Study of Asthma and Allergy in Childhood (for children and adolescents)</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggersthat are implicated in the development orexacerbation of allergic disease</td><td rowspan=1 colspan=1>House dust mitesGrass pollenCatsCockroachesLatex</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>Sulphur dioxide inhalation caused significant respiratory problems in school children in Durban. This is basedon an environmental impact study.</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>Data not available</td></tr><tr><td rowspan=1 colspan=2>Allergy Care: Treatment &amp; Training</td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy/clinical immunology</td><td rowspan=1 colspan=1>Allergy has been recognized as a specialty by the College of Medicine of South Africa, as well as the HealthProfessional Council of South Africà, since 2008. Government approval for this recognition is still awaited.</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>Data not available</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>General practitioners can obtain a diploma in allergy. The Allergy Society of South Africa also conductscongresses and workshops for General Practitioners.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>There are no allergy services in rural areas.Data source: Allergy Society of South Africa</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>Our major challenges are tuberculosis and human immunodeficiency virus, and a lot of governmentresources are spent on these diseases. In consequence, allergy is not regarded as major health problem. Wedefinitely need more allergy clinics and the personnel to run these clinics. We also have an urgent need forepidemiological studies to assess the economic impact of allergic disease.</td></tr></table>
+
+## QUICK LOOK: South Korea
+
+Report by Korean Academy of Allergy, Asthma and Clinical Immunology
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>50,000,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>January 2010</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>- Childhood Asthma – remained the same– Adult Asthma - increased- Severe Asthma - increased– Allergic Rhinitis - increased Atopic— Eczema - increased– Anaphylaxis – remained the same- Food Allergy - increased- Complex, multi-organ allergic disease – remained the sameData Source: Korean Asthma Foundation 2005 / Report of the Korea Centers for Disease Control andPrevention (KCDC) 2009</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>Estimated percentage:30% of adult population40% of childhood populationReferences:Kim TB, Kim YK, Chang YS, et al. Association between sensitization to outdoor spider mites and clinicalmanifestations of asthma and rhinitis in the general population of adults. J Korean Med Sci 2006; 21:247–52.Park HS, Choi GS, Cho JS, Kim YY. Epidemiology and current status of allergic rhinitis, asthma and associatedallergic diseases in Korea: AIRA Asia- Pacific workshop report.</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>House dust mitesWeed pollens: mugwort, ragweed, Japanese hopTree pollens: alder/birchReferences:Kim TB, Kim KM, Kim SH et al. Sensitization rates for inhalant allergens in Korea: a multicenter study. JAsthma Allergy Clin Immunol 23:483, 2003,2.Park HS, Chung DH, Joo YJ. Survey of airborne pollens in Seoul, Korea. J Korean Med Sci 1994; 9:42–6</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>Outdoor: Diesel exhaust particulates,SO2 - NOx - O3}Indoor: Formaldehyde NOxData Source: Korean Government data</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>Asthma - $1.78 billionRhinitis - $266 millionData source: Korean Asthma Foundation 2005 / Report of the Korea Centers for Disease Control andPrevention (KCDC) 2009</td></tr><tr><td rowspan=1 colspan=1>Allergy Care: Treatment &amp; Training</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy/clinical immunology</td><td rowspan=1 colspan=1>Recognized as a separate specialty since 1992</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>Estimated figure: 200, of whom half are specialists in adult allergy, and half and pediatric allergistsData Source: Korean Academy of Medicine/Korean Medical Association</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>Allergy and Clinical Immunology is part of the official undergraduate curriculum in most medical schools, andis part of relevant postgraduate curricula</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>Most allergy specialists are working in urban areas.Data Source: Korean Academy of Medicine/Korean Medical Association</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>There are some conflicts between allergy specialists and other specialists such as pulmonologists and ENTdoctors about who should be responsible for caring for allergie rhinitis and asthma patients; the unique role ofthe allergist in the holistic management of the atopic/allergic patient requires explanation and promotion.</td></tr></table>
+
+## QUICK LOOK: Spain
+
+Report by Spanish Society of Allergology and Clinical Immunology
+<table><tr><td colspan="2" rowspan="1">General</td></tr><tr><td colspan="1" rowspan="1">National population</td><td colspan="1" rowspan="1">46,745,800</td></tr><tr><td colspan="1" rowspan="1">Year population figure was reported</td><td colspan="1" rowspan="1">2009</td></tr><tr><td colspan="1" rowspan="1">Health service systems</td><td colspan="1" rowspan="1">National and Private Services</td></tr><tr><td colspan="1" rowspan="1">Allergy &amp; Allergic Diseases</td><td colspan="1" rowspan="1"></td></tr><tr><td colspan="1" rowspan="1">Allergic disease prevalence trends</td><td colspan="1" rowspan="1">Overall prevalence is increased.– Childhood Asthma - increased– Adult Asthma - increased– Severe Asthma - increased– Allergic Rhinitis - increased– Atopic Eczema - increased– Anaphylaxis - increased– Food Allergy - increased– Complex, multi-organ allergic disease - increasedData source: Allergologica 1992; Allergologica 2005; International Study of Asthma and Allergies in Childhood(ISAAC) study</td></tr><tr><td colspan="1" rowspan="1">Percentage of population with one or moreallergic diseases</td><td colspan="1" rowspan="1">20% of adult population25% of childhood populationData source: Allergologica 1992; Allergologica 2005; ISAAC study</td></tr><tr><td colspan="1" rowspan="1">Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td colspan="1" rowspan="1">The major triggers of allergic diseases are respiratory allergens (which are diverse due to the diversity ofSpanish climates) followed by food allergens. The relative importance of each food group depends on thepatient's age, cow's milk, egg, legumes and fish being more important in infants and children and fruits/vegetables and shellfish at older ages, probably due to the cross-reactivity phoneme between pollens/vegetables and shellfish/house dust mites observed in Spanish allergic patients.</td></tr><tr><td colspan="1" rowspan="1">Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td colspan="1" rowspan="1">Environmental pollution: ozone, nitrogen-derived oxides, and diesel exhaust particles in urban areasRespiratory infections</td></tr><tr><td colspan="1" rowspan="1">The annual socio-economic costs ofallergic diseases</td><td colspan="1" rowspan="1">Data not available</td></tr><tr><td colspan="2" rowspan="1">Allergy Care: Treatment &amp; Training</td></tr><tr><td colspan="1" rowspan="1">Recognition of the specialty of allergy orallergy/clinical immunology</td><td colspan="1" rowspan="1">Allergology is a full medical specialty</td></tr><tr><td colspan="1" rowspan="1">Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td colspan="1" rowspan="1">1250Data Source: Spanish Society of Allergology and Clinical Immunology</td></tr><tr><td colspan="1" rowspan="1">General practitioner training in allergydiagnosis and treatment</td><td colspan="1" rowspan="1">The teaching of allergy in Medical Faculties in Spain is incomplete. Very few Faculties teach allergy to theirstudents. Neither General Practitioners nor Pediatricians receive specific training about the diagnosis andtreatment of allergic diseases during their education. If General Practitioners have a special interest theyusually attend an allergy department for one month during postgraduate training.</td></tr><tr><td colspan="1" rowspan="1">Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td colspan="1" rowspan="1">Allergy services are well provided in important cities in Spain, but do not exist in rural areas, and patientsmay have to travel a long distance or have difficulty in accessing allergy services. Some regions have allergyservices only in Private Hospitals but not in Public Hospitals. If the «ideal» number of specialists in Allergologyis 1/5,.000 inhabitants, we have some regions with sufficient allergists, but in other areas the number isclearly inadequate.Data Source: Spanish Society of Allergology and Clinical Immunology; The National Commission of Allergy</td></tr><tr><td rowspan="5">Enhancements required for improved patient care</td><td>Education in allergy: a) to promote teaching of the specialty of Allergy in Medical Schools;</td></tr><tr><td>b) to enhance rotation in allergy services of physicians from other specialties such as primary care, dermatology, respiratory medicine, etc.;</td></tr><tr><td>c) to provide uniform fellowship-level teaching of the specialty of Allergy by creating a nationwide committee</td></tr><tr><td>of allergy teaching tutors; d) the development by the Spanish Society of a recertification program in Allergy for Spanish allergologists.</td></tr><tr><td>Health provision: a) to continue to advise the Public Administration about the increasing prevalence and importance of allergic diseases in modern societies and the need to provide an adequate number of allergist positions in the public</td></tr><tr><td></td><td>health services to meet the current demands; b) to promote the need for uniform provision of care throughout the country in arder to decrease the regional disparities; c) the Minister of Health has recently been informed about the participation of the Spanish Society of Allergy in the Global Alliance Against Respiratory Diseases (GARD), and has acknowledged ils importance, and has included asthma as a “strategie disease” within the policy of the Ministry of Health.</td></tr></table>
+
+## QUICK LOOK: Sri Lanka
+
+Report by Allergy & Immunology Society of Sri Lanka
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>20,000,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2008</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and private services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>– Childhood Asthma – remained the same— Allergic Rhinitis - increasedChildhood allergic rhinitis seems to be increasing while asthma seems to be either decreased or has reacheda plateau.References:Amarasekera NDDM, Gunawardena NK, de Silva NR, Weerasinghe A. Prevalence of childhood atopic diseasesin Western Province of Sri Lanka. Ceylon Medical Journal. 2010; 55: 5-8.Fernando MAM, Senathilake PHRS, Perera BJC. Body mass index, allergic rhinitis and asthma in children. SriLanka Journal of Child Health. 2004; 33:102-5.Karunasekera KAW, Perera KPJ, Perera MTPR, Abeynarayana J. Prevalence of asthma and atopic symptoms inchildren 5-11 years. Sri Lanka Journal of Child Health. 2003; 32:11-4.de Silva NR et al. Aetiological factors of chronic urticaria. Proceedings of 4th Scientific Sessions, Allergy andImmunology Society of Sri Lanka. 2009; Abstract C6Talgola TB et al. A descriptive pilot study of allergic rhinitis Proceedings of 4th Scientific sessions, Allergy andImmunology Society of Sri Lanka. 2009; Abstract C8Attanayake K et al. The pattern of allergy in a field base rural clinic. Proceedings of 4th Scientific sessions,Allergy and Immunology Society of Sri Lanka. 2009; Abstract P3</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>No data available for adults33.7% of childhood populationAmarasekera NDDM, Gunawardena NK, de Silva NR, Weerasinghe A. Prevalence of childhood atopic diseasesin Western Province of Sri Lanka. Ceylon Medical Journal. 2010; 55: 5-8.</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>Blomia tropicalisDermatophagoides pteronyssinusCockroachesCat epithelium and danderGrass pollenReferences:Amarasekera NDDM. Atopy, allergic diseases and soil-transmitted nematode infections in children in SriLanka. M.Phil. Thesis, University of Kelaniya, Sri Lanka; 2009. pp 132.Weerasinghe A, Weerasinghe S, Amarasekera M, Medagoda K, Katelaris CH. Sensitization patterns of allergensamong asthmatics in Sri Lanka. Proceedings from the 20th World Allergy Congress. December 2007; Bangkok,Thailand.</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>Allergy Care: Treatment &amp; Training</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy/clinical immunology</td><td rowspan=1 colspan=1>Not recognized as a separate specialty</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>Estimated number: 5</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>No special training is provided to general practitioners.All general practitioners are in private practice, and treat allergies.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>Most services are provided in Colombo, the capital city of Sri Lanka, but as the country is small, patients arereferred to hospitals in the city.</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>There are limitations in personnel, training, and laboratory investigations which need enhancement to improvepatient care. In addition, adrenaline auto-injectors are not available for most patients with anaphylaxis, andthis inadequacy needs to be addressed.</td></tr></table>
+
+## QUICK LOOK: Sweden
+
+Report by Swedish Association for Allergology
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>9,446,812</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2011</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>Several population studies (eg., ISAAC-study, OLIN-study, studies by Lundbäck et al) indicate that from themid-1990&#x27;s allergic disease prevalence has been relatively stable although Allergic Rhinitis prevalencehas increased.Data source:PLoS One. 2011 Feb 17;6(2):e16082. Increased prevalence of symptoms of rhinitis but not of asthma between1990 and 2008 in Swedish adults: comparisons of the ECRHS and GA²LEN surveys. Bjerg A, Ekerljung L,Middelveld R, Dahlén SE, Forsberg B, Franklin K, Larsson K, Lötvall J, Olafsdóttir iS, Torén K, Lundbäck B,Janson C.</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>30% of adult population25% of childhood population25% of the total populationData source:Published population studies. If asthma is included, the prevalence for adults is about 30% until ages40-50 years; above that age there is a lower prevalence. For children the overall prevalence is 20-30%.</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>Birch pollenGrass pollensCatHouse dust mites</td></tr><tr><td rowspan=1 colspan=1>Major (indoor / outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>$1,500,000,000</td></tr><tr><td rowspan=1 colspan=2>Allergy Care: Treatment &amp; Training</td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy / clinical immunology</td><td rowspan=1 colspan=1>Recognized as a separate medical specialty</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND / ORallergist / clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>Estimated figure:130 allergists and 60 to 70 pediatric allergists</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>General practitioners both diagnose and treat mild to moderate allergic diseases, including asthma.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy / clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>Specialty clinics available only in larger cities. There is a clear geographical variation between southern andnorthern Sweden with much higher density of services in southern Sweden.</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>Provide equal access to allergy specialists throughout the country.</td></tr></table>
+
+## QUICK LOOK: Switzerland
+
+## Report by Swiss Society of Allergology and Immunology
+
+<table><tr><td colspan="2">General</td></tr><tr><td>National population</td><td>7,795,750</td></tr><tr><td>Year population figure was reported</td><td>2008</td></tr><tr><td>Health service systems</td><td>National and Private Services</td></tr><tr><td>Allergy &amp; Allergic Diseases</td><td></td></tr><tr><td>Allergic disease prevalence trends</td><td>Allergic diseases in general have increased. – Childhood Asthma - increased – Adult Asthma -increased - Severe Asthma – remained the same – Allergic Rhinitis - increased – Atopic Eczema – remained the same – Complex, multi-organ allergic disease – no data available Data source: Swiss study on Air Pollution and Lung Disease in Adults (SAPALDIA I, Il and IlI) 1990, 2002 and</td></tr><tr><td rowspan="3">Percentage of population with one or more allergic diseases</td><td>Estimated figure:</td></tr><tr><td>15% of adult population</td></tr><tr><td>20% of childhood population</td></tr><tr><td rowspan="5">Major allergen triggers that are implicated in the development or exacerbation of allergic disease</td><td>18% of total population Pollens</td></tr><tr><td>House dust mites</td></tr><tr><td>Food allergens</td></tr><tr><td>Animal allergens</td></tr><tr><td>Data source: Some from SAPALDIA</td></tr><tr><td>Major (indoor/outdoor) environmental pollutants that are implicated in the development or exacerbation of allergic disease</td><td>Ultrafine particles</td></tr><tr><td rowspan="2">The annual socio-economic costs of allergic diseases</td><td>Occupational skin disorders – data available</td></tr><tr><td>Occupational respiratory disorders – data available Data available at: http://www.unfallstatistik.ch/d/neuza/anhaenge_fjb/Tabelle_3_6_2_d.pdf</td></tr><tr><td colspan="2">Allergy Care: Treatment &amp; Training</td></tr><tr><td>Recognition of the specialty of allergy or allergy/clinical immunology</td><td>Separate medical specialty</td></tr><tr><td>Number of certified allergists AND/OR allergist/clinical immunologists currently</td><td>147 as main working field plus approximately 30 as minor working field Data source: Swiss Medical Association FMH</td></tr><tr><td>practicing nationally General practitioner training in allergy</td><td>http://www.fmh.ch/themen/aerztedemographie/aerztestatistik.html General practitioners receive training during undergraduate training and in postgraduate courses.</td></tr><tr><td>diagnosis and treatment Regional differences in allergy/clinical immunology service provision between</td><td>Allergy/clinical immunology services are mainly provided in the large cities.</td></tr><tr><td>urban and rural areas Enhancements required for improved patient care</td><td>No data available</td></tr></table>
+
+Report by Asia Pacific Association of Allergology and Clinical Immunology/ Taiwan Academy of Allergy and Clinical Immunology
+
+## QUICK LOOK: Taiwan
+
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>23,000,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2009</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=2 colspan=1>National Health Service</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>Overall prevalence has increased.– Childhood Asthma - increased– Adult Asthma - increased– Severe Asthma – remained the same– Allergic Rhinitis - increased– Atopic Eczema - increased– Anaphylaxis - remained the same– Food Allergy - increased– Complex, multi-organ allergic disease - increasedReferences:Prevalence and severity of symptoms of asthma, rhinitis, and eczema in 13- to 14-year-old children in Taipei,Taiwan Annals of Allergy, Asthma &amp; Immunology, Volume 95, Issue 6, December 2005, Pages 579-585 Dah-Chin Yan, Liang-Shiou Ou, Tien-Lung Tsai, Wei-Fong Wu, Jing-Long HuangPrevalence of Childhood Allergic Diseases in Central Taiwan over the Past 15 Years Pediatrics &amp; Neonatology,Volume 50, Issue 1, Pages 18-25</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one ormore allergic diseases</td><td rowspan=1 colspan=1>30% of adult population45% of childhood population40% of total populationReferences:Prevalence and severity of symptoms of asthma, rhinitis, and eczema in 13- to 14-year-old children in TaipeiTaiwan Annals of Allergy, Asthma &amp; Immunology, Volume 95, Issue 6, December 2005, Pages 579-585 Dah-Chin Yan, Liang-Shiou Ou, Tien-Lung Tsai, Wei-Fong Wu, Jing-Long HuangPrevalence of Childhood Allergic Diseases in Central Taiwan over the Past 15 Years Pediatrics &amp; NeonatologyVolume 50, Issue 1, Pages 18-25</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>Mite species – Dermatophagoides pteronyssinus, Dermatophagoides farinae, Blomia tropicalisAspergillus, Alternaria, ShrimpReference: Shyh-Dar Shyur, Ren-Long Jan, James R. Webster. Chang Ping, Yu- Ron Leu, Jiu-Yao Wang 2010.Determination of multiple allergen- specific IgE by microfluidic immunoassay cartridge in clinical settings.Pediatr Allergy Immunol (in press)</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>Sulphur dioxideParticulate matterReference: Air pollution, weather, and associated risk factors related to asthma prevalence and attack rateEnvironmental Research, Volume 104, Issue 3, July 2007, Pages 402-409 Wen-Chao Ho, William R. Hartley,Leann Myers, Meng-Hung Lin, Yu-Sheng Lin, Ċhih-Hui Lien, Ruey-Shiung Lin</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>Data not available</td></tr><tr><td rowspan=1 colspan=1>Allergy Care: Treatment &amp; Training</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy/clinical immunology</td><td rowspan=1 colspan=1>Separate Medical Specialty</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>358; number of certified practitioners is increasingData Source: Taiwan Society of Pediatric Allergy and Clinical Immunology, Chinese Society of Immunology,Taiwan</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>Yes</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>There are no regional differences in allergy/clinical immunology service provision between urban and ruralareas.</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>The national health insurance system does not provide sufficient incentive for the prevention of allergy andasthma in the general population, despite the fact that these allergic diseases are the most prominent chronicdiseases in Taiwan.</td></tr></table>
+
+## QUICK LOOK: Thailand
+
+Report by The Allergy, Asthma, and Immunology Society of Thailand
+<table><tr><td colspan="2" rowspan="1">General</td></tr><tr><td colspan="1" rowspan="1">National population</td><td colspan="1" rowspan="1">65,000,000</td></tr><tr><td colspan="1" rowspan="1">Year population figure was reported</td><td colspan="1" rowspan="1">2010</td></tr><tr><td colspan="1" rowspan="1">Health service systems</td><td colspan="1" rowspan="1">National and Private services</td></tr><tr><td colspan="1" rowspan="1">Allergy &amp; Allergic Diseases</td><td colspan="1" rowspan="1"></td></tr><tr><td colspan="1" rowspan="1">Allergic disease prevalence trends</td><td colspan="1" rowspan="1">- Childhood Asthma - increased– Adult Asthma - increased- Severe Asthma - increased</td></tr><tr><td colspan="1" rowspan="1">Percentage of population with one or moreallergic diseases</td><td colspan="1" rowspan="1">7% of adult population12% of childhood population10% of total populationReferences:1. Epidemiology and current status of allergic rhinitis and asthma in Thailand -- ARIA Asia-Pacific Workshopreport. Bunnag C, Jareoncharsri P, Tantilipikorn P, Vichyanond P, Pawankar R. Asian Pac JAllergy Immunol.2009 Mar;27(1):79-86.2. Time trends of the prevalence of asthma, rhinitis and eczema in Thai children-ISAAC (International Studyof Asthma and Allergies in Childhood) Phase Three. Trakultivakorn M, Sangsupawanich P, Vichyanond P.JAsthma. 2007 0ct;44(8):609-11.3. Prevalence of asthma, rhinitis and eczema in children from the Bangkok area using the ISAAC(International Study for Asthma and Allergy in Children) questionnaires. Vichyanond P, Jirapongsananuruk 0,Visitsuntorn N, Tuchinda M. J Med Assoc Thai. 1998 Mar;81(3):175-84.4. Prevalence of asthma, rhinitis, and eczema in Northern Thai children from Chiang Mai (International Studyof Asthma and Allergies in Childhood, ISAAC). Trakultivakorn M. Asian Pac JAllergy Immunol. 1999 Dec; 17(4):243-8.5. Prevalence of asthma, allergic rhinitis and eczema among university students in Bangkok.Vichyanond P, Sunthornchart S, Singhirannusorn V, Ruangrat S, Kaewsomboon S, Visitsunthorn N. Respir Med.2002 Jan;96(1):34-8.6. Survey of the prevalence of asthma, allergic rhinitis and eczema in schoolchildren from Khon KaenNortheast Thailand. an ISAAC study. International Study of Asthma and Allergies in Childhood. TeeratakulpisarnJ, Pairojkul S, Heng S. Asian Pac JAllergy Immunol. 2000 Dec;18(4):187-94.7. Surveying the prevalence of asthma, allergic rhinitis and eczema in school-children in Khon Kaen,Northeastern Thailand using the ISAAC questionnaire: phase III. Teeratakulpisarn J, Wiangnon S, Kosalaraksa P,Heng S. Asian Pac JAllergy Immunol. 2004 Dec;22(4):175-81.8. Prevalence of adverse food reactions and food allergy among Thai children. Santadusit S,Atthapaisalsarudee S, Vichyanond P. J Med Assoc Thai. 2005 Nov;88 Suppl 8:S27-329. 4. Survey of asthma control in Thailand. Boonsawat W, Charoenphan P, Kiatboonsri S, Wongtim S,Viriyachaiyo V, Pothirat C, Thanomsieng N. Respirology. 2004 Aug;9(3):373-8.</td></tr><tr><td colspan="1" rowspan="1">Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td colspan="1" rowspan="1">House dust miteCockroachCow's milk proteinsGrass pollenCat1. Epidemiology and current status of allergic rhinitis and asthma in Thailand -- ARIA Asia-Pacific Workshopreport. Bunnag C, Jareoncharsri P, Tantilipikorn P, Vichyanond P, Pawankar R. Asian Pac JAllergy Immunol.2009 Mar;27(1):79-86.2. Time trends of the prevalence of asthma, rhinitis and eczema in Thai children-ISAAC (International Studyof Asthma and Allergies in Childhood) Phase Three. Trakultivakorn M, Sangsupawanich P, Vichyanond P.JAsthma. 2007 0ct;44(8):609-11.3. Prevalence of asthma, rhinitis and eczema in children from the Bangkok area using the ISAAC (InternationalStudy for Asthma and Allergy in Children) questionnaires. Vichyanond P, Jirapongsananuruk O, Visitsuntorn N,Tuchinda M. J Med Assoc Thai. 1998 Mar;81(3):175-844. Prevalence of asthma, rhinitis, and eczema in Northern Thai children from Chiang Mai (International Studyof Asthma and Allergies in Childhood, ISAAC). Trakultivakorn M. Asian Pac JAllergy Immunol. 1999 Dec;17(4):243-8.5. Prevalence of asthma, allergic rhinitis and eczema among university students in Bangkok. VichyanondP, Sunthornchart S, Singhirannusorn V, Ruangrat S, Kaewsomboon S, Visitsunthorn N. Respir Med. 2002Jan;96(1):34-8.6. Survey of the prevalence of asthma, allergic rhinitis and eczema in schoolchildren from Khon Kaen,Northeast Thailand. an ISAAC study. International Study of Asthma and Allergies in Childhood. TeeratakulpisarnJ, Pairojkul S, Heng S. Asian Pac JAllergy Immunol. 2000 Dec;18(4):187-94.7. Surveying the prevalence of asthma, allergic rhinitis and eczema in school-children in Khon Kaen,Northeastern Thailand using the ISAAC questionnaire: phase III. Teeratakulpisarn J, Wiangnon S, Kosalaraksa P,Heng S. Asian Pac J Allergy Immunol. 2004 Dec;22(4):175-81.8. Prevalence of adverse food reactions and food allergy among Thai children. Santadusit S,Atthapaisalsarudee S, Vichyanond P. J Med Assoc Thai. 2005 Nov; 88 Suppl 8:S27-32.</td></tr><tr><td colspan="1" rowspan="1">Major (indoor / outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td colspan="1" rowspan="1">No data available</td></tr><tr><td colspan="1" rowspan="1">The annual socio-economic costs ofallergic diseases</td><td colspan="1" rowspan="1">No data available</td></tr><tr><td colspan="2" rowspan="1">Allergy Care: Treatment &amp; Training</td></tr><tr><td colspan="1" rowspan="1">Recognition of the specialty of allergy orallergy / clinical immunology</td><td colspan="1" rowspan="1">Upgraded in 2000 to become a separately recognized medical specialty</td></tr><tr><td colspan="1" rowspan="1">Number of certified allergists AND / ORallergist / clinical immunologists currentlypracticing nationally</td><td colspan="1" rowspan="1">100</td></tr><tr><td colspan="1" rowspan="1">General practitioner training in allergydiagnosis and treatment</td><td colspan="1" rowspan="1">The medical doctor curriculum and residency training curriculum include allergy and immunology as amajor topic to be trained at both levels of the medical training program.</td></tr><tr><td colspan="1" rowspan="1">Regional differences in allergy / clinicalimmunology service provision betweenurban and rural areas</td><td colspan="1" rowspan="1">There is still unequal access for patients to see specialists in allergy/immunology in Thailand. More specialistsare available in urban than in rural areas.</td></tr><tr><td colspan="1" rowspan="1">Enhancements required for improvedpatient care</td><td colspan="1" rowspan="1">Increase the number of allergy/immunology specialists.Increase accessibility to specialist services in both urban and rural areas.Increase accessibility to medications for all Thai patients.Start a national Allergy/Immunology institute in Thailand.</td></tr></table>
+
+## QUICK LOOK: Turkey
+
+Report by Turkish National Society of Allergy and Clinical Immunology
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>73,000,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2009</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>Allergic diseases in the population have generally increased. In Turkey, there is a lack of nationwide studies inboth asthma and rhinitis. Most of the studies have concentrated on the prevalence of asthma in both childrenand adults from different regions of the country. These studies show that, depending upon the geographicalregion, the asthma prevalence in childhood varies between 2-15% in childhood and 2-5% in adults; and theprēvalence of rhinitis ranges between 4.5-36.3% in children and 8.9-27.7% in adults.References:Pediatr Allergy Immunol 2004;15:531-538. Allergy Asthma Proc 2005;26:410-414. Allergy 2006;61:1448-1453.Eur Respir J. 2009;33:724-33.Pediatr Allergy Immunol. 2006;17:269-77.</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>Estimated figure: 15% of total populationReferences:Pediatr Allergy Immunol 2004;15:531-538.Allergy Asthma Proc 2005;26:410-414.Allergy 2006; 61:1448-1453.Eur Respir J. 2009;33:724-33.Pediatr Allergy Immunol. 2006;17:269-77. Turk J Pediatr 2001;43:1-11.</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>House dust miteGrass pollensCatMolds</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>Data not available</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>There are no data on the overall costs of allergic disease. According to one study the total annual cost ofchildhood asthma was US$1597.4 +/-236.2 and there was a significant variation in costs between study centers.Reference: Pediatr Allergy Immunol. 2009 Feb;20(1):72-80.</td></tr><tr><td rowspan=1 colspan=1>Allergy Care: Treatment &amp; Training</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy/clinical immunology</td><td rowspan=1 colspan=1>Part of another specialty. New legislation resulted in allergy and immunology being combined into a singlesubspecialty.</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>Estimated figure: 182This figure is increasing because many universities are training fellows, and every year there are graduatesfrom training programs.</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>General practitioners do receive training in allergy diagnosis and treatment but the level of knowledge is notat the desired level. This training is received during medical school at the level of undergraduate training.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>Allergy and immunology services are better established in urban areas where universities are located.</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>We need to improve the education of general practitioners about allergic diseases. An increase in the numberof allergy specialists is required.Public awareness of allergic diseases must be enhanced.</td></tr></table>
+
+## QUICK LOOK: Ukraine
+
+Report by Ukrainian Association of Allergologists and Clinical Immunologists
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>46,000,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2005</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=2>Allergy &amp; Allergic Diseases</td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>Prevalence of allergic disease has increased– Childhood Asthma - increased– Adult Asthma - increased— Severe Asthma - decreased— Allergic Rhinitis - increased— Atopic Eczema - increased– Anaphylaxis – remained the same— Food Allergy - increased– Complex, multi-organ allergic disease - increasedData source: Journal publications</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>Estimated figure:10% of adult population20% of childhood population30% of total population</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>RagweedHouse dust mitesCat danderDog danderGrass/weed/tree pollens</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>Allergy Care: Treatment &amp; Training</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy/clinical immunology</td><td rowspan=1 colspan=1>Upgraded to specialty status in 2005</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>Estimated figure:130</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>Yes</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>There are regional differences in allergy/clinical immunology service provision between urban and rural areas.</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>No data available</td></tr></table>
+
+## QUICK LOOK: United Kingdom
+
+## Report by British Society for Allergy and Clinical Immunology
+
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>61,708,895</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2009</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>Data show that allergic disease prevalence in the general population has remained stable.Data Source: International Study of Asthma and Allergies in Childhood Phase III</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>Estimated figure:25% of adult population25% of childhood population</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>House dust miteGrass pollensCatsViral colds</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=2>Allergy Care: Treatment &amp; Training</td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy/clinical immunology</td><td rowspan=1 colspan=1>A separate medical specialty</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>27 whole time equivalent allergistsData Source: Royal College of Physicians&#x27; report on Allergy</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>There is very little allergy training in the basic medical training. SomeGeneral Practitioners have an interest in respiratory medicine and learn allergy as part of this, others have aprimary interest in allergy and join BSACl where there is a primary care group.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>The South East is much better provided for compared to more outlying parts of the country, such as the North,Scotland and Wales.Data Source: House of Lords Implementation Committee</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>We need to improve undergraduate training in allergy and primary care training in allergy, and to ensure thatmore physicians are trained in allergyThe creation of specialist centers with good communications between these centers and primary care (thehub and spoke model) would greatly enhance patient care.Epidemiological studies are needed to assess the socio-economic burden of allergic diseases.</td></tr></table>
+
+## QUICK LOOK: Uruguay
+
+## Report by Uruguayan Society of Allergy
+
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>3,400,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>1998</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>Allergy prevalence has increased.Childhood Asthma - increasedAdult Asthma – remained the sameSevere Asthma - decreased Allergic Rhinitis - increased Atopic Eczema - increased Anaphylaxis - increasedFood Allergy - increasedComplex, multi-organ allergic disease – increasedData source: International Study of Asthma and Allergy in Childhood (ISAAC)</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>Estimated figure:15% of adult population25% of childhood population20% of total population</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>House dust mitesGrass pollensMilkDrugsData source: Working Groups of the Uruguayan Society of Allergy</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>No clear economic costs or socio-economic burden specifically regarding Uruguay have been studied.</td></tr><tr><td rowspan=1 colspan=2>Allergy Care: Treatment &amp; Training</td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy/clinical immunology</td><td rowspan=1 colspan=1>A separate medical specialty since 1982</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>Estimated figure:35 (this figure is decreasing)</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>General Practitioners receive curricular course on allergic diseases during their postgraduate specialtytraining.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>Allergy consultations are only available in the large towns of the country.Data source: Sindicato Médico del Uruguay</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>Due to the increase of the prevalence of Allergic diseases in Uruguay, more specialists are needed.</td></tr></table>
+
+## QUICK LOOK: United States of America
+
+## Report by American Academy of Allergy, Asthma and Immunology, and American College of Allergy, Asthma and Immunology
+
+<table><tr><td colspan="2" rowspan="1">General</td></tr><tr><td colspan="1" rowspan="1">National population</td><td colspan="1" rowspan="1">310,148,802</td></tr><tr><td colspan="1" rowspan="1">Year population figure was reported</td><td colspan="1" rowspan="1">2010</td></tr><tr><td colspan="1" rowspan="1">Health service systems</td><td colspan="1" rowspan="1">National and private services</td></tr><tr><td colspan="1" rowspan="1">Allergy &amp; Allergic Diseases</td><td colspan="1" rowspan="1"></td></tr><tr><td colspan="1" rowspan="1">Allergic disease prevalence trends</td><td colspan="1" rowspan="1">– Childhood Asthma - increasing– Adult Asthma - increasing- Severe Asthma - unknown- Allergic Rhinitis - increasing- Atopic Eczema - increasing– Anaphylaxis – remained the same— Food Allergy – increasingReferences:An average of one out of every 10 school-aged child has asthma.American Lung Association, Epidemiology and Statistics Unit, Research and Program Services. Trends inAsthma Morbidity and Mortality. November 2007.The prevalence of asthma increased 75% from 1980-1994.Asthma rates in children under the age of five have increased more than 160% from 1980-1994. Centers forDisease Control. Surveillance for Asthma - United States, 1960-1995, MMWR, 1998; 47 (SS-1).Allergic Rhinitis is estimated to affect approximately 60 million people in the United States, and its prevalenceis increasing, Nathan RA. The burden of allergic rhinitis, Allergy Asthma Proc 2007:28:3-9The prevalence of food allergy among children under the age of 18 increased 18% percent from 1997 to2007.Branum AM, Lukacs SL. Food allergy among U.S. children: Trends in prevalence and hospitalizations. NCHSdata brief, no 10. Hyattsville, MD: National Center for Health Statistics. 2008Spergel JM. Epidemiology of atopic dermatitis and atopic march in children. Immunol Allergy Clin North Am.2010 Aug;30(3):269-80.</td></tr><tr><td colspan="1" rowspan="1">Percentage of population with one or moreallergic diseases</td><td colspan="1" rowspan="1">10%-30% of adult population20%-40% of childhood population20%-25% of total populationReferences:About 23 million people, including almost 7 million children, have asthma. Summary Health Statistics forU.S. Adults: National Health Interview Survey, 2008 and Summary Health Statistics for U.S. Children: NationalHealth Interview Survey, 2008Allergic diseases affect as many as 40 to 50 million Americans. Airborne allergens: Something in the air.National Institute of Allergy and Infectious Diseases, NIH Publication No, 03-7045. 2003.Allergic rhinitis affects between 10% and 30% of all adults and as many as 40% of children. The Diagnosisand Management of Rhinitis: An Updated Practice Parameter. Joint Task Force on Practice Parameters. JAllergy Clin Immunol. 2008; 122: Š1-S84.In 2007, approximately 3 million children under the age of 18 werereported to have a food or digestive allergy in the previous 12 months. BranumAM, Lukacs SL. Food allergy among U.S. children: Trends in prevalence and hospitalizations. NCHS data brief,no 10. Hyattsville, MD: National Center for Health Statistics. 2008</td></tr><tr><td colspan="1" rowspan="1">Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td colspan="1" rowspan="1">Ragweed pollenGrass pollenTree pollen – but this varies geographically across the United States. For example oak (Quercus) and maple(Acer) in the south and east, mountain cedar (Juniperus ashei) in Texas and Oklahoma, other Cupressaceae inother parts of the country, olive (Olea) in some parts of California, hazelnut (Corylus) in Oregon.House dust mitesCat; dogCockroachAlternariaAspergillusSource of this data:White JF and Bernstein DI. 2003. Key pollen allergens in North America. 2003 Annals of Allergy, Asthma, andImmunology 91(5): 425-35.Bernstein IL, Li JT, Bernstein DI, Hamilton R, Spector SL, Tan R, Sicherer S, Golden DBK, Khan DA, Nicklas RA,Portnoy JM, Blessing-Moore J, Cox L, Lang DM, Oppenheimer J, Randolph CC, Schuller DE, Tilles SA, WallaceDV, Levetin E, Weber R. 2008. Allergy Diagnostic Testing: An Updated Practice Parameter. Annals of Allergy,Asthma and Immunology, vol. 100, no. 3, pp. 1-148.</td></tr><tr><td>Major (indoor/outdoor) environmental pollutants that are implicated in the development or exacerbation of allergic disease</td><td>PM 2.5 Diesel Particles ETS – environmental tobacco smoke Sulfur dioxide and/or nitrogen dioxide References: Silverman RA and Ito K. 2010. Age-related association of fine particles and ozone with severe acute asthma in New York City. Journal of Allergy and Clinical Immunology 125: 367-373. Peden D and Reed CE. 2010. Environmental and occupational allergies. Journal of Allergy and Clinical Immunology, 125: S150-S160.</td></tr><tr><td></td><td>American Lung Association, Epidemiology &amp; Statistics Unit, Research and Program Services. Trends in Asthma Morbidity and Mortality, November 2007. http://www.aafa.org/display.cfm?id=8&amp;sub=42 For adults, asthma is the fourth leading cause of work absenteeism and “presenteeism," resulting in nearly 15 million missed or lost (“less productive”) workdays each year (this accounts for nearly $3 billion of the “indirect costs” shown above). “Morbidity and Mortality Weekly Report," Surveillance for Asthma, U.S. CDC, Among children ages 5 to 17, asthma is the leading cause of school absences from a chronic illness. It accounts for an annual loss of more than 14 million school days per year (approximately 8 days for each student with asthma) and more hospitalizations than any other childhood disease. It is estimated that children with asthma spend an nearly 8 million days per year restricted to bed. “The Costs of Asthma," Asthma and Allergy Foundation 1992 and 1998 Study, 2000 Update Katayoun Bahadori et al . Economic burden of asthma: a systematic review. BMC Pulmonary Medicine 2009, 9:24doi:10.1186/1471-2466-9-24. Of the 68 studies identified in this literature review, twenty-three used data derived from the US, twenty- five from European countries, eight from East Asia and the Pacific regions, five from Canada, and seven were from other countries Gergen PJ: Understanding the economic burden of asthma. J Allergy Clin Immunol 2001 , 107(5 Suppl):S445-S448 Birnbaum HG, Berger WE, Greenberg PE, Holland M, Auerbach R, Atkins KM, Wanke LA: Direct and indirect costs of asthma to an employer. J Allergy Clin Immunol 2002 , 109(2):264-70 Cisternas MG, Blanc PD, Yen IH, Katz PP, Earnest G, Eisner MD, Shiboski S, Yelin EH: A comprehensive study of the direct and indirect costs of adult asthma. J Allergy Clin Immunol 2003 , 111(6):1212-8 Sears, Malcolm R.“Epidemiology of asthma exacerbations," Journal of Allergy and Clinical Immunology, Vol 122, Issue 4, pp 662–668. (0ctober 2008) Blanchette CM, Gutierrez B, Ory C, Chang E, Akazawa M.J Manag Care Pharm. Economic burden in direct costs of concomitant chronic obstructive pulmonary disease and asthma in a Medicare Advantage population. Manag Care Pharm. 2008 Mar;14(2):176-85 Weiss KB, Gergen PJ, Hodgson TA: An economic evaluation of asthma in the United States N Engl J Med 1992 , 326(13):862-6</td></tr><tr><td colspan="2" rowspan="1">Allergy Care: Treatment &amp; Training</td></tr><tr><td colspan="1" rowspan="1">Recognition of the specialty of allergy orallergy/clinical immunology</td><td colspan="1" rowspan="1">Allergy and Clinical Immunology is recognized as a separate medical specialty.Training is available to successful graduates of accredited residency programs of either pediatrics or internalmedicine. The length of fellowship is two years (with optional a third year for research) (academic) leading toa certification examination by a conjoint board of pediatrics and internal medicine. Certification is time limitedwith required CME credits and periodic re-examination.</td></tr><tr><td colspan="1" rowspan="1">Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td colspan="1" rowspan="1">5946Data source: American Board of Allergy and Imunology (May 2010)</td></tr><tr><td colspan="1" rowspan="1">General practitioner training in allergydiagnosis and treatment</td><td colspan="1" rowspan="1">GP's receive post graduate education through approved Continuing Medication Education meetings sponsoredthough their professional associations, and may attend specialist organizations such as the American Collegeof Allergy Asthma and Immunology and the American Academy of Allergy, Asthma and Immunology foradditional training.</td></tr><tr><td colspan="1" rowspan="1">Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td colspan="1" rowspan="1">Rural patients have increased difficulty obtaining health care in general, and limited data suggesting theyreceive inferior care for asthma. The available data suggests that asthma prevalence in rural USA is greaterthan that seen worldwide, and is not as significantly different from urban areas as it is in other countries.There is limited data that there may be a higher burden of asthma hospitalizations, though further study in thisarea needs to be done.Rural Americans have decreased ability to access care for asthma due to both economic disparities (lowerincome and higher rates of uninsured, under-insured and government -insured residents) and supplydisparities (lower rates of preventive screening suggesting difficulty accessing primary care, and lowerrelative supply rate of both primary care and specialist physicians in rural areas). Rural Americans also travelgreater distances to obtain care, and greater distance to care is a risk for poor health outcomes and increasedmorbidity and mortality.Reference: Valet RS et al. Rural health disparities in asthma care and outcomes. JACI 2009 June; 123(6):1220-1225</td></tr><tr><td colspan="1" rowspan="1">Enhancements required for improvedpatient care</td><td colspan="1" rowspan="1">Conversion to a national health service favors younger physicians who more adaptable to governmentmandated guidelines, but may precipitate a manpower shortage as older physicians seek earlier retirement;the potential shortage of trained allergists will need to be monitored and addressed to ensure sufficientcapacity for the increasing burden of allergic diseases in the population.Patient care would be enhanced by the implementation of electronic medical records utilizing the specialknowledge of Allergists.</td></tr></table>
+
+## QUICK LOOK: Venezuela
+
+## Report by Venezuelan Society of Allergy and Immunology
+
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>27,000,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2009</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>Overall allergic disease prevalence has increased.Reference:Pediatr Allergy Immunol. 2009 Sep 24. Prevalence of rhinitis-related symptoms in Latin American children -Results of the InternationalStudy of Asthma and Allergies in Childhood (ISAAC) phase three. Solé D, Mallol J, Camelo-Nunes IC,Wandalsen GF; Latin American ISAAC Study Group</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>Estimated figure:30% of adult population40% of childhood population40% of total population</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>Dust mites, including Dermatophadoides pternoyssinus and Blomiatropicalis CockroachDog and cat epitheliumMoldsGrass pollensReference:Sánchez Borges M, Mantilla P, Capriles Huleltt A, Caballero F. Alergenos responsables de las enfermedadesalérgicas respiratorias en Venezuela. Revista Venezolana de Alergia, Asma e Inmunología 2003, vol V, Nº 2, pp43-52</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>Allergy Care: Treatment &amp; Training</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy/clinical immunology</td><td rowspan=1 colspan=1>A separate medical specialty</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>Estimated figure:250</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>Partially. Most undergraduate programs include basic skills for diagnosing/treating asthma, but have severallimitations regarding allergic rhinitis, drug allergy, food allergy, etc.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>There are no Allergy/Clinical Immunology services in the rural areas in Venezuela.Data source: Instituto de Inmunología - Universidad Central de Venezuela - Centro Nacional de Referencia enInmunología Clínica database.</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>Our country has very limited access to specialized services in Allergology. We have too few specialistsand most of those are distributed within big cities. Government services are scarce, and there are no drugdistribution programs; this means that most patients have to buy their medication without reimbursement,making it difficult for the physician to prescribe the correct therapy, and causing problems with patientcompliance.Except for a few isolated research efforts, the state provides very limited and confusing epidemiologicinformation. The Ministry of Health homepage only provides mortality information up to 2007. No officialinformation is available regarding morbidity for almost any disease (including asthma and allergies) in thelast 10 years. For any National-based allergy and asthma control program we must begin by gatheringreliable epidemiological data, providing a strong academic background to our medical students, and designingdiagnosis and treatment protocols that are suitable for General Practitioners, and that include a medicationsupply for patients.</td></tr></table>
+
+## QUICK LOOK: Zimbabwe
+
+## Report by Zimbabwe Allergy Society
+
+<table><tr><td rowspan=1 colspan=2>General</td></tr><tr><td rowspan=1 colspan=1>National population</td><td rowspan=1 colspan=1>13,000,000</td></tr><tr><td rowspan=1 colspan=1>Year population figure was reported</td><td rowspan=1 colspan=1>2007</td></tr><tr><td rowspan=1 colspan=1>Health service systems</td><td rowspan=1 colspan=1>National and Private Services</td></tr><tr><td rowspan=1 colspan=1>Allergy &amp; Allergic Diseases</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Allergic disease prevalence trends</td><td rowspan=1 colspan=1>– Allergic diseases have increased.- Childhood Asthma - increased- Adult Asthma - increased- Severe Asthma – no data available— Allergic Rhinitis - increased– Atopic Eczema - increased Anaphylaxis - no data available Food Allergy - increasedData source: Case records as the Clinical Immunology and Allergy Clinic in Harare. Anaphylaxis and SevereAsthma tend to be attended to in Emergency facilities.</td></tr><tr><td rowspan=1 colspan=1>Percentage of population with one or moreallergic diseases</td><td rowspan=1 colspan=1>Estimated figure:10% of adult population15% of childhood population12% of total population</td></tr><tr><td rowspan=1 colspan=1>Major allergen triggers that are implicatedin the development or exacerbation ofallergic disease</td><td rowspan=1 colspan=1>House dust mites Grass pollens Mold sporesAnimal dandersFood allergensData source: Published material and clinical observations.</td></tr><tr><td rowspan=1 colspan=1>Major (indoor/outdoor) environmentalpollutants that are implicated in thedevelopment or exacerbation of allergicdisease</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>The annual socio-economic costs ofallergic diseases</td><td rowspan=1 colspan=1>No data available</td></tr><tr><td rowspan=1 colspan=1>Allergy Care: Treatment &amp; Training</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>Recognition of the specialty of allergy orallergy/clinical immunology</td><td rowspan=1 colspan=1>A separate medical specialty.</td></tr><tr><td rowspan=1 colspan=1>Number of certified allergists AND/ORallergist/clinical immunologists currentlypracticing nationally</td><td rowspan=1 colspan=1>1Data source: Medical and Dental Practitioners Council of Zimbabwe</td></tr><tr><td rowspan=1 colspan=1>General practitioner training in allergydiagnosis and treatment</td><td rowspan=1 colspan=1>General Practitioners do not receive formal training in allergy, but plansare underway for training.</td></tr><tr><td rowspan=1 colspan=1>Regional differences in allergy/clinicalimmunology service provision betweenurban and rural areas</td><td rowspan=1 colspan=1>There are no specialist allergy or clinical immunology services outside the capital city, Harare. Registeredspecialists are resident and operate from the capital.</td></tr><tr><td rowspan=1 colspan=1>Enhancements required for improvedpatient care</td><td rowspan=1 colspan=1>The primary challenge facing patients is access to accurate, accessible and good quality clinical diagnosis oftheir conditions. Factors impacting on this situation include poor patient awareness of the existence of allergicdiseases, limited government emphasis on the growing allergy epidemic, and limited funding for allergyservice delivery, with limited preparedness of health workers to adequately diagnose and appropriately treatallergic conditions.We lack defined referral networks for allergy patients. There are limited numbers of community groupspromoting allergy awareness. Patients with asthma face challenges of delayed diagnosis and so tend topresent with more severe disease. The subsequent challenge is a mismatch between disease severity andtreatment regimens. The WA0 and other asthma treatment guidelines are poorly disseminated and even whenthey are available, access to tools for the evaluation and interpretation of asthma severity (eg, spirometry)may be limited.Severe asthma and anaphylaxis patients are faced with the general challenges of shortages in the numbersof allergy and emergency physicians, limited access to intensive care units and limited access to emergencymedication. The allergy epidemic is growing. There is however limited epidemic preparedness.</td></tr></table>
+
+# WAO White Book Author Affiliations
+
+Ignacio Ansotegui, MD, PhD Hospital Quirón Bizkaia Erandio, Bilbao SPAIN
+
+Sonia Cerrai, BSc Institute of Clinical Physiology Natural Research Council Pisa ITALY
+
+Jose E. Gereda, MD Clinica Ricardo Palma San Isidro, Lima PERU
+
+Luisa Karla P. Arruda, MD University of São Paulo School of Medicine Ribeirão Preto BRAZIL
+
+Fook Thim Chew, PhD National University of Singapore SINGAPORE
+
+Tari Haahtela, MD   
+Helsinki University Central Hospital   
+Helsinki FINLAND
+
+Héctor Ariel Badellino, MD Clinica Regional del Este Srl Córdoba ARGENTINA
+
+Linda Susan Cox, MD Allergy and Asthma Center Fort Lauderdale, Florida USA
+
+Stephen T. Holgate, BSc, MD, DSc, CBE University of Southampton Southampton General Hospital Southampton UNITED KINGDOM
+
+Carlos E. Baena-Cagnani, MD Catholic University of Cordoba Cordoba ARGENTINA
+
+Paul Cullinan, MD National Heart and Lung Institute Imperial College London UNITED KINGDOM
+
+John W. Holloway, BSc, PhD University of Southampton Southampton UNITED KINGDOM
+
+Sami L. Bahna, MD, DrPH Louisiana State University Health Sciences Center Shreveport, Louisiana USA
+
+Adnan Custovic, MD, PhD The University of Manchester Manchester UNITED KINGDOM
+
+Juan Carlos Ivancevich, MD Universidad Del Salvado Buenos Aires ARGENTINA
+
+Sandra Baldacci, BSc Institute of Clinical Physiology Natural Research Council Pisa ITALY
+
+Gennaro D’Amato, MD   
+Medical School of Specialization   
+University of Naples   
+Naples Italy
+
+Marek Jutel, MD, PhD Wroclaw Medical University Wroclaw POLAND
+
+Thomas R. M. Bieber, MD, PhD Friedrich-Wilhelms-Universitat Bonn GERMANY
+
+Gennaro Sergio Del Giacco, MD, PhD University of Cagliari Medical School Sardegna, Cagliari ITALY
+
+Michael A. Kaliner, MD Institute for Asthma & Allergy Wheaton, Maryland USA
+
+Carsten Bindslev-Jensen, MD, PhD, DMSci Odense University Hospita Odense DENMARK
+
+Pascal Demoly, MD, PhD University of Montpellier Montpellier FRANCE
+
+Allen P. Kaplan, MD Medical University of South Carolina Charleston, South Carolina USA
+
+Patrizia Bonadonna, MD Verona General Hospital Verona ITALY
+
+Vesselin Dimov, MD University of Chicago Chicago, Illinois USA
+
+Stephen Frederick Kemp, MD University of Mississippi Medical Center Jackson, Mississippi USA
+
+Sergio Bonini, MD Second University of Naples Rome ITALY
+
+Yehia M. El-Gamal, MD, PhD   
+Ain Shams University   
+Cairo EGYPT
+
+Marek L. Kowalski, MD, PhD Medical University of Lodz Lodz POLAND
+
+Giorgio Walter Canonica, MD   
+Genoa University   
+Liguria ITALY
+
+Alessandro Fiocchi, MD University of Milan Medical Schoo Milano ITALY
+
+Gideon Lack, MBBCh St. Thomas’ Hospital London UNITED KINGDOM
+
+Kai-Hakon Carlsen, MD   
+Oslo University Hospital   
+University of Oslo   
+Olso NORWAY
+
+Anthony J. Frew, MD Brighton & Sussex Medical School Brighton UNITED KINGDOM
+
+Bee Wah Lee, MD, PhD National University of Singapore SINGAPORE
+
+Thomas B. Casale, MD Creighton University School of Medicine Omaha, Nebraska USA
+
+Takeshi Fukuda, MD Dokkyo University School of Medicine Shimotsuga-gun, Tochigi JAPAN
+
+Donald Y. M. Leung, MD, PhD National Jewish Medical & Research Center   
+Denver, Colorado USA
+
+Phillip Lieberman, MD University of Tennessee College of Medicine Memphis, Tennessee USA
+
+Lanny J. Rosenwasser, MD Children‘s Mercy Hospital & Clinics Kansas City, Missouri USA
+
+Olivier Vandenplas, MD, MSc Mont Godinne Hospital Catholic University of Louvain Yvoir BELGIUM
+
+Richard F. Lockey, MD, FAAAAI University of South Florida Tampa, Florida USA
+
+Menachem Rottem, MD Emek Medical Center Afula ISRAEL
+
+Roy Gerth van Wijk, MD, PhD Erasmus Medical Center Rotterdam NETHERLANDS
+
+Sara Maio, BSc   
+Institute of Clinical Physiology   
+Natural Research Counci   
+Pisa ITALY
+
+Hugh Albert Sampson, MD Mt. Sinai School of Medicine New York, New York USA
+
+Pakit Vichyanond, MD Siriraj Hospital Bangkok THAILAND
+
+Mario Sanchez-Borges, MD Clinica El Avila Caracas VENEZEULA
+
+Harold S. Nelson, MD National Jewish Health Denver, Colorado USA
+
+Giovanni Viegi, MD Institute of Clinical Physiology Natural Research Council Pisa ITALY
+
+Hae-Sim Park, MD, PhD Ajou University School of Medicine Yongtong-gu, KOREA
+
+Giuseppe Sarno, BSc Institute of Clinical Physiology Natural Research Council Pisa ITALY
+
+Leena von Hertzen, PhD Helsinki University Centre Hospital Helsinki FINLAND
+
+Martyn Partridge, MD   
+Imperial College of Science, Technology   
+& Medicine   
+London UNITED KINGDOM
+
+Aziz Sheikh, BSc, MBBS, MSc, MD, MRCP The University of Edinburgh Edinburgh UNITED KINGDOM
+
+Jill A. Warner, BSc PhD Imperial College London UNITED KINGDOM
+
+Giovanni Passalacqua, MD Universita Degli Studi Di Genova Liguria ITALY
+
+Marzia Simoni, BSc Institute of Clinical Physiology Natural Research Council Pisa ITALY
+
+John O. Warner, MD Imperial College London UNITED KINGDOM
+
+Ruby Pawankar, MD, PhD Nippon Medical School Tokyo, Japan
+
+F. Estelle R. Simons, MD University of Manitoba Winnipeg CANADA
+
+Rosalind J. Wright, MD, MPH Harvard Medical School Boston, Massachusetts USA
+
+Werner J. Pichler, MD, PhD Inselspital Bern SWITZERLAND
+
+Michelle Sternthal Harvard School of Public Health Boston, Massachusetts USA
+
+Ian Anthony Yang, MBBS (Hons) The Prince Charles Hospital Brisbane AUSTRALIA
+
+Thomas A. E. Platts-Mills, MD PhD University of Virginia Charlottesville, Virginia USA
+
+Jeffrey Radford Stokes, MD Creighton University Medical Center Omaha, Nebraska USA
+
+Myron Zitt, MD State University of New York Woodbury, New York USA
+
+Jay M. Portnoy, MD Children‘s Mercy Hospital Kansas City, Missouri USA
+
+William W. Storms, MD University of Colorado Health Sciences Center Colorado Springs, Colorado USA
+
+Torsten Zuberbier, MD, PhD Charite University of Medicine-Berlin Berlin GERMANY
+
+Paul C. Potter, MD University of Cape Town Groote Schuur SOUTH AFRICA
+
+Erkka J. Valovirta, MD PhD Terveystalo Allergy Clinic Terveystalo FINLAND
+
+Noel Rodriguez Perez, MD State University of Tamaulipas Centro, Tamaulipas MEXICO
+
+Paul B. van Cauwenberge, MD   
+Ghent University   
+Ghent BELGIUM
+
+None of the authors of the White Book on Allergy have any conflicts of interest to disclose in relation to this work
+
+![](images/792211cbabb8fe3be59f0a0a1d2e69e4de9b7364d8ca2adbae88e3887d0477b5.jpg)
+
+WORLD ALLERGY ORGANIZATION
+
+A World Federation of Allergy, Asthma & Clinical Immunology Societies
+
+\$0.00
+
+ISBN978-0-615-46182-3

@@ -1,0 +1,58 @@
+# Peanut Allergy: What to Know About the Latest Prevention Guidelines
+
+By: Claire McCarthy, MD, FAAP
+
+When I was growing up, peanut butter and jelly sandwiches were really common in the school lunchroom. These days, most parents wouldn't even think of sending one. We've moved from peanut-free lunch tables to peanut-free schools—and many camps and afterschool programs have banned anything peanut too.
+They do it to save lives. Not only has the prevalence of peanut allergy doubled in Western countries over a decade, it is the leading cause of food allergy related death in the United States.
+
+Finally we may have an answer, and it is the simplest answer of all: eating peanuts. Not actual peanuts—they are a serious choking hazard—but things made from peanuts, like peanut butter.
+
+## Previous recommendations on when to introduce peanut products in a child's diet
+
+For many years, experts thought that the best way to fight peanut allergy was to avoid peanut products in the first years of life—that's why in 2000 the American Academy of Pediatrics (AAP) recommended that any child at high risk of peanut allergy (like those with a family history of it, or with other food allergies, or eczema) not eat any before they turned 3.
+
+But that didn't help, which is why in 2008 the AAP stopped recommending it.
+## Surprising new research on peanut allergies
+
+Around this time, researchers in the UK noticed something interesting: peanut allergy in Jewish children living in the UK was about 10 times more common than it was in Jewish children living in Israel. Since these children shared a similar ancestry, the difference had to be something that they were doing.
+
+It turned out there was a big diet difference. Children in the UK rarely ate peanut products in the first year or so of life—whereas children in Israel commonly ate a snack called Bamba, a corn puff made with peanut butter. The researchers wondered: Could this be the important difference—that the Israeli children ate peanut products from an early age?
+
+So they tested it. They did a study on about 600 babies who had severe eczema or egg allergy, which are known to increase the risk of peanut allergies. They divided them up into two groups: one was given Bamba to eat regularly (if they didn't like Bamba, they could eat smooth peanut butter), and the other was told to stay away from foods containing peanuts. They did this until the children were 5 years old.
+
+At 5 years, only 3 percent of the kids who ate peanut products were allergic to them—compared with 17 percent of those who didn't eat peanuts. This included children who tested positive for a peanut allergy as infants (those with strong positive tests, however, were not included in the study).
+
+## New peanut allergy advice
+
+When this research was released, the National Institute of Allergy and Infectious Diseases came out with guidelines to help pediatricians and parents understand and use this news. The AAP endoresed those guidelines, and in a new clinical report underlines their importance.
+
+### The guidelines divide babies into three groups:
+
+- Those with severe eczema (persistent or recurrent eczema who need prescription creams frequently) and/or egg allergy
+- Those with mild to moderate eczema
+- Those who don't have any eczema or food allergy
+
+For the first group, those with severe eczema and/or egg allergy, testing for peanut allergy is recommended—and parents should talk with their doctors about how and when to give peanut products.
+
+If testing shows an allergy, it may be a good idea to do that first taste of peanut product in the doctor's office. Parents of babies in this group should talk to their doctor early, like at the 2- or 4-month checkup, because the recommendation is that these babies should get peanut products between 4 and 6 months.
+
+There is no testing needed for babies with mild to moderate eczema, although they should still talk with their doctors about their child's situation and needs. These babies should try peanut products at around 6 months of age.
+
+The babies who don't have any eczema or food allergy can have peanut products along with other foods based on their family's preferences and cultural practices. It's not so important to do it early, but it's fine if parents do.
+
+It's very important not to give babies whole peanuts or chunks of them (or chunky peanut butter), because babies could choke. Smooth peanut butter mixed into a puree is better, as are snacks or foods made with peanut butter.
+
+We don't know if this will work for other food allergies. So, if there are other allergies you are looking to prevent, talk to your doctor.
+
+## More information
+
+- Ask the Pediatrician: When can I start giving my baby peanut butter?
+- Diagnosing Food Allergies in Children
+- Create an Allergy and Anaphylaxis Emergency Plan 
+- The Effects of Early Nutritional Interventions on the Development of Atopic Disease in Infants and Children: The Role of Maternal Dietary Restriction, Breastfeeding, Hydrolyzed Formulas, and Timing of Introduction of Allergenic Complementary Foods (AAP Clinical Report) 
+- Management of Food Allergy in the School Setting (AAP Clinical Report) 
+- Addendum Guidelines for the Prevention of Peanut Allergy in the United States: Report of the National Institute of Allergy and Infectious Diseases-Sponsored Expert Panel (AAP-Endorsed Guidelines) 
+
+## About Dr. McCarthy:
+
+Harvard Health Blog, Huffington Post and many other online and print publications.

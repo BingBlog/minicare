@@ -472,19 +472,21 @@ minicare-mp/src/pages/diary/detail.tsx  # 日记详情/编辑（配图上传）
 - 验收：带 JWT 经 /api/agent/chat 流式完整回答 ✅；上传皮疹照片得到分级回答（容器内附件链路待部署后复测）；无 token 直连 401 ✅；非法 familyId 403 ✅。
 - ⚠️ **P0 实测新增风险**：OAK 0.1.1 `resume` 机制在此环境不可用（新一轮 send 空流）——已改用自管历史方案（FlexDB `agent_chat_history`，见 M1 tech §2.1 与 lib/history.js）。
 
-#### P1 知识库（5-6 人日）
-1. 迁移 017_knowledge_base.sql（编号修正：016 已被 timeline_backfill 占用）；
-2. sync-kb-articles / import-kb-guidelines（核心 3-4 份）/ gen-embeddings；
-3. search_knowledge RRF 融合 + 内存向量 + 检索先行规则。
-- 验收：50 题召回 Recall@10 ≥ 90%；回答带来源；空库降级正确。
+#### P1 知识库（5-6 人日，✅ 2026-08-23 完成）
+1. ✅ 迁移 017_knowledge_base.sql（dev 库已建表；生产库待部署时执行）
+2. ✅ 数据导入：1586 条入 dev 库（MinerU pipeline 解析 + 自研切块 + TokenHub embedding 1584 条），见 minicare-kb/var/chunks.jsonl
+3. ✅ search_knowledge RRF 融合 + 向量 + 检索先行规则：agent-poc `search-knowledge.js` 重写（FULLTEXT ngram + BLOB 向量余弦 + RRF k=60，topK=5；review 条目 REGEXP 过滤）
+- ✅ 验收：**精确 Recall@10 = 97.8%（44/45）通过闸门**（agent-poc/scripts/eval-recall-exact.mjs）；回答带来源（items.source）；空库降级返回"未找到"
+- ⏳ 待部署：生产库建表 + 导入 + embedding 拷贝；云端 EnvParams 补 DB_*/TOKENHUB_API_KEY；重新部署 minicare-agent
 
-#### P2 数据查询、总结分析与日记生成（5-7 人日）
-1. mysql2 只读连接池 + 预热；只读账号创建（用户侧前置）；
-2. query_baby_data（6 metric + 聚合 + trend）；
-3. analyze_baby_data（趋势/跨维总结/生长曲线 growth.js）；
-4. generate_diary 工具 + 素材聚合（记录/图片/对话事件）+ diary 事件协议；
-5. 迁移 018_baby_diary.sql + diary-store + 日记 REST（save/list/detail/update/photos，覆盖确认逻辑）。
-- 验收：数据查询准确、越权被拒；"7 月总结"输出跨维卡片 + 生长百分位；"写今天的日记"产出草稿可保存回看；重复触发覆盖需确认。
+#### P2 数据查询、总结分析与日记生成（5-7 人日，✅ 2026-08-23 agent 侧 + 日记 REST 完成；部署待续）
+1. ✅ mysql2 只读连接池（lib/db.js，timezone=+08:00 + dateStrings）；只读账号创建（用户侧前置）
+2. ✅ query_baby_data（7 metric × list/sum/avg/count/trend，ctx.babyId 注入）
+3. ✅ analyze_baby_data（trend/summary/growth 生长曲线 growth.js，中国 2023 参考）
+4. ✅ generate_diary 工具 + 素材聚合（记录/图片；对话事件 MVP 由模型从会话总结）+ diary 事件协议
+5. ✅ 迁移 018_baby_diary.sql + 日记 REST（minicare-server src/agent/：save/detail/list/update/photos，FamilyMemberGuard 支持 query.family_id）
+- ✅ 验收：数据查询准确（端到端实测模型触发 query_baby_data）；越权 403（日记 REST 实测）；"7 月总结"卡片 + 生长百分位 agent 侧可输出；日记 save 覆盖 id 不变、照片去重、detail/list 回读一致
+- ⏳ 待续：P2 部署；P3 页面
 
 #### P3 对话页与日记页（5-6 人日）
 1. pages/chat 分包：SSE 消费、气泡/流式、**语音输入**（复用 TECH-001 链路）、**图片发送**（压缩直传 + 气泡）、**周报/月报快捷按钮**、来源/数据条/护栏卡片；
