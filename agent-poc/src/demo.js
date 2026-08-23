@@ -19,8 +19,10 @@
  */
 import { randomUUID } from 'node:crypto'
 import { createAgent } from '@cloudbase/open-agent-kernel'
-import { getDeepSeekKey, buildDeepSeekModelSpec, getCloudBaseCredentials } from './lib/cloudbase-auth.js'
-import { KNOWLEDGE_TOOL_DEF, executeSearchKnowledge } from './lib/knowledge-base.js'
+import { getDeepSeekKey } from './config.js'
+import { buildModelSpec } from './lib/deepseek.js'
+import { getCloudBaseCredentials } from './lib/flexdb.js'
+import { KNOWLEDGE_TOOL_DEF, executeSearchKnowledge } from './lib/tools/search-knowledge.js'
 
 // ① 凭证
 const apiKey = getDeepSeekKey()
@@ -31,7 +33,7 @@ console.log('[1/5] DeepSeek API Key 就绪, FlexDB 凭证就绪')
 const agent = createAgent({
   envId: 'minicare-cloud-6gqledlle0132cbe',
   credentials, // FlexDB 会话持久化（client-tool 必需）
-  model: buildDeepSeekModelSpec(apiKey),
+  model: buildModelSpec(apiKey),
   systemPrompt:
     '你是"敏宝护理助手"，一名严谨温和的宝宝护理顾问。回答家长问题时：' +
     '1) 必须先调用 search_knowledge 检索知识库，基于检索结果回答；' +

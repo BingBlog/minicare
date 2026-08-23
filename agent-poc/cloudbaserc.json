@@ -3,6 +3,6 @@
   "envId": "minicare-cloud-6gqledlle0132cbe",
   "$schema": "https://framework-1258016615.tcloudbaseapp.com/schema/latest.json",
   "cloudrun": {
-    "name": "oak-agent-demo"
+    "name": "minicare-agent"
   }
 }

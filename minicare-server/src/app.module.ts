@@ -13,6 +13,7 @@ import { BabyFoodsModule } from './baby-foods/baby-foods.module';
 import { ReportModule } from './report/report.module';
 import { AppConfigModule } from './app-config/app-config.module'
 import { VoiceModule } from './voice/voice.module'
+import { AgentModule } from './agent/agent.module'
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { VoiceModule } from './voice/voice.module'
     ReportModule,
     AppConfigModule,
     VoiceModule,
+    AgentModule,
   ],
 })
 export class AppModule {}

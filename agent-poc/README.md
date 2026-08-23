@@ -1,17 +1,20 @@
 # agent-poc · OAK 最小 POC（DeepSeek + 知识库工具 + 多用户会话）
 
-> 状态：**核心链路验证通过**（2026-08-20）
+> 状态：**核心链路验证通过 + P0 基础服务完成**（2026-08-23）
 > 模型方案：**DeepSeek 官方 API（Anthropic 兼容端点）**——已实测可用
 > 关联调研：[TECH-005-oak-source-analysis.md](../docs/tech/TECH-005-oak-source-analysis.md)
+> 生产方案：[TECH-006-minicare-agent-plan.md](../docs/tech/TECH-006-minicare-agent-plan.md)（v2.0）
 
 ## 验证结论
 
 | 项 | 结果 |
 |----|------|
-| OAK + DeepSeek 出流 | ✅ 通过（deepseek-v4-flash / deepseek-v4-pro，Anthropic 兼容端点） |
+| OAK + DeepSeek 出流（文本） | ✅ 通过（`deepseek-v4-flash` / `deepseek-v4-pro`，**直接传真实模型名**） |
+| **OAK + DeepSeek 出流（视觉）** | ✅ **通过（2026-08-23 P0 实测）**：`deepseek-v4-flash-vision-exp` + attachments 传图，图片解读质量高 |
 | client-tool 协议（模型调用→宿主执行→回传→基于结果作答） | ✅ 通过（FlexDB 持久化启用后） |
 | 多用户会话隔离（userId + UUID conversationId） | ✅ 通过 |
 | 知识库工具注入（zod schema + execute） | ✅ 通过 |
+| **跨请求会话恢复** | ✅ **通过（自管历史方案）**——⚠️ OAK 0.1.1 `resume` 机制在此环境**不可用**（新一轮 send 返回空流），改用 FlexDB `agent_chat_history` 自管历史 + systemPrompt 注入（见踩坑 8） |
 | 无需 CloudBase AI 资源包 | ✅ **模型调用走 DeepSeek，完全不依赖成长计划/Token Credits** |
 
 ## 为什么选 DeepSeek（决策记录）
@@ -26,33 +29,53 @@
 # 1. 配置 key（已写入 .env.local，被 .gitignore 保护）
 echo "DEEPSEEK_API_KEY=sk-xxx" > .env.local
 
-# 2. 前置：tcb login 已登录（读取 ~/.config/.cloudbase/auth.json 作 FlexDB 凭证）
+# 2. 启动服务（本地开发：凭证优先读环境变量，兜底 tcb CLI 登录态）
+#    ⚠️ 本地 tcb CLI 临时凭证会过期（tmp secret key expire）——过期后 FlexDB 会话不可用，
+#    建议注入 minicare-server/.env.local 的长期 TCB_SECRET_ID/KEY 本地联调
+AGENT_INTERNAL_TOKEN=xxx node src/server.js   # 服务 :3000，/health /diag /chat(SSE)
+
+# 3. 或运行演示脚本（双用户隔离演示）
 node src/demo.js
 ```
 
-## 架构
+## 架构（P0 目录分层，TECH-006 §2.2.1）
 
 ```
-小程序/业务层
-  └─ agent-poc/src/demo.js（宿主循环）
-       ├─ createAgent(...)          # OAK，模型走 DeepSeek Anthropic 端点
-       ├─ session.send(msg)         # 发消息 → ACP 事件流
-       ├─ client/<tool> 请求        # 模型要调工具 → 宿主执行
-       ├─ respondToolUse(...)       # 回传结果 → 模型基于结果继续
-       └─ getHistory()              # 会话历史（FlexDB，主环境）
+src/
+├── server.js              # Express 入口：路由注册 + 鉴权中间件
+├── config.js              # env 读取 + 启动校验（缺 key 不崩溃，/health ready=false）
+├── agent.js               # createAgent 工厂（按请求构建，历史注入 systemPrompt）
+├── middleware/
+│   └── internal-token.js  # x-agent-token 校验（timingSafeEqual）+ ctx base64 解析 + UUID 校验
+├── routes/
+│   ├── chat.js            # POST /chat（SSE：meta/session/tool_call/tool_result/text/done/error）
+│   ├── health.js          # GET /health（探活，放行无需 token）
+│   └── diag.js            # GET /diag（容器诊断）
+├── lib/
+│   ├── deepseek.js        # ModelSpec（真实模型名 + Anthropic 端点）
+│   ├── flexdb.js          # TCB 凭证封装（env 优先 + auth.json 兜底）
+│   ├── history.js         # ⚠️ 自管对话历史（FlexDB agent_chat_history，绕过 OAK resume bug）
+│   ├── storage.js         # CloudBase Storage（fileId → 临时 URL）
+│   ├── vision.js          # 图片 → OAK attachment（file 类型，base64）
+│   ├── sse.js             # SSE 事件发送
+│   └── tools/
+│       └── search-knowledge.js  # 知识库工具（zod + execute，P1 换混合检索）
+└── prompts/
+    └── system.js          # systemPrompt（角色/检索先行/护栏/图片规则/历史块）
 ```
 
-## 关键配置（demo.js）
+## 关键配置（agent.js）
 
 ```js
 const agent = createAgent({
   envId: 'minicare-cloud-6gqledlle0132cbe',
-  credentials: { secretId, secretKey, sessionToken },  // FlexDB 持久化必需
+  credentials: { secretId, secretKey, sessionToken },  // FlexDB 必需
   model: {
-    id: 'claude-sonnet-4-20250514',   // ⚠️ Claude CLI 白名单内模型名（CLI 校验）
-    apiBaseUrl: 'https://api.deepseek.com/anthropic',  // DeepSeek Anthropic 端点
+    id: 'deepseek-v4-flash',           // ✅ 2026-08-23 实测：直接传真实模型名，无需白名单映射
+    apiBaseUrl: 'https://api.deepseek.com/anthropic',
     apiKey: process.env.DEEPSEEK_API_KEY,
   },
+  systemPrompt,  // 含历史块（手动恢复）
   tools: [{ name, description, parameters: zodSchema, execute }],
   cwd: process.cwd(),
 })
@@ -60,18 +83,21 @@ const agent = createAgent({
 
 ## ⚠️ POC 实测踩坑（务必记录）
 
-1. **模型名必须是 Claude CLI 白名单内的**（如 `claude-sonnet-4-20250514`）——传 `deepseek-v4-flash` 等会报 `unrecognized_model`（CLI 校验），但 gateway/DeepSeek 不校验模型名，实际请求仍路由到目标模型
+1. ~~**模型名必须是 Claude CLI 白名单内的**~~ —— **2026-08-23 已推翻**：当前 SDK（claude-agent-sdk 0.3.x）直接传 `deepseek-v4-flash`/`deepseek-v4-flash-vision-exp` 即可，无白名单校验。POC 当时的 `unrecognized_model` 应属旧 SDK 行为
 2. **`session: { enabled: false }` 时 client-tool 链路是坏的**——工具回传依赖 `patchSentinelToolResult` 读写持久化 transcript，必须启用 FlexDB（传 credentials）
 3. **client-tool 是"暂停-执行-回传"协议**：模型调用工具 → turn pause → 发出 `client/<toolName>` JSON-RPC REQUEST → 宿主执行 → `session.respondToolUse({ toolUseId, output })` → turn 恢复
 4. **Tools 的 parameters 必须是 zod schema**（OAK `ToolDefinition.parameters` 直接透传 SDK 的 `tool()`），不是 JSON Schema
 5. **conversationId 必须是 UUID 格式**——Claude CLI 校验，非 UUID 报 `Invalid session ID`
-6. 凭证：模型走 `DEEPSEEK_API_KEY`；FlexDB 会话走 CloudBase 临时凭证（POC 读 CLI 登录态，生产环境变量注入）
+6. 凭证：模型走 `DEEPSEEK_API_KEY`；FlexDB 会话走 CloudBase 凭证（本地读 CLI 登录态，生产环境变量注入）。⚠️ 本地 CLI 登录态是**临时凭证会过期**，过期后 FlexDB/会话持久化失效（`tmp secret key expire`）——本地联调用长期凭证
 7. 安装：npm install 用 `--registry=https://registry.npmmirror.com`（默认源可能卡死）；Claude CLI 二进制 325MB 随平台包安装
+8. **⚠️ OAK 0.1.1 `resume` 不可用（2026-08-23 P0 实测，0.1.2-beta.0 亦复现）**：新一轮 `session.send()`（isContinuation → `resume: sessionId`）返回空流，CLI 不 spawn。影响：① 同 session 对象第二次 send；② 跨请求按 conversationId 恢复。**绕行方案**：每次请求新建 session（`startSession({conversationId: randomUUID()})`），历史由 `lib/history.js` 从 FlexDB `agent_chat_history` 读取并注入 systemPrompt（最近 20 条）。单轮内 client-tool resume（respondToolUse）不受影响，已验证
+9. **图片输入走 OAK attachments 而非自组 image block**：`session.send({ type:'message', content, attachments:[{type:'file', source:Uint8Array, mimeType}] })`，DeepSeek 端点直接接受 base64 图片并正确解读（P0 实测）
 
-## 生产化待办（P1）
+## 生产化待办（按 TECH-006 执行计划）
 
-- [ ] HTTP 服务化（Express/SSE），供小程序对话页对接
-- [ ] 会话隔离模型落地：userId=family member，conversationId=UUID（threadId）
-- [ ] 知识库 MCP server 化（PG pgvector / COS Vector + MCP 协议，替代内存检索）
-- [ ] 凭证管理：DeepSeek key + CloudBase 凭证走环境变量/密钥管理，不落代码
-- [ ] 模型选择：deepseek-v4-flash（默认，便宜）/ deepseek-v4-pro（复杂任务）按场景路由
+- [x] **P0 基础服务**：目录分层 / token 鉴权 / ctx 注入 / /chat SSE / /health /diag / 视觉链路实测 / server 代理模块 / 会话恢复（自管历史）
+- [ ] **P0 剩余**：CloudRun 部署 `minicare-agent`（需 AGENT_INTERNAL_TOKEN 生成）、容器内视觉附件链路复测
+- [ ] **P1 知识库**：迁移 017_knowledge_base + 混合检索（FULLTEXT + embedding + RRF），替换内存检索
+- [ ] **P2 数据与日记**：只读 DB 连接 + query/analyze/generate_diary 工具 + 日记 REST
+- [ ] **P3 小程序**：对话页/日记页分包
+- [ ] **P4 打磨**：全量知识库 + 医学评审 + 评测 + 监控 + TCR 秒级部署

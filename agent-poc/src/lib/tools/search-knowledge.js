@@ -1,7 +1,11 @@
 /**
- * 最小知识库：内存向量检索（POC 用）
- * 模拟"知识库 MCP 的检索服务"——真实环境这里会换成 PG pgvector / COS Vector + MCP server
+ * 知识库检索工具（search_knowledge，M2 前置 POC 版）
+ *
+ * ⚠️ 当前为内存关键词检索（POC 用），P1 替换为 knowledge_base 表（迁移 017）
+ * + FULLTEXT ngram + 内存余弦 RRF 混合检索。接口保持兼容。
  */
+import { z } from 'zod'
+
 const KNOWLEDGE = [
   {
     id: 'kb-001',
@@ -33,22 +37,16 @@ const KNOWLEDGE = [
   },
 ]
 
-/**
- * 简单关键词检索（真实环境替换为向量检索）
- * @param {string} query
- * @returns {{id: string, topic: string, content: string, score: number}[]}
- */
+/** 简单关键词检索（P1 替换为向量检索） */
 export function searchKnowledge(query) {
   const q = query.toLowerCase()
   const scored = KNOWLEDGE.map((doc) => {
     const text = (doc.topic + ' ' + doc.tags.join(' ') + ' ' + doc.content).toLowerCase()
     let score = 0
-    // 按关键词命中次数打分（中文按子串匹配）
     for (const kw of q.split(/[\s，。、？?！!：:；;,.]+/).filter(Boolean)) {
       if (kw.length < 2) continue
       if (text.includes(kw)) score += kw.length
     }
-    // 补充主题词匹配
     for (const tag of doc.tags) {
       if (q.includes(tag)) score += 5
     }
@@ -60,10 +58,7 @@ export function searchKnowledge(query) {
     .slice(0, 2)
 }
 
-/** 给模型看的工具描述 */
-// ⚠️ OAK 的 ToolDefinition.parameters 必须是 zod schema（源码直接透传 SDK 的 tool()）
-import { z } from 'zod'
-
+/** OAK ToolDefinition：parameters 必须是 zod schema（POC 踩坑 4） */
 export const KNOWLEDGE_TOOL_DEF = {
   name: 'search_knowledge',
   description:
@@ -73,13 +68,11 @@ export const KNOWLEDGE_TOOL_DEF = {
   }),
 }
 
-/** 工具执行函数（会被包装成 MCP server 注入 agent） */
+/** 工具执行函数（宿主侧） */
 export async function executeSearchKnowledge(input) {
   const results = searchKnowledge(input.query)
   if (results.length === 0) {
     return JSON.stringify({ found: false, message: '知识库未找到相关内容' })
   }
-  return JSON.stringify(
-    results.map((r) => ({ id: r.id, topic: r.topic, content: r.content })),
-  )
+  return JSON.stringify(results.map((r) => ({ id: r.id, topic: r.topic, content: r.content })))
 }
