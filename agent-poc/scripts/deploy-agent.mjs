@@ -7,9 +7,9 @@
  * 用法：node scripts/deploy-agent.mjs
  * ⚠️ 生产部署操作，执行前确认；EnvParams 为全量替换语义，本脚本确保保留现有键。
  */
-import 'dotenv/config'
-import { config as loadDotenv } from 'dotenv'
-loadDotenv({ path: '.env.local', override: false })
+import { loadLocalEnv } from '../src/lib/env.js'
+
+loadLocalEnv()
 import path from 'node:path'
 import fs from 'node:fs'
 import { fileURLToPath } from 'node:url'
@@ -34,7 +34,8 @@ const tcb = readEnv(SERVER_ENV)
 const kb = readEnv(KB_ENV)
 
 const app = cloudbase.init({
-  env: tcb.TCB_ENV_ID,
+  // manager-node 5.x：init 参数从 env 改名为 envId（旧写法会报 "EnvId is required"）
+  envId: tcb.TCB_ENV_ID,
   secretId: tcb.TCB_SECRET_ID,
   secretKey: tcb.TCB_SECRET_KEY,
 })
@@ -64,7 +65,9 @@ const res = await app.cloudrun.deploy({
   serverName: 'minicare-agent',
   targetPath: AGENT_POC_DIR,
   serverConfig: {
-    EnvParams: existing,
+    // ⚠️ manager-node 的 parseObjectToDiffConfigItem 要求 EnvParams 为 JSON 字符串，
+    //    传对象会报 "Items.0.Value type should be string"（2026-08-24 实测修复）
+    EnvParams: JSON.stringify(existing),
     Port: 3000,
   },
 })

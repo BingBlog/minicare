@@ -1,6 +1,10 @@
+import { loadLocalEnv } from '../src/lib/env.js'
+
+loadLocalEnv()
 import cloudbase from '@cloudbase/manager-node'
 const app = cloudbase.init({
-  env: process.env.TCB_ENV_ID,
+  // manager-node 5.x：init 参数从 env 改名为 envId
+  envId: process.env.TCB_ENV_ID,
   secretId: process.env.TCB_SECRET_ID,
   secretKey: process.env.TCB_SECRET_KEY,
 })

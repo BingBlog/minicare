@@ -3,9 +3,9 @@
  *
  * 用法：node scripts/test-data.mjs [babyId]（默认取 dev 库第一个宝宝）
  */
-import 'dotenv/config'
-import { config as loadDotenv } from 'dotenv'
-loadDotenv({ path: '.env.local', override: false })
+import { loadLocalEnv } from '../src/lib/env.js'
+
+loadLocalEnv()
 import { initDb, closeDb } from '../src/lib/db.js'
 import { loadConfig } from '../src/config.js'
 import { queryMetric, METRICS } from '../src/lib/query.js'
