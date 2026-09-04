@@ -14,6 +14,7 @@ import { ReportModule } from './report/report.module';
 import { AppConfigModule } from './app-config/app-config.module'
 import { VoiceModule } from './voice/voice.module'
 import { AgentModule } from './agent/agent.module'
+import { DeviceModule } from './device/device.module'
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { AgentModule } from './agent/agent.module'
     AppConfigModule,
     VoiceModule,
     AgentModule,
+    DeviceModule,
   ],
 })
 export class AppModule {}

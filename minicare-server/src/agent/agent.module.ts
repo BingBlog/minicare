@@ -10,5 +10,6 @@ import { AgentService } from './agent.service';
   imports: [AuthModule],
   controllers: [AgentController],
   providers: [AgentService],
+  exports: [AgentService],  // 供 DeviceModule 复用 postChat/buildCtx/verifyBaby
 })
 export class AgentModule {}

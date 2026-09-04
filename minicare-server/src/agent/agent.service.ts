@@ -78,17 +78,12 @@ export class AgentService {
   }
 
   /**
-   * POST /chat — SSE 帧级透传（M8 tech §2.2）
-   * - 客户端断连 → abort 上游（res.on('close') cancel reader）
+   * 调 agent-poc /chat，返回上游 fetch Response（供 proxyChat 与 DeviceModule 复用）。
    * - 上游 60s 无数据 → AbortSignal.timeout 兜底（防模型悬挂）
    * - conversationId 未传由服务端生成（UUID，Claude CLI 强校验）
    */
-  async proxyChat(
-    res: import('express').Response,
-    dto: ChatDto,
-    ctxB64: string,
-  ): Promise<void> {
-    const upstream = await fetch(`${this.baseUrl}/chat`, {
+  async postChat(dto: ChatDto, ctxB64: string): Promise<Response> {
+    return fetch(`${this.baseUrl}/chat`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -103,6 +98,19 @@ export class AgentService {
       }),
       signal: AbortSignal.timeout(60_000),
     });
+  }
+
+  /**
+   * POST /chat — SSE 帧级透传（M8 tech §2.2）
+   * - 客户端断连 → abort 上游（res.on('close') cancel reader）
+   * - 非 2xx 响应原样透传
+   */
+  async proxyChat(
+    res: import('express').Response,
+    dto: ChatDto,
+    ctxB64: string,
+  ): Promise<void> {
+    const upstream = await this.postChat(dto, ctxB64);
 
     // 非流式响应（4xx/5xx JSON）原样透传
     if (!upstream.ok || !upstream.body) {
