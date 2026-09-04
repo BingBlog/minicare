@@ -22,16 +22,19 @@ const path = require('path')
 const fs = require('fs')
 const { execSync } = require('child_process')
 
-// ── 强制 IPv4 DNS 解析，防止 IPv6 地址导致 IP 白名单校验失败 ──
-// NODE_OPTIONS --dns-result-order=ipv4first 必须在进程启动时设置，无法中途修改
-// 如果当前进程未设置，自动重启动自身并带上该参数
-if (!process.env.NODE_OPTIONS || !process.env.NODE_OPTIONS.includes('ipv4first')) {
-  process.env.NODE_OPTIONS = (process.env.NODE_OPTIONS || '').trim() + ' --dns-result-order=ipv4first'
+// ── 强制 IPv4 出站，防止 IPv6 地址导致 IP 白名单校验失败 ──
+// 2026-08-24 实测：Node 20+ 的 happy eyeballs（autoSelectFamily）会并行尝试 IPv6，
+// 即使 --dns-result-order=ipv4first 也会以 IPv6 源地址出站 → 微信报 invalid ip。
+// 需同时禁用网络族自动选择；NODE_OPTIONS 必须在进程启动时设置，无法中途修改，
+// 因此未设置时自动重启动自身并带上参数。
+const NEED_IPV4_OPTS = '--dns-result-order=ipv4first --no-network-family-autoselection'
+if (!process.env.NODE_OPTIONS || !process.env.NODE_OPTIONS.includes('ipv4first') || !process.env.NODE_OPTIONS.includes('network-family-autoselection')) {
+  process.env.NODE_OPTIONS = (process.env.NODE_OPTIONS || '').trim() + ' ' + NEED_IPV4_OPTS
   // 清除代理环境变量（重启动时也生效）
   for (const k of ['HTTP_PROXY', 'http_proxy', 'HTTPS_PROXY', 'https_proxy', 'ALL_PROXY', 'all_proxy']) {
     delete process.env[k]
   }
-  console.log('  ℹ️ 自动启用 IPv4 DNS 解析 + 清除代理（避免 IP 白名单校验失败）')
+  console.log('  ℹ️ 自动启用 IPv4 DNS 解析 + 禁用 IPv6 自动选路 + 清除代理（避免 IP 白名单校验失败）')
   const result = execSync(`node "${__filename}" ${process.argv.slice(2).join(' ')}`, {
     cwd: path.resolve(__dirname, '..'),
     stdio: 'inherit',

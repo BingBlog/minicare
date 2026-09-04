@@ -15,8 +15,8 @@
     "dev:weapp": "node scripts/check-node.js && taro build --type weapp --mode development --watch",
     "build:h5": "node scripts/check-node.js && taro build --type h5",
     "dev:h5": "node scripts/check-node.js && taro build --type h5 --mode development --watch",
-    "preview": "NODE_OPTIONS=\"--dns-result-order=ipv4first\" node scripts/mp-preview.js",
-    "preview:staging": "NODE_OPTIONS=\"--dns-result-order=ipv4first\" node scripts/mp-preview.js --staging"
+    "preview": "NODE_OPTIONS=\"--dns-result-order=ipv4first --no-network-family-autoselection\" node scripts/mp-preview.js",
+    "preview:staging": "NODE_OPTIONS=\"--dns-result-order=ipv4first --no-network-family-autoselection\" node scripts/mp-preview.js --staging"
   },
   "engines": {
     "node": ">=18.0.0"
