@@ -5,23 +5,23 @@
  * 生活事件 MVP 简化：模型从会话上下文（FlexDB transcript）总结，不单独建事件表。
  */
 import { z } from 'zod'
-import { queryMetric, METRICS, METRIC_LABELS } from '../query.js'
+import { queryMetricOnDate, METRICS, METRIC_LABELS } from '../query.js'
 import { getDb } from '../db.js'
 
 export const GENERATE_DIARY_TOOL = {
   name: 'generate_diary',
   description:
-    '聚合宝宝某一天的记录概览与当天图片素材，用于生成每日日记。用户要求"写日记/写今天的日记/记录今天"时调用，先聚合素材再动笔。',
+    '聚合宝宝某一天的记录概览、当天图片素材与宝宝档案（名字/月龄），用于生成每日日记。用户要求"写日记/写今天的日记/记录今天"时调用，先聚合素材再动笔。',
   parameters: z.object({
     date: z.string().describe('YYYY-MM-DD，默认今天'),
   }),
 }
 
-/** 当天记录概览（各维 days=1，list） */
+/** 指定日期的记录概览（按 date 精确取当天，非 NOW 窗口） */
 async function dayRecords(babyId, date) {
   const out = []
   for (const metric of METRICS) {
-    const res = await queryMetric(babyId, metric, 1, 'list')
+    const res = await queryMetricOnDate(babyId, metric, date)
     if (res.hasData) {
       out.push({ metric, label: METRIC_LABELS[metric], count: res.count, rows: res.rows.slice(0, 5) })
     }
@@ -62,19 +62,47 @@ async function dayPhotos(babyId, date) {
   return photos
 }
 
+/** 宝宝档案：名字 + 出生日期 → 月龄（日记标题/称呼用，按日记日期计算） */
+async function babyInfo(babyId, date) {
+  const db = getDb()
+  if (!db) return null
+  try {
+    const [rows] = await db.query(
+      'SELECT name, birth_date FROM baby_profile WHERE id=? AND deleted_at IS NULL LIMIT 1',
+      [babyId],
+    )
+    if (!rows?.length) return null
+    const { name, birth_date: birthDate } = rows[0]
+    if (!birthDate) return { name, ageMonths: null }
+    const b = new Date(birthDate + 'T00:00:00')
+    const at = /^\d{4}-\d{2}-\d{2}$/.test(date) ? new Date(date + 'T00:00:00') : new Date()
+    let months = (at.getFullYear() - b.getFullYear()) * 12 + (at.getMonth() - b.getMonth())
+    if (at.getDate() < b.getDate()) months -= 1
+    return { name, birthDate, ageMonths: Math.max(0, months) }
+  } catch (e) {
+    console.error('[diary] 查 baby_profile 失败:', e.message)
+    return null
+  }
+}
+
 export async function executeGenerateDiary(input, ctx) {
   const babyId = ctx?.babyId
   if (!babyId) return JSON.stringify({ ok: false, error: '缺少 babyId 上下文' })
   const date = input?.date && /^\d{4}-\d{2}-\d{2}$/.test(input.date) ? input.date : new Date().toISOString().slice(0, 10)
   try {
-    const [records, photos] = await Promise.all([dayRecords(babyId, date), dayPhotos(babyId, date)])
+    const [records, photos, info] = await Promise.all([
+      dayRecords(babyId, date),
+      dayPhotos(babyId, date),
+      babyInfo(babyId, date),
+    ])
     return JSON.stringify({
       ok: true,
       date,
+      baby: info, // { name, birthDate, ageMonths } 或 null（写日记时用宝宝名字与月龄）
       records,
       photos,
       chatEvents: [], // MVP：模型从会话上下文总结生活事件，可靠性靠 prompt 约束
-      note: '生活事件请只写用户明确提到的事实，不要编造；若当天有提到活动但无照片，可在末尾提醒补充照片。',
+      note: '生活事件请只写用户明确提到的事实，不要编造；写日记时可结合当天记录和用户提到的趣事；若当天有提到活动但无照片，可在末尾提醒补充照片。',
     })
   } catch (e) {
     console.error('[diary] ERROR:', e?.stack || e)

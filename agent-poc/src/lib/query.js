@@ -12,13 +12,14 @@
  *   health    → health_record
  *   symptom   → symptom_record
  *   activity  → activity_record
+ *   medical   → medical_record（就医/体检）
  *
  * aggregate：list（最近 N 条）/ sum / avg / count / trend（按天分组）。
  * days 服务端 clamp 1-90（M3 §3.2）。
  */
 import { getDb } from './db.js'
 
-export const METRICS = ['feeding', 'sleep', 'diaper', 'growth', 'health', 'symptom', 'activity']
+export const METRICS = ['feeding', 'sleep', 'diaper', 'growth', 'health', 'symptom', 'activity', 'medical']
 export const METRIC_LABELS = {
   feeding: '喂养',
   sleep: '睡眠',
@@ -27,6 +28,7 @@ export const METRIC_LABELS = {
   health: '健康',
   symptom: '表现',
   activity: '活动',
+  medical: '就医',
 }
 
 const clampDays = (days) => Math.max(1, Math.min(90, Number(days) || 7))
@@ -48,12 +50,12 @@ const FEEDING_SUB_TABLES = [
   {
     key: 'food', label: '辅食',
     table: 'feeding_food_record',
-    select: "NULL AS side, NULL AS duration_min, NULL AS ml, NULL AS food_name, NULL AS amount_g",
+    join: 'feeding_food_item',  // 明细子表（food_name/amount_g），queryList 时 LEFT JOIN
   },
   {
     key: 'supplement', label: '营养素',
     table: 'feeding_supplement_record',
-    select: "NULL AS side, NULL AS duration_min, NULL AS ml, NULL AS food_name, NULL AS amount_g",
+    json: 'supplement_items',   // JSON 列（[{label,key,dose,unit}]），queryList 时解析
   },
 ]
 
@@ -65,24 +67,78 @@ const SIMPLE_METRICS = {
   health: { table: 'health_record', timeCol: 'record_time', numericCol: 'temperature', statusWhere: '' },
   symptom: { table: 'symptom_record', timeCol: 'record_time', numericCol: null, statusWhere: '' },
   activity: { table: 'activity_record', timeCol: 'record_time', numericCol: 'duration_min', statusWhere: '' },
+  medical: { table: 'medical_record', timeCol: 'visit_date', numericCol: null, statusWhere: '' },
 }
 
 // ---------- 查询实现 ----------
 
-/** list：最近 N 条原始记录（含数值字段） */
-async function queryList(db, babyId, metric, days, limit = 10) {
-  if (metric === 'feeding') {
-    const out = []
-    for (const sub of FEEDING_SUB_TABLES) {
+/**
+ * feeding 4 子表统一产出结构化行（时间过滤由调用方传入 where 片段）
+ * - food      子表：LEFT JOIN feeding_food_item，输出 food_name/amount_g/amount_note
+ * - supplement 子表：解析 supplement_items JSON，输出补充剂名称列表
+ */
+async function queryFeedingRows(db, babyId, timeWhere, params, limit) {
+  const out = []
+  for (const sub of FEEDING_SUB_TABLES) {
+    if (sub.join) {
+      const [rows] = await db.query(
+        `SELECT f.record_time, i.food_name, i.amount_g, i.amount_note, f.note AS record_note
+         FROM ${sub.table} f LEFT JOIN ${sub.join} i ON i.record_id = f.id
+         WHERE f.baby_id=? AND ${timeWhere}
+         ORDER BY f.record_time DESC, i.id ASC LIMIT ?`,
+        [babyId, ...params, Math.ceil(limit / 4) * 3],
+      )
+      for (const r of rows) {
+        out.push({
+          type: sub.label,
+          record_time: r.record_time,
+          food_name: r.food_name || null,
+          amount_g: r.amount_g != null ? r.amount_g : null,
+          amount_note: r.amount_note || null,
+          note: r.record_note || null,
+        })
+      }
+    } else if (sub.json) {
+      const [rows] = await db.query(
+        `SELECT record_time, ${sub.json}, note FROM ${sub.table}
+         WHERE baby_id=? AND ${timeWhere}
+         ORDER BY record_time DESC LIMIT ?`,
+        [babyId, ...params, Math.ceil(limit / 4)],
+      )
+      for (const r of rows) {
+        let items = []
+        try {
+          items = Array.isArray(r[sub.json]) ? r[sub.json] : JSON.parse(r[sub.json] || '[]')
+        } catch { /* 坏 JSON 忽略 */ }
+        out.push({
+          type: sub.label,
+          record_time: r.record_time,
+          supplement_items: (Array.isArray(items) ? items : []).map((x) => ({
+            label: x?.label || null,
+            key: x?.key || null,
+            dose: x?.dose ?? '',
+            unit: x?.unit ?? '',
+          })),
+          note: r.note || null,
+        })
+      }
+    } else {
       const [rows] = await db.query(
         `SELECT record_time, ${sub.select} FROM ${sub.table}
-         WHERE baby_id=? AND record_time >= DATE_SUB(NOW(), INTERVAL ? DAY)
+         WHERE baby_id=? AND ${timeWhere}
          ORDER BY record_time DESC LIMIT ?`,
-        [babyId, days, Math.ceil(limit / 4)],
+        [babyId, ...params, Math.ceil(limit / 4)],
       )
       for (const r of rows) out.push({ type: sub.label, record_time: r.record_time, ...r })
     }
-    return out.sort((a, b) => new Date(b.record_time) - new Date(a.record_time)).slice(0, limit)
+  }
+  return out.sort((a, b) => new Date(b.record_time) - new Date(a.record_time)).slice(0, limit)
+}
+
+/** list：最近 N 条原始记录（含数值字段） */
+async function queryList(db, babyId, metric, days, limit = 10) {
+  if (metric === 'feeding') {
+    return queryFeedingRows(db, babyId, 'record_time >= DATE_SUB(NOW(), INTERVAL ? DAY)', [days], limit)
   }
   const m = SIMPLE_METRICS[metric]
   const [rows] = await db.query(
@@ -91,6 +147,33 @@ async function queryList(db, babyId, metric, days, limit = 10) {
     [babyId, days, limit],
   )
   return rows
+}
+
+/**
+ * 指定某一天的记录明细（generate_diary 用）。
+ * date 形如 YYYY-MM-DD，按业务时区 +08:00 取 [date 00:00:00, date 23:59:59]。
+ */
+export async function queryMetricOnDate(babyId, metric, date) {
+  const db = getDb()
+  if (!db) return { ok: false, error: '数据库未连接（DB 配置缺失）', metric, date, hasData: false, count: 0, rows: [] }
+  if (!METRICS.includes(metric)) {
+    return { ok: false, error: `不支持的 metric: ${metric}`, metric, date, hasData: false, count: 0, rows: [] }
+  }
+  const t0 = `${date} 00:00:00`
+  const t1 = `${date} 23:59:59`
+  let rows = []
+  if (metric === 'feeding') {
+    rows = await queryFeedingRows(db, babyId, 'record_time BETWEEN ? AND ?', [t0, t1], 20)
+  } else {
+    const m = SIMPLE_METRICS[metric]
+    const [r] = await db.query(
+      `SELECT * FROM ${m.table} WHERE baby_id=? AND ${m.timeCol} BETWEEN ? AND ? ${m.statusWhere}
+       ORDER BY ${m.timeCol} DESC LIMIT 20`,
+      [babyId, t0, t1],
+    )
+    rows = r
+  }
+  return { ok: true, metric, date, hasData: rows.length > 0, count: rows.length, rows }
 }
 
 /** count：窗口内条数 */

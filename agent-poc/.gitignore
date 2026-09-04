@@ -9,3 +9,12 @@ dist/
 # 调试产物
 *.log
 .oak/
+
+# deepeval local test reports
+.deepeval/
+
+# wire 代理观测落盘（WIRE_LOG=on 时）
+.wire-logs/
+
+# Python 字节码（evals/ deepeval 离线层）
+__pycache__/

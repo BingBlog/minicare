@@ -1,4 +1,5 @@
 /**
+ * ⚠️ 2026-09-04 OAK 已移除：本 demo 基于 OAK client-tool 协议，已失效。新运行时见 src/lib/runtime.js + routes/chat.js；延迟诊断用 scripts/poc-direct-sdk.mjs / poc-wire-proxy.mjs。
  * 最小 demo：OAK + DeepSeek（Anthropic 兼容端点）+ 知识库工具 + 多用户会话
  *
  * 运行：node src/demo.js

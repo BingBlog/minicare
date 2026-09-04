@@ -18,6 +18,9 @@ import { embed, cosine } from '../embeddings.js'
 
 const RRF_K = 60
 
+/** 单条检索结果 content 截断上限（字符）。5 条全文可达 18KB，截到 800 字后整体 ~4KB */
+const CONTENT_MAX_CHARS = 800
+
 // ---------- FULLTEXT 路 ----------
 
 /** review 条目过滤：MySQL LIKE 中 [..] 是字符类语法，必须用 REGEXP 匹配字面 [ */
@@ -49,19 +52,65 @@ async function fulltextSearch(db, query, filters) {
 // ---------- 向量路 ----------
 
 // 进程级向量缓存：{ rows: [...], ts }，10 分钟 TTL（知识库离线导入，运行期基本不变）
+// 2026-09-04 性能修复：TTL 过期改为 stale-while-revalidate —— 立即返回旧数据、
+// 后台异步刷新。原来同步重拉全表（1584 行 / 6.5MB BLOB ≈ 6s）会把首个撞上的
+// 知识库问题卡 6s+。另提供 preheatVectors() 供 server 启动时预热。
 let vecCache = null
 const VEC_TTL = 10 * 60 * 1000
+let vecRefreshing = false
 
-async function loadVectors(db) {
-  const now = Date.now()
-  if (vecCache && now - vecCache.ts < VEC_TTL) return vecCache.rows
+async function fetchVectors(db) {
   const [rows] = await db.query(
     `SELECT id, kb_id, title, category, content, source, risk_level, embedding
      FROM knowledge_base
      WHERE status=1 AND ${NOT_REVIEW} AND embedding IS NOT NULL`,
   )
-  vecCache = { ts: now, rows }
   return rows
+}
+
+/** 后台刷新（fire-and-forget，失败沿用旧数据，同一时刻最多一个刷新在跑） */
+function refreshVectorsInBackground(db) {
+  if (vecRefreshing) return
+  vecRefreshing = true
+  const started = Date.now()
+  fetchVectors(db)
+    .then((rows) => {
+      vecCache = { ts: Date.now(), rows }
+      console.log(`[kb] 向量缓存后台刷新完成 rows=${rows.length} ms=${Date.now() - started}`)
+    })
+    .catch((e) => {
+      console.error('[kb] 向量缓存后台刷新失败（沿用旧数据）:', e.message)
+    })
+    .finally(() => {
+      vecRefreshing = false
+    })
+}
+
+async function loadVectors(db) {
+  if (vecCache) {
+    if (Date.now() - vecCache.ts >= VEC_TTL) refreshVectorsInBackground(db)
+    return vecCache.rows
+  }
+  const started = Date.now()
+  const rows = await fetchVectors(db)
+  vecCache = { ts: Date.now(), rows }
+  console.log(`[kb] 向量缓存冷加载 rows=${rows.length} ms=${Date.now() - started}`)
+  return rows
+}
+
+/** 启动预热：server 启动时后台拉一次全表向量，首个知识库问题不再付 6s 冷加载成本 */
+export function preheatVectors() {
+  const db = getDb()
+  if (!db || vecCache || vecRefreshing) return
+  const started = Date.now()
+  fetchVectors(db)
+    .then((rows) => {
+      vecCache = { ts: Date.now(), rows }
+      console.log(`[kb] 向量缓存预热完成 rows=${rows.length} ms=${Date.now() - started}`)
+    })
+    .catch((e) => {
+      console.error('[kb] 向量缓存预热失败（首个问题将冷加载）:', e.message)
+    })
 }
 
 /** query embedding → 余弦 top 20；embedding 不可用时返回 null（仅 FULLTEXT） */
@@ -185,7 +234,12 @@ export async function executeSearchKnowledge(input) {
       id: it.id,
       kb_id: it.kb_id,
       title: it.title,
-      content: it.content,
+      // 2026-09-04 性能修复：截断单条 content（800 字），避免 5 条全文撑到 18KB+
+      // 导致下一轮 LLM prefill 暴涨（实测 in=9144 tokens / 回答生成 3.9s）
+      content: it.content.length > CONTENT_MAX_CHARS
+        ? it.content.slice(0, CONTENT_MAX_CHARS) + '…（已截断，可缩小范围重查）'
+        : it.content,
+      content_truncated: it.content.length > CONTENT_MAX_CHARS,
       source: it.source,
       risk_level: it.risk_level,
     })),

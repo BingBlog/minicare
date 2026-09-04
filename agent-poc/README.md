@@ -25,17 +25,34 @@
 
 ## 运行
 
-```bash
-# 1. 配置 key（已写入 .env.local，被 .gitignore 保护）
-echo "DEEPSEEK_API_KEY=sk-xxx" > .env.local
+环境区分（`NODE_ENV`，见 `src/lib/env.js`）：
 
-# 2. 启动服务（本地开发：凭证优先读环境变量，兜底 tcb CLI 登录态）
+| 环境 | 命令 | env 来源 | 用途 |
+|------|------|----------|------|
+| development（默认） | `npm run start` | `.env.local`（连 minicare_dev 库 + 本地 Langfuse） | 本地开发联调 |
+| production | `npm run start:prod` | **仅环境变量**（CloudRun 容器为控制台 EnvParams；不读任何本地文件，本地可显式注入模拟生产） | 容器运行 / 本地生产演练 |
+
+```bash
+# 1. 配置 key（已写入 .env.local，被 .gitignore 保护；模板见 .env.example）
+cp .env.example .env.local   # 填入 DEEPSEEK_API_KEY 等
+
+# 2. 本地开发启动（development：自动读 .env.local；凭证优先环境变量，兜底 tcb CLI 登录态）
 #    ⚠️ 本地 tcb CLI 临时凭证会过期（tmp secret key expire）——过期后 FlexDB 会话不可用，
 #    建议注入 minicare-server/.env.local 的长期 TCB_SECRET_ID/KEY 本地联调
-AGENT_INTERNAL_TOKEN=xxx node src/server.js   # 服务 :3000，/health /diag /chat(SSE)
+npm run start                 # 服务 :3000，/health /diag /chat(SSE)；AGENT_INTERNAL_TOKEN 需要时前缀注入
 
-# 3. 或运行演示脚本（双用户隔离演示）
-node src/demo.js
+# 3. 本地模拟生产（不读 .env.local，全部变量自行注入）
+NODE_ENV=production DEEPSEEK_API_KEY=sk-xxx npm run start:prod
+
+# 4. 演示脚本（双用户隔离演示，development 语义）
+npm run demo
+
+# 运维 / 观测脚本（自动加载 .env.local，无需手动 source）
+npm run deploy        # 部署 minicare-agent 到 CloudRun
+npm run deploy:check  # 查询云端部署详情
+npm run traces        # 查看最近 trace
+npm run traces:stats  # trace 统计
+npm run traces:import # FlexDB trace → 本地 Langfuse 导入
 ```
 
 ## 架构（P0 目录分层，TECH-006 §2.2.1）

@@ -121,10 +121,15 @@ async function getBabyProfile(babyId) {
   }
 }
 
-function ageInMonths(birthDate) {
+/** 月龄（默认按当前日期；传 atDate 可按测量日期计算） */
+function ageInMonths(birthDate, atDate = null) {
   const b = new Date(birthDate)
-  const now = new Date()
-  return (now.getFullYear() - b.getFullYear()) * 12 + (now.getMonth() - b.getMonth())
+  const at = atDate
+    ? (atDate instanceof Date ? atDate : new Date(String(atDate).slice(0, 10) + 'T00:00:00'))
+    : new Date()
+  let months = (at.getFullYear() - b.getFullYear()) * 12 + (at.getMonth() - b.getMonth())
+  if (at.getDate() < b.getDate()) months -= 1
+  return Math.max(0, months)
 }
 
 async function growthAnalysis(babyId, days) {
@@ -138,15 +143,17 @@ async function growthAnalysis(babyId, days) {
   const last = sorted[sorted.length - 1]
   const first = sorted[0]
   const sex = profile.gender === 'female' ? 'female' : 'male'
-  const months = ageInMonths(profile.birth_date)
+  // 百分位按「测量当天月龄」计算（历史测量不能用当前月龄，否则百分位偏移）
+  const months = ageInMonths(profile.birth_date, last.record_date)
 
-  const out = { ok: true, scope: 'growth', days: res.days, hasData: true, months, sex, ref: '中国2023儿科生长参考' }
+  const out = { ok: true, scope: 'growth', days: res.days, hasData: true, months, measuredAt: last.record_date, sex, ref: '中国2023儿科生长参考' }
   if (last.weight_g != null) {
     const wKg = Number(last.weight_g) / 1000
     const firstKg = first.weight_g != null ? Number(first.weight_g) / 1000 : null
     const g = percentileOf(months, sex, 'weight', wKg)
     out.weight = {
       lastKg: wKg,
+      measuredAt: last.record_date,
       deltaKg: firstKg != null ? Math.round((wKg - firstKg) * 100) / 100 : null,
       p: g.p,
       percentile: g.percentile,
@@ -160,6 +167,7 @@ async function growthAnalysis(babyId, days) {
     const g = percentileOf(months, sex, 'height', hCm)
     out.height = {
       lastCm: hCm,
+      measuredAt: last.record_date,
       deltaCm: firstCm != null ? Math.round((hCm - firstCm) * 10) / 10 : null,
       p: g.p,
       percentile: g.percentile,

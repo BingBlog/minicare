@@ -7,13 +7,15 @@
  *   POST /chat      对话（SSE，需要 x-agent-token；ctx 可选）
  *   （日记 REST 路由 P2 追加）
  *
- * ⚠️ agent 按请求构建（每次请求读历史重建，OAK resume 不可用），
- * 不持有进程级单例；/health 的 ready 由 config.deepSeekKey 决定。
+ * ⚠️ 2026-09-04 直连 SDK 改造：agent 循环在 lib/runtime.js，按请求构建（历史注入
+ * systemPrompt，见 agent.js）；wire-proxy 进程内常驻（thinking 注入 / prompt 抓取）。
+ * /health 的 ready 由 config.deepSeekKey 决定。
  *
  * 环境变量见 config.js；部署时环境变量由 CloudRun 控制台管理，
  * 不得在 serverConfig.EnvParams 传入（会整体替换已有配置）。
  */
-import 'dotenv/config' // 加载 .env（本地开发）；不覆盖已存在的环境变量，生产 EnvParams 优先
+import { loadLocalEnv, NODE_ENV } from './lib/env.js' // development 读 .env.local；production 只认环境变量（CloudRun EnvParams）
+loadLocalEnv()
 import express from 'express'
 import { loadConfig } from './config.js'
 import { initDb } from './lib/db.js'
@@ -21,14 +23,23 @@ import { internalToken } from './middleware/internal-token.js'
 import { chatRoute } from './routes/chat.js'
 import { healthRoute } from './routes/health.js'
 import { diagRoute } from './routes/diag.js'
-
-// 本地开发读 .env.local（CloudRun 容器不依赖此文件）
-import { config as loadDotenv } from 'dotenv'
-loadDotenv({ path: '.env.local', override: false })
+import { initAgentRuntime } from './lib/runtime.js'
+import { preheatVectors } from './lib/tools/search-knowledge.js'
 
 const config = loadConfig()
+
+// 2026-09-04 直连 SDK 改造：运行时环境（进程内 wire 反代 + CLAUDE_CONFIG_DIR）
+// 统一由 runtime.initAgentRuntime 幂等初始化（eval harness 复用同一入口）
+if (config.deepSeekKey) {
+  await initAgentRuntime(config)
+}
+
 // 知识库只读连接池（P1；缺配置时 pool=null，检索降级为"未找到"）
 initDb(config)
+// 向量缓存预热（后台异步，不阻塞启动）：避免首个知识库问题支付 ~6s 全表 BLOB 冷加载
+if (config.db && config.tokenHubKey) {
+  preheatVectors()
+}
 const app = express()
 app.use(express.json({ limit: '1mb' }))
 
@@ -40,6 +51,7 @@ if (config.deepSeekKey) {
 } else {
   console.error('[server] DEEPSEEK_API_KEY 未配置 —— /chat 将不可用')
 }
+console.log(`[server] NODE_ENV=${NODE_ENV}`)
 console.log(
   `[server] FlexDB ${config.tcbCredentials ? 'enabled' : 'in-memory (no TCB credentials)'}, ` +
     `KB-DB ${config.db ? 'enabled' : 'DISABLED (no DB config)'}, ` +

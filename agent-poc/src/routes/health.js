@@ -10,6 +10,7 @@ export function healthRoute(config) {
     res.json({
       status: 'ok',
       service: 'minicare-agent',
+      env: config.nodeEnv,
       ready: Boolean(config.deepSeekKey),
       model: config.modelDefault,
       vision: config.modelVision,
