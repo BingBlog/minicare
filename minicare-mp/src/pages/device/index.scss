@@ -1,0 +1,276 @@
+.device-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #fdf7f5;
+}
+
+.device-page__header {
+  padding: 12px 20px 8px;
+  flex-shrink: 0;
+}
+
+.device-page__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 44px;
+}
+
+.device-page__back {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.device-page__back-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.device-page__title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #3d2b2e;
+}
+
+.device-page__nav-spacer {
+  width: 32px;
+}
+
+.device-page__body {
+  flex: 1;
+  padding: 8px 16px 120px;
+  box-sizing: border-box;
+}
+
+.device-page__empty {
+  padding-top: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.device-page__empty-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: #7a5a60;
+}
+
+.device-page__empty-desc {
+  font-size: 13px;
+  color: #9a7e82;
+}
+
+.device-card {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+}
+
+.device-card__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #fff0f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.device-card__icon-img {
+  width: 22px;
+  height: 22px;
+}
+
+.device-card__info {
+  flex: 1;
+  margin-left: 12px;
+  min-width: 0;
+}
+
+.device-card__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.device-card__name {
+  font-size: 15px;
+  font-weight: 500;
+  color: #3d2b2e;
+}
+
+.device-card__badge {
+  font-size: 11px;
+  color: #1d9e75;
+  background: #e1f5ee;
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+
+.device-card__sub {
+  display: block;
+  font-size: 12px;
+  color: #9a7e82;
+  margin-top: 4px;
+}
+
+.device-card__unbind {
+  font-size: 13px;
+  color: #f05060;
+  padding: 8px 4px;
+  flex-shrink: 0;
+}
+
+.device-page__footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 12px 16px calc(16px + env(safe-area-inset-bottom));
+  background: linear-gradient(transparent, #fdf7f5 40%);
+}
+
+.device-page__add-btn {
+  height: 48px;
+  border-radius: 24px;
+  background: #f87098;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.device-page__add-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* 绑定码底部弹层 */
+.device-sheet-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(61, 43, 46, 0.4);
+  display: flex;
+  align-items: flex-end;
+  z-index: 100;
+}
+
+.device-sheet {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 20px 20px 0 0;
+  padding: 20px 24px calc(28px + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+
+.device-sheet__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.device-sheet__title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #3d2b2e;
+}
+
+.device-sheet__close {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.device-sheet__close-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.device-sheet__tip {
+  display: block;
+  font-size: 13px;
+  color: #9a7e82;
+  margin-bottom: 16px;
+}
+
+.device-sheet__code {
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: 12px;
+  color: #3d2b2e;
+  text-align: center;
+  padding: 20px 0 16px;
+  background: #fdf7f5;
+  border-radius: 14px;
+}
+
+.device-sheet__note {
+  text-align: center;
+  font-size: 12px;
+  color: #9a7e82;
+  margin-top: 10px;
+}
+
+.device-sheet__actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.device-sheet__copy {
+  flex: 1;
+  height: 44px;
+  border-radius: 22px;
+  border: 1px solid #f87098;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: #f87098;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.device-sheet__copy-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.device-sheet__regen {
+  flex: 1;
+  height: 44px;
+  border-radius: 22px;
+  background: #fff0f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e8507a;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.device-sheet__warn {
+  display: block;
+  text-align: center;
+  font-size: 12px;
+  color: #c4a6ac;
+  margin-top: 14px;
+}

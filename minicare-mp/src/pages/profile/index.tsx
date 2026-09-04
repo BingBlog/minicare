@@ -389,6 +389,15 @@ export default function ProfilePage() {
       subText: activeCount > 0 ? `${activeCount}人` : undefined,
       onClick: openMembers,
     },
+    {
+      id: 'devices',
+      type: 'arrow',
+      icon: 'speaker',
+      iconBg: '#FFF0F4',
+      label: '智能设备',
+      subText: '语音音箱',
+      onClick: () => Taro.navigateTo({ url: '/pages/device/index' }),
+    },
   ]
 
   const toolRows: SettingsRow[] = [

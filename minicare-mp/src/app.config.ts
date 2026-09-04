@@ -32,6 +32,10 @@ export default {
       pages: ['index', 'detail'],
     },
     {
+      root: 'pages/device',
+      pages: ['index'],
+    },
+    {
       root: 'pages/records/feeding',
       pages: ['index'],
     },

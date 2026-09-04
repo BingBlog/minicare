@@ -1,5 +1,7 @@
 export { fetchAppConfig } from './appConfig'
 export { familyApi } from './family'
+export { deviceApi } from './device'
+export type { SpeakerDevice } from './device'
 export { babyApi } from './baby'
 export type { CreateBabyDto } from './baby'
 export { recordsApi } from './records'
