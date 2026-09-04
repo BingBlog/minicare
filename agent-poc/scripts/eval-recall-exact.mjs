@@ -7,9 +7,9 @@
  *
  * 用法：node scripts/eval-recall-exact.mjs
  */
-import 'dotenv/config'
-import { config as loadDotenv } from 'dotenv'
-loadDotenv({ path: '.env.local', override: false })
+import { loadLocalEnv } from '../src/lib/env.js'
+
+loadLocalEnv()
 import fs from 'node:fs'
 import { initDb, closeDb } from '../src/lib/db.js'
 import { loadConfig } from '../src/config.js'

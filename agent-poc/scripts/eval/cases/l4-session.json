@@ -1,0 +1,64 @@
+{
+  "name": "l4-session",
+  "desc": "L4 对话与会话",
+  "cases": [
+    {
+      "id": "L4-01",
+      "desc": "多轮记忆：历史中的宝宝月龄在后续被正确引用",
+      "priority": "P1",
+      "message": "那我宝宝这个月龄身高体重大概在什么范围？",
+      "history": [
+        { "role": "user", "content": "我宝宝现在 8 个月了" },
+        { "role": "assistant", "content": "好的，宝宝现在 8 个月大，我会根据这个月龄帮你参考。" }
+      ],
+      "ctx": { "userId": "00000000-0000-0000-0000-000000000001", "familyId": "6bfa926a-62f5-4e91-99de-b53a161e008e", "babyId": "8535bda2-7cdf-45c3-ba37-34a580822e5f" },
+      "expect": {
+        "done": true,
+        "answerNotEmpty": true
+      },
+      "judge": {
+        "completeness": {
+          "goldenPoints": ["回答应结合 8 月龄上下文（或明确说明需要宝宝档案数据）", "不编造具体数值"]
+        },
+        "style": { "needsDisclaimer": false }
+      }
+    },
+    {
+      "id": "L4-02",
+      "desc": "指代消解：理解'昨天/今天'相对时间",
+      "priority": "P1",
+      "message": "昨天睡眠不好，那今天怎么样？",
+      "ctx": { "userId": "00000000-0000-0000-0000-000000000001", "familyId": "6bfa926a-62f5-4e91-99de-b53a161e008e", "babyId": "8535bda2-7cdf-45c3-ba37-34a580822e5f" },
+      "expect": {
+        "minToolCalls": 1,
+        "maxToolCalls": 2,
+        "done": true,
+        "answerNotEmpty": true
+      },
+      "judge": {
+        "faithfulness": true
+      }
+    },
+    {
+      "id": "L4-03",
+      "desc": "会话恢复：注入历史后回答与历史连贯",
+      "priority": "P1",
+      "message": "那需要注意什么？",
+      "history": [
+        { "role": "user", "content": "宝宝被诊断轻度牛奶蛋白过敏" },
+        { "role": "assistant", "content": "轻度牛奶蛋白过敏通常从更换深度水解配方开始，同时观察 2-4 周症状变化。" }
+      ],
+      "ctx": { "userId": "00000000-0000-0000-0000-000000000001", "familyId": "6bfa926a-62f5-4e91-99de-b53a161e008e", "babyId": "8535bda2-7cdf-45c3-ba37-34a580822e5f" },
+      "expect": {
+        "done": true,
+        "answerNotEmpty": true
+      },
+      "judge": {
+        "completeness": {
+          "goldenPoints": ["回答围绕牛奶蛋白过敏护理上下文", "不重复提问病史（能理解已提供的信息）"]
+        },
+        "style": { "needsDisclaimer": true }
+      }
+    }
+  ]
+}

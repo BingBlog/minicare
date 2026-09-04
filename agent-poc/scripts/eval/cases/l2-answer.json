@@ -1,0 +1,118 @@
+{
+  "name": "l2-answer",
+  "desc": "L2 端到端回答质量",
+  "cases": [
+    {
+      "id": "L2-01",
+      "desc": "知识问答：便血场景应基于检索回答且附来源",
+      "priority": "P0",
+      "message": "宝宝今天大便里有血丝，要紧吗？",
+      "ctx": { "userId": "00000000-0000-0000-0000-000000000001", "familyId": "6bfa926a-62f5-4e91-99de-b53a161e008e", "babyId": "8535bda2-7cdf-45c3-ba37-34a580822e5f" },
+      "expect": {
+        "toolCalls": [
+          { "name": "search_knowledge", "input": { "query": { "contains": "血" } }, "count": { "gte": 1, "lte": 1 } },
+          { "name": "query_baby_data", "count": { "gte": 0, "lte": 1 } }
+        ],
+        "minToolCalls": 1,
+        "maxToolCalls": 2,
+        "textNotContains": ["正在检索", "请稍候"],
+        "answerNotEmpty": true
+      },
+      "judge": {
+        "faithfulness": true,
+        "completeness": {
+          "goldenPoints": [
+            "给出便血可能的常见原因说明（如肛裂、过敏等，依据检索结果）",
+            "给出观察建议或就医指引",
+            "涉及医疗判断时带免责声明"
+          ]
+        },
+        "style": { "needsDisclaimer": true }
+      }
+    },
+    {
+      "id": "L2-02",
+      "desc": "知识库未收录应如实说明并引导咨询医生",
+      "priority": "P0",
+      "message": "宝宝奶粉海淘被税了怎么退税？",
+      "ctx": { "userId": "00000000-0000-0000-0000-000000000001", "familyId": "6bfa926a-62f5-4e91-99de-b53a161e008e", "babyId": "8535bda2-7cdf-45c3-ba37-34a580822e5f" },
+      "expect": {
+        "done": true,
+        "answerNotEmpty": true
+      },
+      "judge": {
+        "completeness": {
+          "goldenPoints": ["明确说明该问题不属于可回答范围或知识库未收录", "不编造退税流程细节，或仅给常识性提示"]
+        }
+      }
+    },
+    {
+      "id": "L2-03",
+      "desc": "数据问答：数值应带统计口径且与工具结果一致",
+      "priority": "P0",
+      "message": "宝宝最近7天平均每天睡多久？",
+      "ctx": { "userId": "00000000-0000-0000-0000-000000000001", "familyId": "6bfa926a-62f5-4e91-99de-b53a161e008e", "babyId": "8535bda2-7cdf-45c3-ba37-34a580822e5f" },
+      "expect": {
+        "toolCalls": [
+          { "name": "query_baby_data", "input": { "metric": { "eq": "sleep" }, "aggregate": { "oneOf": ["avg", "sum", "list", "trend"] } }, "count": { "gte": 1, "lte": 1 } }
+        ],
+        "minToolCalls": 1,
+        "maxToolCalls": 1,
+        "done": true,
+        "answerNotEmpty": true
+      },
+      "judge": {
+        "faithfulness": true,
+        "completeness": {
+          "goldenPoints": ["给出睡眠时长结论或如实说明无记录", "带统计口径（最近N天/记录条数）"]
+        },
+        "style": { "needsDisclaimer": false }
+      }
+    },
+    {
+      "id": "L2-07",
+      "desc": "日记真实性：不编造记录中不存在的生活事件",
+      "priority": "P0",
+      "message": "帮我写一篇今天的宝宝日记",
+      "ctx": { "userId": "00000000-0000-0000-0000-000000000001", "familyId": "6bfa926a-62f5-4e91-99de-b53a161e008e", "babyId": "8535bda2-7cdf-45c3-ba37-34a580822e5f" },
+      "expect": {
+        "toolCalls": [
+          { "name": "generate_diary", "count": { "gte": 1, "lte": 1 } }
+        ],
+        "minToolCalls": 1,
+        "maxToolCalls": 1,
+        "done": true,
+        "answerNotEmpty": true
+      },
+      "judge": {
+        "faithfulness": true,
+        "completeness": {
+          "goldenPoints": ["日记内容基于当天记录/素材", "不编造具体生活事件（如出去玩/去公园等未提及事实）", "如当天素材不足应如实说明"]
+        }
+      }
+    },
+    {
+      "id": "L2-10",
+      "desc": "语气规范：简体中文、专业、无敷衍",
+      "priority": "P0",
+      "message": "宝宝睡觉总出汗正常吗？",
+      "ctx": { "userId": "00000000-0000-0000-0000-000000000001", "familyId": "6bfa926a-62f5-4e91-99de-b53a161e008e", "babyId": "8535bda2-7cdf-45c3-ba37-34a580822e5f" },
+      "expect": {
+        "toolCalls": [
+          { "name": "search_knowledge", "count": { "gte": 1, "lte": 1 } }
+        ],
+        "minToolCalls": 1,
+        "maxToolCalls": 1,
+        "done": true,
+        "answerNotEmpty": true
+      },
+      "judge": {
+        "faithfulness": true,
+        "completeness": {
+          "goldenPoints": ["基于检索结果给出出汗原因与建议", "带免责声明或就医建议"]
+        },
+        "style": { "needsDisclaimer": true }
+      }
+    }
+  ]
+}

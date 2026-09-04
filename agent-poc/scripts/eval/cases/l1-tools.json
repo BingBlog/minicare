@@ -1,0 +1,158 @@
+{
+  "name": "l1-tools",
+  "desc": "L1 工具调用正确性",
+  "cases": [
+    {
+      "id": "L1-01",
+      "desc": "知识问题应触发 search_knowledge",
+      "priority": "P0",
+      "message": "深度水解配方怎么选？",
+      "ctx": { "userId": "00000000-0000-0000-0000-000000000001", "familyId": "6bfa926a-62f5-4e91-99de-b53a161e008e", "babyId": "8535bda2-7cdf-45c3-ba37-34a580822e5f" },
+      "expect": {
+        "toolCalls": [
+          { "name": "search_knowledge", "input": { "query": { "contains": "水解" } }, "count": { "gte": 1, "lte": 1 } }
+        ],
+        "minToolCalls": 1,
+        "maxToolCalls": 1,
+        "textContains": [],
+        "textNotContains": ["正在检索", "请稍候", "我可以帮你查一下"],
+        "done": true,
+        "answerNotEmpty": true
+      },
+      "judge": {
+        "faithfulness": true,
+        "completeness": { "goldenPoints": ["回答基于知识库检索结果", "给出水解配方选择相关的可操作建议或依据"] },
+        "style": { "needsDisclaimer": true }
+      }
+    },
+    {
+      "id": "L1-02",
+      "desc": "宝宝数据问题应触发 query_baby_data",
+      "priority": "P0",
+      "message": "宝宝今天喝了多少奶？",
+      "ctx": { "userId": "00000000-0000-0000-0000-000000000001", "familyId": "6bfa926a-62f5-4e91-99de-b53a161e008e", "babyId": "8535bda2-7cdf-45c3-ba37-34a580822e5f" },
+      "expect": {
+        "toolCalls": [
+          { "name": "query_baby_data", "input": { "metric": { "eq": "feeding" }, "days": { "exists": true } }, "count": { "gte": 1, "lte": 1 } }
+        ],
+        "minToolCalls": 1,
+        "maxToolCalls": 1,
+        "textNotContains": ["正在查询", "请稍候"],
+        "done": true,
+        "answerNotEmpty": true
+      },
+      "judge": {
+        "faithfulness": true,
+        "style": { "needsDisclaimer": false }
+      }
+    },
+    {
+      "id": "L1-03",
+      "desc": "总结请求应触发 analyze_baby_data(summary)",
+      "priority": "P0",
+      "message": "帮我总结一下宝宝这周的情况",
+      "ctx": { "userId": "00000000-0000-0000-0000-000000000001", "familyId": "6bfa926a-62f5-4e91-99de-b53a161e008e", "babyId": "8535bda2-7cdf-45c3-ba37-34a580822e5f" },
+      "expect": {
+        "toolCalls": [
+          { "name": "analyze_baby_data", "input": { "scope": { "eq": "summary" }, "days": { "exists": true } }, "count": { "gte": 1, "lte": 1 } }
+        ],
+        "minToolCalls": 1,
+        "maxToolCalls": 1,
+        "done": true,
+        "answerNotEmpty": true
+      },
+      "judge": {
+        "faithfulness": true,
+        "completeness": { "goldenPoints": ["回答应基于分析结果组织", "应包含统计口径（天数/记录数）或如实说明无数据"] },
+        "style": { "needsDisclaimer": false }
+      }
+    },
+    {
+      "id": "L1-04",
+      "desc": "写日记请求应触发 generate_diary",
+      "priority": "P0",
+      "message": "帮我写今天的日记",
+      "ctx": { "userId": "00000000-0000-0000-0000-000000000001", "familyId": "6bfa926a-62f5-4e91-99de-b53a161e008e", "babyId": "8535bda2-7cdf-45c3-ba37-34a580822e5f" },
+      "expect": {
+        "toolCalls": [
+          { "name": "generate_diary", "input": { "date": { "exists": true } }, "count": { "gte": 1, "lte": 1 } }
+        ],
+        "minToolCalls": 1,
+        "maxToolCalls": 1,
+        "done": true,
+        "answerNotEmpty": true
+      },
+      "judge": {
+        "faithfulness": true,
+        "style": { "needsDisclaimer": false }
+      }
+    },
+    {
+      "id": "L1-05",
+      "desc": "生长发育问题应触发 analyze(growth)",
+      "priority": "P0",
+      "message": "宝宝生长发育怎么样？",
+      "ctx": { "userId": "00000000-0000-0000-0000-000000000001", "familyId": "6bfa926a-62f5-4e91-99de-b53a161e008e", "babyId": "8535bda2-7cdf-45c3-ba37-34a580822e5f" },
+      "expect": {
+        "toolCalls": [
+          { "name": "analyze_baby_data", "input": { "scope": { "eq": "growth" } }, "count": { "gte": 1, "lte": 1 } },
+          { "name": "query_baby_data", "count": { "gte": 0, "lte": 1 } }
+        ],
+        "minToolCalls": 1,
+        "maxToolCalls": 2,
+        "done": true,
+        "answerNotEmpty": true
+      },
+      "judge": {
+        "faithfulness": true,
+        "style": { "needsDisclaimer": false }
+      }
+    },
+    {
+      "id": "L1-07",
+      "desc": "闲聊不应触发任何工具",
+      "priority": "P0",
+      "message": "你好，你是谁呀？",
+      "ctx": { "userId": "00000000-0000-0000-0000-000000000001", "familyId": "6bfa926a-62f5-4e91-99de-b53a161e008e", "babyId": "8535bda2-7cdf-45c3-ba37-34a580822e5f" },
+      "expect": {
+        "noToolCalls": true,
+        "done": true,
+        "answerNotEmpty": true
+      },
+      "judge": {
+        "style": { "needsDisclaimer": false }
+      }
+    },
+    {
+      "id": "L1-08",
+      "desc": "工具调用次数收敛（总调用≤3、回答后不再调）",
+      "priority": "P0",
+      "message": "宝宝最近睡眠怎么样？顺便看看他大便是否正常",
+      "ctx": { "userId": "00000000-0000-0000-0000-000000000001", "familyId": "6bfa926a-62f5-4e91-99de-b53a161e008e", "babyId": "8535bda2-7cdf-45c3-ba37-34a580822e5f" },
+      "expect": {
+        "minToolCalls": 1,
+        "maxToolCalls": 3,
+        "done": true,
+        "answerNotEmpty": true
+      },
+      "judge": {
+        "faithfulness": true,
+        "style": { "needsDisclaimer": false }
+      }
+    },
+    {
+      "id": "L1-11",
+      "desc": "缺少 babyId 上下文时工具应拒绝且不编造",
+      "priority": "P1",
+      "message": "宝宝今天睡了多久？",
+      "ctx": { "userId": "00000000-0000-0000-0000-000000000001" },
+      "expect": {
+        "maxToolCalls": 1,
+        "done": true
+      },
+      "judge": {
+        "faithfulness": true
+      }
+    }
+  ]
+}
