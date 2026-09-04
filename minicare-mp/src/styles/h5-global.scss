@@ -24,8 +24,35 @@ body {
   background: #fdf7f5;
 }
 
+// ── 根字号恒锁 40PX（关键）─────────────────────────────────────
+// 本项目 scss 以 375 稿 px 直书，且 weapp 端 pxtransform 关闭（px 按逻辑像素原样渲染）。
+// H5 编译端 px→rem ÷40，根字号必须恒为 40px 才能与小程序端 1:1 等大。
+// Taro 注入的脚本按 750 稿等比缩放根字号（40×w/750，375 宽 → 20px），
+// 会导致手机端所有 rem 尺寸减半（字体变小、布局显小）——必须用 !important 覆盖。
+html {
+  font-size: 40PX !important;
+}
+
+// ── 桌面端「手机画框」呈现 ─────────────────────────────────────
+// 宽度 ≥500px 的视口（桌面/平板横屏）：
+//   1. 内容约束在 500px 画框内居中，两侧留背景色
+//   2. 滚动改为 #app 容器内滚动 + transform 创建包含块，
+//      使所有 position:fixed 后代（TabBar/SubmitBar/底部弹层）相对画框定位，
+//      避免逐个修改 24 处业务样式
 @media screen and (min-width: 500PX) {
-  html {
-    font-size: 50PX !important;
+  html,
+  body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  #app {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    // 创建 containing block：fixed 后代改为相对 #app 定位（随画框收窄）
+    transform: translateZ(0);
+    box-shadow: 0 0 24PX rgba(61, 43, 46, 0.08);
   }
 }

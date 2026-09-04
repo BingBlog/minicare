@@ -12,6 +12,14 @@ let cachedNavBarHeight: number | null = null
 let cachedStatusBarHeight: number | null = null
 
 /**
+ * 胶囊按钮等小程序专属 API 的平台守卫。
+ * H5 下 Taro.getMenuButtonBoundingClientRect() 不抛同步异常，而是返回 rejected Promise，
+ * try/catch 捕获不到 → unhandledrejection（H5 兼容性问题，2026-09-03 测试发现）。
+ * 因此非 weapp 平台必须在调用前短路，直接走降级值。
+ */
+const IS_WEAPP = process.env.TARO_ENV === 'weapp'
+
+/**
  * 获取状态栏高度（px）
  * iOS 刘海屏约 47px，非刘海约 20px，Android 各异
  */
@@ -36,6 +44,11 @@ export function getStatusBarHeight(): number {
 export function getNavBarHeight(): number {
   if (cachedNavBarHeight !== null) return cachedNavBarHeight
   const statusBarHeight = getStatusBarHeight()
+  if (!IS_WEAPP) {
+    // H5 无胶囊按钮，直接降级（避免 rejected Promise 产生 unhandledrejection）
+    cachedNavBarHeight = statusBarHeight + 44
+    return cachedNavBarHeight
+  }
   try {
     const menuButton = Taro.getMenuButtonBoundingClientRect()
     const gap = menuButton.top - statusBarHeight
@@ -61,6 +74,7 @@ export function useNavBarPaddingTop(): string {
  * 用于 Tab 页自定义顶栏、标题行右侧操作区等
  */
 export function getCapsuleRightPadding(): number {
+  if (!IS_WEAPP) return 96
   try {
     const menuBtn = Taro.getMenuButtonBoundingClientRect()
     const sysInfo = Taro.getSystemInfoSync()

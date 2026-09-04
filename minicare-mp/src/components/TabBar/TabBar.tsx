@@ -80,6 +80,8 @@ export default function TabBar({ activeTab }: TabBarProps) {
   const isCancelingRef = useRef(false)
   const isStoppedRef = useRef(false)
   const tipTimerRef = useRef<ReturnType<typeof setTimeout>>()
+  /** 最近一次 touchend 时间戳：用于跳过触屏 touchend 后浏览器合成的 click（H5 兼容） */
+  const lastTouchEndTsRef = useRef(0)
 
   const isLoggedIn = !!getToken()
 
@@ -156,6 +158,7 @@ export default function TabBar({ activeTab }: TabBarProps) {
   }, [voice, isLoggedIn])
 
   const handleFabTouchEnd = useCallback(() => {
+    lastTouchEndTsRef.current = Date.now()
     if (!isLoggedIn) {
       Taro.navigateTo({ url: '/pages/login/index' })
       return
@@ -168,6 +171,21 @@ export default function TabBar({ activeTab }: TabBarProps) {
       setFabOpen(true)
     }
   }, [voice, isLoggedIn])
+
+  /**
+   * FAB 点击（H5 桌面浏览器兼容）：
+   * 桌面端无 touch 事件，短按开抽屉的逻辑原本只在 onTouchEnd 里，鼠标点击无效。
+   * 触屏设备上 touchend 后浏览器会合成一次 click，用时间戳去重跳过，
+   * 避免长按录音结束后合成 click 误开抽屉。
+   */
+  const handleFabClick = useCallback(() => {
+    if (Date.now() - lastTouchEndTsRef.current < 600) return
+    if (!isLoggedIn) {
+      Taro.navigateTo({ url: '/pages/login/index' })
+      return
+    }
+    setFabOpen(true)
+  }, [isLoggedIn])
 
   const handleConfirmRecord = useCallback(async () => {
     if (!voice.parseResult?.recordType || !familyId) return
@@ -366,6 +384,7 @@ export default function TabBar({ activeTab }: TabBarProps) {
           )}
           <View
             className={`tabbar__fab${isRecording ? ' is-recording' : ''}`}
+            onClick={handleFabClick}
             onTouchStart={handleFabTouchStart}
             onTouchMove={handleFabTouchMove}
             onTouchEnd={handleFabTouchEnd}

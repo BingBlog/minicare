@@ -106,8 +106,9 @@ export default function DashboardPage() {
     init()
   }, [])
 
-  // 保持屏幕常亮
+  // 保持屏幕常亮（H5 无此 API，返回 rejected Promise 且 try/catch 捕获不到，直接跳过）
   useEffect(() => {
+    if (process.env.TARO_ENV !== 'weapp') return
     Taro.setKeepScreenOn({ keepScreenOn: true })
     return () => {
       Taro.setKeepScreenOn({ keepScreenOn: false })

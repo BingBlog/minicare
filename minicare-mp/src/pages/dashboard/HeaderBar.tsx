@@ -33,7 +33,11 @@ export default function HeaderBar({ babyName, selectedDate, onDateChange, soundE
   const [now, setNow] = useState(new Date())
 
   // 获取胶囊按钮位置，计算顶栏安全区域
+  // （H5 无胶囊 API，返回 rejected Promise 且 try/catch 捕获不到，须先按平台短路）
   const capsuleLayout = useMemo(() => {
+    if (process.env.TARO_ENV !== 'weapp') {
+      return { paddingTop: 0, headerHeight: 0, rightWidth: 0 }
+    }
     try {
       const menuBtn = Taro.getMenuButtonBoundingClientRect()
       const sysInfo = Taro.getSystemInfoSync()

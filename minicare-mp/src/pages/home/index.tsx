@@ -12,7 +12,6 @@ import { navigateToRecord } from '@/lib/navigation'
 import { getStatusBarHeight } from '@/lib/safeArea'
 import { useIsIPad } from '@/lib/useIsIPad'
 import { getBabyAge, getGreeting, getTodayDateStr, compareTime } from '@/lib/utils'
-import { generateShareImage, type ShareStats } from '@/lib/shareImage'
 
 import HeroSection from './HeroSection'
 import QuickActions from './QuickActions'
@@ -373,8 +372,9 @@ export default function HomePage() {
     return () => { Taro.eventCenter.off('home:refresh', handler) }
   }, [refreshTodayRecords])
 
-  // 启用分享菜单
+  // 启用分享菜单（H5 无此 API，编译期剔除）
   useEffect(() => {
+    if (process.env.TARO_ENV !== 'weapp') return
     Taro.showShareMenu({
       withShareTicket: true,
       menus: ['shareAppMessage', 'shareTimeline'],

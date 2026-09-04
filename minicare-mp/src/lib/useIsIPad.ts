@@ -13,6 +13,13 @@ let cachedIsIPad: boolean | null = null
 
 function detectIPad(): boolean {
   if (cachedIsIPad !== null) return cachedIsIPad
+  // H5：桌面浏览器宽度 ≥768 且 platform 可能为 mac，会误触发 iPad 大屏样式。
+  // H5 端统一按手机画框呈现，仅 iPad UA 才启用大屏样式。
+  if (process.env.TARO_ENV === 'h5') {
+    const ua = typeof navigator !== 'undefined' ? navigator.userAgent : ''
+    cachedIsIPad = /iPad/i.test(ua)
+    return cachedIsIPad
+  }
   try {
     // 优先使用新 API（基础库 2.20.1+）
     let model = ''

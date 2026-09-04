@@ -94,13 +94,24 @@ function arrayBufferToStr(buf: ArrayBuffer): string {
 }
 
 /**
- * SSE 流式对话（POST /api/agent/chat）
+ * SSE 流式对话（POST /api/agent/chat）—— 按平台分流
  *
- * - 微信小程序无 EventSource：enableChunked + requestTask.onChunkReceived 增量解析；
- * - 降级：onChunkReceived 不可用/未触发时，success 的完整响应走同一解析器；
+ * - weapp：无 EventSource，enableChunked + requestTask.onChunkReceived 增量解析；
+ *   降级：onChunkReceived 不可用/未触发时，success 的完整响应走同一解析器；
+ * - h5：Taro H5 request 对 SSE 纯文本默认按 JSON 解析，失败后 res.data = null
+ *   （2026-09-03 H5 兼容性测试发现"回复为空"的根因），且 XHR 无 onChunkReceived，
+ *   改用原生 fetch + ReadableStream 增量解析；
  * - promise 在 done/error/连接结束/abort 时 resolve；网络/HTTP 错误 reject。
  */
 export function chatStream(opts: ChatStreamOptions): ChatStreamHandle {
+  if (process.env.TARO_ENV === 'h5') {
+    return chatStreamViaFetch(opts)
+  }
+  return chatStreamViaTaroRequest(opts)
+}
+
+/** weapp 路径：Taro.request（enableChunked + onChunkReceived，success 降级） */
+function chatStreamViaTaroRequest(opts: ChatStreamOptions): ChatStreamHandle {
   let task: Taro.RequestTask<any> | null = null
   let aborted = false
 
@@ -222,6 +233,144 @@ export function chatStream(opts: ChatStreamOptions): ChatStreamHandle {
       } catch {
         /* task 已结束 */
       }
+    },
+  }
+}
+
+/**
+ * h5 路径：原生 fetch + ReadableStream 流式解析 SSE
+ *
+ * 与 weapp 路径语义对齐：
+ * - 同一套 parseSseBlock 解析、同一套空闲兜底（45s idle / 100s 总时长）；
+ * - abort() 通过 AbortController 中断，promise 以 { aborted: true } resolve；
+ * - HTTP 非 2xx 时尝试读 JSON 错误信息并 reject；
+ * - 极老浏览器无 ReadableStream 时退化为 response.text() 一次性解析。
+ */
+function chatStreamViaFetch(opts: ChatStreamOptions): ChatStreamHandle {
+  let controller: AbortController | null = new AbortController()
+  let aborted = false
+
+  const promise = new Promise<ChatStreamResult>((resolve, reject) => {
+    const token = getToken()
+    let buffer = ''
+    let conversationId = ''
+    let settled = false
+
+    const settle = (result: ChatStreamResult) => {
+      if (settled) return
+      settled = true
+      clearInterval(idleTimer)
+      resolve(result)
+    }
+
+    // 空闲兜底（与 weapp 路径一致）：45s 无事件或总时长 100s 强制收尾，并中断底层连接
+    let lastEventAt = Date.now()
+    const startedAt = Date.now()
+    const IDLE_FALLBACK_MS = 45_000
+    const MAX_TOTAL_MS = 100_000
+    const idleTimer = setInterval(() => {
+      if (settled) return
+      const now = Date.now()
+      if (now - lastEventAt > IDLE_FALLBACK_MS || now - startedAt > MAX_TOTAL_MS) {
+        console.warn(`[agent] chatStream(h5) force settle (idle=${now - lastEventAt}ms, total=${now - startedAt}ms)`)
+        try {
+          controller?.abort()
+        } catch {
+          /* 已结束 */
+        }
+        settle({ conversationId, aborted })
+      }
+    }, 5_000)
+
+    /** 消费累积 buffer 中的完整 SSE 块（与 weapp 路径同一解析器） */
+    const drain = () => {
+      for (;;) {
+        const sep = buffer.indexOf('\n\n')
+        if (sep < 0) break
+        const block = buffer.slice(0, sep)
+        buffer = buffer.slice(sep + 2)
+        if (!block.trim()) continue
+        const parsed = parseSseBlock(block)
+        if (!parsed) continue
+        lastEventAt = Date.now()
+        if (parsed.event === 'meta') {
+          conversationId = (parsed.data as { conversationId?: string }).conversationId || conversationId
+        }
+        opts.onEvent(parsed as AgentSSEEvent)
+        if (parsed.event === 'done' || parsed.event === 'error') {
+          settle({ conversationId, aborted })
+          return
+        }
+      }
+    }
+
+    fetch(`${API_BASE_URL}/api/agent/chat`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'text/event-stream',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify({
+        family_id: opts.familyId,
+        baby_id: opts.babyId,
+        ...(opts.conversationId ? { conversation_id: opts.conversationId } : {}),
+        message: opts.message,
+        ...(opts.images?.length ? { images: opts.images } : {}),
+      }),
+      signal: controller.signal,
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          let msg = `HTTP ${response.status}`
+          try {
+            const data = await response.json()
+            msg = (data as { message?: string })?.message || (data as { error?: string })?.error || msg
+          } catch {
+            /* 非 JSON 错误体，用状态码信息 */
+          }
+          throw new Error(msg)
+        }
+        const body = response.body
+        if (body && typeof body.getReader === 'function') {
+          const reader = body.getReader()
+          const decoder = new TextDecoder('utf-8')
+          for (;;) {
+            const { done, value } = await reader.read()
+            if (done) break
+            buffer += decoder.decode(value, { stream: true })
+            drain()
+          }
+          buffer += decoder.decode()
+          drain()
+        } else {
+          // 无 ReadableStream：整包读取后一次性解析（无流式效果但内容正确）
+          buffer += await response.text()
+          drain()
+        }
+        if (!settled) settle({ conversationId, aborted })
+      })
+      .catch((err) => {
+        if (settled) return
+        if (aborted || (err && err.name === 'AbortError')) {
+          aborted = true
+          settle({ conversationId, aborted: true })
+          return
+        }
+        reject(new Error(err?.message ? `网络请求失败：${err.message}` : '网络请求失败'))
+      })
+  })
+
+  return {
+    promise,
+    abort: () => {
+      aborted = true
+      try {
+        controller?.abort()
+      } catch {
+        /* 已结束 */
+      }
+      controller = null
     },
   }
 }

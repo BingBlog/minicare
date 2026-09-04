@@ -67,7 +67,11 @@ export default function FoodObservationBoardPage() {
   const filterRef = useRef<FilterKey>('all')
 
   // ── 胶囊按钮避让 ──
+  // （H5 无胶囊 API，返回 rejected Promise 且 try/catch 捕获不到，须先按平台短路）
   const capsuleLayout = useMemo(() => {
+    if (process.env.TARO_ENV !== 'weapp') {
+      return { paddingTop: getStatusBarHeight(), headerHeight: 44, rightWidth: 0 }
+    }
     try {
       const menuBtn = Taro.getMenuButtonBoundingClientRect()
       const sysInfo = Taro.getSystemInfoSync()

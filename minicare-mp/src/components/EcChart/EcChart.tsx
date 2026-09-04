@@ -70,8 +70,9 @@ export default function EcChart({ option, height }: EcChartProps) {
   const chartRef = useRef<ECharts | null>(null)
   const canvasNodeRef = useRef<WechatMiniprogram.Canvas | null>(null)
 
-  // ── 截图 ──
+  // ── 截图（仅 weapp：H5 直接渲染 Canvas，无需截图）──
   const takeSnapshot = useCallback(() => {
+    if (process.env.TARO_ENV !== 'weapp') return
     const canvasNode = canvasNodeRef.current
     if (!canvasNode) return
     Taro.canvasToTempFilePath({
@@ -84,6 +85,22 @@ export default function EcChart({ option, height }: EcChartProps) {
   // ── 初始化 Canvas + ECharts ──
   useEffect(() => {
     if (inited) return
+    if (process.env.TARO_ENV === 'h5') {
+      // H5：echarts 直接初始化在真实 <canvas> 上（Taro H5 的 Canvas 组件
+      // 会渲染 <taro-canvas> 宿主元素，内含原生 canvas 节点）
+      const timer = setTimeout(() => {
+        const host = document.getElementById(cid)
+        const canvasEl =
+          (host?.tagName === 'CANVAS' ? host : host?.querySelector('canvas')) as HTMLCanvasElement | null
+        if (!canvasEl || canvasEl.clientWidth === 0) return
+        const dpr = Taro.getSystemInfoSync().pixelRatio || window.devicePixelRatio || 1
+        const chart = echarts.init(canvasEl, undefined, { devicePixelRatio: dpr })
+        chart.setOption({ ...option, animation: false })
+        chartRef.current = chart
+        setInited(true)
+      }, 250)
+      return () => clearTimeout(timer)
+    }
     const timer = setTimeout(() => {
       const query = Taro.createSelectorQuery()
       query.select(`#${cid}`).fields({ node: true, size: true })
@@ -150,19 +167,23 @@ export default function EcChart({ option, height }: EcChartProps) {
 
   return (
     <View style={{ width: '100%', height, position: 'relative', overflow: 'hidden' }}>
-      {/* Canvas 始终在屏幕外，仅用于 ECharts 渲染和截图 */}
+      {/* weapp：Canvas 在屏幕外仅用于渲染+截图；H5：直接显示 Canvas */}
       <Canvas
         id={cid}
         canvasId={cid}
         type='2d'
-        style={{
-          width: '100%',
-          height,
-          display: 'block',
-          position: 'absolute',
-          left: '-9999px',
-          top: 0,
-        }}
+        style={
+          process.env.TARO_ENV === 'h5'
+            ? { width: '100%', height, display: 'block' }
+            : {
+                width: '100%',
+                height,
+                display: 'block',
+                position: 'absolute',
+                left: '-9999px',
+                top: 0,
+              }
+        }
       />
 
       {/* 用户看到的始终是截图 Image */}

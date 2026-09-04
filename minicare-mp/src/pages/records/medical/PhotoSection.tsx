@@ -10,7 +10,8 @@
 import { View, Text, Image, type ITouchEvent } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { useEffect, useRef, useState } from 'react'
-import { storageApi, type UploadUrlResult } from '@/api/storage'
+import { storageApi } from '@/api/storage'
+import { compressImage, uploadToCos } from '@/lib/uploadImage'
 
 const MAX_PHOTOS = 6
 
@@ -65,65 +66,23 @@ export default function PhotoSection({ babyId, value, onChange, showToast }: Pro
   }, [items])
 
   /**
-   * PUT 直传 COS。
-   * 注意：不能用 Taro.uploadFile（multipart 表单会污染文件内容），
-   * 必须 readFile 读 ArrayBuffer 后走 Taro.request PUT，body 才是纯文件字节。
+   * PUT 直传 COS：统一走共享 uploadToCos（多端文件——weapp 为
+   * getFileSystemManager + Taro.request PUT；H5 为 fetch Blob PUT）。
+   * 不能用 Taro.uploadFile（multipart 表单会污染文件内容）。
    * 签名 header 集合与 CloudBase Node SDK uploadFile 保持一致。
    */
-  const uploadToCos = (uploadUrl: string, filePath: string, meta: UploadUrlResult, cloudPath: string) =>
-    new Promise<void>((resolve, reject) => {
-      Taro.getFileSystemManager().readFile({
-        filePath,
-        success: (fsRes) => {
-          Taro.request({
-            url: uploadUrl,
-            method: 'PUT',
-            data: fsRes.data,
-            header: {
-              Signature: meta.signature,
-              authorization: meta.signature,
-              'x-cos-security-token': meta.cosToken,
-              'x-cos-meta-fileid': meta.cosFileId,
-              key: encodeURIComponent(cloudPath),
-              'Content-Type': 'application/octet-stream',
-            },
-            timeout: 30000,
-            success: (res) => {
-              if (res.statusCode >= 200 && res.statusCode < 300) resolve()
-              else reject(new Error(`HTTP ${res.statusCode}`))
-            },
-            fail: (err) => reject(new Error(err.errMsg || '上传失败')),
-          })
-        },
-        fail: (err) => reject(new Error(err.errMsg || '读取文件失败')),
-      })
-    })
 
   /**
-   * 上传前压缩（wx.compressImage）。
-   * chooseImage 的 compressed 参数压缩力度有限（iPhone 原图压缩后仍可达 2-4M），
-   * 医疗图片仅留档查看，统一压到 1280px 宽 + 80 质量（约 200-400KB）。
+   * 上传前压缩：统一走共享 compressImage（多端文件，默认 1280px 宽 + 80 质量，
+   * 与原本地实现参数一致；H5 端为 canvas 压缩实现）。
    * 压缩失败（个别格式/低版本基础库）则回退用原图。
    */
-  const compress = (src: string) =>
-    new Promise<string>((resolve) => {
-      Taro.compressImage({
-        src,
-        quality: 80,
-        compressedWidth: 1280,
-        success: (res) => resolve(res.tempFilePath),
-        fail: (err) => {
-          console.warn('[PhotoSection] compressImage failed, use original', err)
-          resolve(src)
-        },
-      })
-    })
 
   const uploadOne = async (tempPath: string) => {
     const tmpId = `tmp-${Date.now()}-${Math.random().toString(36).slice(2)}`
     setItems((prev) => [...prev, { fileID: tmpId, url: tempPath, tempPath, status: 'uploading' }])
     try {
-      const uploadPath = await compress(tempPath)
+      const uploadPath = await compressImage(tempPath)
       const cloudPath = `medical/${babyId || 'pending'}/${Date.now()}-${Math.random().toString(36).slice(2)}.jpg`
       const meta = await storageApi.getUploadUrl(cloudPath)
       await uploadToCos(meta.uploadUrl, uploadPath, meta, cloudPath)
