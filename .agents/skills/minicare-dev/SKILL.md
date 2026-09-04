@@ -96,6 +96,7 @@ minicare-server/src/
 ├── scheduler/                 # 定时任务（睡眠超时 12h 自动标记）
 ├── storage/                   # 云存储上传（照片）
 ├── websocket/                 # WebSocket 实时推送
+├── device/                    # 音箱设备（TECH-008）：DeviceGuard + 绑定码/绑定/解绑 + LLM Adapter
 └── common/                    # 共用工具（database / cloudbase / decorators / interceptors / utils）
 ```
 
@@ -106,7 +107,7 @@ minicare-server/src/
 
 **唯一权威来源**：`minicare-server/migrations/` 目录，按文件名顺序执行。
 
-> **当前最新迁移**：`018_baby_diary.sql`（001~018 共 18 个文件）
+> **当前最新迁移**：`019_speaker_device.sql`（001~019 共 19 个文件）
 > 新增迁移文件后，**必须更新本行的「当前最新迁移」字段**。
 
 | 文件 | 变更内容 |
@@ -129,6 +130,7 @@ minicare-server/src/
 | `016_timeline_backfill.sql` | record_timeline 全量重刷回填：修复 medical/growth 物化缺失（日期拼接 bug）、medication 历史回填、medical summary_tags 补全（就诊类型/医院/诊断）、清理 medication 孤儿行 |
 | `017_knowledge_base.sql` | 敏宝知识条目库（M2 知识问答，agent 知识库，FULLTEXT ngram + embedding BLOB） |
 | `018_baby_diary.sql` | 宝宝每日日记（M5 日记生成，baby_id+diary_date 唯一每天一篇） |
+| `019_speaker_device.sql` | 音箱设备绑定（TECH-008「小宝小宝」）：speaker_device（token 哈希+last_conversation_id）+ speaker_binding_code（6 位绑定码，每家庭仅 1 条 pending） |
 
 ---
 

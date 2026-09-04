@@ -64,7 +64,26 @@ description: minicare 项目构建发布操作手册。包含前端静态托管�
 >
 > **两者不对齐会导致登录失败**（前端用真实短信 + 后端用固定验证码 = 400 错误）。
 
-### 1.4 云函数参数
+### 1.4 Agent 服务参数（agent-poc，minicare-agent）
+
+| 属性            | 值                                                                                     |
+| --------------- | -------------------------------------------------------------------------------------- |
+| 项目目录        | `/Users/bing/Documents/minicare-v1/agent-poc`                                          |
+| CloudRun 服务名 | `minicare-agent`                                                                        |
+| 部署方式        | `node scripts/deploy-agent.mjs`（manager-node 源码上传 + 云端 Docker 构建，EnvParams 保留合并） |
+| 状态/构建日志   | `node scripts/check-agent-deploy.mjs`；`app.cloudrun.getDeployRecords/getBuildLog`       |
+| 访问域名        | `https://minicare-agent-240137-10-1253854169.sh.run.tcloudbase.com`                     |
+| 健康检查        | `GET /health`（免 token）→ `{"ready":true,"db":true,"embedding":true,"tokenAuth":true}` |
+| EnvParams       | DEEPSEEK_API_KEY, TCB_*, AGENT_INTERNAL_TOKEN, DB_*(生产库), TOKENHUB_API_KEY — 控制台为准 |
+
+> ⚠️ 踩坑（2026-09-04）：
+> 1. `@cloudbase/manager-node` 5.x 的 `init()` 参数从 `env` 改名为 **`envId`**（旧写法报 `[DescribeEnvInfo] EnvId is required`）；deploy 脚本已适配。
+> 2. manager-node 是 agent-poc 的 devDependency（部署时曾被误删），缺了先 `npm i -D @cloudbase/manager-node`。
+> 3. 直连 SDK 版镜像依赖 `@anthropic-ai/claude-agent-sdk` 的 linux-x64 CLI 二进制，云端 `npm install` 自动按平台拉取；部署后必须跑一次 `/chat` 端到端验证 CLI 可用。
+> 4. 验收时 `x-agent-token` 必须用 **CloudRun EnvParams 里的 AGENT_INTERNAL_TOKEN**（可能与本地 `.env.local` 不一致；本地不一致会导致 minicare-server 本地代理 401）。
+> 5. Dockerfile 非root用户（oak）+ `CLAUDE_CONFIG_DIR` 兜底 /tmp；`.dockerignore` 已排除 `.env.local`/`.wire-logs`。
+
+### 1.5 云函数参数
 
 | 属性       | 值                                                                                           |
 | ---------- | -------------------------------------------------------------------------------------------- |
@@ -75,7 +94,7 @@ description: minicare 项目构建发布操作手册。包含前端静态托管�
 | 验证标志   | 调用后日志含 `status=200`                                                                    |
 | CLI 命令   | `tcb fn code update keepalive-ping --dir functions -e minicare-cloud-6gqledlle0132cbe`       |
 
-### 1.5 数据库迁移参数
+### 1.6 数据库迁移参数
 
 | 属性         | 值                                                    |
 | ------------ | ----------------------------------------------------- |
