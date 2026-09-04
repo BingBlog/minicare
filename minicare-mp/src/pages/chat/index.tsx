@@ -52,6 +52,40 @@ const TOOL_LABELS: Record<string, string> = {
 const LONG_PRESS_MS = 350
 const CANCEL_THRESHOLD = -60
 
+/**
+ * 从 agent 完整回答中提取日记正文（去掉末尾的"引导补充趣事"话术）：
+ * 保存到日记时只需正文，不应包含"今天有没有什么有意思的事想写进去？"这类引导语。
+ */
+const DIARY_FOLLOWUP_RE =
+  /(\n*\s*(?:今天有没有什么|还有什么想记|有什么想写|想写进日记|有意思的事想写|随时告诉我(?:呀|哦)?|对了，?今天)[^]*)$/i
+
+function extractDiaryBody(content: string): string {
+  if (!content) return ''
+  const m = content.match(DIARY_FOLLOWUP_RE)
+  if (m && m.index !== undefined) {
+    return content.slice(0, m.index).replace(/\s+$/, '').replace(/---+\s*$/, '').trim()
+  }
+  return content.trim()
+}
+
+/** markdown 转纯文本（复制分享用）：去标题/加粗/列表/表格/引用符号 */
+function stripMarkdown(content: string): string {
+  if (!content) return ''
+  return content
+    .replace(/```[\s\S]*?```/g, (c) => c.replace(/^```[^\n]*\n|\n```$/g, ''))
+    .replace(/\|/g, ' ')
+    .replace(/^\s*[-*]\s+/gm, '')
+    .replace(/^\s*\d+\.\s+/gm, '')
+    .replace(/^>\s?/gm, '')
+    .replace(/^#{1,6}\s+/gm, '')
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/\*([^*]+)\*/g, '$1')
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/^\s*---+\s*$/gm, '')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+}
+
 function nowTime(): string {
   const d = new Date()
   return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
@@ -588,7 +622,7 @@ export default function ChatPage() {
     return (
       <View className='chat-msg__footer'>
         {m.diaryRound ? (
-          <View className='chat-msg__diary-btn' onClick={() => openDraft(m.content)}>
+          <View className='chat-msg__diary-btn' onClick={() => openDraft(extractDiaryBody(m.content))}>
             <Text className='chat-msg__diary-btn-text'>保存为今天的日记</Text>
           </View>
         ) : null}
@@ -734,7 +768,22 @@ export default function ChatPage() {
                   </View>
                 ) : null}
                 {m.content ? (
-                  <View className={`chat-msg__bubble chat-msg__bubble--${m.role}`}>
+                  <View
+                    className={`chat-msg__bubble chat-msg__bubble--${m.role}`}
+                    onLongPress={() => {
+                      if (m.role !== 'assistant' || !m.content) return
+                      Taro.showActionSheet({
+                        itemList: ['复制全文', '复制纯文本'],
+                        success: (r) => {
+                          const plain = r.tapIndex === 1
+                          Taro.setClipboardData({
+                            data: plain ? stripMarkdown(m.content) : m.content,
+                            success: () => Taro.showToast({ title: '已复制', icon: 'success' }),
+                          })
+                        },
+                      })
+                    }}
+                  >
                     {m.role === 'assistant' ? (
                       <>
                         <MarkdownText content={m.content} />
@@ -746,6 +795,17 @@ export default function ChatPage() {
                         {m.status === 'streaming' ? <Text className='chat-msg__cursor'>▍</Text> : null}
                       </Text>
                     )}
+                  </View>
+                ) : m.role === 'assistant' && m.status === 'streaming' ? (
+                  // ⚠️ 思考中占位：模型推理阶段（发送后到首个事件前）content 为空，
+                  // 展示"正在思考…"避免用户以为没反应（配合右上角 elapsed 计时）
+                  <View className='chat-msg__bubble chat-msg__bubble--assistant chat-msg__thinking'>
+                    <View className='chat-msg__thinking-dots'>
+                      <View className='chat-msg__thinking-dot' />
+                      <View className='chat-msg__thinking-dot' />
+                      <View className='chat-msg__thinking-dot' />
+                    </View>
+                    <Text className='chat-msg__thinking-text'>正在思考{elapsed >= 5 ? ` ${elapsed}s` : ''}…</Text>
                   </View>
                 ) : null}
                 {renderToolStatus(m)}
