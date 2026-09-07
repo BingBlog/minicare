@@ -77,29 +77,70 @@ function toIngestionBatch(doc) {
   })
   for (const obs of doc.observations || []) {
     const isGen = obs.type === 'generation'
+    const body = {
+      id: obs.id,
+      traceId: doc.traceId,
+      parentObservationId: null,
+      name: obs.name,
+      startTime: iso(base, obs.startTime - base),
+      endTime: iso(base, (obs.endTime || obs.startTime) - base),
+      input: obs.input ?? undefined,
+      output: obs.output ?? undefined,
+      level: obs.level || 'DEFAULT',
+      statusMessage: obs.statusMessage || undefined,
+    }
+    if (isGen) {
+      // model + usage 明细（transcript-enrich 后含 input/output/cache 分解）
+      body.model = obs.model || null
+      const u = obs.usage
+      if (u?.total_tokens) {
+        body.usage = {
+          total: u.total_tokens,
+          unit: 'TOKENS',
+          ...(u.input_tokens != null ? { input: u.input_tokens } : {}),
+          ...(u.output_tokens != null ? { output: u.output_tokens } : {}),
+        }
+      }
+      // cache token 不落 usage（Langfuse v3 不收），进 metadata 供展开查看
+      const cacheRead = u?.cache_read_input_tokens
+      const cacheCreation = u?.cache_creation_input_tokens
+      if (obs.metadata || cacheRead != null || cacheCreation != null) {
+        body.metadata = {
+          ...(obs.metadata || {}),
+          ...(cacheRead != null || cacheCreation != null
+            ? { cliUsage: { cacheRead: cacheRead ?? 0, cacheCreation: cacheCreation ?? 0 } }
+            : {}),
+        }
+      }
+    } else if (obs.metadata) {
+      body.metadata = obs.metadata
+    }
     events.push({
       id: obs.id,
       type: isGen ? 'generation-create' : 'span-create',
       timestamp: iso(base, obs.startTime - base),
-      body: {
-        id: obs.id,
-        traceId: doc.traceId,
-        parentObservationId: null,
-        name: obs.name,
-        startTime: iso(base, obs.startTime - base),
-        endTime: iso(base, (obs.endTime || obs.startTime) - base),
-        ...(isGen ? { model: obs.model || null, usage: obs.usage?.total_tokens ? { total: obs.usage.total_tokens, unit: 'TOKENS' } : undefined } : {}),
-        input: obs.input ?? undefined,
-        output: obs.output ?? undefined,
-        level: obs.level || 'DEFAULT',
-        statusMessage: obs.statusMessage || undefined,
-      },
+      body,
     })
   }
   return events
 }
 
+/** 删除 Langfuse 远端 trace（cliEnriched 重建前清理旧 telemetry generation；幂等） */
+async function deleteTrace(traceId) {
+  const res = await fetch(`${LANGFUSE_HOST}/api/public/traces/${traceId}`, {
+    method: 'DELETE',
+    headers: { Authorization: `Basic ${Buffer.from(`${PK}:${SK}`).toString('base64')}` },
+  })
+  if (res.ok || res.status === 404) return
+  console.warn(`  ! DELETE trace ${traceId} 返回 ${res.status}（忽略，继续 upsert）`)
+}
+
 async function importTrace(doc) {
+  // transcript 增强过的 trace：先删远端旧版本（旧 telemetry generation 无法原地
+  // 替换 id），再整体重建 cli generations + spans，保证瀑布干净
+  if (doc.metadata?.cliEnriched) {
+    await deleteTrace(doc.traceId)
+  }
   const batch = toIngestionBatch(doc)
   const res = await fetch(`${LANGFUSE_HOST}/api/public/ingestion`, {
     method: 'POST',
