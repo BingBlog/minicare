@@ -79,14 +79,20 @@ const SIMPLE_METRICS = {
  */
 async function queryFeedingRows(db, babyId, timeWhere, params, limit) {
   const out = []
+  // 子表预取量（2026-09-07 修复）：food 子表 LEFT JOIN food_item 每食材膨胀 1 行，
+  // 此前非 food 子表仅预取 ceil(limit/4) 行，当日顿数一多（或辅食项多）配方奶/母乳行就被
+  // 截断 → 模型按可见明细心算总量出错（生产日记 460 vs 880 事故根因）。
+  // 现改为：非 food 子表预取 limit 行、food 子表预取 limit*3 行，合并排序后再 slice(0, limit)。
+  const prefetch = { milk: limit, food: limit * 3 }
   for (const sub of FEEDING_SUB_TABLES) {
+    const subLimit = sub.join ? prefetch.food : prefetch.milk
     if (sub.join) {
       const [rows] = await db.query(
         `SELECT f.record_time, i.food_name, i.amount_g, i.amount_note, f.note AS record_note
          FROM ${sub.table} f LEFT JOIN ${sub.join} i ON i.record_id = f.id
          WHERE f.baby_id=? AND ${timeWhere}
          ORDER BY f.record_time DESC, i.id ASC LIMIT ?`,
-        [babyId, ...params, Math.ceil(limit / 4) * 3],
+        [babyId, ...params, subLimit],
       )
       for (const r of rows) {
         out.push({
@@ -103,7 +109,7 @@ async function queryFeedingRows(db, babyId, timeWhere, params, limit) {
         `SELECT record_time, ${sub.json}, note FROM ${sub.table}
          WHERE baby_id=? AND ${timeWhere}
          ORDER BY record_time DESC LIMIT ?`,
-        [babyId, ...params, Math.ceil(limit / 4)],
+        [babyId, ...params, subLimit],
       )
       for (const r of rows) {
         let items = []
@@ -127,7 +133,7 @@ async function queryFeedingRows(db, babyId, timeWhere, params, limit) {
         `SELECT record_time, ${sub.select} FROM ${sub.table}
          WHERE baby_id=? AND ${timeWhere}
          ORDER BY record_time DESC LIMIT ?`,
-        [babyId, ...params, Math.ceil(limit / 4)],
+        [babyId, ...params, subLimit],
       )
       for (const r of rows) out.push({ type: sub.label, record_time: r.record_time, ...r })
     }
@@ -174,6 +180,49 @@ export async function queryMetricOnDate(babyId, metric, date) {
     rows = r
   }
   return { ok: true, metric, date, hasData: rows.length > 0, count: rows.length, rows }
+}
+
+/**
+ * 指定某一天的喂养汇总（generate_diary 用，2026-09-07 新增）。
+ * SQL 直接 SUM，返回权威合计，供模型写日记直接引用，避免对（可能截断的）明细心算加总。
+ * date 形如 YYYY-MM-DD，窗口 [date 00:00:00, date 23:59:59]（业务时区 +08）。
+ */
+export async function queryFeedingSummaryOnDate(babyId, date) {
+  const db = getDb()
+  if (!db) return null
+  const t0 = `${date} 00:00:00`
+  const t1 = `${date} 23:59:59`
+  try {
+    const [[formula]] = await db.query(
+      `SELECT COUNT(*) AS n, COALESCE(SUM(formula_ml), 0) AS total_ml
+       FROM feeding_formula_record WHERE baby_id=? AND record_time BETWEEN ? AND ?`,
+      [babyId, t0, t1],
+    )
+    const [[breast]] = await db.query(
+      `SELECT COUNT(*) AS n, COALESCE(SUM(duration_min), 0) AS total_min
+       FROM feeding_breast_record WHERE baby_id=? AND record_time BETWEEN ? AND ?`,
+      [babyId, t0, t1],
+    )
+    const [[food]] = await db.query(
+      `SELECT COUNT(*) AS n FROM feeding_food_record WHERE baby_id=? AND record_time BETWEEN ? AND ?`,
+      [babyId, t0, t1],
+    )
+    const [[supplement]] = await db.query(
+      `SELECT COUNT(*) AS n FROM feeding_supplement_record WHERE baby_id=? AND record_time BETWEEN ? AND ?`,
+      [babyId, t0, t1],
+    )
+    return {
+      formula_ml: Math.round(formula.total_ml || 0),
+      formula_count: Number(formula.n || 0),
+      breast_min: Math.round(breast.total_min || 0),
+      breast_count: Number(breast.n || 0),
+      food_count: Number(food.n || 0),
+      supplement_count: Number(supplement.n || 0),
+    }
+  } catch (e) {
+    console.error('[query] 当日喂养汇总失败:', e.message)
+    return null
+  }
 }
 
 /** count：窗口内条数 */

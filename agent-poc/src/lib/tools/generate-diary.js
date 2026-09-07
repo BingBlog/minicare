@@ -5,7 +5,7 @@
  * 生活事件 MVP 简化：模型从会话上下文（FlexDB transcript）总结，不单独建事件表。
  */
 import { z } from 'zod'
-import { queryMetricOnDate, METRICS, METRIC_LABELS } from '../query.js'
+import { queryMetricOnDate, queryFeedingSummaryOnDate, METRICS, METRIC_LABELS } from '../query.js'
 import { getDb } from '../db.js'
 
 export const GENERATE_DIARY_TOOL = {
@@ -23,7 +23,22 @@ async function dayRecords(babyId, date) {
   for (const metric of METRICS) {
     const res = await queryMetricOnDate(babyId, metric, date)
     if (res.hasData) {
-      out.push({ metric, label: METRIC_LABELS[metric], count: res.count, rows: res.rows.slice(0, 5) })
+      const isFeeding = metric === 'feeding'
+      const item = {
+        metric,
+        label: METRIC_LABELS[metric],
+        count: res.count,
+        // 2026-09-07 修复：喂养明细不再截断（此前 slice(0,5) 把当天较早的配方奶行丢掉，
+        // 模型按可见明细心算总量出错，460 vs 880 事故根因）；当日记录量级小，全量给出。
+        // 其余维度保持前 5 行概览即可。
+        rows: res.rows.slice(0, isFeeding ? 20 : 5),
+      }
+      // 喂养附当日 SQL 汇总（权威合计，写日记直接引用，勿对明细心算加总）
+      if (isFeeding) {
+        const summary = await queryFeedingSummaryOnDate(babyId, date)
+        if (summary) item.summary = summary
+      }
+      out.push(item)
     }
   }
   return out
@@ -102,7 +117,7 @@ export async function executeGenerateDiary(input, ctx) {
       records,
       photos,
       chatEvents: [], // MVP：模型从会话上下文总结生活事件，可靠性靠 prompt 约束
-      note: '生活事件请只写用户明确提到的事实，不要编造；写日记时可结合当天记录和用户提到的趣事；若当天有提到活动但无照片，可在末尾提醒补充照片。',
+      note: '生活事件请只写用户明确提到的事实，不要编造；写日记时可结合当天记录和用户提到的趣事；若当天有提到活动但无照片，可在末尾提醒补充照片。feeding 记录的 summary 是当日权威合计（配方奶 formula_ml 毫升/母乳 breast_min 分钟/各类型次数），写奶量时直接引用 summary.formula_ml，不要对 rows 明细自行加总（明细里的辅食 food_name 是逐食材拆行，会干扰数数）。',
     })
   } catch (e) {
     console.error('[diary] ERROR:', e?.stack || e)
