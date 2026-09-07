@@ -9,5 +9,6 @@ import { TimelineModule } from '../timeline/timeline.module';
   imports: [AuthModule, FamilyModule, TimelineModule],
   controllers: [GrowthController],
   providers: [GrowthService],
+  exports: [GrowthService], // 供 records/medical 儿保测量同步（TECH-011）
 })
 export class GrowthModule {}
