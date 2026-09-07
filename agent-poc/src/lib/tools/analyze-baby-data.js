@@ -55,6 +55,77 @@ function findAnomalies(rows, metric) {
   return out
 }
 
+// ---------- summary 的逐日/分段明细（周/月总结"先每天/先每周、后汇总"的数据底座） ----------
+
+/** ISO 日期字符串的纯算术（基于 UTC，避免本地时区与 DB 时区错位一天） */
+const parseDate = (s) => {
+  const [y, m, d] = s.split('-').map(Number)
+  return Date.UTC(y, m - 1, d)
+}
+const fmtDate = (ms) => {
+  const dt = new Date(ms)
+  return `${dt.getUTCFullYear()}-${String(dt.getUTCMonth() + 1).padStart(2, '0')}-${String(dt.getUTCDate()).padStart(2, '0')}`
+}
+const addDaysStr = (s, n) => fmtDate(parseDate(s) + n * 86400000)
+
+/** 单维按天行 → daily 合并字段（>0 才写入）。单位：配方奶 ml / 母乳与睡眠 min / 活动 min */
+function digestPatch(metric, row) {
+  const patch = {}
+  const put = (key, raw) => {
+    const n = Math.round(Number(raw) || 0)
+    if (n > 0) patch[key] = n
+  }
+  if (metric === 'feeding') {
+    put('formula_ml', row.formula_ml)
+    put('breast_min', row.breast_min)
+    put('food_count', row.food_count)
+  } else if (metric === 'sleep') put('sleep_min', row.total)
+  else if (metric === 'activity') put('activity_min', row.total)
+  else if (metric === 'diaper') put('diaper_count', row.count)
+  else if (metric === 'symptom') put('symptom_count', row.count)
+  else if (metric === 'growth') put('growth_count', row.count)
+  else if (metric === 'health') put('health_count', row.count)
+  else if (metric === 'medical') put('medical_count', row.count)
+  return patch
+}
+
+/** 长窗口（>14 天）按约 7 天一段聚合，供月总结"分周简述"。todayStr 取 DB CURDATE()（与查询同时区） */
+function buildWeeks(dayMap, windowDays, todayStr) {
+  const rowsAll = [...dayMap.values()]
+  if (!rowsAll.length) return []
+  const start = addDaysStr(todayStr, -(windowDays - 1))
+  const weeks = []
+  let from = start
+  while (from <= todayStr) {
+    const to = addDaysStr(from, 6) > todayStr ? todayStr : addDaysStr(from, 6)
+    const rows = rowsAll.filter((r) => r.date >= from && r.date <= to)
+    if (rows.length) {
+      const sum = (k) => rows.reduce((s, r) => s + (r[k] || 0), 0)
+      const daysWith = (pred) => rows.filter(pred).length
+      const w = { from, to, record_days: rows.length }
+      const add = (k, v) => {
+        const n = Math.round(Number(v) || 0)
+        if (n > 0) w[k] = n
+      }
+      add('formula_ml', sum('formula_ml'))
+      add('breast_min', sum('breast_min'))
+      add('sleep_min', sum('sleep_min'))
+      add('activity_min', sum('activity_min'))
+      add('food_count', sum('food_count'))
+      add('diaper_count', sum('diaper_count'))
+      add('symptom_count', sum('symptom_count'))
+      add('growth_count', sum('growth_count'))
+      add('health_count', sum('health_count'))
+      add('feed_days', daysWith((r) => (r.formula_ml || 0) > 0 || (r.breast_min || 0) > 0))
+      add('sleep_days', daysWith((r) => (r.sleep_min || 0) > 0))
+      add('activity_days', daysWith((r) => (r.activity_min || 0) > 0))
+      weeks.push(w)
+    }
+    from = addDaysStr(to, 1)
+  }
+  return weeks
+}
+
 async function trendAnalysis(babyId, metric, days) {
   if (!metric) return { ok: false, error: 'trend 需要指定 metric（metrics[0] 或 metric）' }
   const res = await queryMetric(babyId, metric, days, 'trend')
@@ -77,32 +148,58 @@ async function trendAnalysis(babyId, metric, days) {
 }
 
 async function summaryAnalysis(babyId, metrics, days) {
+  const windowDays = Math.max(1, Math.min(90, Number(days) || 7))
   const dims = metrics && metrics.length ? metrics : METRICS
   const dimensions = []
   const anomalies = []
+  const dayMap = new Map() // date → 当日各维合并字段（digestPatch 只写 >0）
   let totalCount = 0
+
+  // 分段锚点用 DB CURDATE()，与查询时间窗同一时区，避免本地/DB 差一天
+  let todayStr = null
+  const db = getDb()
+  if (db) {
+    try {
+      const [[row]] = await db.query('SELECT CURDATE() AS d')
+      todayStr = row?.d || null
+    } catch { /* 忽略 */ }
+  }
+  const today = todayStr || fmtDate(Date.now())
+
   for (const metric of dims) {
-    const res = await queryMetric(babyId, metric, days, 'count')
+    const res = await queryMetric(babyId, metric, windowDays, 'count')
     totalCount += res.count
-    let brief = { hasData: res.count > 0 }
+    const brief = { hasData: res.count > 0 }
+    let metricDays = 0
     if (res.count > 0 && metric !== 'growth' && metric !== 'symptom') {
-      const agg = await queryMetric(babyId, metric, days, 'sum')
+      const agg = await queryMetric(babyId, metric, windowDays, 'sum')
       brief.summary = agg.summary
     }
-    dimensions.push({ metric, label: METRIC_LABELS[metric], ...brief, count: res.count })
-    // 异常：趋势维度 >4 天时检查
     if (res.count > 0) {
-      const tr = await queryMetric(babyId, metric, days, 'trend')
+      const tr = await queryMetric(babyId, metric, windowDays, 'trend')
+      metricDays = tr.rows.filter((r) => Number(r.count) > 0).length
+      for (const r of tr.rows) {
+        if (!Number(r.count)) continue
+        const date = String(r.date)
+        const cur = dayMap.get(date) || { date }
+        Object.assign(cur, digestPatch(metric, r))
+        dayMap.set(date, cur)
+      }
       anomalies.push(...findAnomalies(tr.rows, metric))
     }
+    dimensions.push({ metric, label: METRIC_LABELS[metric], ...brief, days: metricDays, count: res.count })
   }
+
+  const daily = [...dayMap.values()].sort((a, b) => (a.date < b.date ? -1 : 1))
   return {
     ok: true,
     scope: 'summary',
-    days,
+    days: windowDays,
     dimensions,
+    daily, // 逐日明细（仅列出当天有记录且 >0 的字段），周总结按天简述用
+    weeks: windowDays > 14 ? buildWeeks(dayMap, windowDays, today) : [], // 约 7 天一段，月总结分周简述用
     anomalies,
-    note: `数据来自最近 ${days} 天各类记录共 ${totalCount} 条`,
+    note: `数据来自最近 ${windowDays} 天各类记录共 ${totalCount} 条`,
   }
 }
 

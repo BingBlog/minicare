@@ -23,6 +23,10 @@
  * 行为对齐（与 OAK 版 chat.js 2026-08-25/09-03 修复一致）：
  *   - 准备语剔除：首个工具调用前的文本缓存，遇工具调用即丢弃；工具已发生后的文本
  *     视为正式回答直接产出；结束点 flush 缓存（无工具轮=结束点整段产出，与原行为一致）。
+ *   - 工具循环内旁白剔除（2026-09-04）：任何伴随 tool_use 的文本（旁白/半截草稿）一律
+ *     不产出，只有不夹工具调用的纯文本消息才算正式回答 → 杜绝 "Let me…" 类英文/预告上屏；
+ *   - 中文兜底（2026-09-04）：产出前单位中文化（ml/min/h → 毫升/分钟/小时），
+ *     不含中文的英文片段整体丢弃并告警（英文对家长绝对禁止）。
  *   - 工具循环防护：同一工具 ≤2 次、总次数 ≤3 次，超限不执行、回传"已达上限"话术
  *     （在工具 execute 包装层实现——SDK 自动执行进程内 MCP 工具，无宿主介入点）。
  *   - 无 OAK client-tool 的主流/resume 双流拼接问题：SDK 单流天然无"续话"歧义。
@@ -197,11 +201,47 @@ export function runAgentTurn(opts) {
 
     let pendingText = ''
     let seenTool = false // 是否已发生工具调用（准备语剔除分界线）
+
+    // —— 给家长文本的中文化兜底（2026-09-04 中文硬规则；prompt 亦约束，此处兜底）——
+    const CJK_RE = /[\u4e00-\u9fff]/
+    let suppressedEn = 0
+    /** 常见单位缩写 → 中文（ml/min/h → 毫升/分钟/小时），防中英夹杂漏网 */
+    function chineseUnits(s) {
+      return s
+        .replace(/(\d+(?:\.\d+)?)\s*(?:ml|mL|ML)(?![A-Za-z0-9])/g, '$1毫升')
+        .replace(/(\d+(?:\.\d+)?)\s*(?:min|mins)(?![A-Za-z0-9])/g, '$1分钟')
+        .replace(/(\d+(?:\.\d+)?)\s*h(?![A-Za-z0-9])/g, '$1小时')
+    }
+    /** 产出文本事件前的净化：单位中文化；不含中文的英文片段整体丢弃（英文绝对禁止） */
+    function isEnglishLedNarration(text) {
+      // 以英文开头且首个汉字前已有 ≥2 个英文单词 → 思考/计划旁白（如 "In the thinking block, ..."）
+      const t = text.trimStart()
+      if (!t || !/[A-Za-z]/.test(t[0])) return false
+      const cjkIdx = t.search(CJK_RE)
+      const prefix = cjkIdx === -1 ? t : t.slice(0, cjkIdx)
+      return (prefix.match(/[A-Za-z]{2,}/g) || []).length >= 2
+    }
+    function* emitText(raw) {
+      const text = chineseUnits(raw)
+      if (!CJK_RE.test(text) && /[A-Za-z]{2,}/.test(text)) {
+        if (suppressedEn++ < 5) {
+          console.warn('[runtime] 丢弃纯英文文本片段:', JSON.stringify(text.slice(0, 100)))
+        }
+        return
+      }
+      if (isEnglishLedNarration(text)) {
+        if (suppressedEn++ < 5) {
+          console.warn('[runtime] 丢弃英文开头的思考/计划旁白:', JSON.stringify(text.slice(0, 120)))
+        }
+        return
+      }
+      yield { type: 'text', text }
+    }
     function* flushPending() {
       if (pendingText) {
         const text = pendingText
         pendingText = ''
-        yield { type: 'text', text }
+        yield* emitText(text)
       }
     }
 
@@ -232,11 +272,18 @@ export function runAgentTurn(opts) {
 
       for await (const msg of q) {
         if (msg.type === 'assistant') {
-          for (const block of msg.message?.content || []) {
+          const contentBlocks = msg.message?.content || []
+          const hasToolUse = contentBlocks.some((b) => b.type === 'tool_use')
+          for (const block of contentBlocks) {
             if (block.type === 'text') {
+              if (hasToolUse) {
+                // 本条消息伴随工具调用 → 其文本是旁白/未完成草稿，一律不产出
+                // （准备语剔除延伸至工具循环：杜绝 "Let me…" 这类英文旁白/半截话上屏）
+                continue
+              }
               if (seenTool) {
                 // 工具已发生：正式回答，直接产出（对齐 OAK resume 流直发行为）
-                yield { type: 'text', text: block.text }
+                yield* emitText(block.text)
               } else {
                 pendingText += block.text
               }
