@@ -473,4 +473,263 @@
   color: #fff;
 }
 
+/* ═══════════════ 020 类型化分区样式（PRD-005 / TECH-011 §4.3）═══════════════ */
+
+/* 编辑态类型锁定条 */
+.medical-type-lock {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 0.5px solid #f5eef0;
+  border-radius: 16px;
+  padding: 14px 16px;
+}
+
+.medical-type-lock__label {
+  font-size: 13px;
+  color: #7a5a60;
+}
+
+.medical-type-lock__value {
+  flex: 1;
+  text-align: right;
+  font-size: 15px;
+  font-weight: 600;
+  color: #3a2428;
+}
+
+/* 卡片内块（textarea 模式头部等） */
+.medical-card__block {
+  padding: 14px 16px;
+}
+
+.medical-card__block--border {
+  border-bottom: 0.5px solid #f5eef0;
+}
+
+/* 卡片内提示文案 */
+.medical-card__hint {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #a8836b;
+  line-height: 1.45;
+}
+
+/* 选择器占位文案 */
+.medical-card__picker-text--placeholder {
+  color: #c0adb2;
+}
+
+/* 芯片（症状/反应多选） */
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -4px;
+}
+
+.chip {
+  margin: 4px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: #faf2f4;
+  border: 1px solid #f3e4e9;
+}
+
+.chip--active {
+  background: #fff0f4;
+  border-color: #f87098;
+}
+
+.chip__text {
+  font-size: 13px;
+  color: #8c7b80;
+}
+
+.chip__text--active {
+  color: #e03050;
+}
+
+/* 三态分段（里程碑） */
+.segment {
+  display: flex;
+  background: #f7f0f2;
+  border-radius: 999px;
+  padding: 2px;
+}
+
+.segment__item {
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+
+.segment__item--active {
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(122, 90, 96, 0.14);
+}
+
+.segment__text {
+  font-size: 12px;
+  color: #a08b90;
+}
+
+.segment__text--active {
+  color: #e03050;
+  font-weight: 600;
+}
+
+/* 里程碑行（label 顶部对齐分段） */
+.medical-card__row--multi {
+  justify-content: space-between;
+}
+
+.medical-card__row--multi .medical-card__label {
+  align-self: flex-start;
+  line-height: 28px;
+}
+
+/* 测量输入（带单位） */
+.medical-card__input-dual {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.medical-card__input-num {
+  width: 120px;
+  text-align: right;
+  font-size: 14px;
+  color: #4a3035;
+}
+
+.medical-card__input-unit {
+  margin-left: 6px;
+  font-size: 12px;
+  color: #b3a0a5;
+  width: 20px;
+}
+
+/* 生长同步开关行 */
+.medical-card__sync {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px 14px;
+  border-top: 0.5px solid #f5eef0;
+}
+
+.medical-card__sync-main {
+  flex: 1;
+  margin-right: 12px;
+}
+
+.medical-card__sync-title {
+  display: block;
+  font-size: 14px;
+  color: #3a2428;
+  font-weight: 600;
+}
+
+.medical-card__sync-hint {
+  display: block;
+  margin-top: 3px;
+  font-size: 11px;
+  color: #a8836b;
+  line-height: 1.4;
+}
+
+/* QA 列表 */
+.medical-card__qa-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 0;
+}
+
+.medical-card__qa-add {
+  font-size: 13px;
+  color: #e03050;
+}
+
+.medical-card__qa-empty {
+  margin: 12px 16px 16px;
+  padding: 18px 12px;
+  border: 1px dashed #e8d5db;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.medical-card__qa-empty-text {
+  font-size: 13px;
+  color: #b0888f;
+}
+
+.qa-item {
+  padding: 12px 16px 0;
+}
+
+.qa-item__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0 8px;
+}
+
+.qa-item__index {
+  font-size: 12px;
+  font-weight: 600;
+  color: #e03050;
+}
+
+.qa-item__remove {
+  font-size: 12px;
+  color: #c0adb2;
+}
+
+.medical-card__textarea--answer {
+  margin-top: 8px;
+  background: #faf7f7;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+/* 疫苗联想下拉 */
+.vax-match {
+  margin-top: 10px;
+  border: 0.5px solid #f0e2e7;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.vax-match__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: #fff;
+}
+
+.vax-match__item + .vax-match__item {
+  border-top: 0.5px solid #f7eff1;
+}
+
+.vax-match__item--active {
+  background: #fff5f7;
+}
+
+.vax-match__name {
+  font-size: 13px;
+  color: #4a3035;
+  font-weight: 600;
+}
+
+.vax-match__meta {
+  font-size: 11px;
+  color: #b3a0a5;
+}
+
+
 @include ipad.medical;

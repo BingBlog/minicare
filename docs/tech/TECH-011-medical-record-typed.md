@@ -288,7 +288,7 @@ checkup-archive/index.tsx    # 历次儿保摘要卡→只读详情/编辑（US-
 | PD-P0-03 | archive + vaccine schedule/book/settings 端点 + 疫苗本引擎（纯函数+单测） | PD-P0-01 | 1.5 | `vaccine-book.service.ts`(新)、`medical.controller.ts`(新端点置于 `:id` 前)、单测（done/pending/overdue/upcoming/hidden/next） | ✅ 09-07 |
 | PD-P0-04 | timeline 写侧 medical_visit_type + feed subtype 过滤 + backfill | PD-P0-01 | 1.0 | `timeline.service.ts`、`feed.service.ts`、`scripts/backfill-medical-visit-type.mjs`(新)；dev 已跑、prod 待部署后跑 | ✅ 09-07 |
 | PD-P0-05 | 前端 API/常量/路由 + type-select 页 | PD-P0-03 | 1.0 | `api/medical.ts`、`constants.ts`、`navigation.ts`、`app.config.ts`、`records/medical/type-select/*` | ✅ 09-07 |
-| PD-P0-06 | 表单分型渲染（Sections 组件）+ 编辑锁定/分流 + 语音 voice_* 透传 | PD-P0-02,05 | 2.0 | `records/medical/index.tsx` 重构 + `VaccineSection/Checkup*Section` 等（新）、voicePrefill 映射 | ⬜ |
+| PD-P0-06 | 表单分型渲染（Sections 组件）+ 编辑锁定/分流 + 语音 voice_* 透传 | PD-P0-02,05 | 2.0 | `records/medical/index.tsx` 重构 + `VaccineSection/CheckupSection/SickSection`（新）、voicePrefill 映射 | ✅ 09-07（编译 0 error，运行态待 P0-09 联调） |
 | PD-P0-07 | 疫苗本页 + 宝宝设置（跟踪/替代） | PD-P0-03,05 | 1.5 | `records/medical/vaccine-book/*` | ⬜ |
 | PD-P0-08 | 儿保档案页（archive 消费/卡片/补录入口） | PD-P0-03,05 | 1.5 | `records/medical/checkup-archive/*` | ⬜ |
 | PD-P0-09 | 老数据兼容联调（blood 编辑兜底/疫苗补全引导）+ P0 全量回归 | PD-P0-04..08 | 1.0 | 回归用例；§9 清单全绿 | ⬜ |
@@ -311,7 +311,7 @@ checkup-archive/index.tsx    # 历次儿保摘要卡→只读详情/编辑（US-
 
 | 范围 | 总任务 | 已完成 | 进行中 | 未开始 | 最近更新 |
 |---|---|---|---|---|---|
-| P0 | 9 | 5 | 0 | 4 | 2026-09-07（01-05 完成；M2 前端类型化进行中） |
+| P0 | 9 | 6 | 0 | 3 | 2026-09-07（01-06 完成；M2 前端类型化闭环，M3 疫苗页进行中） |
 | P1/P2 | 5 | 0 | 0 | 5 | 同上 |
 
 > 关键路径：PD-P0-01 → 02/03/04（可并行）→ 05 → 06/07/08（部分并行）→ 09。P0 后端侧（01-04）完成后即可先行部署联调，前端 05-08 不阻塞其后端依赖项继续。
