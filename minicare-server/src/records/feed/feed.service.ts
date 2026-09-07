@@ -74,6 +74,7 @@ export class FeedService {
       whereClauses.push('source_type = ?');
       params.push(type);
     }
+    this.appendSubtypeToWhere(whereClauses, params, type, query.subtype);
     this.appendDateRangeToWhere(whereClauses, params, filterDate);
     const sql = `SELECT COUNT(*) AS n FROM record_timeline WHERE ${whereClauses.join(' AND ')}`;
     const [rows] = await this.db.query<any[]>(sql, params);
@@ -86,9 +87,11 @@ export class FeedService {
    */
   private async listSingleDate(query: FeedQueryDto, filterDate: string): Promise<FeedListResponse> {
     const type = (query.type ?? 'all') as FeedFilterType;
+    // subtype 仅 type=medical 生效；union 派生表仅在 medical 时透出 medical_visit_type 列
+    const subtype = type === 'medical' ? query.subtype : undefined;
     if (this.feedReadSource !== 'union') {
       try {
-        const rows = await this.queryTimelineSameDayRows(query.baby_id, type, null, filterDate);
+        const rows = await this.queryTimelineSameDayRows(query.baby_id, type, null, filterDate, subtype);
         return {
           items: rows.map((row) => this.mapTimelineRow(row)),
           nextCursor: null,
@@ -101,8 +104,8 @@ export class FeedService {
       }
     }
 
-    const { baseSql, baseParams } = this.buildBaseQuery(type, query.baby_id);
-    const rows = await this.querySameDayRows(baseSql, baseParams, null, filterDate);
+    const { baseSql, baseParams } = this.buildBaseQuery(type, query.baby_id, subtype);
+    const rows = await this.querySameDayRows(baseSql, baseParams, null, filterDate, subtype);
     return {
       items: rows.map((row) => this.mapRow(row)),
       nextCursor: null,
@@ -112,11 +115,13 @@ export class FeedService {
 
   private async listFromUnion(query: FeedQueryDto, filterDate?: string): Promise<FeedListResponse> {
     const type = (query.type ?? 'all') as FeedFilterType;
+    // subtype 仅 type=medical 生效；union 派生表仅在 medical 时透出 medical_visit_type 列
+    const subtype = type === 'medical' ? query.subtype : undefined;
     const limit = query.limit ?? 20;
     const cursor = this.decodeCursor(query.cursor);
 
-    const { baseSql, baseParams } = this.buildBaseQuery(type, query.baby_id);
-    const initialRows = await this.queryFeedRows(baseSql, baseParams, cursor, limit + 1, filterDate);
+    const { baseSql, baseParams } = this.buildBaseQuery(type, query.baby_id, subtype);
+    const initialRows = await this.queryFeedRows(baseSql, baseParams, cursor, limit + 1, filterDate, subtype);
     if (initialRows.length === 0) {
       return { items: [], nextCursor: null, hasMore: false };
     }
@@ -127,7 +132,7 @@ export class FeedService {
     // 做法 A：limit 作为最小条数，若页尾落在某一天中间，补齐该天剩余数据（按日筛选时无需补齐）
     if (!filterDate && initialHasOverflow && pageRows.length > 0) {
       const tailDate = this.getDateKey(pageRows[pageRows.length - 1].event_time);
-      const dayRows = await this.querySameDayRows(baseSql, baseParams, cursor, tailDate);
+      const dayRows = await this.querySameDayRows(baseSql, baseParams, cursor, tailDate, subtype);
       pageRows = this.mergeAndSortRows(pageRows, dayRows);
     }
 
@@ -137,7 +142,7 @@ export class FeedService {
       return { items: [], nextCursor: null, hasMore: false };
     }
 
-    const hasMore = await this.checkHasMore(baseSql, baseParams, cursor, oldest, filterDate);
+    const hasMore = await this.checkHasMore(baseSql, baseParams, cursor, oldest, filterDate, subtype);
     const nextCursor = hasMore ? this.encodeCursor({ t: oldest.event_time, id: oldest.id }) : null;
 
     return { items, nextCursor, hasMore };
@@ -159,7 +164,7 @@ export class FeedService {
     const limit = query.limit ?? 20;
     const cursor = this.decodeCursor(query.cursor);
 
-    const initialRows = await this.queryTimelineRows(query.baby_id, type, cursor, limit + 1, filterDate);
+    const initialRows = await this.queryTimelineRows(query.baby_id, type, cursor, limit + 1, filterDate, query.subtype);
     if (initialRows.length === 0) {
       return { items: [], nextCursor: null, hasMore: false };
     }
@@ -169,7 +174,7 @@ export class FeedService {
 
     if (!filterDate && initialHasOverflow && pageRows.length > 0) {
       const tailDate = this.getDateKey(pageRows[pageRows.length - 1].event_time);
-      const dayRows = await this.queryTimelineSameDayRows(query.baby_id, type, cursor, tailDate);
+      const dayRows = await this.queryTimelineSameDayRows(query.baby_id, type, cursor, tailDate, query.subtype);
       pageRows = this.mergeTimelineRows(pageRows, dayRows);
     }
 
@@ -178,7 +183,7 @@ export class FeedService {
     if (!oldest) return { items: [], nextCursor: null, hasMore: false };
 
     const oldestTime = this.toSqlDateTime(oldest.event_time);
-    const hasMore = await this.checkTimelineHasMore(query.baby_id, type, cursor, oldest, filterDate);
+    const hasMore = await this.checkTimelineHasMore(query.baby_id, type, cursor, oldest, filterDate, query.subtype);
     const nextCursor = hasMore
       ? this.encodeCursor({ t: oldestTime, id: String(oldest.timeline_id) })
       : null;
@@ -192,6 +197,7 @@ export class FeedService {
     cursor: FeedCursor | null,
     limit: number,
     filterDate?: string,
+    subtype?: string,
   ): Promise<any[]> {
     const params: Array<string | number> = [babyId];
     const whereClauses = ['baby_id = ?'];
@@ -199,6 +205,7 @@ export class FeedService {
       whereClauses.push('source_type = ?');
       params.push(type);
     }
+    this.appendSubtypeToWhere(whereClauses, params, type, subtype);
     this.appendDateRangeToWhere(whereClauses, params, filterDate);
     if (cursor) {
       whereClauses.push('(event_time < ? OR (event_time = ? AND timeline_id < ?))');
@@ -224,6 +231,7 @@ export class FeedService {
     type: FeedFilterType,
     cursor: FeedCursor | null,
     dateKey: string,
+    subtype?: string,
   ): Promise<any[]> {
     const dayStart = `${dateKey} 00:00:00`;
     const dayEnd = `${this.getNextDate(dateKey)} 00:00:00`;
@@ -234,6 +242,7 @@ export class FeedService {
       whereClauses.push('source_type = ?');
       params.push(type);
     }
+    this.appendSubtypeToWhere(whereClauses, params, type, subtype);
     if (cursor) {
       whereClauses.push('(event_time < ? OR (event_time = ? AND timeline_id < ?))');
       params.push(cursor.t, cursor.t, Number(cursor.id));
@@ -268,6 +277,7 @@ export class FeedService {
     cursor: FeedCursor | null,
     oldestRow: any,
     filterDate?: string,
+    subtype?: string,
   ): Promise<boolean> {
     const params: Array<string | number> = [babyId];
     const whereClauses = ['baby_id = ?'];
@@ -275,6 +285,7 @@ export class FeedService {
       whereClauses.push('source_type = ?');
       params.push(type);
     }
+    this.appendSubtypeToWhere(whereClauses, params, type, subtype);
     this.appendDateRangeToWhere(whereClauses, params, filterDate);
     whereClauses.push('(event_time < ? OR (event_time = ? AND timeline_id < ?))');
     const oldestTime = this.toSqlDateTime(oldestRow.event_time);
@@ -318,11 +329,11 @@ export class FeedService {
     };
   }
 
-  private buildBaseQuery(type: FeedFilterType, babyId: string): { baseSql: string; baseParams: string[] } {
+  private buildBaseQuery(type: FeedFilterType, babyId: string, subtype?: string): { baseSql: string; baseParams: string[] } {
     if (type === 'all') {
       return this.buildAllTypeQuery(babyId);
     }
-    return this.buildSingleTypeQuery(type, babyId);
+    return this.buildSingleTypeQuery(type, babyId, subtype);
   }
 
   private buildAllTypeQuery(babyId: string): { baseSql: string; baseParams: string[] } {
@@ -346,7 +357,7 @@ export class FeedService {
     };
   }
 
-  private buildSingleTypeQuery(type: Exclude<FeedFilterType, 'all'>, babyId: string): { baseSql: string; baseParams: string[] } {
+  private buildSingleTypeQuery(type: Exclude<FeedFilterType, 'all'>, babyId: string, subtype?: string): { baseSql: string; baseParams: string[] } {
     const sqlMap: Record<Exclude<FeedFilterType, 'all'>, string> = {
       feeding: [
         this.feedingBreastSql(),
@@ -360,7 +371,8 @@ export class FeedService {
       health: this.healthSql(),
       symptom: this.symptomSql(),
       growth: this.growthSql(),
-      medical: this.medicalSql(),
+      // medical 且带 subtype 时透出 visit_type 列，供外层 WHERE 过滤（union 兜底路径）
+      medical: this.medicalSql(type === 'medical' && !!subtype),
       medication: this.medicationSql(),
     };
     const sql = sqlMap[type];
@@ -563,13 +575,14 @@ export class FeedService {
     `;
   }
 
-  private medicalSql(): string {
+  private medicalSql(includeVisitType = false): string {
     return `
       SELECT
         id,
         'medical' AS type,
         CONCAT(visit_date, ' 00:00:00') AS event_time,
         note,
+        ${includeVisitType ? 'visit_type AS medical_visit_type,' : ''}
         JSON_OBJECT(
           'visit_date', visit_date,
           'visit_type', visit_type,
@@ -800,10 +813,13 @@ export class FeedService {
     cursor: FeedCursor | null,
     limit: number,
     filterDate?: string,
+    subtype?: string,
   ): Promise<any[]> {
     const params: Array<string | number> = [...baseParams];
     const whereClauses: string[] = [];
     this.appendDateRangeToWhere(whereClauses, params, filterDate);
+    // union 路径仅 type=medical 时透出 medical_visit_type 列，故此处无需再判断 type
+    this.appendSubtypeToWhere(whereClauses, params, 'medical', subtype);
     if (cursor) {
       whereClauses.push('(event_time < ? OR (event_time = ? AND id < ?))');
       params.push(cursor.t, cursor.t, cursor.id);
@@ -823,6 +839,7 @@ export class FeedService {
     baseParams: Array<string | number>,
     cursor: FeedCursor | null,
     dateKey: string,
+    subtype?: string,
   ): Promise<any[]> {
     const dayStart = `${dateKey} 00:00:00`;
     const dayEnd = `${this.getNextDate(dateKey)} 00:00:00`;
@@ -831,6 +848,8 @@ export class FeedService {
     let sql = `SELECT id, type, event_time, note, detail_json FROM (${baseSql}) feed`;
     const whereClauses: string[] = ['event_time >= ? AND event_time < ?'];
     params.push(dayStart, dayEnd);
+
+    this.appendSubtypeToWhere(whereClauses, params, 'medical', subtype);
 
     if (cursor) {
       whereClauses.push('(event_time < ? OR (event_time = ? AND id < ?))');
@@ -861,10 +880,12 @@ export class FeedService {
     cursor: FeedCursor | null,
     oldest: FeedItem,
     filterDate?: string,
+    subtype?: string,
   ): Promise<boolean> {
     const params: Array<string | number> = [...baseParams];
     const whereClauses: string[] = [];
     this.appendDateRangeToWhere(whereClauses, params, filterDate);
+    this.appendSubtypeToWhere(whereClauses, params, 'medical', subtype);
     whereClauses.push('(event_time < ? OR (event_time = ? AND id < ?))');
     params.push(oldest.event_time, oldest.event_time, oldest.id);
 
@@ -929,5 +950,25 @@ export class FeedService {
     const { dayStart, dayEnd } = this.buildDateRange(filterDate);
     whereClauses.push('event_time >= ?', 'event_time < ?');
     params.push(dayStart, dayEnd);
+  }
+
+  /**
+   * medical 子类型过滤（020 物化列 medical_visit_type）：
+   * 仅 type==='medical' 且带 subtype 时追加条件，subtype='unknown' 语义为老数据行（IS NULL）。
+   * timeline 路径作用于物化表列；union 兜底路径同样适用（medicalSql 已透出 visit_type 派生列）。
+   */
+  private appendSubtypeToWhere(
+    whereClauses: string[],
+    params: Array<string | number>,
+    type: FeedFilterType,
+    subtype?: string,
+  ): void {
+    if (type !== 'medical' || !subtype) return;
+    if (subtype === 'unknown') {
+      whereClauses.push('medical_visit_type IS NULL');
+    } else {
+      whereClauses.push('medical_visit_type = ?');
+      params.push(subtype);
+    }
   }
 }

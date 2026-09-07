@@ -16,6 +16,17 @@ export const FEED_TYPES = [
 
 export type FeedFilterType = typeof FEED_TYPES[number];
 
+/** medical 子类型白名单（020 起 timeline 冗余 medical_visit_type）；'unknown'=老数据行（IS NULL） */
+export const MEDICAL_SUBTYPES = [
+  'checkup',
+  'sick',
+  'vaccine',
+  'other',
+  'allergy',
+  'blood',
+  'unknown',
+] as const;
+
 export class FeedQueryDto {
   @ApiProperty({ description: '宝宝 ID (UUID)' })
   @IsUUID()
@@ -37,6 +48,11 @@ export class FeedQueryDto {
   @IsOptional()
   @IsIn(FEED_TYPES)
   type?: FeedFilterType;
+
+  @ApiPropertyOptional({ description: '医疗子类型过滤（仅 type=medical 生效）', enum: MEDICAL_SUBTYPES })
+  @IsOptional()
+  @IsIn(MEDICAL_SUBTYPES)
+  subtype?: string;
 
   @ApiPropertyOptional({ description: '按自然日筛选，格式 YYYY-MM-DD' })
   @IsOptional()

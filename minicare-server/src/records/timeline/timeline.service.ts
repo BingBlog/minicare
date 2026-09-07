@@ -14,6 +14,21 @@ type SourceType =
   | 'medical'
   | 'medication';
 
+/** 物化 payload 统一形状；medicalVisitType 仅 medical 源填充（020），其余源为 undefined */
+interface TimelineSourcePayload {
+  babyId: string;
+  medicalVisitType?: string | null;
+  eventTime: string;
+  note: string | null;
+  summaryTitle: string;
+  summaryTagsJson: string | null;
+  summaryValue: string | null;
+  summaryUnit: string | null;
+  summaryTheme: string;
+  summaryActive: boolean;
+  detailJson: string;
+}
+
 @Injectable()
 export class TimelineService {
   private readonly logger = new Logger(TimelineService.name);
@@ -28,12 +43,13 @@ export class TimelineService {
 
       await this.db.execute(
         `INSERT INTO record_timeline
-          (baby_id, source_type, source_id, event_time, note,
+          (baby_id, source_type, source_id, medical_visit_type, event_time, note,
            summary_title, summary_tags_json, summary_value, summary_unit, summary_theme, summary_active,
            detail_json)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
          ON DUPLICATE KEY UPDATE
            baby_id = VALUES(baby_id),
+           medical_visit_type = VALUES(medical_visit_type),
            event_time = VALUES(event_time),
            note = VALUES(note),
            summary_title = VALUES(summary_title),
@@ -47,6 +63,7 @@ export class TimelineService {
           payload.babyId,
           sourceType,
           sourceId,
+          payload.medicalVisitType ?? null, // 020：仅 medical 行填充，其余源恒 null
           payload.eventTime,
           payload.note,
           payload.summaryTitle,
@@ -82,7 +99,7 @@ export class TimelineService {
     }
   }
 
-  private async loadSourcePayload(sourceType: SourceType, sourceId: string) {
+  private async loadSourcePayload(sourceType: SourceType, sourceId: string): Promise<TimelineSourcePayload | null> {
     if (sourceType === 'feeding') return this.loadFeedingPayload(sourceId);
     if (sourceType === 'sleep') return this.loadSleepPayload(sourceId);
     if (sourceType === 'diaper') return this.loadDiaperPayload(sourceId);
@@ -381,7 +398,8 @@ export class TimelineService {
 
   private async loadMedicalPayload(sourceId: string) {
     const [rows] = await this.db.query<any[]>(
-      `SELECT id, baby_id, visit_date, visit_time, visit_type, hospital, diagnosis, note
+      `SELECT id, baby_id, visit_date, visit_time, visit_type, hospital, doctor,
+              diagnosis, note, vaccine_name, vaccine_dose_seq
        FROM medical_record WHERE id = ? LIMIT 1`,
       [sourceId],
     );
@@ -395,29 +413,39 @@ export class TimelineService {
     const eventTime = r.visit_time
       ? `${visitDate} ${r.visit_time}:00`
       : `${visitDate} 00:00:00`;
-    // summary_tags 存最终展示文案：就诊类型 + 医院 + 诊断（对齐 TECH-002 §7 蓝图）
-    const tags = [
-      r.visit_type ? this.visitTypeLabel(r.visit_type) : '',
-      r.hospital ?? '',
-      r.diagnosis ?? '',
-    ].filter(Boolean);
+
+    const typeLabel = this.visitTypeLabel(r.visit_type);
+    // 子类型名作标题（020 类型徽标）；tags 按类型差异化：疫苗=疫苗名(+机构)，其余=机构+诊断
+    let tags: string[] = [];
+    if (r.visit_type === 'vaccine') {
+      tags = [r.vaccine_name ?? r.hospital ?? '', r.diagnosis ?? ''].filter(Boolean);
+    } else {
+      tags = [r.hospital ?? '', r.diagnosis ?? ''].filter(Boolean);
+    }
+    const detail: Record<string, any> = {
+      visit_date: visitDate,
+      visit_time: r.visit_time,
+      visit_type: r.visit_type,
+      hospital: r.hospital,
+      doctor: r.doctor,
+      diagnosis: r.diagnosis,
+    };
+    if (r.visit_type === 'vaccine') {
+      detail.vaccine_name = r.vaccine_name;
+      detail.vaccine_dose_seq = r.vaccine_dose_seq;
+    }
     return {
       babyId: r.baby_id,
+      medicalVisitType: r.visit_type ?? null,
       eventTime,
       note: r.note ?? null,
-      summaryTitle: '医疗',
+      summaryTitle: typeLabel,
       summaryTagsJson: tags.length ? JSON.stringify(tags) : null,
       summaryValue: null,
       summaryUnit: null,
       summaryTheme: 'purple',
       summaryActive: false,
-      detailJson: JSON.stringify({
-        visit_date: visitDate,
-        visit_time: r.visit_time,
-        visit_type: r.visit_type,
-        hospital: r.hospital,
-        diagnosis: r.diagnosis,
-      }),
+      detailJson: JSON.stringify(detail),
     };
   }
 
