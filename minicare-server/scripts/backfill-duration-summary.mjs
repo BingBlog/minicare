@@ -8,7 +8,9 @@
  * 幂等：只对「当前 summary_value 与按源表 duration_min 计算的展示文本不一致」的行做 UPDATE，
  * 可重复执行。
  *
- * 用法：node scripts/backfill-duration-summary.mjs
+ * 用法：
+ *   node scripts/backfill-duration-summary.mjs                                  # 默认库（.env.local 的 DB_NAME）
+ *   node scripts/backfill-duration-summary.mjs --db=minicare-cloud-6gqledlle0132cbe  # 指定库
  */
 import mysql from 'mysql2/promise'
 import { readFileSync } from 'node:fs'
@@ -19,10 +21,13 @@ for (const line of readFileSync(new URL('../.env.local', import.meta.url), 'utf8
   if (m) env[m[1]] = m[2].trim()
 }
 
+const dbArg = process.argv.slice(2).find((a) => a.startsWith('--db='))
+const dbName = dbArg ? dbArg.slice(5) : env.DB_NAME
+
 const pool = await mysql.createPool({
   host: env.DB_HOST,
   port: Number(env.DB_PORT || 3306),
-  database: env.DB_NAME,
+  database: dbName,
   user: env.DB_USER,
   password: env.DB_PASS,
   timezone: '+08:00',
