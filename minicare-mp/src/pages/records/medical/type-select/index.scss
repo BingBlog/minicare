@@ -1,0 +1,100 @@
+/* 医疗类型选择页 — 与医疗记录表单页同色系（#FAF5F6 底 / 白卡片） */
+
+.medical-type-page {
+  min-height: 100vh;
+  background: #faf5f6;
+  display: flex;
+  flex-direction: column;
+}
+
+.medical-type-page__body {
+  flex: 1;
+  padding: 16px 16px 40px;
+}
+
+/* ── 引导区 ── */
+.medical-type-page__intro {
+  padding: 4px 4px 16px;
+}
+
+.medical-type-page__title {
+  display: block;
+  font-size: 20px;
+  font-weight: 600;
+  color: #3a2428;
+  line-height: 1.4;
+}
+
+.medical-type-page__voice-hint {
+  display: block;
+  margin-top: 8px;
+  font-size: 13px;
+  color: #b4886a;
+  line-height: 1.5;
+}
+
+/* ── 类型卡片 ── */
+.medical-type-card {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 0.5px solid #f5eef0;
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(122, 90, 96, 0.06);
+}
+
+.medical-type-card--hover {
+  opacity: 0.9;
+  transform: scale(0.985);
+}
+
+.medical-type-card__icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.medical-type-card__icon-img {
+  width: 27px;
+  height: 27px;
+}
+
+.medical-type-card__icon-fallback {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.medical-type-card__main {
+  flex: 1;
+  min-width: 0;
+  margin-left: 12px;
+}
+
+.medical-type-card__label {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  color: #3a2428;
+  line-height: 1.3;
+}
+
+.medical-type-card__subtitle {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #8c7b80;
+  line-height: 1.45;
+}
+
+.medical-type-card__arrow {
+  margin-left: 8px;
+  font-size: 26px;
+  font-weight: 300;
+  line-height: 1;
+}

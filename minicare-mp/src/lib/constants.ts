@@ -104,7 +104,8 @@ export const HOME_RECORD_MP_ROUTES: Record<string, string> = {
   '/records/form/diaper': '/pages/records/diaper/index',
   '/records/form/sleep': '/pages/records/sleep/index',
   '/records/form/growth': '/pages/records/growth/index',
-  '/records/form/medical': '/pages/records/medical/index',
+  // PRD-005 D1：医疗新建主入口 = 独立类型选择页（编辑态由 navigation 分发到表单页，不经过本路由）
+  '/records/form/medical': '/pages/records/medical/type-select/index',
   '/records/form/allergy': '/pages/records/health/allergy/index',
   '/records/form/temperature': '/pages/records/health/temperature/index',
   '/records/form/activity': '/pages/records/activity/index',
@@ -162,6 +163,70 @@ export const VISIT_TYPE_LABELS: Record<string, string> = {
   // 已废弃类型（2026-08-22 精简），仅用于老数据列表展示
   allergy: '过敏原检测',
   blood: '血液检查',
+}
+
+/** 医疗类型选择页（PRD-005 US-01）4 卡片配置：标题取 VISIT_TYPE_LABELS[key]，此处只放副文案与配色 */
+export const MEDICAL_TYPE_OPTIONS: {
+  key: string
+  subtitle: string
+  bg: string
+  color: string
+}[] = [
+  { key: 'vaccine', subtitle: '记录剂次与接种反应 · 同步疫苗本进度', bg: '#EAF2FB', color: '#5B9BD5' },
+  { key: 'checkup', subtitle: '体格测量 · 发育评估 · 医生问答', bg: '#E4F8F0', color: '#2A9E70' },
+  { key: 'sick', subtitle: '主诉 · 诊断 · 开药 · 医嘱', bg: '#FFE8EF', color: '#E8507A' },
+  { key: 'other', subtitle: '检查项目 · 结果 · 报告照片', bg: '#F3EFF2', color: '#9A8090' },
+]
+
+/** 医疗表单目标路由（type-select → 表单直连用，勿改） */
+export const MEDICAL_FORM_PAGE = '/pages/records/medical/index'
+
+// ── 020 类型化枚举文案（键与后端 dto/create-medical.dto 枚举一一对应；单一文案源禁双写）──
+
+export const VACCINE_CATEGORY_LABELS: Record<string, string> = {
+  free: '免费',
+  paid: '自费',
+}
+
+export const VACCINE_REACTION_LABELS: Record<string, string> = {
+  none: '无异常',
+  fever: '发热',
+  local_redness: '局部红肿',
+  induration: '硬结',
+  rash: '皮疹',
+  sleepy_irritable: '嗜睡/烦躁',
+  other: '其他',
+}
+
+export const VACCINE_SITE_LABELS: Record<string, string> = {
+  left_arm: '左臂',
+  right_arm: '右臂',
+  thigh: '大腿',
+  oral: '口服',
+  other: '其他',
+  unknown: '未知',
+}
+
+/** 儿保里程碑 5 维度（键 = CheckupMilestoneDim，顺序即表单展示顺序） */
+export const CHECKUP_MILESTONE_DIMS: { key: string; label: string }[] = [
+  { key: 'gross', label: '大运动' },
+  { key: 'fine', label: '精细动作' },
+  { key: 'language', label: '语言' },
+  { key: 'cognitive', label: '认知' },
+  { key: 'social', label: '社会适应' },
+]
+
+export const MILESTONE_STATUS_LABELS: Record<string, string> = {
+  ok: '正常',
+  watch: '待观察',
+  na: '未评估',
+}
+
+export const CHECKUP_GROWTH_SYNC_LABELS: Record<string, string> = {
+  none: '未同步',
+  synced: '已同步生长记录',
+  overwritten: '已覆盖同日生长',
+  skipped: '跳过同步',
 }
 
 /** 过敏程度选项配置（含激活颜色） */

@@ -57,7 +57,7 @@ export default {
     },
     {
       root: 'pages/records/medical',
-      pages: ['index'],
+      pages: ['index', 'type-select/index'],
     },
     {
       root: 'pages/records/activity',

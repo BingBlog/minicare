@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#E8507A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- 就诊：圆角方 + 医疗十字 -->
+  <rect x="3.5" y="3.5" width="17" height="17" rx="4.5" fill="#E8507A" fill-opacity="0.08"/>
+  <path d="M12 8v8"/>
+  <path d="M8 12h8"/>
+</svg>
