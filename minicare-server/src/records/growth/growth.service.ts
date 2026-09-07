@@ -84,12 +84,27 @@ export class GrowthService {
     return rows[0];
   }
 
+  /**
+   * 获取各生长指标「各自最近一次非空」的数值（跨记录回溯）。
+   *
+   * 生长记录允许单条只填部分维度（如只称体重），若仅取最新一条记录，
+   * 身高/头围等本维度数据会因最新记录未填写而显示为空。因此每个字段
+   * 独立按 record_date 倒序找最近一条非空值，返回结构与原单条记录一致：
+   * { weight_g, height_mm, head_mm }（任一字段可能为 null）。
+   */
   async getLatest(babyId: string) {
-    const [rows] = await this.db.execute<any[]>(
-      'SELECT * FROM growth_record WHERE baby_id = ? ORDER BY record_date DESC LIMIT 1',
-      [babyId],
+    const [rows] = await this.db.query<any[]>(
+      `SELECT
+         (SELECT weight_g  FROM growth_record WHERE baby_id = ? AND weight_g  IS NOT NULL ORDER BY record_date DESC LIMIT 1) AS weight_g,
+         (SELECT height_mm FROM growth_record WHERE baby_id = ? AND height_mm IS NOT NULL ORDER BY record_date DESC LIMIT 1) AS height_mm,
+         (SELECT head_mm   FROM growth_record WHERE baby_id = ? AND head_mm   IS NOT NULL ORDER BY record_date DESC LIMIT 1) AS head_mm`,
+      [babyId, babyId, babyId],
     );
-    return rows[0] ?? null;
+    const row = rows[0];
+    if (!row) return null;
+    // 与旧行为对齐：宝宝完全没有任何生长数据时返回 null
+    if (row.weight_g == null && row.height_mm == null && row.head_mm == null) return null;
+    return row;
   }
 
   async update(id: string, dto: UpdateGrowthDto) {

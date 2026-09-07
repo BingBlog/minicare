@@ -68,6 +68,13 @@ export const growthApi = {
     }),
 
   /**
+   * 获取各生长指标「各自最近一次非空」的数值（跨记录回溯）。
+   * 单条记录可能只填部分维度，此接口保证身高/体重/头围分别取到各自的最近值。
+   */
+  getLatest: (familyId: string, babyId: string): Promise<GrowthRecord | null> =>
+    request<GrowthRecord | null>(`/api/family/${familyId}/records/growth/latest?baby_id=${babyId}`),
+
+  /**
    * 获取单条生长记录（编辑前重新查询，确保数据最新）
    */
   getOne: (familyId: string, id: string): Promise<GrowthRecord> =>

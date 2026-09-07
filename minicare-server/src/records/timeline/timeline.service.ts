@@ -108,7 +108,7 @@ export class TimelineService {
         note: b[0].note ?? null,
         summaryTitle: '母乳',
         summaryTagsJson: JSON.stringify([this.breastSideLabel(b[0].breast_side)]),
-        summaryValue: b[0].duration_min != null ? String(b[0].duration_min) : null,
+        summaryValue: this.formatDurationLabel(b[0].duration_min),
         summaryUnit: null,
         summaryTheme: 'pink',
         summaryActive: false,
@@ -230,7 +230,7 @@ export class TimelineService {
       note: r.note ?? null,
       summaryTitle: r.status === 'ongoing' ? '睡眠中' : '睡眠',
       summaryTagsJson: r.status === 'ongoing' ? JSON.stringify(['进行中']) : null,
-      summaryValue: r.duration_min != null ? String(r.duration_min) : null,
+      summaryValue: this.formatDurationLabel(r.duration_min),
       summaryUnit: null,
       summaryTheme: r.status === 'ongoing' ? 'pink' : 'warm',
       summaryActive: r.status === 'ongoing',
@@ -279,7 +279,7 @@ export class TimelineService {
       note: r.note ?? null,
       summaryTitle: '活动',
       summaryTagsJson: null,
-      summaryValue: r.duration_min != null ? String(r.duration_min) : null,
+      summaryValue: this.formatDurationLabel(r.duration_min),
       summaryUnit: null,
       summaryTheme: 'warm',
       summaryActive: false,
@@ -468,6 +468,20 @@ export class TimelineService {
     } catch {
       return val;
     }
+  }
+
+  /**
+   * 时长类 summary_value 的展示文本（与 feed.service.formatDuration / 前端 fmtDuration 一致）。
+   * duration_min 为空或 <= 0 时返回 null（不展示右侧摘要）。
+   */
+  private formatDurationLabel(durationMin: unknown): string | null {
+    const min = Number(durationMin);
+    if (durationMin == null || !Number.isFinite(min) || min <= 0) return null;
+    const h = Math.floor(min / 60);
+    const m = min % 60;
+    if (h > 0 && m > 0) return `${h}h ${m}m`;
+    if (h > 0) return `${h}h`;
+    return `${m}m`;
   }
 
   private breastSideLabel(side: string): string {
