@@ -7,8 +7,7 @@
  */
 import Taro from '@tarojs/taro'
 import { request, getToken } from './http'
-
-const API_BASE_URL = process.env.TARO_APP_API_BASE_URL || 'http://localhost:3001'
+import { API_BASE_URL } from './base'
 
 // ── SSE 事件类型（对齐 agent-poc/routes/chat.js）──────────────────────
 

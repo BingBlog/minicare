@@ -1,12 +1,5 @@
 import Taro from '@tarojs/taro'
-
-// Taro 编译时会将 process.env.TARO_APP_* 替换为字面量字符串，
-// 小程序运行时无 process 全局，不可用运行时判断。
-// 各环境 .env 文件中配置：
-//   .env.development  → http://127.0.0.1:3001
-//   .env.staging      → staging CloudRun URL
-//   .env.production   → production CloudRun URL
-const API_BASE_URL = process.env.TARO_APP_API_BASE_URL || 'http://localhost:3001'
+import { API_BASE_URL } from './base'
 
 export function getToken(): string | null {
   return Taro.getStorageSync('minicare_token') || null

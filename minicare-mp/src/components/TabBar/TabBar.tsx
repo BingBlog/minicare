@@ -369,6 +369,7 @@ export default function TabBar({ activeTab }: TabBarProps) {
                 className='tabbar__icon'
                 src={isActive ? icon.active : icon.normal}
                 mode='aspectFit'
+                style={{ width: '24px', height: '24px' }}
               />
               <Text className='tabbar__label'>{tab.label}</Text>
             </View>
@@ -407,6 +408,7 @@ export default function TabBar({ activeTab }: TabBarProps) {
                 className='tabbar__icon'
                 src={isActive ? icon.active : icon.normal}
                 mode='aspectFit'
+                style={{ width: '24px', height: '24px' }}
               />
               <Text className='tabbar__label'>{tab.label}</Text>
             </View>

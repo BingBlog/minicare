@@ -20,12 +20,12 @@
 .tabbar__item {
   color: #a89399;
   font-size: 11px;
-  padding: 6px 0;
+  padding: 4px 0 6px; // 顶 padding 收紧，让 icon+label 整组在 cell 中更居中（视觉对齐）
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
+  gap: 3px; // 与设计稿 ui-draft/common.css 对齐
 }
 
 .tabbar__item.is-active {
@@ -34,8 +34,27 @@
 }
 
 .tabbar__icon {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
+  // H5 端修复：Taro 的 taro-img__mode-aspectfit 给内嵌 SVG data URL 设置了
+  // position:absolute; left/top:11px; width/height:11px（缩小一半再居中），
+  // 导致 SVG 图标看起来未填满容器、视觉上偏中心且偏小。强制覆盖。
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  font-size: 0;
+
+  img {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    left: 0 !important;
+    top: 0 !important;
+    transform: none !important;
+    position: static !important;
+  }
 }
 
 .tabbar__label {

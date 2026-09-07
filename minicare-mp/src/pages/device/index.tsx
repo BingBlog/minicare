@@ -131,7 +131,9 @@ export default function DevicePage() {
 
       <ScrollView scrollY className='device-page__body'>
         {loading ? (
-          <View className='device-page__empty'>加载中…</View>
+          <View className='device-page__empty'>
+            <Text className='device-page__empty-loading'>加载中…</Text>
+          </View>
         ) : devices.length === 0 ? (
           <View className='device-page__empty'>
             <Text className='device-page__empty-title'>暂无绑定设备</Text>

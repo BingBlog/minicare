@@ -15,6 +15,7 @@ import { babyApi } from '@/api/baby'
 import { agentDiaryApi, chatStream, type AgentSourceItem } from '@/api/agent'
 import type { Baby } from '@/api/types'
 import { getToken, getStoredFamilyId, setCurrentBabyId, getStoredBabyId } from '@/api/http'
+import { API_BASE_URL } from '@/api/base'
 import { getBabyAge, nowDate } from '@/lib/utils'
 import { uploadOne, fetchTempUrls } from '@/lib/uploadImage'
 import MarkdownText from '@/components/MarkdownText/MarkdownText'
@@ -247,7 +248,7 @@ export default function ChatPage() {
     if (!familyId) return
     let cancelled = false
     Taro.request({
-      url: `${process.env.TARO_APP_API_BASE_URL || 'http://localhost:3001'}/api/agent/health`,
+      url: `${API_BASE_URL}/api/agent/health`,
       method: 'GET',
       timeout: 5000,
       success: () => {
