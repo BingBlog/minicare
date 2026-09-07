@@ -83,6 +83,11 @@ description: minicare 项目构建发布操作手册。包含前端静态托管�
 > 4. 验收时 `x-agent-token` 必须用 **CloudRun EnvParams 里的 AGENT_INTERNAL_TOKEN**（可能与本地 `.env.local` 不一致；本地不一致会导致 minicare-server 本地代理 401）。
 > 5. Dockerfile 非root用户（oak）+ `CLAUDE_CONFIG_DIR` 兜底 /tmp；`.dockerignore` 已排除 `.env.local`/`.wire-logs`。
 
+> ⚠️ 部署状态监控（2026-09-07 补充）：
+> - 用 `getDeployRecords({serverName})` 看 `DeployId/Status/FlowRatio`（creating→normal + flow=100 才算完），比 `detail().VersionName` 可靠（detail 在放量前一直显示旧版）。
+> - 线上 prod 库有多个"旺仔"种子家庭（04-02/04-03 创建）且测试账号 `13146989718` 在 prod 无 active 家庭绑定——**验收勿臆测 family/baby ctx**，数据回归需真实用户会话。
+> - emoji 加固已上线（v012，2026-09-07）：规则 22 扩写覆盖寒暄/自我介绍 + 规则 33 追加全篇禁 emoji（日记除外）——验收/回归时注意寒暄类回复不应再出现表情符号。
+
 ### 1.5 云函数参数
 
 | 属性       | 值                                                                                           |

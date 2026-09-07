@@ -1,9 +1,13 @@
 # TECH-007 — Agent 观测能力方案（Langfuse + FlexDB）
 
-> 状态：已实施并验收通过（2026-08-30）
+> 状态：已实施并验收通过（2026-08-30）；transcript 细节增强已落地（2026-09-05，见 §8）
 > 背景：agent 链路（agent-poc，OAK + DeepSeek）已跑通，但数据查询类问题回答准确率不高，
 > 缺乏对执行过程的可观测性：无法看到模型实际调了哪些工具、工具返回了什么、每轮 LLM 输出了什么。
 > 目标：构建 agent 观测能力，记录 **用户问题 / LLM 调用与返回 / tools 调用** 全链路。
+>
+> ⚠️ 2026-09-04 起 agent 为 v0.2.0 直连 SDK 架构（OAK 移除，见 lib/runtime.js）。
+> §2 的"OAK usage_update / client-tool / resume"描述为历史事实；埋点数据模型与
+> §4 导入协议不变，增强后的结构见 §8。
 
 ## 0. 实施踩坑（Docker Desktop 代理注入）
 
@@ -152,12 +156,43 @@ LANGFUSE_SECRET_KEY=sk-lf-...
 3. 启动本地 Langfuse，跑导入脚本，UI 中可见该 trace 及 observation 树，时间线/耗时正确
 4. 断网/关闭 FlexDB 凭证场景：对话功能不受影响（仅日志告警）
 
-## 7. 涉及文件
+## 7. CLI transcript 细节增强（2026-09-05 落地）
+
+agent 底层是闭源 Claude CLI，宿主拿不到内部执行逻辑；但 CLI 把完整会话 transcript
+以 JSONL 落盘（`~/.minicare-agent/claude-config/projects/<cwd>/<cli-session-id>.jsonl`），
+每轮 LLM 调用一行 assistant 记录：真实 model、**精确 usage（含 cache_read/cache_creation）**、
+text/tool_use/thinking blocks、stop_reason。TECH-007 §6 途径对比中的 B 方案（P0）据此落地：
+
+```
+transcript JSONL ──scripts/transcript-enrich.mjs──▶ FlexDB agent_traces（增强）
+  解析 assistant 行（message.id 合并 blocks）          │ 替换 telemetry 模糊 generation
+  时间窗(±120s)+首问匹配 traceId                      │ 保留工具 span；importedAt=null
+                                                     ▼
+                                  scripts/langfuse-import.mjs（cliEnriched → 先 DELETE 远端再整体重建）
+                                                     ▼
+                                    本地 Langfuse：精确 generation 瀑布
+```
+
+- **FlexDB 文档变化**：generation id 由随机 UUID 改为确定性 `${traceId}-cli-${i}`；
+  usage 含 input_tokens/output_tokens/cache_read/cache_creation；新增
+  `metadata.cli = { messageId, stopReason, thinking(截断3000字), toolUses, ... }`；
+  trace.metadata 增 `cliEnriched = { transcriptFile, cliSessionId, turns, ... }`
+- **导入端变化**：generation body 的 usage 明细（input/output/total）与 metadata 透传；
+  cache token 不入 usage（Langfuse v3 不收），进 metadata.cliUsage；
+  cliEnriched trace 先 `DELETE /api/public/traces/{id}` 再重建（旧 generation id 无法原地替换）
+- **验证**：`node scripts/transcript-enrich.mjs`（幂等，文件 mtime 未变跳过）→
+  `node scripts/langfuse-import.mjs`（重建）→ Langfuse UI/API 可见每轮
+  input/output/cache 分离、真实模型名、tool_use 摘要。check-traces.mjs 同步升级展示。
+- 详见 docs/tech/OAK-internals-observability.md §3/§7/§8。
+
+## 8. 涉及文件（09-05 增补完整清单）
 
 | 文件 | 动作 |
 |------|------|
 | `agent-poc/src/lib/telemetry.js` | 新增：trace recorder（内存组装 + FlexDB 落库） |
 | `agent-poc/src/routes/chat.js` | 修改：按 §2 点位接入 recorder（SSE 协议不变） |
-| `agent-poc/scripts/langfuse-import.mjs` | 新增：FlexDB → Langfuse 导入 |
+| `agent-poc/scripts/langfuse-import.mjs` | 新增：FlexDB → Langfuse 导入；cliEnriched 重建 |
+| `agent-poc/scripts/transcript-enrich.mjs` | 新增（09-05）：transcript → FlexDB 增强 |
+| `agent-poc/scripts/check-traces.mjs` | 修改（09-05）：cache/usage 明细展示 |
 | `agent-poc/langfuse/docker-compose.yml` | 新增：本地 Langfuse v3 栈（web :3100） |
 | `agent-poc/.env.local` | 追加 LANGFUSE_* （首次部署后手工填入） |

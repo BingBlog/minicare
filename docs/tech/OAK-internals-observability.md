@@ -5,6 +5,14 @@
 > LLM generation 的 input 恒为空、工具轮 output 为空、token 只有累计值。本文完整回答：
 > 缺口根因是什么 → OAK 内部执行机制在哪层 → 有哪些感知途径 → JSONL 能否作为 trace 源
 > → 如何存储展示 → 依赖的 CLI 是否闭源 → 落地路线。
+>
+> ⚠️ 2026-09-05 更新：§3 的 transcript 目录随直连 SDK 改造（v0.2.0）迁移至
+> `~/.minicare-agent/claude-config/projects/`（不再是 ~/.oak/agent/.claude）。P0
+> transcript 解析器已落地（scripts/transcript-enrich.mjs + langfuse-import 重建），见 §7。
+>
+> ⚠️ 2026-09-05 补充：OAK 已于 09-04 移除，agent 循环迁至 lib/runtime.js
+> （claude-agent-sdk 直连）。本文 §2 的 OAK 机制图为历史事实；§3/§4/§7 的 transcript
+> 结论与落地路线仍然有效（SDK CLI 同样落盘 transcript、同样闭源）。
 
 ## 1. 问题根因：Langfuse generation input/output 为空
 
@@ -56,7 +64,8 @@ chat.js ──session.send()──▶ OAK (createAgent/startSession)
 
 ## 3. CLI transcript JSONL：已经存在的完整执行细节（重大发现）
 
-位置：`~/.oak/agent/.claude/projects/<cwd 编码目录>/<cli-session-id>.jsonl`
+位置（OAK 时期）：`~/.oak/agent/.claude/projects/<cwd 编码目录>/<cli-session-id>.jsonl`
+位置（v0.2.0 直连 SDK 起）：`~/.minicare-agent/claude-config/projects/<cwd 编码目录>/<cli-session-id>.jsonl`
 （一行一条 JSON，append-only，每会话一个文件）
 
 实测一次完整对话轮（"旺仔今天喝了多少奶"，14 行）的结构：
@@ -139,21 +148,34 @@ user message 内容匹配」关联（enqueue 行就是原始问题），实测�
 
 ## 7. 落地路线
 
-1. **P0（B 方案）**：transcript 增量解析器
-   - 扫描 `~/.oak/agent/.claude/projects/` 按 mtime 增量解析
-   - 按 message.id 去重 blocks → 组装每轮 LLM 调用（model/usage/blocks/时间戳）
-   - 时间窗+首问匹配关联 traceId → 回填 FlexDB / 转 Langfuse generation
-   - 立即解决：generation output 空、usage 归因不准、cache 命中可视化
-   - 风险：CLI 升级可能改 transcript 格式，解析器按 version 字段兼容
-2. **P1（C 方案）**：本地透明代理抓完整 prompt（env 开关 `LLM_WIRE_LOG=on`）
+1. **P0（B 方案）—— ✅ 已落地（2026-09-05）**
+   - 实现：`scripts/transcript-enrich.mjs` + `scripts/langfuse-import.mjs` 增强
+   - 扫描 transcript 按 mtime/时间窗增量解析；按 message.id 合并 blocks → 组装每轮
+     LLM 调用（真实 model / 精确 usage 含 cache_read / text·tool_use·thinking / stop_reason）
+   - 时间窗 + 首问匹配关联 traceId → 回填 FlexDB：替换 telemetry 模糊 generation
+     （id 确定性派生 `${traceId}-cli-${i}`），保留工具 span；置 importedAt=null 触发重建
+   - langfuse-import 对 cliEnriched trace 先 DELETE 远端再整体重建（旧 generation 无法
+     原地替换 id；Langfuse v3 支持 DELETE /api/public/traces/{id}，级联删 observations）
+   - 效果：Langfuse 瀑布中每轮 generation 展示精确 input/output/cache tokens、
+     真实模型名、tool_use 摘要与 stop_reason（thinking 已由 wire-proxy 关闭故为空）
+   - 幂等：enrich 记录 metadata.cliEnriched{transcriptFile, enrichedAt}，文件 mtime 未变
+     即跳过；import 靠 importedAt + DELETE 重建可重跑
+   - 使用：`node scripts/transcript-enrich.mjs && node scripts/langfuse-import.mjs`
+   - 风险（保留）：CLI 升级可能改 transcript 格式，解析器按 message.id/usage 结构容错
+2. **P1（C 方案）**：本地透明代理抓完整 prompt（env 开关 `WIRE_LOG=on`，
+   wire-proxy.js 已实现，落 `.wire-logs/wire-<ts>.jsonl`）
    - 解决 input 空；顺带做 prompt 体积分析（单轮 input ~22k token，值得拆 system
      prompt 组成）
-   - 仅 dev 启用；注意本机 Clash 代理环境（`--noproxy`）
+   - 仅 dev 启用（生产勿开）；注意本机 Clash 代理环境（`--noproxy`）
+   - 待办：wire-log 与 FlexDB trace 按时间窗关联后回填 generation input（仿 enrich 模式）
 3. **P2（D 方案）**：向上游提 onModelCall 钩子 issue / 关注 claude-agent-sdk 演进
 
 ## 8. 附录：实测记录与代码位置
 
-- transcript 样本：`~/.oak/agent/.claude/projects/-Users-bing-Documents-minicare-v1-agent-poc/807dd565-b738-47a1-a208-350813dcf741.jsonl`
+- transcript 样本：`~/.minicare-agent/claude-config/projects/-Users-bing-Documents-minicare-v1-agent-poc/<sessionId>.jsonl`
+  （OAK 时期为 ~/.oak/agent/.claude/projects/...，样本 807dd565-b738-47a1-a208-350813dcf741.jsonl）
+- P0 落地代码：`scripts/transcript-enrich.mjs`（解析+匹配+回填）、`scripts/langfuse-import.mjs`
+  （cliEnriched 重建 + usage 明细/metadata 透传）、`scripts/check-traces.mjs`（cache/usage 展示）
 - OAK bundle 关键位置（0.1.1 dist/index.js）：`buildClaudeQueryOptions`（env 注入）、
   `resolveCredential`（ModelSpec→baseUrl/apiKey）、`deriveAgentConfigDir`（~/.oak 根）、
   `AgentHooks`（6 个钩子，无 LLM 级）
