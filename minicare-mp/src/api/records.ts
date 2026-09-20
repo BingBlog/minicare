@@ -20,7 +20,13 @@ import type { HealthRecord, HealthListParams, CreateHealthDto, UpdateHealthDto }
 import { growthApi } from './growth'
 import type { GrowthRecord, GrowthListParams, CreateGrowthDto, UpdateGrowthDto } from './growth'
 import { medicalApi } from './medical'
-import type { MedicalRecord, MedicalListParams, CreateMedicalDto, UpdateMedicalDto } from './medical'
+import type {
+  MedicalRecord,
+  MedicalListParams,
+  CreateMedicalDto,
+  UpdateMedicalDto,
+  VaccineSettingPayload,
+} from './medical'
 import { symptomApi } from './symptom'
 import type { SymptomRecord, SymptomListParams, CreateSymptomDto, UpdateSymptomDto } from './symptom'
 import { medicationApi } from './medication'
@@ -196,6 +202,13 @@ export const recordsApi = {
       medicalApi.getOne(familyId, id),
     getNextFollowUp: (familyId: string, babyId: string) =>
       medicalApi.getNextFollowUp(familyId, babyId),
+    /** 疫苗参考程序（US-02 联想数据源）/ 疫苗本状态机 / 疫苗偏好 */
+    getVaccineSchedule: (familyId: string) =>
+      medicalApi.getVaccineSchedule(familyId),
+    getVaccineBook: (familyId: string, babyId: string) =>
+      medicalApi.getVaccineBook(familyId, babyId),
+    patchVaccineSetting: (familyId: string, data: VaccineSettingPayload) =>
+      medicalApi.patchVaccineSetting(familyId, data),
   },
   symptom: {
     list: (familyId: string, babyId: string, params?: DateListParams) =>
