@@ -100,10 +100,19 @@ async function babyInfo(babyId, date) {
   }
 }
 
+/**
+ * 北京时间（UTC+8）当天日期 YYYY-MM-DD。
+ * 不能用 new Date().toISOString()：那是 UTC，北京时间 00:00-08:00 之间会比实际日期少一天。
+ */
+function todayCST() {
+  return new Date(Date.now() + 8 * 3600 * 1000).toISOString().slice(0, 10)
+}
+
 export async function executeGenerateDiary(input, ctx) {
   const babyId = ctx?.babyId
   if (!babyId) return JSON.stringify({ ok: false, error: '缺少 babyId 上下文' })
-  const date = input?.date && /^\d{4}-\d{2}-\d{2}$/.test(input.date) ? input.date : new Date().toISOString().slice(0, 10)
+  const date =
+    input?.date && /^\d{4}-\d{2}-\d{2}$/.test(input.date) ? input.date : todayCST()
   try {
     const [records, photos, info] = await Promise.all([
       dayRecords(babyId, date),

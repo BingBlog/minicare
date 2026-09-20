@@ -41,6 +41,8 @@ import path from 'node:path'
 import { createSdkMcpServer, tool as sdkTool, query } from '@anthropic-ai/claude-agent-sdk'
 import { TOOLS } from './tools/index.js'
 import { buildSystemPrompt } from '../prompts/system.js'
+import { getBabyProfile } from './profile.js'
+import { getPerception } from './perception.js'
 
 /** 工具循环防护阈值（与 OAK 版一致） */
 export const MAX_SAME_TOOL_CALLS = 2
@@ -188,11 +190,21 @@ export function runAgentTurn(opts) {
   } = opts
 
   ensureConfigDir()
-  const systemPrompt = buildSystemPrompt(ctx, history)
   const { mcpServer, wouldAllow } = buildMcpTools(ctx)
 
   async function* gen() {
-    await initAgentRuntime(config) // 幂等：eval 直跑时也完成 env/代理初始化
+    // 画像（F3）与 env 初始化并行：前者是 5 条只读 SQL（有 5 分钟缓存），
+    // 后者只在冷启动时真实耗时，串行叠加没有意义
+    const [profile] = await Promise.all([
+      getBabyProfile(ctx?.babyId),
+      initAgentRuntime(config), // 幂等：eval 直跑时也完成 env/代理初始化
+    ])
+    // 现状感知（TECH-014）串在画像之后：它复用 profile.formula / freshness，
+    // 并行取会各算一遍（缓存要写入后才命中，不是预占）。代价是 3 条只读 SQL。
+    const perception = process.env.PERCEPTION_INJECT === 'off'
+      ? null
+      : await getPerception(ctx?.babyId, { profile })
+    const systemPrompt = buildSystemPrompt(ctx, history, profile, perception)
     // tool_use_id → { name, startedAt }（assistant 块与 user tool_result 分属两条消息）
     const pendingTools = new Map()
 

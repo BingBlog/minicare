@@ -70,6 +70,58 @@ const SIMPLE_METRICS = {
   medical: { table: 'medical_record', timeCol: 'visit_date', numericCol: null, statusWhere: '' },
 }
 
+// ---------- medical 列显式化 + 类型化列运行时探测（2026-09-19，migration 020）----------
+//
+// 背景：此前 medical 走 SELECT *，同一份 agent 代码在 dev（34 列）与生产（18 列）
+// 返回不同字段 —— 生产库尚未应用 migration 020，没有 vaccine_*/checkup_*/sick_* 列。
+// 一旦 tool 直接引用这些列，线上即 Unknown column 全线失败。
+//
+// 处置：改显式列 + 启动后按 information_schema 探测一次（结果缓存），
+// 生产环境自动退化为基础列，dev/staging 拿到完整字段。
+const MEDICAL_SELECT_BASE = [
+  'id', 'baby_id', 'visit_date', 'visit_time', 'visit_type',
+  'hospital', 'doctor', 'diagnosis', 'result_summary', 'note',
+  'follow_up_date', 'follow_up_time', 'medications', 'photo_ids', 'created_at',
+].join(', ')
+
+// 020 才新增的 16 列，仅在探测到类型化 schema 时拼接
+const MEDICAL_SELECT_TYPED_EXTRA = [
+  'vaccine_name', 'vaccine_schedule_key', 'vaccine_dose_seq', 'vaccine_site',
+  'vaccine_batch', 'vaccine_reactions', 'vaccine_reaction_note',
+  'checkup_height_mm', 'checkup_weight_g', 'checkup_head_mm',
+  'checkup_milestones', 'checkup_assessment', 'checkup_qa', 'checkup_growth_sync',
+  'sick_complaint', 'sick_symptom_flags',
+].join(', ')
+
+/** 探测列用 checkup_weight_g（020 新增），不能用 visit_type —— 后者生产库早已存在 */
+let typedMedicalFlag = null
+
+export async function hasTypedMedical(db) {
+  if (typedMedicalFlag !== null) return typedMedicalFlag
+  try {
+    const [rows] = await db.query(
+      `SELECT COUNT(*) AS n FROM information_schema.COLUMNS
+       WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME='medical_record'
+         AND COLUMN_NAME='checkup_weight_g'`,
+    )
+    typedMedicalFlag = Number(rows?.[0]?.n || 0) > 0
+  } catch {
+    typedMedicalFlag = false
+  }
+  return typedMedicalFlag
+}
+
+/** medical 的显式列清单（按探测结果决定是否含 020 类型化列） */
+async function medicalSelect(db) {
+  const typed = await hasTypedMedical(db)
+  return typed ? `${MEDICAL_SELECT_BASE}, ${MEDICAL_SELECT_TYPED_EXTRA}` : MEDICAL_SELECT_BASE
+}
+
+/** 仅 medical 需要显式列（其余表无跨环境 schema 差异，保留 * 以免列清单失维护） */
+async function selectClause(db, metric) {
+  return metric === 'medical' ? medicalSelect(db) : '*'
+}
+
 // ---------- 查询实现 ----------
 
 /**
@@ -147,8 +199,9 @@ async function queryList(db, babyId, metric, days, limit = 10) {
     return queryFeedingRows(db, babyId, 'record_time >= DATE_SUB(NOW(), INTERVAL ? DAY)', [days], limit)
   }
   const m = SIMPLE_METRICS[metric]
+  const cols = await selectClause(db, metric)
   const [rows] = await db.query(
-    `SELECT * FROM ${m.table} WHERE baby_id=? AND ${m.timeCol} >= DATE_SUB(NOW(), INTERVAL ? DAY) ${m.statusWhere}
+    `SELECT ${cols} FROM ${m.table} WHERE baby_id=? AND ${m.timeCol} >= DATE_SUB(NOW(), INTERVAL ? DAY) ${m.statusWhere}
      ORDER BY ${m.timeCol} DESC LIMIT ?`,
     [babyId, days, limit],
   )
@@ -172,8 +225,9 @@ export async function queryMetricOnDate(babyId, metric, date) {
     rows = await queryFeedingRows(db, babyId, 'record_time BETWEEN ? AND ?', [t0, t1], 20)
   } else {
     const m = SIMPLE_METRICS[metric]
+    const cols = await selectClause(db, metric)
     const [r] = await db.query(
-      `SELECT * FROM ${m.table} WHERE baby_id=? AND ${m.timeCol} BETWEEN ? AND ? ${m.statusWhere}
+      `SELECT ${cols} FROM ${m.table} WHERE baby_id=? AND ${m.timeCol} BETWEEN ? AND ? ${m.statusWhere}
        ORDER BY ${m.timeCol} DESC LIMIT 20`,
       [babyId, t0, t1],
     )

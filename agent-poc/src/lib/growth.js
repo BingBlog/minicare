@@ -88,6 +88,12 @@ export function getStandardAtAge(sex, ageMonths) {
 /** 计算实测值落在哪个百分位区间 */
 function bucket(refValues, value) {
   if (refValues == null || value == null) return null
+  // 非有限输入（月龄 NaN / 查表越界插值出 NaN）必须显式拒绝。
+  // 否则下面的比较全部为 false，会静默落到末行 return，**编造出「P85-P97」这个假分位**
+  // —— 生长分位属医疗相关结论，宁可返回 null 也不给错值。
+  if (!Number.isFinite(value) || refValues.some((v) => !Number.isFinite(v))) {
+    return { p: null, percentile: null }
+  }
   if (value < refValues[0]) return { p: '低于P3', percentile: 3 }
   if (value >= refValues[4]) return { p: '高于P97', percentile: 97 }
   for (let i = 0; i < 4; i++) {

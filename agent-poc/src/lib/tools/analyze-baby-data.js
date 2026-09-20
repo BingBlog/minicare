@@ -10,6 +10,10 @@ import { z } from 'zod'
 import { queryMetric, METRICS, METRIC_LABELS } from '../query.js'
 import { percentileOf } from '../growth.js'
 import { getDb } from '../db.js'
+// 宝宝档案与月龄统一从 lib/profile.js 取得（2026-09-19 收敛）：
+// 此前本文件各存一份 getBabyProfile / ageInMonths，与画像层并行存在两套实现，
+// 有结论漂移风险 —— 分位数已用 growth.js 共用，月龄也必须共用同一份。
+import { getBabyProfile, ageInMonths } from '../profile.js'
 
 export const ANALYZE_BABY_DATA_TOOL = {
   name: 'analyze_baby_data',
@@ -203,45 +207,20 @@ async function summaryAnalysis(babyId, metrics, days) {
   }
 }
 
-/** 从 baby_profile 取性别与出生日期 */
-async function getBabyProfile(babyId) {
-  const db = getDb()
-  if (!db) return null
-  try {
-    const [[row]] = await db.query(
-      'SELECT gender, birth_date FROM baby_profile WHERE id=? AND deleted_at IS NULL',
-      [babyId],
-    )
-    return row || null
-  } catch {
-    return null
-  }
-}
-
-/** 月龄（默认按当前日期；传 atDate 可按测量日期计算） */
-function ageInMonths(birthDate, atDate = null) {
-  const b = new Date(birthDate)
-  const at = atDate
-    ? (atDate instanceof Date ? atDate : new Date(String(atDate).slice(0, 10) + 'T00:00:00'))
-    : new Date()
-  let months = (at.getFullYear() - b.getFullYear()) * 12 + (at.getMonth() - b.getMonth())
-  if (at.getDate() < b.getDate()) months -= 1
-  return Math.max(0, months)
-}
-
 async function growthAnalysis(babyId, days) {
   const res = await queryMetric(babyId, 'growth', days, 'list')
   if (!res.hasData) return { ok: true, scope: 'growth', days: res.days, hasData: false, note: '窗口内无生长测量记录' }
-  const profile = await getBabyProfile(babyId)
-  if (!profile) return { ok: true, scope: 'growth', days: res.days, hasData: false, note: '缺少宝宝档案（性别/出生日期），无法解读生长曲线' }
+  // getBabyProfile 返回的是画像聚合对象，档案字段在 basic 下（2026-09-19 收敛后）
+  const basic = (await getBabyProfile(babyId))?.basic
+  if (!basic) return { ok: true, scope: 'growth', days: res.days, hasData: false, note: '缺少宝宝档案（性别/出生日期），无法解读生长曲线' }
 
   // growth_record 数值：weight_g（克→kg）、height_mm（毫米→cm）
   const sorted = [...res.rows].sort((a, b) => new Date(a.record_date) - new Date(b.record_date))
   const last = sorted[sorted.length - 1]
   const first = sorted[0]
-  const sex = profile.gender === 'female' ? 'female' : 'male'
+  const sex = basic.gender === 'female' ? 'female' : 'male'
   // 百分位按「测量当天月龄」计算（历史测量不能用当前月龄，否则百分位偏移）
-  const months = ageInMonths(profile.birth_date, last.record_date)
+  const months = ageInMonths(basic.birthDate, last.record_date)
 
   const out = { ok: true, scope: 'growth', days: res.days, hasData: true, months, measuredAt: last.record_date, sex, ref: '中国2023儿科生长参考' }
   if (last.weight_g != null) {
