@@ -72,6 +72,7 @@ description: minicare 项目构建发布操作手册。包含前端静态托管�
 | CloudRun 服务名 | `minicare-agent`                                                                        |
 | 部署方式        | `node scripts/deploy-agent.mjs`（manager-node 源码上传 + 云端 Docker 构建，EnvParams 保留合并） |
 | 状态/构建日志   | `node scripts/check-agent-deploy.mjs`；`app.cloudrun.getDeployRecords/getBuildLog`       |
+| 端到端验收      | `node scripts/verify-online.mjs --domain` 看线上版本/域名/令牌一致性；`node scripts/verify-online.mjs "旺仔现在转奶到哪一步了？"` 直打生产 CloudRun 并回放 SSE |
 | 访问域名        | `https://minicare-agent-240137-10-1253854169.sh.run.tcloudbase.com`                     |
 | 健康检查        | `GET /health`（免 token）→ `{"ready":true,"db":true,"embedding":true,"tokenAuth":true}` |
 | EnvParams       | DEEPSEEK_API_KEY, TCB_*, AGENT_INTERNAL_TOKEN, DB_*(生产库), TOKENHUB_API_KEY — 控制台为准 |
@@ -80,8 +81,10 @@ description: minicare 项目构建发布操作手册。包含前端静态托管�
 > 1. `@cloudbase/manager-node` 5.x 的 `init()` 参数从 `env` 改名为 **`envId`**（旧写法报 `[DescribeEnvInfo] EnvId is required`）；deploy 脚本已适配。
 > 2. manager-node 是 agent-poc 的 devDependency（部署时曾被误删），缺了先 `npm i -D @cloudbase/manager-node`。
 > 3. 直连 SDK 版镜像依赖 `@anthropic-ai/claude-agent-sdk` 的 linux-x64 CLI 二进制，云端 `npm install` 自动按平台拉取；部署后必须跑一次 `/chat` 端到端验证 CLI 可用。
-> 4. 验收时 `x-agent-token` 必须用 **CloudRun EnvParams 里的 AGENT_INTERNAL_TOKEN**（可能与本地 `.env.local` 不一致；本地不一致会导致 minicare-server 本地代理 401）。
+> 4. 验收时 `x-agent-token` 必须用 **CloudRun EnvParams 里的 AGENT_INTERNAL_TOKEN**。2026-09-20 实测：线上 agent 与线上 `minicare-api-production` 的值一致（48 位），而本地 `minicare-server/.env.local` 是 **18 位** —— 两者早已脱钩（拿本地值调线上会一直 401，现象像"发版失败"）。**真正的风险**：minicare-server 部署若把本地 EnvParams 整体写入，会把线上 48 位冲成 18 位，而 agent 侧仍是 48 位 → **生产聊天全线 401**。部署 minicare-server 前先核对这一项；`verify-online.mjs` 会主动比对并告警。
 > 5. Dockerfile 非root用户（oak）+ `CLAUDE_CONFIG_DIR` 兜底 /tmp；`.dockerignore` 已排除 `.env.local`/`.wire-logs`。
+> 6. 实测耗时（2026-09-20，v013→v014）：提交到镜像构建完 **5m44s**（`create_build_image: creating` → `succ`），随后 `create_eks_virtual_service` 秒级 succ，全程约 6 分钟。`getDeployRecords` 比 `getProcessLog` 滞后（前者还在 `creating`、后者已 `succ`），**判断是否完成优先看 `getProcessLog`**。
+> 7. `AGENT_INTERNAL_TOKEN` 为 32 位以上随机串时，新版本首次 `/chat` 若返回 `{"error":"unauthorized"}`，先按第 4 条排查令牌，不要误判为部署失败。
 
 > ⚠️ 部署状态监控（2026-09-07 补充）：
 > - 用 `getDeployRecords({serverName})` 看 `DeployId/Status/FlowRatio`（creating→normal + flow=100 才算完），比 `detail().VersionName` 可靠（detail 在放量前一直显示旧版）。
