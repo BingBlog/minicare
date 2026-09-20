@@ -11,7 +11,7 @@ import { HOME_RECORD_ROUTES } from '@/lib/constants'
 import { navigateToRecord } from '@/lib/navigation'
 import { getStatusBarHeight } from '@/lib/safeArea'
 import { useIsIPad } from '@/lib/useIsIPad'
-import { getBabyAge, getGreeting, getTodayDateStr, compareTime } from '@/lib/utils'
+import { getBabyAge, getGreeting, getTodayDateStr, yesterdayStr, compareTime } from '@/lib/utils'
 
 import HeroSection from './HeroSection'
 import QuickActions from './QuickActions'
@@ -22,7 +22,7 @@ import SleepBanner from './SleepBanner'
 import FeedingBanner from './FeedingBanner'
 import NextFollowUpBanner from './NextFollowUpBanner'
 import AllergyProgressBar from './AllergyProgressBar'
-import TodayDiaryCard from './TodayDiaryCard'
+import HomeDiaryCard from './HomeDiaryCard'
 import RecordActionSheet from './RecordActionSheet'
 import TabBar from '@/components/TabBar/TabBar'
 import InviteModal from '@/components/InviteModal/InviteModal'
@@ -71,12 +71,15 @@ export default function HomePage() {
   const [birthDate, setBirthDate] = useState('')
   const [familyId, setFamilyId] = useState('')
   const familyIdRef = useRef('')
+  const babyIdRef = useRef('')
   const [loading, setLoading] = useState(true)
   const [babyGrowth, setBabyGrowth] = useState<{ weightKg?: string; heightCm?: string; headCm?: string } | null>(null)
   const [foodObservations, setFoodObservations] = useState<FoodObservation[]>([])
   const [nextFollowUp, setNextFollowUp] = useState<NextFollowUp | null>(null)
-  const [todayDiary, setTodayDiary] = useState<DiaryDetail | null>(null)
-  const [diaryLoading, setDiaryLoading] = useState(false)
+  const [yesterdayDiary, setYesterdayDiary] = useState<DiaryDetail | null>(null)
+  // 初值 true：首帧即渲染等高骨架，避免「空态卡闪现 → 卡片消失 → 内容卡出现」的三重跳变
+  const [diaryLoading, setDiaryLoading] = useState(true)
+  const diaryLoadedRef = useRef(false)
 
   // 页面加载时，解析 URL 参数
   useEffect(() => {
@@ -91,25 +94,29 @@ export default function HomePage() {
     }
   }, [])
 
-  /** 获取昨日日期字符串 YYYY-MM-DD */
-  const getYesterdayDateStr = useCallback(() => {
-    const d = new Date()
-    d.setDate(d.getDate() - 1)
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-  }, [])
-
-  /** 今日日记摘要（首页卡片，失败静默） */
-  const loadTodayDiary = useCallback(async (fid: string, bid: string) => {
-    const d = new Date()
-    const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-    setDiaryLoading(true)
+  /**
+   * 昨日日记摘要（首页卡片，失败静默）。
+   *
+   * 目标日期是「昨天」而非今天：日记定位为当日回顾式总结，当天数据还不全。
+   * 注意参数必须用 yesterdayStr()（YYYY-MM-DD）—— getTodayDateStr() 返回的是
+   * 「9月19日 星期六」这类展示串，传给接口会被日期校验拒收，卡片将恒显空态。
+   *
+   * silent=true 时跳过 loading 态：用于从子页面返回、以及 diary:changed 事件触发的刷新，
+   * 避免每次回首页都把卡片切回骨架（原实现在这里反复闪）。
+   */
+  const loadDiaryPreview = useCallback(async (fid: string, bid: string, silent = false) => {
+    babyIdRef.current = bid
+    const target = yesterdayStr()
+    const showSkeleton = !silent && !diaryLoadedRef.current
+    if (showSkeleton) setDiaryLoading(true)
     try {
-      const item = await agentDiaryApi.detail(fid, bid, today)
-      setTodayDiary(item)
+      const item = await agentDiaryApi.detail(fid, bid, target)
+      setYesterdayDiary(item)
     } catch {
-      setTodayDiary(null)
+      setYesterdayDiary(null)
     } finally {
-      setDiaryLoading(false)
+      diaryLoadedRef.current = true
+      if (showSkeleton) setDiaryLoading(false)
     }
   }, [])
 
@@ -149,7 +156,7 @@ export default function HomePage() {
 
       // 同时刷新昨日记录（用于对比）
       try {
-        const yRecords = await recordsApi.today(fid, getYesterdayDateStr())
+        const yRecords = await recordsApi.today(fid, yesterdayStr())
         setYesterdayRecords(yRecords.map(toHomeRecord))
       } catch {
         // 昨日记录获取失败不影响主流程
@@ -162,7 +169,7 @@ export default function HomePage() {
         setFoodObservations([])
       }
 
-      loadTodayDiary(fid, baby.id)
+      loadDiaryPreview(fid, baby.id)
 
       try {
         const nf = await recordsApi.medical.getNextFollowUp(fid, baby.id)
@@ -173,7 +180,7 @@ export default function HomePage() {
     } catch {
       // 静默失败，保留已有数据
     }
-  }, [getYesterdayDateStr, loadTodayDiary])
+  }, [yesterdayStr, loadDiaryPreview])
 
   // 是否处于游客模式（未登录）
   const [isGuest, setIsGuest] = useState(false)
@@ -283,11 +290,11 @@ export default function HomePage() {
             })
             .catch(() => {})
 
-          recordsApi.today(fid, getYesterdayDateStr())
+          recordsApi.today(fid, yesterdayStr())
             .then((yRecs) => { if (!cancelled) setYesterdayRecords(yRecs.map(toHomeRecord)) })
             .catch(() => {})
 
-          loadTodayDiary(fid, baby.id)
+          loadDiaryPreview(fid, baby.id)
 
           recordsApi.medical.getNextFollowUp(fid, baby.id)
             .then((nf) => { if (!cancelled) setNextFollowUp(nf) })
@@ -371,6 +378,18 @@ export default function HomePage() {
     Taro.eventCenter.on('home:refresh', handler)
     return () => { Taro.eventCenter.off('home:refresh', handler) }
   }, [refreshTodayRecords])
+
+  // 监听日记变更事件（chat 页保存草稿 / 日记详情页保存后均会 trigger）→ 静默刷新卡片。
+  // 此前该事件全项目无监听者，导致保存完日记回到首页卡片仍是旧的。
+  useEffect(() => {
+    const handler = () => {
+      const fid = familyIdRef.current
+      const bid = babyIdRef.current
+      if (fid && bid) void loadDiaryPreview(fid, bid, true)
+    }
+    Taro.eventCenter.on('diary:changed', handler)
+    return () => { Taro.eventCenter.off('diary:changed', handler) }
+  }, [loadDiaryPreview])
 
   // 启用分享菜单（H5 无此 API，编译期剔除）
   useEffect(() => {
@@ -690,7 +709,7 @@ export default function HomePage() {
         }
       />
       <View className='home-content'>
-        <TodayDiaryCard diary={todayDiary} loading={diaryLoading} />
+        <HomeDiaryCard diary={yesterdayDiary} loading={diaryLoading} />
         <QuickActions
           birthDate={birthDate}
           onMoreClick={() => Taro.eventCenter.trigger('tabbar:openFab')}

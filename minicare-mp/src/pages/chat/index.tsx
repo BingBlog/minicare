@@ -16,7 +16,7 @@ import { agentDiaryApi, chatStream, type AgentSourceItem } from '@/api/agent'
 import type { Baby } from '@/api/types'
 import { getToken, getStoredFamilyId, setCurrentBabyId, getStoredBabyId } from '@/api/http'
 import { API_BASE_URL } from '@/api/base'
-import { getBabyAge, nowDate } from '@/lib/utils'
+import { getBabyAge, nowDate, yesterdayStr, toDateOnly } from '@/lib/utils'
 import { uploadOne, fetchTempUrls } from '@/lib/uploadImage'
 import MarkdownText from '@/components/MarkdownText/MarkdownText'
 import { useChatVoice } from './useChatVoice'
@@ -33,6 +33,8 @@ interface ChatMessage {
   sources?: AgentSourceItem[]
   toolNames?: string[]
   diaryRound?: boolean // 本轮触发过 generate_diary → 回答后可保存为日记
+  diaryDate?: string // generate_diary 实际使用的日期（YYYY-MM-DD），保存时以此为准
+  diarySaved?: boolean // 本轮日记已自动落库（生成即保存，F1）
   status: 'streaming' | 'done' | 'error' | 'aborted'
   error?: string
   time: string
@@ -60,13 +62,103 @@ const CANCEL_THRESHOLD = -60
 const DIARY_FOLLOWUP_RE =
   /(\n*\s*(?:今天有没有什么|还有什么想记|有什么想写|想写进日记|有意思的事想写|随时告诉我(?:呀|哦)?|对了，?今天)[^]*)$/i
 
+/**
+ * 判断一段文本是否"只是准备语/寒暄"（不含日记正文特征）。
+ * 用于剥离开场过程话术 —— 线上事故：2026-08-25 那篇把
+ * 「好的，我先帮您聚合一下…这是旺仔的日记👇」当正文存进了 baby_diary。
+ */
+const DIARY_PREAMBLE_ACT_RE =
+  /聚合|整理|汇总|统计|看一下|看看|查一下|拉取|读取|调取|准备|动笔|素材|记录和素材|这是.{0,6}的日记/
+const DIARY_BODY_HINT_RE = /喂养|睡眠|大便|尿布|奶量|辅食|维生素|月龄|体重|身高|体温/
+
+function looksLikePreamble(text: string): boolean {
+  const t = text.trim()
+  if (!t) return false
+  // 过长（可能是正文）或含正文特征词 → 判为正文，不剥离
+  if (t.length > 200) return false
+  if (DIARY_BODY_HINT_RE.test(t)) return false
+  return DIARY_PREAMBLE_ACT_RE.test(t)
+}
+
+/**
+ * 剥离模型开场的过程话术。两级策略：
+ *  1) 首个 `---` 分隔线之前若只是准备语 → 整体丢弃（8-25 那篇属此类：
+ *     准备语与"这是…的日记👇"挤在同一超长行，逐行判定覆盖不到）
+ *  2) 逐行剥离开头最多 3 行过程话术（短句形态）
+ * 判定从严，任一条件不满足即停止，避免误伤正文首句。
+ */
+function stripDiaryPreamble(content: string): string {
+  let text = content
+
+  const sep = text.search(/\n\s*-{3,}\s*\n/)
+  if (sep > 0 && looksLikePreamble(text.slice(0, sep))) {
+    text = text.slice(sep).replace(/^\s*-{3,}\s*/, '')
+  }
+
+  const lines = text.split('\n')
+  let i = 0
+  while (i < lines.length && i < 3) {
+    const line = lines[i].trim()
+    if (!line) {
+      i += 1
+      continue
+    }
+    if (!looksLikePreamble(line)) break
+    i += 1
+  }
+  return lines.slice(i).join('\n').trim()
+}
+
 function extractDiaryBody(content: string): string {
   if (!content) return ''
-  const m = content.match(DIARY_FOLLOWUP_RE)
-  if (m && m.index !== undefined) {
-    return content.slice(0, m.index).replace(/\s+$/, '').replace(/---+\s*$/, '').trim()
+  const body = stripDiaryPreamble(content)
+  const tail = (() => {
+    const m = body.match(DIARY_FOLLOWUP_RE)
+    return m && m.index !== undefined ? body.slice(0, m.index) : body
+  })()
+  return tail
+    .replace(/\s+$/, '')
+    .replace(/---+\s*$/, '')
+    // 日记以纯文本呈现，行首 markdown 标题符是无意义残留（如「## 旺仔小日记」）
+    .replace(/^#{1,6}\s+/gm, '')
+    .trim()
+}
+
+/**
+ * 从 generate_diary 的 tool_result 输出里取实际使用的日期。
+ * 模型未显式传 date 时 input.date 为空，只有工具返回的 date 才是权威值。
+ */
+function parseDiaryToolDate(output: string): string {
+  if (!output) return ''
+  try {
+    const parsed = JSON.parse(output) as { date?: unknown }
+    const d = typeof parsed.date === 'string' ? parsed.date : ''
+    return /^\d{4}-\d{2}-\d{2}$/.test(d) ? d : ''
+  } catch {
+    return ''
   }
-  return content.trim()
+}
+
+/** 保存按钮文案：跟随实际日期，避免「存的是 9-18、按钮却写今天」的误导 */
+function diarySaveLabel(date?: string): string {
+  if (!date || date === nowDate()) return '保存为今天的日记'
+  if (date === yesterdayStr()) return '保存为昨天的日记'
+  const [, mm, dd] = date.split('-')
+  return `保存为 ${Number(mm)}月${Number(dd)}日 的日记`
+}
+
+/**
+ * 判断助手回答是否「就是一篇日记」——自动落库前的最后一道校验。
+ *
+ * 依据 prompt 规则 17 的日记结构（标题 → 日期+月龄行 → …），要求正文足够长
+ * 且含日期行。不满足时**不自动保存**，保留手动保存按钮：宁可少存一篇，不可把
+ * 「今天记录很少，要不要我先看看？」这类答复当成日记写进库。
+ */
+const DIARY_DATE_LINE_RE =
+  /(\d{4}\s*年\s*\d{1,2}\s*月\s*\d{1,2}\s*日)|(\d{4}\s*[./-]\s*\d{1,2})|(\d{1,2}\s*月\s*\d{1,2}\s*日)/
+
+function looksLikeDiary(body: string): boolean {
+  return body.length >= 40 && DIARY_DATE_LINE_RE.test(body)
 }
 
 /** markdown 转纯文本（复制分享用）：去标题/加粗/列表/表格/引用符号 */
@@ -130,7 +222,12 @@ export default function ChatPage() {
   const [overwriteConfirm, setOverwriteConfirm] = useState(false)
   const [savingDiaryDate, setSavingDiaryDate] = useState('')
 
-  const scrollIdRef = useRef('')
+  // 滚动到底：用累加的 scrollTop 而非 scrollIntoView。
+  // 原实现绑定 useRef（scrollIntoView={scrollIdRef.current}），effect 改 ref 不触发重渲染，
+  // 首屏一次性 setMessages(restored) 后再无渲染 → 永远停在顶部；
+  // 流式期间也只是"恰好"追赶。累加值保证每次内容变化都超出可滚动高度 → 稳定滚底。
+  const [scrollTop, setScrollTop] = useState(0)
+  const scrollTopRef = useRef(0)
   const chatHandleRef = useRef<{ abort: () => void } | null>(null)
   const streamingMsgIdRef = useRef('')
   const isLongPressRef = useRef(false)
@@ -263,22 +360,28 @@ export default function ChatPage() {
     }
   }, [familyId])
 
-  // 预置消息（日记页「写日记/重新生成」跳转）
+  // 预置消息（首页卡片 / 日记列表「写日记」/ 日记详情「重新生成」跳转）
   useEffect(() => {
     if (!baby || loading || presetDiarySentRef.current) return
     const params = getCurrentInstance()?.router?.params ?? {}
     if (params.preset === 'diary') {
       presetDiarySentRef.current = true
-      void sendMessage('帮我写今天的日记', [])
+      // 详情页「重新生成」带该篇自身日期；首页卡片与列表页带昨天日期；
+      // 都没带（旧版入口）同样退化为昨天 —— 日记是回顾式总结，当天数据还不全。
+      // 一律发「显式日期」消息，因此不依赖 prompt 的日期规则也能拿到正确日期。
+      const d = toDateOnly(params.date) || yesterdayStr()
+      const [, mm, dd] = d.split('-')
+      void sendMessage(`帮我写 ${Number(mm)}月${Number(dd)}日 的日记`, [])
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [baby?.id, loading])
 
-  // 流式期间自动滚底
+  // 消息变化即滚底（首屏恢复 / 新消息 / 流式增长三种场景统一）
   useEffect(() => {
-    if (messages.length > 0) {
-      scrollIdRef.current = `msg-${messages[messages.length - 1].id}`
-    }
+    if (messages.length === 0) return
+    // 步长远大于任何会话高度，微信侧会 clamp 到可滚动底部
+    scrollTopRef.current += 100000
+    setScrollTop(scrollTopRef.current)
   }, [messages])
 
   // 语音转写完成 → 回填输入框
@@ -292,6 +395,70 @@ export default function ChatPage() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [voice.state])
+
+  /**
+   * 持久化消息列表（供再次进入恢复）。
+   *
+   * 必须把本轮状态显式 patch 进去：messagesRef 由 useEffect 同步，晚于 setMessages
+   * 一拍，直接读它会丢掉刚写入的 diaryRound/diarySaved，刷新后按钮就消失了。
+   * patch 返回 null 表示该条不变；值为 undefined 的键会被剔除（避免覆盖已有值）。
+   */
+  const persistMessages = useCallback(
+    (patch: (m: ChatMessage) => Partial<ChatMessage> | null) => {
+      const list = messagesRef.current
+        .map((m) => {
+          const p = patch(m)
+          if (!p) return m
+          const cleaned = Object.fromEntries(Object.entries(p).filter(([, v]) => v !== undefined))
+          return { ...m, ...cleaned }
+        })
+        .map((m) => ({
+          ...m,
+          status: m.status === 'streaming' ? ('done' as const) : m.status,
+          images: m.images?.map((img) => ({ fileId: img.fileId })),
+        }))
+      Taro.setStorageSync(storageKey('msgs'), list.slice(-40))
+    },
+    [storageKey],
+  )
+
+  /**
+   * 生成即落库（F1 日记自动保存闭环）。
+   *
+   * 两种结果：
+   *  - 该日期没有日记 → 直接保存，并把消息标记为「已保存」（消息下方出现「查看」）；
+   *  - 该日期已有日记 → **不覆盖**，打开预填的草稿层交给家长确认（风险 R4）。
+   * 失败静默：保留手动保存按钮兜底，不打断对话。
+   */
+  const autoSaveDiary = useCallback(
+    async (msgId: string, rawText: string, date: string) => {
+      if (!familyId || !baby) return
+      const body = extractDiaryBody(rawText)
+      if (!looksLikeDiary(body)) return
+      try {
+        const exist = await agentDiaryApi.detail(familyId, baby.id, date)
+        if (exist) {
+          setDraftText(body)
+          setSavingDiaryDate(date)
+          setDraftOpen(true)
+          return
+        }
+        await agentDiaryApi.save({
+          family_id: familyId,
+          baby_id: baby.id,
+          diary_date: date,
+          content: body,
+          photo_ids: [],
+        })
+        setMessages((prev) => prev.map((m) => (m.id === msgId ? { ...m, diarySaved: true } : m)))
+        persistMessages((m) => (m.id === msgId ? { diarySaved: true } : null))
+        Taro.eventCenter.trigger('diary:changed')
+      } catch {
+        /* 自动保存失败：保留手动保存入口，不打扰家长 */
+      }
+    },
+    [familyId, baby, persistMessages],
+  )
 
   // ── 发送消息 ────────────────────────────────────────────────────
   const sendMessage = useCallback(
@@ -330,8 +497,10 @@ export default function ChatPage() {
       setSending(true)
       streamingMsgIdRef.current = asstMsg.id
 
-      // 本轮工具调用累积（本地变量，避免 React 异步更新导致 diaryRound 判断丢失）
+      // 本轮累积（本地变量，避免 React 异步更新导致判断丢失/时序错位）
       const roundToolNames: string[] = []
+      let answerText = '' // 本轮助手正文（自动落库用，不依赖 state 时序）
+      let roundDiaryDate = '' // generate_diary 实际使用的日期
 
       const handle = chatStream({
         familyId,
@@ -355,11 +524,23 @@ export default function ChatPage() {
               }),
             )
           } else if (ev.event === 'text') {
+            answerText += ev.data.delta
             setMessages((prev) =>
               prev.map((m) =>
                 m.id === msgId ? { ...m, content: m.content + ev.data.delta } : m,
               ),
             )
+          } else if (ev.event === 'tool_result') {
+            // 以工具实际返回的 date 为准（模型未显式传 date 时 input.date 为空，只有 output 权威）
+            if (ev.data.name === 'generate_diary') {
+              const usedDate = parseDiaryToolDate(ev.data.output)
+              if (usedDate) {
+                roundDiaryDate = usedDate
+                setMessages((prev) =>
+                  prev.map((m) => (m.id === msgId ? { ...m, diaryDate: usedDate } : m)),
+                )
+              }
+            }
           } else if (ev.event === 'sources') {
             setMessages((prev) =>
               prev.map((m) =>
@@ -373,13 +554,14 @@ export default function ChatPage() {
 
       try {
         const result = await handle.promise
+        const wasDiaryRound = roundToolNames.includes('generate_diary')
         setMessages((prev) =>
           prev.map((m) =>
             m.id === msgId
               ? {
                   ...m,
                   status: result.aborted ? 'aborted' : 'done',
-                  diaryRound: roundToolNames.includes('generate_diary'),
+                  diaryRound: wasDiaryRound,
                 }
               : m,
           ),
@@ -389,12 +571,20 @@ export default function ChatPage() {
           setConversationId(result.conversationId)
           Taro.setStorageSync(storageKey('conv'), result.conversationId)
         }
-        const persist = messagesRef.current.map((m) => ({
-          ...m,
-          status: m.status === 'streaming' ? 'done' : m.status,
-          images: m.images?.map((img) => ({ fileId: img.fileId })),
-        }))
-        Taro.setStorageSync(storageKey('msgs'), persist.slice(-40))
+        persistMessages((m) =>
+          m.id === msgId
+            ? {
+                status: result.aborted ? 'aborted' : 'done',
+                diaryRound: wasDiaryRound,
+                diaryDate: roundDiaryDate || undefined,
+              }
+            : null,
+        )
+        // 生成即落库（F1）：本轮生成过日记且正文像日记 → 直接保存，家长无需再点。
+        // 中断（用户手动停止）不自动保存，避免存下半截正文。
+        if (wasDiaryRound && !result.aborted) {
+          await autoSaveDiary(msgId, answerText, roundDiaryDate || yesterdayStr())
+        }
       } catch (err) {
         const msg = err instanceof Error ? err.message : '请求失败'
         setMessages((prev) =>
@@ -411,7 +601,7 @@ export default function ChatPage() {
         streamingMsgIdRef.current = ''
       }
     },
-    [sending, familyId, baby, conversationId, storageKey],
+    [sending, familyId, baby, conversationId, storageKey, persistMessages, autoSaveDiary],
   )
 
   // ── 停止生成 ────────────────────────────────────────────────────
@@ -544,9 +734,11 @@ export default function ChatPage() {
   }, [storageKey])
 
   // ── 日记保存流程 ────────────────────────────────────────────────
-  const openDraft = useCallback((content: string) => {
+  const openDraft = useCallback((content: string, date?: string) => {
     setDraftText(content)
-    setSavingDiaryDate(nowDate())
+    // 保存日期跟随本轮 generate_diary 实际使用的日期。
+    // 原实现硬编码 nowDate()，线上已造成「正文写 9-18、diary_date 落 9-19」的错位数据。
+    setSavingDiaryDate(date && /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : nowDate())
     setDraftOpen(true)
   }, [])
 
@@ -564,13 +756,20 @@ export default function ChatPage() {
       })
       setDraftOpen(false)
       Taro.showToast({ title: '日记已保存', icon: 'success' })
+      // 手动保存后同样标记「已保存」：否则按钮仍停在「保存为…」，诱导重复保存
+      const markSaved = (m: ChatMessage) =>
+        m.role === 'assistant' && m.diaryRound && (m.diaryDate || '') === savingDiaryDate
+          ? { diarySaved: true }
+          : null
+      setMessages((prev) => prev.map((m) => (markSaved(m) ? { ...m, diarySaved: true } : m)))
+      persistMessages(markSaved)
       Taro.eventCenter.trigger('diary:changed')
     } catch (err) {
       Taro.showToast({ title: err instanceof Error ? err.message : '保存失败', icon: 'none' })
     } finally {
       setDraftSaving(false)
     }
-  }, [draftText, familyId, baby, savingDiaryDate])
+  }, [draftText, familyId, baby, savingDiaryDate, persistMessages])
 
   const handleDraftSaveClick = useCallback(async () => {
     if (!familyId || !baby) return
@@ -620,11 +819,19 @@ export default function ChatPage() {
 
   const renderAssistantFooter = (m: ChatMessage) => {
     if (m.status !== 'done') return null
+    const targetDate = m.diaryDate || yesterdayStr()
     return (
       <View className='chat-msg__footer'>
-        {m.diaryRound ? (
-          <View className='chat-msg__diary-btn' onClick={() => openDraft(extractDiaryBody(m.content))}>
-            <Text className='chat-msg__diary-btn-text'>保存为今天的日记</Text>
+        {m.diarySaved ? (
+          <View
+            className='chat-msg__diary-btn chat-msg__diary-btn--saved'
+            onClick={() => Taro.navigateTo({ url: `/pages/diary/detail?date=${targetDate}` })}
+          >
+            <Text className='chat-msg__diary-btn-text'>已保存到日记 · 查看</Text>
+          </View>
+        ) : m.diaryRound ? (
+          <View className='chat-msg__diary-btn' onClick={() => openDraft(extractDiaryBody(m.content), m.diaryDate)}>
+            <Text className='chat-msg__diary-btn-text'>{diarySaveLabel(m.diaryDate)}</Text>
           </View>
         ) : null}
         <Text className='chat-msg__disclaimer'>本回答仅供参考，不能替代专业医疗建议</Text>
@@ -722,7 +929,7 @@ export default function ChatPage() {
       </View>
 
       {/* 消息列表 */}
-      <ScrollView className='chat-scroll' scrollY scrollWithAnimation scrollIntoView={scrollIdRef.current}>
+      <ScrollView className='chat-scroll' scrollY scrollWithAnimation scrollTop={scrollTop}>
         <View className='chat-scroll__inner'>
           {messages.length === 0 ? (
             <View className='chat-empty'>

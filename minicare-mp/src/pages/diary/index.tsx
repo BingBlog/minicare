@@ -13,6 +13,7 @@ import { babyApi } from '@/api/baby'
 import { agentDiaryApi, type DiaryItem } from '@/api/agent'
 import { getToken, getStoredFamilyId, setCurrentBabyId, getStoredBabyId } from '@/api/http'
 import { fetchTempUrls } from '@/lib/uploadImage'
+import { toDateOnly, yesterdayStr } from '@/lib/utils'
 import './index.scss'
 
 const WEEKDAYS = ['日', '一', '二', '三', '四', '五', '六']
@@ -106,9 +107,11 @@ export default function DiaryListPage() {
     [month, familyId, babyId, loadDiary],
   )
 
+  // 缺省目标是「昨天」：日记是当日回顾式总结，当天数据还不全。
+  // 显式带 date 参数，使对话页不必依赖 prompt 规则也能拿到正确日期。
   const goWrite = useCallback(() => {
     if (!familyId || !babyId) return
-    Taro.navigateTo({ url: '/pages/chat/index?preset=diary' })
+    Taro.navigateTo({ url: `/pages/chat/index?preset=diary&date=${yesterdayStr()}` })
   }, [familyId, babyId])
 
   if (loading && items.length === 0) {
@@ -180,7 +183,7 @@ export default function DiaryListPage() {
           ) : items.length === 0 ? (
             <View className='diary-empty'>
               <Text className='diary-empty__title'>这个月还没有日记</Text>
-              <Text className='diary-empty__desc'>和敏宝助手说一句「帮我写今天的日记」吧</Text>
+              <Text className='diary-empty__desc'>和敏宝助手说一句「帮我写昨天的日记」吧</Text>
               <View className='diary-empty__btn' onClick={goWrite}>
                 <Text className='diary-empty__btn-text'>去写一篇</Text>
               </View>
@@ -192,7 +195,9 @@ export default function DiaryListPage() {
                 className='diary-card'
                 onClick={() =>
                   Taro.navigateTo({
-                    url: `/pages/diary/detail?date=${item.diary_date}`,
+                    // toDateOnly 兜底：后端 DATE 列若未收口会输出 ISO 串，
+                    // 直接拼进 URL 会被详情接口的正则拒收（列表点不进详情的根因）
+                    url: `/pages/diary/detail?date=${toDateOnly(item.diary_date)}`,
                   })
                 }
               >

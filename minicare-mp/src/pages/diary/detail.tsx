@@ -14,6 +14,7 @@ import { babyApi } from '@/api/baby'
 import { agentDiaryApi, type DiaryDetail } from '@/api/agent'
 import { getToken, getStoredFamilyId, setCurrentBabyId, getStoredBabyId } from '@/api/http'
 import { uploadOne, fetchTempUrls } from '@/lib/uploadImage'
+import { toDateOnly } from '@/lib/utils'
 import './detail.scss'
 
 const WEEKDAYS = ['日', '一', '二', '三', '四', '五', '六']
@@ -75,7 +76,9 @@ export default function DiaryDetailPage() {
       return
     }
     const params = getCurrentInstance()?.router?.params ?? {}
-    const d = (params.date as string) || dayjs().format('YYYY-MM-DD')
+    // toDateOnly 兜底：路由参数可能带 ISO 串（后端 DATE 未收口时），
+    // 直接用它请求会被 DATE_RE 拒收 → 恒显示「这一天还没有日记」
+    const d = toDateOnly(params.date) || dayjs().format('YYYY-MM-DD')
     setDate(d)
     setFamilyId(fid)
     ;(async () => {
@@ -148,9 +151,10 @@ export default function DiaryDetailPage() {
   }, [editText, editPhotos, detail, familyId])
 
   // ── 重新生成（跳对话页预置消息；已有日记先确认）──
+  // 带上该篇自己的日期：原实现只传 preset，导致「重新生成 9-18 的日记」实际写的是今天
   const goRegen = useCallback(() => {
-    Taro.navigateTo({ url: '/pages/chat/index?preset=diary' })
-  }, [])
+    Taro.navigateTo({ url: `/pages/chat/index?preset=diary&date=${date}` })
+  }, [date])
 
   const handleRegen = useCallback(() => {
     if (detail) {

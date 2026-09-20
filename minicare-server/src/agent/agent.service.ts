@@ -8,6 +8,7 @@ import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
 import { Pool } from 'mysql2/promise';
 import { DATABASE_POOL } from '../common/database/database.module';
+import { formatSqlDate } from '../common/utils/date.util';
 
 export interface AgentCtx {
   userId: string;
@@ -199,7 +200,13 @@ export class AgentService {
     );
     const row = rows[0] ?? null;
     if (!row) return null;
-    return { ...row, photo_ids: row.photo_ids ? row.photo_ids.split(',') : [] };
+    return {
+      ...row,
+      // DATE 列经 mysql2 会变成 JS Date（UTC 补零），
+      // 不格式化会输出 '2026-09-18T16:00:00.000Z'，导致前端拿它回传时被 DATE_RE 拒收
+      diary_date: formatSqlDate(row.diary_date),
+      photo_ids: row.photo_ids ? row.photo_ids.split(',') : [],
+    };
   }
 
   /** 按月列表（倒序，含首句摘要 + 首图） */
@@ -218,7 +225,7 @@ export class AgentService {
       return {
         id: r.id,
         baby_id: r.baby_id,
-        diary_date: r.diary_date,
+        diary_date: formatSqlDate(r.diary_date),
         excerpt: r.content.replace(/\s+/g, ' ').slice(0, 60),
         first_photo: photos[0] ?? null,
         photo_count: photos.length,

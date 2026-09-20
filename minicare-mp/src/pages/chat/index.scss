@@ -487,6 +487,17 @@
   font-weight: 600;
 }
 
+// 已自动落库态：与「待保存」区分开，改为安静的完成态（可点进详情）
+.chat-msg__diary-btn--saved {
+  background: #f4f7f3;
+  border-color: #d8e3d4;
+}
+
+.chat-msg__diary-btn--saved .chat-msg__diary-btn-text {
+  color: #6f8a63;
+  font-weight: 500;
+}
+
 .chat-msg__disclaimer {
   font-size: 10px;
   color: #c4adb3;

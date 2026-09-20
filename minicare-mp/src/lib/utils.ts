@@ -14,6 +14,31 @@ export function nowTime(): string {
   return dayjs().format('HH:mm')
 }
 
+/** 昨天本地日期，格式 YYYY-MM-DD */
+export function yesterdayStr(): string {
+  return dayjs().subtract(1, 'day').format('YYYY-MM-DD')
+}
+
+/**
+ * 把后端返回的日期值收敛为 YYYY-MM-DD（前端兜底）。
+ *
+ * 背景：后端 DATE 列在未做 formatSqlDate 收口时会输出 '2026-09-18T16:00:00.000Z'
+ * （mysql2 以 UTC 零点补零，再经本地时区序列化）。该值若被当参数回传，
+ * 会被接口的 ^\d{4}-\d{2}-\d{2}$ 校验拒收 —— 日记列表点不进详情即此因。
+ * 带时区标记的串按本地时区还原，恰好抵消偏移；纯日期串直接截取。
+ */
+export function toDateOnly(value: unknown): string {
+  if (!value) return ''
+  const s = String(value)
+  const m = s.match(/^(\d{4})-(\d{2})-(\d{2})/)
+  if (!m) return ''
+  if (/T.*(?:Z|[+-]\d{2}:?\d{2})$/.test(s)) {
+    const d = dayjs(s)
+    return d.isValid() ? d.format('YYYY-MM-DD') : `${m[1]}-${m[2]}-${m[3]}`
+  }
+  return `${m[1]}-${m[2]}-${m[3]}`
+}
+
 // ===========================================================================
 // 时间格式转换（全部基于 dayjs，不使用 new Date）
 // ===========================================================================

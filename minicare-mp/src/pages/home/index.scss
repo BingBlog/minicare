@@ -1181,3 +1181,23 @@
   color: #e8507a;
   flex-shrink: 0;
 }
+
+// 加载骨架：与真实卡同高度（高度由 40px badge 决定），避免布局位移
+.home-diary-card--skeleton .home-diary-card__badge {
+  background: #f1ebea;
+}
+
+.home-diary-card__sk {
+  border-radius: 4px;
+  background: #f1ebea;
+}
+
+.home-diary-card__sk--title {
+  width: 64px;
+  height: 14px;
+}
+
+.home-diary-card__sk--text {
+  width: 148px;
+  height: 11px;
+}
