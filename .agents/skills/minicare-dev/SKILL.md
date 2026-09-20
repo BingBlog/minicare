@@ -107,8 +107,10 @@ minicare-server/src/
 
 **唯一权威来源**：`minicare-server/migrations/` 目录，按文件名顺序执行。
 
-> **当前最新迁移**：`019_speaker_device.sql`（001~019 共 19 个文件）
+> **当前最新迁移**：`020_medical_typed_records.sql`（001~020 共 20 个文件）
 > 新增迁移文件后，**必须更新本行的「当前最新迁移」字段**。
+>
+> ⚠️ **环境差异提醒**：生产库可能滞后于本目录。当前生产库停在 **019**（`medical_record` 仅 18 列，无 `vaccine_*`/`checkup_*`/`sick_*`、无 `vaccine_schedule`/`baby_vaccine_setting`），dev/staging 已到 020。写任何跨环境代码前先确认目标库的 `schema_migrations`。
 
 | 文件 | 变更内容 |
 |------|----------|
@@ -131,12 +133,13 @@ minicare-server/src/
 | `017_knowledge_base.sql` | 敏宝知识条目库（M2 知识问答，agent 知识库，FULLTEXT ngram + embedding BLOB） |
 | `018_baby_diary.sql` | 宝宝每日日记（M5 日记生成，baby_id+diary_date 唯一每天一篇） |
 | `019_speaker_device.sql` | 音箱设备绑定（TECH-008「小宝小宝」）：speaker_device（token 哈希+last_conversation_id）+ speaker_binding_code（6 位绑定码，每家庭仅 1 条 pending） |
+| `020_medical_typed_records.sql` | medical_record 类型化扩展（visit_type=vaccine/checkup/sick + vaccine_*/checkup_*/sick_* 列）+ vaccine_schedule 参考库 + baby_vaccine_setting + record_timeline.medical_visit_type（**生产库尚未应用，见上方提醒**） |
 
 ---
 
 ## 数据库表字段速查
 
-> ⚠️ **唯一权威来源**：`minicare-server/migrations/` 目录下的所有 SQL 文件（当前 001~007）  
+> ⚠️ **唯一权威来源**：`minicare-server/migrations/` 目录下的所有 SQL 文件（当前 001~020）  
 > 主键均为 `CHAR(36)` UUID，由**应用层生成传入**（MySQL 不支持 `DEFAULT UUID()`）
 
 ### TINYINT 枚举值域（双向映射必须）
@@ -388,7 +391,7 @@ npx -y gitnexus@latest detect-changes
 - `minicare/docs/tech/DB-01-overview.md` — 数据架构总览（ER 图、存储策略、技术选型）
 - `minicare/docs/tech/DB-02-schema.md` — 完整建表说明（指向 migrations 权威）
 - `minicare/docs/tech/DB-03-mock-data.md` — Mock 数据示例
-- `minicare/minicare-server/migrations/` — **权威 DDL 目录（001~007）**
+- `minicare/minicare-server/migrations/` — **权威 DDL 目录（001~020）**
 - `minicare/docs/business/MVP-PRD.md` — 完整 PRD 存档（已归档，现行权威规格见 docs/features/ + docs/prd/）
 - `.catpaw/skills/minicare-deploy/SKILL.md` — 发布操作手册（含 EnvParams 等敏感参数，不提交 git）
 - `.catpaw/skills/minicare-design/SKILL.md` — 视觉风格指南（UI 页面开发时同时激活）
