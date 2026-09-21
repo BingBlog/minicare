@@ -10,9 +10,9 @@ import { queryMetric, METRICS } from '../query.js'
 export const QUERY_BABY_DATA_TOOL = {
   name: 'query_baby_data',
   description:
-    '查询宝宝健康记录（喂养/睡眠/尿布/生长/健康/表现/活动/就医），支持最近 1-90 天，可按天聚合或取明细。回答"宝宝今天喝了多少奶/睡了多久/长了多少/上次体检"等自家宝宝数据问题时必须调用，结果带统计口径。营养补充（维生素D等）在 feeding 维度、就医/体检在 medical 维度。计算总量（如"今天一共喝了多少毫升奶"）必须用 aggregate=sum 或 trend（服务端 SQL 直接合计，准确）；aggregate=list 只返回最近若干条明细、可能未覆盖当天全部记录，禁止用 list 明细自行加总推断总量。',
+    '查询宝宝健康记录（喂养/睡眠/尿布/生长/健康/表现/活动/就医/服药），支持最近 1-90 天，可按天聚合或取明细。回答"宝宝今天喝了多少奶/睡了多久/长了多少/上次体检/最近在吃什么药"等自家宝宝数据问题时必须调用，结果带统计口径。营养补充（维生素D等）在 feeding 维度、就医/体检与开药在 medical 维度、服药打卡（每次吃了什么药、剂量、时间）在 medication 维度。计算总量（如"今天一共喝了多少毫升奶"）必须用 aggregate=sum 或 trend（服务端 SQL 直接合计，准确）；aggregate=list 只返回最近若干条明细、可能未覆盖当天全部记录，禁止用 list 明细自行加总推断总量。',
   parameters: z.object({
-    metric: z.enum(METRICS).describe('查询维度（feeding=喂养含母乳/配方奶/辅食/营养素，medical=就医体检）'),
+    metric: z.enum(METRICS).describe('查询维度（feeding=喂养含母乳/配方奶/辅食/营养素，medical=就医体检，medication=服药打卡）'),
     days: z.number().int().min(1).max(90).optional().describe('时间窗天数，默认 7'),
     aggregate: z.enum(['list', 'sum', 'avg', 'count', 'trend']).optional().describe('list=明细 / sum=合计 / avg=平均 / count=条数 / trend=按天趋势'),
   }),

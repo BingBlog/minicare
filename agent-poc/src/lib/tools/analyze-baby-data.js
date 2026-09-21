@@ -90,6 +90,7 @@ function digestPatch(metric, row) {
   else if (metric === 'growth') put('growth_count', row.count)
   else if (metric === 'health') put('health_count', row.count)
   else if (metric === 'medical') put('medical_count', row.count)
+  else if (metric === 'medication') put('medication_count', row.count)
   return patch
 }
 
@@ -120,6 +121,7 @@ function buildWeeks(dayMap, windowDays, todayStr) {
       add('symptom_count', sum('symptom_count'))
       add('growth_count', sum('growth_count'))
       add('health_count', sum('health_count'))
+      add('medication_count', sum('medication_count'))
       add('feed_days', daysWith((r) => (r.formula_ml || 0) > 0 || (r.breast_min || 0) > 0))
       add('sleep_days', daysWith((r) => (r.sleep_min || 0) > 0))
       add('activity_days', daysWith((r) => (r.activity_min || 0) > 0))
@@ -175,7 +177,7 @@ async function summaryAnalysis(babyId, metrics, days) {
     totalCount += res.count
     const brief = { hasData: res.count > 0 }
     let metricDays = 0
-    if (res.count > 0 && metric !== 'growth' && metric !== 'symptom') {
+    if (res.count > 0 && metric !== 'growth' && metric !== 'symptom' && metric !== 'medication') {
       const agg = await queryMetric(babyId, metric, windowDays, 'sum')
       brief.summary = agg.summary
     }

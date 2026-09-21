@@ -15,7 +15,7 @@ import { loadLocalEnv } from '../src/lib/env.js'
 loadLocalEnv()
 const { loadConfig } = await import('../src/config.js')
 const { initDb, closeDb } = await import('../src/lib/db.js')
-const { getBabyProfile, cstToday } = await import('../src/lib/profile.js')
+const { getBabyProfile, cstToday, FRESHNESS_LABEL: FRESH_LABEL } = await import('../src/lib/profile.js')
 const { getPerception, renderPerceptionBlock, REF, normalizeFoods } = await import('../src/lib/perception.js')
 const mysql = (await import('mysql2/promise')).default
 
@@ -27,15 +27,7 @@ const OBS_STATUS_LABEL = {
   allergic: '已确认过敏',
   paused: '已暂停',
 }
-const FRESH_LABEL = {
-  formula: '配方奶',
-  food: '辅食',
-  supplement: '营养补充',
-  growth: '生长测量',
-  symptom: '症状',
-  medical: '就医记录',
-  diary: '日记',
-}
+// 数据源中文名统一从 profile.js 复用，避免多份清单漂移
 
 const cfg = loadConfig()
 initDb(cfg)

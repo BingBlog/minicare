@@ -4,7 +4,8 @@
  * 运行：cd agent-poc && NODE_OPTIONS= node scripts/verify-perception.mjs
  * 覆盖：六板块字段完整性、注入 systemPrompt 的实际效果、缓存命中、
  *      归一化与七大类归类、合理性 flag 与字段的自洽、元信号（无记录 ≠ 阴性结论）、
- *      单一真相源（阶段/新鲜度与 profile.js 同源、参考值只在 REF）。
+ *      单一真相源（阶段/新鲜度与 profile.js 同源、参考值只在 REF）、
+ *      边界（无配方记录的宝宝不得整段降级）。
  * 失败即退出码 1，可直接接进 CI。依赖 dev 库（.env.local）。
  */
 import { loadLocalEnv } from '../src/lib/env.js'
@@ -162,6 +163,21 @@ if (q.stage && q.stage.level > 1) {
   check('后续取数仍用默认参考值', after.ref.stageStableDays === REF.stageStableDays, String(after.ref.stageStableDays))
   invalidatePerception(baby.id)
 }
+
+// ── 8. 边界：无配方记录的宝宝不得整段降级 ─────────────────────────────
+// 回归：buildFlags 曾直接访问 stage.level，formula 为 null 时抛 TypeError，
+// 使新用户 / 纯母乳 / 未开始转奶的宝宝连排敏、多样性、可信度一起拿不到。
+console.log('\n=== 边界：无配方记录（stage=null）===')
+const noFormula = { ...p, formula: null }
+// 传 ref 以绕过缓存且不写缓存（否则伪造 profile 会顶掉真实缓存）
+const qn = await getPerception(baby.id, { profile: noFormula, ref: { stageStableDays: REF.stageStableDays } })
+check('formula=null 时感知仍构建成功（不整段降级）', qn !== null && qn.babyId === baby.id)
+check('stage=null 是合法状态（非异常）', qn?.stage === null)
+check('无配方记录时不给 transition_ready', Boolean(qn) && !qn.flags.some((f) => f.key === 'transition_ready'))
+check('无配方记录时其余四板块仍在', Boolean(qn) && ['allergy', 'variety', 'maintain', 'trust'].every((k) => qn[k]))
+const blockNoFormula = renderPerceptionBlock(qn)
+check('无配方记录时仍可渲染（转奶段给"信息缺失"）', blockNoFormula.includes('转奶：') && blockNoFormula.includes('无法判定阶段'))
+check('无配方记录不污染缓存（后续取数仍有 stage）', (await getPerception(baby.id))?.stage?.level === p.formula.ladderLevel)
 
 console.log('\n结果: ' + pass + ' PASS / ' + fail + ' FAIL')
 await closeDb()

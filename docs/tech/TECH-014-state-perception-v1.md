@@ -355,7 +355,7 @@ dev 实测暴露了一个反例：`强化铁米`（建档名）与 `高铁米粉
 | agent | 新增 `src/lib/perception.js`；`runtime.js` 取数并传入；`prompts/system.js` 追加现状块 | 518 行 | ✅ 已合 |
 | 助手 | 注入后开口即带现状；`R1`-`R6` 每轮最多提 1 条 | prompt +825 字符 | ✅ 已合 |
 | 小程序 | **零改动**（首页卡改造列为下一期） | 0 | — |
-| 脚本 | `perception-preview.mjs`（人眼核对）/ `verify-perception.mjs`（52 断言）/ `ask-agent.mjs`（单轮实跑） | 420 行 | ✅ 已合 |
+| 脚本 | `perception-preview.mjs`（人眼核对）/ `verify-perception.mjs`（58 断言）/ `ask-agent.mjs`（单轮实跑） | 420 行 | ✅ 已合 |
 
 **实际改动清单（逐文件）**
 
@@ -385,7 +385,7 @@ dev 实测暴露了一个反例：`强化铁米`（建档名）与 `高铁米粉
 
 | 步 | 动作 | 通过标准 | 实测 |
 |---|---|---|---|
-| 1 | `cd agent-poc && NODE_OPTIONS= node scripts/verify-perception.mjs` | 52 项断言全过（归一化 / 空值语义 / 计数自洽 / flag 与字段一致 / 注入效果 / 缓存 / 参数化参考值） | 52 PASS / 0 FAIL |
+| 1 | `cd agent-poc && NODE_OPTIONS= node scripts/verify-perception.mjs` | 58 项断言全过（归一化 / 空值语义 / 计数自洽 / flag 与字段一致 / 注入效果 / 缓存 / 参数化参考值 / 边界：无配方记录不降级） | 58 PASS / 0 FAIL |
 | 2 | `NODE_OPTIONS= node scripts/perception-preview.mjs` | 七段全部输出（含 §⑦ 实际注入文本），进程正常退出 | 通过 |
 | 3 | `NODE_OPTIONS= node scripts/verify-profile.mjs` | 22 项断言仍全过（确认复用未破坏既有画像） | 22 PASS / 0 FAIL |
 | 4 | `NODE_OPTIONS= node scripts/eval/eval-agent.mjs --group=l1 --no-judge` | 工具组用例不因注入而回归 | 8/8 通过 |
@@ -469,7 +469,7 @@ E5 是元信号的典型：**"没有记录"与"记录显示不达标"必须区�
 | Q4 | `R3` 未维持的暴露窗口取 14 天还是 30 天 | 命中数量从 8 变 3 | 建议 14 天（更贴近"还在吃"的直觉），30 天仅作参考 |
 | Q5 | 首页是否展示这批数字 | 影响聚合是否需提前下沉服务端 | 本期不做；若要做，按 TECH-013 §4.1 ADR-001 提前下沉 |
 | Q6 | **本地体验时看到的是 dev 库数据，窗口停在 09-03** | 直接跑会看到"近 14 天无辅食记录 / 已 17 天未更新"，像是功能坏了 | 不是故障，是 dev 种子数据没有滚到今天。要看到"活"的数字，先跑 `node minicare-server/scripts/seed-dev-data.mjs`（幂等，只重建 7 天内自己造的记录）；或把 dev 库指向生产快照 |
-| Q7 | 现状块 825 字符是否还要压 | 每轮成本 | 观察到模型偶尔会复述条目（prompt 里已明令禁止）。若实际使用中仍偏多，优先砍"数据可信度"整行（信息密度最低）|
+| Q7 | 现状块 833 字符是否还要压 | 每轮成本 | 观察到模型偶尔会复述条目（prompt 里已明令禁止）。若实际使用中仍偏多，优先砍"数据可信度"整行（信息密度最低）|
 
 ---
 

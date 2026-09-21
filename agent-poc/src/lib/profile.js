@@ -50,18 +50,19 @@ const ALLERGEN_LABEL = {
 }
 const LEVEL_LABEL = { mild: '轻度', moderate: '中度', severe: '重度' }
 
-/** 数据源中文名（新鲜度渲染用） */
-const FRESHNESS_LABEL = {
+/** 数据源中文名（新鲜度渲染用）——唯一出处：perception.js 与干跑脚本均从本文件复用 */
+export const FRESHNESS_LABEL = {
   formula: '配方奶',
   food: '辅食',
   supplement: '营养补充',
+  medication: '服药',
   growth: '生长测量',
   symptom: '症状',
   medical: '就医记录',
   diary: '日记',
 }
 /** 超过这些天数视为"陈旧"（月龄尺度不同，阈值分档） */
-const STALE_DAYS = { formula: 3, food: 3, supplement: 3, growth: 45, symptom: 14, medical: 45, diary: 3 }
+const STALE_DAYS = { formula: 3, food: 3, supplement: 3, medication: 3, growth: 45, symptom: 14, medical: 45, diary: 3 }
 /**
  * 判定"已停母乳"的间隔阈值（天）。
  * 依据：母乳喂养若连续 14 天无任何记录，视为已停（与 STALE_DAYS.symptom 同尺度）。
@@ -382,11 +383,12 @@ async function queryFreshness(db, babyId) {
     `SELECT 'formula' AS src, MAX(record_time) AS latest FROM feeding_formula_record WHERE baby_id = ?
      UNION ALL SELECT 'food', MAX(record_time) FROM feeding_food_record WHERE baby_id = ?
      UNION ALL SELECT 'supplement', MAX(record_time) FROM feeding_supplement_record WHERE baby_id = ?
+     UNION ALL SELECT 'medication', MAX(record_time) FROM medication_record WHERE baby_id = ? AND deleted_at IS NULL
      UNION ALL SELECT 'growth', MAX(record_date) FROM growth_record WHERE baby_id = ?
      UNION ALL SELECT 'symptom', MAX(record_time) FROM symptom_record WHERE baby_id = ?
      UNION ALL SELECT 'medical', MAX(visit_date) FROM medical_record WHERE baby_id = ?
      UNION ALL SELECT 'diary', MAX(diary_date) FROM baby_diary WHERE baby_id = ?`,
-    [babyId, babyId, babyId, babyId, babyId, babyId, babyId],
+    [babyId, babyId, babyId, babyId, babyId, babyId, babyId, babyId],
   )
   const out = {}
   for (const r of rows) {
@@ -550,7 +552,7 @@ export function renderProfileBlock(profile) {
 
   // 数据新鲜度（元信号）
   if (freshness) {
-    const order = ['formula', 'food', 'supplement', 'growth', 'symptom', 'medical']
+    const order = ['formula', 'food', 'supplement', 'medication', 'growth', 'symptom', 'medical']
     const texts = order.map((s) => freshnessText(s, freshness[s]))
     lines.push(`数据新鲜度：${texts.join(' / ')}。`)
   }

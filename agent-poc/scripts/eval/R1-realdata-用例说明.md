@@ -69,7 +69,7 @@ DB_NAME=minicare-cloud-6gqledlle0132cbe node scripts/eval/eval-agent.mjs --group
 | R1-06 | ✅ 37s | analyze(growth)，百分位与记录如实 |
 | R1-04 | 初版❌→放宽后✅ | **发现**：「有没有异常」模型 2/2 稳定走 `query(sleep, aggregate=trend)` 而非 `analyze(trend)`，回答质量达标（准确定位 8/25、家长化）。属 systemPrompt 的路由灰区——systemPrompt 规则 6 说"趋势→analyze"，模型未遵守但结果更好。可选优化：规则 6 改为"单维趋势可用 query(aggregate=trend)，跨维总结用 analyze"，或将本用例恢复严格断言以驱动 prompt 修正 |
 
-## 五、工具能力边界与已知改进项（2026-09-01 已修复，用例同步转为正向断言）
+## 五、工具能力边界与已知改进项（已修复，用例同步转为正向断言）
 
 | # | 原问题 | 修复 | 验证 |
 |---|---|---|---|
@@ -79,6 +79,7 @@ DB_NAME=minicare-cloud-6gqledlle0132cbe node scripts/eval/eval-agent.mjs --group
 | 4 | generate_diary 忽略 date：`dayRecords` 固定 days=1（NOW 窗口） | 新增 `queryMetricOnDate(babyId, metric, date)` 按日精确取数；babyInfo 月龄按日记日期算 | ✅ 实测 date=2026-08-29 聚合该日 feeding:8/sleep:6 |
 | 5 | 生长百分位用当前月龄 | `growthAnalysis` 改用 `ageInMonths(birth, last.record_date)`（测量日月龄） | ✅ 9.15kg@5月龄 → **P85-P97**（原按 8 月龄误判 P50-P85，掩盖偏胖） |
 | 6 | systemPrompt 规则 6 路由灰区（「有没有异常」走 query 而非 analyze） | 规则 6 改为「单维趋势 query(trend) 或 analyze(trend) 皆可」 | 待全量回归 |
+| 7 | 服药记录：`medication_record`（migration 013）不在工具覆盖，问「最近在吃什么药」答不出（2026-09-21） | METRICS 新增 `medication`（→ medication_record，timeCol=record_time，过滤 `deleted_at`）；该维度列清单显式化以剔除 `recorded_by`（用户 UUID）；同时纳入 `profile.freshness` 与 inject 块 | ✅ 实测 90 天窗口返回氯雷他定糖浆 / 西替利嗪滴剂；画像出现「服药 32 天前」 |
 
 > ⚠️ R1-06 百分位预期已随修复改为 **P85-P97（5 月龄测量）**，运行前请勿回退旧值。
 > `food_observation`（辅食过敏观察）仍未接入工具，如后续需要可在 METRICS 增加。

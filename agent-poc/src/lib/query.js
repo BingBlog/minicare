@@ -13,13 +13,14 @@
  *   symptom   → symptom_record
  *   activity  → activity_record
  *   medical   → medical_record（就医/体检）
+ *   medication→ medication_record（服药打卡，migration 013）
  *
  * aggregate：list（最近 N 条）/ sum / avg / count / trend（按天分组）。
  * days 服务端 clamp 1-90（M3 §3.2）。
  */
 import { getDb } from './db.js'
 
-export const METRICS = ['feeding', 'sleep', 'diaper', 'growth', 'health', 'symptom', 'activity', 'medical']
+export const METRICS = ['feeding', 'sleep', 'diaper', 'growth', 'health', 'symptom', 'activity', 'medical', 'medication']
 export const METRIC_LABELS = {
   feeding: '喂养',
   sleep: '睡眠',
@@ -29,6 +30,7 @@ export const METRIC_LABELS = {
   symptom: '表现',
   activity: '活动',
   medical: '就医',
+  medication: '服药',
 }
 
 const clampDays = (days) => Math.max(1, Math.min(90, Number(days) || 7))
@@ -68,6 +70,8 @@ const SIMPLE_METRICS = {
   symptom: { table: 'symptom_record', timeCol: 'record_time', numericCol: null, statusWhere: '' },
   activity: { table: 'activity_record', timeCol: 'record_time', numericCol: 'duration_min', statusWhere: '' },
   medical: { table: 'medical_record', timeCol: 'visit_date', numericCol: null, statusWhere: '' },
+  // 服药打卡（013）：表带 deleted_at 软删除列，未软删的才返回
+  medication: { table: 'medication_record', timeCol: 'record_time', numericCol: null, statusWhere: 'AND deleted_at IS NULL' },
 }
 
 // ---------- medical 列显式化 + 类型化列运行时探测（2026-09-19，migration 020）----------
@@ -117,9 +121,20 @@ async function medicalSelect(db) {
   return typed ? `${MEDICAL_SELECT_BASE}, ${MEDICAL_SELECT_TYPED_EXTRA}` : MEDICAL_SELECT_BASE
 }
 
-/** 仅 medical 需要显式列（其余表无跨环境 schema 差异，保留 * 以免列清单失维护） */
+/**
+ * medication 显式列：剔除 recorded_by（user_account UUID）与 deleted_at ——
+ * SELECT * 会把内部标识一并塞进模型上下文。故本维度列清单固定。
+ */
+const MEDICATION_SELECT = ['medication_name', 'dose', 'record_time', 'note'].join(', ')
+
+/**
+ * 需要显式列的两个维度：medical（跨环境 schema 差异）/ medication（隐私列剔除）；
+ * 其余表无差异，保留 * 以免列清单失维护。
+ */
 async function selectClause(db, metric) {
-  return metric === 'medical' ? medicalSelect(db) : '*'
+  if (metric === 'medical') return medicalSelect(db)
+  if (metric === 'medication') return MEDICATION_SELECT
+  return '*'
 }
 
 // ---------- 查询实现 ----------

@@ -32,6 +32,7 @@ import {
   toDateStr,
   LADDER_LABEL,
   LADDER_LEVEL,
+  FRESHNESS_LABEL as FRESH_LABEL, // 数据源中文名唯一出处，勿在本文件另立一份
 } from './profile.js'
 
 const CACHE_TTL_MS = 5 * 60 * 1000
@@ -70,16 +71,7 @@ const OBS_STATUS_LABEL = {
   allergic: '已确认过敏',
   paused: '已暂停',
 }
-/** 新鲜度数据源（与 profile.js FRESHNESS_LABEL 同集） */
-const FRESH_LABEL = {
-  formula: '配方奶',
-  food: '辅食',
-  supplement: '营养补充',
-  growth: '生长测量',
-  symptom: '症状',
-  medical: '就医记录',
-  diary: '日记',
-}
+// 数据源中文名 FRESH_LABEL 已统一由 profile.js 导出（见顶部 import）——勿在本文件另立清单
 
 // ── 食材归一化（同一食材重复建档 / 形态差异）─────────────────────────
 /** 七大类食物（膳食指南口径）关键词表 */
@@ -255,7 +247,10 @@ function buildFlags({ stage, allergy, variety, maintain, trust }, ref) {
       detail: `${maintain.idleSafe.length} 种已判耐受但近 ${ref.windowVarietyDays} 天未再食用`,
     })
   }
-  if (stage.level > 1 && stage.stableDays >= ref.stageStableDays) {
+  // stage 可为 null（尚无配方记录的宝宝：新用户 / 纯母乳 / 未开始转奶）——
+  // 这是合法状态，不是异常。缺此守卫会抛 TypeError 导致整个感知层降级为 null，
+  // 使这些宝宝连排敏、多样性、可信度都拿不到。
+  if (stage && stage.level > 1 && stage.stableDays >= ref.stageStableDays) {
     flags.push({
       key: 'transition_ready',
       label: '转奶可推进',
