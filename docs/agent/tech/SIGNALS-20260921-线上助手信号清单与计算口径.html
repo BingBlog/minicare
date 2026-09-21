@@ -1,0 +1,1928 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>线上助手信号清单与计算口径</title>
+<style>
+:root{--bg:#f6f7f9;--paper:#fff;--ink:#1f2328;--ink2:#4a5058;--ink3:#6b7280;
+--line:#e3e6ea;--line2:#eef0f3;--accent:#2563eb;--accent-soft:#eff4ff;
+--code-bg:#f4f6f8;--code-ink:#b4315a;--thead:#f0f3f7;--zebra:#fafbfc;}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);
+font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+-webkit-font-smoothing:antialiased}
+.wrap{display:flex;max-width:1440px;margin:0 auto;gap:26px;padding:0 20px;align-items:flex-start}
+.toc{position:sticky;top:0;flex:0 0 270px;max-height:100vh;overflow-y:auto;
+padding:28px 6px 40px 0;font-size:13px;line-height:1.5}
+.toc-title{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--ink3);padding:0 10px 10px}
+.toc a{display:block;padding:4px 10px;color:var(--ink2);text-decoration:none;
+border-left:2px solid transparent;border-radius:0 4px 4px 0}
+.toc a:hover{background:var(--accent-soft);color:var(--accent);border-left-color:var(--accent)}
+.toc a.lvl2{font-weight:600;margin-top:9px}
+.toc a.lvl3{padding-left:22px;color:var(--ink3);font-size:12.5px}
+main{flex:1 1 auto;min-width:0;background:var(--paper);margin:24px 0 60px;
+padding:44px 52px 64px;border-radius:12px;
+box-shadow:0 1px 3px rgba(16,24,40,.06),0 8px 24px -12px rgba(16,24,40,.1)}
+main>:first-child{margin-top:0}
+h1{font-size:29px;line-height:1.32;margin:0 0 22px;padding-bottom:18px;
+border-bottom:2px solid var(--line);letter-spacing:-.01em}
+h2{font-size:21px;margin:50px 0 16px;padding-bottom:10px;
+border-bottom:1px solid var(--line);scroll-margin-top:20px}
+h3{font-size:17px;margin:34px 0 12px;scroll-margin-top:20px}
+p{margin:13px 0}a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+blockquote{margin:18px 0;padding:14px 20px;background:#f8fafc;border-left:3px solid #cbd5e1;
+border-radius:0 6px 6px 0;color:var(--ink2);font-size:14.5px}
+blockquote p{margin:5px 0}
+ul,ol{padding-left:24px;margin:13px 0}li{margin:5px 0}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;
+background:var(--code-bg);color:var(--code-ink);padding:.16em .42em;border-radius:4px;
+word-break:break-word}
+pre{background:#1e2430;color:#e6edf3;padding:18px 20px;border-radius:8px;overflow-x:auto;
+margin:18px 0;font-size:12.5px;line-height:1.7}
+pre code{background:none;color:inherit;padding:0;font-size:inherit;white-space:pre-wrap}
+table{border-collapse:separate;border-spacing:0;width:100%;margin:18px 0;font-size:13.5px;
+border:1px solid var(--line);border-radius:8px;overflow:hidden}
+thead th{background:var(--thead);font-weight:700;text-align:left;padding:10px 13px;
+border-bottom:1px solid var(--line);white-space:nowrap}
+tbody td{padding:9px 13px;border-bottom:1px solid var(--line2);vertical-align:top}
+tbody tr:nth-child(even) td{background:var(--zebra)}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:#f5f8ff}
+hr{border:none;border-top:1px solid var(--line);margin:40px 0}
+strong{font-weight:700;color:#111827}
+.docmeta{font-size:12.5px;color:var(--ink3);padding:14px 0 0;
+border-top:1px solid var(--line2);margin-top:40px}
+@media(max-width:1020px){.wrap{flex-direction:column}
+.toc{position:static;flex:none;max-height:none;width:100%;padding:20px 0 0}
+main{padding:28px 20px 44px;margin:0 0 40px}
+h1{font-size:23px}h2{font-size:18px}table{font-size:12.5px}}
+</style></head><body>
+<div class="wrap">
+<nav class="toc"><div class="toc-title">目录 · 14 节 / 29 小节</div><a class="lvl2" href="#1-总览-信号分四层">1. 总览：信号分四层</a><a class="lvl2" href="#2-信号总量对账">2. 信号总量对账</a><a class="lvl2" href="#3-第-0-层-上下文与日期信号">3. 第 0 层：上下文与日期信号</a><a class="lvl2" href="#4-第-1-层-原始数据维度-模型自查通道">4. 第 1 层：原始数据维度（模型自查通道）</a><a class="lvl3" href="#4-1-维度-数据表映射">4.1 维度 → 数据表映射</a><a class="lvl3" href="#4-2-feeding-的四个子表">4.2 feeding 的四个子表</a><a class="lvl3" href="#4-3-五种聚合方式">4.3 五种聚合方式</a><a class="lvl3" href="#4-4-跨环境兼容-medical-的列探测">4.4 跨环境兼容：medical 的列探测</a><a class="lvl3" href="#4-5-隐私列剔除">4.5 隐私列剔除</a><a class="lvl2" href="#5-第-2-层-画像信号-lib-profile-js">5. 第 2 层：画像信号（lib/profile.js）</a><a class="lvl3" href="#5-1-A-组-基本情况-queryBasic">5.1 A 组 基本情况（queryBasic）</a><a class="lvl3" href="#5-2-B-组-配方与转奶进度-queryFormula-核心信号">5.2 B 组 配方与转奶进度（queryFormula）—— 核心信号</a><a class="lvl3" href="#5-3-C-组-喂养方式-queryFeeding">5.3 C 组 喂养方式（queryFeeding）</a><a class="lvl3" href="#5-4-E-组-生长分位-queryGrowth">5.4 E 组 生长分位（queryGrowth）</a><a class="lvl3" href="#5-5-I-组-数据新鲜度-queryFreshness-元信号">5.5 I 组 数据新鲜度（queryFreshness）—— 元信号</a><a class="lvl3" href="#5-6-画像渲染块形态">5.6 画像渲染块形态</a><a class="lvl2" href="#6-第-3-层-现状感知信号-lib-perception-js">6. 第 3 层：现状感知信号（lib/perception.js）</a><a class="lvl3" href="#6-1-板块①-转奶阶段与进度-复用-profile-formula-派生">6.1 板块① 转奶阶段与进度（复用 profile.formula + 派生）</a><a class="lvl3" href="#6-2-板块②-排敏进度-queryObservations">6.2 板块② 排敏进度（queryObservations）</a><a class="lvl3" href="#6-3-食材归一化与七大类归类-贯穿板块②③④">6.3 食材归一化与七大类归类（贯穿板块②③④）</a><a class="lvl3" href="#6-4-板块③-日常摄入多样性-queryVariety">6.4 板块③ 日常摄入多样性（queryVariety）</a><a class="lvl3" href="#6-5-板块④-已耐受维持暴露-queryEaten-交叉">6.5 板块④ 已耐受维持暴露（queryEaten + 交叉）</a><a class="lvl3" href="#6-6-板块⑤-数据可信度-复用-profile-freshness">6.6 板块⑤ 数据可信度（复用 profile.freshness）</a><a class="lvl3" href="#6-7-板块⑥-合理性判定-buildFlags-6-条规则-6-个-flag">6.7 板块⑥ 合理性判定（buildFlags，6 条规则 → 6 个 flag）</a><a class="lvl3" href="#6-8-现状块渲染形态">6.8 现状块渲染形态</a><a class="lvl2" href="#7-第-4-层-分析派生信号-analyze_baby_data">7. 第 4 层：分析派生信号（analyze_baby_data）</a><a class="lvl3" href="#7-1-scope-trend-单维趋势">7.1 scope=trend 单维趋势</a><a class="lvl3" href="#7-2-scope-summary-跨维综合总结">7.2 scope=summary 跨维综合总结</a><a class="lvl3" href="#7-3-scope-growth-生长曲线解读">7.3 scope=growth 生长曲线解读</a><a class="lvl3" href="#7-4-画像里的趋势措辞">7.4 画像里的趋势措辞</a><a class="lvl2" href="#8-参考值与阈值总表">8. 参考值与阈值总表</a><a class="lvl3" href="#8-1-REF-现状感知参考值唯一出处">8.1 REF —— 现状感知参考值唯一出处</a><a class="lvl3" href="#8-2-其他阈值">8.2 其他阈值</a><a class="lvl3" href="#8-3-参考值的边界声明">8.3 参考值的边界声明</a><a class="lvl2" href="#9-元信号与护栏-什么时候不该下结论">9. 元信号与护栏：什么时候不该下结论</a><a class="lvl3" href="#9-1-无记录-数据陈旧">9.1 「无记录」≠「数据陈旧」</a><a class="lvl3" href="#9-2-覆盖率不足不下阴性结论">9.2 覆盖率不足不下阴性结论</a><a class="lvl3" href="#9-3-注入块自带的行为约束">9.3 注入块自带的行为约束</a><a class="lvl2" href="#10-尚未支持的信号-缺口清单">10. 尚未支持的信号（缺口清单）</a><a class="lvl2" href="#11-代码与文件地图">11. 代码与文件地图</a><a class="lvl2" href="#附录-A-四层信号速查-一屏版">附录 A：四层信号速查（一屏版）</a><a class="lvl2" href="#附录-B-命令速查">附录 B：命令速查</a><a class="lvl2" href="#附录-C-改信号时的连带改动清单">附录 C：改信号时的连带改动清单</a></nav>
+<main>
+<h1>线上助手信号清单与计算口径</h1>
+<blockquote>
+<p><strong>文档编号</strong>：SIGNALS-20260921
+<strong>适用版本</strong>：<code>minicare-agent-015</code>（线上 production，2026-09-21 上线）
+<strong>核实方式</strong>：逐行读 <code>agent-poc/src/lib/{profile,perception,query,growth}.js</code> 与 <code>src/lib/tools/*.js</code>，非依据设计文档转述
+<strong>一句话</strong>：助手回答里出现的每一个数字，都能在下文找到它的来源表、SQL 口径、派生规则和阈值出处。
+<strong>不在本文范围</strong>：知识库检索（search_knowledge）、图片理解（视觉模型）、日记生成（generate_diary）—— 那三条是&quot;内容&quot;链路，不是&quot;信号&quot;链路。</p>
+</blockquote>
+<hr />
+<h2 id="1-总览-信号分四层">1. 总览：信号分四层</h2>
+<p>助手拿到一个数字，路径不是&quot;模型去查库&quot;，而是<strong>服务端先算好结论、注入 prompt，模型只负责组织语言</strong>。因此信号按&quot;离原始数据多远&quot;分成四层：</p>
+<pre><code>第 0 层  上下文与日期        2 个   → 每轮必注入（无 SQL）
+第 1 层  原始数据维度        9 维   → 模型按需调用 query_baby_data 自查明细
+第 2 层  画像信号        5 组 41+  → 每轮注入，答&quot;是什么样&quot;
+第 3 层  现状感知信号    6 板块 60+ → 每轮注入，答&quot;走到哪了、这样走合理吗&quot;
+第 4 层  分析派生信号     3 scope  → 模型按需调用 analyze_baby_data，答&quot;趋势/总结/生长水平&quot;
+</code></pre>
+<p>两层注入（第 2、3 层）合计约 833 字符/轮，是<strong>每轮固定成本</strong>（≈300 token）。</p>
+<p>关键区别：</p>
+<table>
+<thead>
+<tr>
+  <th>层</th>
+  <th>谁在算</th>
+  <th>何时算</th>
+  <th>模型能看到什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>第 0 层</td>
+  <td>服务端</td>
+  <td>每轮</td>
+  <td>今天/昨天的具体日期</td>
+</tr>
+<tr>
+  <td>第 1 层</td>
+  <td>服务端</td>
+  <td>模型主动调用时</td>
+  <td>原始记录明细与 SQL 聚合值</td>
+</tr>
+<tr>
+  <td>第 2 层</td>
+  <td>服务端</td>
+  <td>每轮（5 分钟缓存）</td>
+  <td>已算好的中文结论</td>
+</tr>
+<tr>
+  <td>第 3 层</td>
+  <td>服务端</td>
+  <td>每轮（5 分钟缓存）</td>
+  <td>已算好的中文结论 + 判定</td>
+</tr>
+<tr>
+  <td>第 4 层</td>
+  <td>服务端</td>
+  <td>模型主动调用时</td>
+  <td>趋势方向、异常点、百分位档</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="2-信号总量对账">2. 信号总量对账</h2>
+<table>
+<thead>
+<tr>
+  <th>层</th>
+  <th>单元</th>
+  <th>数量</th>
+  <th>载体</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>第 0 层</td>
+  <td>上下文信号</td>
+  <td>2</td>
+  <td><code>prompts/system.js</code></td>
+</tr>
+<tr>
+  <td>第 1 层</td>
+  <td>数据维度（metric）</td>
+  <td>9</td>
+  <td><code>lib/query.js::METRICS</code></td>
+</tr>
+<tr>
+  <td>第 1 层</td>
+  <td>覆盖数据表</td>
+  <td>13</td>
+  <td>见 §4.1</td>
+</tr>
+<tr>
+  <td>第 1 层</td>
+  <td>聚合方式</td>
+  <td>5</td>
+  <td><code>list/sum/avg/count/trend</code></td>
+</tr>
+<tr>
+  <td>第 2 层</td>
+  <td>画像分组</td>
+  <td>5</td>
+  <td><code>lib/profile.js::buildProfile</code></td>
+</tr>
+<tr>
+  <td>第 2 层</td>
+  <td>数据新鲜度源</td>
+  <td>8</td>
+  <td><code>FRESHNESS_LABEL</code></td>
+</tr>
+<tr>
+  <td>第 3 层</td>
+  <td>感知板块</td>
+  <td>6</td>
+  <td><code>lib/perception.js</code></td>
+</tr>
+<tr>
+  <td>第 3 层</td>
+  <td>排敏状态枚举</td>
+  <td>5</td>
+  <td><code>OBS_STATUS</code></td>
+</tr>
+<tr>
+  <td>第 3 层</td>
+  <td>判定规则（flag）</td>
+  <td>6</td>
+  <td><code>buildFlags()</code></td>
+</tr>
+<tr>
+  <td>第 4 层</td>
+  <td>分析 scope</td>
+  <td>3</td>
+  <td><code>analyze_baby_data</code></td>
+</tr>
+<tr>
+  <td>第 4 层</td>
+  <td>生长百分位档</td>
+  <td>7</td>
+  <td><code>growth.js::bucket</code></td>
+</tr>
+<tr>
+  <td>参考值</td>
+  <td>行业参考常量</td>
+  <td>10</td>
+  <td><code>REF</code>（唯一出处）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-第-0-层-上下文与日期信号">3. 第 0 层：上下文与日期信号</h2>
+<table>
+<thead>
+<tr>
+  <th>#</th>
+  <th>信号</th>
+  <th>值</th>
+  <th>计算口径</th>
+  <th>代码位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>0-1</td>
+  <td>今天</td>
+  <td><code>YYYY-MM-DD</code></td>
+  <td><code>cstToday()</code> = <code>Date.now() + 8h</code> 后取 ISO 串前 10 位。<strong>不用 <code>toISOString()</code></strong> —— UTC 在 00:00-08:00 会差一天</td>
+  <td><code>profile.js::cstToday</code></td>
+</tr>
+<tr>
+  <td>0-2</td>
+  <td>昨天</td>
+  <td><code>YYYY-MM-DD</code></td>
+  <td>今天 - 1 天，纯日期算术（<code>shiftDays(today, -1)</code>），与本地时区无关</td>
+  <td><code>system.js::shiftDays</code></td>
+</tr>
+</tbody>
+</table>
+<p>注入形态：</p>
+<pre><code>【当前日期】今天 2026-09-21，昨天 2026-09-20（北京时间）。
+【当前上下文】familyId=... babyId=...（宝宝档案可在数据接入后查询）
+</code></pre>
+<p><strong>为什么必须有</strong>：模型没有内置时钟。缺这一条，&quot;帮我写日记&quot;会按训练数据的年份猜日期；这也是 F2 修复的根因。</p>
+<hr />
+<h2 id="4-第-1-层-原始数据维度-模型自查通道">4. 第 1 层：原始数据维度（模型自查通道）</h2>
+<p>模型调用 <code>query_baby_data(metric, days, aggregate)</code> 时走的就是这一层。<code>days</code> 服务端 clamp 到 <strong>1-90</strong>。</p>
+<h3 id="4-1-维度-数据表映射">4.1 维度 → 数据表映射</h3>
+<table>
+<thead>
+<tr>
+  <th>metric</th>
+  <th>中文</th>
+  <th>数据表</th>
+  <th>时间列</th>
+  <th>数值列</th>
+  <th>过滤条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>feeding</td>
+  <td>喂养</td>
+  <td>4 张子表（见 §4.2）</td>
+  <td>record_time</td>
+  <td>分表</td>
+  <td>无</td>
+</tr>
+<tr>
+  <td>sleep</td>
+  <td>睡眠</td>
+  <td>sleep_record</td>
+  <td>start_time</td>
+  <td>duration_min</td>
+  <td><code>status='ended'</code></td>
+</tr>
+<tr>
+  <td>diaper</td>
+  <td>尿布</td>
+  <td>diaper_record</td>
+  <td>record_time</td>
+  <td>—</td>
+  <td>无</td>
+</tr>
+<tr>
+  <td>growth</td>
+  <td>生长</td>
+  <td>growth_record</td>
+  <td>record_date</td>
+  <td>weight_g</td>
+  <td>无</td>
+</tr>
+<tr>
+  <td>health</td>
+  <td>健康</td>
+  <td>health_record</td>
+  <td>record_time</td>
+  <td>temperature</td>
+  <td>无</td>
+</tr>
+<tr>
+  <td>symptom</td>
+  <td>表现</td>
+  <td>symptom_record</td>
+  <td>record_time</td>
+  <td>—</td>
+  <td>无</td>
+</tr>
+<tr>
+  <td>activity</td>
+  <td>活动</td>
+  <td>activity_record</td>
+  <td>record_time</td>
+  <td>duration_min</td>
+  <td>无</td>
+</tr>
+<tr>
+  <td>medical</td>
+  <td>就医</td>
+  <td>medical_record</td>
+  <td>visit_date</td>
+  <td>—</td>
+  <td>无</td>
+</tr>
+<tr>
+  <td>medication</td>
+  <td>服药</td>
+  <td>medication_record</td>
+  <td>record_time</td>
+  <td>—</td>
+  <td><code>deleted_at IS NULL</code></td>
+</tr>
+</tbody>
+</table>
+<p>总计覆盖 <strong>13 张表</strong>（feeding 计 5 张，见下）。</p>
+<h3 id="4-2-feeding-的四个子表">4.2 feeding 的四个子表</h3>
+<table>
+<thead>
+<tr>
+  <th>子表 key</th>
+  <th>中文</th>
+  <th>表</th>
+  <th>输出字段</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>breast</td>
+  <td>母乳</td>
+  <td>feeding_breast_record</td>
+  <td>side（侧别）、duration_min</td>
+</tr>
+<tr>
+  <td>formula</td>
+  <td>配方奶</td>
+  <td>feeding_formula_record</td>
+  <td>duration_min、ml（formula_ml）</td>
+</tr>
+<tr>
+  <td>food</td>
+  <td>辅食</td>
+  <td>feeding_food_record LEFT JOIN feeding_food_item</td>
+  <td>food_name、amount_g、amount_note</td>
+</tr>
+<tr>
+  <td>supplement</td>
+  <td>营养素</td>
+  <td>feeding_supplement_record</td>
+  <td>supplement_items（JSON 解析为 label/key/dose/unit）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>口径要点</strong>：<code>food</code> 子表因 LEFT JOIN 每个食材膨胀一行。取明细时非 food 子表预取 <code>limit</code> 行、food 子表预取 <code>limit*3</code> 行，合并排序后再 <code>slice(0, limit)</code>。此前非 food 子表仅预取 <code>ceil(limit/4)</code>，当日顿数一多就把配方奶行截断 → 模型按可见明细心算总量出错（生产日记 460 vs 880 事故根因）。</p>
+<h3 id="4-3-五种聚合方式">4.3 五种聚合方式</h3>
+<table>
+<thead>
+<tr>
+  <th>aggregate</th>
+  <th>返回</th>
+  <th>口径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>list</td>
+  <td><code>rows</code>（最多 10 条明细）</td>
+  <td>按时间倒序取最近 10 条。<strong>不得用于加总推断总量</strong></td>
+</tr>
+<tr>
+  <td>count</td>
+  <td><code>summary.count</code></td>
+  <td>窗口内记录条数</td>
+</tr>
+<tr>
+  <td>sum</td>
+  <td><code>summary</code></td>
+  <td>数值列直接 SUM；喂奶给出 <code>breast_min</code> 与 <code>formula_ml</code> 两项</td>
+</tr>
+<tr>
+  <td>avg</td>
+  <td><code>summary</code></td>
+  <td>数值列 AVG。temperature 保留 1 位小数，其余取整</td>
+</tr>
+<tr>
+  <td>trend</td>
+  <td><code>rows</code>（按天）</td>
+  <td>按 <code>DATE(时间列)</code> 分组，每天给 <code>count</code> + <code>total</code> + <code>avg</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="4-4-跨环境兼容-medical-的列探测">4.4 跨环境兼容：medical 的列探测</h3>
+<p><code>medical_record</code> 在 dev/staging 是 34 列（已上 migration 020），生产库停在 019 只有 18 列。处置：</p>
+<ul>
+<li><strong>基础列</strong>（15 列，两库都有）：<code>id / baby_id / visit_date / visit_time / visit_type / hospital / doctor / diagnosis / result_summary / note / follow_up_date / follow_up_time / medications / photo_ids / created_at</code></li>
+<li><strong>类型化列</strong>（16 列，仅 020）：<code>vaccine_*</code>(7) / <code>checkup_*</code>(7) / <code>sick_*</code>(2)</li>
+<li>探测方式：<code>information_schema</code> 查 <code>medical_record.checkup_weight_g</code> 是否存在，结果缓存；生产库自动退化为基础列。<strong>探测列不能用 <code>visit_type</code></strong> —— 后者生产库早已存在，探不出来。</li>
+</ul>
+<h3 id="4-5-隐私列剔除">4.5 隐私列剔除</h3>
+<p><code>medication</code> 维度<strong>不使用 <code>SELECT *</code></strong>，而是固定列清单 <code>medication_name, dose, record_time, note</code>。原因：表里有 <code>recorded_by</code>（user_account UUID）与 <code>deleted_at</code>，<code>SELECT *</code> 会把内部标识一并塞进模型上下文。</p>
+<p>全局仅 <code>medical</code>（跨环境 schema 差异）与 <code>medication</code>（隐私列剔除）两个维度使用显式列，其余保留 <code>*</code> 以免列清单失维护。</p>
+<hr />
+<h2 id="5-第-2-层-画像信号-lib-profile-js">5. 第 2 层：画像信号（<code>lib/profile.js</code>）</h2>
+<p>定位：答&quot;<strong>是什么样</strong>&quot;。5 组只读 SQL + 5 分钟进程内缓存 + 单组失败静默降级。</p>
+<h3 id="5-1-A-组-基本情况-queryBasic">5.1 A 组 基本情况（<code>queryBasic</code>）</h3>
+<table>
+<thead>
+<tr>
+  <th>信号</th>
+  <th>口径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>name</td>
+  <td><code>baby_profile.name</code>，<code>deleted_at IS NULL</code></td>
+</tr>
+<tr>
+  <td>gender</td>
+  <td><code>male</code> / <code>female</code> / <code>unknown</code></td>
+</tr>
+<tr>
+  <td>birthDate</td>
+  <td>收敛为 <code>YYYY-MM-DD</code></td>
+</tr>
+<tr>
+  <td>ageText</td>
+  <td><strong>月龄「X 个月 Y 天」精确表述</strong>：先算整月数，再从&quot;出生日 + 整月数&quot;到今天的实际天数</td>
+</tr>
+<tr>
+  <td>allergyTypes</td>
+  <td>JSON 列，13 种枚举（milk/egg/wheat/soy/peanut/nut/fish/shrimp/crab/rice/corn/oat/beef）</td>
+</tr>
+<tr>
+  <td>allergyLevel</td>
+  <td>mild / moderate / severe → 轻度/中度/重度</td>
+</tr>
+<tr>
+  <td>birthWeightG</td>
+  <td>出生体重（克）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="5-2-B-组-配方与转奶进度-queryFormula-核心信号">5.2 B 组 配方与转奶进度（<code>queryFormula</code>）—— 核心信号</h3>
+<p><strong>数据源</strong>：<code>feeding_formula_record</code> JOIN <code>feeding_formula_mix</code>，窗口 <strong>近 60 天</strong>，按「日 × 奶型」聚合勺数。</p>
+<p>CMPA 配方阶梯（<code>LADDER_LEVEL</code>，高→低；向上=升级，向下=降级）：</p>
+<table>
+<thead>
+<tr>
+  <th>奶型 key</th>
+  <th>中文</th>
+  <th>阶梯位</th>
+  <th>乳糖</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>aa</td>
+  <td>氨基酸配方</td>
+  <td>4</td>
+  <td>无乳糖</td>
+</tr>
+<tr>
+  <td>eh_no_lactose</td>
+  <td>深度水解（无乳糖）</td>
+  <td>3</td>
+  <td>无乳糖</td>
+</tr>
+<tr>
+  <td>eh_lactose</td>
+  <td>深度水解（含乳糖）</td>
+  <td>3</td>
+  <td>含乳糖</td>
+</tr>
+<tr>
+  <td>ph</td>
+  <td>适度水解</td>
+  <td>2</td>
+  <td>—</td>
+</tr>
+<tr>
+  <td>std</td>
+  <td>普通配方</td>
+  <td>1</td>
+  <td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>阶梯推进路径</strong>（<code>NEXT_STAGE</code>）：<code>aa → eh_lactose</code>、<code>eh_no_lactose → ph</code>、<code>eh_lactose → ph</code>、<code>ph → std</code>。两种 eh 同阶，故都指向 <code>ph</code>。</p>
+<p>计算口径逐项：</p>
+<table>
+<thead>
+<tr>
+  <th>信号</th>
+  <th>计算口径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>current</td>
+  <td><strong>构成占比（勺数口径），取近 7 天</strong>，降序 <code>[[type, ratio], ...]</code></td>
+</tr>
+<tr>
+  <td>dominant</td>
+  <td>current 第一位（占比最高者）</td>
+</tr>
+<tr>
+  <td>ladderLevel</td>
+  <td><code>LADDER_LEVEL[dominant]</code>，即 1-4</td>
+</tr>
+<tr>
+  <td>status</td>
+  <td>单一奶型 → <code>stable</code>；混合且停滞 &lt;14 天 → <code>transitioning</code>；混合且停滞 ≥14 天 → <code>stalled</code></td>
+</tr>
+<tr>
+  <td>stalledDays</td>
+  <td><strong>构成停滞天数</strong>：从今天往前找「连续同一构成签名」的最早一天，算它到今天的间隔</td>
+</tr>
+<tr>
+  <td>stableSince</td>
+  <td>上述连续段的最早日期</td>
+</tr>
+<tr>
+  <td>stalledAtLeast</td>
+  <td>连续段起点 == 窗口最早一天（说明真实天数可能更长，只能说「至少」）</td>
+</tr>
+<tr>
+  <td>direction</td>
+  <td>近 30 天「首日主导类型阶梯位」与「当日主导类型阶梯位」对比 → <code>escalated</code> / <code>deescalated</code> / <code>same</code></td>
+</tr>
+<tr>
+  <td>lactose</td>
+  <td>仅 <code>eh_lactose</code> → 含乳糖；<code>eh_no_lactose</code> 或 <code>aa</code> → 无乳糖；其余 null</td>
+</tr>
+<tr>
+  <td>aaLastAt</td>
+  <td>最后一条含 <code>aa</code> 的日期</td>
+</tr>
+<tr>
+  <td>aaStoppedDays</td>
+  <td>最后含 aa 日期距今，<strong>且近 7 天构成中 aa 占比为 0</strong>（即确已停用）</td>
+</tr>
+<tr>
+  <td>lastRecordAt</td>
+  <td>窗口内最后一条配方记录日期</td>
+</tr>
+<tr>
+  <td>staleDays</td>
+  <td>今天 - lastRecordAt</td>
+</tr>
+<tr>
+  <td>basisLabel</td>
+  <td>近 7 天有记录 → <code>近 7 天</code>；否则 <code>截至 {退回日}</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>两个必须知道的口径细节</strong>：</p>
+<ol>
+<li><strong>构成签名用「占比」不用「绝对勺数」</strong>。签名 = 各奶型整数百分比排序后以竖线拼接（如「深度水解 75 / 适度水解 25」）。用绝对勺数会把「构成没变」误判成「天天在变」（今天 24 勺、明天 28 勺），停滞天数永远归零。</li>
+<li><strong>配方空档兜底</strong>：近 7 天一条记录都没有时，退回「最近 7 个<strong>有记录</strong>的日子」算构成，并在 <code>basisLabel</code> / 渲染文本里标注截至日期 —— 配方类型是最稳定的信号，不该因短期空档整段消失，但也绝不能把旧构成当当前状态。</li>
+</ol>
+<h3 id="5-3-C-组-喂养方式-queryFeeding">5.3 C 组 喂养方式（<code>queryFeeding</code>）</h3>
+<table>
+<thead>
+<tr>
+  <th>信号</th>
+  <th>计算口径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>mode</td>
+  <td>见下方判定规则</td>
+</tr>
+<tr>
+  <td>sinceBreastDays</td>
+  <td>今天 - 最后一次母乳记录日期</td>
+</tr>
+<tr>
+  <td>lastBreastAt</td>
+  <td>最后一次母乳记录日期</td>
+</tr>
+<tr>
+  <td>breastCount30</td>
+  <td>近 30 天母乳记录条数（<strong>仅作展示参考，不参与判定</strong>）</td>
+</tr>
+<tr>
+  <td>formulaRecords14</td>
+  <td>近 14 天配方奶记录条数</td>
+</tr>
+<tr>
+  <td>avgFormulaMl7</td>
+  <td>近 7 天<strong>配方奶日均毫升</strong>：先把每顿 SUM 成当日总量，再对「有记录的天」取 AVG</td>
+</tr>
+<tr>
+  <td>solidKinds30</td>
+  <td>近 30 天辅食涉及的不同食材名数（<code>COUNT(DISTINCT food_name)</code>，<strong>未归一化</strong>）</td>
+</tr>
+<tr>
+  <td>supplementDays30</td>
+  <td>近 30 天有营养素记录的天数</td>
+</tr>
+</tbody>
+</table>
+<p><strong>喂养方式判定（硬规则）</strong>：按「最近一次母乳距今」判，阈值 <code>WEANED_DAYS = 14</code> 天。</p>
+<table>
+<thead>
+<tr>
+  <th>条件</th>
+  <th>mode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>从无母乳记录，或最近一次母乳距今 ≥ 14 天</td>
+  <td><code>formula_only</code>（已停母乳，<strong>有效结论</strong>）</td>
+</tr>
+<tr>
+  <td>距今 &lt; 14 天 且 近 14 天有配方奶记录</td>
+  <td><code>mixed</code></td>
+</tr>
+<tr>
+  <td>距今 &lt; 14 天 且 近 14 天无配方奶记录</td>
+  <td><code>breast_only</code></td>
+</tr>
+<tr>
+  <td>其余</td>
+  <td><code>unknown</code>（不下结论）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>禁止用「30 天累计条数 &gt; 0」判仍在母乳</strong> —— 那是滞后指标：09-03 停母乳的宝宝到 09-19 仍有 5 条落在 30 天窗口内，按条数会误判成混合喂养。已停时渲染层必须显式标注「30 天窗口内尚有 N 条旧记录，属历史数据，不代表仍在母乳」。</p>
+<h3 id="5-4-E-组-生长分位-queryGrowth">5.4 E 组 生长分位（<code>queryGrowth</code>）</h3>
+<p>取 <code>growth_record</code> <strong>最近 2 条</strong>，按性别 + <strong>测量当天月龄</strong>算百分位。</p>
+<table>
+<thead>
+<tr>
+  <th>信号</th>
+  <th>口径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>latest.weightKg</td>
+  <td><code>weight_g / 1000</code></td>
+</tr>
+<tr>
+  <td>latest.heightCm</td>
+  <td><code>height_mm / 10</code></td>
+</tr>
+<tr>
+  <td>latest.weightP / heightP</td>
+  <td><code>percentileOf(月龄, 性别, 类型, 值).p</code></td>
+</tr>
+<tr>
+  <td>latest.months</td>
+  <td>测量当天的整月龄（<code>ageInMonths(birthDate, record_date)</code>）</td>
+</tr>
+<tr>
+  <td>previous</td>
+  <td>上一条测量，同口径</td>
+</tr>
+<tr>
+  <td>staleDays</td>
+  <td>今天 - 最近测量日期</td>
+</tr>
+</tbody>
+</table>
+<h3 id="5-5-I-组-数据新鲜度-queryFreshness-元信号">5.5 I 组 数据新鲜度（<code>queryFreshness</code>）—— 元信号</h3>
+<p>一条 8 路 UNION ALL 的 SQL，每路取 <code>MAX(时间列)</code>：</p>
+<table>
+<thead>
+<tr>
+  <th>源 key</th>
+  <th>中文</th>
+  <th>表 / 时间列</th>
+  <th>陈旧阈值（天）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>formula</td>
+  <td>配方奶</td>
+  <td>feeding_formula_record.record_time</td>
+  <td>3</td>
+</tr>
+<tr>
+  <td>food</td>
+  <td>辅食</td>
+  <td>feeding_food_record.record_time</td>
+  <td>3</td>
+</tr>
+<tr>
+  <td>supplement</td>
+  <td>营养补充</td>
+  <td>feeding_supplement_record.record_time</td>
+  <td>3</td>
+</tr>
+<tr>
+  <td>medication</td>
+  <td>服药</td>
+  <td>medication_record.record_time（过滤 deleted_at）</td>
+  <td>3</td>
+</tr>
+<tr>
+  <td>growth</td>
+  <td>生长测量</td>
+  <td>growth_record.record_date</td>
+  <td>45</td>
+</tr>
+<tr>
+  <td>symptom</td>
+  <td>症状</td>
+  <td>symptom_record.record_time</td>
+  <td>14</td>
+</tr>
+<tr>
+  <td>medical</td>
+  <td>就医记录</td>
+  <td>medical_record.visit_date</td>
+  <td>45</td>
+</tr>
+<tr>
+  <td>diary</td>
+  <td>日记</td>
+  <td>baby_diary.diary_date</td>
+  <td>3</td>
+</tr>
+</tbody>
+</table>
+<p>每源输出 <code>{ lastAt, staleDays }</code>。渲染规则：<code>无记录</code> / <code>今天</code> / <code>昨天</code> / <code>N天前（较旧）</code>（超过阈值才加「较旧」）。</p>
+<p><strong>渲染顺序</strong>（<code>renderProfileBlock</code> 硬编码）：formula → food → supplement → medication → growth → symptom → medical。日记不渲染（只存在于数据结构里）。</p>
+<h3 id="5-6-画像渲染块形态">5.6 画像渲染块形态</h3>
+<pre><code>旺仔，8 个月 24 天，男。轻度牛奶蛋白过敏（过敏原：牛奶）。
+配方：当前为纯深度水解（含乳糖）配方；乳糖类型：含乳糖；已停用氨基酸配方 36 天；构成稳定至少 30 天。
+喂养：已停止母乳（最后一次母乳记录在 17 天前，30 天窗口内尚有 5 条旧记录，属历史数据，不代表仍在母乳）；近 7 天配方奶日均约 620 毫升；近 30 天辅食涉及 22 种食材。
+生长：体重 9.2 千克（P50-P85）、身长 71 厘米（P50-P85），趋势平稳（测量于 2026-09-10，7 月龄）。
+数据新鲜度：配方奶今天 / 辅食今天 / 营养补充3天前 / 服药今天 / 生长测量11天前 / 症状32天前（较旧） / 就医记录无记录。
+【画像使用要求】
+- 以上是服务端算好的结论，直接作为前提使用，不要向家长复述&quot;你的记录显示…&quot;这类统计口径话术；
+- 喂养方式以本画像为准：标注&quot;已停止母乳&quot;时，回答与日记中都不要出现&quot;母乳喂养/混合喂养/亲喂&quot;等默认表述；
+- 所有辅食与喂养建议默认带牛奶蛋白过敏前提；
+- 标注&quot;较旧&quot;或&quot;无记录&quot;的信号不要当作阴性结论，也不要提醒家长补记录。
+</code></pre>
+<hr />
+<h2 id="6-第-3-层-现状感知信号-lib-perception-js">6. 第 3 层：现状感知信号（<code>lib/perception.js</code>）</h2>
+<p>定位：答&quot;<strong>走到哪了、这样走合理吗</strong>&quot;；<strong>不回答</strong>&quot;要去哪&quot;。三个只读查询 + 复用画像，5 分钟缓存。</p>
+<p><strong>四条设计约束</strong>（决定了它能做什么、不能做什么）：</p>
+<ol>
+<li><strong>单一真相源</strong> —— 阶段 / 月龄 / 新鲜度一律复用 <code>profile.js</code>，参考值只在 <code>REF</code> 定义一次。</li>
+<li><strong>失败静默降级</strong> —— 任一组查询失败 → 该组置空，其余照常注入。</li>
+<li><strong>只出事实与判定，不出建议</strong> —— 建议由对话产生。</li>
+<li><strong>不设目标</strong> —— 行业对&quot;每阶/总时长&quot;无共识（见 <code>RESEARCH-20260920</code>），故只算&quot;到哪了 + 合理吗&quot;，不做倒计时、不做待办。</li>
+</ol>
+<h3 id="6-1-板块①-转奶阶段与进度-复用-profile-formula-派生">6.1 板块① 转奶阶段与进度（复用 <code>profile.formula</code> + 派生）</h3>
+<table>
+<thead>
+<tr>
+  <th>信号</th>
+  <th>口径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>key / label</td>
+  <td>主导奶型及其中文名</td>
+</tr>
+<tr>
+  <td>level</td>
+  <td>阶梯位 1-4</td>
+</tr>
+<tr>
+  <td>nextKey / nextLabel / nextLevel</td>
+  <td><code>NEXT_STAGE[dominant]</code> 及其阶梯位</td>
+</tr>
+<tr>
+  <td>gapToEnd</td>
+  <td><code>level - 1</code>（还差几阶到普通配方）</td>
+</tr>
+<tr>
+  <td>mix</td>
+  <td>近 7 天构成占比</td>
+</tr>
+<tr>
+  <td>nextPct</td>
+  <td>下一阶在当前构成中的占比（0-1）。<strong>纯阶时期恒为 0</strong></td>
+</tr>
+<tr>
+  <td>stableDays</td>
+  <td>= <code>formula.stalledDays</code>（本阶构成稳定天数）</td>
+</tr>
+<tr>
+  <td>stableAtLeast</td>
+  <td>= <code>formula.stalledAtLeast</code></td>
+</tr>
+<tr>
+  <td>status / lactose / aaStoppedDays</td>
+  <td>同画像口径</td>
+</tr>
+<tr>
+  <td>staleDays / lastRecordAt</td>
+  <td>同画像口径</td>
+</tr>
+<tr>
+  <td>verdict</td>
+  <td>四档判定，见下</td>
+</tr>
+</tbody>
+</table>
+<p><strong>verdict 判定（<code>stage</code> 派生）</strong>：</p>
+<table>
+<thead>
+<tr>
+  <th>条件</th>
+  <th>结论</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>level === 1</code></td>
+  <td>已在普通配方（终点）</td>
+</tr>
+<tr>
+  <td><code>stalledDays &lt; 7</code></td>
+  <td>未满下限，观察中</td>
+</tr>
+<tr>
+  <td><code>stalledDays &lt; 14</code></td>
+  <td>进度正常</td>
+</tr>
+<tr>
+  <td><code>stalledDays &gt;= 14</code></td>
+  <td>本阶已 N 天 ≥ 参考 14 天，具备推进条件（需无症状前提）</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>反直觉点（必须配对展示）</strong>：纯阶时期下一阶占比恒为 0%，因此&quot;阶内进度 0%&quot;是<strong>正常状态</strong>，不是&quot;没进展&quot;。渲染时它必须与&quot;本阶已 N 天 / 参考 14 天&quot;配对出现，否则家长会误读成停滞。</p>
+</blockquote>
+<p><strong><code>stage</code> 可以为 <code>null</code></strong>（尚无配方记录的宝宝：新用户 / 纯母乳 / 未开始转奶）。这是<strong>合法状态不是异常</strong> —— <code>buildFlags()</code> 里曾有漏守卫导致整个感知层降级的 bug（见 §6.7）。</p>
+<h3 id="6-2-板块②-排敏进度-queryObservations">6.2 板块② 排敏进度（<code>queryObservations</code>）</h3>
+<p><strong>数据源</strong>：<code>food_observation</code> <strong>全量</strong>（量级几十条），按 <code>updated_at DESC</code>。</p>
+<p>排敏五态（<code>OBS_STATUS</code>，全产品统一口径）：</p>
+<table>
+<thead>
+<tr>
+  <th>key</th>
+  <th>中文</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>observing</td>
+  <td>观察中</td>
+</tr>
+<tr>
+  <td>safe</td>
+  <td>已耐受</td>
+</tr>
+<tr>
+  <td>suspected</td>
+  <td>疑似</td>
+</tr>
+<tr>
+  <td>allergic</td>
+  <td>已确认过敏</td>
+</tr>
+<tr>
+  <td>paused</td>
+  <td>已暂停</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+  <th>信号</th>
+  <th>口径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>total</td>
+  <td>建档总条数</td>
+</tr>
+<tr>
+  <td>byStatus</td>
+  <td>五态各自条数（<strong>五态之和恒等于 total</strong>）</td>
+</tr>
+<tr>
+  <td>safeCount</td>
+  <td><code>status='safe'</code> 的<strong>条数</strong></td>
+</tr>
+<tr>
+  <td>safeKinds</td>
+  <td>已耐受<strong>归一化去重后的食材种数</strong>（西兰花与西兰花泥算 1 种）</td>
+</tr>
+<tr>
+  <td>safeNames</td>
+  <td>归一化后的食材名数组</td>
+</tr>
+<tr>
+  <td>dupGroups</td>
+  <td>同一归一化名对应多个原始名 → 重复建档组 <code>{ normalized, raw[] }</code></td>
+</tr>
+<tr>
+  <td>observing[]</td>
+  <td>每项含 <code>name / day（current_day）/ days（observation_days，缺省 3）/ idle / stalled</code></td>
+</tr>
+<tr>
+  <td>stalledObserving</td>
+  <td><code>observing</code> 中 <code>idle &gt; days</code> 的项（排敏任务停滞）</td>
+</tr>
+<tr>
+  <td>suspected[]</td>
+  <td><code>{ name, severity }</code></td>
+</tr>
+<tr>
+  <td>allergic[]</td>
+  <td>已确认过敏的食材名</td>
+</tr>
+<tr>
+  <td>paused[]</td>
+  <td>已暂停的食材名</td>
+</tr>
+</tbody>
+</table>
+<p><strong>停滞判定口径</strong>：<code>idle</code> = 今天 − DATE(updated_at)（该条目最后一次被推进距今），<code>days</code> 取 observation_days，缺失时缺省为 3；<code>stalled</code> 为 idle 大于 days。</p>
+<blockquote>
+<p>注意 <code>idle</code> 的锚点是 <code>updated_at</code> 而不是 <code>first_intro_at</code> —— 它衡量的是&quot;这条排敏记录多久没被推进了&quot;。</p>
+</blockquote>
+<h3 id="6-3-食材归一化与七大类归类-贯穿板块②③④">6.3 食材归一化与七大类归类（贯穿板块②③④）</h3>
+<p><strong>归一化三步</strong>（<code>normalizeFoods</code>）：</p>
+<ol>
+<li><strong>复合名拆分</strong> —— 按 <code>+ ＋ 、 ， ,</code> 切分（<code>纯米粉+南瓜泥</code> → 双项）</li>
+<li><strong>剥修饰</strong> —— 前缀（纯/熟/自制/新鲜/有机/进口）与后缀（米糊/泥糊/泥/糊/粥/水/汁/条/块/片/粉/沫/羹/汤）循环剥离，且保留长度保护（剥后至少剩 2 字）</li>
+<li><strong>别名兜底</strong> —— <code>ALIAS</code> 表查询，<strong>当前刻意留空</strong></li>
+</ol>
+<p><strong>七大类归类</strong>（<code>categoryOf</code>，首个命中即归类，未命中计「未归类」）：</p>
+<table>
+<thead>
+<tr>
+  <th>类别</th>
+  <th>关键词（节选）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>谷薯</td>
+  <td>米粉、米、小米、粥、面、馒头、土豆、红薯、紫薯、山药、玉米、燕麦、南瓜</td>
+</tr>
+<tr>
+  <td>蔬菜</td>
+  <td>青菜、西兰花、菠菜、胡萝卜、生菜、芹菜、白菜、油菜、番茄、西红柿、黄瓜、冬瓜、茄子、豌豆、西葫芦</td>
+</tr>
+<tr>
+  <td>水果</td>
+  <td>苹果、香蕉、梨、火龙果、蓝莓、草莓、桃、牛油果、橙、葡萄、西梅</td>
+</tr>
+<tr>
+  <td>肉禽鱼</td>
+  <td>鸡、猪、牛、羊、里脊、鱼、虾、鳕鱼、三文鱼、肝</td>
+</tr>
+<tr>
+  <td>蛋</td>
+  <td>蛋</td>
+</tr>
+<tr>
+  <td>豆类坚果</td>
+  <td>豆腐、豆、花生、芝麻、核桃、坚果</td>
+</tr>
+<tr>
+  <td>奶类</td>
+  <td>奶、酸奶、奶酪</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong><code>ALIAS</code> 留空是刻意决定</strong>：能盖形态差异与修饰前缀，盖不住品牌命名差异（dev 库曾出现「强化铁米」与「高铁米粉」指同一产品）。未拍板前不猜 —— 重复建档通过 <code>dupGroups</code> 显式暴露，而不是被静默合并。</p>
+</blockquote>
+<h3 id="6-4-板块③-日常摄入多样性-queryVariety">6.4 板块③ 日常摄入多样性（<code>queryVariety</code>）</h3>
+<p><strong>数据源</strong>：<code>feeding_food_record</code> JOIN <code>feeding_food_item</code>，窗口<strong>近 14 天</strong>，按日分组。</p>
+<table>
+<thead>
+<tr>
+  <th>信号</th>
+  <th>口径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>days[]</td>
+  <td>逐日：<code>date / kinds（原始名数）/ kindsNormalized（归一化后数）/ categories（该日类别集合）/ foods</code></td>
+</tr>
+<tr>
+  <td>recordedDays</td>
+  <td>有辅食记录的天数</td>
+</tr>
+<tr>
+  <td>hitDays</td>
+  <td><code>kindsNormalized &gt;= 4</code> 的天数</td>
+</tr>
+<tr>
+  <td>avgKinds</td>
+  <td>各日 <code>kindsNormalized</code> 的算术平均（<strong>分母只含有记录的天</strong>）</td>
+</tr>
+<tr>
+  <td>categories</td>
+  <td>窗口内所有日期的类别并集</td>
+</tr>
+</tbody>
+</table>
+<h3 id="6-5-板块④-已耐受维持暴露-queryEaten-交叉">6.5 板块④ 已耐受维持暴露（<code>queryEaten</code> + 交叉）</h3>
+<p><strong>数据源</strong>：<code>feeding_food_item</code> JOIN <code>feeding_food_record</code>，窗口<strong>近 30 天</strong>，按食材分组取 <code>COUNT(*)</code> 与 <code>MAX(DATE(record_time))</code>。</p>
+<table>
+<thead>
+<tr>
+  <th>信号</th>
+  <th>口径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>(基础) eaten30</td>
+  <td>近 30 天<strong>实际吃过</strong>的归一化食材集合</td>
+</tr>
+<tr>
+  <td>(基础) eaten14</td>
+  <td>最后一次食用落在近 14 天内的归一化食材集合</td>
+</tr>
+<tr>
+  <td>idleSafe</td>
+  <td><strong><code>safeNames</code> − <code>eaten14</code></strong>：已判耐受但近 14 天未再食用</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>为什么这个信号重要</strong>：判了耐受却不再吃，是最容易出事的状态（耐受可能回退）。所以它不只统计&quot;吃了什么&quot;，而是专门算&quot;该吃没吃&quot;的差集。</p>
+</blockquote>
+<h3 id="6-6-板块⑤-数据可信度-复用-profile-freshness">6.6 板块⑤ 数据可信度（复用 <code>profile.freshness</code>）</h3>
+<table>
+<thead>
+<tr>
+  <th>信号</th>
+  <th>口径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>sources</td>
+  <td>直接复用画像的 8 路 freshness</td>
+</tr>
+<tr>
+  <td>symptomStaleDays</td>
+  <td><code>freshness.symptom.staleDays</code>（症状最后记录距今）</td>
+</tr>
+<tr>
+  <td>symptomUsable</td>
+  <td><code>symptomStaleDays &lt;= 14</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="6-7-板块⑥-合理性判定-buildFlags-6-条规则-6-个-flag">6.7 板块⑥ 合理性判定（<code>buildFlags</code>，6 条规则 → 6 个 flag）</h3>
+<p><strong>纯内存派生，零额外 SQL</strong>。flag key 与 <code>TECH-013 §7.6</code> 命名对齐。</p>
+<table>
+<thead>
+<tr>
+  <th>flag key</th>
+  <th>中文</th>
+  <th>触发条件</th>
+  <th>detail 口径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>observe_stalled</td>
+  <td>排敏任务停滞</td>
+  <td><code>stalledObserving.length &gt; 0</code></td>
+  <td>逐项列出「{食材} 停 {idle} 天（观察期仅 {days} 天）」</td>
+</tr>
+<tr>
+  <td>observing_overlap</td>
+  <td>排敏并行</td>
+  <td><code>observing.length &gt; 1</code></td>
+  <td>「同时 N 项在观察，无法归因反应」</td>
+</tr>
+<tr>
+  <td>safe_not_maintained</td>
+  <td>已耐受未维持</td>
+  <td><code>idleSafe.length &gt; 0</code></td>
+  <td>「N 种已判耐受但近 14 天未再食用」</td>
+</tr>
+<tr>
+  <td>transition_ready</td>
+  <td>转奶可推进</td>
+  <td><code>stage &amp;&amp; level &gt; 1 &amp;&amp; stableDays &gt;= 14</code></td>
+  <td>「本阶已 N 天 ≥ 参考 14 天」</td>
+</tr>
+<tr>
+  <td>variety_insufficient</td>
+  <td>日常种类不足</td>
+  <td><code>recordedDays &gt; 0 &amp;&amp; hitDays &lt; recordedDays × 0.5</code></td>
+  <td>「近 14 天仅 X/Y 天达到 4 种（排敏期单一种属正常，需排除）」</td>
+</tr>
+<tr>
+  <td>data_stale</td>
+  <td>症状数据陈旧</td>
+  <td><code>symptomStaleDays != null &amp;&amp; &gt; 14</code></td>
+  <td>「N 天无症状记录，相关阴性结论不可下」</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>⚠️ <strong><code>transition_ready</code> 上必须保留 <code>stage &amp;&amp;</code> 守卫</strong>。<code>stage</code> 对没有配方记录的宝宝是合法地为 <code>null</code>，漏掉守卫会抛 TypeError → <code>getPerception()</code> 整段降级为 <code>null</code>，这些宝宝连排敏、多样性、可信度都拿不到，而界面上只表现为「助手好像变笨了」。已在 <code>verify-perception.mjs</code> 用 6 条边界断言锁死。</p>
+</blockquote>
+<h3 id="6-8-现状块渲染形态">6.8 现状块渲染形态</h3>
+<pre><code>【宝宝现状（服务端算好的结论，直接作为前提使用）】
+转奶：当前 深度水解（含乳糖） 100%｜下一阶 适度水解｜距终点 2 阶｜阶内进度 0%｜本阶稳定 30 天（参考 14 天）｜乳糖 含乳糖。判定：本阶已 30 天 ≥ 参考 14 天，具备推进条件（需无症状前提）
+排敏：建档 18 条（已耐受 13 / 观察中 3 / 疑似 2）；已耐受 13 条归一化后 11 种。
+观察中：小米粉 第 2/3 天（2 天未推进）；牛肉 第 1/3 天（6 天未推进）；火龙果 第 3/3 天（15 天未推进）。
+疑似：鳕鱼(mild)、蛋黄(mild)。
+已确认过敏：南瓜泥、土豆泥、燕麦粉。
+重复建档（同一食材多条目）：西兰花 ← 西兰花 / 西兰花泥；鸡肉 ← 鸡肉 / 鸡胸肉；米粉 ← 米粉 / 纯米粉。
+日常种类：近 14 天有辅食记录 8 天，平均每天 2.3 种（参考 ≥4 种），达标 0/8 天；覆盖类别 5 类。
+维持暴露：近 30 天实际吃过 6 种；8 种已判耐受但近 14 天未再吃：苹果、猪里脊、西兰花……（参考：已耐受食物每周维持 2-3 次）。
+数据可信度：配方奶今天 / 辅食今天 / 营养补充3天前 / 服药今天 / 生长测量11天前 / 症状32天前 / 就医记录无记录 / 日记3天前。
+症状结论不可用：32 天无症状记录，只能表述&quot;这段时间没有相关记录&quot;，不得推断&quot;没有过敏反应&quot;。
+需要注意：排敏任务停滞（…）；排敏并行（…）；已耐受未维持（…）；转奶可推进（…）；日常种类不足（…）；症状数据陈旧（…）。
+【现状使用要求】
+- 以上是&quot;现在到哪了、走得合不合理&quot;的结论，直接当前提用；只在与家长问题相关时自然带出，不要逐条复述给家长，也不要暴露统计口径（条数/窗口/均值）。
+- 标注&quot;信息缺失/无记录/陈旧/未更新&quot;的项不得当阴性结论（症状久无记录 ≠ 无症状；辅食无记录 ≠ 种类不足）；被家长问到时如实说这段没有记录。
+- 这些不是计划：不要据此给出&quot;应该转奶了/应该加辅食了&quot;的目标、倒计时或待办清单；只描述现状，建议在家长具体问到该怎么走时再给。
+- 涉及医疗判断（转阶、复引入、停配方）时附&quot;仅供参考，不能替代专业医疗建议&quot;。
+</code></pre>
+<p><strong>信息缺失时的降级文本</strong>（三处，必须原样保留）：</p>
+<table>
+<thead>
+<tr>
+  <th>板块</th>
+  <th>缺失时文本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>转奶</td>
+  <td>无足够配方记录，无法判定阶段（信息缺失，不要据此说&quot;还在某某配方&quot;）</td>
+</tr>
+<tr>
+  <td>排敏</td>
+  <td>无任何建档记录（信息缺失，不要据此说&quot;还没开始排敏&quot;或&quot;都耐受&quot;）</td>
+</tr>
+<tr>
+  <td>日常种类</td>
+  <td>近 14 天无辅食记录（信息缺失，不等于&quot;种类不足&quot;）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="7-第-4-层-分析派生信号-analyze_baby_data">7. 第 4 层：分析派生信号（<code>analyze_baby_data</code>）</h2>
+<p>三个 scope，模型主动调用。</p>
+<h3 id="7-1-scope-trend-单维趋势">7.1 scope=trend 单维趋势</h3>
+<table>
+<thead>
+<tr>
+  <th>信号</th>
+  <th>口径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>trend</td>
+  <td><code>up</code> / <code>down</code> / <code>flat</code>，见下</td>
+</tr>
+<tr>
+  <td>trendReason</td>
+  <td>中文说明（如「末期均值约为初期 1.4 倍」）</td>
+</tr>
+<tr>
+  <td>keyNumbers</td>
+  <td>最后一天的日期与条数</td>
+</tr>
+<tr>
+  <td>anomalies[]</td>
+  <td>见下</td>
+</tr>
+<tr>
+  <td>rows[]</td>
+  <td>底层按天数据</td>
+</tr>
+</tbody>
+</table>
+<p><strong>趋势判定（<code>judgeTrend</code>）</strong>：</p>
+<ul>
+<li>数据点 &lt; 4 天 → <code>flat</code>，理由「数据点不足」</li>
+<li>取<strong>首 3 天均值</strong>与<strong>末 3 天均值</strong>，算 <code>ratio = lastAvg / max(firstAvg, 1)</code></li>
+<li><code>ratio &gt; 1.3</code> → <code>up</code>；<code>ratio &lt; 0.7</code> → <code>down</code>；否则 <code>flat</code></li>
+<li>首末均值都为 0 → <code>flat</code>，理由「无数值数据」</li>
+</ul>
+<p><strong>异常点判定（<code>findAnomalies</code>）</strong>：对每一天，取<strong>前后各 2 天</strong>（窗口内可得部分）的均值作对照，若「当日值与均值之差的绝对值」超过均值的 50% 则记为异常，提示「当日数值与前后 2 天均值偏差超过 50%，请确认是否误录」。</p>
+<h3 id="7-2-scope-summary-跨维综合总结">7.2 scope=summary 跨维综合总结</h3>
+<p>默认遍历<strong>全部 9 维</strong>（可用 <code>metrics</code> 参数收窄）。</p>
+<table>
+<thead>
+<tr>
+  <th>输出</th>
+  <th>口径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>dimensions[]</td>
+  <td>每维 <code>{ metric, label, hasData, summary?, days, count }</code></td>
+</tr>
+<tr>
+  <td>daily[]</td>
+  <td>逐日合并明细，<strong>只写 &gt; 0 的字段</strong></td>
+</tr>
+<tr>
+  <td>weeks[]</td>
+  <td>窗口 &gt; 14 天时按约 7 天一段聚合</td>
+</tr>
+<tr>
+  <td>anomalies[]</td>
+  <td>逐维异常点汇总</td>
+</tr>
+<tr>
+  <td>note</td>
+  <td>数据来自最近 N 天共 X 条</td>
+</tr>
+</tbody>
+</table>
+<p><strong>daily 字段映射</strong>（<code>digestPatch</code>）：</p>
+<table>
+<thead>
+<tr>
+  <th>metric</th>
+  <th>daily 字段</th>
+  <th>单位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>feeding</td>
+  <td>formula_ml / breast_min / food_count</td>
+  <td>毫升 / 分钟 / 次数</td>
+</tr>
+<tr>
+  <td>sleep</td>
+  <td>sleep_min</td>
+  <td>分钟</td>
+</tr>
+<tr>
+  <td>activity</td>
+  <td>activity_min</td>
+  <td>分钟</td>
+</tr>
+<tr>
+  <td>diaper</td>
+  <td>diaper_count</td>
+  <td>次数</td>
+</tr>
+<tr>
+  <td>symptom</td>
+  <td>symptom_count</td>
+  <td>次数</td>
+</tr>
+<tr>
+  <td>growth</td>
+  <td>growth_count</td>
+  <td>次数</td>
+</tr>
+<tr>
+  <td>health</td>
+  <td>health_count</td>
+  <td>次数</td>
+</tr>
+<tr>
+  <td>medical</td>
+  <td>medical_count</td>
+  <td>次数</td>
+</tr>
+<tr>
+  <td>medication</td>
+  <td>medication_count</td>
+  <td>次数</td>
+</tr>
+</tbody>
+</table>
+<p>维度取值规则：<code>count &gt; 0</code> 时取 trend 铺进 daily；<code>count &gt; 0</code> <strong>且不是 growth/symptom/medication</strong> 时额外取 sum 填 <code>brief.summary</code>（这三个维度无数值列可加总）。</p>
+<p><strong>weeks 段内字段</strong>：formula_ml / breast_min / sleep_min / activity_min / food_count / diaper_count / symptom_count / growth_count / health_count / medication_count / record_days / feed_days / sleep_days / activity_days。分段锚点用 <strong>DB 的 <code>CURDATE()</code></strong>，与查询时间窗同一时区，避免本地/DB 差一天。</p>
+<h3 id="7-3-scope-growth-生长曲线解读">7.3 scope=growth 生长曲线解读</h3>
+<table>
+<thead>
+<tr>
+  <th>信号</th>
+  <th>口径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>months</td>
+  <td><strong>最后一次测量当天</strong>的月龄（历史测量不能用当前月龄，否则百分位偏移）</td>
+</tr>
+<tr>
+  <td>weight.lastKg / measuredAt / deltaKg / p / percentile</td>
+  <td>deltaKg = 窗口内最后一次 − 第一次</td>
+</tr>
+<tr>
+  <td>height.lastCm / measuredAt / deltaCm / p / percentile</td>
+  <td>deltaCm 同上</td>
+</tr>
+<tr>
+  <td>sex / ref</td>
+  <td>性别与中国 2023 儿科生长参考</td>
+</tr>
+</tbody>
+</table>
+<p><strong>百分位档（<code>growth.js::bucket</code>）</strong>：参考表 0-36 月、19 个锚点（0/1/…/12/15/18/21/24/30/36），月龄落在锚点之间时<strong>线性插值</strong>。</p>
+<table>
+<thead>
+<tr>
+  <th>条件</th>
+  <th>输出</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>值 &lt; P3 参考值</td>
+  <td>低于P3</td>
+</tr>
+<tr>
+  <td>值 ≥ P97 参考值</td>
+  <td>高于P97</td>
+</tr>
+<tr>
+  <td>落在 P3-P15 之间</td>
+  <td>P3-P15</td>
+</tr>
+<tr>
+  <td>落在 P15-P50 之间</td>
+  <td>P15-P50</td>
+</tr>
+<tr>
+  <td>落在 P50-P85 之间</td>
+  <td>P50-P85</td>
+</tr>
+<tr>
+  <td>落在 P85-P97 之间</td>
+  <td>P85-P97</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>⚠️ <strong><code>bucket()</code> 的 NaN 守卫必须保留</strong>。非有限输入（月龄 NaN / 插值越界）下，区间比较会全部为 false，静默落到函数末尾 <code>return</code>，<strong>凭空造出「P85-P97」这个假分位</strong>。生长分位属医疗相关结论，宁可返回 <code>null</code> 也不给错值。</p>
+</blockquote>
+<h3 id="7-4-画像里的趋势措辞">7.4 画像里的趋势措辞</h3>
+<p><code>renderProfileBlock</code> 对最近两次测量的体重分位做<strong>档位升降序比较</strong>（<code>P3 &lt; P15 &lt; P50 &lt; P85 &lt; P97</code>）：升 → 「趋势上升」，降 → 「趋势下降」，同 → 「趋势平稳」。</p>
+<hr />
+<h2 id="8-参考值与阈值总表">8. 参考值与阈值总表</h2>
+<h3 id="8-1-REF-现状感知参考值唯一出处">8.1 <code>REF</code> —— 现状感知参考值唯一出处</h3>
+<table>
+<thead>
+<tr>
+  <th>常量</th>
+  <th>值</th>
+  <th>出处</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>stageStableDays</td>
+  <td>14 天</td>
+  <td>NHS 标准阶梯 7 天 + FPIAP 1-2 周 → 取 14</td>
+</tr>
+<tr>
+  <td>stageMinDays</td>
+  <td>7 天</td>
+  <td>NHS：即使提前吃完规定量也须满 7 天</td>
+</tr>
+<tr>
+  <td>observeDays</td>
+  <td>3 天</td>
+  <td>国家卫健委「2-3 日」+ 中国营养学会「2-3 天」</td>
+</tr>
+<tr>
+  <td>dailyKinds</td>
+  <td>4 种</td>
+  <td>每日辅食种类下限（含 1 动物性 + 1 蔬菜 + 1 谷薯）</td>
+</tr>
+<tr>
+  <td>dailyCategories</td>
+  <td>4 类</td>
+  <td>每日类别下限</td>
+</tr>
+<tr>
+  <td>maintainPerWeek</td>
+  <td>2 次</td>
+  <td>已耐受食物每周维持次数下限</td>
+</tr>
+<tr>
+  <td>maintainPerWeekMax</td>
+  <td>3 次</td>
+  <td>上限</td>
+</tr>
+<tr>
+  <td>symptomUsableDays</td>
+  <td>14 天</td>
+  <td>超过则症状数据视为陈旧，不得下阴性结论</td>
+</tr>
+<tr>
+  <td>windowVarietyDays</td>
+  <td>14 天</td>
+  <td>摄入多样性统计窗口</td>
+</tr>
+<tr>
+  <td>windowEatenDays</td>
+  <td>30 天</td>
+  <td>维持暴露统计窗口</td>
+</tr>
+</tbody>
+</table>
+<p><code>REF</code> 已 <code>Object.freeze()</code>；干跑脚本 <code>perception-preview.mjs</code> 从此处 import，不另立一份。对照实验用 <code>getPerception(babyId, { ref })</code> 覆盖（传 <code>ref</code> 会绕过缓存且不写缓存）。</p>
+<h3 id="8-2-其他阈值">8.2 其他阈值</h3>
+<table>
+<thead>
+<tr>
+  <th>常量</th>
+  <th>值</th>
+  <th>位置</th>
+  <th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>WEANED_DAYS</td>
+  <td>14 天</td>
+  <td><code>profile.js</code></td>
+  <td>判「已停母乳」</td>
+</tr>
+<tr>
+  <td>STALE_DAYS</td>
+  <td>3 / 3 / 3 / 3 / 45 / 14 / 45 / 3</td>
+  <td><code>profile.js</code></td>
+  <td>各源陈旧阈值（顺序同 §5.5）</td>
+</tr>
+<tr>
+  <td>停滞判定</td>
+  <td><code>stalledDays &gt;= 14</code></td>
+  <td><code>profile.js::queryFormula</code></td>
+  <td>混合配比判 <code>stalled</code></td>
+</tr>
+<tr>
+  <td>缓存 TTL</td>
+  <td>5 分钟</td>
+  <td><code>profile.js</code> / <code>perception.js</code></td>
+  <td>进程内 Map</td>
+</tr>
+<tr>
+  <td>趋势阈值</td>
+  <td>1.3 / 0.7</td>
+  <td><code>analyze-baby-data.js</code></td>
+  <td>up / down 分界</td>
+</tr>
+<tr>
+  <td>异常阈值</td>
+  <td>偏差 &gt; 50%</td>
+  <td><code>analyze-baby-data.js</code></td>
+  <td>单日异常点</td>
+</tr>
+<tr>
+  <td>days clamp</td>
+  <td>1-90</td>
+  <td><code>query.js</code></td>
+  <td>查询窗口</td>
+</tr>
+<tr>
+  <td>list 上限</td>
+  <td>10 条</td>
+  <td><code>query.js</code></td>
+  <td>明细条数</td>
+</tr>
+</tbody>
+</table>
+<h3 id="8-3-参考值的边界声明">8.3 参考值的边界声明</h3>
+<p>行业参考值只覆盖<strong>单步时长</strong>（每阶多久、每种观察几天），<strong>不覆盖全程倒计时</strong> —— <code>Nutrients 2025</code> 明确说明&quot;无最优总时长共识&quot;。因此助手：</p>
+<ul>
+<li><strong>可以</strong>说&quot;本阶已 30 天，达到参考的 14 天&quot;</li>
+<li><strong>不可以</strong>说&quot;照这个速度还需 3 个月转完&quot;或&quot;应该转奶了&quot;</li>
+</ul>
+<p>排敏目标&quot;种类数&quot;（15/25/30）是<strong>推算值不是官方指标</strong>，官方口径清一色是&quot;每天&quot;（每日 ≥4 种、7 类中 ≥4 类、7-24 月龄 7-9 种、WHO ≥5 类）。详见 <code>RESEARCH-20260920-转奶与排敏行业参考值.md</code>。</p>
+<hr />
+<h2 id="9-元信号与护栏-什么时候不该下结论">9. 元信号与护栏：什么时候不该下结论</h2>
+<p>这是整条信号链里最容易做错、也最值钱的部分。核心口径三条：</p>
+<h3 id="9-1-无记录-数据陈旧">9.1 「无记录」≠「数据陈旧」</h3>
+<table>
+<thead>
+<tr>
+  <th>情形</th>
+  <th>性质</th>
+  <th>助手应当</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>母乳 0 条</td>
+  <td><strong>有效结论</strong>（确定已停）</td>
+  <td>直接说已停止母乳</td>
+</tr>
+<tr>
+  <td>症状 31 天无记录</td>
+  <td><strong>信息缺失</strong></td>
+  <td>只能说&quot;这段时间没有相关记录&quot;，<strong>不得</strong>推断&quot;没有过敏反应&quot;</td>
+</tr>
+<tr>
+  <td>辅食近 14 天无记录</td>
+  <td><strong>信息缺失</strong></td>
+  <td><strong>不得</strong>推断&quot;种类不足&quot;</td>
+</tr>
+<tr>
+  <td>排敏 0 条建档</td>
+  <td><strong>信息缺失</strong></td>
+  <td><strong>不得</strong>说&quot;还没开始排敏&quot;或&quot;都耐受&quot;</td>
+</tr>
+<tr>
+  <td>配方 3 天未更新</td>
+  <td><strong>数据陈旧</strong></td>
+  <td>引用构成时必须标注截至日期</td>
+</tr>
+</tbody>
+</table>
+<h3 id="9-2-覆盖率不足不下阴性结论">9.2 覆盖率不足不下阴性结论</h3>
+<p>元信号覆盖率 &lt; 50% 时，不产出阴性结论（设计口径，见 PRD-006 §4）。实现上由 <code>trust.symptomUsable</code> 与渲染层的「信息缺失」文本承载。</p>
+<h3 id="9-3-注入块自带的行为约束">9.3 注入块自带的行为约束</h3>
+<p>前文 §5.6 / §6.8 已完整列出。要点复述：</p>
+<ul>
+<li>不复述统计口径（条数/窗口/均值）</li>
+<li>不把&quot;无记录/陈旧&quot;当阴性结论</li>
+<li>不把现状当计划（不给目标、倒计时、待办）</li>
+<li>医疗判断附免责</li>
+</ul>
+<p>这三条决定了注入是否<strong>真的改变回答</strong>，而不是变成一段&quot;资料&quot;。线上对照实验的证据：关闭注入后，助手会把<strong>已确认过敏的南瓜泥当普通食材列出</strong>。</p>
+<hr />
+<h2 id="10-尚未支持的信号-缺口清单">10. 尚未支持的信号（缺口清单）</h2>
+<p>明确列出&quot;现在没有的&quot;，避免误以为存在。</p>
+<table>
+<thead>
+<tr>
+  <th>缺口</th>
+  <th>状态</th>
+  <th>归属</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>目标 / 计划账本（转奶计划、排敏计划）</td>
+  <td><strong>刻意不做</strong>（行业无总时长共识）</td>
+  <td>第 4 期</td>
+</tr>
+<tr>
+  <td>全程倒计时 / 待办清单</td>
+  <td><strong>刻意不做</strong></td>
+  <td>—</td>
+</tr>
+<tr>
+  <td>矛盾检测 8 flag（TECH-013 §7.6 完整版）</td>
+  <td>仅实现 6 条纯内存版</td>
+  <td>感知层完整版</td>
+</tr>
+<tr>
+  <td>机制分型采集（怎么采尚未拍板）</td>
+  <td>未实现</td>
+  <td>TECH-013 §15</td>
+</tr>
+<tr>
+  <td>flag 频控（同 flag 7 天去重、单轮最多 1 条）</td>
+  <td>未实现</td>
+  <td>需 migration 022</td>
+</tr>
+<tr>
+  <td>护栏出口校验 G9（「声称已写入」拦截）</td>
+  <td>未实现</td>
+  <td><code>runtime.js</code></td>
+</tr>
+<tr>
+  <td>排敏进度纳入画像层</td>
+  <td>只在感知层</td>
+  <td>—</td>
+</tr>
+<tr>
+  <td>分位计算下沉服务端一份</td>
+  <td>未做（mp 仍有一份 <code>growth-standards.ts</code>）</td>
+  <td>有漂移风险</td>
+</tr>
+<tr>
+  <td>跨进程缓存主动失效</td>
+  <td>未接线（只靠 5 分钟 TTL）</td>
+  <td>TECH-013 §4.2</td>
+</tr>
+<tr>
+  <td><code>ALIAS</code> 别名表</td>
+  <td>刻意留空</td>
+  <td>待 Q1 拍板</td>
+</tr>
+<tr>
+  <td>服药隐私列</td>
+  <td>已剔除 <code>recorded_by</code></td>
+  <td>—</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="11-代码与文件地图">11. 代码与文件地图</h2>
+<table>
+<thead>
+<tr>
+  <th>文件</th>
+  <th>行数</th>
+  <th>职责</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>agent-poc/src/prompts/system.js</code></td>
+  <td>212</td>
+  <td>组装 systemPrompt：日期块 + 画像块 + 现状块 + 33 条规则 + few-shot</td>
+</tr>
+<tr>
+  <td><code>agent-poc/src/lib/runtime.js</code></td>
+  <td>—</td>
+  <td>取画像（与 env 并行）→ 取感知（串行，复用画像）→ 注入；<code>PERCEPTION_INJECT=off</code> 一键回滚</td>
+</tr>
+<tr>
+  <td><code>agent-poc/src/lib/profile.js</code></td>
+  <td>572</td>
+  <td>画像 5 组查询 + 渲染 + 缓存 + 日期工具 + 阶梯/新鲜度常量</td>
+</tr>
+<tr>
+  <td><code>agent-poc/src/lib/perception.js</code></td>
+  <td>513</td>
+  <td>现状感知 6 板块 + 归一化 + 6 flag + 渲染 + 缓存 + <code>REF</code></td>
+</tr>
+<tr>
+  <td><code>agent-poc/src/lib/query.js</code></td>
+  <td>443</td>
+  <td>9 维查询 + 5 种聚合 + medical/medication 显式列</td>
+</tr>
+<tr>
+  <td><code>agent-poc/src/lib/growth.js</code></td>
+  <td>121</td>
+  <td>中国 2023 生长参考表 + 插值 + 百分位档</td>
+</tr>
+<tr>
+  <td><code>agent-poc/src/lib/tools/query-baby-data.js</code></td>
+  <td>39</td>
+  <td><code>query_baby_data</code> 工具定义</td>
+</tr>
+<tr>
+  <td><code>agent-poc/src/lib/tools/analyze-baby-data.js</code></td>
+  <td>274</td>
+  <td><code>analyze_baby_data</code> 三 scope</td>
+</tr>
+</tbody>
+</table>
+<p><strong>自验脚本</strong>：</p>
+<table>
+<thead>
+<tr>
+  <th>脚本</th>
+  <th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>scripts/verify-perception.mjs</code></td>
+  <td>58 条断言（含 6 条边界：无配方记录不降级）</td>
+</tr>
+<tr>
+  <td><code>scripts/verify-profile.mjs</code></td>
+  <td>22 条断言</td>
+</tr>
+<tr>
+  <td><code>scripts/perception-preview.mjs</code></td>
+  <td>干跑六板块，人眼核对</td>
+</tr>
+<tr>
+  <td><code>scripts/ask-agent.mjs</code></td>
+  <td>单轮实跑；<code>--context</code> 打印注入文本，<code>--no-perception</code> 做对照</td>
+</tr>
+<tr>
+  <td><code>scripts/verify-online.mjs</code></td>
+  <td>线上端到端验收（令牌从线上 EnvParams 现取）</td>
+</tr>
+<tr>
+  <td><code>scripts/eval/eval-agent.mjs</code></td>
+  <td>L0-L4 + R1 评测组</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="附录-A-四层信号速查-一屏版">附录 A：四层信号速查（一屏版）</h2>
+<table>
+<thead>
+<tr>
+  <th>层</th>
+  <th>信号</th>
+  <th>一句话口径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>0</td>
+  <td>今天 / 昨天</td>
+  <td>北京时间（+8h），纯日期算术</td>
+</tr>
+<tr>
+  <td>1</td>
+  <td>9 个数据维度</td>
+  <td>模型按需查明细，窗口 1-90 天，5 种聚合</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td>月龄</td>
+  <td>整月数 + 从&quot;出生日+整月数&quot;到今天的实际天数</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td>过敏前提</td>
+  <td>13 种过敏原枚举 + 轻/中/重</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td>转奶当前配方</td>
+  <td>近 7 天勺数占比，纯阶时期&quot;阶内进度&quot;恒 0%</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td>构成停滞天数</td>
+  <td>连续同一构成签名的跨度；签名用整数百分比不用勺数</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td>阶梯方向</td>
+  <td>近 30 天首日 vs 当日主导类型的阶梯位</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td>氨基酸停用</td>
+  <td>最后含 aa 日期距今，且近 7 天 aa 占比为 0</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td>喂养方式</td>
+  <td>按&quot;最近一次母乳距今 ≥ 14 天&quot;判已停</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td>配方奶日均</td>
+  <td>先按日 SUM 再对&quot;有记录的天&quot;取 AVG</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td>生长分位</td>
+  <td>按测量当天月龄查表 + 线性插值，7 档</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td>数据新鲜度</td>
+  <td>8 路 MAX(时间列) → 无记录 / 今天 / 昨天 / N天前</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td>距终点 / 下一阶</td>
+  <td>阶梯位派生，不做倒计时</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td>本阶稳定天数</td>
+  <td>复用画像 stalledDays，与「参考 14 天」配对</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td>verdict</td>
+  <td>终点 / 未满下限 / 正常 / 可推进（四档）</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td>排敏五态</td>
+  <td>observing / safe / suspected / allergic / paused</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td>已耐受种数</td>
+  <td>归一化去重（西兰花泥 = 西兰花）</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td>重复建档</td>
+  <td>同一归一化名对应多原始名</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td>排敏停滞</td>
+  <td><code>今天 - DATE(updated_at) &gt; observation_days</code></td>
+</tr>
+<tr>
+  <td>3</td>
+  <td>每日种类</td>
+  <td>归一化后种数，参考 ≥4 种，达标天数 / 有记录天数</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td>类别覆盖</td>
+  <td>七大类（谷薯/蔬菜/水果/肉禽鱼/蛋/豆类坚果/奶类）</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td>维持暴露</td>
+  <td>已耐受 − 近 14 天吃过 = 该维持没维持</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td>6 个 flag</td>
+  <td>停滞 / 并行 / 未维持 / 可推进 / 种类不足 / 症状陈旧</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td>趋势</td>
+  <td>首末各 3 天均值比，&gt;1.3 升、&lt;0.7 降</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td>异常点</td>
+  <td>单日 vs 前后各 2 天均值，偏差 &gt;50%</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td>总结</td>
+  <td>dimensions / daily（只写 &gt;0）/ weeks（&gt;14 天才分段）/ anomalies</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td>生长解读</td>
+  <td>最后一次测量当天的月龄，delta 为窗口首末差</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="附录-B-命令速查">附录 B：命令速查</h2>
+<pre><code class="language-bash">cd agent-poc
+
+# 画像回归（22 条）
+NODE_OPTIONS= node scripts/verify-profile.mjs
+
+# 现状感知回归（58 条，含边界）
+NODE_OPTIONS= node scripts/verify-perception.mjs
+
+# 干跑六板块（人眼核对）
+NODE_OPTIONS= node scripts/perception-preview.mjs
+
+# 单轮实跑 + 看注入文本 + 关注入对照
+NODE_OPTIONS= node scripts/ask-agent.mjs --context &quot;旺仔现在转奶到哪一步了？&quot;
+NODE_OPTIONS= node scripts/ask-agent.mjs --no-perception &quot;旺仔现在转奶到哪一步了？&quot;
+
+# 线上端到端验收（默认即生产 babyId；--domain 看版本与令牌一致性）
+NODE_OPTIONS= node scripts/verify-online.mjs &quot;旺仔最近在吃什么药？&quot;
+
+# 评测组
+NODE_OPTIONS= node scripts/eval/eval-agent.mjs --group=l1 --no-judge
+</code></pre>
+<hr />
+<h2 id="附录-C-改信号时的连带改动清单">附录 C：改信号时的连带改动清单</h2>
+<p>改一处信号，往往要动多个文件。按信号类型对照：</p>
+<table>
+<thead>
+<tr>
+  <th>改动类型</th>
+  <th>必须同步的位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>新增一个数据维度</td>
+  <td><code>query.js</code> 的 METRICS / METRIC_LABELS / SIMPLE_METRICS 三处 → <code>selectClause</code>（隐私列）→ <code>query-baby-data.js</code> 描述 → <code>analyze-baby-data.js</code> 的 digestPatch + buildWeeks → <code>profile.js</code> 新鲜度四处（若家长会连续记录）</td>
+</tr>
+<tr>
+  <td>新增一个感知板块</td>
+  <td><code>perception.js</code> 查询函数 → 主入口组装 → <code>renderPerceptionBlock</code> → <code>buildFlags</code> → <code>verify-perception.mjs</code> 断言 → <code>perception-preview.mjs</code> 打印 → <code>TECH-014</code></td>
+</tr>
+<tr>
+  <td>调整参考值</td>
+  <td>只改 <code>REF</code>（唯一出处），但需同步 <code>TECH-014</code> 与 <code>RESEARCH-20260920</code> 的文字表述</td>
+</tr>
+<tr>
+  <td>调整新鲜度源清单</td>
+  <td><strong>只改 <code>profile.js::FRESHNESS_LABEL</code></strong> —— 它是唯一出处，<code>perception.js</code> 与干跑脚本都从这里 import</td>
+</tr>
+<tr>
+  <td>调整阶判断</td>
+  <td><code>profile.js::LADDER_LEVEL</code> / <code>NEXT_STAGE</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>三条禁则</strong>：</p>
+<ol>
+<li>同一语义的清单不得在多个文件各存一份（<code>FRESHNESS_LABEL</code> 曾三处并存，加一个维度要改三处）。</li>
+<li>干跑脚本不得自己重算算法，只能 import 同一份实现（否则&quot;脚本对了、线上不对&quot;）。</li>
+<li>可空对象的守卫必须贯穿所有消费点（<code>stage</code> 可为 null，漏一处就整段降级）。</li>
+</ol>
+
+<p class="docmeta">由 <code>docs/tools/md2html.py</code> 从同名 Markdown 渲染 · 36 张表格全部正常解析</p>
+</main></div></body></html>
