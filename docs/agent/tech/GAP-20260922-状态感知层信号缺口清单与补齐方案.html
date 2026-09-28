@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GAP-20260922 状态感知层信号缺口清单与补齐方案</title>
+<style>
+:root{--bg:#f6f7f9;--paper:#fff;--ink:#1f2328;--ink2:#4a5058;--ink3:#6b7280;
+--line:#e3e6ea;--line2:#eef0f3;--accent:#2563eb;--accent-soft:#eff4ff;
+--code-bg:#f4f6f8;--code-ink:#b4315a;--thead:#f0f3f7;--zebra:#fafbfc;}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);
+font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+-webkit-font-smoothing:antialiased}
+.wrap{display:flex;max-width:1440px;margin:0 auto;gap:26px;padding:0 20px;align-items:flex-start}
+.toc{position:sticky;top:0;flex:0 0 270px;max-height:100vh;overflow-y:auto;
+padding:28px 6px 40px 0;font-size:13px;line-height:1.5}
+.toc-title{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--ink3);padding:0 10px 10px}
+.toc a{display:block;padding:4px 10px;color:var(--ink2);text-decoration:none;
+border-left:2px solid transparent;border-radius:0 4px 4px 0}
+.toc a:hover{background:var(--accent-soft);color:var(--accent);border-left-color:var(--accent)}
+.toc a.lvl2{font-weight:600;margin-top:9px}
+.toc a.lvl3{padding-left:22px;color:var(--ink3);font-size:12.5px}
+main{flex:1 1 auto;min-width:0;background:var(--paper);margin:24px 0 60px;
+padding:44px 52px 64px;border-radius:12px;
+box-shadow:0 1px 3px rgba(16,24,40,.06),0 8px 24px -12px rgba(16,24,40,.1)}
+main>:first-child{margin-top:0}
+h1{font-size:29px;line-height:1.32;margin:0 0 22px;padding-bottom:18px;
+border-bottom:2px solid var(--line);letter-spacing:-.01em}
+h2{font-size:21px;margin:50px 0 16px;padding-bottom:10px;
+border-bottom:1px solid var(--line);scroll-margin-top:20px}
+h3{font-size:17px;margin:34px 0 12px;scroll-margin-top:20px}
+p{margin:13px 0}a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+blockquote{margin:18px 0;padding:14px 20px;background:#f8fafc;border-left:3px solid #cbd5e1;
+border-radius:0 6px 6px 0;color:var(--ink2);font-size:14.5px}
+blockquote p{margin:5px 0}
+ul,ol{padding-left:24px;margin:13px 0}li{margin:5px 0}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;
+background:var(--code-bg);color:var(--code-ink);padding:.16em .42em;border-radius:4px;
+word-break:break-word}
+pre{background:#1e2430;color:#e6edf3;padding:18px 20px;border-radius:8px;overflow-x:auto;
+margin:18px 0;font-size:12.5px;line-height:1.7}
+pre code{background:none;color:inherit;padding:0;font-size:inherit;white-space:pre-wrap}
+table{border-collapse:separate;border-spacing:0;width:100%;margin:18px 0;font-size:13.5px;
+border:1px solid var(--line);border-radius:8px;overflow:hidden}
+thead th{background:var(--thead);font-weight:700;text-align:left;padding:10px 13px;
+border-bottom:1px solid var(--line);white-space:nowrap}
+tbody td{padding:9px 13px;border-bottom:1px solid var(--line2);vertical-align:top}
+tbody tr:nth-child(even) td{background:var(--zebra)}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:#f5f8ff}
+hr{border:none;border-top:1px solid var(--line);margin:40px 0}
+strong{font-weight:700;color:#111827}
+.docmeta{font-size:12.5px;color:var(--ink3);padding:14px 0 0;
+border-top:1px solid var(--line2);margin-top:40px}
+@media(max-width:1020px){.wrap{flex-direction:column}
+.toc{position:static;flex:none;max-height:none;width:100%;padding:20px 0 0}
+main{padding:28px 20px 44px;margin:0 0 40px}
+h1{font-size:23px}h2{font-size:18px}table{font-size:12.5px}}
+</style></head><body>
+<div class="wrap">
+<nav class="toc"><div class="toc-title">目录 · 9 节 / 17 小节</div><a class="lvl2" href="#0-结论">0. 结论</a><a class="lvl2" href="#0-1-补齐状态-2026-09-22-实施完毕">0.1 补齐状态（2026-09-22 实施完毕）</a><a class="lvl2" href="#1-先说一个必须先解决的问题-PRD-的-41-对不上-已修订">1. 先说一个必须先解决的问题：PRD 的「41」对不上 —— ✅ 已修订</a><a class="lvl2" href="#2-逐条对账">2. 逐条对账</a><a class="lvl3" href="#组-A-过敏基本情况-5">组 A 过敏基本情况（5）</a><a class="lvl3" href="#组-B-配方与转奶进度-7-唯一完整的一组">组 B 配方与转奶进度（7）—— 唯一完整的一组</a><a class="lvl3" href="#组-C-喂养方式-5">组 C 喂养方式（5）</a><a class="lvl3" href="#组-D-辅食与排敏进度-8">组 D 辅食与排敏进度（8）</a><a class="lvl3" href="#组-E-生长与营养-7">组 E 生长与营养（7）</a><a class="lvl3" href="#组-F-症状与反应-5-整组未实现">组 F 症状与反应（5）—— 整组未实现</a><a class="lvl3" href="#组-G-医疗与随访-4-整组未实现">组 G 医疗与随访（4）—— 整组未实现</a><a class="lvl3" href="#组-H-日记与家长侧-2">组 H 日记与家长侧（2）</a><a class="lvl3" href="#组-I-数据新鲜度-3">组 I 数据新鲜度（3）</a><a class="lvl3" href="#组-J-矛盾与风险-8-flag">组 J 矛盾与风险（8 flag）</a><a class="lvl3" href="#机制层-比单条信号更缺">机制层（比单条信号更缺）</a><a class="lvl2" href="#3-缺口归因-三类-代价完全不同">3. 缺口归因：三类，代价完全不同</a><a class="lvl2" href="#4-补齐方案-三批">4. 补齐方案：三批</a><a class="lvl3" href="#批-1-把已存在的数据接上-零迁移-零界面-已实施">批 1　把已存在的数据接上（零迁移、零界面）—— ✅ 已实施</a><a class="lvl3" href="#批-2-补元信号与剩余派生-零迁移-已实施-wfh-除外">批 2　补元信号与剩余派生（零迁移）—— ✅ 已实施（wfh 除外）</a><a class="lvl3" href="#批-3-需要迁移或产品决策-外部阻塞-已实施不依赖迁移的部分">批 3　需要迁移或产品决策（外部阻塞）—— ◐ 已实施不依赖迁移的部分</a><a class="lvl2" href="#5-建议">5. 建议</a><a class="lvl2" href="#6-实施清单-2026-09-22">6. 实施清单（2026-09-22）</a><a class="lvl3" href="#6-1-代码改动">6.1 代码改动</a><a class="lvl3" href="#6-2-口径决策-本可以含糊过去-但必须写死">6.2 口径决策（本可以含糊过去，但必须写死）</a><a class="lvl3" href="#6-3-外部阻塞-未实施">6.3 外部阻塞（未实施）</a><a class="lvl2" href="#附录-本次核对发现的洞落在哪个缺口">附录　本次核对发现的洞落在哪个缺口</a></nav>
+<main>
+<h1>GAP-20260922 状态感知层信号缺口清单与补齐方案</h1>
+<blockquote>
+<p>触发：用户反馈「这次宝宝数据对了，但是信号不完整」
+目标口径：<code>docs/prd/PRD-006/02-能力设计.md</code> §4（状态感知能力）
+实现现状：<code>agent-poc/src/lib/profile.js</code>（5 组）＋ <code>agent-poc/src/lib/perception.js</code>（6 板块）
+核对方法：逐组逐条对着 PRD 的 §4.3 / §4.5 / §4.6 找代码里到底有没有（grep 命中即算实现，取到但未渲染算&quot;采集未用&quot;）</p>
+</blockquote>
+<hr />
+<h2 id="0-结论">0. 结论</h2>
+<p><strong>确认：信号确实不完整，而且缺的不是零头，是整组。</strong></p>
+<p>按 PRD §4.3 的 10 组清点，当前实现状态是：</p>
+<table>
+<thead>
+<tr>
+  <th>组</th>
+  <th>名称</th>
+  <th>PRD 项数</th>
+  <th>生效</th>
+  <th>缺口性质</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>A</td>
+  <td>过敏基本情况</td>
+  <td>5</td>
+  <td>2</td>
+  <td>2 项采集未用/未渲染，2 项需 migration 022</td>
+</tr>
+<tr>
+  <td>B</td>
+  <td><strong>配方与转奶进度</strong></td>
+  <td>7</td>
+  <td><strong>7</strong></td>
+  <td>无（最完整的一组）</td>
+</tr>
+<tr>
+  <td>C</td>
+  <td>喂养方式</td>
+  <td>5</td>
+  <td>4</td>
+  <td>1 项未定口径</td>
+</tr>
+<tr>
+  <td>D</td>
+  <td>辅食与排敏进度</td>
+  <td>8</td>
+  <td>5</td>
+  <td>3 项未开发；<strong><code>food_observation_log</code> 完全没读</strong></td>
+</tr>
+<tr>
+  <td>E</td>
+  <td>生长与营养</td>
+  <td>7</td>
+  <td>4</td>
+  <td>头围未取列；速度/体重身长比/依从性/降档预警未做</td>
+</tr>
+<tr>
+  <td>F</td>
+  <td><strong>症状与反应</strong></td>
+  <td>5</td>
+  <td><strong>0</strong></td>
+  <td><strong>整组未实现</strong> ← 最大缺口</td>
+</tr>
+<tr>
+  <td>G</td>
+  <td>医疗与随访</td>
+  <td>4</td>
+  <td>0</td>
+  <td>整组未实现（含 020 未上生产的降级）</td>
+</tr>
+<tr>
+  <td>H</td>
+  <td>日记与家长侧</td>
+  <td>2</td>
+  <td>1</td>
+  <td>主题抽取 PRD 本就暂缓；已有的那 1 项<strong>渲染位置不一致</strong></td>
+</tr>
+<tr>
+  <td>I</td>
+  <td>数据新鲜度</td>
+  <td>3</td>
+  <td>1</td>
+  <td><strong>覆盖率 <code>coverage.rate</code> 完全未实现</strong></td>
+</tr>
+<tr>
+  <td>J</td>
+  <td>矛盾与风险</td>
+  <td>8 flag</td>
+  <td><strong>3</strong></td>
+  <td>5 个未做，其中 2 个是 PRD 标「<strong>强</strong>」的</td>
+</tr>
+</tbody>
+</table>
+<p><strong>最要紧的一条</strong>：今天核对发现的「转奶判定前提已被违反却没人拦」这个洞，根因就在这里 —— <strong>F 组整组不存在</strong>。真实腹泻记在 <code>health_record.allergy_symptoms</code>，而感知层代码里 <code>allergy_symptoms</code> <strong>grep 零命中</strong>。</p>
+<hr />
+<h2 id="0-1-补齐状态-2026-09-22-实施完毕">0.1 补齐状态（2026-09-22 实施完毕）</h2>
+<p><strong>批 1 + 批 2 全部实施，批 3 除需 migration 的部分外全部实施。</strong> 对账结果：</p>
+<table>
+<thead>
+<tr>
+  <th>组</th>
+  <th>补齐前生效</th>
+  <th>补齐后生效</th>
+  <th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>A 过敏基本情况</td>
+  <td>2 / 5</td>
+  <td>3 / 5</td>
+  <td>出生体重已渲染；诊断确定性、家族过敏史依赖 <strong>migration 022</strong></td>
+</tr>
+<tr>
+  <td>B 配方与转奶进度</td>
+  <td>7 / 7</td>
+  <td>7 / 7</td>
+  <td>原本完整</td>
+</tr>
+<tr>
+  <td>C 喂养方式</td>
+  <td>4 / 5</td>
+  <td>5 / 5</td>
+  <td><code>mealRhythm</code> 口径已定（近 7 天日均进食次数）</td>
+</tr>
+<tr>
+  <td>D 辅食与排敏进度</td>
+  <td>5 / 8</td>
+  <td>8 / 8</td>
+  <td><code>food_observation_log</code> 双源合并、<code>highRiskIntroduced</code>、<code>eatingMarked</code> 全部落地</td>
+</tr>
+<tr>
+  <td>E 生长与营养</td>
+  <td>4 / 7</td>
+  <td>6 / 7</td>
+  <td>头围分位、<code>velocity</code>、<code>supplementAdherence</code> 已做；<strong><code>wfh</code> 缺参考表不做</strong>（不编造）</td>
+</tr>
+<tr>
+  <td>F 症状与反应</td>
+  <td>0 / 5</td>
+  <td>5 / 5</td>
+  <td><strong>整组从零补齐</strong></td>
+</tr>
+<tr>
+  <td>G 医疗与随访</td>
+  <td>0 / 4</td>
+  <td>3 / 4</td>
+  <td>计数版 + 最近就诊 + 复查计划；<code>vaccineProgress</code> 明细受 <strong>020 未上生产</strong>阻塞</td>
+</tr>
+<tr>
+  <td>H 日记与家长侧</td>
+  <td>1 / 2</td>
+  <td>1 / 2</td>
+  <td>渲染位置已统一；<code>themes[]</code> PRD 自身标&quot;暂缓&quot;</td>
+</tr>
+<tr>
+  <td>I 数据新鲜度</td>
+  <td>1 / 3</td>
+  <td>3 / 3</td>
+  <td><code>coverage</code> 已实现（大便性状 / 头围 / 辅食记录），&lt;50% 不得下阴性结论已写进注入约束</td>
+</tr>
+<tr>
+  <td>J 矛盾与风险</td>
+  <td>3 / 8</td>
+  <td><strong>8 / 8</strong></td>
+  <td>8 个 PRD flag 全部落地，另加 4 个实现新增</td>
+</tr>
+<tr>
+  <td>机制层</td>
+  <td>0 / 3</td>
+  <td>3 / 4</td>
+  <td>频控、护栏、判定优先级链已做；<strong>跨进程去重</strong>需 022 落库</td>
+</tr>
+</tbody>
+</table>
+<p><strong>验收</strong>：<code>verify-perception.mjs</code> 58 → <strong>101 条断言全绿</strong>；<code>verify-profile.mjs</code> 22 → <strong>35 条全绿</strong>；
+<code>eval-agent --group=l1</code> <strong>8/8</strong>；生产库（旺仔 <code>a54c8980</code>）实跑复算通过。</p>
+<p><strong>注入体积</strong>：感知块 982 → <strong>1764 字符</strong>（生产实测），画像块 500 → 约 800 字符。
+突破 PRD §4.7「约 300 字」的约定 —— 原因是信号组从 3 组扩到 10 组全覆盖，且 §4.7 的示例本身只写了 6 段。
+取舍：保持&quot;每组一行&quot;的密度，并把体积上限做成断言（&lt;3200 字符）纳入回归。</p>
+<hr />
+<h2 id="1-先说一个必须先解决的问题-PRD-的-41-对不上-已修订">1. 先说一个必须先解决的问题：PRD 的「41」对不上 —— ✅ 已修订</h2>
+<p>PRD §4.3 标题写「10 组 / <strong>41 个信号</strong>」，但同节的 §4.3.1 分组总览表自身加总是：</p>
+<pre><code>A5 + B7 + C5 + D8 + E7 + F5 + G4 + H2 + I3 = 46   （+ J 的 8 个 flag = 54）
+</code></pre>
+<p>而且表里的「信号数」与各小节实际列出的条目也对不上（组 D 标 8 却只列 6 项；组 E 标 7 却列了 8 项）。</p>
+<p><strong>这意味着&quot;补齐&quot;目前没有终点定义</strong> —— 按 41 算还是按 54 算，会差出一整组的工作量。<strong>建议先修 PRD 这一处的自相矛盾，再谈补哪些。</strong></p>
+<hr />
+<h2 id="2-逐条对账">2. 逐条对账</h2>
+<blockquote>
+<p>⚠️ 本节记录的是<strong>补齐前</strong>（2026-09-22 上午）的状态，用于定位缺口；
+补齐后的生效情况见 <a href="#01-%E8%A1%A5%E9%BD%90%E7%8A%B6%E6%80%812026-09-22-%E5%AE%9E%E6%96%BD%E5%AE%8C%E6%AF%95">§0.1</a>。</p>
+</blockquote>
+<p>图例：✅ 已实现且生效｜△ 部分实现 / 采集未用｜❌ 未实现</p>
+<h3 id="组-A-过敏基本情况-5">组 A 过敏基本情况（5）</h3>
+<table>
+<thead>
+<tr>
+  <th>#</th>
+  <th>信号</th>
+  <th>状态</th>
+  <th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>1</td>
+  <td><code>allergyTypes</code> 过敏类型</td>
+  <td>✅</td>
+  <td><code>queryBasic</code> 取 <code>allergy_types</code>，渲染成「中度牛奶蛋白过敏」</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>allergyLevel</code> 过敏程度</td>
+  <td>✅</td>
+  <td>同上，<code>LEVEL_LABEL</code> 映射</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><strong>诊断确定性</strong> <code>diagnosed</code></td>
+  <td>❌</td>
+  <td>无字段、无信号，依赖 <strong>migration 022</strong></td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>birthWeightG</code> 出生体重</td>
+  <td>△</td>
+  <td><code>queryBasic</code> <strong>取了</strong>，但 <code>renderProfileBlock</code> <strong>从没用它</strong> → 等于没有</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><strong>家族过敏史</strong></td>
+  <td>❌</td>
+  <td>无字段，依赖 <strong>migration 022</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="组-B-配方与转奶进度-7-唯一完整的一组">组 B 配方与转奶进度（7）—— 唯一完整的一组</h3>
+<table>
+<thead>
+<tr>
+  <th>#</th>
+  <th>信号</th>
+  <th>状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>1</td>
+  <td><code>formula.current</code> 构成占比</td>
+  <td>✅</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>formula.ladder</code> 阶梯位</td>
+  <td>✅</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>formula.status</code> stable/transitioning/stalled</td>
+  <td>✅</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>formula.direction</code> escalated/deescalated/same</td>
+  <td>✅</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>formula.stalledDays</code> 停滞天数</td>
+  <td>✅</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>formula.lactose</code> 乳糖型</td>
+  <td>✅</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>formula.lastChangedAt</code></td>
+  <td>✅</td>
+</tr>
+</tbody>
+</table>
+<h3 id="组-C-喂养方式-5">组 C 喂养方式（5）</h3>
+<table>
+<thead>
+<tr>
+  <th>#</th>
+  <th>信号</th>
+  <th>状态</th>
+  <th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>1</td>
+  <td><code>feeding.mode</code></td>
+  <td>✅</td>
+  <td>已按「最近一次母乳 ≥14 天」判定（R2 修正）</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>lastBreastAt</code></td>
+  <td>✅</td>
+  <td></td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>dailyMilkMl</code></td>
+  <td>✅</td>
+  <td>近 7 天配方奶日均毫升</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>solidKinds</code></td>
+  <td>✅</td>
+  <td>近 30 天辅食食材种数</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>mealRhythm</code> 餐次节奏</td>
+  <td>❌</td>
+  <td>PRD 只列了名字没给算法，<strong>口径未定</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="组-D-辅食与排敏进度-8">组 D 辅食与排敏进度（8）</h3>
+<table>
+<thead>
+<tr>
+  <th>#</th>
+  <th>信号</th>
+  <th>状态</th>
+  <th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>1</td>
+  <td><code>food.safeList</code></td>
+  <td>✅</td>
+  <td>含归一化后的种数</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>food.suspectedList</code></td>
+  <td>✅</td>
+  <td>含 severity</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>food.allergicList</code></td>
+  <td>✅</td>
+  <td>含 severity</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>food.observingTask</code></td>
+  <td>✅</td>
+  <td>含 <code>day n/N</code> + 停滞天数；但<strong>该段在无观察任务时整段不渲染</strong></td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>food.conflictFlags</code> 合规性</td>
+  <td>△</td>
+  <td>4 项检查里实现了 2 项（<code>staleObserving</code>→<code>observe_stalled</code>、<code>multiObserving</code>→<code>observing_overlap</code>）；<code>nameDuplication</code> 只作为一行文字展示、<strong>不是 flag</strong>（不会被频控/强度机制管到）；<code>eatingMarked</code> <strong>未做</strong></td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>food.highRiskIntroduced</code> 高致敏引入状态</td>
+  <td>❌</td>
+  <td>代码里 <code>highRisk</code> / <code>高致敏</code> <strong>零命中</strong></td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>food_observation_log</code> 逐日打卡</td>
+  <td>❌</td>
+  <td>PRD 明写「必须双源合并」，实际<strong>只读了两源</strong>，这张表 grep <strong>零命中</strong></td>
+</tr>
+<tr>
+  <td>8</td>
+  <td>名称归一化</td>
+  <td>✅</td>
+  <td><code>normalizeFoods()</code>，含重复建档分组</td>
+</tr>
+</tbody>
+</table>
+<h3 id="组-E-生长与营养-7">组 E 生长与营养（7）</h3>
+<table>
+<thead>
+<tr>
+  <th>#</th>
+  <th>信号</th>
+  <th>状态</th>
+  <th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>1</td>
+  <td><code>growth.weightP</code></td>
+  <td>✅</td>
+  <td></td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>growth.heightP</code></td>
+  <td>✅</td>
+  <td></td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><strong><code>growth.headP</code></strong></td>
+  <td>❌</td>
+  <td><code>queryGrowth</code> 的 SQL <strong>只 <code>SELECT weight_g, height_mm</code></strong> —— 头围列根本没取（<code>growth_record</code> 里实测有 8 条头围）</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>growth.trend</code></td>
+  <td>✅</td>
+  <td>渲染层比对最近两次分位档</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>growth.velocity</code> 增长速度</td>
+  <td>❌</td>
+  <td>g/天、cm/月 未做</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>growth.wfh</code> 体重-身长比</td>
+  <td>❌</td>
+  <td></td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>nutrition.supplementAdherence</code> 维 D 依从性</td>
+  <td>❌</td>
+  <td><code>supplement_items</code> JSON <strong>只在工具层解析</strong>，画像/感知层未用；现在只有「近 30 天补充记录 N 天」这个粗指标</td>
+</tr>
+</tbody>
+</table>
+<p>（<code>growth.measureFreshness</code> ✅ 由新鲜度覆盖；<code>growth.stagnationFlag</code> 是 flag #7，见组 J）</p>
+<h3 id="组-F-症状与反应-5-整组未实现">组 F 症状与反应（5）—— <strong>整组未实现</strong></h3>
+<table>
+<thead>
+<tr>
+  <th>#</th>
+  <th>信号</th>
+  <th>状态</th>
+  <th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>1</td>
+  <td><code>symptom.recent[]</code> 近期症状谱</td>
+  <td>❌</td>
+  <td>感知层<strong>从不读 <code>symptom_record</code></strong>，只有它的新鲜度</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>allergyEvents[]</code> 过敏事件</td>
+  <td>❌</td>
+  <td><code>health_record.allergy_symptoms</code> grep <strong>零命中</strong> ← 今天这个洞的根因</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>stoolFlag</code> 大便性状</td>
+  <td>❌</td>
+  <td><code>diaper_record.poop_type</code> grep <strong>零命中</strong>（PRD 说 dev 填写率仅 22%，本就要配覆盖率）</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>activeDays</code> 活跃度</td>
+  <td>❌</td>
+  <td></td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>foodLink</code> 症状↔食材关联</td>
+  <td>❌</td>
+  <td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="组-G-医疗与随访-4-整组未实现">组 G 医疗与随访（4）—— 整组未实现</h3>
+<table>
+<thead>
+<tr>
+  <th>#</th>
+  <th>信号</th>
+  <th>状态</th>
+  <th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>1</td>
+  <td><code>medical.byType</code> 分型统计</td>
+  <td>❌</td>
+  <td>生产实测 vaccine 4 / checkup 1 / sick 1，<strong>连计数都没给</strong></td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>lastCheckup</code></td>
+  <td>❌</td>
+  <td></td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>followUp</code> 复查计划</td>
+  <td>❌</td>
+  <td>生产 6 条里有多条可读</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>vaccineProgress</code> 疫苗进度</td>
+  <td>❌</td>
+  <td>依赖 <strong>020 未上生产</strong>；PRD 允许降级为计数</td>
+</tr>
+</tbody>
+</table>
+<h3 id="组-H-日记与家长侧-2">组 H 日记与家长侧（2）</h3>
+<table>
+<thead>
+<tr>
+  <th>#</th>
+  <th>信号</th>
+  <th>状态</th>
+  <th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>1</td>
+  <td><code>diary.lastAt</code></td>
+  <td>△</td>
+  <td>感知段渲染了（8 源之一），但<strong>画像段 <code>order</code> 漏了 <code>diary</code></strong> —— 同一件事两个渲染位置不一致</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>themes[]</code> 近期关注点</td>
+  <td>❌</td>
+  <td>PRD 自己标「本版暂缓」</td>
+</tr>
+</tbody>
+</table>
+<h3 id="组-I-数据新鲜度-3">组 I 数据新鲜度（3）</h3>
+<table>
+<thead>
+<tr>
+  <th>#</th>
+  <th>信号</th>
+  <th>状态</th>
+  <th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>1</td>
+  <td><code>staleDays</code> 各源陈旧天数</td>
+  <td>✅</td>
+  <td>8 源齐全（<code>FRESHNESS_LABEL</code> 唯一出处）</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><strong><code>coverage.rate</code> 覆盖率</strong></td>
+  <td>❌</td>
+  <td>代码里 <code>coverage</code> <strong>零命中</strong></td>
+</tr>
+<tr>
+  <td>3</td>
+  <td>覆盖率 &lt;50% 不下阴性结论</td>
+  <td>❌</td>
+  <td>机器判定不存在，只在 prompt 里写了句行为约束</td>
+</tr>
+</tbody>
+</table>
+<h3 id="组-J-矛盾与风险-8-flag">组 J 矛盾与风险（8 flag）</h3>
+<table>
+<thead>
+<tr>
+  <th>#</th>
+  <th>flag（PRD）</th>
+  <th>强度</th>
+  <th>状态</th>
+  <th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>1</td>
+  <td><strong>过敏食材仍在食用</strong></td>
+  <td><strong>强</strong></td>
+  <td>❌</td>
+  <td><code>status ∈ (suspected, allergic)</code> 的食材出现在近 14 天 <code>feeding_food_item</code> —— <strong>安全底线，未做</strong></td>
+</tr>
+<tr>
+  <td>2</td>
+  <td>排敏任务停滞</td>
+  <td>中</td>
+  <td>✅</td>
+  <td><code>observe_stalled</code></td>
+</tr>
+<tr>
+  <td>3</td>
+  <td>多个排敏窗口重叠</td>
+  <td>拦截型</td>
+  <td>△</td>
+  <td><code>observing_overlap</code> 实现了，但<strong>只在 <code>observing &gt; 1</code> 时触发</strong>；PRD 要求的是&quot;窗口有交集&quot;，语义不同</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td>转奶停滞</td>
+  <td>中</td>
+  <td>❌</td>
+  <td><code>status = stalled</code> 已算出来，但<strong>没有对应 flag</strong></td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><strong>转奶停滞期出现过敏反应</strong></td>
+  <td><strong>强</strong></td>
+  <td>❌</td>
+  <td>需要 #4 × 症状源；<strong>今天核对发现的正是这一类洞</strong></td>
+</tr>
+<tr>
+  <td>6</td>
+  <td>配方阶梯上移</td>
+  <td>弱</td>
+  <td>❌</td>
+  <td><code>direction = escalated</code> 只写进画像文字，没做成 flag</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td>生长分位下降</td>
+  <td>中</td>
+  <td>❌</td>
+  <td><code>trend</code> 已算，但没升级成预警 flag</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td>关键数据陈旧</td>
+  <td>中</td>
+  <td>✅</td>
+  <td><code>data_stale</code>（现只覆盖症状，PRD 要求症状+生长）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>另有 3 个 PRD 未列、实现里新加的 flag</strong>：<code>safe_not_maintained</code>（已耐受未维持）、<code>transition_ready</code>（转奶可推进）、<code>variety_insufficient</code>（日常种类不足）。它们不是缺口，但说明<strong>flag 清单已经偏离 PRD</strong>，PRD §4.5 该同步。</p>
+<h3 id="机制层-比单条信号更缺">机制层（比单条信号更缺）</h3>
+<table>
+<thead>
+<tr>
+  <th>机制</th>
+  <th>PRD 要求</th>
+  <th>状态</th>
+  <th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>flag 频控</td>
+  <td>单轮<strong>最多 1 条</strong>、同 flag <strong>7 天不重复</strong>、强项可打断</td>
+  <td>❌</td>
+  <td>实际是 <code>需要注意：</code> 一行<strong>全量 dump</strong>（本次实测 4 条一起给）</td>
+</tr>
+<tr>
+  <td>护栏（判定顺序 Q1）</td>
+  <td>命中即中断计划 + 就医引导</td>
+  <td>❌</td>
+  <td>prompt 层有文案规则 35/36，<strong>服务端没有护栏判定</strong></td>
+</tr>
+<tr>
+  <td>判定优先级链</td>
+  <td>护栏 &gt; 数据不足 &gt; 分型 &gt; 活跃计划 &gt; 空档</td>
+  <td>❌</td>
+  <td>现只有配方段自己的 <code>verdict</code>，五级链不存在</td>
+</tr>
+<tr>
+  <td>注入体积</td>
+  <td>§4.7 称约 300 字 / 400 token</td>
+  <td>⚠️</td>
+  <td>实测 <strong>1,482 字符</strong>（画像 500 + 感知 982），超约 20%</td>
+</tr>
+<tr>
+  <td>跨进程缓存失效</td>
+  <td>写入后主动失效</td>
+  <td>❌</td>
+  <td>只靠 5 分钟 TTL（TECH-013 §4.2 待接线）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-缺口归因-三类-代价完全不同">3. 缺口归因：三类，代价完全不同</h2>
+<table>
+<thead>
+<tr>
+  <th>类型</th>
+  <th>含义</th>
+  <th>涉及缺口</th>
+  <th>代价</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>① 数据源没接线</strong></td>
+  <td>库里明明有数据，代码没读</td>
+  <td><code>allergy_symptoms</code>（腹泻真在里头）、<code>poop_type</code>、<code>head_mm</code>、<code>food_observation_log</code>、<code>supplement_items</code>、<code>birth_weight_g</code> 渲染、组 G 计数</td>
+  <td><strong>低</strong>：改 SQL + 加渲染，零迁移、零界面改动</td>
+</tr>
+<tr>
+  <td><strong>② 规则没写</strong></td>
+  <td>数据够，判定逻辑没做</td>
+  <td>flag #1/#4/#5/#6/#7、覆盖率、频控、护栏、判定优先级链、<code>highRiskIntroduced</code>、<code>velocity</code>/<code>wfh</code></td>
+  <td><strong>中</strong>：纯服务端派生；频控需存状态（要落库）</td>
+</tr>
+<tr>
+  <td><strong>③ 外部阻塞</strong></td>
+  <td>缺字段或未上生产</td>
+  <td>组 A 的诊断确定性 / 家族过敏史（<strong>migration 022</strong>）、<code>vaccineProgress</code>（<strong>020 未上生产</strong>）</td>
+  <td><strong>高</strong>：被迁移与产品决策卡住</td>
+</tr>
+</tbody>
+</table>
+<p><strong>关键判断：占比最大的 ① 和 ② 都不需要 migration，也不需要动小程序</strong> —— 正好落在 §12.4 五期一轨「第 1 期会看＝感知层，服务端+agent、小程序近零改动」的范围里。</p>
+<hr />
+<h2 id="4-补齐方案-三批">4. 补齐方案：三批</h2>
+<h3 id="批-1-把已存在的数据接上-零迁移-零界面-已实施">批 1　把已存在的数据接上（零迁移、零界面）—— ✅ 已实施</h3>
+<table>
+<thead>
+<tr>
+  <th>做</th>
+  <th>落点</th>
+  <th>产出</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>症状信号（组 F 的 1/2）</td>
+  <td><code>perception.js</code> 新增 <code>querySymptoms</code>：<code>symptom_record</code> 近期症状谱 + <strong><code>health_record.allergy_symptoms</code></strong> 过敏事件</td>
+  <td>注入块出现「近期反应」一行</td>
+</tr>
+<tr>
+  <td>大便性状（组 F 的 3）</td>
+  <td>同上，读 <code>diaper_record.poop_type</code> + <strong>附填写率</strong></td>
+  <td>便血/腹泻可判</td>
+</tr>
+<tr>
+  <td>flag #1 过敏食材仍在食用（<strong>强</strong>）</td>
+  <td><code>buildFlags</code>：<code>suspected/allergic</code> × 近 14 天 <code>feeding_food_item</code></td>
+  <td>安全底线</td>
+</tr>
+<tr>
+  <td>flag #4 + #5 转奶停滞 / 停滞期有反应（<strong>强</strong>）</td>
+  <td><code>buildFlags</code>：<code>stage.status === 'stalled'</code>；#5 = #4 × 症状</td>
+  <td><strong>直接消掉本次发现的洞</strong></td>
+</tr>
+<tr>
+  <td>flag #6 阶梯上移 / #7 生长分位下降</td>
+  <td><code>buildFlags</code>：复用已有 <code>direction</code> 与 <code>growth.trend</code></td>
+  <td>纯内存，零 SQL</td>
+</tr>
+<tr>
+  <td>头围分位（组 E 的 3）</td>
+  <td><code>queryGrowth</code> SQL 补 <code>head_mm</code> + 渲染</td>
+  <td>PRD 明确列了，一行 SQL</td>
+</tr>
+<tr>
+  <td>出生体重渲染（组 A 的 4）</td>
+  <td><code>renderProfileBlock</code> 用起来</td>
+  <td>采集未用的补上</td>
+</tr>
+<tr>
+  <td>画像段补 <code>diary</code></td>
+  <td><code>renderProfileBlock</code> 的 <code>order</code> 加 <code>diary</code></td>
+  <td>消除两处渲染不一致</td>
+</tr>
+</tbody>
+</table>
+<p>验收：<code>verify-perception.mjs</code> 58 → 约 70（含&quot;Health 有反应但 Symptom 陈旧&quot;的边界断言）、<code>verify-profile.mjs</code> 22、<code>eval-agent.mjs --group=l1</code> 全绿 + <code>perception-preview --prod</code> 人眼核对。</p>
+<h3 id="批-2-补元信号与剩余派生-零迁移-已实施-wfh-除外">批 2　补元信号与剩余派生（零迁移）—— ✅ 已实施（<code>wfh</code> 除外）</h3>
+<blockquote>
+<p><code>wfh</code>（体重-身长比）<strong>未实施</strong>：需要 WHO weight-for-length 参考表，当前仓库里没有这份数据，
+按&quot;宁可返回 null 也不给错值&quot;的原则跳过，等参考表导入后再补（见 §6.3）。</p>
+</blockquote>
+<ul>
+<li><strong>覆盖率 <code>coverage.rate</code></strong>（组 I 的 2/3）：按维度算填写率，<code>&lt;50%</code> 时把阴性结论降级为提问</li>
+<li><strong>组 G 计数版</strong>：<code>medical_record</code> 按 <code>visit_type</code> 计数 + 最近一次；<code>vaccine_*</code> 走已有的 <code>hasTypedMedical</code> 探测，未就绪标 <code>degraded_partial</code></li>
+<li><strong><code>supplementAdherence</code></strong>：解析 <code>supplement_items</code> JSON 算维 D 覆盖率</li>
+<li><strong><code>velocity</code> / <code>wfh</code></strong>：需要月龄参考值，先定口径</li>
+<li><strong>注入体积压回 §4.7 的约定</strong>（1,482 → 目标 ≤1,200 字符）</li>
+</ul>
+<h3 id="批-3-需要迁移或产品决策-外部阻塞-已实施不依赖迁移的部分">批 3　需要迁移或产品决策（外部阻塞）—— ◐ 已实施不依赖迁移的部分</h3>
+<ul>
+<li>组 A 的诊断确定性 / 家族过敏史 → <strong>migration 022</strong>（未做，字段不存在）</li>
+<li><strong>flag 频控</strong>（单轮 1 条 / 7 天去重 / 强项可打断）→ ✅ <strong>已实施</strong>（进程内状态；跨进程去重仍需 022 落库）</li>
+<li><strong>服务端护栏判定</strong> + 判定优先级链（§4.4）→ ✅ <strong>已实施</strong>（护栏 4 类规则 + 五级链输出 <code>route</code>）</li>
+<li><code>mealRhythm</code> / <code>highRiskIntroduced</code> → ✅ <strong>已实施</strong>（口径见 §6.1）</li>
+</ul>
+<hr />
+<h2 id="5-建议">5. 建议</h2>
+<ol>
+<li><strong>先修 PRD §4.3 的「41 vs 54」</strong>，把目标口径钉死 —— 否则补到哪算完说不清。</li>
+<li><strong>批 1 立刻可做</strong>：全部落在感知层（服务端 + agent），零 migration、零小程序改动、有现成的 58 + 22 条断言兜底，且能顺手修掉今天核对暴露的洞。</li>
+<li>批 2 里<strong>覆盖率</strong>优先级高于其余 —— 它是&quot;能不能下阴性结论&quot;的开关，PRD §4.6.2 把它当硬约束。</li>
+<li>批 3 等 020 / 022 排期，不阻塞前面。</li>
+</ol>
+<hr />
+<h2 id="6-实施清单-2026-09-22">6. 实施清单（2026-09-22）</h2>
+<h3 id="6-1-代码改动">6.1 代码改动</h3>
+<table>
+<thead>
+<tr>
+  <th>文件</th>
+  <th>改动</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>agent-poc/src/lib/growth.js</code></td>
+  <td>新增 0-36 月男/女<strong>头围</strong> P3/P15/P50/P85/P97 参考表（逐值取自 <code>minicare-mp/src/lib/growth-standards.ts</code>，含跨仓一致性断言）；<code>percentileOf</code> 支持 <code>type='head'</code>；<code>getStandardAtAge</code> 返回 <code>hd</code></td>
+</tr>
+<tr>
+  <td><code>agent-poc/src/lib/profile.js</code></td>
+  <td><code>queryGrowth</code> 取 <code>head_mm</code>、各指标<strong>分别回溯上次有效测量</strong>（头围只填过 8 次，不能要求同行齐全）、新增 <code>velocity</code>；新增 <code>queryMedical</code>（组 G 计数版 + 020 降级标记）、<code>querySupplements</code>（维 D 覆盖）、<code>queryMealRhythm</code>；<code>renderProfileBlock</code> 补出生体重、头围、增速、营养补充、医疗、新鲜度补 <code>diary</code></td>
+</tr>
+<tr>
+  <td><code>agent-poc/src/lib/perception.js</code></td>
+  <td>新增 <code>querySymptoms</code>（组 F，双入口）、<code>queryStool</code>（性状 + 填写率）、<code>queryCoverage</code>（组 I）、<code>computeHighRisk</code>（组 D）、<code>growthTrend</code>（组 E）；<code>queryObservations</code> 合并 <code>food_observation_log</code>、新增窗口重叠与 <code>highRisk</code>；<code>queryEaten</code> 一次拉 90 天后派生 7/14/30 天视图；<code>buildFlags</code> 扩到 12 个 flag（PRD 8 个 + 实新增 4 个）并带 <code>strength</code>；新增 <code>pickFlagsForTurn</code>（频控）/<code>resetFlagGate</code>；新增 <code>deriveRoute</code>（§4.4 判定链）；<code>renderPerceptionBlock</code> 支持 <code>opts</code> 返回 <code>{block, flags}</code></td>
+</tr>
+<tr>
+  <td><code>agent-poc/src/prompts/system.js</code></td>
+  <td>现状块改为带频控调用（<code>renderPerceptionBlock(perception, {})</code>）</td>
+</tr>
+<tr>
+  <td><code>agent-poc/src/lib/query.js</code></td>
+  <td><strong>体温不再被加总</strong>：<code>notAdditive</code> 维度 SUM 改 MAX（修掉 37.0+36.7+36.8=110.5 的假阳性）；数值列全空时返回 <code>null</code> 而不是 0（&quot;体温 0.0&quot;同样会被当成真实测量值）</td>
+</tr>
+<tr>
+  <td><code>agent-poc/scripts/perception-preview.mjs</code></td>
+  <td>新增 ⑤ 症状/大便、⑦ 判定路径、⑧ flag（带强度标签）；⑨ 段加<strong>频控对照</strong>与注入块体积</td>
+</tr>
+</tbody>
+</table>
+<h3 id="6-2-口径决策-本可以含糊过去-但必须写死">6.2 口径决策（本可以含糊过去，但必须写死）</h3>
+<table>
+<thead>
+<tr>
+  <th>项</th>
+  <th>决定</th>
+  <th>理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>mealRhythm</code></td>
+  <td>近 7 天<strong>有记录日</strong>的平均每天进食次数（奶顿数 + 辅食顿数），<strong>不给达标结论</strong></td>
+  <td>餐次随月龄与个体差异大，行业无共识阈值</td>
+</tr>
+<tr>
+  <td><code>velocity</code></td>
+  <td>只给实测 g/天、cm/月，<strong>不给&quot;是否达标&quot;</strong></td>
+  <td>缺月龄增速参考表；给了就是编造</td>
+</tr>
+<tr>
+  <td><code>wfh</code></td>
+  <td><strong>不做</strong></td>
+  <td>缺 WHO weight-for-length 参考表</td>
+</tr>
+<tr>
+  <td>头围分位</td>
+  <td>复用小程序同一份头围表</td>
+  <td>单一真相源；已加跨仓逐值断言</td>
+</tr>
+<tr>
+  <td>覆盖不足时</td>
+  <td>注入块写&quot;不得据此下没有腹泻/便血这类结论&quot;</td>
+  <td>PRD §4.6.2 硬约束</td>
+</tr>
+<tr>
+  <td>分型缺失</td>
+  <td>标&quot;未采集&quot;，<strong>不硬锁定推进</strong></td>
+  <td>字段不存在，假装锁定等于把缺失包装成结论</td>
+</tr>
+<tr>
+  <td>flag 冷却</td>
+  <td>进程内 Map（7 天），<code>FLAG_THROTTLE=off</code> 一键回滚</td>
+  <td>跨进程去重需 022 落库；先把&quot;同一会话反复念&quot;止住</td>
+</tr>
+</tbody>
+</table>
+<h3 id="6-3-外部阻塞-未实施">6.3 外部阻塞（未实施）</h3>
+<table>
+<thead>
+<tr>
+  <th>项</th>
+  <th>阻塞原因</th>
+  <th>解除条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>组 A 诊断确定性 / 家族过敏史</td>
+  <td><code>baby_profile</code> 无对应字段</td>
+  <td>migration 022</td>
+</tr>
+<tr>
+  <td><code>vaccineProgress</code> 剂次/名称/批次</td>
+  <td>生产库停在 019，无 <code>vaccine_*</code> 列</td>
+  <td>migration 020 上生产（当前按 §4.6.3 降级为计数并标 <code>degradedPartial</code>）</td>
+</tr>
+<tr>
+  <td>flag 频控跨进程去重</td>
+  <td>需持久化&quot;上次提示时间&quot;</td>
+  <td>migration 022 或 FlexDB</td>
+</tr>
+<tr>
+  <td>§4.4「活跃计划 / 冷却期」两级</td>
+  <td><code>milk_transition_plan</code> 等计划表未建</td>
+  <td>第 2 期计划类能力</td>
+</tr>
+<tr>
+  <td><code>wfh</code></td>
+  <td>缺 WHO weight-for-length 参考表</td>
+  <td>参考表导入</td>
+</tr>
+<tr>
+  <td>组 H <code>themes[]</code></td>
+  <td>PRD 自身标&quot;本版暂缓&quot;</td>
+  <td>产品排期</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="附录-本次核对发现的洞落在哪个缺口">附录　本次核对发现的洞落在哪个缺口</h2>
+<table>
+<thead>
+<tr>
+  <th>现象</th>
+  <th>归属缺口</th>
+  <th>批次</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>转奶给「具备推进条件」，但宝宝 09-20 在腹泻（<code>health_record.allergy_symptoms</code>）、09-15 三文鱼泥判 severe</td>
+  <td><strong>组 F 整组缺失</strong> + flag #1/#5 未做</td>
+  <td>批 1</td>
+</tr>
+<tr>
+  <td>症状源 <code>symptom_record</code> 最新 08-19（34 天）被判不可用 → 真实反应改从别的入口进来却没人读</td>
+  <td><strong>PRD §4.6 的「同一事实两个入口」</strong>；<code>allergy_symptoms</code> 零命中</td>
+  <td>批 1</td>
+</tr>
+<tr>
+  <td><code>health</code> 维度把体温加总出 110.5</td>
+  <td>工具层 <code>numericCol</code> 误用（非本次缺口）</td>
+  <td>单独修</td>
+</tr>
+<tr>
+  <td>注入块里&quot;观察中&quot;整段在无任务时消失</td>
+  <td>组 D 的信号 4 渲染策略</td>
+  <td>批 1（顺手）</td>
+</tr>
+<tr>
+  <td>画像段 7 个新鲜度源 vs 感知段 8 个</td>
+  <td>组 H 的渲染不一致</td>
+  <td>批 1</td>
+</tr>
+</tbody>
+</table>
+
+<p class="docmeta">由 <code>docs/tools/md2html.py</code> 从同名 Markdown 渲染 · 19 张表格全部正常解析</p>
+</main></div></body></html>

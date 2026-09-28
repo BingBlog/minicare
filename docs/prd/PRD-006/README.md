@@ -250,7 +250,7 @@ sequenceDiagram
 
 **本项目内**
 1. `docs/agent/tech/RESEARCH-20260919-转奶与排敏教练-先进性调研.md`（循证与对标依据）
-2. `docs/agent/tech/PROFILE-20260919-敏宝画像信号清单与设计.md`（10 组 41 个信号与实测锚点，[§4](02-能力设计.md) 的来源）
+2. `docs/agent/tech/PROFILE-20260919-敏宝画像信号清单与设计.md`（10 组 46 个信号 + 8 个 flag 与实测锚点，[§4](02-能力设计.md) 的来源）
 3. `docs/agent/tech/OPT-20260919-线上助手问题分析与优化方案.md`（线上缺陷与优化项）
 4. `docs/prd/PRD-003.md`《养娃智能体「敏宝助手」V1.0》
 5. `docs/prd/PRD-002.md`《辅食记录与排敏管理》（现有四态/五态模型与观察期设计的来源）
