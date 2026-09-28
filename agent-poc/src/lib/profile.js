@@ -64,6 +64,13 @@ export const FRESHNESS_LABEL = {
 /** 超过这些天数视为"陈旧"（月龄尺度不同，阈值分档） */
 const STALE_DAYS = { formula: 3, food: 3, supplement: 3, medication: 3, growth: 45, symptom: 14, medical: 45, diary: 3 }
 /**
+ * 分位档序列（从低到高）——**必须与 `growth.js::bucket()` 的返回值集合逐字一致**。
+ * bucket 只返回区间档（'低于P3' / 'P3-P15' / 'P15-P50' / 'P50-P85' / 'P85-P97' / '高于P97'），
+ * 从不返回 'P50' 这类单点标签；拿单点标签做 `indexOf` 会恒为 -1，导致趋势判定永远「平稳」。
+ * 改 bucket 的档位命名时，这里必须同步改（verify-profile.mjs 有对应断言）。
+ */
+export const P_BANDS = ['低于P3', 'P3-P15', 'P15-P50', 'P50-P85', 'P85-P97', '高于P97']
+/**
  * 判定"已停母乳"的间隔阈值（天）。
  * 依据：母乳喂养若连续 14 天无任何记录，视为已停（与 STALE_DAYS.symptom 同尺度）。
  * 注意必须用「最近一次母乳距今」判定，**不能**用 30 天累计条数——后者是滞后指标：
@@ -349,7 +356,7 @@ async function queryFeeding(db, babyId) {
 async function queryGrowth(db, babyId, basic) {
   if (!basic?.birthDate) return null
   const [rows] = await db.query(
-    'SELECT record_date, weight_g, height_mm FROM growth_record WHERE baby_id = ? ORDER BY record_date DESC LIMIT 2',
+    'SELECT record_date, weight_g, height_mm, head_mm FROM growth_record WHERE baby_id = ? ORDER BY record_date DESC LIMIT 3',
     [babyId],
   )
   if (!rows.length) return null
@@ -357,7 +364,16 @@ async function queryGrowth(db, babyId, basic) {
   const measure = (row) => {
     const at = toDateStr(row.record_date)
     const months = ageInMonths(basic.birthDate, at)
-    const out = { measuredAt: at, months, weightKg: null, heightCm: null, weightP: null, heightP: null }
+    const out = {
+      measuredAt: at,
+      months,
+      weightKg: null,
+      heightCm: null,
+      headCm: null,
+      weightP: null,
+      heightP: null,
+      headP: null,
+    }
     if (row.weight_g != null) {
       out.weightKg = Number(row.weight_g) / 1000
       out.weightP = percentileOf(months, sex, 'weight', out.weightKg).p
@@ -366,14 +382,171 @@ async function queryGrowth(db, babyId, basic) {
       out.heightCm = Number(row.height_mm) / 10
       out.heightP = percentileOf(months, sex, 'height', out.heightCm).p
     }
+    if (row.head_mm != null) {
+      out.headCm = Number(row.head_mm) / 10
+      out.headP = percentileOf(months, sex, 'head', out.headCm).p
+    }
     return out
   }
   const latest = measure(rows[0])
-  const prev = rows[1] ? measure(rows[1]) : null
+  // 上一次**有效同类测量**（各指标列常缺测：头围只填过 8 次，不能要求同一行齐全）
+  const prevWith = (key) => {
+    for (const r of rows.slice(1)) {
+      const m = measure(r)
+      if (m[key] != null) return m
+    }
+    return null
+  }
+  const prevWeight = prevWith('weightKg')
+  const prevHeight = prevWith('heightCm')
+  const prevHead = prevWith('headCm')
+
+  /** 增速：只给实测值（g/天、cm/月），不给"是否达标"结论 —— 缺月龄增速参考表，不编造 */
+  const velocity = (() => {
+    const out = {}
+    const v = (cur, prev, curKey, prevKey, toUnit) => {
+      if (cur[curKey] == null || !prev || prev[prevKey] == null) return null
+      const days = dayDiff(prev.measuredAt, cur.measuredAt)
+      if (!days || days <= 0) return null
+      const dv = toUnit(cur[curKey] - prev[prevKey])
+      return { perDay: round2(dv / days), perMonth: round2((dv / days) * 30.4), days, from: prev.measuredAt }
+    }
+    out.weightGPerDay = v(latest, prevWeight, 'weightKg', 'weightKg', (x) => x * 1000)
+    out.heightCmPerMonth = v(latest, prevHeight, 'heightCm', 'heightCm', (x) => x)
+    out.headCmPerMonth = v(latest, prevHead, 'headCm', 'headCm', (x) => x)
+    return out.weightGPerDay || out.heightCmPerMonth ? out : null
+  })()
+
   return {
     latest,
-    previous: prev,
+    previous: prevWeight,
+    prevHeight,
+    prevHead,
+    velocity,
     staleDays: Math.max(0, dayDiff(latest.measuredAt, cstToday()) ?? 0),
+  }
+}
+
+/**
+ * 组 G 医疗与随访（PRD §4.3.4 组 G）。
+ * 生产库停在 migration 019 → 无 vaccine 系 / checkup 系列，故疫苗进度**降级为计数**
+ * （PRD §4.6.3 明确允许），并以 `degraded_partial` 标记，避免模型编造剂次。
+ */
+async function queryMedical(db, babyId) {
+  // 先探 schema：degradedPartial 表达的是"本环境类型化字段是否可读"，
+  // 与"有没有就医记录"无关 —— 无记录时也必须给出正确标记。
+  let typed = false
+  try {
+    const { hasTypedMedical } = await import('./query.js')
+    typed = await hasTypedMedical(db)
+  } catch {
+    typed = false
+  }
+  const [rows] = await db.query(
+    `SELECT visit_type, visit_date, follow_up_date FROM medical_record
+      WHERE baby_id = ? ORDER BY visit_date DESC`,
+    [babyId],
+  )
+  if (!rows.length) {
+    return {
+      total: 0,
+      byType: {},
+      lastVisitAt: null,
+      lastVisitType: null,
+      lastCheckupAt: null,
+      followUp: null,
+      typed,
+      degradedPartial: !typed,
+    }
+  }
+  const byType = {}
+  for (const r of rows) {
+    const t = r.visit_type || 'other'
+    byType[t] = (byType[t] || 0) + 1
+  }
+  const last = rows[0]
+  const checkup = rows.find((r) => r.visit_type === 'checkup')
+  const today = cstToday()
+  const future = rows
+    .map((r) => toDateStr(r.follow_up_date))
+    .filter((d) => d && d >= today)
+    .sort()[0]
+  return {
+    total: rows.length,
+    byType,
+    lastVisitAt: toDateStr(last.visit_date) || null,
+    lastVisitType: last.visit_type || null,
+    lastCheckupAt: checkup ? toDateStr(checkup.visit_date) || null : null,
+    followUp: future || null,
+    typed,
+    // 020 未应用 → 疫苗只能给针数，剂次/名称/批次不可读
+    degradedPartial: !typed,
+  }
+}
+
+/**
+ * 组 E 营养补充依从性（PRD §4.3.4）：解析 supplement_items JSON 算维 D 覆盖率。
+ * 参考：婴儿出生后数日即应每日补充维生素 D 400 IU（中国营养学会），故按"天数覆盖"判定。
+ */
+async function querySupplements(db, babyId) {
+  const [rows] = await db.query(
+    `SELECT DATE(record_time) AS d, supplement_items FROM feeding_supplement_record
+      WHERE baby_id = ? AND record_time >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)`,
+    [babyId],
+  )
+  const D_KEYS = ['vitD', 'vitAD', 'vitd', 'vitad']
+  const daySet = new Set()
+  let lastVitDAt = null
+  const keyNames = new Set()
+  for (const r of rows) {
+    const d = toDateStr(r.d)
+    for (const it of asArray(r.supplement_items)) {
+      const k = String(it?.key || '')
+      if (it?.label) keyNames.add(String(it.label))
+      if (D_KEYS.includes(k)) {
+        daySet.add(d)
+        if (!lastVitDAt || d > lastVitDAt) lastVitDAt = d
+      }
+    }
+  }
+  return {
+    windowDays: 30,
+    vitDDays: daySet.size,
+    vitDRate: round2(daySet.size / 30),
+    lastVitDAt,
+    vitDStaleDays: lastVitDAt ? Math.max(0, dayDiff(lastVitDAt, cstToday()) ?? 0) : null,
+    kinds: [...keyNames].slice(0, 6),
+    records30: rows.length,
+  }
+}
+
+
+/**
+ * 组 C 餐次节奏 `mealRhythm`（PRD §4.3.1 组 C 第 5 项，原文只列名未给算法）。
+ * 本实现定的口径：**近 7 天有记录的日子里，平均每天进食几次、其中奶几顿辅食几顿**。
+ * 刻意不给"是否达标"结论 —— 餐次随月龄与个体差异大，行业无共识阈值，只描述现状。
+ */
+async function queryMealRhythm(db, babyId) {
+  const [rows] = await db.query(
+    `SELECT d, SUM(f) AS formula_meals, SUM(s) AS food_meals FROM (
+       SELECT DATE(record_time) AS d, COUNT(*) AS f, 0 AS s
+         FROM feeding_formula_record WHERE baby_id = ? AND record_time >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) GROUP BY d
+       UNION ALL
+       SELECT DATE(record_time) AS d, 0 AS f, COUNT(*) AS s
+         FROM feeding_food_record WHERE baby_id = ? AND record_time >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) GROUP BY d
+     ) t GROUP BY d ORDER BY d`,
+    [babyId, babyId],
+  )
+  if (!rows.length) return null
+  const meals = rows.map((r) => Number(r.formula_meals || 0) + Number(r.food_meals || 0))
+  const avg = meals.reduce((a, b) => a + b, 0) / meals.length
+  return {
+    recordedDays: rows.length,
+    avgMealsPerDay: round2(avg),
+    avgFormulaMeals: round2(rows.reduce((a, r) => a + Number(r.formula_meals || 0), 0) / rows.length),
+    avgFoodMeals: round2(rows.reduce((a, r) => a + Number(r.food_meals || 0), 0) / rows.length),
+    minMeals: Math.min(...meals),
+    maxMeals: Math.max(...meals),
   }
 }
 
@@ -412,13 +585,16 @@ async function buildProfile(babyId) {
   }
   const basic = await safe('basic', () => queryBasic(db, babyId))
   if (!basic) return null // 连档案都取不到，画像无意义
-  const [formula, feeding, freshness] = await Promise.all([
+  const [formula, feeding, freshness, medical, supplements, mealRhythm] = await Promise.all([
     safe('formula', () => queryFormula(db, babyId)),
     safe('feeding', () => queryFeeding(db, babyId)),
     safe('freshness', () => queryFreshness(db, babyId)),
+    safe('medical', () => queryMedical(db, babyId)),
+    safe('supplements', () => querySupplements(db, babyId)),
+    safe('mealRhythm', () => queryMealRhythm(db, babyId)),
   ])
   const growth = await safe('growth', () => queryGrowth(db, babyId, basic))
-  return { babyId, at: Date.now(), basic, formula, feeding, growth, freshness }
+  return { babyId, at: Date.now(), basic, formula, feeding, growth, freshness, medical, supplements, mealRhythm }
 }
 
 /**
@@ -462,19 +638,22 @@ function freshnessText(src, info) {
  */
 export function renderProfileBlock(profile) {
   if (!profile?.basic) return ''
-  const { basic, formula, feeding, growth, freshness } = profile
+  const { basic, formula, feeding, growth, freshness, medical, supplements, mealRhythm } = profile
   const lines = []
 
-  // 第一行：身份 + 过敏前提
+  // 第一行：身份 + 过敏前提（出生体重属组 A 事实信号，采集了就必须用上）
   const allergen = basic.allergyTypes.map((t) => ALLERGEN_LABEL[t] || t).join('、')
   const level = LEVEL_LABEL[basic.allergyLevel] || null
   const who = [basic.name, basic.ageText, basic.gender === 'male' ? '男' : basic.gender === 'female' ? '女' : null]
     .filter(Boolean)
     .join('，')
+  const birthNote = basic.birthWeightG
+    ? `，出生体重 ${(basic.birthWeightG / 1000).toFixed(2)} 千克`
+    : ''
   const allergyText = allergen
     ? `${level ? level : ''}${allergen}蛋白过敏（过敏原：${allergen}）`
     : `过敏原未填写`
-  lines.push(`${who}。${allergyText}。`)
+  lines.push(`${who}。${allergyText}${birthNote}。`)
 
   // 配方与转奶进度
   if (formula?.dominantLabel) {
@@ -529,30 +708,72 @@ export function renderProfileBlock(profile) {
     }
     if (feeding.avgFormulaMl7) parts.push(`近 7 天配方奶日均约 ${feeding.avgFormulaMl7} 毫升`)
     if (feeding.solidKinds30) parts.push(`近 30 天辅食涉及 ${feeding.solidKinds30} 种食材`)
+    if (mealRhythm?.recordedDays) {
+      parts.push(
+        `近 7 天有记录 ${mealRhythm.recordedDays} 天、平均每天进食 ${mealRhythm.avgMealsPerDay} 次（奶 ${mealRhythm.avgFormulaMeals} 顿 + 辅食 ${mealRhythm.avgFoodMeals} 顿）`,
+      )
+    }
     lines.push(`喂养：${parts.join('；')}。`)
   }
 
-  // 生长分位与趋势
+  // 生长分位与趋势（含头围 —— 组 E 明确列了 headP，此前 SQL 未取列）
   if (growth?.latest) {
     const l = growth.latest
     const parts = []
     if (l.weightKg) parts.push(`体重 ${l.weightKg} 千克${l.weightP ? `（${l.weightP}）` : ''}`)
     if (l.heightCm) parts.push(`身长 ${l.heightCm} 厘米${l.heightP ? `（${l.heightP}）` : ''}`)
+    if (l.headCm) parts.push(`头围 ${l.headCm} 厘米${l.headP ? `（${l.headP}）` : ''}`)
     const trend = (() => {
       const p = growth.previous
       if (!p?.weightP || !l.weightP) return ''
-      const rank = (s) => ['P3', 'P15', 'P50', 'P85', 'P97'].indexOf(s)
-      const d = rank(l.weightP) - rank(p.weightP)
-      return d > 0 ? '，趋势上升' : d < 0 ? '，趋势下降' : '，趋势平稳'
+      // growth.js::bucket 只返回**区间档**（如 'P85-P97' / '高于P97'），
+      // 用单点标签 ['P3','P15',…] 做 indexOf 会恒为 -1 → 两边都得 -1 → d=0 →
+      // **趋势永远输出「平稳」**（2026-09-22 修：改用档位序列；档位认不出时不给结论，
+      // 绝不因为"算不出来"就说平稳 —— 那等于给家长报假结论）。
+      const rank = (s) => P_BANDS.indexOf(s)
+      const rl = rank(l.weightP)
+      const rp = rank(p.weightP)
+      if (rl < 0 || rp < 0) return ''
+      return rl > rp ? '，趋势上升' : rl < rp ? '，趋势下降' : '，趋势平稳'
     })()
+    // 增速只给实测速度，不给"是否达标"（缺月龄增速参考表，不编造结论）
+    const v = growth.velocity?.weightGPerDay
+    const vh = growth.velocity?.heightCmPerMonth
+    const vText = []
+    if (v) vText.push(`日均增重约 ${v.perDay} 克`)
+    if (vh) vText.push(`月均增长约 ${vh.perMonth} 厘米`)
     if (parts.length) {
-      lines.push(`生长：${parts.join('、')}${trend}（测量于 ${l.measuredAt}，${l.months} 月龄）。`)
+      lines.push(
+        `生长：${parts.join('、')}${trend}（测量于 ${l.measuredAt}，${l.months} 月龄）${vText.length ? `；与上次测量相比${vText.join('、')}` : ''}。`,
+      )
     }
+  }
+
+  // 营养补充依从性（组 E）：维 D 是中国婴幼儿唯一普遍推荐每日补充的项
+  if (supplements) {
+    const bits = [`近 30 天维生素 D 类补充覆盖 ${supplements.vitDDays}/30 天`]
+    if (supplements.vitDStaleDays != null && supplements.vitDStaleDays > 3) {
+      bits.push(`最近一次在 ${supplements.vitDStaleDays} 天前`)
+    }
+    if (supplements.kinds.length) bits.push(`补充种类：${supplements.kinds.join('、')}`)
+    lines.push(`营养补充：${bits.join('；')}（参考：婴儿应每日补充维生素 D）。`)
+  }
+
+  // 医疗与随访（组 G）
+  if (medical?.total) {
+    const TYPE_LABEL = { vaccine: '疫苗', checkup: '儿保', sick: '就诊', other: '其他' }
+    const byType = Object.entries(medical.byType)
+      .map(([k, n]) => `${TYPE_LABEL[k] || k} ${n}`)
+      .join('、')
+    // 020 未上生产时只有计数值可读 —— 必须显式标注，避免模型追问剂次/名称
+    const degraded = medical.degradedPartial ? '（仅计数可读，接种剂次与名称暂不可用）' : ''
+    lines.push(`医疗：${byType}${degraded}；最近一次 ${medical.lastVisitAt}${TYPE_LABEL[medical.lastVisitType] ? `（${TYPE_LABEL[medical.lastVisitType]}）` : ''}。`)
+    if (medical.followUp) lines.push(`复查计划：已登记 ${medical.followUp} 的复查。`)
   }
 
   // 数据新鲜度（元信号）
   if (freshness) {
-    const order = ['formula', 'food', 'supplement', 'medication', 'growth', 'symptom', 'medical']
+    const order = ['formula', 'food', 'supplement', 'medication', 'growth', 'symptom', 'medical', 'diary']
     const texts = order.map((s) => freshnessText(s, freshness[s]))
     lines.push(`数据新鲜度：${texts.join(' / ')}。`)
   }

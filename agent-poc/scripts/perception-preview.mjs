@@ -1,8 +1,9 @@
 /**
  * 现状感知 v1 干跑预览（TECH-014）
  *
- * 运行：cd agent-poc && NODE_OPTIONS= node scripts/perception-preview.mjs [宝宝名]
- * 默认宝宝名「旺仔」；可用 DB_* 环境变量指向其它库（只读）。
+ * 运行：cd agent-poc && NODE_OPTIONS= node scripts/perception-preview.mjs [宝宝名|baby_id] [--prod]
+ * 默认宝宝名「旺仔」、默认 dev 库；`--prod` 指向生产库（minicare-kb/.env 的 DB_* + 固定库名）。
+ * 传 baby_id（UUID）时走主键查询 —— 生产库存在同名「旺仔」，按名字 LIKE 会取错人。
  *
  * 定位：**人眼核对工具**。算法全在 `src/lib/perception.js`（注入对话用的是同一份），
  * 本脚本只负责把算出来的每个数字摊开打印，方便逐个对账——
@@ -10,13 +11,32 @@
  *
  * 只读：不写库、不改业务代码；全部数据来自已有表单，零新增录入。
  */
+import { readFileSync } from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { loadLocalEnv } from '../src/lib/env.js'
+
+/** 目标库：默认 dev（.env.local）；--prod 指向生产库（minicare-kb/.env + 固定库名） */
+const ARGS = process.argv.slice(2)
+const PROD = ARGS.includes('--prod')
+const TARGET = ARGS.find((a) => !a.startsWith('--')) || '旺仔'
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
+if (PROD) {
+  // 必须在 loadLocalEnv() 之前写入：env.js 用 override:false，已存在的变量优先
+  const KB_ENV = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../minicare-kb/.env')
+  for (const line of readFileSync(KB_ENV, 'utf8').split('\n')) {
+    const m = line.match(/^([A-Z_]+)=(.*)$/)
+    if (m) process.env[m[1]] = m[2].trim()
+  }
+  process.env.DB_NAME = 'minicare-cloud-6gqledlle0132cbe'
+}
 
 loadLocalEnv()
 const { loadConfig } = await import('../src/config.js')
 const { initDb, closeDb } = await import('../src/lib/db.js')
 const { getBabyProfile, cstToday, FRESHNESS_LABEL: FRESH_LABEL } = await import('../src/lib/profile.js')
-const { getPerception, renderPerceptionBlock, REF, normalizeFoods } = await import('../src/lib/perception.js')
+const { getPerception, renderPerceptionBlock, resetFlagGate, REF, normalizeFoods } = await import('../src/lib/perception.js')
 const mysql = (await import('mysql2/promise')).default
 
 const { LADDER_LABEL } = await import('../src/lib/profile.js')
@@ -43,13 +63,27 @@ const db = mysql.createPool({
 })
 await db.query("SET time_zone = '+08:00'")
 
-const babyName = process.argv[2] || '旺仔'
-const [[baby]] = await db.query(
-  'SELECT id, name, birth_date FROM baby_profile WHERE name LIKE ? AND deleted_at IS NULL LIMIT 1',
-  [`%${babyName}%`],
-)
+// 定位宝宝：传 UUID 走主键（生产库存在同名宝宝，禁止按名字猜）；传名字走 LIKE 仅限 dev
+let baby
+if (UUID_RE.test(TARGET)) {
+  ;[[baby]] = await db.query(
+    'SELECT id, name, birth_date FROM baby_profile WHERE id = ?',
+    [TARGET],
+  )
+} else {
+  const [cands] = await db.query(
+    'SELECT id, name, birth_date FROM baby_profile WHERE name LIKE ? AND deleted_at IS NULL',
+    [`%${TARGET}%`],
+  )
+  if (cands.length > 1) {
+    console.error(`名字「${TARGET}」匹配到 ${cands.length} 条，请改用 baby_id：`)
+    for (const c of cands) console.error(`  ${c.id}  ${c.name}  ${c.birth_date}`)
+    process.exit(1)
+  }
+  baby = cands[0]
+}
 if (!baby) {
-  console.error('未找到宝宝：' + babyName)
+  console.error('未找到宝宝：' + TARGET)
   process.exit(1)
 }
 
@@ -101,9 +135,10 @@ row('进行中', a.observing.length
   ? a.observing.map((o) => `${o.name} 第 ${o.day}/${o.days} 天（${o.idle} 天未推进）`).join('；')
   : '无')
 row('疑似', a.suspected.map((o) => `${o.name}(${o.severity})`).join('、') || '无')
-row('确认过敏', a.allergic.join('、') || '无')
+row('确认过敏', a.allergic.map((o) => `${o.name}(${o.severity})`).join('、') || '无')
 row('已暂停', a.paused.join('、') || '无')
-row('并行上限', `同时 ${a.observing.length} 项（应为 1，串行为准，否则无法归因反应）`)
+row('窗口重叠', a.overlaps.length ? a.overlaps.map(([x, y]) => `${x} × ${y}`).join('；') : '无（串行）')
+row('逐日打卡（第二源）', `${a.logTotal} 条${a.lastLogAt ? `，最近 ${a.lastLogAt}` : ''}`)
 
 // ── ③ 日常摄入多样性 ────────────────────────────────────────────────
 const v = q.variety
@@ -122,8 +157,23 @@ row('近 14 天真吃过', `${m.eaten14.length} 种：${m.eaten14.join('、') ||
 row('已耐受但近 14 天未吃', m.idleSafe.length ? `${m.idleSafe.length} 种：${m.idleSafe.join('、')}` : '无')
 row('参考', `已耐受食物每周维持 ${q.ref.maintainPerWeek}-${q.ref.maintainPerWeekMax} 次暴露`)
 
-// ── ⑤ 数据可信度 ────────────────────────────────────────────────────
-hr('⑤ 数据可信度（源：profile.freshness｜元信号）')
+// ── ⑤ 症状与反应 / 大便 / 覆盖度（组 F + 组 I）────────────────────────
+const sy = q.symptoms
+const so = q.stool
+hr('⑤ 症状与反应（源：symptom_record × health_record.allergy_symptoms × diaper_record）')
+row('反应记录（过敏事件）', `${sy.eventTotal} 次${sy.lastEventAt ? `，最近 ${sy.lastEventAt}` : ''}${sy.unlinkedEvents ? `（${sy.unlinkedEvents} 次未关联食材）` : ''}`)
+for (const e of sy.events.slice(0, 6)) {
+  row(`  ${e.date}`, `${e.food || '（未关联食材）'} · ${e.symptoms.join('/') || '-'} · ${e.severity || '-'}${e.obsStatus ? ` · 建档=${e.obsStatus}` : ''}`)
+}
+row('表现记录（症状谱）', `${sy.symptomTotal} 条${sy.lastSymptomAt ? `，最近 ${sy.lastSymptomAt}（${sy.symptomStaleDays} 天前）` : ''}`)
+row('近 14 天有反应天数', `${sy.activeDays14} 天`)
+row('大便性状', so.total
+  ? `${so.total} 条：${Object.entries(so.byType).map(([k, n]) => `${k} ${n}`).join(' / ')}；填写率 ${(so.fillRate * 100).toFixed(0)}%（覆盖${so.coverageOk ? '达标' : '不足'}）${so.lastAbnormalAt ? `，最近异常 ${so.lastAbnormalAt}` : ''}`
+  : `近 ${so.windowDays} 天无尿布记录`)
+row('高致敏引入', q.highRisk.map((g) => `${g.group}${g.introduced ? `✓(${g.foods.join('/')})` : '✗'}`).join(' | '))
+
+// ── ⑥ 数据可信度 ────────────────────────────────────────────────────
+hr('⑥ 数据可信度（源：profile.freshness + coverage｜元信号）')
 for (const [k, label] of Object.entries(FRESH_LABEL)) {
   const info = q.trust.sources?.[k]
   row(label, info?.lastAt ? `最近 ${info.lastAt}（${info.staleDays} 天前）` : '从无记录')
@@ -131,16 +181,37 @@ for (const [k, label] of Object.entries(FRESH_LABEL)) {
 row('症状结论可用性', q.trust.symptomUsable
   ? '可用'
   : `不可用：${q.trust.symptomStaleDays} 天无记录，只能写"信息缺失"，不能写"无症状"`)
+for (const [k, c] of Object.entries(q.coverage || {})) {
+  row(`覆盖率 · ${k}`, `${c.filled}/${c.total} = ${(c.rate * 100).toFixed(0)}%${c.rate < q.ref.coverageMin ? '（不足 50%，不得下阴性结论）' : ''}`)
+}
 
-// ── ⑥ 合理性判定 ────────────────────────────────────────────────────
-hr('⑥ 合理性判断（供注入 agent + 界面提示；建议仍只在对话里产生）')
+// ── ⑦ 判定路径（PRD §4.4 五级链）─────────────────────────────────────
+hr('⑦ 判定路径（PRD §4.4：护栏 > 数据不足 > 分型 > 活跃计划 > 空档）')
+row('命中路径', q.route.route)
+row('护栏命中', q.route.guardHits.length ? q.route.guardHits.map((g) => `${g.key}：${g.detail}`).join('；') : '无')
+row('缺失组', q.route.missing.join('、') || '无')
+row('降级组', q.route.degraded.join('、') || '无')
+row('分型是否已知', q.route.mechanismKnown ? '已知' : '未采集（需 migration 022）')
+
+// ── ⑧ 合理性判定 ────────────────────────────────────────────────────
+hr('⑧ 合理性判断（8 个 PRD flag + 实现新增；建议仍只在对话里产生）')
 if (!q.flags.length) console.log('  无异常')
-for (const f of q.flags) console.log(`  ⚑ ${String(f.label).padEnd(14)} ${f.detail}   [${f.key}]`)
+const STRENGTH_TAG = { strong: '强', medium: '中', weak: '弱', intercept: '拦截' }
+for (const f of q.flags) console.log(`  ⚑ [${STRENGTH_TAG[f.strength] || f.strength}] ${String(f.label).padEnd(16)} ${f.detail}   [${f.key}]`)
 
-// ── ⑦ 实际注入对话的文本（逐字核对）──────────────────────────────────
-hr('⑦ 实际注入 systemPrompt 的文本（与对话完全同源）')
+// ── ⑨ 实际注入对话的文本（逐字核对）──────────────────────────────────
+hr('⑨ 实际注入 systemPrompt 的文本（与对话完全同源）')
 console.log(renderPerceptionBlock(q))
 console.log()
+row('注入块体积', `${renderPerceptionBlock(q).length} 字符（每轮都进 prompt）`)
+
+// 频控对照（PRD §4.5）：强项每轮都给，非强项单轮 1 条、7 天内不重复
+resetFlagGate(q.babyId)
+const t1 = renderPerceptionBlock(q, { enabled: true })
+row('频控第 1 轮', t1.flags.map((f) => `${f.label}[${f.strength}]`).join('；') || '无')
+const t2 = renderPerceptionBlock(q, { enabled: true })
+row('频控第 2 轮（紧接着）', t2.flags.map((f) => `${f.label}[${f.strength}]`).join('；') || '无')
+resetFlagGate(q.babyId)
 
 console.log('─'.repeat(74))
 console.log(`干跑完成：${a.total} 条排敏建档 / ${v.recordedDays} 天辅食记录 / ${q.stage?.mix?.length || 0} 种奶型 —— 全部来自已有表单，零新增录入。`)

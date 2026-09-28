@@ -66,7 +66,7 @@ const SIMPLE_METRICS = {
   sleep: { table: 'sleep_record', timeCol: 'start_time', numericCol: 'duration_min', statusWhere: "AND status='ended'" },
   diaper: { table: 'diaper_record', timeCol: 'record_time', numericCol: null, statusWhere: '' },
   growth: { table: 'growth_record', timeCol: 'record_date', numericCol: 'weight_g', statusWhere: '' },
-  health: { table: 'health_record', timeCol: 'record_time', numericCol: 'temperature', statusWhere: '' },
+  health: { table: 'health_record', timeCol: 'record_time', numericCol: 'temperature', statusWhere: '', notAdditive: true, aggFn: 'MAX' },
   symptom: { table: 'symptom_record', timeCol: 'record_time', numericCol: null, statusWhere: '' },
   activity: { table: 'activity_record', timeCol: 'record_time', numericCol: 'duration_min', statusWhere: '' },
   medical: { table: 'medical_record', timeCol: 'visit_date', numericCol: null, statusWhere: '' },
@@ -333,12 +333,18 @@ async function queryAggregate(db, babyId, metric, days, agg) {
   }
   const m = SIMPLE_METRICS[metric]
   if (!m.numericCol) return {}
+  // 可加总性：体温是**测量值**不是累计量，SUM 会把一天多条体温相加
+  // （实测出过 37.0+36.7+36.8 = 110.5 这种荒谬值）→ 用 MAX（当日最高体温临床更有意义）。
+  const fn = agg === 'SUM' && m.notAdditive ? (m.aggFn || 'MAX') : agg
   const [[row]] = await db.query(
-    `SELECT ${agg}(${m.numericCol}) AS v FROM ${m.table} WHERE baby_id=? AND ${m.timeCol} >= DATE_SUB(NOW(), INTERVAL ? DAY) ${m.statusWhere}`,
+    `SELECT ${fn}(${m.numericCol}) AS v FROM ${m.table} WHERE baby_id=? AND ${m.timeCol} >= DATE_SUB(NOW(), INTERVAL ? DAY) ${m.statusWhere}`,
     [babyId, days],
   )
   const value = m.numericCol === 'temperature' ? Number(row.v || 0).toFixed(1) : Math.round(row.v || 0)
-  return { value }
+  // 数值列在该窗口内全为空（如只有过敏反应、没量体温的 health 记录）→ 明说无值，
+  // 不要返回 0（"体温 0.0"会被当成真实测量值，是假阳性的来源）
+  if (row.v == null) return { value: null, note: '该窗口内没有可用的数值记录' }
+  return { value, ...(fn !== agg ? { agg_fn: fn } : {}) }
 }
 
 /** trend：按天分组（feeding 聚合母乳分钟/配方毫升/次数） */
@@ -385,17 +391,24 @@ async function queryTrend(db, babyId, metric, days) {
     return [...byDay.values()].sort((a, b) => (a.date < b.date ? -1 : 1))
   }
   const m = SIMPLE_METRICS[metric]
+  // 当日 total：非可加总列（体温）取 MAX 而不是 SUM，否则一天多次测温会被相加
+  const tFn = m.notAdditive ? m.aggFn || 'MAX' : 'SUM'
   const [rows] = await db.query(
-    `SELECT DATE(${m.timeCol}) AS d, COUNT(*) AS cnt${m.numericCol ? `, SUM(${m.numericCol}) AS total, AVG(${m.numericCol}) AS avg_v` : ''}
+    `SELECT DATE(${m.timeCol}) AS d, COUNT(*) AS cnt${m.numericCol ? `, ${tFn}(${m.numericCol}) AS total, AVG(${m.numericCol}) AS avg_v` : ''}
      FROM ${m.table} WHERE baby_id=? AND ${m.timeCol} >= DATE_SUB(NOW(), INTERVAL ? DAY) ${m.statusWhere}
      GROUP BY DATE(${m.timeCol}) ORDER BY d`,
     [babyId, days],
   )
-  return rows.map((r) => ({
-    date: String(r.d),
-    count: Number(r.cnt),
-    ...(m.numericCol ? { total: m.numericCol === 'temperature' ? Number(r.total || 0).toFixed(1) : Number(r.total || 0), avg: m.numericCol === 'temperature' ? Number(r.avg_v || 0).toFixed(1) : Number(r.avg_v || 0) } : {}),
-  }))
+  return rows.map((r) => {
+    const hasNum = m.numericCol && r.total != null
+    const fmt = (v) => (m.numericCol === 'temperature' ? Number(v).toFixed(1) : Number(v))
+    return {
+      date: String(r.d),
+      count: Number(r.cnt),
+      // 当日该列全空（如只记了过敏反应、没量体温）→ 不给 total/avg，避免"体温 0.0"
+      ...(hasNum ? { total: fmt(r.total), avg: fmt(r.avg_v) } : {}),
+    }
+  })
 }
 
 /**

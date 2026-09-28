@@ -53,6 +53,55 @@ const GIRL = [
   [36, 11.10, 12.90, 14.80, 16.90, 19.00, 88.0, 91.6, 95.3, 99.0, 102.6],
 ]
 
+/**
+ * 头围参考（cm），格式 [month, p3, p15, p50, p85, p97]。
+ * 来源：minicare-mp/src/lib/growth-standards.ts 的 headP3..headP97（同源同值，勿手改）。
+ * 月龄点与上下两张表一致（0-12 逐月 + 15/18/21/24/30/36），可直接共用插值逻辑。
+ */
+const BOY_HEAD = [
+  [0, 31.9, 32.9, 34, 35.1, 36.1],
+  [1, 35, 36.2, 37.3, 38.4, 39.5],
+  [2, 37.1, 38.3, 39.6, 40.8, 41.9],
+  [3, 38.8, 40.1, 41.3, 42.5, 43.6],
+  [4, 40.1, 41.4, 42.7, 43.9, 45],
+  [5, 41.2, 42.5, 43.8, 45.1, 46.2],
+  [6, 42.1, 43.5, 44.8, 46, 47.2],
+  [7, 42.9, 44.3, 45.6, 46.9, 48.1],
+  [8, 43.6, 45, 46.4, 47.7, 48.9],
+  [9, 44.2, 45.7, 47, 48.4, 49.6],
+  [10, 44.8, 46.3, 47.6, 49, 50.2],
+  [11, 45.3, 46.8, 48.2, 49.5, 50.8],
+  [12, 45.8, 47.3, 48.6, 50, 51.3],
+  [15, 46.6, 48.2, 49.6, 51, 52.3],
+  [18, 47.3, 48.9, 50.3, 51.7, 53.1],
+  [21, 47.9, 49.5, 51, 52.4, 53.8],
+  [24, 48.4, 50, 51.5, 53, 54.4],
+  [30, 49.1, 50.8, 52.3, 53.8, 55.3],
+  [36, 49.7, 51.4, 53, 54.6, 56.1],
+]
+
+const GIRL_HEAD = [
+  [0, 31.3, 32.3, 33.3, 34.4, 35.4],
+  [1, 34.4, 35.5, 36.6, 37.7, 38.7],
+  [2, 36.3, 37.5, 38.7, 39.9, 41],
+  [3, 37.9, 39.2, 40.4, 41.6, 42.7],
+  [4, 39.1, 40.4, 41.7, 42.9, 44.1],
+  [5, 40.1, 41.5, 42.8, 44, 45.2],
+  [6, 40.9, 42.3, 43.7, 45, 46.2],
+  [7, 41.6, 43, 44.4, 45.7, 47],
+  [8, 42.2, 43.6, 45.1, 46.4, 47.7],
+  [9, 42.7, 44.2, 45.6, 47, 48.3],
+  [10, 43.2, 44.7, 46.1, 47.5, 48.8],
+  [11, 43.6, 45.1, 46.6, 48, 49.3],
+  [12, 44, 45.5, 47, 48.4, 49.8],
+  [15, 44.8, 46.4, 47.9, 49.4, 50.8],
+  [18, 45.5, 47.1, 48.7, 50.2, 51.7],
+  [21, 46.1, 47.8, 49.4, 50.9, 52.4],
+  [24, 46.6, 48.3, 49.9, 51.5, 53],
+  [30, 47.3, 49.1, 50.7, 52.3, 53.9],
+  [36, 47.9, 49.7, 51.4, 53, 54.6],
+]
+
 const REF_NAME = '中国2023儿科生长参考'
 const P_KEYS = ['P3', 'P15', 'P50', 'P85', 'P97']
 
@@ -60,14 +109,27 @@ export function getStandards(sex) {
   return sex === 'female' ? GIRL : BOY
 }
 
-/** 按月龄取插值点：{ w:[p3,p15,p50,p85,p97], h:[p3,p15,p50,p85,p97] } */
+/** 头围参考表（与体重/身长同源，供 percentileOf(type='head') 使用） */
+export function getHeadStandards(sex) {
+  return sex === 'female' ? GIRL_HEAD : BOY_HEAD
+}
+
+/**
+ * 按月龄取插值点：{ w:[p3,p15,p50,p85,p97], h:[...], hd:[...] }
+ * hd = 头围（cm）。
+ */
 export function getStandardAtAge(sex, ageMonths) {
+  const head = getHeadStandards(sex)
   const rows = getStandards(sex)
   if (rows.length === 0) return null
-  if (ageMonths <= rows[0][0]) return { month: rows[0][0], w: rows[0].slice(1, 6), h: rows[0].slice(6, 11) }
+  const slice = (r) => ({ w: r.slice(1, 6), h: r.slice(6, 11) })
+  if (ageMonths <= rows[0][0]) {
+    return { month: rows[0][0], ...slice(rows[0]), hd: head[0].slice(1, 6) }
+  }
   const last = rows[rows.length - 1]
-  if (ageMonths >= last[0]) return { month: last[0], w: last.slice(1, 6), h: last.slice(6, 11) }
-  let low = 0
+  if (ageMonths >= last[0]) {
+    return { month: last[0], ...slice(last), hd: head[head.length - 1].slice(1, 6) }
+  }  let low = 0
   let high = rows.length - 1
   while (low < high - 1) {
     const mid = Math.floor((low + high) / 2)
@@ -78,10 +140,21 @@ export function getStandardAtAge(sex, ageMonths) {
   const b = rows[high]
   const t = (ageMonths - a[0]) / (b[0] - a[0])
   const interp = (off) => a[off] + t * (b[off] - a[off])
+  // 头围表月龄点与体重/身长表逐一对应，故同一组 (low, high, t) 可直接复用，
+  // 无需二次查表；若未来两表月龄点分叉，这里会返回 null 而不是错值。
+  const ha = head[low]
+  const hb = head[high]
+  const headAt = (i) => {
+    const x = ha?.[i]
+    const y = hb?.[i]
+    if (!Number.isFinite(x)) return null
+    return Number.isFinite(y) ? x + t * (y - x) : x
+  }
   return {
     month: ageMonths,
     w: [1, 2, 3, 4, 5].map((i) => interp(i)),
     h: [6, 7, 8, 9, 10].map((i) => interp(i)),
+    hd: ha?.[0] === a[0] && hb?.[0] === b[0] ? [1, 2, 3, 4, 5].map(headAt) : null,
   }
 }
 
@@ -108,14 +181,16 @@ function bucket(refValues, value) {
  * 生长百分位
  * @param {number} ageMonths 月龄
  * @param {string} sex male|female
- * @param {'weight'|'height'} type
- * @param {number} value 实测值（体重 kg / 身高 cm）
+ * @param {'weight'|'height'|'head'} type
+ * @param {number} value 实测值（体重 kg / 身长 cm / 头围 cm）
  * @returns {{p:string, percentile:number, ref:string}}
  */
 export function percentileOf(ageMonths, sex, type, value) {
   const ref = getStandardAtAge(sex, ageMonths)
   if (!ref) return { p: null, percentile: null, ref: REF_NAME }
-  const values = type === 'weight' ? ref.w : ref.h
+  const values = type === 'weight' ? ref.w : type === 'head' ? ref.hd : ref.h
+  // 头围表在极端月龄或数据缺失时可能拿不到参考值 —— 一律返回 null，绝不落到末行编造假分位
+  if (!values || !values.length) return { p: null, percentile: null, ref: REF_NAME }
   const { p, percentile } = bucket(values, value)
   return { p, percentile, ref: REF_NAME }
 }

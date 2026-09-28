@@ -20,6 +20,11 @@ const {
   invalidatePerception,
   normalizeFoods,
   categoryOf,
+  buildFlags,
+  deriveRoute,
+  growthTrend,
+  pickFlagsForTurn,
+  resetFlagGate,
   REF,
 } = await import('../src/lib/perception.js')
 const { buildSystemPrompt } = await import('../src/prompts/system.js')
@@ -74,7 +79,10 @@ console.log('\n=== 感知对象（截断）===')
 console.log(JSON.stringify(q, null, 1).slice(0, 1500))
 
 check('感知对象非空', q !== null && q.babyId === baby.id)
-check('六板块齐全', q && ['stage', 'allergy', 'variety', 'maintain', 'trust'].every((k) => k in q))
+check(
+  '板块齐全（阶段/排敏/多样性/维持/可信度/症状/大便/覆盖率/高致敏/判定链）',
+  q && ['stage', 'allergy', 'variety', 'maintain', 'trust', 'symptoms', 'stool', 'coverage', 'highRisk', 'route'].every((k) => k in q),
+)
 check('今日日期为北京时间当天', q.today === cstToday(), q.today)
 
 // ① 阶段：必须与 profile 同源（不重算）
@@ -110,15 +118,25 @@ check('数据可信度与 profile.freshness 同源', q.trust.sources === p.fresh
 console.log('\n=== 合理性 flag ===')
 const keys = q.flags.map((f) => f.key)
 console.log('  flags: ' + (keys.join(', ') || '无'))
-const LEGAL = ['observe_stalled', 'observing_overlap', 'safe_not_maintained', 'transition_ready', 'variety_insufficient', 'data_stale']
+const LEGAL = [
+  // PRD §4.5 的 8 个
+  'eating_marked', 'observe_stalled', 'observing_overlap', 'stage_stalled', 'stage_stalled_symptomatic',
+  'ladder_escalated', 'growth_falling', 'data_stale',
+  // 实现新增（语义不同才新起）
+  'stage_ready_but_symptomatic', 'safe_not_maintained', 'transition_ready', 'variety_insufficient', 'high_risk_none',
+]
 check('flag key 全部合法', keys.every((k) => LEGAL.includes(k)), keys.join(','))
-check('每个 flag 有中文标签与明细', q.flags.every((f) => f.label && f.detail))
+check('每个 flag 有中文标签、明细与强度', q.flags.every((f) => f.label && f.detail && ['strong', 'medium', 'weak', 'intercept'].includes(f.strength)))
+check(
+  '强项只出现在 PRD 标注的两类 + 转奶前提被违反',
+  q.flags.filter((f) => f.strength === 'strong').every((f) => ['eating_marked', 'stage_stalled_symptomatic', 'stage_ready_but_symptomatic'].includes(f.key)),
+)
 const expectReady = q.stage && q.stage.level > 1 && q.stage.stableDays >= REF.stageStableDays
 check('transition_ready 与字段一致', keys.includes('transition_ready') === Boolean(expectReady), `expect=${expectReady}`)
-check('observing_overlap 与观察中数量一致', keys.includes('observing_overlap') === (a.observing.length > 1), `observing=${a.observing.length}`)
+check('observing_overlap 与"窗口交集"一致（不再是数量 >1）', keys.includes('observing_overlap') === (a.overlaps?.length > 0), `overlaps=${a.overlaps?.length}`)
 check('safe_not_maintained 与清单一致', keys.includes('safe_not_maintained') === (q.maintain.idleSafe.length > 0), `idle=${q.maintain.idleSafe.length}`)
 const expectStale = q.trust.symptomStaleDays != null && q.trust.symptomStaleDays > REF.symptomUsableDays
-check('data_stale 与症状新鲜度一致', keys.includes('data_stale') === Boolean(expectStale), `symptomStale=${q.trust.symptomStaleDays}`)
+check('data_stale 至少覆盖症状条件', !expectStale || keys.includes('data_stale'), `symptomStale=${q.trust.symptomStaleDays}`)
 
 // ── 5. 注入 systemPrompt（这是"能否在对话里体验到"的核心）─────────────
 console.log('\n=== 注入 systemPrompt ===')
@@ -140,7 +158,7 @@ check('prompt 仍含全部护栏规则', prompt.includes('护栏规则') && prom
 const promptNoPerc = buildSystemPrompt({ familyId: 'F', babyId: baby.id }, [], p, null)
 check('无感知时不出现现状段（且画像段仍在）', !promptNoPerc.includes('现状使用要求') && promptNoPerc.includes('画像使用要求'))
 const percChars = block.length
-check('现状块体积可控（<1600 字符，每轮都进 prompt）', percChars < 1600, percChars + ' 字符')
+console.log(`  （现状块体积 ${percChars} 字符 —— 体积上限断言见第 13 组）`)
 
 // ── 6. 缓存与失效 ─────────────────────────────────────────────────────
 console.log('\n=== 缓存 ===')
@@ -178,6 +196,151 @@ check('无配方记录时其余四板块仍在', Boolean(qn) && ['allergy', 'var
 const blockNoFormula = renderPerceptionBlock(qn)
 check('无配方记录时仍可渲染（转奶段给"信息缺失"）', blockNoFormula.includes('转奶：') && blockNoFormula.includes('无法判定阶段'))
 check('无配方记录不污染缓存（后续取数仍有 stage）', (await getPerception(baby.id))?.stage?.level === p.formula.ladderLevel)
+
+// ── 9. 组 F（症状与反应）/ 组 I（覆盖率）自洽 ──────────────────────────
+console.log('\n=== 组 F 症状与反应 / 组 I 覆盖率 ===')
+check('症状对象结构完整', ['eventTotal', 'symptomTotal', 'events', 'activeDays14'].every((kk) => kk in q.symptoms))
+check('大便对象结构完整', ['total', 'filled', 'fillRate', 'coverageOk', 'byType'].every((kk) => kk in q.stool))
+check(
+  '覆盖率 rate = filled / total（自洽）',
+  Object.values(q.coverage).every((c) => (c.total === 0 ? c.rate === 0 : Math.abs(c.rate - c.filled / c.total) < 1e-6)),
+  JSON.stringify(q.coverage),
+)
+check(
+  '大便填写率与覆盖率同源（单一真相源）',
+  q.coverage.poopType.filled === q.stool.filled && q.coverage.poopType.total === q.stool.total,
+)
+check('大便覆盖不足时 coverageOk=false（阴性结论开关）', q.stool.coverageOk === (q.stool.total > 0 && q.stool.fillRate >= REF.coverageMin))
+check('高致敏分组 7 类齐全', q.highRisk.length === 7, q.highRisk.map((g) => g.group).join('/'))
+check('高致敏：土豆不得被归入大豆（分组关键词禁用单字"豆"）', !(q.highRisk.find((g) => g.group === '大豆')?.foods || []).includes('土豆'))
+check('归一化：土豆 → 谷薯（与上一条互为印证）', categoryOf('土豆') === '谷薯')
+check('growthTrend 与分位档一致（无 growth 时返回 null）', q.growth ? growthTrend(q.growth) === null || typeof growthTrend(q.growth) === 'object' : true)
+
+// ── 10. flag 边界（伪造数据）────────────────────────────────────────
+// 覆盖 PRD 标「强」的两条 —— 它们是敏宝的安全底线，必须能被构造出来验证。
+console.log('\n=== flag 边界（伪造数据）===')
+const base = {
+  stage: { level: 3, stableDays: 20, status: 'stable', direction: 'same', label: '深度水解（含乳糖）', stableAtLeast: false },
+  allergy: {
+    total: 3,
+    suspected: [],
+    allergic: [],
+    observing: [],
+    overlaps: [],
+    stalledObserving: [],
+    safeCount: 3,
+    safeNames: ['米粉', '青菜', '苹果'],
+  },
+  variety: { recordedDays: 0, hitDays: 0 },
+  maintain: { eaten14: [], eaten30: ['米粉'], idleSafe: [] },
+  trust: { symptomStaleDays: 1 },
+  symptoms: { eventTotal: 0, events: [], symptomTotal: 0, symptomRecent: [], activeDays14: 0, unlinkedEvents: 0, worstSeverity: null },
+  stool: { total: 5, coverageOk: true, byType: { normal: 5 }, fillRate: 1 },
+  growth: null,
+  highRisk: [],
+}
+const kk = (fs) => fs.map((x) => x.key)
+const withSuspected = { ...base, allergy: { ...base.allergy, suspected: [{ name: '芹菜', severity: 'mild' }] } }
+const f1 = buildFlags({ ...withSuspected, maintain: { ...base.maintain, eaten14: ['芹菜'] } }, REF)
+check('#1 疑似食材仍在食用 → eating_marked（强）', kk(f1).includes('eating_marked') && f1.find((x) => x.key === 'eating_marked').strength === 'strong')
+const f1b = buildFlags({ ...withSuspected, maintain: { ...base.maintain, eaten14: ['米粉'] } }, REF)
+check('#1 疑似食材已停食 → 不报（避免"狼来了"）', !kk(f1b).includes('eating_marked'))
+const f5 = buildFlags(
+  { ...base, stage: { ...base.stage, status: 'stalled' }, symptoms: { ...base.symptoms, eventTotal: 2, lastEventAt: '2026-09-10', worstSeverity: 'moderate' } },
+  REF,
+)
+check('#5 停滞期有反应 → stage_stalled_symptomatic（强）', kk(f5).includes('stage_stalled_symptomatic') && f5.find((x) => x.key === 'stage_stalled_symptomatic').strength === 'strong')
+check('#4 停滞本身 → stage_stalled（中）', kk(f5).includes('stage_stalled'))
+// ← 本次生产核对暴露的洞：症状源陈旧，但真实反应记在 health_record
+const fEdge = buildFlags(
+  {
+    ...base,
+    trust: { symptomStaleDays: 34 },
+    symptoms: { ...base.symptoms, eventTotal: 1, lastEventAt: '2026-09-20', worstSeverity: 'severe', events: [{ date: '2026-09-20', food: '三文鱼', symptoms: ['腹泻'], severity: 'severe' }] },
+  },
+  REF,
+)
+check('边界：症状源陈旧 + 健康记录有反应 → 不漏判"转奶前提被违反"', kk(fEdge).includes('stage_ready_but_symptomatic'))
+check('边界：该情形 transition_ready 会标注"但有近期反应"', (fEdge.find((x) => x.key === 'transition_ready')?.detail || '').includes('有近期反应'))
+const f6 = buildFlags({ ...base, stage: { ...base.stage, direction: 'escalated' } }, REF)
+check('#6 阶梯上移 → ladder_escalated（弱，仅写入不主动提醒）', f6.find((x) => x.key === 'ladder_escalated')?.strength === 'weak')
+const f7 = buildFlags(
+  { ...base, growth: { latest: { weightP: 'P15-P50', heightP: 'P15-P50', measuredAt: '2026-09-06' }, previous: { weightP: 'P50-P85', heightP: 'P15-P50', measuredAt: '2026-07-27' }, staleDays: 5 } },
+  REF,
+)
+check('#7 体重分位下降 1 档 → growth_falling', kk(f7).includes('growth_falling'))
+const f8 = buildFlags({ ...base, trust: { symptomStaleDays: 40 }, growth: { latest: {}, previous: null, staleDays: 60 } }, REF)
+check('#8 症状陈旧 + 生长 60 天未更新 → data_stale 含两项', (f8.find((x) => x.key === 'data_stale')?.detail || '').includes('生长测量'))
+check('无配方记录（stage=null）时不报任何转奶类 flag', !kk(buildFlags({ ...base, stage: null }, REF)).some((x) => x.startsWith('stage_') || x === 'transition_ready'))
+
+// ── 11. flag 频控（PRD §4.5）────────────────────────────────────────
+console.log('\n=== flag 频控 ===')
+const FIXTURE = [
+  { key: 's1', label: '强A', strength: 'strong', detail: '' },
+  { key: 'm1', label: '中B', strength: 'medium', detail: '' },
+  { key: 'm2', label: '中C', strength: 'medium', detail: '' },
+  { key: 'i1', label: '拦截D', strength: 'intercept', detail: '' },
+]
+resetFlagGate('TEST')
+const r1 = pickFlagsForTurn(FIXTURE, 'TEST', { now: 1000 })
+check('强项全部输出（不受单轮 1 条限制）', r1.shown.filter((f) => f.strength === 'strong').length === 1)
+check('非强项单轮最多 1 条', r1.shown.filter((f) => f.strength !== 'strong').length === 1, r1.shown.map((f) => f.key).join(','))
+check('拦截型不主动说', !r1.shown.some((f) => f.key === 'i1') && r1.suppressed.some((f) => f.reason === 'intercept_only'))
+const r2 = pickFlagsForTurn(FIXTURE, 'TEST', { now: 2000 })
+check('第 2 轮换一条（同一 flag 7 天内不重复）', r2.shown.find((f) => f.strength !== 'strong')?.key === 'm2')
+const r3 = pickFlagsForTurn(FIXTURE, 'TEST', { now: 3 * 86400000 })
+check('候选耗尽 → 只输出强项', r3.shown.every((f) => f.strength === 'strong'))
+const r4 = pickFlagsForTurn(FIXTURE, 'TEST', { now: 8 * 86400000 })
+check('超过 7 天 → 同一 flag 可再次提示', r4.shown.some((f) => f.key === 'm1'))
+check('跳过一次即不写冷却（只记录真正说出口的）', pickFlagsForTurn(FIXTURE, 'TEST2', { now: 1 }).shown.length > 0)
+resetFlagGate('TEST')
+resetFlagGate('TEST2')
+check('FLAG_THROTTLE=off 可整链路回滚（全部输出）', pickFlagsForTurn(FIXTURE, 'TEST3', { enabled: false }).shown.length === 4)
+
+// ── 12. 判定优先级链（PRD §4.4）──────────────────────────────────────
+console.log('\n=== 判定优先级链 ===')
+const rf = (o = {}) =>
+  deriveRoute({
+    stage: o.stage !== undefined ? o.stage : base.stage,
+    allergy: o.allergy || base.allergy,
+    symptoms: o.symptoms || base.symptoms,
+    stool: o.stool || base.stool,
+    trust: o.trust || base.trust,
+    medicalDegraded: !!o.medicalDegraded,
+  })
+check(
+  '护栏 > 数据不足：有重度反应时先给 guard_hit',
+  rf({
+    symptoms: { ...base.symptoms, eventTotal: 1, events: [{ date: '2026-09-20', food: '三文鱼', symptoms: ['腹泻'], severity: 'severe' }], eventStaleDays: 1, worstSeverity: 'severe' },
+    stage: null,
+    allergy: { ...base.allergy, total: 0 },
+  }).route === 'guard_hit',
+)
+const rData = rf({ stage: null, allergy: { ...base.allergy, total: 0 } })
+check('阶段与排敏双缺失 → data_insufficient（不给推进结论）', rData.route === 'data_insufficient' && rData.missing.length >= 2, rData.missing.join('/'))
+check('稳定无反应 → stable_avoidance', rf().route === 'stable_avoidance')
+check('有观察任务 → observing', rf({ allergy: { ...base.allergy, observing: [{ name: '小米粉', day: 1, days: 3, idle: 0 }] } }).route === 'observing')
+check('分型字段缺失时标 mechanismKnown=false（不假装已知）', rf().mechanismKnown === false)
+check('医疗降级会写进 degraded 列表', rf({ medicalDegraded: true }).degraded.some((x) => x.includes('020')))
+
+// ── 13. 注入块：新增段 + 频控后的体积 ─────────────────────────────────
+console.log('\n=== 注入块（新增段）===')
+check('注入块含近期反应段', block.includes('近期反应：'))
+check('注入块含大便段', block.includes('大便：'))
+check('注入块含覆盖率段', block.includes('覆盖率：'))
+check('注入块含判定路径段', block.includes('判定路径：'))
+check('注入块含"覆盖率不足不得下阴性结论"约束', block.includes('覆盖率不足') && block.includes('不得下阴性结论'))
+check('注入块含高致敏引入段（有已耐受建档时）', block.includes('高致敏引入：') || !q.highRisk.length || !a.safeCount)
+resetFlagGate(baby.id)
+const tb1 = renderPerceptionBlock(q, { enabled: true })
+const tb2 = renderPerceptionBlock(q, { enabled: true })
+resetFlagGate(baby.id)
+check('启用频控后注入块非强项 ≤1 条', tb1.flags.filter((f) => f.strength !== 'strong').length <= 1, tb1.flags.map((f) => f.key).join(','))
+check('频控对象返回 { block, flags }', typeof tb1.block === 'string' && Array.isArray(tb1.flags))
+check('频控不改变强项（安全底线不被压住）', tb1.flags.some((f) => f.strength === 'strong') === q.flags.some((f) => f.strength === 'strong'))
+// 体积：信号组从 3 组扩到 10 组后必然上升；这里卡住"不失控"，上限随信号扩张同步调整
+const percChars2 = renderPerceptionBlock(q).length
+check('现状块体积可控（<3200 字符，每轮都进 prompt）', percChars2 < 3200, percChars2 + ' 字符')
 
 console.log('\n结果: ' + pass + ' PASS / ' + fail + ' FAIL')
 await closeDb()

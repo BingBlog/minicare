@@ -33,7 +33,9 @@ export function buildSystemPrompt(ctx = null, history = [], profile = null, perc
   const today = cstToday()
   const dateBlock = `【当前日期】今天 ${today}，昨天 ${shiftDays(today, -1)}（北京时间）。`
   const profileBlock = profile ? renderProfileBlock(profile) : ''
-  const perceptionBlock = perception ? renderPerceptionBlock(perception) : ''
+  // 传 opts 即启用 flag 频控（PRD §4.5：单轮最多 1 条非强项 / 同 flag 7 天去重 / 强项豁免）
+  // —— 现状段每轮都进 prompt，把 8 条 flag 全量倒给模型会破坏对话感。
+  const perceptionBlock = perception ? renderPerceptionBlock(perception, {}).block : ''
   const historyBlock = history.length > 0
     ? '【历史对话（仅供理解上下文，直接回答用户最新问题即可）】\n' +
       history.map((m) => `${m.role === 'user' ? '家长' : '助手'}: ${m.content}`).join('\n')
