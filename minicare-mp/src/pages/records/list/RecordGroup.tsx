@@ -72,9 +72,28 @@ function calcDiaperSummary(items: RecordItem[]): string[] {
   return badges
 }
 
+function formatSleepDuration(min: number): string {
+  const h = Math.floor(min / 60)
+  const m = min % 60
+  if (h > 0 && m > 0) return `${h}小时${m}分`
+  if (h > 0) return `${h}小时`
+  return `${m}分`
+}
+
+function calcSleepSummary(items: RecordItem[]): string[] {
+  const badges: string[] = []
+  const totalMin = items.reduce((sum, r) => {
+    const dur = Number((r as Record<string, unknown>).duration_min ?? 0)
+    return Number.isFinite(dur) && dur > 0 ? sum + dur : sum
+  }, 0)
+  if (totalMin > 0) badges.push(`共 ${formatSleepDuration(totalMin)}`)
+  return badges
+}
+
 function getSummaryBadges(typeKey: string, items: RecordItem[]): string[] {
   if (typeKey === 'feeding') return calcFeedingSummary(items)
   if (typeKey === 'diaper') return calcDiaperSummary(items)
+  if (typeKey === 'sleep') return calcSleepSummary(items)
   return []
 }
 

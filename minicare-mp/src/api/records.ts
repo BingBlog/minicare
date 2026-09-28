@@ -20,9 +20,17 @@ import type { HealthRecord, HealthListParams, CreateHealthDto, UpdateHealthDto }
 import { growthApi } from './growth'
 import type { GrowthRecord, GrowthListParams, CreateGrowthDto, UpdateGrowthDto } from './growth'
 import { medicalApi } from './medical'
-import type { MedicalRecord, MedicalListParams, CreateMedicalDto, UpdateMedicalDto } from './medical'
+import type {
+  MedicalRecord,
+  MedicalListParams,
+  CreateMedicalDto,
+  UpdateMedicalDto,
+  VaccineSettingPayload,
+} from './medical'
 import { symptomApi } from './symptom'
 import type { SymptomRecord, SymptomListParams, CreateSymptomDto, UpdateSymptomDto } from './symptom'
+import { medicationApi } from './medication'
+import type { MedicationRecord, CreateMedicationRecordDto, UpdateMedicationRecordDto } from './medication'
 
 function withType<T extends { id: string }>(type: string, items: T[]): T[] {
   return items.map((r) => ({ ...r, type }))
@@ -39,9 +47,64 @@ export interface DateListParams {
   before_date?: string
 }
 
+export type FeedType =
+  | 'feeding'
+  | 'sleep'
+  | 'diaper'
+  | 'activity'
+  | 'health'
+  | 'growth'
+  | 'medical'
+  | 'symptom'
+
+export interface FeedSummary {
+  title: string
+  tags?: string[]
+  value?: string
+  unit?: string
+  theme?: 'pink' | 'warm' | 'purple' | 'fever'
+  active?: boolean
+}
+
+export interface FeedItem {
+  id: string
+  type: FeedType
+  event_time: string
+  note?: string | null
+  summary: FeedSummary
+  detail?: Record<string, unknown>
+}
+
+export interface FeedListParams {
+  baby_id: string
+  limit?: number
+  cursor?: string
+  type?: 'all' | FeedType
+  /** YYYY-MM-DD，按 event_time 自然日筛选 */
+  date?: string
+}
+
+export interface FeedListResponse {
+  items: FeedItem[]
+  nextCursor: string | null
+  hasMore: boolean
+  /** 符合条件的记录总数（仅首屏返回） */
+  totalCount?: number
+}
+
 export const recordsApi = {
   today: (familyId: string, date?: string) =>
     request<TodayRecord[]>(`/api/family/${familyId}/records/today${date ? `?date=${date}` : ''}`),
+  feed: {
+    list: (familyId: string, params: FeedListParams) => {
+      const query: string[] = [`baby_id=${encodeURIComponent(params.baby_id)}`]
+      if (params.limit != null) query.push(`limit=${params.limit}`)
+      if (params.cursor) query.push(`cursor=${encodeURIComponent(params.cursor)}`)
+      if (params.type) query.push(`type=${encodeURIComponent(params.type)}`)
+      if (params.date) query.push(`date=${encodeURIComponent(params.date)}`)
+      return request<FeedListResponse>(`/api/family/${familyId}/records/feed?${query.join('&')}`)
+    },
+  },
   remove: (familyId: string, type: string, id: string) =>
     request<void>(`/api/family/${familyId}/records/${type}/${id}`, { method: 'DELETE' }),
   feeding: {
@@ -115,6 +178,7 @@ export const recordsApi = {
     list: (familyId: string, babyId: string, params?: DateListParams) =>
       growthApi.list(familyId, babyId, params as GrowthListParams)
         .then((res) => ({ items: withType('growth', res.items), nextBeforeDate: res.nextBeforeDate })),
+    getLatest: growthApi.getLatest,
     create: (familyId: string, data: CreateGrowthDto) =>
       growthApi.create(familyId, data),
     update: (familyId: string, id: string, data: UpdateGrowthDto) =>
@@ -136,6 +200,15 @@ export const recordsApi = {
       medicalApi.remove(familyId, id),
     getOne: (familyId: string, id: string) =>
       medicalApi.getOne(familyId, id),
+    getNextFollowUp: (familyId: string, babyId: string) =>
+      medicalApi.getNextFollowUp(familyId, babyId),
+    /** 疫苗参考程序（US-02 联想数据源）/ 疫苗本状态机 / 疫苗偏好 */
+    getVaccineSchedule: (familyId: string) =>
+      medicalApi.getVaccineSchedule(familyId),
+    getVaccineBook: (familyId: string, babyId: string) =>
+      medicalApi.getVaccineBook(familyId, babyId),
+    patchVaccineSetting: (familyId: string, data: VaccineSettingPayload) =>
+      medicalApi.patchVaccineSetting(familyId, data),
   },
   symptom: {
     list: (familyId: string, babyId: string, params?: DateListParams) =>
@@ -150,6 +223,19 @@ export const recordsApi = {
     getOne: (familyId: string, id: string) =>
       symptomApi.getOne(familyId, id),
   },
+  medication: {
+    list: (familyId: string, babyId: string, date?: string) =>
+      medicationApi.listRecords(familyId, babyId, date)
+        .then((items) => withType('medication', items)),
+    create: (familyId: string, data: CreateMedicationRecordDto) =>
+      medicationApi.createRecord(familyId, data),
+    update: (familyId: string, id: string, data: UpdateMedicationRecordDto) =>
+      medicationApi.updateRecord(familyId, id, data),
+    remove: (familyId: string, id: string) =>
+      medicationApi.removeRecord(familyId, id),
+    getOne: (familyId: string, id: string) =>
+      medicationApi.getRecord(familyId, id),
+  },
 }
 
 export type {
@@ -161,6 +247,7 @@ export type {
   GrowthRecord, GrowthListParams, CreateGrowthDto, UpdateGrowthDto,
   MedicalRecord, MedicalListParams, CreateMedicalDto, UpdateMedicalDto,
   SymptomRecord, SymptomListParams, CreateSymptomDto, UpdateSymptomDto,
+  MedicationRecord, CreateMedicationRecordDto, UpdateMedicationRecordDto,
 }
 
 // Re-export for backward compatibility

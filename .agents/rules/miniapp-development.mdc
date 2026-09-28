@@ -1,0 +1,82 @@
+---
+description: minicare 小程序（Taro 4.2 + React 18）开发规范（主平台）
+globs: minicare-mp/**/*
+alwaysApply: false
+---
+
+# Mini Program Development Rules
+
+## 定位
+
+- `minicare-mp` 是敏宝日记的**主发布平台**（微信小程序，AppID: wxac792556967d5838）。
+- `minicare-web` 已进入维护模式，新功能优先在小程序端开发。
+- 小程序与 Web 端共享同一后端 API（NestJS on CloudRun），常量与枚举定义可参考 Web 端但小程序侧维护独立的 `src/lib/constants.ts`。
+
+## 分包加载策略
+
+- **主包**：4 个 TabBar 页面（首页/记录列表/报告/我的）+ 登录/引导页
+- **子包**（`subPackages`）：各记录表单页、家庭管理、详情页等低频页面
+- 新增页面时需判断归属：高频访问放主包，其余放子包，避免主包体积超 2MB
+
+## 自定义 TabBar
+
+- 使用 Taro 自定义 TabBar（`custom: true` in `app.config.ts`）
+- 中间 FAB 按钮跳转记录类型选择弹层，然后进入对应记录表单页
+- TabBar 组件位于 `src/custom-tab-bar/`，勿在单页面内共存多个实例
+
+## 页面与状态管理
+
+- 组件状态优先使用"查看态 + 编辑态"双态设计，编辑态需提供最小闭环：进入、取消、保存。
+- 需要本地持久化的配置必须统一使用 `Taro.setStorageSync/getStorageSync`，并维护明确的 key 常量。
+- 任何本地配置都要提供可恢复默认值逻辑（首次进入、配置损坏、版本升级后）。
+- 路由跳转统一使用 `Taro.navigateTo`/`Taro.switchTab`，子包页面路径需带包名前缀。
+
+## 图标与视觉
+
+- 禁止在业务 UI 中用 emoji 充当图标。
+- 小程序端图标统一走 `src/assets/icons/*.svg` + `<Image src={...} />` 方案；映射集中在 `recordTypeIcons.ts`。
+- 颜色、文案、分组、路由映射等配置应集中在 `src/lib/constants.ts`（或同层常量文件），禁止组件内散落硬编码。
+
+## 弹层与交互组件
+
+- 相同业务语义的入口必须复用同一弹层/选择器组件，保持分组、标题、副标题、关闭行为一致。
+- 弹层需支持：蒙层关闭、内容区阻止冒泡、安全区留白、可滚动内容区。
+- 需要动态分组时，优先先做过滤再回退到默认分组，避免空弹层。
+
+## ECharts 图表规范
+
+- 使用 ECharts 6 + `ec-canvas`，启用 **截图模式**（`forceUseOldCanvas: true`）解决小程序 Canvas z-index 层级问题
+- 图表数据从后端报告聚合接口获取，前端只做展示逻辑
+- 图表配色使用品牌色（`#F87098` 主色，`#FFB5C8` 副色）
+
+## 网络与环境
+
+- 所有 API 调用统一经 `src/api/http.ts` 的 `request()`，禁止在页面组件中直接 `Taro.request`。
+- 保持 `/api` 前缀与本地 `127.0.0.1:3001` 调试约定，避免绕过代理/配置导致联调失败。
+- 生产环境 `API_BASE_URL` 指向 CloudRun 域名，需在微信公众平台配置 request 合法域名。
+
+## 认证模式
+
+- 支持双模式：测试模式（固定验证码 123456）和短信模式（CloudBase SMS OTP）
+- 支持访客模式（游客预览），未登录用户可浏览部分页面
+- Token 存储使用 `Taro.setStorageSync('token', ...)`，`request()` 自动附带 Authorization header
+
+## 提交前检查
+
+- 每次改动小程序页面/组件后至少执行一次 `npm run build:weapp` 并修复报错。
+- 对改动文件执行 lints 检查，确保无新增诊断。
+- 发布前确认主包体积不超 2MB，总包不超 20MB。
+
+## CI 预览（无需开发者工具）
+
+- 使用 `miniprogram-ci` CLI 实现构建 + 预览二维码生成，无需微信开发者工具 GUI
+- 命令：`cd minicare-mp && npm run preview`（production）或 `npm run preview:staging`
+- 预览前**必须关闭 Clash 系统代理**，脚本已内置 IPv4 强制 + 代理清除
+- 二维码输出到 `.preview/` 目录（不入 git），微信扫码即可预览开发版
+- IP 白名单需在微信公众平台配置，详见 `.agents/rules/mp-preview.mdc`
+
+## 发布流程
+
+1. `npm run build:weapp` 生产构建
+2. 微信开发者工具上传代码（或通过 CI 预览先行验证）
+3. 微信公众平台提交审核 → 发布正式版

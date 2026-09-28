@@ -46,6 +46,30 @@ export class FamilyController {
     return this.familyService.getMyFamilies(userId);
   }
 
+  @Get('pending-invites')
+  @ApiOperation({ summary: '获取当前用户的待处理邀请列表' })
+  getPendingInvites(@CurrentUser() userId: string) {
+    return this.familyService.getPendingInvites(userId);
+  }
+
+  @Post('pending-invites/:memberId/accept')
+  @ApiOperation({ summary: '接受家庭邀请' })
+  acceptInvite(
+    @Param('memberId') memberId: string,
+    @CurrentUser() userId: string,
+  ) {
+    return this.familyService.acceptInvite(memberId, userId);
+  }
+
+  @Post('pending-invites/:memberId/decline')
+  @ApiOperation({ summary: '拒绝家庭邀请' })
+  declineInvite(
+    @Param('memberId') memberId: string,
+    @CurrentUser() userId: string,
+  ) {
+    return this.familyService.declineInvite(memberId, userId);
+  }
+
   @Get(':familyId/members')
   @UseGuards(FamilyMemberGuard, RoleGuard)
   @ApiOperation({ summary: '获取家庭成员列表（含 pending 状态 + 当前用户角色）' })
@@ -90,6 +114,31 @@ export class FamilyController {
     @CurrentUser() userId: string,
   ) {
     return this.familyService.removeMember(familyId, memberId, userId);
+  }
+
+  @Post(':familyId/leave')
+  @UseGuards(FamilyMemberGuard, RoleGuard)
+  @ApiOperation({ summary: '主动退出家庭（Owner 不可退出）' })
+  leaveFamily(
+    @Param('familyId') familyId: string,
+    @CurrentUser() userId: string,
+  ) {
+    return this.familyService.leaveFamily(familyId, userId);
+  }
+
+  /**
+   * 解散/删除家庭（级联删除宝宝及全部记录）
+   * 仅 Owner 可操作，删除后不可恢复
+   */
+  @Delete(':familyId')
+  @UseGuards(FamilyMemberGuard, RoleGuard)
+  @MinRole(FamilyRole.OWNER)
+  @ApiOperation({ summary: '解散家庭（级联删除全部宝宝和记录，仅创建者可操作）' })
+  deleteFamily(
+    @Param('familyId') familyId: string,
+    @CurrentUser() userId: string,
+  ) {
+    return this.familyService.deleteFamily(familyId, userId);
   }
 
   @Get(':familyId/records/today')

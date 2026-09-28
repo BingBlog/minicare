@@ -186,7 +186,7 @@ export default function RemindersColumn({ data, selectedDate, onAdd, feedingMode
           level: 'todo',
           title: '今日体温未记录',
           desc: '建议每日测量体温',
-          action: { label: '记录', type: 'health' },
+          action: { label: '记录', type: 'temperature' },
         })
       } else {
         const latestTemp = data.latestTemp

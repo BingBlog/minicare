@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { DATABASE_POOL } from '../../common/database/database.module';
 import { CreateSymptomDto, UpdateSymptomDto } from './dto/create-symptom.dto';
 import { toMysqlDatetime, getBeijingToday, addDays } from '../../common/utils/date.util';
+import { TimelineService } from '../timeline/timeline.service';
 
 function parseJson(val: unknown) {
   if (val == null) return null;
@@ -13,7 +14,10 @@ function parseJson(val: unknown) {
 
 @Injectable()
 export class SymptomService {
-  constructor(@Inject(DATABASE_POOL) private readonly db: Pool) {}
+  constructor(
+    @Inject(DATABASE_POOL) private readonly db: Pool,
+    private readonly timelineService: TimelineService,
+  ) {}
 
   async create(userId: string, dto: CreateSymptomDto) {
     const id = uuidv4();
@@ -33,6 +37,7 @@ export class SymptomService {
         dto.note      ?? null,
       ],
     );
+    await this.timelineService.upsertFromSource('symptom', id);
     return { id };
   }
 
@@ -103,11 +108,13 @@ export class SymptomService {
       `UPDATE symptom_record SET ${setClauses.join(', ')} WHERE id = ?`,
       values,
     );
+    await this.timelineService.upsertFromSource('symptom', id);
     return this.findOne(id);
   }
 
   async remove(id: string) {
     await this.db.execute('DELETE FROM symptom_record WHERE id = ?', [id]);
+    await this.timelineService.removeBySource('symptom', id);
     return { id };
   }
 }

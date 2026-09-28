@@ -672,6 +672,79 @@
 }
 
 /* ── 辅食 ── */
+.feed-food-presets {
+  padding: 12px 14px;
+}
+
+.feed-food-presets__group + .feed-food-presets__group {
+  margin-top: 12px;
+}
+
+.feed-food-presets__title {
+  display: block;
+  margin-bottom: 8px;
+  color: #9a8090;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.feed-food-presets__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.feed-food-presets__chip {
+  position: relative;
+  border: 1px solid #f0d8df;
+  border-radius: 16px;
+  background: #fff8fa;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.feed-food-presets__chip.is-active {
+  border-color: #f87098;
+  background: #fff0f4;
+}
+
+.feed-food-presets__chip.is-allergic {
+  border-color: #f05060;
+  background: #ffe8ee;
+}
+
+.feed-food-presets__chip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.feed-food-presets__chip-text {
+  color: #9a8090;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.feed-food-presets__chip.is-active .feed-food-presets__chip-text {
+  color: #f87098;
+  font-weight: 600;
+}
+
+.feed-food-presets__chip.is-allergic .feed-food-presets__chip-text {
+  color: #f05060;
+}
+
+.feed-food-presets__chip-badge {
+  font-size: 9px;
+  color: #9a7e82;
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* ── 已选辅食 chip ── */
 .feed-food-chips {
   display: flex;
   flex-wrap: wrap;
@@ -694,6 +767,11 @@
   color: #c0305a;
 }
 
+.feed-food-chip__status {
+  font-size: 10px;
+  font-weight: 600;
+}
+
 .feed-food-chip__del {
   width: 16px;
   height: 16px;
@@ -710,6 +788,7 @@
   line-height: 1;
 }
 
+/* ── 辅食输入框 ── */
 .feed-food-input-row {
   display: flex;
   align-items: center;
@@ -739,6 +818,58 @@
   color: #fff;
   font-size: 22px;
   line-height: 1;
+}
+
+/* ── 历史辅食快捷选择 ── */
+.feed-food-history {
+  padding: 10px 14px;
+}
+
+.feed-food-history__title {
+  display: block;
+  margin-bottom: 8px;
+  color: #9a8090;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.feed-food-history__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.feed-food-history__chip {
+  position: relative;
+  border: 1px solid #f0d8df;
+  border-radius: 16px;
+  background: #fff8fa;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.feed-food-history__chip.is-active {
+  border-color: #f87098;
+  background: #fff0f4;
+}
+
+.feed-food-history__chip-text {
+  color: #4a3035;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.feed-food-history__chip.is-active .feed-food-history__chip-text {
+  color: #f87098;
+  font-weight: 600;
+}
+
+.feed-food-history__chip-status {
+  font-size: 10px;
+  font-weight: 600;
 }
 
 /* ── 备注 ── */

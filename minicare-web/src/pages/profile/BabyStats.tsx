@@ -43,10 +43,11 @@ export default function BabyStats() {
 
   const fetchLatestGrowth = useCallback(() => {
     if (!familyId || !babyId) return
+    // 逐指标回溯：身高/体重/头围分别取各自最近一次非空的记录值，
+    // 避免"最新一条只填了体重"时身高/头围显示为空
     recordsApi.growth
-      .list(familyId, babyId)
-      .then((res) => {
-        const latest = res.items[0]
+      .getLatest(familyId, babyId)
+      .then((latest) => {
         if (!latest) return
         setHeightMm(latest.height_mm ?? null)
         setWeightG(latest.weight_g ?? null)

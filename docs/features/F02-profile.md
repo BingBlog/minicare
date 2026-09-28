@@ -3,7 +3,12 @@
 > 功能 ID：P0-001  
 > 优先级：P0  
 > 状态：**已完成** ✅  
-> 最后更新：2026-05-03（对齐小程序实际实现）
+> 最后更新：2026-08-20（删除宝宝改为**软删除**：标记 deleted_at，保留历史数据，Migration 012）
+>
+> **来源**：docs/business/MVP-PRD.md §3.1  
+> 功能 ID：P0-001  
+> 优先级：P0  
+> 最后同步：2026-08-20（更新：删除宝宝改为软删除）
 
 ## 功能描述
 
@@ -40,6 +45,19 @@
 
 **可编辑字段**：昵称、出生日期、性别、过敏程度、过敏类型（编辑时支持多选：milk/egg/wheat/peanut/tree_nut/soy/fish/shellfish/other）
 
+## 删除宝宝档案
+
+在"我的"页面 → 编辑宝宝档案弹窗（`EditBabyModal`）底部提供「删除宝宝档案」入口，**仅家庭创建者（owner）可见**：
+
+- 点击后弹出二次确认，提示该宝宝档案和全部记录将**不再显示，历史数据归档保留**
+- 确认后调用 `DELETE /api/family/:familyId/baby/:babyId`
+- **软删除原则（Migration 012）**：服务端仅标记 `baby_profile.deleted_at = NOW()`，**不物理删除任何数据**——该宝宝全部记录（feeding 4 表、sleep/diaper/activity/health/symptom/growth/medical、food_observation、record_timeline 等）原样保留在库中，所有查询按 `deleted_at IS NULL` 过滤，前端不再展示
+- 删除成功后前端自动切换到其他宝宝；若无其他宝宝则清空当前状态
+- 普通 member 调用该接口返回 403（`@MinRole(OWNER)` 拦截）
+- 软删后同家庭可继续创建新宝宝（Migration 012 已移除"每家庭单宝宝"唯一键）
+
+> 背景：用户被邀请加入其他家庭后，自己创建的家庭/宝宝已无用，需要能删除；软删除保证误删可恢复、历史数据不丢失。
+
 ## 后端 API
 
 | 端点 | 方法 | 说明 |
@@ -49,6 +67,7 @@
 | `/api/family/:familyId/baby` | POST | 创建宝宝档案 |
 | `/api/family/:familyId/baby` | GET | 获取家庭下宝宝列表 |
 | `/api/family/:familyId/baby/:babyId` | PATCH | 更新宝宝信息 |
+| `/api/family/:familyId/baby/:babyId` | DELETE | 删除宝宝档案（仅 Owner，级联删除全部记录） |
 
 ## 数据库表
 
@@ -75,6 +94,9 @@
 - [x] "我的"页面可编辑宝宝档案
 - [x] 编辑模式支持多种过敏原类型选择
 - [x] 性别选择器：男宝/女宝/未知
+- [x] 家庭创建者可删除宝宝档案（二次确认 + 软删除标记，数据归档保留）
+- [x] 非创建者（member）调用删除接口返回 403
+- [x] 软删后同家庭可继续创建新宝宝
 
 ## 相关文件
 

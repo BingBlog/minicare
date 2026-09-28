@@ -57,10 +57,16 @@
 
 .baby-hero {
   display: flex;
-  align-items: center;
-  gap: 16px;
+  flex-direction: column;
+  gap: 12px;
   padding: 16px 20px;
   padding-bottom: 20px;
+}
+
+.baby-hero__main {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 .baby-hero__avatar {
@@ -81,7 +87,6 @@
 }
 
 .baby-hero__name {
-  display: block;
   font-size: 20px;
   font-weight: 800;
   color: #4a3035;
@@ -115,11 +120,63 @@
   flex-shrink: 0;
 }
 
+.baby-hero__actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.baby-picker {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.baby-picker__item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: #fff;
+  border: 1.5px solid #f0e7ea;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.15s;
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+.baby-picker__item--active {
+  background: #fff0f4;
+  border-color: #f87098;
+}
+
+.baby-picker__name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #4a3035;
+}
+
+.baby-picker__check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 // ── BabyStats ──────────────────────────────────────────────────────
 
 .baby-stats {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   margin: 0 16px;
   border-radius: 16px;
   overflow: hidden;
@@ -505,6 +562,26 @@
   font-weight: 600;
 }
 
+// 删除宝宝档案（危险操作，仅创建者可见）
+.edit-baby-delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(100% - 32px);
+  margin: 16px 16px 0;
+  padding: 13px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #f05060;
+  border-radius: 16px;
+  background: #fff0f0;
+  transition: transform 0.1s;
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
 // ── MembersModal ──────────────────────────────────────────────────
 
 .members-overlay {
@@ -735,6 +812,26 @@
   border-radius: 16px;
   background: #f5f0f2;
   color: #9a8090;
+  transition: transform 0.1s;
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+// 解散家庭（危险操作，仅创建者可见）
+.members-delete-family {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(100% - 32px);
+  margin: 0 16px 4px;
+  padding: 13px 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #f05060;
+  border-radius: 16px;
+  background: #fff0f0;
   transition: transform 0.1s;
 
   &:active {
@@ -1050,6 +1147,113 @@
   font-size: 14px;
   font-weight: 600;
   color: #9a8090;
+}
+
+.family-picker-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.family-picker {
+  width: 300px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 24px;
+}
+
+.family-picker__title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #3d2b2e;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.family-picker__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.family-picker__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #fafafa;
+  border: 1.5px solid transparent;
+  transition: all 0.15s;
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+.family-picker__item--active {
+  background: #fff0f4;
+  border-color: #f87098;
+}
+
+.family-picker__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f5f0f2;
+  flex-shrink: 0;
+}
+
+.family-picker__item--active .family-picker__icon {
+  background: linear-gradient(135deg, #f9a8c0, #f87098);
+}
+
+.family-picker__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.family-picker__name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #3d2b2e;
+}
+
+.family-picker__role {
+  font-size: 12px;
+  color: #9a7e82;
+}
+
+.family-picker__check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.baby-picker__leave {
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: #fff0f4;
+  flex-shrink: 0;
+}
+
+.baby-picker__leave-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #f05060;
 }
 
 @include ipad.profile;

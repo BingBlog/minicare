@@ -10,8 +10,9 @@ const MP_ROUTE_MAP: Record<string, string> = {
   '/records/form/diaper': '/pages/records/diaper/index',
   '/records/form/sleep': '/pages/records/sleep/index',
   '/records/form/growth': '/pages/records/growth/index',
-  '/records/form/health': '/pages/records/health/index',
-  '/records/form/medical': '/pages/records/medical/index',
+  '/records/form/medical': '/pages/records/medical/type-select/index',
+  '/records/form/allergy': '/pages/records/health/allergy/index',
+  '/records/form/temperature': '/pages/records/health/temperature/index',
   '/records/form/activity': '/pages/records/activity/index',
   '/records/form/symptom': '/pages/records/symptom/index',
   '/profile': '/pages/profile/index',
@@ -22,7 +23,6 @@ const MP_ROUTE_MAP: Record<string, string> = {
 const TAB_BAR_PAGES = new Set([
   '/pages/home/index',
   '/pages/records/list/index',
-  '/pages/report/index',
   '/pages/profile/index',
 ])
 

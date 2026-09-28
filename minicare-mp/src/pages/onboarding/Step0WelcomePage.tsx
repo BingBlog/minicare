@@ -5,14 +5,12 @@
  *   - Logo 圆圈 + 产品标题副标题
  *   - 三张特性卡片（饮食追踪 / 全家记录 / 数据分析）
  *   - 底部「开始创建宝宝档案」按钮
- *   - 「直接进入首页」链接
  *
  * 差异化：
  *   - 导航：useNavigate → Taro.reLaunch
  *   - SVG 图标：MP 不支持内联 SVG，使用 Image + base64
  */
 import { View, Text, Image } from '@tarojs/components'
-import Taro from '@tarojs/taro'
 import { getStatusBarHeight } from '@/lib/safeArea'
 
 // ── 特性卡片数据（与 Web FEATURES 语义一致） ──────────────────────
@@ -41,15 +39,11 @@ const FEATURES = [
 ]
 
 interface Props {
-  /** 点击「开始创建宝宝档案」 */
   onStart: () => void
+  onInviteJoin?: () => void
 }
 
-export default function Step0WelcomePage({ onStart }: Props) {
-  const handleGoHome = () => {
-    Taro.reLaunch({ url: '/pages/home/index' })
-  }
-
+export default function Step0WelcomePage({ onStart, onInviteJoin }: Props) {
   return (
     <View
       className='welcome-page'
@@ -97,12 +91,11 @@ export default function Step0WelcomePage({ onStart }: Props) {
         <View className='welcome-page__cta' onClick={onStart}>
           <Text className='welcome-page__cta-text'>开始创建宝宝档案</Text>
         </View>
-        <View className='welcome-page__skip'>
-          <Text className='welcome-page__skip-label'>已有档案？ </Text>
-          <Text className='welcome-page__skip-link' onClick={handleGoHome}>
-            直接进入首页
-          </Text>
-        </View>
+        {onInviteJoin && (
+          <View className='welcome-page__invite-btn' onClick={onInviteJoin}>
+            <Text className='welcome-page__invite-btn-text'>已被邀请，去加入</Text>
+          </View>
+        )}
       </View>
     </View>
   )

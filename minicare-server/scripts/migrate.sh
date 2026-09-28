@@ -121,11 +121,13 @@ fi
 # ── 解析参数 ─────────────────────────────────────────────────
 DRY_RUN=false
 ALL_ENVS=false
+DB_OVERRIDE=""
 
 for arg in "$@"; do
   case "${arg}" in
     --dry-run)  DRY_RUN=true ;;
     --all-envs) ALL_ENVS=true ;;
+    --db=*)     DB_OVERRIDE="${arg#--db=}" ;;
   esac
 done
 
@@ -153,10 +155,15 @@ if [ "${ALL_ENVS}" = "true" ]; then
   DEV_CMD=$(make_mysql_cmd "${DB_HOST}" "${DB_PORT}" "${DB_USER}" "${DB_PASS}" "${DEV_DB}")
   run_migrations_for_db "开发库 (${DEV_DB})" "${DEV_CMD}" "${DRY_RUN}"
 
-  # 测试库
-  STAGING_DB="minicare-cloud-6gqledlle0132cbe"
+  # 测试库（minicare_staging）
+  STAGING_DB="minicare_staging"
   STAGING_CMD=$(make_mysql_cmd "${DB_HOST}" "${DB_PORT}" "${DB_USER}" "${DB_PASS}" "${STAGING_DB}")
-  run_migrations_for_db "测试库 (${STAGING_DB})" "${STAGING_CMD}" "${DRY_RUN}"
+  run_migrations_for_db "Staging 库 (${STAGING_DB})" "${STAGING_CMD}" "${DRY_RUN}"
+
+  # 正式库
+  PROD_DB="minicare-cloud-6gqledlle0132cbe"
+  PROD_CMD=$(make_mysql_cmd "${DB_HOST}" "${DB_PORT}" "${DB_USER}" "${DB_PASS}" "${PROD_DB}")
+  run_migrations_for_db "正式库 (${PROD_DB})" "${PROD_CMD}" "${DRY_RUN}"
 
   echo ""
   echo -e "${GREEN}✓ 全部数据库迁移完成${NC}"
@@ -167,7 +174,11 @@ fi
 load_env "${SCRIPT_DIR}/../.env.local"
 DB_HOST="${DB_HOST:-127.0.0.1}"
 DB_PORT="${DB_PORT:-3306}"
-DB_NAME="${DB_NAME:-minicare_dev}"
+if [ -n "${DB_OVERRIDE}" ]; then
+  DB_NAME="${DB_OVERRIDE}"
+else
+  DB_NAME="${DB_NAME:-minicare_dev}"
+fi
 DB_USER="${DB_USER:-root}"
 DB_PASS="${DB_PASS:-}"
 

@@ -1,0 +1,199 @@
+---
+description: minicare 前端编码规范。涵盖图标使用、枚举标签管理、弹层规则。适用于 minicare-web（维护模式）和 minicare-mp（主平台）。
+globs:
+  - "minicare-web/src/**/*.tsx"
+  - "minicare-web/src/**/*.ts"
+  - "minicare-mp/src/**/*.tsx"
+  - "minicare-mp/src/**/*.ts"
+alwaysApply: true
+---
+
+# minicare 前端编码规范
+
+> **平台定位**：`minicare-mp`（微信小程序）为主发布平台，`minicare-web` 已进入维护模式（保持可访问但不再主动开发新功能）。
+> 以下规则同时适用于两个前端项目。
+
+## 规则一：禁止使用 Emoji，必须使用 Icon 替代
+
+**禁止范围覆盖前端和后端所有代码**：
+
+| 层级 | 禁止 | 原因 |
+|------|------|------|
+| 组件 JSX/TSX | 直接写入 emoji 字符 | 跨平台渲染不一致 |
+| 后端数据/接口 | 在静态数据或 API 响应中包含 emoji 字段 | 会被前端渲染，绕过此规则 |
+| 常量/枚举 | 在 `constants.ts`、`*.data.ts` 等文件中存储 emoji | 同上 |
+
+**图标使用方式因平台而异**：
+
+| 平台 | 图标来源 | 使用方式 |
+|------|---------|---------|
+| Web (`minicare-web`) | `src/components/ui/icons.tsx` | `<IconPill size={12} color="#9B8ED8" />` |
+| MP (`minicare-mp`) | `src/assets/icons/*.svg` + `<Image src={...} />` | 映射集中在 `recordTypeIcons.ts` |
+
+### 图标使用示例
+
+```tsx
+// ❌ 禁止
+<span>💊 {medName}</span>
+
+// ✅ 正确（Web）
+import { IconPill } from '@/components/ui/icons'
+<span><IconPill size={12} color="#9B8ED8" /> {medName}</span>
+
+// ✅ 正确（MP）
+import { recordTypeIcons } from '@/lib/recordTypeIcons'
+<Image src={recordTypeIcons.pill} style={{ width: 12, height: 12 }} />
+```
+
+### 后端数据禁止携带 emoji
+
+```ts
+// ❌ 禁止（后端静态数据文件 *.data.ts）
+export const FOOD_CATEGORIES = [
+  { key: 'grain', label: '主食', emoji: '🌾' },  // 不允许！
+]
+
+// ✅ 正确（只保留语义字段，图标由前端 CATEGORY_ICONS 映射）
+export const FOOD_CATEGORIES = [
+  { key: 'grain', label: '主食' },
+]
+```
+
+前端通过 `key` 到 `CATEGORY_ICONS` 常量映射对应的 SVG 图标组件，绝不依赖后端传递 emoji。
+
+### 需要新图标时
+
+若现有图标库中没有所需语义图标：
+- **Web**：先在 `src/components/ui/icons.tsx` 中添加新的 SVG 图标组件
+- **MP**：先在 `src/assets/icons/` 中添加新的 SVG 文件，并在 `recordTypeIcons.ts` 中注册映射
+
+图标命名规范：`Icon` + 语义名称（大驼峰），例如 `IconHospital`、`IconThermometer`。
+
+图标设计规范（与现有图标保持一致）：
+- 基于 Lucide 图标集风格，stroke 线条风格
+- `strokeWidth="2"`，`strokeLinecap="round"`，`strokeLinejoin="round"`
+- 默认尺寸通过 `size` prop 控制，颜色通过 `color` prop 控制
+
+---
+
+## 规则二：枚举中文标签必须统一管理到 constants.ts
+
+**禁止**在组件文件（`.tsx`）或工具函数文件（`utils.ts`）中以私有 `const` 形式定义枚举 key → 中文标签的映射字典。
+
+**必须**将所有业务枚举的中文标签统一收口到 `src/lib/constants.ts`，并以 `export const` 导出。
+
+### 正确做法
+
+```ts
+// ✅ 在 src/lib/constants.ts 中定义并导出
+export const SLEEP_PERIOD_LABELS: Record<string, string> = {
+  night:         '夜觉',
+  morning_nap:   '上午觉',
+  afternoon_nap: '下午觉',
+  other:         '其他',
+}
+```
+
+```tsx
+// ✅ 在组件中从 constants.ts 导入使用
+import { SLEEP_PERIOD_LABELS } from '@/lib/constants'
+
+const label = SLEEP_PERIOD_LABELS[period] ?? period
+```
+
+```ts
+// ❌ 禁止在组件或 utils.ts 中私有定义
+const SLEEP_PERIOD_LABELS = {  // 不允许！
+  night: '夜觉',
+  ...
+}
+```
+
+### 已收录到 constants.ts 的枚举标签
+
+以下枚举标签均已在 `src/lib/constants.ts` 中定义，**直接导入使用，不要重复定义**：
+
+| 常量名 | 含义 |
+|---|---|
+| `SLEEP_PERIOD_LABELS` | 睡眠时段（夜觉/上午觉/下午觉/其他） |
+| `SLEEP_QUALITY_LABELS` | 睡眠质量（质量好/一般/较差） |
+| `DIAPER_TYPE_LABELS` | 尿布类型（小便/大便/混合/干净） |
+| `POOP_TYPE_LABELS` | 大便性状（正常软便/稀便/水样便…） |
+| `ACTIVITY_TYPE_LABELS` | 活动类型（洗澡/户外活动/玩耍/俯趴练习…） |
+| `ACTIVITY_INTENSITY_LABELS` | 活动强度（轻松/适中/活跃） |
+| `MOOD_LABELS` | 情绪（开心/平静/烦躁/哭闹） |
+| `SPIRIT_LABELS` | 精神状态（精神活跃/精神正常/有点累/萎靡） |
+| `VISIT_TYPE_LABELS` | 就诊类型（常规体检/过敏专科/生病就诊…） |
+| `ALLERGY_TYPE_LABELS` | 过敏原类型 |
+| `ALLERGY_LEVEL_LABELS` | 过敏程度 |
+
+### 新增枚举标签的流程
+
+1. 在 `src/lib/constants.ts` 中添加新的 `export const XXXX_LABELS`
+2. 在使用该标签的组件中 `import { XXXX_LABELS } from '@/lib/constants'`
+3. 不得在组件文件中临时定义同名私有字典
+
+---
+
+## 规则三：禁止使用浏览器原生对话框，必须用内联弹层替代
+
+**禁止**在任何 React 组件中调用以下浏览器原生 API：
+
+| 禁止 API | 原因 |
+|---|---|
+| `window.confirm(...)` | 样式无法定制，移动端体验极差，iOS WebView 可能被屏蔽 |
+| `window.alert(...)` | 同上 |
+| `window.prompt(...)` | 同上 |
+
+**小程序端**：使用 `Taro.showModal` 或自定义组件替代。
+
+### 必须改用内联确认弹层（BottomSheet 风格）
+
+所有需要用户"二次确认"的危险操作（删除、移除、清空、退出等），**必须**使用与整体设计风格一致的底部弹层实现。
+
+#### 实现模式
+
+在组件内维护一个 `confirm` 状态，点击危险按钮时更新状态、展开确认弹层，用户点击"确认"后再执行异步操作：
+
+```tsx
+// ✅ 正确：内联 ConfirmSheet
+interface ConfirmState {
+  open: boolean
+  targetId: string
+  targetName: string
+}
+const CONFIRM_INIT: ConfirmState = { open: false, targetId: '', targetName: '' }
+
+const [confirm, setConfirm] = useState<ConfirmState>(CONFIRM_INIT)
+const [confirmLoading, setConfirmLoading] = useState(false)
+
+// 打开确认弹层
+const openConfirm = (id: string, name: string) => {
+  setConfirm({ open: true, targetId: id, targetName: name })
+}
+
+// 执行删除
+const handleConfirm = async () => {
+  setConfirmLoading(true)
+  try {
+    await deleteApi(confirm.targetId)
+  } finally {
+    setConfirmLoading(false)
+    setConfirm(CONFIRM_INIT)
+  }
+}
+```
+
+弹层 UI 要求：
+- 使用 `rounded-t-3xl` 圆角底部弹层，覆盖蒙层背景
+- 顶部显示拖拽把手（`w-10 h-1 rounded-full bg-gray-200`）
+- 包含警告图标 + 操作说明文字
+- **确认按钮**：危险操作使用红色 `#F05060`，普通操作使用品牌色 `#F87098`，支持 `loading` 状态
+- **取消按钮**：灰色次要样式 `#F5F0F2`，文字"再想想"
+- `z-index` 必须高于触发它的父弹层（如父层 z-50，则确认弹层用 z-[70]）
+
+```tsx
+// ❌ 禁止
+if (window.confirm('确定要删除吗？')) {
+  await deleteItem(id)
+}

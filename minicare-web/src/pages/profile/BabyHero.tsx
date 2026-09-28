@@ -3,10 +3,11 @@
  *
  * 展示宝宝大头像、名字/年龄/性别/生日、过敏信息标签，
  * 以及右侧「编辑」按钮。整行可点击，触发编辑弹层。
+ * 支持多宝宝切换：当有多个宝宝时，顶部显示宝宝选择器。
  *
  * 被引用：ProfilePage.tsx
  */
-import type { AllergyLevel, AllergyType } from "@/api";
+import type { AllergyLevel, AllergyType, Baby } from "@/api";
 import { useAppConfig } from "@/lib/useAppConfig";
 import { getBabyAge } from "@/lib/utils";
 import dayjs from "dayjs";
@@ -25,6 +26,20 @@ const IconPencil = () => (
     style={{ width: 14, height: 14 }}>
     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+  </svg>
+);
+
+/** 勾选图标 */
+const IconCheck = () => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="#F87098"
+    strokeWidth="3"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: 12, height: 12 }}>
+    <polyline points="20 6 9 17 4 12" />
   </svg>
 );
 
@@ -52,6 +67,12 @@ interface BabyHeroProps {
   allergyLevel: AllergyLevel | null | undefined;
   /** 点击编辑按钮或整行的回调 */
   onEdit: () => void;
+  /** 所有宝宝列表（支持多宝宝切换） */
+  babies?: Baby[];
+  /** 当前宝宝 ID */
+  currentBabyId?: string;
+  /** 切换宝宝回调 */
+  onSwitchBaby?: (baby: Baby) => void;
 }
 
 /**
@@ -66,6 +87,9 @@ interface BabyHeroProps {
  *   allergyTypes={currentBaby?.allergy_types}
  *   allergyLevel={currentBaby?.allergy_level as AllergyLevel}
  *   onEdit={openEdit}
+ *   babies={allBabies}
+ *   currentBabyId={currentBaby?.id}
+ *   onSwitchBaby={handleSwitchBaby}
  * />
  */
 export default function BabyHero({
@@ -76,6 +100,9 @@ export default function BabyHero({
   allergyTypes,
   allergyLevel,
   onEdit,
+  babies,
+  currentBabyId,
+  onSwitchBaby,
 }: BabyHeroProps) {
   const { getLabel } = useAppConfig()
 
@@ -92,81 +119,124 @@ export default function BabyHero({
       ? allergyTypes.map((t) => getLabel('allergyType', t)).join("、")
       : null;
 
-  return (
-    <div
-      className="flex items-center gap-4 px-5 py-4 cursor-pointer"
-      style={{ paddingBottom: 20 }}
-      onClick={onEdit}>
-      {/* ── 宝宝头像：粉色渐变圆形 + 白色卡通小人 ── */}
-      <div
-        className="flex items-center justify-center flex-shrink-0"
-        style={{
-          width: 64,
-          height: 64,
-          borderRadius: "50%",
-          background: "linear-gradient(135deg, #F9A8C0, #F87098)",
-          boxShadow: "0 4px 14px rgba(248,112,152,.3)",
-        }}>
-        {/* 卡通宝宝 SVG：圆头 + 双眼点 + 身体弧线 */}
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="#fff"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          style={{ width: 42, height: 42 }}>
-          <path d="M12 2a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4" />
-          <path d="M5 20a7 7 0 0 1 14 0" />
-          {/* 眼睛（实心圆点） */}
-          <circle cx="9" cy="10.5" r="1" fill="#fff" />
-          <circle cx="15" cy="10.5" r="1" fill="#fff" />
-        </svg>
-      </div>
+  /** 是否有多个宝宝 */
+  const hasMultipleBabies = babies && babies.length > 1;
 
-      {/* ── 宝宝信息文字区 ── */}
-      <div className="flex-1 min-w-0">
-        {/* 宝宝名称 */}
+  return (
+    <div onClick={onEdit}>
+      {/* ── 多宝宝选择器 ── */}
+      {hasMultipleBabies && onSwitchBaby && (
         <div
-          className="text-[20px] font-extrabold text-[#4A3035] tracking-tight"
-          style={{ letterSpacing: "-0.3px" }}>
-          {displayName}
+          className="flex gap-2 px-5 pb-3 overflow-x-auto"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          {babies!.map((b) => {
+            const isActive = b.id === currentBabyId;
+            return (
+              <div
+                key={b.id}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full cursor-pointer transition-all flex-shrink-0 ${
+                  isActive ? 'ring-2 ring-[#F87098]' : ''
+                }`}
+                style={{
+                  background: isActive ? '#FFF0F4' : '#F5F0F2',
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (!isActive) {
+                    onSwitchBaby(b);
+                  }
+                }}
+              >
+                <span
+                  className="text-[13px] font-medium"
+                  style={{ color: isActive ? '#F87098' : '#9A8090' }}
+                >
+                  {b.name}
+                </span>
+                {isActive && <IconCheck />}
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* ── 主内容区 ── */}
+      <div
+        className="flex items-center gap-4 px-5 py-4 cursor-pointer"
+        style={{ paddingBottom: 20 }}
+      >
+        {/* ── 宝宝头像：粉色渐变圆形 + 白色卡通小人 ── */}
+        <div
+          className="flex items-center justify-center flex-shrink-0"
+          style={{
+            width: 64,
+            height: 64,
+            borderRadius: "50%",
+            background: "linear-gradient(135deg, #F9A8C0, #F87098)",
+            boxShadow: "0 4px 14px rgba(248,112,152,.3)",
+          }}>
+          {/* 卡通宝宝 SVG：圆头 + 双眼点 + 身体弧线 */}
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#fff"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            style={{ width: 42, height: 42 }}>
+            <path d="M12 2a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4" />
+            <path d="M5 20a7 7 0 0 1 14 0" />
+            {/* 眼睛（实心圆点） */}
+            <circle cx="9" cy="10.5" r="1" fill="#fff" />
+            <circle cx="15" cy="10.5" r="1" fill="#fff" />
+          </svg>
         </div>
 
-        {/* 年龄 + 性别 + 生日（有数据时正常显示，无数据时降权提示去编辑） */}
-        {birthDate ? (
-          <div className="text-[13px] text-[#9A8090] mt-0.5">
-            {getBabyAge(birthDate)}
-            {genderLabel && ` · ${genderLabel}`}
-            {" · "}
-            {dayjs(birthDate).format("YYYY年M月D日")}出生
+        {/* ── 宝宝信息文字区 ── */}
+        <div className="flex-1 min-w-0">
+          {/* 宝宝名称 */}
+          <div
+            className="text-[20px] font-extrabold text-[#4A3035] tracking-tight"
+            style={{ letterSpacing: "-0.3px" }}>
+            {displayName}
           </div>
-        ) : (
-          <div className="text-[12px] mt-0.5" style={{ color: 'rgba(154,128,144,0.5)' }}>
-            点击编辑，补充宝宝信息
-          </div>
-        )}
-      </div>
 
-      {/* ── 编辑按钮（阻止冒泡，避免与外层 onClick 重复触发）── */}
-      <button
-        type="button"
-        onClick={(e) => {
-          e.stopPropagation();
-          onEdit();
-        }}
-        className="flex items-center gap-1 border-none cursor-pointer flex-shrink-0"
-        style={{
-          background: "#FFF0F4",
-          color: "#F87098",
-          padding: "8px 14px",
-          borderRadius: 20,
-          fontSize: 13,
-          fontWeight: 600,
-        }}>
-        <IconPencil />
-        编辑
-      </button>
+          {/* 年龄 + 性别 + 生日（有数据时正常显示，无数据时降权提示去编辑） */}
+          {birthDate ? (
+            <div className="text-[13px] text-[#9A8090] mt-0.5">
+              {getBabyAge(birthDate)}
+              {genderLabel && ` · ${genderLabel}`}
+              {" · "}
+              {dayjs(birthDate).format("YYYY年M月D日")}出生
+            </div>
+          ) : (
+            <div className="text-[12px] mt-0.5" style={{ color: 'rgba(154,128,144,0.5)' }}>
+              点击编辑，补充宝宝信息
+            </div>
+          )}
+        </div>
+
+        {/* ── 编辑按钮（阻止冒泡，避免与外层 onClick 重复触发）── */}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onEdit();
+          }}
+          className="flex items-center gap-1 border-none cursor-pointer flex-shrink-0"
+          style={{
+            background: "#FFF0F4",
+            color: "#F87098",
+            padding: "8px 14px",
+            borderRadius: 20,
+            fontSize: 13,
+            fontWeight: 600,
+          }}>
+          <IconPencil />
+          编辑
+        </button>
+      </div>
     </div>
   );
 }

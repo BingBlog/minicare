@@ -10,13 +10,17 @@ export const RECORD_TYPE_CFG: Record<string, RecordTypeCfg> = {
   breast: { label: '母乳', bg: '#FDEDF3', color: '#C4185A' },
   food: { label: '辅食', bg: '#FFF3D6', color: '#D4780A' },
   sleep: { label: '睡眠', bg: '#EAEDFF', color: '#4358C8' },
+  sleep_start: { label: '开始睡觉', bg: '#EAEDFF', color: '#4358C8' },
+  sleep_end: { label: '醒来', bg: '#EAEDFF', color: '#4358C8' },
   diaper: { label: '尿布', bg: '#E4F6FD', color: '#2A9ED4' },
   activity: { label: '活动', bg: '#FFF3E0', color: '#E07A00' },
   health: { label: '健康', bg: '#FFE8EF', color: '#D42060' },
+  allergy: { label: '过敏表现', bg: '#FFE8EF', color: '#D42060' },
   temperature: { label: '体温', bg: '#FFE8EF', color: '#E03050' },
   growth: { label: '生长', bg: '#E4F8F0', color: '#2A9E70' },
   symptom: { label: '表现', bg: '#FFF9E0', color: '#E8960A' },
   medical: { label: '医疗', bg: '#E6EEFF', color: '#2E60C8' },
+  medication: { label: '用药', bg: '#F0EFFF', color: '#6C5CE7' },
   supplement: { label: '营养素', bg: '#FFF8E0', color: '#E8A000' },
 }
 
@@ -30,27 +34,28 @@ export const ALL_QUICK_ACTION_KEYS = [
   'symptom',
   'supplement',
   'activity',
-  'health',
+  'allergy',
   'growth',
   'medical',
+  'medication',
 ] as const
 
 export const GLOBAL_FAB_GROUPS: { label: string; keys: string[] }[] = [
   { label: '喂食', keys: ['formula', 'breast', 'food'] },
   { label: '日常护理', keys: ['diaper', 'sleep', 'temperature', 'symptom'] },
   { label: '日常补录', keys: ['supplement', 'activity'] },
-  { label: '健康档案', keys: ['health', 'growth', 'medical'] },
+  { label: '健康档案', keys: ['allergy', 'growth', 'medical', 'medication'] },
 ]
 
 export const FAB_GROUPS: { label: string; keys: string[] }[] = [
   { label: '日常补录', keys: ['supplement', 'activity'] },
-  { label: '健康档案', keys: ['health', 'growth', 'medical'] },
+  { label: '健康档案', keys: ['allergy', 'growth', 'medical', 'medication'] },
 ]
 
 export const DEFAULT_QUICKACTION_KEYS_BY_AGE: Record<string, string[]> = {
   '0-5m': ['formula', 'breast', 'diaper', 'sleep', 'temperature', 'symptom', 'supplement', 'activity'],
-  '6-11m': ['formula', 'breast', 'food', 'diaper', 'sleep', 'temperature', 'symptom', 'supplement'],
-  '12m+': ['food', 'breast', 'formula', 'sleep', 'diaper', 'temperature', 'symptom', 'activity'],
+  '6-11m': ['formula', 'breast', 'food', 'diaper', 'sleep', 'temperature', 'symptom', 'medication'],
+  '12m+': ['food', 'breast', 'formula', 'sleep', 'diaper', 'temperature', 'medication', 'activity'],
 }
 
 export const FAB_SUBTITLES: Record<string, string> = {
@@ -60,12 +65,13 @@ export const FAB_SUBTITLES: Record<string, string> = {
   sleep: '计时模式 · 补录模式',
   activity: '大运动 · 精细运动 · 户外活动',
   diaper: '大便次数性状 · 小便次数',
-  health: '体温 · 过敏表现 · 护理',
+  allergy: '皮疹 · 腹泻 · 呼吸急促等表现',
   temperature: '快速记录宝宝体温',
   supplement: '维生素D · 铁剂 · 益生菌 · 钙剂',
   symptom: '精神状态 · 心情状态',
   growth: '身高 · 体重 · 头围',
   medical: '儿保 · 过敏检查 · 就诊',
+  medication: '常用药清单 · 单次服药打卡',
 }
 
 /** Home 页内记录入口的目标路由（与 web RECORD_ROUTES 对齐）。 */
@@ -75,13 +81,16 @@ export const HOME_RECORD_ROUTES: Record<string, string> = {
   food: '/records/form/feeding?tab=food',
   supplement: '/records/form/feeding?tab=supplement',
   sleep: '/records/form/sleep',
+  sleep_start: '/records/form/sleep',
+  sleep_end: '/records/form/sleep',
   diaper: '/records/form/diaper',
   activity: '/records/form/activity',
-  health: '/records/form/health',
-  temperature: '/records/form/health?expandTemp=true',
+  allergy: '/records/form/allergy',
+  temperature: '/records/form/temperature',
   growth: '/records/form/growth',
   medical: '/records/form/medical',
   symptom: '/records/form/symptom',
+  medication: '/records/form/medication',
 }
 
 /**
@@ -95,17 +104,20 @@ export const HOME_RECORD_MP_ROUTES: Record<string, string> = {
   '/records/form/diaper': '/pages/records/diaper/index',
   '/records/form/sleep': '/pages/records/sleep/index',
   '/records/form/growth': '/pages/records/growth/index',
-  '/records/form/health': '/pages/records/health/index',
-  '/records/form/medical': '/pages/records/medical/index',
+  // PRD-005 D1：医疗新建主入口 = 独立类型选择页（编辑态由 navigation 分发到表单页，不经过本路由）
+  '/records/form/medical': '/pages/records/medical/type-select/index',
+  '/records/form/allergy': '/pages/records/health/allergy/index',
+  '/records/form/temperature': '/pages/records/health/temperature/index',
   '/records/form/activity': '/pages/records/activity/index',
   '/records/form/symptom': '/pages/records/symptom/index',
+  '/records/form/medication': '/pages/records/medication/index',
 }
 
 export const SLEEP_PERIOD_LABELS: Record<string, string> = {
   night: '夜觉',
   morning_nap: '上午觉',
   afternoon_nap: '下午觉',
-  other: '其他',
+  other: '傍晚觉',
 }
 
 export const SLEEP_QUALITY_LABELS: Record<string, string> = {
@@ -145,11 +157,76 @@ export const SPIRIT_LABELS: Record<string, string> = {
 
 export const VISIT_TYPE_LABELS: Record<string, string> = {
   checkup: '儿保检查',
-  allergy: '过敏原检测',
   sick: '就诊记录',
   vaccine: '疫苗接种',
-  blood: '血液检查',
   other: '其他检查',
+  // 已废弃类型（2026-08-22 精简），仅用于老数据列表展示
+  allergy: '过敏原检测',
+  blood: '血液检查',
+}
+
+/** 医疗类型选择页（PRD-005 US-01）4 卡片配置：标题取 VISIT_TYPE_LABELS[key]，此处只放副文案与配色 */
+export const MEDICAL_TYPE_OPTIONS: {
+  key: string
+  subtitle: string
+  bg: string
+  color: string
+}[] = [
+  { key: 'vaccine', subtitle: '记录剂次与接种反应 · 同步疫苗本进度', bg: '#EAF2FB', color: '#5B9BD5' },
+  { key: 'checkup', subtitle: '体格测量 · 发育评估 · 医生问答', bg: '#E4F8F0', color: '#2A9E70' },
+  { key: 'sick', subtitle: '主诉 · 诊断 · 开药 · 医嘱', bg: '#FFE8EF', color: '#E8507A' },
+  { key: 'other', subtitle: '检查项目 · 结果 · 报告照片', bg: '#F3EFF2', color: '#9A8090' },
+]
+
+/** 医疗表单目标路由（type-select → 表单直连用，勿改） */
+export const MEDICAL_FORM_PAGE = '/pages/records/medical/index'
+
+// ── 020 类型化枚举文案（键与后端 dto/create-medical.dto 枚举一一对应；单一文案源禁双写）──
+
+export const VACCINE_CATEGORY_LABELS: Record<string, string> = {
+  free: '免费',
+  paid: '自费',
+}
+
+export const VACCINE_REACTION_LABELS: Record<string, string> = {
+  none: '无异常',
+  fever: '发热',
+  local_redness: '局部红肿',
+  induration: '硬结',
+  rash: '皮疹',
+  sleepy_irritable: '嗜睡/烦躁',
+  other: '其他',
+}
+
+export const VACCINE_SITE_LABELS: Record<string, string> = {
+  left_arm: '左臂',
+  right_arm: '右臂',
+  thigh: '大腿',
+  oral: '口服',
+  other: '其他',
+  unknown: '未知',
+}
+
+/** 儿保里程碑 5 维度（键 = CheckupMilestoneDim，顺序即表单展示顺序） */
+export const CHECKUP_MILESTONE_DIMS: { key: string; label: string }[] = [
+  { key: 'gross', label: '大运动' },
+  { key: 'fine', label: '精细动作' },
+  { key: 'language', label: '语言' },
+  { key: 'cognitive', label: '认知' },
+  { key: 'social', label: '社会适应' },
+]
+
+export const MILESTONE_STATUS_LABELS: Record<string, string> = {
+  ok: '正常',
+  watch: '待观察',
+  na: '未评估',
+}
+
+export const CHECKUP_GROWTH_SYNC_LABELS: Record<string, string> = {
+  none: '未同步',
+  synced: '已同步生长记录',
+  overwritten: '已覆盖同日生长',
+  skipped: '跳过同步',
 }
 
 /** 过敏程度选项配置（含激活颜色） */
@@ -194,4 +271,37 @@ export const ROLE_BADGE_COLOR: Record<string, string> = {
 export const ROLE_ICON_COLOR: Record<string, string> = {
   owner:  '#fff',
   member: '#4A90D9',
+}
+
+export const OBSERVATION_STATUS_LABELS: Record<string, string> = {
+  observing: '观察中',
+  paused: '已停用',
+  safe: '已耐受',
+  suspected: '疑似过敏',
+  allergic: '确认过敏',
+}
+
+export const OBSERVATION_STATUS_CFG: Record<string, { label: string; bg: string; color: string }> = {
+  observing: { label: '观察中', bg: '#FFF8EC', color: '#DDB870' },
+  paused: { label: '已停用', bg: '#F5F0F2', color: '#9A8090' },
+  safe: { label: '已耐受', bg: '#E4F8F0', color: '#2A9E70' },
+  suspected: { label: '疑似过敏', bg: '#FFF3E0', color: '#E07A00' },
+  allergic: { label: '确认过敏', bg: '#FFE8EF', color: '#E8305A' },
+}
+
+export const REACTION_LEVEL_LABELS: Record<string, string> = {
+  none: '无反应',
+  mild: '轻度',
+  moderate: '中度',
+  severe: '重度',
+}
+
+export const REACTION_FLAGS_LABELS: Record<string, string> = {
+  rash: '皮疹',
+  vomit: '呕吐',
+  diarrhea: '腹泻',
+  blood_stool: '血便',
+  wheeze: '喘息',
+  face_swelling: '面部肿胀',
+  other: '其他',
 }

@@ -694,35 +694,6 @@
     font-size: 16px;
   }
 
-  // 生长 - 拍照按钮
-  .growth-photo-btn__icon {
-    width: 72px;
-    height: 72px;
-    border-radius: 16px;
-  }
-
-  .growth-photo-btn__icon-text {
-    font-size: 32px;
-  }
-
-  .growth-photo-btn__title {
-    font-size: 17px;
-  }
-
-  .growth-photo-btn__desc {
-    font-size: 15px;
-  }
-
-  // 健康 - 护肤 Chip
-  .health-skin__chip {
-    padding: 10px 18px;
-    font-size: 16px;
-  }
-
-  .health-skin__group-label {
-    font-size: 15px;
-  }
-
   // 表现 - 选项卡片
   .symptom-card__icon-wrap {
     width: 56px;
@@ -747,28 +718,31 @@
     font-size: 14px;
   }
 
-  // 医疗 - OCR 上传
-  .medical-ocr__upload {
+  // 医疗 - 图片上传
+  .medical-photo {
     margin: 0 24px 14px;
-    padding: 28px 24px;
-    border-radius: 20px;
   }
 
-  .medical-ocr__title {
-    font-size: 18px;
+  .medical-photo__grid {
+    gap: 12px;
   }
 
-  .medical-ocr__desc {
-    font-size: 15px;
+  .medical-photo__item,
+  .medical-photo__add {
+    border-radius: 16px;
   }
 
-  .medical-ocr__btn {
-    padding: 12px 28px;
-    border-radius: 12px;
+  .medical-photo__add-icon {
+    width: 32px;
+    height: 32px;
   }
 
-  .medical-ocr__btn-text {
-    font-size: 16px;
+  .medical-photo__add-text {
+    font-size: 14px;
+  }
+
+  .medical-photo__hint {
+    font-size: 13px;
   }
 
   // 医疗 - 复查提醒
@@ -894,23 +868,6 @@
 
   .health-collapse-card__hint {
     font-size: 15px;
-  }
-
-  // ── 医疗用药 ──────────────────────────────────────────
-  .medical-meds__title {
-    font-size: 16px;
-  }
-
-  .medical-meds__add-text {
-    font-size: 15px;
-  }
-
-  .medical-meds__name {
-    font-size: 16px;
-  }
-
-  .medical-meds__dose {
-    font-size: 16px;
   }
 
   // ── 加载态文字 ──────────────────────────────────────────

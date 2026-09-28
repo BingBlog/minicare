@@ -3,7 +3,7 @@
 > 功能 ID：P0-007  
 > 优先级：P0  
 > 状态：**已完成** ✅  
-> 最后更新：2026-05-03（对齐小程序实际实现）
+> 最后更新：2026-05-21（新增：跨零点睡眠自动拆分规则）
 
 ## 功能描述
 
@@ -82,6 +82,33 @@ ongoing ──(end)──→ ended
 - `duration_min` 由后端 MySQL `TIMESTAMPDIFF(MINUTE, start_time, end_time)` 计算，规避容器 UTC+0 时区问题
 - 前端计时器使用 `setInterval` 每秒更新显示，实际时长以服务端 `start_time` 为准
 - 编辑模式：通过 URL 参数 `recordId` 进入，可修改已结束的睡眠记录
+
+### 跨零点睡眠自动拆分
+
+当一条睡眠记录的 `start_time` 和 `end_time` 不在同一天（跨零点）时，后端自动按零点拆分为多条记录写入数据库：
+
+**拆分规则**：
+- 拆分时机：仅在「结束睡眠」（`endSleep`）和「补录完整记录」（`createCompleteSleep`）时执行
+- 进行中（ongoing）的记录**不拆分**，始终保持1条记录
+- 拆分后每条记录的 `start_time` 和 `end_time` 在同一天内
+- 每条记录独立拥有 `duration_min`，值为该日内的实际睡眠分钟数
+
+**示例**：入睡 22:00 → 醒来 06:00（跨零点）
+- 记录A：`start_time=22:00, end_time=00:00, duration_min=120, sleep_period=night`
+- 记录B：`start_time=00:00, end_time=06:00, duration_min=360, sleep_period=night`
+
+**字段分配**：
+- `quality`：两条记录相同（继承原始值）
+- `sleep_period`：第一条继承原始值，第二条根据开始时间自动推断
+- `note`：仅保留在第一条记录上
+
+**编辑处理**：
+- 编辑已结束记录时，如果修改后的时间范围跨零点，自动删除原记录并拆分为多条新记录
+- 编辑进行中记录时，仅更新字段，不触发拆分
+
+**统计影响**：
+- 前端按 `DATE(start_time)` 查询某天记录，`SUM(duration_min)` 即为当天实际睡眠时长
+- 无需前端额外计算，数据源头已保证每条记录归属正确日期
 
 ## 验收标准（AC）
 

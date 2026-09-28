@@ -163,47 +163,6 @@
   color: #f87098;
 }
 
-/* ── 拍照上传占位 ── */
-.growth-photo-btn {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 16px;
-  width: 100%;
-}
-
-.growth-photo-btn__icon {
-  width: 56px;
-  height: 56px;
-  border-radius: 12px;
-  border: 2px dashed #f0b8c8;
-  background: #fff0f4;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.growth-photo-btn__icon-text {
-  font-size: 24px;
-  color: #f0b8c8;
-  line-height: 1;
-}
-
-.growth-photo-btn__title {
-  font-size: 14px;
-  font-weight: 600;
-  color: #7a5a60;
-  display: block;
-}
-
-.growth-photo-btn__desc {
-  font-size: 12px;
-  color: #9a8090;
-  margin-top: 2px;
-  display: block;
-}
-
 /* ── 备注 ── */
 .growth-note-input {
   height: 44px;

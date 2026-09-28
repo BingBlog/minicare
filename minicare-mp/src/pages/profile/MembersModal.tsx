@@ -56,6 +56,7 @@ interface MembersModalProps {
   isOwner: boolean
   onInviteByPhone: (phone: string) => Promise<void>
   onRemoveMember: (memberId: string) => Promise<void>
+  onDeleteFamily?: () => void
   onClose: () => void
 }
 
@@ -80,6 +81,7 @@ export default function MembersModal({
   isOwner,
   onInviteByPhone,
   onRemoveMember,
+  onDeleteFamily,
   onClose,
 }: MembersModalProps) {
   const [showInviteForm, setShowInviteForm] = useState(false)
@@ -352,6 +354,21 @@ export default function MembersModal({
             <Text style={{ color: '#4A90D9', fontWeight: 600 }}>成员</Text>
             可查看和新增记录。
           </View>
+
+          {/* 解散家庭（仅创建者可见） */}
+          {isOwner && onDeleteFamily && (
+            <View className='members-delete-family' onClick={onDeleteFamily}>
+              <svg
+                viewBox='0 0 24 24' fill='none' stroke='#F05060'
+                strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round'
+                style={{ width: 14, height: 14, verticalAlign: -2, marginRight: 4 }}
+              >
+                <polyline points='3 6 5 6 21 6' />
+                <path d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2' />
+              </svg>
+              解散家庭
+            </View>
+          )}
 
           {/* 关闭按钮 */}
           <View className='members-btn-close' onClick={handleClose}>

@@ -1,0 +1,355 @@
+·标准·方案·指南·
+
+# 中国婴儿轻中度非IgE介导的牛奶蛋白过敏诊断和营养干预指南
+
+![](images/98845ff71ac395db1f9844b6d8acf0b21575819c54ffbb4af7e82d9be8072727.jpg)  
+扫码阅读电子版
+
+陈同辛<sup>1</sup> 洪莉<sup>2</sup> 王华<sup>3</sup> 邵洁<sup>4</sup> 杨凡<sup>5</sup> 王莹<sup>6</sup> 刘光辉<sup>7</sup> 徐樨巍<sup>8</sup> 盛晓阳<sup>9</sup> 许春娣
+
+<sup>1</sup>国家儿童医学中心（上海），上海交通大学医学院附属上海儿童医学中心过敏／免疫科，上海200127；<sup>2</sup>国家儿童医学中心（上海），上海交通大学医学院附属上海儿童医学中心营养科，上海200127；<sup>3</sup>重庆医科大学附属儿童医院皮肤科，重庆 400015；<sup>4</sup>上海交通大学医学院附属瑞金医院儿内科，上海 200025；<sup>5</sup>四川大学华西第二医院儿童保健科，成都 610041；<sup>6</sup>上海交通大学医学院附属新华医院消化科，上海 200092；<sup>7</sup>武汉大学中南医院过敏反应科，武汉 430062；<sup>8</sup>清华大学附属北京清华长庚医院儿科，北京 102218；<sup>9</sup>上海交通大学医学院附属新华医院儿童保健科，上海 20009陈同辛和洪莉对本文有同等贡献
+
+通信作者：陈同辛，Email：tongxinc2021＠163．com；徐樨巍，Email：xuxiweibch＠163．com；盛晓阳， Email：shengxiaoyang＠xinhuamed．com．cn；许春娣，Email：chundixu55＠163．com
+
+【摘要】 牛奶蛋白过敏常见于婴幼儿，是由牛奶蛋白引起的异常免疫反应，发病机制可分为 IgE或非 Ig介导，亦或两者混合介导。目前我国已有多项牛奶蛋白过敏的专家共识，但这些共识均未对 IgE和非 IgE介导的牛奶蛋白过敏进行区分。鉴于两者在临床上有着明显不同，且婴儿时期非 IgE介导的牛奶蛋白过敏更为常见，故中华预防医学会过敏病预防与控制专业委员会组织儿科消化、过敏／免疫、皮肤、营养和儿童保健专业专家，针对非 IgE介导的牛奶蛋白过敏类型、临床特征、诊断和营养干预，参考国际指南并结合我国临床实践制定了本指南。本指南的建议更适合基层医师的理解和实践，涉及非 IgE介导的牛奶蛋白过敏问题共7大类42条建议。
+
+【关键词】 牛奶蛋白过敏；指南；非 IgE介导；婴儿；诊断；营养干预
+
+DOI：10．3760／cma．j．cn1010702022010600016
+
+# Guidelinesfordiagnosisandnutritionalinterventionofmildtomoderatenon－IgEmediatedcow′smilkpro teinallergyinChineseinfant
+
+ChenTongxin<sup>1</sup>，HongLi<sup>2</sup>，WangHua<sup>3</sup>，ShaoJie<sup>4</sup>，YangFan<sup>5</sup>，WangYing<sup>6</sup>，LiuGuanghui<sup>7</sup>，XuXiwei<sup>8</sup>，ShengXiao yang<sup>9</sup>，XuChund
+
+<sup>1</sup>DepartmentofAllergy／Immunology，ShanghaiChildren′sMedicalCenterAffiliatedtoShanghaiJiaotongUniversit SchoolofMedicine，NationalChildren′sMedicalCenter（Shanghai），Shanghai200127，China；<sup>2</sup>DepartmentofNutri tion，ShanghaiChildren′sMedicalCenterAffiliatedtoShanghaiJiaotongUniversitySchoolofMedicine，NationalChi dren′sMedicalCenter（Shanghai），Shanghai200127，China；<sup>3</sup>DepartmentofDermatology，Children′sHospitalAffiliate toChongqingMedicalUniversity，Chongqing400015，China；<sup>4</sup>DepartmentofPediatrics，RuijinHospitalAffiliatedt ShanghaiJiaotongUniversitySchoolofMedicine，Shanghai200025，China；<sup>5</sup>DepartmentofChildHealthCare，WestCh naSecondHospital，SichuanUniversity，Chengdu610041，China；<sup>6</sup>DepartmentofGastroenterology，XinhuaHospitalAffilia tedtoShanghaiJiaotongUniversitySchoolofMedicine，Shanghai200092，China；<sup>7</sup>DepartmentofAllergy，CentralSout HospitalofWuhanUniversity，Wuhan430062，China；<sup>8</sup>DepartmentofPediatrics，BeijingTsinghuaChanggungHospita AffiliatedTsinghuaUniversity，Beijing102218，China；<sup>9</sup>DepartmentofChildHealthCare，XinhuaHospitalAffiliatedt ShanghaiJiaotongUniversitySchoolofMedicine，Shanghai200092，Chin
+
+Correspondingauthor：ChenTongxin，Email：tongxinc2021＠163．com；XuXiwei，Email：xuxiweibch＠163．com；Shen Xiaoyang，Email：shengxiaoyang＠xinhuamed．com．cn；XuChundi，Email：chundixu55＠163．com
+
+【Abstract】 Cow′smilkproteinallergy（CMPA）isoneofthemostcommonpresentationsoffoodallergyseenin earlychildhood．Itisanabnormalimmuneresponsecausedbycow′smilkprotein．CMPAcanbeclinicallysubdivide intoeitherimmediate－onsetIgEmediatedordelayedonsetnon－IgEmediated，orboth．Atpresent，concernsregardin theearlyandtimelydiagnosisofCMPAhavebeenhigh－lightedovertheyearsandtherearemanyexpertconsensuso CMPAinChina，buttheseconsensusdidnotdistinguishIgEmediatedornon－IgEmediatedCMPA．Inviewoftheob viousclinicaldifferencesbetweenthetwotypeofCMPAandnon－IgEmediatedCMPAismorecommonininfancy，ex pertsfocusonpediatricgastroenterology，allergy／immunology，dermatology，nutritionandchildhealthcareconvenedb theAllergyPreventionandControlProfessionalCommitteeofChinesePreventiveMedicineAssociationpresentth guidelinetohelppractitionersinprimarycaresettingstoearlyrecognizeandmakesuitablemanagementofnon－IgE mediatedCMPAinChina．Theguidelineincorporatesthecutting－edgeinternationalguidanceandtheactualsituation ofChinesechildrendescribingindetailthetypes，clinicalfeatures，diagnosisandnutritionalinterventionofnon－IgE mediatedCMPA．Thereare42recommendationsin7categoriesintotalreferringtothecommonquestionsrelatedt
+
+non－IgEmediatedCMPA
+
+【Keywords】 Cow′smilkproteinallergy；Guideline；Non－IgEmediated；Infant；Diagnosis；Nutritionalinterventio
+
+DOI:10.3760/cma.j. cn101070-20220106-00016
+
+牛奶蛋白过敏（cow′smilkproteinallergy，CMPA）常见于婴幼儿，是一种由牛奶蛋白引起的异常免疫反应，其发病机制可通过 IgE或非 IgE介导，亦或两者混合介导。因诊断方法不同，各地报道的 CMPA发病率也有所差别。文献报道，全球 CMPA的发生率为 2．5％3.0%[1-2],国内报道 0 \~ 3 岁婴幼儿 CMPA 发生率为083％～3．50％<sup>［3］</sup>。因 IgE介导的牛奶蛋白过敏（IgEmediatedcow′smilkproteinallergy，IgECMPA）表现为进食后出现症状的时间短<sup>［2］</sup>，并可参考过敏原检测，故容易判断；而非IgE介导的牛奶蛋白过敏（non－IgEmediatedcow′smilkproteinallergy，nonIgECMPA）表现为进食后出现症状的时间不固定且较长<sup>［2］</sup>，又缺乏实验室辅助诊断手段，故较难判断，往往需要通过试验性膳食回避口服食物激发（experimentaldietaryavoidance－oralfoodchallenge，EDAOFC）来明确诊断。普遍共识牛奶蛋白 EDAOFC阳性的患儿，牛奶蛋白皮肤点刺试验（skinpricktest，SPT）阳性或能检测到牛奶蛋白特异性IgE（specificIgE，sIgE）者为IgECMPA，牛奶蛋白SPT阴性或检测不到牛奶蛋白 sIgE 者为 non-IgE-CMPA[4-6]。
+
+目前我国已有多项涉及CMPA的专家共识，如201版《婴幼儿食物过敏诊治建议》<sup>［7］</sup>、2013版《中国婴幼儿牛奶蛋白过敏诊治循证建议》<sup>［6］</sup>和2017版《食物过敏相关消化道疾病诊断与管理专家共识》<sup>［8］</sup>。这些共识均对CMPA的发生、临床表现、诊断及治疗进行了相关描述，但均未就 IgE-CMPA 和 non-IgE-CMPA 进行区分，鉴于IgE-CMPA和non-IgE-CMPA在临床上有着明显不同，并且婴儿时期non-IgE-CMPA更为常见，故本指南由中华预防医学会过敏病预防与控制专业委员会组织儿科消化、过敏／免疫、皮肤、营养和儿童保健专业专家，筛选相关文献对non-IgE-CMPA的类型、临床特征、诊断和营养干预，参考国际指南并结合我国临床实践做出了相应诊治建议。本指南的建议更适合基层医师理解和实践，简称为“中国牛奶过敏基层医师指南”（China－milkallerginprimarycareguidelines），又称CMAP指南。
+
+本指南涉及 non-IgE-CMPA 问题共7 大类42 条建议。所有建议推荐的原则，除了根据文献的等级外，采用了专家投票方式进行等级推荐。专家参照2001年英国牛津循证医学证据分级和推荐意见强度<sup>［9］</sup>、相关指南推荐的强度和自我临床实践中的经验进行等级确定，最终以专家多数意见作为建议的等级推荐（附录 1）。
+
+## 1 non-IgE-CMPA 相关疾病类型及特征
+
+## 1.1 non-IgE-CMPA 疾病谱(图 1) non-IgE-CMPA 与
+
+IgECMPA疾病谱明显不同。受累的器官主要以消化道和皮肤为主。在婴儿期，消化道受累包括了器质性病变和功能性胃肠病，而皮肤受累多以特应性皮炎（atopidermatitis，AD）为主<sup>［1011］</sup>。
+
+![](images/4a58c5f9d8f3ee1ac3f874f6416a2c4c00c6d3d0f2652776d49adcdee5ba6482.jpg)  
+注：根据EAACI和NIAID命名法调整的非 IgE介导的过敏性疾病的 食物过敏细分；EAACI：欧洲过敏和临床免疫学学会；NIAID：美国国家过 敏和传染病研究所；<sup>a</sup>特应性皮炎也可能由 IgE介导，但通常与食物过敏 无关 Foodallergysubdivisionofnon－IgEmediatedallergicdisease adjustedaccordingtoEAACIandNIAID nomenclature；EAACI：Europea AcademyofAllergyandClinicalImmunology；NIAID：NationalInstituteofAllerg andInfectiousDiseases；<sup>a</sup>atopicdermatitismayalsobeIgEmediated，butiti usuallynotrelatedtofoodallerg  
+图1 非IgE介导的食物过敏分类<sup>［12］</sup>  
+Figure1 Classificationofnon－IgEmediatedfoodallergy<sup>［12］</sup>
+
+1.2 不同类型 non-IgE-CMPA 的临床特征(表1) 特别需要注意的是，食物蛋白诱导的各种肠道病变的判断，其中食物蛋白诱导的小肠结肠炎综合征（foodprotein－inducedenterocolitissyndrome，FPIES）少见、严重<sup>［1314］</sup>；食物蛋白诱导的过敏性直肠结肠炎（foodprotein－inducedallergicproctocolitis，FPIAP）多为母乳喂养，且以血便为主<sup>［1213］</sup>；食物蛋白诱导的肠病（foodprotein－inducedenteropathy，FPE）较少见，以反复腹泻、小肠吸收功能降低为主，严重时可伴有生长发育迟缓<sup>［15］</sup>。
+
+## 2 婴儿 non-IgE-CMPA 与 IgE-CMPA 的临床表现、鉴别和分度
+
+病史采集是判断CMPA的重要依据，不同机制介导的CMPA存在着明显不同的特征，不论是在进食牛奶蛋白后到出现症状的时间以及喂养方式和临床表现均有一定差异。婴儿轻中度 IgE-CMPA 和 non-IgE-CMPA的特征见表 2。
+
+一般婴儿non-IgE-CMPA临床表现多以胃肠道受累为主，皮肤表现往往以 AD为主，且基本不会引起呼吸道受累<sup>［5，16］</sup>。而婴儿 IgECMPA往往以皮肤受累为主，表现为急性红斑、风团和血管性水肿为主，且可表现出呼吸道症状<sup>［17］</sup>。一般纯母乳喂养的婴儿呼吸道受累少见。
+
+表1 儿童非 IgE介导的食物过敏相关性疾病概述<sup>［8，1015］</sup>  
+Table1 Overviewofnon－IgEmediatedfoodallergyrelateddiseasesinchildren<sup>［8，1015］</sup>
+<table><tr><td rowspan="2">临床 食物蛋白诱导的 特征</td><td rowspan="2">小肠结肠炎综合征 过敏性直肠结肠炎</td><td rowspan="2">食物蛋白诱导的</td><td rowspan="2">食物蛋白 诱导的肠病</td><td colspan="2">功能性胃肠病</td><td rowspan="2">嗜酸性粒细胞性 食管炎</td><td rowspan="2">特应性皮炎</td></tr><tr><td>肠绞痛 4月龄内</td><td>胃食管反流病</td></tr><tr><td>发病 年龄</td><td>3~6月龄 固态食物过敏：5~ 7月龄 反复呕吐，常伴嗜</td><td>牛奶和大豆过敏：出生后12个月内，24月龄内 尤以出生后6个 月内多见</td><td></td><td></td><td>与接触牛奶蛋白的 36月龄内常见 时间相关，以6月 龄内最为常见</td><td></td><td>婴儿期为主(3~6月龄)</td></tr><tr><td>表现</td><td>睡和皮肤苍白 腹泻(严重时有便 血) 严重时有低血压、 高铁血红蛋白血 症、代谢性酸中无生长发育迟缓 毒、低体温或体</td><td>腹泻 大便性状改变，可低白蛋白血症、低 有黏液便、血便 (从便中带血丝、 血点可到便中带 较多血)</td><td>反复腹泻 蛋白血症(常伴 水肿）、贫血、营 养不良、生长发无生长发育迟缓 育迟缓 可有呕吐，血便</td><td>难以安抚的焦躁或 哭闹；每天发作至 少3 h，每周至少 3 d</td><td>费力) 受限、贫血</td><td>吐、生长发育迟缓 喂养困难、生长发育大龄儿童：食物嵌 塞、吞咽困难、胸 痛、反流</td><td>反复反流(吐出不显婴儿：喂养困难、呕皮肤干燥，瘙痒明显。急性 期红斑、丘疹、水疱、伴糜 烂和结痂。慢性期皮疹 肥厚、苔藓样变 婴儿：皮疹广泛，累及脸颊、 躯干和四肢伸侧 儿童：皮疹较婴儿期局限，</td></tr><tr><td>反应呕吐：进食1~4h内 时间腹泻：进食5~10h内</td><td>温增高</td><td></td><td></td><td></td><td></td><td></td><td>以颈前、肘窝、腘窝和关 节为主 几小时至几天</td></tr><tr><td>涉及 食物</td><td>其他：谷物(大米、 燕麦)、鸡蛋、鱼</td><td>牛奶、大豆最常见牛奶、大豆、鸡蛋、牛奶、大豆、鸡蛋、最常见牛奶蛋白 小麦</td><td>小麦 华</td><td></td><td>最常见牛奶蛋白</td><td>牛奶、大豆、鸡蛋、小麦有争议，涉及牛奶、小麦</td><td></td></tr><tr><td>鉴别</td><td>等</td><td>感染性胃肠炎</td><td>小肠淋巴管扩张外科急腹症 症</td><td></td><td>嗜酸性粒细胞性食</td><td>胃食管反流病 感染性食管炎(念珠</td><td></td></tr><tr><td>诊断</td><td>脓毒症 外科急腹症 坏死性小肠结肠 炎</td><td></td><td>肠扭转 乳糜泻 感染性胃肠炎</td><td>管炎 幽门狭窄 胃扭转</td><td>菌) 克罗恩病</td><td></td><td>广泛，包括：脂溢性皮炎、接 触性皮炎、疥疮、原发免疫 缺陷病、移植物抗宿主病、 营养和其他</td></tr></table>
+
+注：－：无 －：non
+
+表2 轻中度牛奶蛋白过敏的临床特征  
+Table2 Clinicalcharacteristicsofmildtomoderatecow′smilkproteinallerg
+<table><tr><td>临床特征</td><td>轻中度非IgE介导的牛奶蛋白过敏</td><td>轻中度IgE介导的牛奶蛋白过敏</td></tr><tr><td>进食后至起病时间</td><td>大多数在摄入后2~72h发作</td><td></td></tr><tr><td>喂养方式</td><td>配方喂养、纯母乳喂养或混合喂养开始时</td><td>主要见配方喂养或混合喂养时</td></tr><tr><td>受累器官</td><td>胃肠道、皮肤</td><td>皮肤、胃肠道、呼吸道</td></tr><tr><td>临床症状和表现</td><td>胃肠道</td><td>皮肤</td></tr><tr><td rowspan="6"></td><td>易激惹：“肠痉挛”</td><td>通常存在1个或多个下列症状：急性瘙痒、红斑、荨麻疹、血管</td></tr><tr><td>呕吐：“反流”——胃食管反流病 拒食或厌食</td><td>性水肿、急性弥漫性特应性湿疹</td></tr><tr><td>腹泻样便:稀便和/或便次增多</td><td>胃肠道 呕吐、腹泻、腹痛/肠痉挛</td></tr><tr><td></td><td></td></tr><tr><td>便秘:尤其是软便，过度用力、腹部不适、腹胀伴腹痛</td><td>呼吸道</td></tr><tr><td>血便和/或黏液便(其他状况良好婴儿) 皮肤</td><td>急性鼻炎和/或结膜炎</td></tr></table>
+
+根据临床表现可将 CMPA分为轻中度过敏和重度过敏，但 non-IgE-CMPA和 IgE-CMPA的分度依据不同。重度与轻中度non-IgE-CMPA的区分不是以临床表现的轻重为依据，而是以是否因过敏造成了营养不良（如血红蛋白、白蛋白降低）和生长发育障碍，或以消化道是否存在病理性的病变为依据。而重度与轻中度 IgECMPA的区分则是以是否存在严重的过敏反应，如呼吸困难（如喉头水肿）或过敏性休克等为依据<sup>［5，18］</sup>，见表3。
+
+## 3 Non-IgE-CMPA 相关婴儿功能性胃肠病诊断
+
+婴儿功能性胃肠病包括婴儿肠痉挛（表现为哭闹和易激惹）、胃食管反流、功能性腹泻和功能性便秘等<sup>［17，1920］</sup>。临床上在判断这些症状是否与 CMPA有关时存在一定困难。一般的原则为：不以单纯存在某一功能性胃肠病来考虑其与CMPA的相关性，而是以是否伴随有其他相关的CMPA的症状进行综合考虑<sup>［21］</sup>。
+
+CoMiSS评分是欧洲建立的一种 CMPA相关症状的认知工具，可帮助临床医师进行早期 CMPA的诊断<sup>［19］</sup>。鉴于我国生活习惯和方式的不同，在临床实践中发现CMPA的婴儿很难达到 CoMiSS评分推荐的 12分标准<sup>［22］</sup>，且对基层医师来说短暂的就诊过程也不易做出评分。因此本指南在 CoMiSS评分基础上进行了改良，使其在婴儿功能性胃肠病与 CMPA相关性的判定上更为简单易行，见表4。
+
+表3 重度牛奶蛋白过敏的临床特征  
+Table3 Clinicalcharacteristicsofseverecow′smilkproteinallerg
+<table><tr><td>临床特征</td><td>重度非 IgE 介导的 牛奶蛋白过敏</td><td>重度 IgE 介导的 牛奶蛋白过敏</td></tr><tr><td></td><td>进食后至起病时间 大多数在摄入后2~72h发作 即刻出现严重反应</td><td></td></tr><tr><td>喂养方式</td><td>配方喂养、纯母乳喂养或混合- 喂养开始时</td><td></td></tr><tr><td>受累器官 临床症状和表现</td><td>胃肠道、皮肤 胃肠道</td><td>全身、呼吸道 过敏性反应</td></tr><tr><td></td><td>由于慢性腹泻或拒绝吃奶呼吸道</td><td></td></tr><tr><td></td><td>或呕吐引起发育迟缓</td><td>急性喉部水肿或</td></tr><tr><td></td><td>肠道潜血或镜下血便导致</td><td>支气管阻塞导致</td></tr><tr><td></td><td>的缺铁性贫血</td><td>的呼吸困难</td></tr><tr><td></td><td>低蛋白血症</td><td></td></tr><tr><td></td><td>内窥镜或病理证实的肠炎</td><td></td></tr><tr><td></td><td>或严重的溃疡性结肠炎</td><td></td></tr><tr><td>皮肤</td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr><tr><td></td><td>中重度特应性皮炎合并低蛋</td><td></td></tr><tr><td></td><td>白血症、贫血、发育迟缓</td><td></td></tr></table>
+
+注：－：无 －：non
+
+本指南“non-IgE-CMPA与婴儿功能性胃肠病的相关性评分”强调是否伴有腹泻、血便、AD和呼吸道症状来进行评分，血便单项评分 3分，其余每项评分 13分，总计最高为12分。建议功能性胃肠病的婴儿评分应达到4分或以上才能考虑与 CMPA的相关性，但最终的诊断仍以 EDAOFC结果为准。
+
+## 4 轻中度 non-IgE-CMPA 的诊断流程(图 2)
+
+4.1 EDA-OFC non-IgE-CMPA 的诊断依赖于详细病史（包括饮食记录）、体格检查以及 EDAOFC的反应<sup>［12，17］</sup>。但 单 纯 的 病 史 和 体 格 检 测 不 能 诊 断non-IgE-CMPA,并且 non-IgE-CMPA 也无可参考的标准实验室诊断方法，因此最终诊断应以牛奶蛋白EDAOFC结果为准。
+
+4．1．1 试验性膳食回避（experimentaldietaryavoidance，EDA）的时间 膳食回避可明确慢性胃肠道症状和AD对饮食控制的反应。膳食回避牛奶蛋白后，过敏症状显著改善所需的时间，一般在消化道受累的情况下，急性 FPIES可在数小时内呕吐和腹泻显著改善，而慢性FPIES需要数天内呕吐和腹泻才能显著改善；FPIAP粪便中可见的血液需要在几天内消失；FPE的症状通常需要1～4周才能消失；而胃肠道的黏膜修复和双糖酶活性恢复则可能需要几个月的时间<sup>［23］</sup>；AD症状的明显改善可能需要2～6周<sup>［24］</sup>。因此 EDA的时间推荐为2～6周，而全程CMPA的膳食回避时间原则上不能少于6个月，且年龄越小建议回避的时间越长，一般需要回避至9～12月龄<sup>［45］</sup>。
+
+## 4．1．2 口服食物激发（oralfoodchallenge，OFC）
+
+IgECMPA需要在医院有急救条件的情况下进行OFC[21](方法可见相关指南)。轻中度non-IgE-CMPA可在家里做家庭再引入的 OFC<sup>［25］</sup>（附 iMAP指南配方奶喂养再引入牛奶蛋白实例，见表5）。但是如果临床经
+
+表4 非 IgE介导的牛奶蛋白过敏与婴儿功能性胃肠病的相关性评分  
+Table4 Relevancescoringbetweennon－IgEmediatedcow′smil proteinallergyandinfantfunctionalgastrointestinaldiseas
+<table><tr><td>症状</td><td>评分</td><td>程度</td></tr><tr><td rowspan="3">腹泻</td><td>1</td><td>不成形便，便次增多(&gt;4次)</td></tr><tr><td>2</td><td>稀便，便次增多(&gt;4次)(排除感染)</td></tr><tr><td>3</td><td>稀便带有较多黏液(排除感染)</td></tr><tr><td>血便</td><td>3</td><td>血丝/血点/便中带有较多血</td></tr><tr><td rowspan="3">特应性皮炎</td><td>1</td><td>vIGA 2分a</td></tr><tr><td>2</td><td>vIGA 3分a</td></tr><tr><td>3</td><td>vIGA 4分a</td></tr><tr><td rowspan="3">呼吸道</td><td>1</td><td>轻微表现b</td></tr><tr><td>2</td><td>轻度表现b</td></tr><tr><td>3</td><td>重度表现b</td></tr></table>
+
+注 <sup>a</sup> 评分（经验证的研究者整体评估）是特应性皮炎临床研究中广泛使用的一种严重程度评估方法，由国际湿疹协会进行标准化并推广。临床医师可根据皮疹的总体外观（不涉及面积）进行评分，简便快捷（https：／／www．eczemacouncil．org／assets／docs／vIGAAD％E2％84％A2CH．pdf）。0分清除：无特应性皮炎的炎症体征（无红斑、无硬结／丘疹、无苔藓化、无渗出／结痂），可能存在炎症后色素沉着和／或色素减退；1分基本清除：几乎无法察觉的红斑、几乎无法察觉的硬结／丘疹和／或极轻微的苔藓化，无渗出或结痂；2分轻度：轻微但明显的红斑（粉红色）、轻微但明显的硬结／丘疹和／或轻微但明显的苔藓化，无渗出或结痂；3分中度：明显可见的红斑（暗红色）、明显可见的硬结／丘疹和／或明显可见的苔藓化，可能存在渗出和结痂；4分重度：明显红斑（深或鲜红色）、明显硬结／丘疹和／或明显苔藓化，病变广泛存在，可能存在渗出或结痂。<sup>b</sup>指流涕、眼痒、咳嗽或喘息等 <sup>a</sup>TheValidatedInvestigatorGlobalAssessment（vIGA）isawidelusedseverityassessmentmethodinclinicalstudiesofatopicdermatitis，whicisstandardizedandpromotedbytheInternationalEczemaCouncil．Cliniciancanscoreaccordingtotheoverallappearanceoftherash（notinvolvingtharea），whichissimpleandfast（https：／／www．eczemacouncil．org／assetsdocs／vIGAAD％E2％84％A2CH．pdf）．Score0－clear：noinflammatorysignofatopicdermatitis（noerythema，noinduration／papulation，nolichenification，nooozing／crusting），post－inflammatoryhyperpigmentationand／orhypopigmentationmaybepresent；score1－almostclear：barelyperceptibleerythema，barelyperceptibleinduration／papulationand／orminimallichenification，nooozingorcrusting；score2－mild：slightbutdefiniteerythema（pink），slightbudefiniteinduration／papulationand／orslightbutdefinitelichenification，nooozingorcrusting；score3－moderate：clearlyperceptibleerythema（dullred），clearlyperceptibleinduration／papulation，and／orclearlyperceptiblelichenifcation，oozingandcrustingmaybepresent；score4－severe：markederythem（deeporbrightred），markedinduration／papulation，and／ormarkedlichenifcation，diseaseiswidespreadinextent，oozingorcrustingmaybepresent．<sup>b</sup>refertorunnynose，itchyeyes，coughingorwheezing，et
+
+验不 足，无 法 从 临 床 特 征 判 断 出 IgECMPA 或non-IgE-CMPA的情况下，必须是过敏原检测牛奶蛋白sIgE阴性且既往也未发生过速发型过敏反应的婴儿才可以进行家庭再引入的 OFC[17]。而重度 non-IgE-CMPA的婴儿仍需在医院有急救条件的情况下进行OFC<sup>［17，21］</sup>。
+
+牛奶蛋白 EDA-OFC 是诊断 non-IgE-CMPA 的唯一可靠 方 法<sup>［4，1617］</sup>。但 需 要 注 意 以 下 几 点：（1）一 般non-IgE-CMPA 不能以 EDA 症状改善作为最终诊断的参考，一定要以EDA时症状改善、OFC时症状再现作为最终的诊断参考[5];(2)non-IgE-CMPA 在 EDA 时,不要求症状完全缓解，只要是症状明显改善即可考虑行 OFC<sup>［17，26］</sup>；(3) non-IgE-CMPA 行 OFC 时可能会受到过敏原的量和分子大小的影响，因此不能用煮沸的牛奶行OFC<sup>［25］</sup>。
+
+表5 非 $\mathrm { I g E }$ 介导的牛奶蛋白过敏婴儿配方奶喂养时牛奶蛋白再引入实例  
+Table5 Examplesofreintroductionofmilkproteininformulafed infantwithnon－IgEmediatedcow′smilkproteinallerg
+<table><tr><td>天数</td><td>奶瓶液体体积 (mL)</td><td>低敏配方(mL) (仅第1瓶)</td><td>牛奶配方(mL) (仅第1瓶)</td></tr><tr><td>第1天</td><td>210</td><td>180</td><td>30</td></tr><tr><td>第2天</td><td>210</td><td>150</td><td>60</td></tr><tr><td>第3天</td><td>210</td><td>120</td><td>90</td></tr><tr><td>第4天</td><td>210</td><td>90</td><td>120</td></tr><tr><td>第5天</td><td>210</td><td>60</td><td>150</td></tr><tr><td>第6天</td><td>210</td><td>30</td><td>180</td></tr><tr><td>第7天</td><td>210</td><td>0</td><td>210</td></tr></table>
+
+注：每天以第1瓶（顿）奶做口服食物激发，即将低敏配方（深度水解牛奶蛋白配方或氨基酸配方）转换为整蛋白牛奶配方。如婴儿第1瓶的奶量为200mL或以上，经7d转换过程以确定婴儿是否已经耐受整蛋白牛奶配方，如能耐受则可将一天的全部低敏配方转换为整蛋白牛奶配方；如婴儿第1瓶的奶量未达到200mL，则需在第1瓶奶转换后，继续转化第2瓶奶，直到达到奶量为200mL或以上才可以将一天的全部低敏配方转换为整蛋白牛奶配方 Whenconvertingfromhypoallergenicformula（extensivelyhydrolyzedproteinformulaoraminoacidformula）tointactproteinfomula，usethefirstbottle（feed）ofmilkofthedayasoralfoodchallenge．Ifababy′sfirstbottleofmilkis200mLormore，a7－dayconversionprocessisneededtodeterminewhetherthebabycantolerateintactproteinformula；itolerated，allhypoallergenicformulasofthedaycanbeconvertedtointactproteinformula．Ifababy′sfirstbottleofmilkisbelow200mL，aftertheconversionofthefirstbottle，anotherbottleofmilkneedstobeconverteduntilthvolumeofmilkreaches200mLormore，atwhichallhypoallergenicformulasothedaycanbeconvertedtointactproteinformula
+
+4．1．3 过敏原检测 SPT和血清 sIgE检测过敏原仅对IgE-CMPA 具有诊断参考价值，对 non-IgE-CMPA 不具有诊断参考价值<sup>［6，16，27］</sup>，即牛奶蛋白过敏原 SPT和 sIgE阴性者仍然不能排除 non-IgE-CMPA。也不建议以特异性IgG 和 IgG4 水平来诊断 non-IgE-CMPA,也不能以单纯血中嗜酸性粒细胞增高作为诊断指标<sup>［14，20］</sup>。如果临床表现和进食牛奶蛋白后症状出现的时间明确指向non-IgE-CMPA 时,也可不做过敏原筛查[21,27]。
+
+4.1.4 AD 婴儿 EDA-OFC 结果判定 non-IgE-CMPA所致的AD，EDA时应以特应性皮炎积分指数（SCORAD）评分来判断 AD症状严重程度的改善（SCORAD评分下降≥10分）<sup>［28］</sup>。症状改善后应进行 OFC，并在 OFC前和至少16～24h后进行 SCORAD评分来确定非 IgE介导的湿疹反应。AD婴儿行 OFC时应注意：（1）应在无症状的间歇期或皮疹稳定期进行，如果皮疹仅靠 EDA没有达到稳定，则必须在开始 OFC前加强局部治疗；（2）EDAOFC期间，不应改变伴随治疗和个人环境因素；（3）如果无法避免外用激素，建议每日使用低效外用皮质类固醇激素并持续整个OFC过程<sup>［28］</sup>。而其他抗炎药物、抗组胺药物或紫外线疗法不能同时使用。
+
+4．2 母乳喂养儿 CMPA的干预 出生后纯母乳喂养是所 有 婴 儿 的 首 选。世 界 卫 生 组 织 （WorldHealtOrganization，WHO）建议纯母乳喂养至出生后6个月，之后可继续母乳喂养至2岁或2岁以上，并辅以适当的辅食[4]。不论是 IgE-CMPA 还是 non-IgE-CMPA,母乳喂养的婴儿一般不建议停母乳。但考虑母亲饮食可能是导致婴儿产生过敏反应的原因，建议母亲行 EDAOFC，以观察婴儿过敏反应的情况。只有当母亲 EDA时婴儿过敏症状明显改善，且母亲 OFA时婴儿过敏反应再现才需要母亲持续的膳食回避。鉴于婴儿期食物过敏以牛奶和鸡蛋过敏的概率最高<sup>［29］</sup>，因此建议母亲行 EDA时首先回避牛奶和鸡蛋，如果回避后症状改善不明显，再考虑其他食物过敏。另外，国外有提出考虑到母亲膳食回避，可能存在摄入营养不足会导致母亲和婴儿的营养不良，母亲也可以选择进食深度水解牛奶蛋白配方（extensivelyhydrolyzedproteinformula，eHF）和氨基酸配方（aminoacidformula，AAF）<sup>［17］</sup>，但在国内还存在争议。
+
+如有下列情况可考虑暂停母乳，改为 AAF替代喂养<sup>［8］</sup>：（1）尽管母亲膳食回避，婴儿症状仍持续存在且很严重；（2）婴儿生长迟缓和其他营养缺乏；（3）母亲饮食回避导致自身严重体质量减少和影响健康；（4）母亲无法应对心理负担。但停母乳的前提一定是婴儿 EDAOFC结果符合CMPA才可以持续地使用AAF替代喂养。
+
+在纯母乳喂养婴儿停母乳后的低敏配方选择，既往多建议选择eHF喂养，但新近认为母乳与牛奶整蛋白相比是低敏的，并含有一定量的小分子蛋白水解片段，婴儿仍不能耐受，故可能也存在着对eHF不耐受的风险增高，现多推荐 AAF替代喂养，以提高耐受的比率。
+
+## 4．3 人工（或混合）喂养 CMPA婴儿配方的选择
+
+CMPA婴儿因无法进食整蛋白配方，需要选择低敏配方进行营养替代。对于轻中度CMPA的婴儿初始治疗时，一般国际上建议使用eHF替代，但考虑到轻中度CMPA的婴儿仍然存在着一定比例对 eHF的不耐受，而 AA配方是无敏配方，100％ CMPA的婴儿均能耐受，因此在国内习惯上在 EDA的 2～6周可考虑使用 AAF替代<sup>［30］</sup>。
+
+重度CMPA婴儿和不能耐受 eHF的 CMPA婴儿原则上建议使用AAF进行替代治疗<sup>［26］</sup>。
+
+在膳食回避到足够长的时间后，是否已经耐受整蛋白配方，需要重新行OFC予以确认<sup>［26］</sup>。在行 OFC之前需要询问病史和过敏原检测，以确定是否可行 OFC和行OFC地点的选择<sup>［17，3132］</sup>（图 2）。
+
+世界过敏组织（WorldAllergyOrganization，WAO）和欧洲儿科胃肠病学肝病学和营养学学会（TheEuropeaSocietyforPaediatricGastroenterologyHepatologyanNutrition，ESPGHAN）关于 CMPA的其他配方建议<sup>［2］</sup>：（1）部分水解配方（partiallyhydrolyzedformula，pHF）可能仍含有免疫反应性表位，不适合用于 CMPA婴儿的替代治疗；（2）由于＞90％的 CMPA婴儿可能同时伴有羊奶过敏反应，因此不建议使用羊奶配方替代治疗；（3）由于30％～50％的CMPA婴儿可能同时伴有大豆过敏反
+
+![](images/f0ac3be66296723f84b0bd19a01f3eafcf2c30600aa74999b978050d911246af.jpg)  
+喂养，世界卫生组织建议母乳喂养至 2岁以上；来自 iMAP指南，iMAP指南是 2017年英国牵头发布的，针对非 IgE牛奶蛋白过敏婴儿的识别、诊断和 治疗指南 eHF：extensivelyhydrolyzedproteinformula；AAF：aminoacidformula；CMPA：cow′smilkproteinallergy；pHF：partiallyhydrolyzedformula；<sup>a</sup>breastmil isthebestnutritionsourceforinfants，asbreastfeedingisencouragedasmuchaspossible，theWorldHealthOrganizationrecommendsbreastfeedingupto2yearso ageorbeyond；<sup>b</sup>fromtheiMAPguideline，whichisaguidelinedevelopedprimarilybytheUnitedKingdomin2017fortheidentification，diagnosisandtreatmento infantswithnon－IgEmediatedcow′smilkproteinallerg  
+图2 轻中度非 IgE介导牛奶蛋白过敏的诊断和管理  
+Figure2 Diagnosisandmanagementofmildtomoderatenon－IgEmediatedcow′smilkproteinallergy<sup>b</sup>
+
+应，不建议使用大豆配方替代治疗，特别是6个月内的
+
+## 4．4 pHF序贯转换承接
+
+OFC时，可将pHF作为普通配方先行激发，如能耐受的婴儿可利用pHF持续喂养，也可在此基础上再行整蛋白配方OFC。该选择的意义在于，在不能耐受整蛋白配方的non-IgE-CMPA婴儿中，有一定比例的婴儿可以耐受pHF，从而可减少 eHF和 AAF的使用<sup>［4］</sup>。如果要做pHF序贯转换承接，其时间点一定要遵循指南推荐做OFC时先行进行，而不是在6个月干预过程中随意转换承接。
+
+## 5 CMPA婴儿的辅食添加
+
+5.1 辅食引入的时间和原则 non-IgE-CMPA婴儿应在过敏症状，尤其是胃肠道症状得到良好控制时，开始添加辅食。辅食添加的时间和原则与正常婴儿相同<sup>［6］</sup>。
+
+纯母乳喂养的 non-IgE-CMPA婴儿，鼓励纯母乳喂养至满6月龄<sup>［3334］</sup>，在继续母乳喂养的基础上添加辅食。基于花生过敏的早期了解（learningearlyaboutpeanuallergy，LEAP）研究<sup>［35］</sup>和耐受探索（enquiringaboutolerance，EAT）研究<sup>［36］</sup>以及对辅食添加研究的系统性回顾[37],非纯母乳喂养的 non-IgE-CMPA 婴儿，可以在婴儿满4月龄后，且能安全进食固体食物时（如抬头稳、能靠坐，伸舌反射消失），开始添加辅食，且应持续、规律摄入多样化的食物<sup>［38］</sup>。
+
+non-IgE-CMPA 婴儿辅食添加也应从富铁的泥糊状食物开始，如婴儿营养米粉、瘦肉等，逐渐增加食物种类及进食量。引入新食物时，应密切观察是否有过敏现象<sup>［39］</sup>，但不应盲目回避易过敏食物，如鸡蛋、花生、鱼、虾等<sup>［27］</sup>。如尝试某种新食物出现不良反应，须及时停止，3个月后再尝试从更低剂量开始少量引入。辅食添加初期（4～9月龄），建议以引入新的食物为重点，尽量减少不必要的配方转换。
+
+5.2“牛奶蛋白梯度引入”轻中度 non-IgE-CMPA婴儿可在家庭中进行牛奶蛋白的再引入，家庭再引入可从致敏性低的含有牛奶蛋白的烘焙食物开始。依据 iMA指南<sup>［16］</sup>的“牛奶蛋白梯度引入”实例，并结合中国婴儿奶制品选择习惯，建议在婴儿序贯转换至 pHF后，逐渐从少量开始再引入牛奶蛋白。
+
+引入牛奶蛋白可遵循以下五个步骤：第一步，引入少许含牛奶蛋白的饼干开始，逐渐增加进食量；第二步，引入其他含牛奶蛋白较高的烘烤产品；第三步，引入奶酪；第四步，引入酸奶；第五步，巴氏消毒奶。在重新引入牛奶蛋白期间，不应引入任何其他新的食物，如果期间出现任何过敏症状应立即停止，返回上一步。
+
+## 6 过敏预防营养策略
+
+6．1 过敏高风险人群定义 过敏预防应分级预防，所谓一级预防是指出生后未发生过敏时，作为过敏的高风险人群应采取的营养策略。因此有关过敏高风险人群的筛查和确认，应该在孕期和围生期就开始。
+
+国际上研究通常以家族过敏史（包括父母和／或兄弟姐妹过敏史）来定义婴儿发生过敏的高危因素<sup>［40］</sup>。研究表明，有家族过敏史的婴儿，其 CMPA的发病率较正常人群高出3倍。若家族中有 AD或哮喘病史，婴儿发生CMPA的风险更高<sup>［41］</sup>。
+
+6．2 过敏预防的营养策略 母乳喂养可降低婴儿食物过敏风险<sup>［4243］</sup>。母乳蛋白质为同种蛋白质，对婴儿免疫系统无刺激，而且母乳中还存在少量来自哺乳母亲的食物特异性抗原，如卵清蛋白（ovalbumin）、β乳球蛋白（βlactoglobulin）、麦醇溶蛋白（gliadin）及花生（peanut）等，可适当刺激婴儿的免疫系统，促进免疫发育和免疫耐受<sup>［4445］</sup>。母乳中丰富的低聚糖、分泌性 IgA、细胞因子、益生菌等均有助于降低婴儿食物过敏风险<sup>［4647］</sup>。因此，建议婴儿出生早期纯母乳喂养，鼓励纯母乳喂养至婴儿满6月龄，随后在继续母乳喂养的基础上添加辅食
+
+当不能母乳喂养或母乳不足时，过敏高风险的婴儿可选择有循证依据的pHF预防过敏<sup>［4849］</sup>。关于 pHF是否能有效预防过敏或 AD仍存在一定争议<sup>［50］</sup>。但202年德国婴儿营养干预（Germanyinfantnutritionintervention，GINI）研究公布了其20年随访结果，仍提示水解蛋白配方具有一定的预防 AD作用，远期也可降低呼吸道过敏的风险<sup>［51］</sup>。
+
+过敏高风险婴儿辅食添加原则和方法与正常婴儿相同。依据LEAP研究<sup>［35］</sup>和 EAT研究<sup>［36］</sup>以及对辅食添加研究的系统性回顾<sup>［37］</sup>，建议非纯母乳喂养的过敏高风险婴儿在4～6月龄间可引入鸡蛋，而牛奶、鱼、小麦、大豆等其他易过敏食物也应在适当时间引入；出生第1年引入食物种类多，可降低食物过敏风险。
+
+## 7 CMPA婴儿营养及生长发育评估
+
+膳食回避是目前治疗食物过敏的唯一有效方法<sup>［7］</sup>，但膳食回避致使可食用的食物种类减少，有可能影响婴儿能量、蛋白质和微量营养素的摄入，导致其出现营养不均衡，严重的可致营养不良。由于婴儿期母乳和／或婴儿配方乳为婴儿的唯一（或）主要营养来源，CMPA的婴儿母亲或自身回避了牛奶蛋白，故发生营养不足或缺乏的风险更高。因此在婴儿CMPA的治疗和管理中，需要进行定期的营养评估，并根据具体情况给予个性化的喂养和营养指导，以保证正常的生长发育。
+
+生长良好是婴儿营养充足的最佳指标，因此身高、体质量的测量是简单评价 CMPA婴儿营养状况的主要内容。
+
+7．1 Z值评分法（即标准差法） 在儿童的营养评价中推荐使用Z评分。Z值评分法可比较不同年龄、不同性别儿童生长发育情况，是最常用的儿童体格生长评价方法。根据婴儿的实际体质量和身高，结合 WHO儿童生长标准图表（0～2岁）的 Z评分（https：／／www．who．inttools／childgrowthstandards），可确定婴儿生长指标的 Z值。通过评价年龄的身长 Z评分（length－for－ageZscore，LAZ）、年龄的体质量 Z评分 （weight－for－ageZscore，WAZ）和身长的体质量 Z评分 （weight－for－lengthZscore，WLZ）来判断儿童的营养状况<sup>［52］</sup>。
+
+7．2 生长曲线法 由于生长速度对机体营养状况敏感，采用生长曲线图来评估连续的生长变化非常必要。通过将测量的体质量和身长值标注于生长曲线上以评估生长发育状态，监测生长发育趋势，对发现生长发育异常起到帮助作用。0～2岁婴幼儿推荐使用 WHO的多中心生长曲线作为生长的参考依据。
+
+仅有单个时间点的数据时，鉴别及诊断指标均为 Z评分，包括WLZ、LAZ、WAZ。有2个以上时间点的数据时，强调生长曲线的应用，指标包括体质量增长速率（岁以下），WLZ下降等（附录2）。
+
+另外，血红蛋白和血浆白蛋白的检测在评估营养不良时也具有重要的意义<sup>［52］</sup>。
+
+指南制定机构 中华预防医学会过敏病预防与控制专业委员会
+
+利益冲突 所有作者均声明不存在利益冲突
+
+## 参考文献
+
+［1］VenterC，ArshadSH．Epidemiologyoffoodallergy［J］．PediatrCliNorthAm，2011，58（2）：327349．DOI：10．1016／j．pcl．2011．02．011
+
+［2］陈同辛．婴幼儿牛奶蛋白过敏国内外指南解读———更好地识别、诊断和治疗［J］．临床儿科杂志，2018，36（10）：805808．DOI：103969／j．issn．10003606．2018．10．019ChenTX．Interpretationofdomesticandforeignguidelinesforinfancow′smilkproteinallergy［J］．JClinPediatr，2018，36（10）：805808DOI：10．3969／j．issn．10003606．2018．10．019
+
+［3］陈静，廖艳，张红忠，等．三城市两岁以下儿童食物过敏现状调查［J］．中华儿科杂志，2012，50（1）：59．DOI：10．3760／cma．j．issn05781310．2012．01．002ChenJ，LiaoY，ZhangHZ，etal．Prevalenceoffoodallergyinchildreunder2yearsofageinthreecitiesinChina［J］．ChinJPediatr，2012，50（1）：59．DOI：10．3760／cma．j．issn．05781310．2012．01．002
+
+［4］VandenplasY，AlHussainiB，AlMannaeiK，etal．Preventionofallegicsensitizationandtreatmentofcow′smilkproteinallergyinearlylife：theMiddleEastStepDownconsensus［J］．Nutrients，2019，11（7）：1444．DOI：10．3390／nu11071444
+
+［5］FoxA，BrownT，WalshJ，etal．Anupdatetothemilkallergyinprimarcareguideline［J］．ClinTranslAllergy，2019，9（1）：40．DOI：10．1186s13601-019-0281-8.
+
+［6］中华医学会儿科学分会免疫学组，中华医学会儿科学分会儿童保健学组，中华医学会儿科学分会消化学组，等．中国婴幼儿牛奶蛋白过敏诊治循证建议［J］．中华儿科杂志，2013，51（3）：183186DOI：10．3760／cma．j．issn．05781310．2013．03．006TheSubspecialtyGroupofImmunology，TheSocietyofPediatrics，ChneseMedicalAssociation；TheSubspecialtyGroupofChildHealtCare，TheSocietyofPediatrics，ChineseMedicalAssociation；TheSubspecialtyGroupofDigestion，TheSocietyofPediatrics，ChineseMedicaAssociation，etal．Evidencebasedrecommendationsforthediagnosiandmanagmentofcow′smilkallergyinChineseinfants［J］．ChinPediatr，2013，51（3）：183186．DOI：10．3760／cma．j．issn．05781310．2013．03．006
+
+［7］中华医学会儿科学分会儿童保健学组，《中华儿科杂志》编辑委员会．婴幼儿食物过敏诊治建议［J］．中华儿科杂志，2011，49（5）：344348．DOI：10．3760／cma．j．issn．05781310．2011．05．006．TheSubspecialtyGroupofChildHealthCare，TheSocietyofPediatrics，ChineseMedicalAssociation；TheEditorialBoardofChineseJournaloPediatrics．Recommendationsforthediagnosisandmanagementoffoo
+
+allergyininfantsandyoungchildren［J］．ChinJPediatr，2011，49（5）：344348．DOI：10．3760／cma．j．issn．05781310．2011．05．006
+
+［8］中华医学会儿科学分会消化学组．食物过敏相关消化道疾病诊断与管理专家共识［J］．中华儿科杂志，2017，55（7）：487492．DOI：10．3760／cma．j．issn．05781310．2017．07．003TheSubspecialtyGroupofDigestion，TheSocietyofPediatrics，ChinesMedicalAssociation．Expertconsensusoffoodallergicgastrointestinadisease［J］．ChinJPediatr，2017，55（7）：487492．DOI：10．3760cma．j．issn．05781310．2017．07．003
+
+［9］PhilipsB，BallC，SaclettD，etal．Levelsofevidenceandgradesofre commendations[ EB/OL]. (2006-06-30)[2022-01-06]. http://www. cebm．net／levels＿of＿evidence．asp
+
+［10］姜丽静，仰曙芬．婴幼儿牛奶蛋白过敏诊治的研究进展［J］．中国儿童保健杂志，2018，26（9）：973976．DOI：10．11852／zgetbjzz201826-09-12.JiangLJ，YangSF．Researchprogressondiagnosisandtreatmentomilkproteinallergyininfants［J］．ChinJChildHealthCare，2018，26(9) :973-976. D0I:10.11852/zgetbjzz2018-26-09-12.
+
+［11］武庆斌．婴幼儿牛奶过敏在胃肠道的表现［J］．实用儿科临床杂志，2012，27（19）：14611464．DOI：10．3969／j．issn．1003515X2012．19．001WuQB．Gastrointestinalmanifestationsofcow′smilkallergyininfant［J］．JApplClinPediatr，2012，27（19）：14611464．DOI：10．3969／jissn．1003515X．2012．19．001
+
+[12] Nowak-We,grzyn A, Katz Y , Mehr SS , et al. Non-IgE-mediated gastroin-testinalfoodallergy［J］．JAllergyClinImmunol，2015，135（5）：11141124．DOI：10．1016／j．jaci．2015．03．025
+
+［13］MeyerR，FoxAT，ChebarLozinskyA，etal．NonIgEmediatedgastrointestinalallergiesdotheyhaveaplaceinanewmodeloftheAllergiMarch［J］．PediatrAllergyImmunol，2019，30（2）：149158．DOI：101111／pai．13000
+
+［14］FiocchiA，BrozekJ，SchünemannH，etal．Worldallergyorganizatio（WAO）diagnosisandrationaleforactionagainstcow′smilkallerg（DRACMA）guidelines［J］．WorldAllergyOrganJ，2010，3（4）：57161．DOI：10．1097／WOX．0b013e3181defeb9
+
+［15］LabrosseR，GrahamF，CaubetJC．NonIgEmediatedgastrointestinafoodallergiesinchildren：anupdate［J］．Nutrients，2020，12（7）：2086．DOI：10．3390／nu12072086
+
+［16］VenterC，BrownT，MeyerR，etal．Betterrecognition，diagnosisandmanagementofnonIgEmediatedcow′smilkallergyininfancy：iMAPaninternationalinterpretationoftheMAP（MilkAllergyinPrimarCare）guideline［J］．ClinTranslAllergy，2017，7：26．DOI：10．1186s13601-017-0162-y.
+
+［17］EspínJaimeB，DíazMartínJJ，BlesaBavieraLC，etal．NonIgEmediatedcow′smilkallergy：consensusdocumentoftheSpanishSocietyoPaediatricGastroenterology，Hepatology，andNutrition（SEGHNP），thSpanishAssociationofPaediatricPrimaryCare（AEPAP），theSpanisSocietyofExtrahospitalPaediatrics and Primary Health Car（SEPEAP），andtheSpanishSocietyofPaediatricClinicalImmunology，Allergy，andAsthma（SEICAP）［J］．AnPediatr（EnglEd），2019，90（3）：193．DOI：10．1016／j．anpedi．2018．11．007
+
+［18］VandenplasY，KoletzkoS，IsolauriE，etal．Guidelinesforthediagnosiandmanagementofcow′smilkproteinallergyininfants［J］．ArchDiChild，2007，92（10）：902908．DOI：10．1136／adc．2006．110999
+
+［19］VandenplasY，DupontC，EigenmannP，etal．Aworkshopreportonthdevelopmentofthecow′smilkrelatedsymptomScoreawarenesstooforyoungchildren［J］．ActaPaediatr，2015，104（4）：334339．DOI：10．1111／apa．12902
+
+［20］VandenplasY．Preventionandmanagementofcow′smilkallergyinonexclusivelybreastfedinfants［J］．Nutrients，2017，9（7）：731DOI：10．3390／nu9070731
+
+［21］KoletzkoS，NiggemannB，AratoA，etal．Diagnosticapproachandmanagementofcow′smilkproteinallergyininfantsandchildren：ESPGHANGICommitteepracticalguidelines［J］．JPediatrGastroenterolNutr，2012，55（2）：221229．DOI：10．1097／MPG．0b013e31825c9482
+
+［22］曾永梅，张纪泳，董国庆，等．牛奶相关症状评分在婴儿牛奶蛋白过敏早期识别中的评价［J］．中国实用儿科杂志，2017，32（10）：786788．DOI：10．19538／j．ek2017100616ZengYM，ZhangJY，DongGQ，etal．Evaluationofcow′smilkrelatesymptomscoresintheearlyidentificationofcow′smilkproteinallergininfants［J］．ChinJPractPediatr，2017，32（10）：786788．DOI：10
+
+19538／j．ek2017100616
+
+［23］FeuilleE，NowakWegrzynA．Foodproteininducedenterocolitissyn drome，allergicproctocolitis，andenteropathy［J］．CurrAllergyAsthm Rep,2015,15(8) :50. D0I:10.1007/s11882-015-0546-9.
+
+［24］NowickiRJ，TrzeciakM，KaczmarskiM，etal．Atopicdermatitis．Inter disciplinarydiagnosticandtherapeuticrecommendationsofthePolis DermatologicalSociety，PolishSocietyofAllergology，PolishPediatri SocietyandPolishSocietyofFamilyMedicine．PartⅡ．Systemictrea mentandnewtherapeuticmethods［J］．PostepyDermatolAlergol， 2020，37（2）：129134．DOI：10．5114／ada．2020．94829
+
+［25］VenterC，BrownT，ShahN，etal．Diagnosisandmanagementofnon IgE-mediated cow's milk allergy in infancy--a UK primary care practicalguide［J］．ClinTranslAllergy，2013，3（1）：23．DOI：10．1186 2045-7022-3-23.
+
+［26］MatthaiJ，SathiasekharanM，PoddarU，etal．Guidelinesondiagnosi andmanagementofcow′smilkproteinallergy［J］．IndianPediatr， 2020,57(8):723-729. D0I:10.1007/s13312-020-1916-5.
+
+［27］MousanG，KamatD．Cow′smilkproteinallergy［J］．ClinPediatr（Phila），2016，55（11）：10541063．DOI：10．1177／0009922816664512
+
+［28］WerfelT，BallmerWeberB，EigenmannPA，etal．Eczematousreactiontofoodinatopiceczema：positionpaperoftheEAACIandGA2LE［J］．Allergy，2007，62（7）：723728．DOI：10．1111／j．139899952007．01429．x
+
+［29］赵京．中国儿童食物过敏现况［J］．中华临床免疫和变态反应杂志，2019，13（4）：271275．DOI：10．3969／j．issn．16738705．201904．005ZhaoJ．CurrentsituationoffoodallergyamongchildreninChina［J］ChinJAllergyClinImmunol，2019，13（4）：271275．DOI：10．3969j．issn．16738705．2019．04．005
+
+［30］魏铭，李文斌．新生儿牛奶蛋白过敏［J］．中华新生儿科杂志，2018，33（6）：471474．DOI：10．3760／cma．j．issn．20962932．201806．020WeiM，LiWB．Milkproteinallergyinneonates［J］．ChinJNeonato，2018，33（6）：471474．DOI：10．3760／cma．j．issn．20962932．201806．020
+
+［31］曾永梅，张纪泳，董国庆，等．口服激发试验在牛奶蛋白过敏诊断中的应用［J］．中国当代儿科杂志，2016，18（6）：564566．DOI：107499／j．issn．10088830．2016．06．018ZengYM，ZhangJY，DongGQ，etal．Applicationoforalfoodchallenginthediagnosisofcow′smilkproteinallergy［J］．ChinJContemPediatr，2016，18（6）：564566．DOI：10．7499／j．issn．10088830．2016．06．018
+
+［32］CalvaniM，BianchiA，ReginelliC，etal．Oralfoodchallenge［J］．Medicin（Kaunas），2019，55（10）：651．DOI：10．3390／medicina55100651
+
+［33］宁俊杰．婴幼儿牛奶蛋白过敏症诊治进展［J］．中国妇幼保健，2018，33（20）：48014803．DOI：10．7620／zgfybj．j．issn．100144112018．20．76NingJJ．Progressindiagnosisandtreatmentofmilkproteinallergyiinfants［J］．ChinJMaterChildHealthCare，2018，33（20）：48014803．DOI：10．7620／zgfybj．j．issn．10014411．2018．20．76
+
+［34］胡亚楠，张艳波，梅花．新生儿牛奶蛋白过敏研究进展［J］．中国小儿急救医学，2020，27（10）：767769．DOI：10．3760／cma．j．issn16734912．2020．10．012HUYN，ZhangYB，MeiH．Researchprogressofmilkproteinallergyineonates［J］．ChinPediatrEmergMed，2020，27（10）：767769．DOI：10．3760／cma．j．issn．16734912．2020．10．012
+
+［35］DuToitG，RobertsG，SayrePH，etal．Randomizedtrialofpeanutconsumptionininfantsatriskforpeanutallergy［J］．NEnglJMed．2015，372（9）：803813．DOI：10．1056／NEJMoa1414850
+
+［36］PerkinMR，LoganK，TsengA，etal．RandomizedtrialofintroductionoallergenicfoodsinBreastFedinfants［J］．NEnglJMed，2016，37（18）：17331743．DOI：10．1056／NEJMoa1514210
+
+［37］GreerFR，SichererSH，BurksAW，etal．Theeffectsofearlynutritionainterventionsonthedevelopmentofatopicdiseaseininfantsandchidren：theroleofmaternaldietaryrestriction，breastfeeding，hydrolyzeformulas，andtimingofintroductionofallergeniccomplementaryfood［J］．Pediatrics，2019，143（4）：e20190281．DOI：10．1542／peds20190281
+
+［38］程娟，申昆玲，段红梅．婴幼儿辅食添加与食物过敏关系的研究进展［J］．中国儿童保健杂志，2019，27（7）：737740，748．DOI：1011852／zgetbjzz20181187
+
+ChengJ，ShenKL，DuanHM．Researchprogressonthecorrelationbetweeninfantcomplementaryfoodsandfoodallergy［J］．ChinJChilHealthCare，2019，27（7）：737740，748．DOI：10．11852／zgetbjzz20181187
+
+［39］中国营养学会膳食指南修订专家委员会妇幼人群指南修订专家工作组．7～24月龄婴幼儿喂养指南［J］．临床儿科杂志，2016，34（5）：381387．DOI：10．3969／j．issn．10003606．2016．05．016ExpertworkinggroupontherevisionofmaternalandchildpopulatioguidelinesoftheexpertcommitteeontherevisionofdietaryguidelineofChinaNutritionSociety．Feedingguidelinesforoldinfantsandyounchildrenaged7to24months［J］．JClinPediatr，2016，34（5）：381387．DOI：10．3969／j．issn．10003606．2016．05．016
+
+［40］KoplinJJ，AllenKJ，GurrinLC，etal．Theimpactoffamilyhistoryofallergyonriskoffoodallergy：apopulationbasedstudyofinfants［J］．InJEnvironResPublicHealth，2013，10（11）：53645377．DOI：103390／ijerph10115364
+
+［41］SardeckaI，os<sup>′</sup>RycharskaE，LudwigH，etal．Earlyriskfactorsforcow′milkallergyinchildreninthefirstyearoflife［J］．AllergyAsthmaProc，2018，39（6）：e4454．DOI：10．2500／aap．2018．39．4159
+
+［42］AgostoniC，DecsiT，FewtrellM，etal．Complementaryfeeding：acommentarybytheESPGHAN committeeonnutrition［J］．JPediatGastroenterolNutr，2008，46（1）：99110．DOI：10．1097／01．mpg0000304464．60788．bd
+
+［43］陈同辛，张慧．婴幼儿牛奶蛋白过敏症的诊断和治疗指南［J］．实用儿科临床杂志，2009，24（21）：16971700．DOI：CNKI：SUN：SYQK.0.2009-21-035.ChenTX，ZhangH．Guidelinesfordiagnosisandmanagementofcow′milkproteinallergyininfants［J］．JApplClinPediatr，2009，24（21）：1697-1700. DOI:CNKI:SUN:SYQK.0.2009-21-035.
+
+［44］JrvinenKM，MartinH，OyoshiMK．Immunomodulatoryeffectsofbreasmilkonfoodallergy［J］．AnnAllergyAsthmaImmunol，2019，123（2）：133143．DOI：10．1016／j．anai．2019．04．022
+
+［45］孙建华，谢恩萍．母乳喂养与新生儿免疫［J］．临床儿科杂志，2012，30（3）：204207．DOI：10．3969／j．issn．10003606．2012．03002SunJH，XieEP．Breaffeedingandneonatalimmunity［J］．JCliPediatr，2012，30（3）：204207．DOI：10．3969／j．issn．100036062012．03．002
+
+［46］LyonsKE，RyanCA，DempseyEM，etal．Breastmilk，asourceofbeneficialmicrobesandassociatedbenefitsforinfanthealth［J］．Nutrients，2020，12（4）：1039．DOI：10．3390／nu12041039
+
+［47］王静，罗晓明，古桂雄．母乳成分及测定方法［J］．中国妇幼健康研究，2015，26（3）：641643，656．DOI：10．3969／j．issn．167352932015．03．087WangJ，LuoXM，GuGX．Compositionofbreastmilkanditsdeterminationmethods［J］．ChinJWomanChildHealthRes，2015，26（3）：641643，656．DOI：10．3969／j．issn．16735293．2015．03．087
+
+［48］SzajewskaH，HorvathA．Apartiallyhydrolyzed100％ wheyformulandtheriskofeczemaandanyallergy：anupdatedmetaanalysis［J］WorldAllergyOrganJ，2017，10（1）：27．DOI：10．1186／s404130170158z
+
+［49］SauserJ，NuttenS，deGrootN，etal．Partiallyhydrolyzedwheyinfanformula：literaturereviewoneffectsongrowthandtheriskofdevelopingatopicdermatitisininfantsfromthegeneralpopulation［J］．InArchAllergyImmunol，2018，177（2）：123134．DOI：10．1159000489861
+
+［50］魏克伦，郝丽红，刘雷，等．乳蛋白部分水解配方奶粉在过敏高风险新生儿的临床研究［J］．实用药物与临床，2020，23（9）：817822．DOI：10．14053／j．cnki．ppcr．202009011WeiKL，HaoLH，LiuL，etal．Clinicaltrialstudyofpartiallyhydrolyzedformulasininfantswithhighriskofallergy［J］．PractPharmCliRemed，2020，23（9）：817822．DOI：10．14053／j．cnki．ppcr202009011
+
+［51］GappaM，FilipiakPittroffB，LibudaL，etal．LongtermeffectsofhydrolyzedformulaeonatopicdiseasesintheGINIstudy［J］．Allergy，2021，76（6）：19031907．DOI：10．1111／all．14709
+
+［52］洪莉．0～6月龄婴儿营养评估［J］．中国实用儿科杂志，2019，34（10）：818822．DOI：10．19538／j．ek2019100605HongL．Nutritionalassessmentfor06montholdinfant［J］．ChinJPracPediatr，2019，34（10）：818822．DOI：10．19538／j．ek2019100605
+
+附录1 非 IgE介导的牛奶蛋白过敏诊断和干预等级推荐表
+
+序号 建议 推荐等级  
+1 Non-IgE-CMPA 相关疾病类型及特征  
+婴儿 与 的临床表现 鉴别和分度  
+3 Non-IgE-CMPA 相关功能性胃肠病诊断  
+（1） 功能性胃肠病与 CMPA的相关性取决于是否伴有功能性胃肠病之外的 CMPA相关症状 C  
+（2） “NonIgECMPA与婴儿功能性胃肠病的相关性评分”是通过是否伴有腹泻、血便、特应性皮炎和呼吸道症状来进行评分 C  
+（3） “NonIgECMPA与婴儿功能性胃肠病的相关性评分”应达到4分或4分以上才可考虑其与 CMPA相关 C  
+4 轻中度 non-IgE-CMPA 诊断流程  
+（4） Non-IgE-CMPA的最终诊断应以牛奶蛋白EDA-OFC 结果为准 A  
+（5） EDA时间为2～6周，全程膳食回避时间原则上不能少于6个月；对于小月龄婴儿，一般建议回避至其9～12月龄 A  
+（6） IgECMPA需要在医院有急救条件的情况下进行 OFC A  
+（7） 明确的轻中度non-IgE-CMPA可在家里做家庭再引入的 OFC A  
+（8） 不能判定 IgE或 nonIgECMPA时，须在过敏原检测牛奶蛋白 sIgE阴性且既往无速发型过敏反应，才可在家庭进行再引入的 OFC B  
+（9） 重度 non-IgE-CMPA需在医院有急救条件的情况下进行 OFC A  
+（10） 须 时症状改善 时症状再 作为最终的诊断参考 A  
+(11) Non-IgE-CMPA 在EDA时，症状明显改善即可考虑做 OFC B  
+(12) Non-IgE-CMPA 不能用煮沸的牛奶做 OFC B  
+（13） SPT和血清 sIgE检测过敏原对 nonIgECMPA的诊断不具有参考价值 B  
+（14） 特异性 IgG 和 IgG4 水平不能作为 non-IgE-CMPA 的诊断依据 A  
+（15） 单纯血中嗜酸性粒细胞增高不能作为 non-IgE-CMPA 诊断指标 B  
+（16） AD婴儿行 EDA时，应以 SCORAD评分来判断症状严重程度的改善（SCORAD评分下降 10分） B  
+（17） AD婴儿症状改善后应进行 OFC，并在16～24h后进行 SCORAD评分以确定非 IgE介导的湿疹反应 B  
+（ ） AD婴儿须在无症状的间歇期或皮疹稳定期才可进行 OFC A  
+（19） AD婴儿在 EDAOFC期间，不应改变伴随的治疗和个人环境因素 B  
+（20） 纯母乳喂养 non-IgE-CMPA的婴儿，一般不建议停母乳喂养 A  
+（21） 怀疑婴儿过敏与母亲饮食有关，只有当母亲做 EDAOFC的结果符合 CMPA时，母亲才可持续膳食回避 B  
+（22） 母亲进行 EDA时，应首先回避牛奶和鸡蛋，如症状改善不明显，再考虑其他食物的回避 B  
+（23） 在膳食回避过程中，母亲亦可选择进食 eHF或 AAF，以降低母亲与婴儿可能发生营养不良的风险 D  
+（24） 不能耐受母乳喂养的 CMPA婴儿，可直接使用 AAF替代喂养，以避免可能存在的对 eHF不耐受的风险 B  
+（25） 确诊为CMPA的婴儿，在以下特殊情况下可考虑AAF替代母乳喂养：①尽管母亲膳食回避，婴儿症状仍持续且很严重；②婴儿生长迟缓和存在其 B他营养缺乏；③由于饮食回避导致母亲体质量严重减少；④母亲无法应对心理负担  
+（26） 人工（或混合）喂养的轻中度 CMPA婴儿，国际上建议首选 eHF替代喂养治疗，国内习惯在 EDA阶段的2～6周可考虑使用 AAF替代喂养治疗 B  
+（27） 人工（或混合）喂养的重度 CMPA婴儿，建议直接使用 AAF替代喂养治疗 B  
+（28） CMPA婴儿持续膳食回避6个月后，需通过 OFC确认是否已耐受整蛋白配方 B  
+（29） 不建议使用 pHF替代喂养治疗 CMPA A  
+（30） 不建议使用羊奶配方替代喂养治疗 CMPA B  
+（ ） 不建议使用大豆配方替代喂养治疗 特别是 个月内的婴儿 B  
+（32） NonIgECMPA患儿在做 OFC时，可将 pHF作为普通配方先行做激发，也可在此基础上再做整蛋白配方 OF C  
+5 CMPA婴儿的辅食添加  
+（33） NonIgECMPA婴儿应在过敏症状，尤其是胃肠道症状得到良好控制时，才可开始添加辅食 B  
+（34） 纯母乳喂养的 nonIgECMPA婴儿，鼓励纯母乳喂养至满6月龄，在继续母乳喂养的基础上添加辅食 A  
+（35） 非纯母乳喂养的 nonIgECMPA婴儿，可在满4月龄后，且能安全进食固体食物时，开始添加辅食 A  
+（36） CMPA婴儿在辅食添加初期（4～9月龄），建议以引入新食物为重点，尽量减少不必要的配方转换 B  
+（37） CMPA婴儿在辅食添加时不应盲目回避易过敏食物，但应在引入新食物时，密切观察是否有不良反应。如有不良反应，须及时停止，3个月后再 B从低剂量开始少量引入  
+（38） 轻中度 nonIgECMPA婴儿可在家中从致敏性低的含有牛奶蛋白的烘焙食物开始再引入牛奶蛋白 B  
+（39） 轻中度 nonIgECMPA婴儿在序贯转换至 pHF后，可从少量开始逐渐引入牛奶蛋白 B  
+6 过敏预防营养策略  
+（40） 对于过敏高风险人群，提倡母乳喂养，预防过敏的发生 A  
+（41） 对于过敏高风险人群，不能母乳喂养或母乳不足时，可使用有循证依据的 pHF喂养来预防过敏 B  
+（42） 过敏高风险婴儿辅食添加原则和方法与正常婴儿相同 B  
+7 CMPA婴儿营养及生长发育评估注：推荐等级是根据循证证据、相关指南推荐意见，结合专家自我临床实践经验进行等级确定，最终以专家多数意见作为建议的等级推荐。推荐 注 推荐等级易根据循证证据 相关指南推荐章见 意见作为建议的等级推荐
+
+等级分为高等强度（A）、中等强度（B）、低等强度（C）、不推荐（D）。结果的评定：9名专家参与了等级评定；8名专家评定结果集中在同一等级，以该等级为最终推荐；8名专家评定结果集中在2个等级或3个等级，以低的等级为最终推荐结果；有2名专家评定结果为不推荐的，以不推荐为最终推荐等级
+
+附录2 营养不良鉴别指标  
+单一时间点的儿科营养不良鉴别指标（SD）
+<table><tr><td>指标</td><td>轻度营养不良</td><td>中度营养不良</td><td>重度营养不良</td></tr><tr><td>身长的体质量 Z评分 年龄的身高Z评分</td><td>-2.0~ -1.0 无数据</td><td>-3.0~ -2.0 无数据</td><td>&lt; -3.0 &lt; -3.0</td></tr><tr><td colspan="4">2个或多个时间点来源数据的营养不良鉴别指标</td></tr><tr><td>指标</td><td>轻度营养不良</td><td>中度营养不良</td><td>重度营养不良</td></tr><tr><td>体质量增长速度(&lt;2岁) 身长的体质量Z评分下降</td><td>正常体质量增长速度的 50% ~ &lt; 75% 正常体质量增长速度的 25% ~ &lt;50% 下降1个Z评分</td><td>下降2个Z评分</td><td>&lt;正常体质量增长速度25% 下降3个Z评分</td></tr></table>

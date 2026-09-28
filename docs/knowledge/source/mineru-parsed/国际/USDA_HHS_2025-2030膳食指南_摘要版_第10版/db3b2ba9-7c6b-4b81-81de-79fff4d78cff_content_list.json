@@ -1,0 +1,2013 @@
+[
+    {
+        "type": "text",
+        "text": "Dietary Guidelines For Americans",
+        "text_level": 2,
+        "bbox": [
+            60,
+            45,
+            632,
+            241
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "image",
+        "img_path": "images/338c1f3bd42e12be421835255e818daf840ddb14d4ec0ddf783091ce01b1dfee.jpg",
+        "image_caption": [],
+        "image_footnote": [],
+        "bbox": [
+            62,
+            348,
+            931,
+            926
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "header",
+        "text": "USDA",
+        "bbox": [
+            802,
+            46,
+            937,
+            87
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "footer",
+        "text": "realfood.gov",
+        "bbox": [
+            58,
+            938,
+            165,
+            955
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "footer",
+        "text": "2025–2030",
+        "bbox": [
+            834,
+            936,
+            937,
+            953
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "2 https://www.cdc.gov/nchs/fastats/obesity-overweight.htm",
+        "bbox": [
+            83,
+            890,
+            323,
+            902
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "Message from the Secretaries",
+        "text_level": 1,
+        "bbox": [
+            83,
+            79,
+            446,
+            106
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "Welcome to the Dietary Guidelines for Americans, 2025–2030.",
+        "bbox": [
+            83,
+            122,
+            562,
+            142
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "These Guidelines mark the most significant reset of federal nutrition policy in our nation’s history.",
+        "bbox": [
+            83,
+            156,
+            714,
+            174
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "The message is simple: eat real food.",
+        "text_level": 2,
+        "bbox": [
+            83,
+            179,
+            334,
+            196
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "To Make America Healthy Again, we must return to the basics. American households must prioritize diets built on whole, nutrient-dense foods—protein, dairy, vegetables, fruits, healthy fats,",
+        "bbox": [
+            81,
+            202,
+            901,
+            237
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "and whole grains. Paired with a dramatic reduction in highly processed foods laden with refined carbohydrates, added sugars, excess sodium, unhealthy fats, and chemical additives, this approach can change the health trajectory for so many Americans.",
+        "bbox": [
+            81,
+            238,
+            941,
+            273
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "The United States is amid a health emergency. Nearly 90% of health care spending goes to treating people who have chronic diseases.1 Many of these illnesses are not genetic destiny; they are the predictable result of the Standard American Diet—a diet which, over time, has become reliant on highly processed foods and coupled with a sedentary lifestyle.",
+        "bbox": [
+            83,
+            279,
+            934,
+            349
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "The consequences have been devastating. More than 70% of American adults are overweight or obese.2 Nearly one in three American adolescents between the ages of 12 and 17 has prediabetes.3 Diet-driven chronic disease now disqualifies large numbers of young Americans from military service, undermining national readiness and cutting off a historic pathway to opportunity and upward mobility.4",
+        "bbox": [
+            81,
+            354,
+            919,
+            426
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "For decades, federal incentives have promoted low-quality, highly processed foods and pharmaceutical intervention instead of prevention. This crisis is the result of poor policy choices; inadequate nutrition research; and a lack of coordination across federal, state, local, and private partners.",
+        "bbox": [
+            81,
+            431,
+            933,
+            484
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "This changes today.",
+        "text_level": 2,
+        "bbox": [
+            83,
+            491,
+            227,
+            507
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "We are realigning our food system to support American farmers, ranchers, and companies who grow and produce real food— and the Trump administration is working to ensure all families can afford it.",
+        "bbox": [
+            81,
+            513,
+            928,
+            549
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "We are putting real food back at the center of the American diet. Real food that nourishes the body. Real food that restores health. Real food that fuels energy and encourages movement and exercise. Real food that builds strength.",
+        "bbox": [
+            81,
+            554,
+            931,
+            590
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "Under President Trump’s leadership, we are restoring common sense, scientific integrity, and accountability to federal food and health policy—and we are reclaiming the food pyramid and returning it to its true purpose of educating and nourishing al Americans.",
+        "bbox": [
+            81,
+            595,
+            931,
+            648
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "These Guidelines call on every American to eat more real food. They call on farmers, ranchers, health care professionals, insurers, educators, community leaders, industry, and lawmakers across all levels of government to join in this critical effort.",
+        "bbox": [
+            81,
+            654,
+            901,
+            707
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "Together, we can shift our food system away from chronic disease and toward nutrient density, nourishment, resilience, and long-term health.",
+        "bbox": [
+            81,
+            713,
+            893,
+            748
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "America’s future depends on what we grow, what we serve, and what we choose to eat.",
+        "bbox": [
+            83,
+            757,
+            666,
+            773
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "This is the foundation that will Make America Healthy Again.",
+        "text_level": 2,
+        "bbox": [
+            83,
+            782,
+            501,
+            799
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "Robert F. Kennedy, Jr.   \nSecretary,   \nU.S. Department of Health and Human Services",
+        "bbox": [
+            83,
+            811,
+            248,
+            863
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "Brooke L. Rollins Secretary, U.S. Department of Agriculture",
+        "bbox": [
+            284,
+            811,
+            449,
+            852
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "1 https://www.cdc.gov/chronic-disease/data-research/facts-stats/index.htm",
+        "bbox": [
+            83,
+            877,
+            387,
+            888
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "3 https://gis.cdc.gov/grasp/diabetes/diabetesatlas-spotlight.html   \n4 https://www.cdc.gov/physical-activity/php/military-readiness/unfit-to-serve.html",
+        "bbox": [
+            509,
+            877,
+            831,
+            902
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "footer",
+        "text": "USDA",
+        "bbox": [
+            58,
+            940,
+            174,
+            979
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "page_number",
+        "text": "1",
+        "bbox": [
+            929,
+            959,
+            942,
+            972
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "footer",
+        "text": "Dietary Guidelines for Americans, 2025–2030",
+        "bbox": [
+            619,
+            958,
+            916,
+            973
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "image",
+        "img_path": "images/5835ef3315e3b630115331b9362d9925b84f1fea9bb3ebe1ec770a54e5b9108d.jpg",
+        "image_caption": [],
+        "image_footnote": [],
+        "bbox": [
+            53,
+            58,
+            169,
+            137
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "Eat the Right Amount for You",
+        "text_level": 2,
+        "bbox": [
+            183,
+            85,
+            531,
+            112
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "\\+ The calories you need depend on your age, sex, height, weight, and level of physical activity.",
+        "bbox": [
+            197,
+            127,
+            511,
+            189
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "\\+ Pay attention to portion sizes, particularly for foods and beverages higher in calories.",
+        "bbox": [
+            197,
+            194,
+            547,
+            234
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "\\+ Hydration is a key factor in overall health. Choose water (still or sparkling) and unsweetened beverages.",
+        "bbox": [
+            584,
+            127,
+            923,
+            189
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "image",
+        "img_path": "images/056016a208c61d57bb99bdf20368d369b21492181a58c745bf6e86eeb691f110.jpg",
+        "image_caption": [],
+        "image_footnote": [],
+        "bbox": [
+            53,
+            227,
+            169,
+            306
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "Prioritize Protein Foods at Every Meal",
+        "text_level": 2,
+        "bbox": [
+            181,
+            256,
+            632,
+            281
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "\\+ Prioritize high-quality, nutrient-dense protein foods as part of a healthy dietary pattern.",
+        "bbox": [
+            196,
+            296,
+            558,
+            338
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "\\+ Consume a variety of protein foods from animal sources, including eggs, poultry, seafood, and red meat, as well as a variety of plant-sourced protein foods, including beans, peas, lentils, legumes, nuts, seeds, and soy.",
+        "bbox": [
+            196,
+            343,
+            545,
+            464
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "\\+ Swap deep-fried cooking methods with baked, broiled, roasted, stir-fried, or grilled cooking methods.",
+        "bbox": [
+            196,
+            469,
+            544,
+            531
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "\\+ Consume meat with no or limited added sugars, refined carbohydrates or starches, or chemical additives. If preferred, flavor with salt, spices, and herbs.",
+        "bbox": [
+            583,
+            296,
+            928,
+            377
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "\\+ Protein serving goals: 1.2–1.6 grams of protein per kilogram of body weight per day, adjusting as needed based on your individual caloric requirements.",
+        "bbox": [
+            583,
+            383,
+            911,
+            464
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "image",
+        "img_path": "images/1860affbfa4384c729abb4703dbad28c9e4d9003f1baa73d04df5d963432dd06.jpg",
+        "image_caption": [],
+        "image_footnote": [],
+        "bbox": [
+            53,
+            521,
+            169,
+            601
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "Consume Dairy",
+        "text_level": 2,
+        "bbox": [
+            181,
+            550,
+            366,
+            577
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "\\+ When consuming dairy, include full-fat dairy with no added sugars. Dairy is an excellent source of protein, healthy fats, vitamins, and minerals.",
+        "bbox": [
+            196,
+            592,
+            558,
+            672
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "\\+ Dairy serving goals: 3 servings per day as part of a 2,000-calorie dietary pattern, adjusting as needed based on your individual caloric requirements.",
+        "bbox": [
+            583,
+            592,
+            918,
+            672
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "Gut Health",
+        "text_level": 2,
+        "bbox": [
+            200,
+            702,
+            331,
+            728
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "\\+ Your gut contains trillions of bacteria and other microorganisms called the microbiome. A healthy diet supports a well-balanced microbiome and healthy digestion. Highly processed foods can disrupt this balance, while vegetables, fruits, fermented foods (e.g., sauerkraut, kimchi, kefir, miso), and high-fiber foods support a diverse microbiome, which may be beneficial for health.",
+        "bbox": [
+            196,
+            757,
+            892,
+            859
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "footer",
+        "text": "USDA",
+        "bbox": [
+            60,
+            940,
+            174,
+            979
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "footer",
+        "text": "Dietary Guidelines for Americans, 2025–2030",
+        "bbox": [
+            619,
+            958,
+            915,
+            974
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "page_number",
+        "text": "2",
+        "bbox": [
+            929,
+            959,
+            942,
+            973
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "image",
+        "img_path": "images/255fdb13835b5dff27631847b40f60a62df39aaa33c8786421594d1bd38e5ca9.jpg",
+        "image_caption": [],
+        "image_footnote": [],
+        "bbox": [
+            55,
+            66,
+            169,
+            143
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "Eat Vegetables & Fruits Throughout the Day",
+        "text_level": 2,
+        "bbox": [
+            178,
+            93,
+            696,
+            121
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "\\+ Eat a variety of colorful, nutrient-dense vegetables and fruits.",
+        "bbox": [
+            196,
+            140,
+            517,
+            179
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "\\+ Eat whole vegetables and fruits in their original form. Wash thoroughly prior to eating raw or cooking.",
+        "bbox": [
+            196,
+            185,
+            517,
+            246
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "\\+ Frozen, dried, or canned vegetables or fruits with no or very limited added sugars can also be good options.",
+        "bbox": [
+            196,
+            252,
+            555,
+            313
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "\\+ If preferred, flavor with salt, spices, and herbs.",
+        "bbox": [
+            196,
+            318,
+            490,
+            357
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "\\+ 100% fruit or vegetable juice should be consumed in limited portions or diluted with water.",
+        "bbox": [
+            583,
+            138,
+            908,
+            199
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "\\+ Vegetables and fruits serving goals for a 2,000-calorie dietary pattern, adjusting as needed based on your individual caloric requirements:",
+        "bbox": [
+            584,
+            205,
+            939,
+            286
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "\\- Vegetables: 3 servings per day",
+        "bbox": [
+            614,
+            291,
+            869,
+            313
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "\\- Fruits: 2 servings per day",
+        "bbox": [
+            614,
+            318,
+            826,
+            338
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "image",
+        "img_path": "images/fa73f27b5f9c5658f18760f56e7d8246c512d01d49427643aa15594880427146.jpg",
+        "image_caption": [],
+        "image_footnote": [],
+        "bbox": [
+            55,
+            351,
+            169,
+            428
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "Incorporate Healthy Fats",
+        "text_level": 2,
+        "bbox": [
+            178,
+            378,
+            473,
+            405
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "\\+ Healthy fats are plentiful in many whole foods, such as meats, poultry, eggs, omega-3–rich seafood, nuts, seeds, full-fat dairy, olives, and avocados.",
+        "bbox": [
+            194,
+            422,
+            549,
+            505
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "\\+ When cooking with or adding fats to meals, prioritize oils with essential fatty acids, such as olive oil. Other options can include butter or beef tallow.",
+        "bbox": [
+            194,
+            510,
+            558,
+            590
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "image",
+        "img_path": "images/5e71a828828fe7f055358f7a9cab6b4411574e1c292076713a42e8b49b3f38e2.jpg",
+        "image_caption": [],
+        "image_footnote": [],
+        "bbox": [
+            60,
+            583,
+            174,
+            662
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "Focus on Whole Grains",
+        "text_level": 2,
+        "bbox": [
+            183,
+            611,
+            455,
+            637
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "\\+ Prioritize fiber-rich whole grains.",
+        "bbox": [
+            196,
+            652,
+            467,
+            672
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "\\+ Significantly reduce the consumption of highly processed, refined carbohydrates, such as white bread, ready-to-eat or packaged breakfast options, flour tortillas, and crackers.",
+        "bbox": [
+            196,
+            678,
+            545,
+            780
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "\\+ In general, saturated fat consumption should not exceed 10% of total daily calories. Significantly limiting highly processed foods will help meet this goal. More high-quality research is needed to determine which types of dietary fats best support long-term health.",
+        "bbox": [
+            581,
+            422,
+            929,
+            566
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "\\+ Whole grains serving goals: 2–4 servings per day, adjusting as needed based on your individual caloric requirements.",
+        "bbox": [
+            583,
+            652,
+            939,
+            713
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "footer",
+        "text": "USDA",
+        "bbox": [
+            60,
+            940,
+            174,
+            979
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "page_number",
+        "text": "3",
+        "bbox": [
+            929,
+            959,
+            942,
+            973
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "footer",
+        "text": "Dietary Guidelines for Americans, 2025–2030",
+        "bbox": [
+            619,
+            958,
+            916,
+            974
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "\\+ Avoid highly processed packaged, prepared, ready-to-eat, or other foods that are salty or sweet, such as chips, cookies, and candy that have added sugars and sodium (salt). Instead, prioritize nutrient-dense foods and home-prepared meals. When dining out, choose nutrient-dense options.",
+        "bbox": [
+            191,
+            154,
+            549,
+            295
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "\\+ Limit foods and beverages that include artificial flavors, petroleum-based dyes, artificial preservatives, and low-calorie non-nutritive sweeteners.",
+        "bbox": [
+            191,
+            300,
+            516,
+            381
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "\\+ Avoid sugar-sweetened beverages, such as sodas, fruit drinks, and energy drinks.",
+        "bbox": [
+            191,
+            387,
+            522,
+            428
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "\\+ While no amount of added sugars or non-nutritive sweeteners is recommended or considered part of a healthy or nutritious diet, one meal should contain no more than 10 grams of added sugars.",
+        "bbox": [
+            578,
+            154,
+            934,
+            255
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "\\+ When selecting snack foods, added sugar limits should follow FDA “Healthy” claim limits. For example, grain snacks (e.g., crackers) should not exceed 5 grams of added sugar per ¾ ounce whole-grain equivalent, and dairy snacks (e.g., yogurt) should not exceed 2.5 grams of added sugar per ⅔ cup equivalent.",
+        "bbox": [
+            578,
+            260,
+            944,
+            422
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "Added Sugars",
+        "text_level": 2,
+        "bbox": [
+            200,
+            459,
+            370,
+            484
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "\\+ To help identify sources of added sugars, look for ingredients that include the word “sugar” or “syrup” or end in “-ose.”",
+        "bbox": [
+            196,
+            508,
+            857,
+            549
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "\\+ Added sugars may appear on ingredient labels under many different names, including high-fructose corn syrup, agave syrup, corn syrup, rice syrup, fructose, glucose, dextrose, sucrose, cane sugar, beet sugar, turbinado sugar, maltose, lactose, fruit juice concentrate, honey, and molasses. Examples of non-nutritive sweeteners include aspartame, sucralose, saccharin, xylitol, and acesulfame K.",
+        "bbox": [
+            196,
+            555,
+            880,
+            656
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "\\+ Some foods and drinks, such as fruits and plain milk, have naturally occurring sugars. The sugars in these foods are not considered added sugars.",
+        "bbox": [
+            196,
+            661,
+            875,
+            702
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "header",
+        "text": "8",
+        "bbox": [
+            53,
+            65,
+            168,
+            142
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "header",
+        "text": "Limit Highly Processed Foods, Added Sugars, & Refined Carbohydrates",
+        "bbox": [
+            176,
+            79,
+            717,
+            131
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "footer",
+        "text": "USDA",
+        "bbox": [
+            60,
+            940,
+            174,
+            979
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "footer",
+        "text": "Dietary Guidelines for Americans, 2025–2030",
+        "bbox": [
+            619,
+            958,
+            916,
+            974
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "page_number",
+        "text": "4",
+        "bbox": [
+            929,
+            959,
+            942,
+            972
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "image",
+        "img_path": "images/9b7d5437c076d8d638b18e74c369d52d798299d084bd13576c4227cd18212d78.jpg",
+        "image_caption": [],
+        "image_footnote": [],
+        "bbox": [
+            52,
+            64,
+            168,
+            143
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "Limit Alcoholic Beverages",
+        "text_level": 2,
+        "bbox": [
+            178,
+            92,
+            491,
+            118
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "\\+ Consume less alcohol for better overall health.",
+        "bbox": [
+            196,
+            145,
+            464,
+            183
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "\\+ People who should completely avoid alcohol include pregnant women, people who are recovering from alcohol use disorder or are unable to control the",
+        "bbox": [
+            196,
+            190,
+            529,
+            270
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "amount they drink, and people taking medications or with medical conditions that can interact with alcohol. For those with a family history of alcoholism, be mindful of alcohol consumption and associated addictive behaviors.",
+        "bbox": [
+            581,
+            145,
+            897,
+            265
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "Sodium",
+        "text_level": 2,
+        "bbox": [
+            199,
+            303,
+            295,
+            327
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "\\+ Sodium and electrolytes are essential for hydration. The general population, ages 14 and above, should consume less than 2,300 mg per day of sodium. Highly active individuals may benefit from increased sodium intake to offset sweat losses.",
+        "bbox": [
+            196,
+            352,
+            898,
+            412
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "\\+ For children, the recommendations vary by age:",
+        "bbox": [
+            196,
+            419,
+            584,
+            438
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "\\- Ages 1–3: less than 1,200 mg per day",
+        "bbox": [
+            227,
+            444,
+            537,
+            464
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "\\- Ages 4–8: less than 1,500 mg per day",
+        "bbox": [
+            227,
+            470,
+            537,
+            489
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "\\- Ages 9–13: less than 1,800 mg per day",
+        "bbox": [
+            225,
+            496,
+            547,
+            515
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "\\+ Highly processed foods that are high in sodium should be avoided.",
+        "bbox": [
+            196,
+            521,
+            732,
+            541
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "footer",
+        "text": "USDA",
+        "bbox": [
+            60,
+            940,
+            174,
+            979
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "footer",
+        "text": "Dietary Guidelines for Americans, 2025–2030",
+        "bbox": [
+            619,
+            958,
+            915,
+            974
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "page_number",
+        "text": "5",
+        "bbox": [
+            929,
+            959,
+            942,
+            972
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "Special Populations & Considerations",
+        "text_level": 2,
+        "bbox": [
+            53,
+            71,
+            599,
+            103
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "Infancy & Early Childhood (Birth–4 Years)",
+        "text_level": 2,
+        "bbox": [
+            53,
+            125,
+            549,
+            151
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "\\+ For about the first 6 months of life, feed your baby only breast milk. When breast milk is not available, feed your baby iron-fortified infant formula.",
+        "bbox": [
+            81,
+            170,
+            495,
+            229
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "\\+ Continue breastfeeding as long as mutually desired by mother and child for 2 years or beyond. If feeding or supplementing your baby with infant formula, stop feeding your baby infant formula at 12 months of age and give them whole milk.",
+        "bbox": [
+            81,
+            236,
+            498,
+            337
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "\\+ All breastfed infants, as well as infants who consume less than 32 ounces of infant formula per day, should receive a daily oral vitamin D supplement of 400 IU starting shortly after birth. Consult your health care professional about vitamin D supplementation.",
+        "bbox": [
+            83,
+            343,
+            501,
+            463
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "\\+ Some infants require iron supplementation. Talk with your health care professional about iron supplementation.",
+        "bbox": [
+            83,
+            469,
+            450,
+            530
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "\\+ At about 6 months of age, infants may begin to have solid foods. It is crucial to continue breastfeeding or formula feeding while solids are introduced. Breast milk or infant formula continues to be the main source of nutrition for your infant up to 12 months of age.",
+        "bbox": [
+            83,
+            536,
+            500,
+            656
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "\\- If your infant is at high risk for peanut allergy (due to the presence of severe eczema and/ or egg allergy), talk with your health care professional about peanut introduction as early as 4 to 6 months. This can be done by mixing a small amount of peanut butter with breast milk or formula, thinning it to a safe consistency, and feeding it by spoon. For infants with mild to moderate eczema, introduce peanut-containing foods at around 6 months of age.",
+        "bbox": [
+            111,
+            662,
+            493,
+            743
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "",
+        "bbox": [
+            562,
+            170,
+            937,
+            291
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "\\+ Introduce potentially allergenic foods—including nut butters, eggs, shellfish, and wheat—with other complementary foods at about 6 months. Ask your infant’s health care professional about their risk for food allergies and safe ways to introduce these foods.",
+        "bbox": [
+            526,
+            296,
+            942,
+            416
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "\\+ Infants should receive a diverse range of nutrient-dense foods in appropriate textures, while avoiding nutrient-poor and highly processed foods.",
+        "bbox": [
+            526,
+            424,
+            937,
+            484
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "\\+ Examples of nutrient-dense foods to introduce during the complementary feeding period include:",
+        "bbox": [
+            526,
+            491,
+            931,
+            530
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "\\- Meat, poultry, and seafood",
+        "bbox": [
+            555,
+            536,
+            779,
+            555
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "\\- Vegetables and fruits",
+        "bbox": [
+            555,
+            563,
+            740,
+            580
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "\\- Full-fat yogurt and cheese",
+        "bbox": [
+            555,
+            588,
+            774,
+            607
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "\\- Whole grains",
+        "bbox": [
+            555,
+            613,
+            674,
+            633
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "\\- Legumes and nut- or seed-containing foods prepared in a safe, infant-appropriate form",
+        "bbox": [
+            555,
+            640,
+            908,
+            679
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "\\+ Avoid added sugars during infancy and early childhood.",
+        "bbox": [
+            526,
+            685,
+            846,
+            726
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "footer",
+        "text": "USDA",
+        "bbox": [
+            60,
+            940,
+            174,
+            979
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "footer",
+        "text": "Dietary Guidelines for Americans, 2025–2030",
+        "bbox": [
+            619,
+            958,
+            916,
+            974
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "page_number",
+        "text": "6",
+        "bbox": [
+            929,
+            959,
+            942,
+            972
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "Introducing Food to Infants & Toddlers",
+        "text_level": 2,
+        "bbox": [
+            76,
+            77,
+            534,
+            103
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "\\+ Every child is different. Look for these signs that your child is developmentally ready to begin eating food:",
+        "bbox": [
+            83,
+            131,
+            918,
+            151
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "\\- Sits up alone or with support",
+        "bbox": [
+            112,
+            157,
+            356,
+            176
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "\\- Can control their head and neck",
+        "bbox": [
+            112,
+            183,
+            379,
+            202
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "\\- Tries to grasp small objects, such as toys or food",
+        "bbox": [
+            112,
+            208,
+            511,
+            228
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "\\- Brings objects to their mouth",
+        "bbox": [
+            112,
+            234,
+            357,
+            253
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "\\- Opens their mouth when food is offered",
+        "bbox": [
+            112,
+            261,
+            439,
+            280
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "\\- Moves food from the front to the back of their tongue to swallow",
+        "bbox": [
+            112,
+            286,
+            630,
+            306
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "\\- Swallows food instead of pushing it back out onto their chin",
+        "bbox": [
+            112,
+            313,
+            596,
+            332
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "\\+ Parents and caregivers can encourage healthy eating by offering new foods multiple times—it may take 8 to 10 exposures before a young child is willing to try a new food—and by modeling healthy eating behaviors.",
+        "bbox": [
+            83,
+            338,
+            931,
+            380
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "Middle Childhood (5–10 Years)",
+        "text_level": 2,
+        "bbox": [
+            57,
+            424,
+            428,
+            450
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "\\+ Focus on whole, nutrient-dense foods such as protein foods, dairy, vegetables, fruits, healthy fats, and whole grains.",
+        "bbox": [
+            83,
+            468,
+            460,
+            529
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "\\+ Full-fat dairy products are important for children to help meet energy needs and support brain development.",
+        "bbox": [
+            83,
+            535,
+            475,
+            594
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "\\+ Avoid caffeinated beverages.",
+        "bbox": [
+            524,
+            468,
+            769,
+            488
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "\\+ No amount of added sugars is recommended.",
+        "bbox": [
+            524,
+            494,
+            897,
+            513
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "\\+ Make cooking meals fun and a regular part of the household’s routine.",
+        "bbox": [
+            524,
+            520,
+            897,
+            559
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "Adolescence (11–18 Years)",
+        "text_level": 2,
+        "bbox": [
+            57,
+            616,
+            388,
+            642
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "\\+ Adolescence is a rapid growth period with increased needs for energy, protein, calcium, and iron—especially for girls due to menstruation. Adequate calcium and vitamin D are vital for peak bone mass.",
+        "bbox": [
+            84,
+            662,
+            490,
+            763
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "\\+ Adolescents should eat nutrient-dense foods such as dairy, leafy greens, and iron-rich animal foods, while significantly limiting sugary drinks and",
+        "bbox": [
+            84,
+            770,
+            493,
+            830
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "energy drinks and avoiding highly processed foods. When access to nutrient-rich foods is limited, fortified foods or supplements may be needed under medical guidance.",
+        "bbox": [
+            537,
+            662,
+            903,
+            743
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "\\+ Encourage adolescents to become active participants in food shopping and cooking so they learn how to make healthy food choices for life.",
+        "bbox": [
+            526,
+            750,
+            933,
+            810
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "page_number",
+        "text": "7",
+        "bbox": [
+            929,
+            958,
+            942,
+            972
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "footer",
+        "text": "USDA",
+        "bbox": [
+            58,
+            940,
+            174,
+            979
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "footer",
+        "text": "Dietary Guidelines for Americans, 2025–2030",
+        "bbox": [
+            619,
+            958,
+            916,
+            974
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "Young Adulthood",
+        "text_level": 2,
+        "bbox": [
+            53,
+            73,
+            261,
+            99
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "\\+ Following the Dietary Guidelines will support optimal health during this period, including reducing risk of the onset or progression of chronic disease and supporting other aspects of health. The brain continues to mature during young adulthood. While the most significant increases in bone density occur during adolescence, optimizing",
+        "bbox": [
+            83,
+            116,
+            500,
+            260
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "Pregnant Women",
+        "text_level": 2,
+        "bbox": [
+            53,
+            281,
+            261,
+            306
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "\\+ Pregnancy increases nutrient needs to support maternal health and fetal growth, with iron, folate, and iodine as top priorities.",
+        "bbox": [
+            83,
+            323,
+            490,
+            383
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "\\+ Pregnant women should consume diverse nutrientdense foods, including iron-rich meats, folate-rich greens and legumes, choline-rich eggs, calcium-rich",
+        "bbox": [
+            83,
+            390,
+            503,
+            450
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "Lactating Women",
+        "text_level": 2,
+        "bbox": [
+            52,
+            472,
+            261,
+            497
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "\\+ Lactation increases energy and nutrient needs to support milk production and maternal health. Breastfeeding women should consume a wide variety of nutrient-dense foods, including vitamin ${ \\mathsf { B } } _ { 1 2 } ^ { \\mathsf { \\Phi } } { \\cdot }$ –rich protein sources such as meats, poultry,",
+        "bbox": [
+            83,
+            515,
+            482,
+            618
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "Older Adults",
+        "text_level": 2,
+        "bbox": [
+            53,
+            641,
+            207,
+            666
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "\\+ Some older adults need fewer calories but still require equal or greater amounts of key nutrients such as protein, vitamin $\\mathsf { B } _ { 1 2 ^ { \\prime } }$ vitamin D, and calcium. To meet these needs, they should prioritize nutrient-dense foods such as dairy, meats, seafood, bone health to achieve peak bone mass and peak bone strength is essential. Additionally, following the Dietary Guidelines can support reproductive health for both women and men—with special emphasis on healthy fats, iron, and folate for women and healthy fats and protein for men.",
+        "bbox": [
+            83,
+            686,
+            504,
+            789
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "",
+        "bbox": [
+            540,
+            117,
+            929,
+            239
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "dairy, and low-mercury omega-3–rich seafood (e.g., salmon, sardines, trout).",
+        "bbox": [
+            540,
+            323,
+            846,
+            363
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "\\+ Women should talk to their health care professional about taking a daily prenatal vitamin during pregnancy.",
+        "bbox": [
+            527,
+            369,
+            869,
+            430
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "eggs, and dairy; omega-3–rich seafood; folate-rich legumes; and vitamin A–rich vegetables.",
+        "bbox": [
+            539,
+            515,
+            934,
+            555
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "\\+ Women should talk to their health care professional about whether dietary supplements may be needed while breastfeeding.",
+        "bbox": [
+            526,
+            560,
+            942,
+            622
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "eggs, legumes, and whole plant foods (vegetables and fruits, whole grains, nuts, and seeds). When dietary intake or absorption is insufficient, fortified foods or supplements may be needed under medical supervision.",
+        "bbox": [
+            540,
+            686,
+            937,
+            789
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "footer",
+        "text": "USDA",
+        "bbox": [
+            58,
+            940,
+            174,
+            979
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "footer",
+        "text": "Dietary Guidelines for Americans, 2025–2030",
+        "bbox": [
+            619,
+            958,
+            916,
+            974
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "page_number",
+        "text": "8",
+        "bbox": [
+            929,
+            959,
+            942,
+            972
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "Individuals with Chronic Disease",
+        "text_level": 2,
+        "bbox": [
+            53,
+            73,
+            442,
+            98
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "\\+ Following the Dietary Guidelines can help prevent the onset or slow the rate of progression of chronic disease, especially cardiovascular disease, obesity, and type 2 diabetes. If you have a chronic disease, talk with your health care professional to see if you need to adapt the Dietary Guidelines to meet your specific needs.",
+        "bbox": [
+            81,
+            117,
+            501,
+            258
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "Vegetarians & Vegans",
+        "text_level": 2,
+        "bbox": [
+            53,
+            280,
+            320,
+            306
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "\\+ Consume a variety of whole foods, especially protein-rich foods, such as dairy, eggs, beans, peas, lentils, legumes, nuts, seeds, tofu, or tempeh.",
+        "bbox": [
+            84,
+            324,
+            503,
+            385
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "\\+ Significantly limit highly processed vegan or vegetarian foods that can include added fats, sugars, and salt.",
+        "bbox": [
+            84,
+            390,
+            455,
+            450
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "\\+ Pay careful attention to potential nutrient gaps when consuming a vegetarian or vegan diet. Vegetarian diets often fall short in vitamins D and E, choline, and iron, whereas vegan diets + Individuals with certain chronic diseases may experience improved health outcomes when following a lower carbohydrate diet. Work with your health care professional to identify and adopt a diet that is appropriate for you and your health condition.",
+        "bbox": [
+            84,
+            457,
+            464,
+            537
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "",
+        "bbox": [
+            526,
+            117,
+            937,
+            238
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "show broader shortfalls in vitamins A, D, E, $\\mathsf { B } _ { 6 ^ { \\prime } }$ and $\\mathsf { B } _ { 1 2 ^ { \\prime } } ^ { \\phantom { \\dagger } }$ riboflavin; niacin; choline; calcium; iron; magnesium; phosphorus; potassium; zinc; and protein. Monitor nutrient status periodically, especially for iron, vitamin $\\mathsf { B } _ { 1 2 ^ { \\prime } }$ vitamin D, calcium, and iodine.",
+        "bbox": [
+            539,
+            324,
+            934,
+            445
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "\\+ To avoid nutrient gaps, prioritize targeted supplementation, diversify plant protein sources for amino acid balance, and enhance mineral bioavailability through food preparation techniques.",
+        "bbox": [
+            527,
+            452,
+            946,
+            532
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "footer",
+        "text": "USDA",
+        "bbox": [
+            58,
+            940,
+            174,
+            979
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "footer",
+        "text": "January 2026",
+        "bbox": [
+            187,
+            958,
+            279,
+            974
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "footer",
+        "text": "Dietary Guidelines for Americans, 2025–2030",
+        "bbox": [
+            619,
+            958,
+            916,
+            974
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "page_number",
+        "text": "9",
+        "bbox": [
+            929,
+            958,
+            942,
+            972
+        ],
+        "page_idx": 9
+    }
+]

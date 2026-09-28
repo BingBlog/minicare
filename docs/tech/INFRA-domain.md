@@ -203,11 +203,11 @@ npm run dev            # 加载 .env.development，Vite proxy 代理到 :3001
 
 ```
 staging 前端：
-  build:staging ──► uploadFiles(cloudPath='/staging/') ──► xxx.tcloudbaseapp.com/staging/
+  build:staging ──► tcb hosting deploy dist staging ──► xxx.tcloudbaseapp.com/staging/
                                                             （内部验证，验证码 123456）
 
 production 前端：
-  build:prod    ──► uploadFiles(cloudPath='/')          ──► minicare.top/
+  build:prod    ──► tcb hosting deploy dist .        ──► minicare.top/
                                                             （正式入口，但共用 staging 后端）
 
 后端：
@@ -251,8 +251,8 @@ VITE_AUTH_MODE=test   # staging 前端走固定验证码 123456
 >
 > 因此：
 > - `.env.staging` / `.env.production` 是纯人工参考文档，标注变量含义和示例值，**不影响任何运行时行为**
-> - 查看线上实际 EnvParams：`queryCloudRun(action='detail', detailServerName='minicare-api')`
-> - 修改线上 EnvParams：在 CloudBase 控制台操作，**不要**通过 `manageCloudRun(deploy)` 的 `serverConfig.EnvParams` 传入（会整体替换所有环境变量，导致 `JWT_SECRET` 变化、全量用户 Token 失效）
+> - 查看线上实际 EnvParams：`tcb cloudrun list --serviceName minicare-api --json -e minicare-cloud-6gqledlle0132cbe`
+> - 修改线上 EnvParams：在 CloudBase 控制台操作，**不要**通过部署命令的 `EnvParams` 传入（会整体替换所有环境变量，导致 `JWT_SECRET` 变化、全量用户 Token 失效）
 
 #### 变更一：CORS 改为环境变量白名单控制
 
@@ -377,7 +377,7 @@ CloudBase 支持免费申请 SSL 证书，或上传腾讯云证书服务中已�
 **重新部署 CloudRun**
 
 - [ ] 2.4 `npm run build` 编译后端
-- [ ] 2.5 在 CloudBase 控制台为 CloudRun 服务新增 `CORS_ORIGINS` 环境变量（含 minicare.top 和 tcloudbaseapp.com 两个域名），然后执行 `manageCloudRun deploy`（不传 `EnvParams`，仅更新代码）
+- [ ] 2.5 在 CloudBase 控制台为 CloudRun 服务新增 `CORS_ORIGINS` 环境变量（含 minicare.top 和 tcloudbaseapp.com 两个域名），然后执行 `tcb cloudrun deploy -s minicare-api --port 3000 --force -e minicare-cloud-6gqledlle0132cbe`（不传环境变量，仅更新代码）
 - [ ] 2.6 验证 `/health` 端点正常响应
 
 ---
@@ -387,13 +387,13 @@ CloudBase 支持免费申请 SSL 证书，或上传腾讯云证书服务中已�
 **staging 前端**
 
 - [ ] 3.1 `npm run build:staging` 构建
-- [ ] 3.2 `uploadFiles(cloudPath='/staging/')` 上传
+- [ ] 3.2 `tcb hosting deploy dist staging -e minicare-cloud-6gqledlle0132cbe` 上传
 - [ ] 3.3 访问 `xxx.tcloudbaseapp.com/staging/` 验证功能（验证码 `123456` 可正常登录）
 
 **production 前端（接入正式域名）**
 
 - [ ] 3.4 `npm run build:prod` 构建
-- [ ] 3.5 `uploadFiles(cloudPath='/')` 上传
+- [ ] 3.5 `tcb hosting deploy dist . -e minicare-cloud-6gqledlle0132cbe` 上传
 - [ ] 3.6 访问 `minicare.top` 验证功能（真实短信登录，后端为 staging 服务）
 
 ---

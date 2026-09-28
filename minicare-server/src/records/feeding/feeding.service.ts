@@ -7,6 +7,8 @@ import {
   UpdateFeedingDto,
 } from './dto/create-feeding.dto';
 import { toMysqlDatetime, getBeijingToday, addDays } from '../../common/utils/date.util';
+import { TimelineService } from '../timeline/timeline.service';
+import { FoodObservationService } from '../food-observation/food-observation.service';
 
 /** JSON 字段解析辅助（mysql2 有时返回字符串） */
 function parseJson(val: unknown) {
@@ -38,7 +40,11 @@ function flattenSupplementItems(items: unknown): unknown {
 
 @Injectable()
 export class FeedingService {
-  constructor(@Inject(DATABASE_POOL) private readonly db: Pool) {}
+  constructor(
+    @Inject(DATABASE_POOL) private readonly db: Pool,
+    private readonly timelineService: TimelineService,
+    private readonly foodObservationService: FoodObservationService,
+  ) {}
 
   // ============================================================
   // CREATE
@@ -46,6 +52,14 @@ export class FeedingService {
 
   async create(userId: string, dto: CreateFeedingDto) {
     const id = uuidv4();
+    const observationLinkage: Array<{
+      food_name: string;
+      action: string;
+      observation_id: string;
+      status: string;
+      current_day: number;
+      observation_days: number;
+    }> = [];
 
     if (dto.feed_type === 'breast') {
       await this.db.execute(
@@ -62,6 +76,7 @@ export class FeedingService {
           dto.note ?? null,
         ],
       );
+      await this.timelineService.upsertFromSource('feeding', id);
       return { id };
     }
 
@@ -91,6 +106,7 @@ export class FeedingService {
           }
         }
       }
+      await this.timelineService.upsertFromSource('feeding', id);
       return { id };
     }
 
@@ -111,6 +127,7 @@ export class FeedingService {
             dto.note ?? null,
           ],
         );
+        await this.timelineService.upsertFromSource('feeding', id);
         return { id };
       }
 
@@ -136,8 +153,26 @@ export class FeedingService {
           `INSERT INTO feeding_food_item (id, record_id, food_name, amount_g) VALUES (?, ?, ?, ?)`,
           [uuidv4(), id, foodName, dto.amount_g ?? null],
         );
+
+        const linked = await this.foodObservationService.createOrReuse({
+          baby_id: dto.baby_id,
+          food_name: foodName,
+          first_intro_at: dto.record_time.slice(0, 10),
+        });
+        observationLinkage.push({
+          food_name: foodName,
+          action: linked.action,
+          observation_id: linked.id,
+          status: linked.status,
+          current_day: linked.current_day,
+          observation_days: linked.observation_days,
+        });
       }
-      return { id };
+      await this.timelineService.upsertFromSource('feeding', id);
+      return {
+        id,
+        observation_linkage: observationLinkage.length > 0 ? observationLinkage : undefined,
+      };
     }
 
     throw new Error(`Unsupported feed_type: ${dto.feed_type}`);
@@ -366,6 +401,7 @@ export class FeedingService {
         values.push(id);
         await this.db.execute(`UPDATE feeding_breast_record SET ${setClauses.join(', ')} WHERE id = ?`, values);
       }
+      await this.timelineService.upsertFromSource('feeding', id);
       return this.findOne(id);
     }
 
@@ -394,6 +430,7 @@ export class FeedingService {
           }
         }
       }
+      await this.timelineService.upsertFromSource('feeding', id);
       return this.findOne(id);
     }
 
@@ -409,6 +446,7 @@ export class FeedingService {
           values.push(id);
           await this.db.execute(`UPDATE feeding_supplement_record SET ${setClauses.join(', ')} WHERE id = ?`, values);
         }
+        await this.timelineService.upsertFromSource('feeding', id);
         return this.findOne(id);
       }
 
@@ -432,8 +470,15 @@ export class FeedingService {
             'INSERT INTO feeding_food_item (id, record_id, food_name, amount_g) VALUES (?, ?, ?, ?)',
             [uuidv4(), id, foodName, amountG],
           );
+          // 编辑辅食后需要同步/复用排敏任务，保证首页排敏进度实时反映最新食材
+          await this.foodObservationService.createOrReuse({
+            baby_id: record.baby_id,
+            food_name: foodName,
+            first_intro_at: (dto.record_time ?? record.record_time).slice(0, 10),
+          });
         }
       }
+      await this.timelineService.upsertFromSource('feeding', id);
       return this.findOne(id);
     }
 
@@ -450,6 +495,7 @@ export class FeedingService {
     await this.db.execute('DELETE FROM feeding_formula_record  WHERE id = ?', [id]);
     await this.db.execute('DELETE FROM feeding_food_record     WHERE id = ?', [id]);
     await this.db.execute('DELETE FROM feeding_supplement_record WHERE id = ?', [id]);
+    await this.timelineService.removeBySource('feeding', id);
     return { id };
   }
 }

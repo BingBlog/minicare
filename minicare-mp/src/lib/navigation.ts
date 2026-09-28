@@ -7,6 +7,11 @@
 import Taro from '@tarojs/taro'
 import { HOME_RECORD_MP_ROUTES } from '@/lib/constants'
 
+/** PRD-005 D1 分流：医疗「新建」→ 类型选择页；「编辑（带 recordId）」→ 直达表单（跳过选型，防类型被改写） */
+const MEDICAL_WEB_ROUTE = '/records/form/medical'
+const MEDICAL_FORM_PAGE = '/pages/records/medical/index'
+const MEDICAL_TYPE_SELECT_PAGE = '/pages/records/medical/type-select/index'
+
 /**
  * 跳转到记录页面
  * @param target Web 路由路径（如 "/records/feeding?tab=formula"）
@@ -14,7 +19,12 @@ import { HOME_RECORD_MP_ROUTES } from '@/lib/constants'
  */
 export function navigateToRecord(target: string, recordId?: string): void {
   const [path, query] = target.split('?')
-  const mpPage = HOME_RECORD_MP_ROUTES[path]
+
+  let mpPage = HOME_RECORD_MP_ROUTES[path]
+  if (path === MEDICAL_WEB_ROUTE) {
+    mpPage = recordId ? MEDICAL_FORM_PAGE : MEDICAL_TYPE_SELECT_PAGE
+  }
+
   if (mpPage) {
     // 已迁移页面：直接跳转
     const parts: string[] = []

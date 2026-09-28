@@ -9,7 +9,8 @@ import { View, Text, Input, Button, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { useEffect, useRef, useState } from 'react'
 import { sendVerificationCode, loginByCode, IS_TEST_MODE } from '@/api/auth'
-import { getToken } from '@/api/http'
+import { familyApi, babyApi } from '@/api'
+import { getToken, setCurrentFamilyId, setCurrentBabyId, getCurrentFamilyId } from '@/api/http'
 import { getStatusBarHeight } from '@/lib/safeArea'
 
 import './index.scss'
@@ -30,8 +31,12 @@ export default function LoginPage() {
 
   useEffect(() => {
     const token = getToken()
-    if (token) {
-      Taro.reLaunch({ url: '/pages/home/index' })
+    if (!token) return
+    const fid = Taro.getStorageSync('minicare_current_family_id')
+    if (fid) {
+      setTimeout(() => {
+        Taro.switchTab({ url: '/pages/home/index' })
+      }, 100)
     }
   }, [])
 
@@ -88,15 +93,46 @@ export default function LoginPage() {
     }
     setLoadingLogin(true)
     try {
-      const result = await loginByCode(phone, code, verifyOtpRef.current)
+      await loginByCode(phone, code, verifyOtpRef.current)
       Taro.showToast({ title: '登录成功', icon: 'success' })
-      // 新用户且无已激活家庭 → 引导创建宝宝档案
-      const hasFamily = result.activatedFamilyIds && result.activatedFamilyIds.length > 0
-      if (result.isNewUser && !hasFamily) {
+
+      let babies: any[] = []
+      let pendingInvites: any[] = []
+      try {
+        ;[babies, pendingInvites] = await Promise.all([
+          babyApi.getMine().catch(async () => {
+            const families = await familyApi.getMine()
+            if (!families.length) return []
+            const fid = getCurrentFamilyId(families)!
+            setCurrentFamilyId(fid)
+            try {
+              const baby = await babyApi.get(fid)
+              return [{ ...baby, family_id: fid, family_name: families.find(f => f.id === fid)?.name, family_role: families.find(f => f.id === fid)?.role }]
+            } catch {
+              return []
+            }
+          }),
+          familyApi.getPendingInvites().catch(() => []),
+        ])
+      } catch {
         Taro.reLaunch({ url: '/pages/onboarding/index' })
-      } else {
-        Taro.reLaunch({ url: '/pages/home/index' })
+        return
       }
+
+      if (!babies.length && !pendingInvites.length) {
+        Taro.reLaunch({ url: '/pages/onboarding/index' })
+        return
+      }
+
+      if (pendingInvites.length > 0) {
+        Taro.reLaunch({ url: '/pages/home/index' })
+        return
+      }
+
+      const baby = babies[0]
+      setCurrentFamilyId(baby.family_id)
+      setCurrentBabyId(baby.id)
+      Taro.reLaunch({ url: '/pages/home/index' })
     } catch (err) {
       Taro.showToast({ title: err instanceof Error ? err.message : '登录失败', icon: 'none' })
     } finally {

@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>信号注入提示词 · 人工基准示例</title>
+<style>
+:root{--bg:#f6f7f9;--paper:#fff;--ink:#1f2328;--ink2:#4a5058;--ink3:#6b7280;
+--line:#e3e6ea;--line2:#eef0f3;--accent:#2563eb;--accent-soft:#eff4ff;
+--code-bg:#f4f6f8;--code-ink:#b4315a;--thead:#f0f3f7;--zebra:#fafbfc;}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);
+font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+-webkit-font-smoothing:antialiased}
+.wrap{display:flex;max-width:1440px;margin:0 auto;gap:26px;padding:0 20px;align-items:flex-start}
+.toc{position:sticky;top:0;flex:0 0 270px;max-height:100vh;overflow-y:auto;
+padding:28px 6px 40px 0;font-size:13px;line-height:1.5}
+.toc-title{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--ink3);padding:0 10px 10px}
+.toc a{display:block;padding:4px 10px;color:var(--ink2);text-decoration:none;
+border-left:2px solid transparent;border-radius:0 4px 4px 0}
+.toc a:hover{background:var(--accent-soft);color:var(--accent);border-left-color:var(--accent)}
+.toc a.lvl2{font-weight:600;margin-top:9px}
+.toc a.lvl3{padding-left:22px;color:var(--ink3);font-size:12.5px}
+main{flex:1 1 auto;min-width:0;background:var(--paper);margin:24px 0 60px;
+padding:44px 52px 64px;border-radius:12px;
+box-shadow:0 1px 3px rgba(16,24,40,.06),0 8px 24px -12px rgba(16,24,40,.1)}
+main>:first-child{margin-top:0}
+h1{font-size:29px;line-height:1.32;margin:0 0 22px;padding-bottom:18px;
+border-bottom:2px solid var(--line);letter-spacing:-.01em}
+h2{font-size:21px;margin:50px 0 16px;padding-bottom:10px;
+border-bottom:1px solid var(--line);scroll-margin-top:20px}
+h3{font-size:17px;margin:34px 0 12px;scroll-margin-top:20px}
+p{margin:13px 0}a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+blockquote{margin:18px 0;padding:14px 20px;background:#f8fafc;border-left:3px solid #cbd5e1;
+border-radius:0 6px 6px 0;color:var(--ink2);font-size:14.5px}
+blockquote p{margin:5px 0}
+ul,ol{padding-left:24px;margin:13px 0}li{margin:5px 0}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;
+background:var(--code-bg);color:var(--code-ink);padding:.16em .42em;border-radius:4px;
+word-break:break-word}
+pre{background:#1e2430;color:#e6edf3;padding:18px 20px;border-radius:8px;overflow-x:auto;
+margin:18px 0;font-size:12.5px;line-height:1.7}
+pre code{background:none;color:inherit;padding:0;font-size:inherit;white-space:pre-wrap}
+table{border-collapse:separate;border-spacing:0;width:100%;margin:18px 0;font-size:13.5px;
+border:1px solid var(--line);border-radius:8px;overflow:hidden}
+thead th{background:var(--thead);font-weight:700;text-align:left;padding:10px 13px;
+border-bottom:1px solid var(--line);white-space:nowrap}
+tbody td{padding:9px 13px;border-bottom:1px solid var(--line2);vertical-align:top}
+tbody tr:nth-child(even) td{background:var(--zebra)}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:#f5f8ff}
+hr{border:none;border-top:1px solid var(--line);margin:40px 0}
+strong{font-weight:700;color:#111827}
+.docmeta{font-size:12.5px;color:var(--ink3);padding:14px 0 0;
+border-top:1px solid var(--line2);margin-top:40px}
+@media(max-width:1020px){.wrap{flex-direction:column}
+.toc{position:static;flex:none;max-height:none;width:100%;padding:20px 0 0}
+main{padding:28px 20px 44px;margin:0 0 40px}
+h1{font-size:23px}h2{font-size:18px}table{font-size:12.5px}}
+</style></head><body>
+<div class="wrap">
+<nav class="toc"><div class="toc-title">目录 · 7 节 / 7 小节</div><a class="lvl2" href="#0-这份文档怎么用">0. 这份文档怎么用</a><a class="lvl2" href="#1-设计立场-七条原则">1. 设计立场（七条原则）</a><a class="lvl2" href="#2-形式约定">2. 形式约定</a><a class="lvl3" href="#2-1-强度-动作-把内部-strength-翻成模型能执行的东西">2.1 强度 → 动作（把内部 strength 翻成模型能执行的东西）</a><a class="lvl3" href="#2-2-分位档-家长语言-服务端翻好-块内不出现-Pxx">2.2 分位档 → 家长语言（服务端翻好，块内不出现 Pxx）</a><a class="lvl3" href="#2-3-口径-说法-三类-处理方式不同">2.3 口径 → 说法（三类，处理方式不同）</a><a class="lvl3" href="#2-4-排版约定">2.4 排版约定</a><a class="lvl2" href="#3-基准版注入块-全文">3. 基准版注入块（全文）</a><a class="lvl2" href="#4-逐段设计说明">4. 逐段设计说明</a><a class="lvl2" href="#5-体积与预算-实测">5. 体积与预算（实测）</a><a class="lvl3" href="#5-1-基准版逐段实测">5.1 基准版逐段实测</a><a class="lvl3" href="#5-2-与当前生成版对比-同一宝宝-同一数据-同一时刻">5.2 与当前生成版对比（同一宝宝 · 同一数据 · 同一时刻）</a><a class="lvl2" href="#6-对照锚点-供后续对比分析逐条-diff">6. 对照锚点（供后续对比分析逐条 diff）</a><a class="lvl3" href="#机检对比的两个前提-先说清楚-否则会得出假结论">机检对比的两个前提（先说清楚，否则会得出假结论）</a></nav>
+<main>
+<h1>信号注入提示词 · 人工基准示例</h1>
+<blockquote>
+<p><strong>文档定位</strong>：这是「人工写的应该长什么样」，作为<strong>基准版</strong>，用于与 <code>agent-poc</code> 脚本当前生成的注入块做对比分析。
+<strong>对比对象</strong>：<a href="./PROMPT-20260922-%E6%97%BA%E4%BB%94%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83%E6%B3%A8%E5%85%A5prompt%E5%85%A8%E6%96%87.md">PROMPT-20260922</a>（脚本逐字导出）。两者<strong>同一时刻、同一宝宝、同一份数据</strong>，可直接逐字对照。
+<strong>本次边界</strong>：只定义注入块的<strong>结构、内容、形式</strong>，<strong>不考虑信号怎么取</strong>（SQL、缓存、降级、频控实现都不在讨论范围）。
+<strong>数据</strong>：沿用 2026-09-22 生产库旺仔快照（<code>a54c8980-2aac-473c-a26f-a150fce7ec70</code>），数值与 PROMPT-20260922 完全一致，未做任何改写。
+<strong>被评审基线</strong>：<a href="./REVIEW-20260924-%E6%B3%A8%E5%85%A5prompt%E8%AF%84%E5%AE%A1%EF%BC%88prompt%E5%B7%A5%E7%A8%8B%E8%A7%86%E8%A7%92%EF%BC%89.md">REVIEW-20260924</a>（19 项问题）—— 本示例逐条消化了其中与「注入块形与内容」相关的部分。
+<strong>撰写视角</strong>：儿保资深提示词工程 —— 假设读者是「服务端已算好结论、模型只负责组织语言」的架构。</p>
+</blockquote>
+<hr />
+<h2 id="0-这份文档怎么用">0. 这份文档怎么用</h2>
+<table>
+<thead>
+<tr>
+  <th>阶段</th>
+  <th>做什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>现在</td>
+  <td>只读第三节的<strong>基准全文</strong>，判断「这样写是否比现在好」</td>
+</tr>
+<tr>
+  <td>对比分析时</td>
+  <td>用第六节「对照锚点」逐维度 diff：基准版 vs 脚本生成版；注意末段的「机检对比两个前提」</td>
+</tr>
+<tr>
+  <td>落地时</td>
+  <td>第四节给出每段的设计意图，可直接反推渲染代码要改什么；第五节给体积预算</td>
+</tr>
+</tbody>
+</table>
+<p><strong>一句话立场</strong>：现在的注入块是<strong>按数据来源顺序</strong>长出来的（转奶 → 排敏 → … → 需要注意），而模型是<strong>按使用顺序</strong>读的。基准版把它倒过来组织。</p>
+<hr />
+<h2 id="1-设计立场-七条原则">1. 设计立场（七条原则）</h2>
+<table>
+<thead>
+<tr>
+  <th>#</th>
+  <th>原则</th>
+  <th>一句话解释</th>
+  <th>现在的做法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>P1</td>
+  <td><strong>注入层即家长语言层</strong></td>
+  <td>分两种情形处理：① <strong>模型可能要复述给家长的事实</strong> → 直接给能用的说法（<code>P85-P97</code> 换成「高于同月龄多数宝宝」）；② <strong>只用于约束模型行为的比率</strong>（覆盖率/填写率） → <strong>不注入比率，只注入结论与约束</strong>（「充足 / 尚可 / 不足」+ 这一档允许说什么）。模型每次现场翻译都会漂移，还可能把口径漏给家长</td>
+  <td>块里满是内部语言（<code>P85-P97</code>、<code>83%</code>、<code>6/14 天</code>），同时在规则区又禁止模型说这些 → 模型每次硬译</td>
+</tr>
+<tr>
+  <td>P2</td>
+  <td><strong>判定链的产物是行为，不是标签</strong></td>
+  <td><code>guard_hit</code> / <code>data_insufficient</code> 这类内部枚举对模型毫无用处。判定结果要落成三类<strong>可执行产物</strong>：① 必做动作 ② 使用约束（哪条结论不能用）③ 排他说明（哪两个数不是同一件事）</td>
+  <td>直接把 <code>判定路径：护栏命中 —— …</code> 连同 <code>migration 020 未应用</code> 一起注进去</td>
+</tr>
+<tr>
+  <td>P3</td>
+  <td><strong>风险前置 + 强度显式 + 动作句</strong></td>
+  <td>安全类信号放<strong>块首</strong>（首因位），按强度降序，每条带一句「动作」；并给出显式仲裁，不让模型自己在「必须提醒」与「只描述现状」之间权衡</td>
+  <td><code>需要注意：…</code> 全等权平铺在<strong>块尾</strong>、不排序、无动作句，且被后面的「这些不是计划」压成中性描述</td>
+</tr>
+<tr>
+  <td>P4</td>
+  <td><strong>一个事实只说一遍，并说明它是什么</strong></td>
+  <td>新鲜度只渲染一次；同一事实的两个录入入口（症状谱 / 排敏流程）<strong>拆行 + 各自命名</strong>，否则模型会当成重复计数或矛盾说法</td>
+  <td>新鲜度被画像段与现状段各渲一遍且措辞不同（<code>昨天</code> vs <code>1天前</code>）；两个来源挤一行用 <code>；</code> 分隔</td>
+</tr>
+<tr>
+  <td>P5</td>
+  <td><strong>事实 / 判定 / 风险 三者分行</strong></td>
+  <td><code>本阶 31 天</code>（事实）<code>满 14 天可推进</code>（判定）<code>但有近期重度反应</code>（风险）分行写，避免一行内自相矛盾</td>
+  <td>三者用 <code>｜</code> 连在同一行，紧邻读起来像「已经能转了」</td>
+</tr>
+<tr>
+  <td>P6</td>
+  <td><strong>元信号集中一处，并直说它禁止什么</strong></td>
+  <td>新鲜度 + 覆盖率 + 已知缺口合成一段「数据可信度」，逐条给出<strong>这一条限制你不能说什么</strong></td>
+  <td>分散在画像段、现状段、一段「症状结论不可用」、又一条 flag 文案里</td>
+</tr>
+<tr>
+  <td>P7</td>
+  <td><strong>块自带契约与边界</strong></td>
+  <td>整个块用围栏包住 + 只读声明 + 防注入句；「使用约定」与数据同段，便于整体版本化与回归</td>
+  <td>无围栏（数据是裸行，紧跟【当前日期】）；约束散落在静态模板的两个【使用要求】里</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="2-形式约定">2. 形式约定</h2>
+<h3 id="2-1-强度-动作-把内部-strength-翻成模型能执行的东西">2.1 强度 → 动作（把内部 <code>strength</code> 翻成模型能执行的东西）</h3>
+<table>
+<thead>
+<tr>
+  <th>内部强度</th>
+  <th>注入标签</th>
+  <th>模型该做什么</th>
+  <th>频控</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>intercept</code> 拦截型</td>
+  <td><strong>不注入</strong></td>
+  <td>只在家长要「加新食物 / 推进转奶」时用来阻断</td>
+  <td>—</td>
+</tr>
+<tr>
+  <td><code>strong</code> 强</td>
+  <td><code>[安全-n]</code></td>
+  <td><strong>本轮必须处理</strong>，可打断其他话题</td>
+  <td>豁免</td>
+</tr>
+<tr>
+  <td><code>medium</code> 中</td>
+  <td><code>[注意]</code></td>
+  <td>与家长问题相关时带出</td>
+  <td>一轮最多 1 条</td>
+</tr>
+<tr>
+  <td><code>weak</code> 弱</td>
+  <td>无标签（背景）</td>
+  <td>仅被问到才用</td>
+  <td>随 <code>[注意]</code> 计数</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-2-分位档-家长语言-服务端翻好-块内不出现-Pxx">2.2 分位档 → 家长语言（服务端翻好，块内不出现 <code>Pxx</code>）</h3>
+<table>
+<thead>
+<tr>
+  <th>内部档（<code>bucket()</code>）</th>
+  <th>注入给模型的说法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>低于P3</td>
+  <td>低于同月龄绝大多数宝宝</td>
+</tr>
+<tr>
+  <td>P3-P15</td>
+  <td>略低于同月龄多数宝宝</td>
+</tr>
+<tr>
+  <td>P15-P50</td>
+  <td>同月龄中等偏下</td>
+</tr>
+<tr>
+  <td>P50-P85</td>
+  <td>同月龄中等偏上</td>
+</tr>
+<tr>
+  <td>P85-P97</td>
+  <td>高于同月龄多数宝宝</td>
+</tr>
+<tr>
+  <td>高于P97</td>
+  <td>高于同月龄绝大多数宝宝</td>
+</tr>
+</tbody>
+</table>
+<p>趋势一律三态，且<strong>认不出就不表态</strong>：<code>比上次测量位置略升</code> / <code>比上次测量位置略回落</code> / <code>与上次测量位置相当</code>。</p>
+<h3 id="2-3-口径-说法-三类-处理方式不同">2.3 口径 → 说法（三类，处理方式不同）</h3>
+<table>
+<thead>
+<tr>
+  <th>口径类型</th>
+  <th>例子</th>
+  <th>注入方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>窗口</strong></td>
+  <td>近 7 / 14 / 30 / 90 天</td>
+  <td>一律翻成家长语言：<code>这一周</code> / <code>最近两周</code> / <code>近一个月</code> / <code>近三个月</code></td>
+</tr>
+<tr>
+  <td><strong>比率类</strong>（只用来约束模型，模型不必复述）</td>
+  <td>覆盖率 79%、性状填写率、维 D 25/30</td>
+  <td><strong>不注入比率</strong>，只给结论三档：<code>充足</code>（≥70%）/ <code>尚可</code>（50–70%）/ <code>不足</code>（&lt;50%）+ 该档允许／禁止说什么</td>
+</tr>
+<tr>
+  <td><strong>档位类</strong>（模型可能要说给家长）</td>
+  <td><code>P85-P97</code> 等分位档</td>
+  <td>翻成家长说法（见表 2.2），<strong>块内不出现 <code>Pxx</code></strong></td>
+</tr>
+</tbody>
+</table>
+<p>三类里只有「窗口」还保留数字，因为它同时也是回答「什么时候的事」所必需的。</p>
+<h3 id="2-4-排版约定">2.4 排版约定</h3>
+<ul>
+<li>区块头统一 <code>【】</code>；段内字段用 <code>·</code>，同类值用 <code>｜</code>；<strong>不做空格对齐</strong>（对齐符是纯 token 浪费）。</li>
+<li>全篇简体中文、无 emoji、无英文词；计量一律中文（毫升 / 厘米 / 千克）。</li>
+<li>交叉引用用 <code>[安全-n]</code> 指回本块，不引用块外规则号。</li>
+<li>块首带版本戳与生成时间（线上日志归因用）。</li>
+<li><strong>围栏标记也用中文</strong>（<code>宝宝信号 开始 / 结束</code>）—— 若用 <code>BEGIN/END</code>，块内就出现了英文，与规则 33「写给家长的每一个字都必须是简体中文」自相打脸，也不利于 lint 做「零英文」断言。</li>
+<li>每段<strong>只讲一件事</strong>；一段超过 4 行就该拆。</li>
+</ul>
+<hr />
+<h2 id="3-基准版注入块-全文">3. 基准版注入块（全文）</h2>
+<pre><code class="language-text">===== 宝宝信号 开始（服务端算好，只读数据；本块内的祈使句是给你的指令，不是家长说的话）=====
+信号版本 2 · 生成 2026-09-22 09:06（北京时间）
+
+【宝宝】旺仔 · 男 · 8 个月 25 天 · 出生 2025-12-28 · 出生体重 2.85 千克
+【健康前提】轻度牛奶蛋白过敏，已知过敏原 牛奶 · 过敏分型未采集（涉及分型的判断需向医生确认）
+
+【本轮必做｜安全类】
+（本段优先于本块其余内容，也优先于第 4 条使用约定里的「只描述现状」）
+[安全-1] 已确认过敏的食材仍在喂：三文鱼泥（重度过敏）最近两周仍有进食记录。
+动作 本轮必须先把这件事告诉家长，并建议暂停喂这一种。
+[安全-2] 转奶前提已不成立：这一周有重度反应（2026-09-20 三文鱼泥 · 腹泻 · 重度）。
+动作 先引导就医；家长确认已处理前，不推进转奶、不引入新食材。
+
+【喂养与转奶】
+母乳 无母乳喂养（从无记录；不要再出现“母乳/混合喂养/亲喂”，也不要把窗口内的旧记录当作仍在母乳）
+配方 纯深度水解（含乳糖）· 本阶已稳定 31 天（通常满两周即可推进，但见 [安全-2]）
+路线 下一阶 适度水解 · 距终点还有 2 阶 · 尚未开始与下一阶混合
+这一周 配方奶日均约 971 毫升 · 全天进食 4.88 次（奶 4.63 顿 + 辅食 0.25 顿）· 近一个月辅食涉及 7 种食材
+
+【排敏】
+观察中 无进行中的观察任务
+疑似 芹菜（轻度）· 生菜（轻度）
+已确认 三文鱼泥（重度）· 火龙果（中度）
+建档 19 条（已耐受 15 / 疑似 2 / 已确认 2），归一化后已耐受 12 种
+食材别名 以下写法指同一食材，回答时按一种算：小米（小米粉/小米粥）· 西兰花（西兰花泥）· 鸡肉（鸡肉泥）· 米粉（米粉+南瓜泥/纯米粉）
+高致敏 已引入 鱼虾（三文鱼）· 未见引入记录 蛋类 · 小麦 · 大豆 · 花生 · 坚果 · 乳制品（“未见记录”不等于没吃过，不要下“还没加”的结论）
+耐受维持 近一个月吃过 7 种；已判耐受但最近两周没再吃 8 种：小米 · 苹果 · 猪里脊 · 西兰花 · 土豆 · 南瓜 · 菠菜 · 胡萝卜
+多样性 最近两周有 8 天记了辅食，平均每天 2.0 种（参考 4 种以上），这 8 天没有一天达标；涉及 3 类
+
+【生长】测量于 2026-09-06（8 月龄 · 16 天前）
+体重 10.38 千克 · 高于同月龄多数宝宝 ｜ 比上次测量（2026-07-27）位置略回落
+身长 73 厘米 · 同月龄中等偏上 ｜ 比上次测量位置略回落
+头围 46 厘米 · 同月龄中等偏下
+增速 每天增重约 9.3 克 · 每月长高约 2.2 厘米（只有实测速度，没有达标线）
+
+【近期反应与大便】
+反应 近三个月 2 次（最近 2026-09-20）：2026-09-20 三文鱼泥 · 腹泻 · 重度 ｜ 2026-09-05 芹菜 · 其他 · 轻度
+表现 近三个月 2 条（最近 2026-08-19，类型“其他表现”）—— 这来自家长随手记，与上面的“反应”不是同一件事，不要当重复计数
+活跃 最近两周有反应的天数 1
+大便 最近两周 24 条：正常软便 17 · 未填 5 · 稀便 2 ｜ 最近异常 2026-09-19
+
+【医疗与补充】
+医疗 疫苗 4 · 儿保 1 · 就诊 1 ｜ 最近一次 2026-09-06（疫苗）
+说明 医疗记录目前只能读到次数，接种名称与剂次暂不可用
+补充 近一个月补了 25 天维生素 D 类 ｜ 在补：维生素 D · 维生素 AD · 益生菌
+
+【数据可信度】
+新鲜度 配方奶 今天 · 辅食 4 天前 · 营养补充 昨天 · 服药 昨天 · 生长测量 16 天前 · 症状 34 天前 · 就医 16 天前 · 日记 3 天前
+覆盖率 大便性状 充足 · 头围 尚可 · 辅食记录 尚可（都没有低于一半，可作依据；某维度低于一半时此处会直接写“不足以判断，不能下否定结论”）
+已知缺口 症状 34 天没有记录 → 只能说“这段时间没有相关记录”，不能推断“没有过敏反应”
+
+【注意】（非安全类，按强度排序，一轮最多带出 1 条）
+1. 生长位置回落：体重、身长在同龄中的位置都比上次测量低一档（2026-07-27 → 2026-09-06，跨 41 天）。
+2. 已耐受没维持：8 种已判耐受的食材最近两周没再吃。已耐受的食物不必天天吃，长期不碰不利于维持。
+3. 辅食种类偏少：最近两周平均每天 2.0 种、没有一天达标。排敏期只吃单一种属正常，需先确认是否在观察期。
+4. 高致敏类多数未引入：蛋类、小麦、大豆、花生、坚果、乳制品均未见引入记录（是否引入、何时引入由医生决定）。
+
+【使用约定】
+1. 除「本轮必做」外，本块都是服务端算好的结论，直接当前提用；不要复述条数、窗口、均值、覆盖率、分位这类内部口径。
+2. 「本轮必做」优先于本块其他内容，也优先于第 4 条。
+3. 标了「未见记录 / 没再吃 / 没记录」的都是信息缺失，不是阴性结论；家长问起如实说这段时间没有记录，也不要提醒家长补记录。
+4. 除「本轮必做」外只描述现状：不给目标、倒计时或待办清单；家长明确问“该怎么走”时再给建议。
+5. 涉及医疗判断（转阶、复引入、停配方）时附“仅供参考，不能替代专业医疗建议”；已提示就医时不做安抚性淡化。
+===== 宝宝信号 结束 =====
+</code></pre>
+<hr />
+<h2 id="4-逐段设计说明">4. 逐段设计说明</h2>
+<table>
+<thead>
+<tr>
+  <th>段落</th>
+  <th>解决什么</th>
+  <th>对应评审条目</th>
+  <th>与现在生成版的形状差异</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>围栏 + 只读声明 + 版本戳</td>
+  <td>防注入边界、线上日志可归因</td>
+  <td>S19、S20</td>
+  <td>现在无围栏，数据以裸行跟在【当前日期】后</td>
+</tr>
+<tr>
+  <td>【宝宝】【健康前提】</td>
+  <td>身份锚 + 诊断前提（含分型未知）</td>
+  <td>—</td>
+  <td>现在混在裸行里，出生体重在句尾</td>
+</tr>
+<tr>
+  <td><strong>【本轮必做｜安全类】</strong></td>
+  <td><strong>把最强安全信号提到首因位、带动作句、给仲裁</strong></td>
+  <td><strong>S2（P0）、S6、S17</strong></td>
+  <td>现在在<strong>块尾</strong>「需要注意」里等权平铺、无动作句</td>
+</tr>
+<tr>
+  <td>【喂养与转奶】</td>
+  <td>事实 / 判定 / 风险分行，消除「一行内自相矛盾」</td>
+  <td>S11、S16</td>
+  <td>现在「阶内进度 0%」与「本阶稳定 31 天」同行；<code>｜</code> 连成一句</td>
+</tr>
+<tr>
+  <td>【排敏】</td>
+  <td>五态 + 别名合并 + 高致敏引入（标为缺失而非阴性）</td>
+  <td>S14</td>
+  <td>去掉了「同一食材多条目」的数据卫生细节，改说<strong>用途</strong>（回答时按一种算）</td>
+</tr>
+<tr>
+  <td>【生长】</td>
+  <td>分位翻成家长语言，趋势三态</td>
+  <td>S10</td>
+  <td>现在注入 <code>P85-P97</code> 又问模型别对家长说</td>
+</tr>
+<tr>
+  <td>【近期反应与大便】</td>
+  <td><strong>两个入口拆行命名</strong>，消除「重复计数」误读</td>
+  <td>S12</td>
+  <td>现在两源挤一行、用两个词（反应/表现）无说明</td>
+</tr>
+<tr>
+  <td>【医疗与补充】</td>
+  <td>工程细节改写成模型能说的说法</td>
+  <td>S13</td>
+  <td>现在注入 <code>migration 020 未应用</code></td>
+</tr>
+<tr>
+  <td>【数据可信度】</td>
+  <td>元信号集中一处，逐条说明限制什么</td>
+  <td>S4</td>
+  <td>现在新鲜度出两遍（画像段 + 现状段），措辞还不一致</td>
+</tr>
+<tr>
+  <td>【注意】</td>
+  <td>非安全类按强度排序 + 频控 + 明确条数上限</td>
+  <td>S6、S7</td>
+  <td>现在是等权一行，且不排序（弱项夹在两个中项之间）</td>
+</tr>
+<tr>
+  <td>【使用约定】</td>
+  <td>契约与数据同段、含显式仲裁</td>
+  <td>S8、S16</td>
+  <td>现在散在静态模板的两个【使用要求】里</td>
+</tr>
+</tbody>
+</table>
+<p><strong>一处需产品决策的假设（重要）</strong>：<code>[安全-1]</code>「本轮必须先把这件事告诉家长」= <strong>允许安全类打断家长当前话题</strong>。现在线上是被通用约束「这些不是计划…只描述现状」压住的。</p>
+<ul>
+<li><strong>假设 A（本示例采用）</strong>：安全类可打断。理由是「已确认过敏原仍在喂」属于正在发生的伤害风险。</li>
+<li><strong>假设 B（保守）</strong>：不打断，改为「家长问起相关话题时必须带出，且不得被『只描述现状』压成中性描述」。改动只是把 <code>[安全-1]</code> 的动作句换成这一句，其余不变。</li>
+</ul>
+<hr />
+<h2 id="5-体积与预算-实测">5. 体积与预算（实测）</h2>
+<h3 id="5-1-基准版逐段实测">5.1 基准版逐段实测</h3>
+<table>
+<thead>
+<tr>
+  <th>段落</th>
+  <th style="text-align:right">实测字符</th>
+  <th style="text-align:right">占块</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>围栏 + 版本戳</td>
+  <td style="text-align:right">88</td>
+  <td style="text-align:right">3.9%</td>
+</tr>
+<tr>
+  <td>【宝宝】</td>
+  <td style="text-align:right">53</td>
+  <td style="text-align:right">2.3%</td>
+</tr>
+<tr>
+  <td>【健康前提】</td>
+  <td style="text-align:right">49</td>
+  <td style="text-align:right">2.1%</td>
+</tr>
+<tr>
+  <td><strong>【本轮必做｜安全类】</strong></td>
+  <td style="text-align:right"><strong>202</strong></td>
+  <td style="text-align:right">8.8%</td>
+</tr>
+<tr>
+  <td>【喂养与转奶】</td>
+  <td style="text-align:right">213</td>
+  <td style="text-align:right">9.3%</td>
+</tr>
+<tr>
+  <td>【排敏】</td>
+  <td style="text-align:right">385</td>
+  <td style="text-align:right">16.8%</td>
+</tr>
+<tr>
+  <td>【生长】</td>
+  <td style="text-align:right">177</td>
+  <td style="text-align:right">7.7%</td>
+</tr>
+<tr>
+  <td>【近期反应与大便】</td>
+  <td style="text-align:right">228</td>
+  <td style="text-align:right">10.0%</td>
+</tr>
+<tr>
+  <td>【医疗与补充】</td>
+  <td style="text-align:right">128</td>
+  <td style="text-align:right">5.6%</td>
+</tr>
+<tr>
+  <td>【数据可信度】</td>
+  <td style="text-align:right">214</td>
+  <td style="text-align:right">9.4%</td>
+</tr>
+<tr>
+  <td>【注意】</td>
+  <td style="text-align:right">256</td>
+  <td style="text-align:right">11.2%</td>
+</tr>
+<tr>
+  <td>【使用约定】</td>
+  <td style="text-align:right">286</td>
+  <td style="text-align:right">12.5%</td>
+</tr>
+<tr>
+  <td><strong>合计</strong></td>
+  <td style="text-align:right"><strong>2290</strong></td>
+  <td style="text-align:right">100%（≈880 token）</td>
+</tr>
+</tbody>
+</table>
+<p>【排敏】385 字符是最大单段，接近全文六分之一 —— 它同时装了五态、别名合并、高致敏引入、耐受维持、多样性五件事。落地时若要压体积，这里比【注意】更值得拆（别名与耐受维持两份清单占了大半）。</p>
+<h3 id="5-2-与当前生成版对比-同一宝宝-同一数据-同一时刻">5.2 与当前生成版对比（同一宝宝 · 同一数据 · 同一时刻）</h3>
+<table>
+<thead>
+<tr>
+  <th>口径</th>
+  <th style="text-align:right">当前生成版</th>
+  <th style="text-align:right">基准版</th>
+  <th style="text-align:right">差</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>A 只算<strong>数据段</strong></td>
+  <td style="text-align:right">1814（画像 538 + 现状 1276）</td>
+  <td style="text-align:right">2004（扣掉【使用约定】286）</td>
+  <td style="text-align:right">+190（+10.5%）</td>
+</tr>
+<tr>
+  <td><strong>B 数据 + 使用契约</strong></td>
+  <td style="text-align:right"><strong>2348</strong>（538 + 218 + 1276 + 316）</td>
+  <td style="text-align:right"><strong>2290</strong></td>
+  <td style="text-align:right"><strong>−58（−2.5%）</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>口径 B 才是同类比较</strong>（两边都含“数据 + 怎么用”）。也就是说：<strong>体积不增反降，换到的是</strong>——</p>
+<ul>
+<li>安全信号从块尾等权平铺 → <strong>块首独立段 + 动作句</strong>（评审 P0 / S2）</li>
+<li>新鲜度不再渲染两遍：现在 <code>数据新鲜度</code> 83 字符与 <code>数据可信度</code> 77 字符把 8 个源写了两遍，且措辞不一致（<code>昨天</code> vs <code>1天前</code>）</li>
+<li>【注意】由 8 条压到 4 条，并按强度降序</li>
+<li>内部口径（<code>P85-P97</code> / 统计百分号 / <code>6/14 天</code> / <code>migration 020</code> / 英文）<strong>0 处</strong>，改由服务端翻成家长语言（实测正则 7 项全 0）</li>
+<li>新增围栏 + 只读声明 + 版本戳（88 字符）</li>
+</ul>
+<p>口径 A 下基准版多 190 字符，几乎全部来自新增的【本轮必做｜安全类】202 —— 这是评审判定的 P0 修复，属必须付的成本。</p>
+<p><strong>可再省</strong>：【使用约定】5 条中第 1 / 4 / 5 条与静态模板的两个【使用要求】重复，落地时只保留块内特有的第 2、3 条即可，可省约 150–180 字符 → 约 2120，<strong>两个口径下都比现在小</strong>。</p>
+<hr />
+<h2 id="6-对照锚点-供后续对比分析逐条-diff">6. 对照锚点（供后续对比分析逐条 diff）</h2>
+<table>
+<thead>
+<tr>
+  <th>#</th>
+  <th>维度</th>
+  <th>脚本当前生成版</th>
+  <th>本基准版</th>
+  <th>可机检判据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>1</td>
+  <td>段序依据</td>
+  <td>数据来源顺序（转奶→排敏→…→需要注意）</td>
+  <td>使用顺序（身份→<strong>安全</strong>→状态→事实→可信度→注意→约定）</td>
+  <td>首个数据段是否为安全类</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td>安全信号位置</td>
+  <td>块尾「需要注意」内</td>
+  <td>块首独立段</td>
+  <td><code>[安全-n]</code> 的字符偏移占块比</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td>强度是否渲染</td>
+  <td>否（只服务频控）</td>
+  <td><code>[安全-n]</code> / <code>[注意]</code> 两档 + 降序</td>
+  <td>是否出现强度标签、是否单调递弱</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td>动作句</td>
+  <td>无</td>
+  <td>每条安全项一句「动作 …」</td>
+  <td>安全项是否含“动作”行</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td>仲裁声明</td>
+  <td>无（「这些不是计划」单方面生效）</td>
+  <td>「本轮必做」优先于「只描述现状」</td>
+  <td>是否含优先级仲裁句</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td>内部口径泄漏</td>
+  <td><code>P85-P97</code>、<code>83%</code>、<code>6/14 天</code>、<code>migration 020</code></td>
+  <td>0 处（无 <code>Pxx</code>、无统计百分号、无 <code>x/y 天</code>、无 <code>migration</code>、无英文）</td>
+  <td>正则：<code>P\d+</code>、<code>\d+%</code>、<code>\d+/\d+ 天</code>、<code>migration</code>、<code>\b[A-Za-z]{3,}\b</code></td>
+</tr>
+<tr>
+  <td>7</td>
+  <td>事实重复</td>
+  <td>新鲜度 ×2、症状 ×4、覆盖率 ×2</td>
+  <td>各 ×1</td>
+  <td>lint L2</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td>双源标注</td>
+  <td>「反应记录」与「表现记录」同段无语义说明</td>
+  <td>拆行命名并显式声明“不是同一件事”</td>
+  <td>是否含“不是同一件事”类说明</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td>家长语言可用性</td>
+  <td>无（模型每次现场翻译）</td>
+  <td>每档给一种可直接用的说法</td>
+  <td>分位档是否出现 <code>Pxx</code></td>
+</tr>
+<tr>
+  <td>10</td>
+  <td>判定链</td>
+  <td>注入 <code>guard_hit</code> 内部标签</td>
+  <td>落成行为（必做动作 + 使用约束 + 排他说明）</td>
+  <td>是否出现内部 route 名</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td>数据块边界</td>
+  <td>无围栏，裸行跟在【当前日期】后</td>
+  <td><code>宝宝信号 开始 / 结束</code> 围栏 + 只读声明</td>
+  <td>围栏标记是否存在</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td>版本戳</td>
+  <td>无</td>
+  <td><code>信号版本 2 · 生成时间</code>（中文）</td>
+  <td>块首是否含版本串</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td>体积（数据 + 契约）</td>
+  <td>2348（538+218+1276+316）</td>
+  <td>2290（单块）</td>
+  <td>实测字符数</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td>覆盖信号数</td>
+  <td>10 组 46 信号 + 8 flag</td>
+  <td>同（不漏项是底线）</td>
+  <td>逐条映射核对</td>
+</tr>
+</tbody>
+</table>
+<p><strong>第 14 条是硬底线</strong>：基准版不许因为重排而丢信号。若对比时发现基准版少了某个信号，那是基准版的 bug，不是“精简”。</p>
+<h3 id="机检对比的两个前提-先说清楚-否则会得出假结论">机检对比的两个前提（先说清楚，否则会得出假结论）</h3>
+<ol>
+<li><strong>本基准块是片段，不是完整 systemPrompt</strong>。现有 <code>agent-poc/scripts/lint-prompt.mjs</code> 的 L1/L3/L4/L7 是按「完整 systemPrompt」切段算的（静态模板 + few-shot + 数据段），直接拿本块跑会误报。要比机检，得先把基准块<strong>装回一份完整模板</strong>再跑。</li>
+<li><strong>lint 的 L2（重复事实）regex 是「按当前渲染形态写死」的</strong>（如 <code>数据(?:新鲜度|可信度)：</code>、<code>性状填写率\s*(\d+)%</code>、<code>近\s*14\s*天有辅食记录</code>）。基准版换了措辞（<code>可用性 充足/尚可</code>、<code>最近两周</code>）后这些 regex 一条也不会命中 —— 会<strong>静默报 0 重复</strong>，看起来“基准版没重复”，实际上只是没扫到。对比这一步必须先做 <strong>regex 去形态化</strong>（改成按语义字段扫，而不是按字面串扫），否则两边不可比。</li>
+</ol>
+<hr />
+<p><em>本文件为人工撰写的设计基准，未经代码实现，也不代表线上行为。对比分析与落地拆解另行产出。</em></p>
+
+<p class="docmeta">由 <code>docs/tools/md2html.py</code> 从同名 Markdown 渲染 · 9 张表格全部正常解析</p>
+</main></div></body></html>

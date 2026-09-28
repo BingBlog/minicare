@@ -15,8 +15,8 @@ import { View, Text, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { useState, useEffect, useCallback } from 'react'
 import { babyApi, familyApi, fetchAppConfig } from '@/api'
-import { removeToken, getToken, getUser } from '@/api/http'
-import type { AllergyLevel, AllergyType, FamilyMember, User, Family, Baby } from '@/api'
+import { removeToken, getToken, getUser, setCurrentFamilyId, getCurrentBabyId, setCurrentBabyId } from '@/api/http'
+import type { AllergyLevel, AllergyType, FamilyMember, User, Baby } from '@/api'
 
 import BabyHero from './BabyHero'
 import BabyStats from './BabyStats'
@@ -45,8 +45,8 @@ export default function ProfilePage() {
   const cls = (base: string) => isIPad ? `${base} is-ipad` : base
   // ── 核心数据状态──────────────────────────────────────────────
   const [user, setUser] = useState<User | null>(null)
-  const [currentFamily, setCurrentFamily] = useState<Family | null>(null)
   const [currentBaby, setCurrentBaby] = useState<Baby | null>(null)
+  const [allBabies, setAllBabies] = useState<Baby[]>([])
   const [loading, setLoading] = useState(true)
 
   // ── 编辑宝宝档案弹层 ──────────────────────────────────────────
@@ -71,6 +71,7 @@ export default function ProfilePage() {
 
   // ── 联系我们弹层 ──────────────────────────────────────────────
   const [contactOpen, setContactOpen] = useState(false)
+  const [babyPickerOpen, setBabyPickerOpen] = useState(false)
 
   // ── 初始数据加载 ──────────────────────────────────────────────
   useEffect(() => {
@@ -92,23 +93,23 @@ export default function ProfilePage() {
 
       try {
         await fetchAppConfig()
-        const families = await familyApi.getMine()
-        if (!families.length) {
+        const babies = await babyApi.getMine()
+        if (!babies.length) {
           if (!cancelled) setLoading(false)
           return
         }
 
-        const family = families[0]
-        let baby: Baby | null = null
-        try {
-          baby = await babyApi.get(family.id)
-        } catch {
-          // 无宝宝档案时不报错
-        }
+        const babyId = getCurrentBabyId(babies)!
+        const baby = babies.find((b) => b.id === babyId) || babies[0]
+        setCurrentBabyId(baby.id)
+        setCurrentFamilyId(baby.family_id)
 
         if (!cancelled) {
-          setCurrentFamily(family)
+          setAllBabies(babies)
           setCurrentBaby(baby)
+          Taro.setStorageSync('minicare_baby', baby)
+          Taro.setStorageSync('minicare_current_baby_id', baby.id)
+          Taro.setStorageSync('minicare_current_family_id', baby.family_id)
           setLoading(false)
         }
       } catch {
@@ -164,14 +165,14 @@ export default function ProfilePage() {
       showToast('请填写出生日期')
       return
     }
-    if (!currentBaby || !currentFamily) {
+    if (!currentBaby) {
       showToast('数据未就绪，请稍后再试')
       return
     }
 
     setSaving(true)
     try {
-      const updated = await babyApi.update(currentFamily.id, currentBaby.id, {
+      const updated = await babyApi.update(currentBaby.family_id, currentBaby.id, {
         name: editName.trim(),
         birth_date: editBirthDate,
         gender: editGender,
@@ -190,14 +191,14 @@ export default function ProfilePage() {
 
   // ── 家庭成员弹层操作 ──────────────────────────────────────────
   const openMembers = async () => {
-    if (!currentFamily) {
+    if (!currentBaby) {
       showToast('暂无家庭信息')
       return
     }
     setMembersOpen(true)
     setMembersLoading(true)
     try {
-      const res = await familyApi.getMembers(currentFamily.id)
+      const res = await familyApi.getMembers(currentBaby.family_id)
       const enriched = res.members.map((m) => ({
         ...m,
         is_self: m.user_id === user?.id,
@@ -219,17 +220,17 @@ export default function ProfilePage() {
   }
 
   const handleInviteByPhone = async (phone: string) => {
-    if (!currentFamily) throw new Error('暂无家庭信息')
-    await familyApi.inviteByPhone(currentFamily.id, phone)
+    if (!currentBaby) throw new Error('暂无家庭信息')
+    await familyApi.inviteByPhone(currentBaby.family_id, phone)
     showToast('邀请已发送，等待对方登录接受')
-    await refreshMembers(currentFamily.id)
+    await refreshMembers(currentBaby.family_id)
   }
 
   const handleRemoveMember = async (memberId: string) => {
-    if (!currentFamily) throw new Error('暂无家庭信息')
-    await familyApi.removeMember(currentFamily.id, memberId)
+    if (!currentBaby) throw new Error('暂无家庭信息')
+    await familyApi.removeMember(currentBaby.family_id, memberId)
     showToast('操作成功')
-    await refreshMembers(currentFamily.id)
+    await refreshMembers(currentBaby.family_id)
   }
 
   // ── 退出登录 ──────────────────────────────────────────────────
@@ -249,9 +250,136 @@ export default function ProfilePage() {
     })
   }
 
+  const handleSwitchBaby = (baby: Baby) => {
+    if (baby.id === currentBaby?.id) return
+    setCurrentBabyId(baby.id)
+    setCurrentFamilyId(baby.family_id)
+    setCurrentBaby(baby)
+    Taro.setStorageSync('minicare_baby', baby)
+    Taro.setStorageSync('minicare_current_baby_id', baby.id)
+    Taro.setStorageSync('minicare_current_family_id', baby.family_id)
+  }
+
+  const handleLeaveFamily = async (baby: Baby) => {
+    if (baby.family_role === 'owner') {
+      showToast('家庭创建者不能退出')
+      return
+    }
+    Taro.showModal({
+      title: '退出家庭',
+      content: `退出「${baby.family_name || '该家庭'}」后将无法查看${baby.name}的数据，确定退出吗？`,
+      confirmText: '确定退出',
+      confirmColor: '#F05060',
+      cancelText: '取消',
+      success: async (res) => {
+        if (!res.confirm) return
+        try {
+          await familyApi.leave(baby.family_id)
+          showToast('已退出该家庭')
+          const remaining = allBabies.filter((b) => b.family_id !== baby.family_id)
+          setAllBabies(remaining)
+          if (remaining.length > 0) {
+            handleSwitchBaby(remaining[0])
+          } else {
+            setCurrentBaby(null)
+            setCurrentBabyId('')
+            setCurrentFamilyId('')
+            Taro.removeStorageSync('minicare_baby')
+            Taro.removeStorageSync('minicare_current_baby_id')
+            Taro.removeStorageSync('minicare_current_family_id')
+          }
+          setBabyPickerOpen(false)
+        } catch (e) {
+          showToast(e instanceof Error ? e.message : '操作失败')
+        }
+      },
+    })
+  }
+
+  // ── 删除宝宝（仅创建者，软删除） ──────────────────────────────
+  const handleDeleteBaby = async () => {
+    if (!currentBaby) return
+    Taro.showModal({
+      title: '删除宝宝档案',
+      content: `删除「${currentBaby.name}」后，ta 的档案和全部记录（喂养、睡眠、尿布、健康等）将不再显示，历史数据将归档保留，确定删除吗？`,
+      confirmText: '删除',
+      confirmColor: '#F05060',
+      cancelText: '取消',
+      success: async (res) => {
+        if (!res.confirm) return
+        try {
+          await babyApi.remove(currentBaby.family_id, currentBaby.id)
+          showToast('宝宝档案已删除')
+          setEditOpen(false)
+          const remaining = allBabies.filter((b) => b.id !== currentBaby.id)
+          setAllBabies(remaining)
+          if (remaining.length > 0) {
+            handleSwitchBaby(remaining[0])
+          } else {
+            setCurrentBaby(null)
+            setCurrentBabyId('')
+            setCurrentFamilyId('')
+            Taro.removeStorageSync('minicare_baby')
+            Taro.removeStorageSync('minicare_current_baby_id')
+            Taro.removeStorageSync('minicare_current_family_id')
+          }
+        } catch (e) {
+          showToast(e instanceof Error ? e.message : '操作失败')
+        }
+      },
+    })
+  }
+
+  // ── 解散家庭（仅创建者，软删除） ──────────────────────────────
+  const handleDeleteFamily = async () => {
+    if (!currentBaby) return
+    const familyName = currentBaby.family_name || '该家庭'
+    Taro.showModal({
+      title: '解散家庭',
+      content: `解散「${familyName}」后，家庭内所有宝宝档案和全部记录将不再显示，历史数据将归档保留，确定解散吗？`,
+      confirmText: '解散',
+      confirmColor: '#F05060',
+      cancelText: '取消',
+      success: async (res) => {
+        if (!res.confirm) return
+        try {
+          await familyApi.remove(currentBaby.family_id)
+          showToast('家庭已解散')
+          setMembersOpen(false)
+          const remaining = allBabies.filter((b) => b.family_id !== currentBaby.family_id)
+          setAllBabies(remaining)
+          if (remaining.length > 0) {
+            handleSwitchBaby(remaining[0])
+          } else {
+            setCurrentBaby(null)
+            setCurrentBabyId('')
+            setCurrentFamilyId('')
+            Taro.removeStorageSync('minicare_baby')
+            Taro.removeStorageSync('minicare_current_baby_id')
+            Taro.removeStorageSync('minicare_current_family_id')
+          }
+          setBabyPickerOpen(false)
+        } catch (e) {
+          showToast(e instanceof Error ? e.message : '操作失败')
+        }
+      },
+    })
+  }
+
   // ── SettingsGroup 数据 ────────────────────────────────────────
   const activeCount = members.filter((m) => m.status === 'active' || m.status === undefined).length
   const familyRows: SettingsRow[] = [
+    ...(allBabies.length > 1
+      ? [{
+          id: 'switch-baby',
+          type: 'arrow' as const,
+          icon: 'baby',
+          iconBg: '#FFF0F4',
+          label: '管理宝宝',
+          subText: currentBaby?.name,
+          onClick: () => setBabyPickerOpen(true),
+        }]
+      : []),
     {
       id: 'members',
       type: 'arrow',
@@ -260,6 +388,15 @@ export default function ProfilePage() {
       label: '家庭成员管理',
       subText: activeCount > 0 ? `${activeCount}人` : undefined,
       onClick: openMembers,
+    },
+    {
+      id: 'devices',
+      type: 'arrow',
+      icon: 'speaker',
+      iconBg: '#FFF0F4',
+      label: '智能设备',
+      subText: '语音音箱',
+      onClick: () => Taro.navigateTo({ url: '/pages/device/index' }),
     },
   ]
 
@@ -377,11 +514,13 @@ export default function ProfilePage() {
           gender={currentBaby?.gender}
           allergyTypes={currentBaby?.allergy_types}
           allergyLevel={currentBaby?.allergy_level as AllergyLevel | undefined}
+          babies={allBabies}
+          currentBabyId={currentBaby?.id}
           onEdit={openEdit}
+          onSwitchBaby={handleSwitchBaby}
         />
 
-        {/* 宝宝生长数据迷你格 */}
-        <BabyStats currentFamily={currentFamily} currentBaby={currentBaby} />
+        <BabyStats currentFamilyId={currentBaby?.family_id} currentBaby={currentBaby} />
 
         {/* 家庭设置组 */}
         <SettingsGroup title='家庭' rows={familyRows} />
@@ -420,6 +559,8 @@ export default function ProfilePage() {
         onSave={handleSave}
         onCancel={() => setEditOpen(false)}
         onCdcHelp={() => showToast('跳转 CDC 评分标准页面')}
+        isOwner={currentBaby?.family_role === 'owner'}
+        onDelete={handleDeleteBaby}
       />
 
 
@@ -428,14 +569,63 @@ export default function ProfilePage() {
         open={membersOpen}
         members={members}
         loading={membersLoading}
-        isOwner={currentUserRole === 'owner'}
+        isOwner={currentUserRole === 'owner' || currentBaby?.family_role === 'owner'}
         onInviteByPhone={handleInviteByPhone}
         onRemoveMember={handleRemoveMember}
+        onDeleteFamily={handleDeleteFamily}
         onClose={() => setMembersOpen(false)}
       />
 
       {/* 联系我们弹层 */}
       <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
+
+      {babyPickerOpen && allBabies.length > 1 && (
+        <View className='family-picker-overlay' onClick={() => setBabyPickerOpen(false)}>
+          <View className='family-picker' onClick={(e) => e.stopPropagation()}>
+            <Text className='family-picker__title'>切换宝宝</Text>
+            <View className='family-picker__list'>
+              {allBabies.map((b) => (
+                <View
+                  key={b.id}
+                  className={`family-picker__item ${b.id === currentBaby?.id ? 'family-picker__item--active' : ''}`}
+                  onClick={() => {
+                    setBabyPickerOpen(false)
+                    handleSwitchBaby(b)
+                  }}
+                >
+                  <View className='family-picker__icon'>
+                    <svg viewBox='0 0 24 24' fill='none' stroke={b.id === currentBaby?.id ? '#fff' : '#f87098'} strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round' style={{ width: 18, height: 18 }}>
+                      <path d='M12 2a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4' />
+                      <path d='M5 20a7 7 0 0 1 14 0' />
+                    </svg>
+                  </View>
+                  <View className='family-picker__info'>
+                    <Text className='family-picker__name'>{b.name}</Text>
+                    <Text className='family-picker__role'>{b.family_name || '家庭'} · {b.family_role === 'owner' ? '创建者' : '成员'}</Text>
+                  </View>
+                  {b.id === currentBaby?.id ? (
+                    <View className='family-picker__check'>
+                      <svg viewBox='0 0 24 24' fill='none' stroke='#f87098' strokeWidth='3' strokeLinecap='round' strokeLinejoin='round' style={{ width: 16, height: 16 }}>
+                        <polyline points='20 6 9 17 4 12' />
+                      </svg>
+                    </View>
+                  ) : b.family_role !== 'owner' ? (
+                    <View
+                      className='baby-picker__leave'
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleLeaveFamily(b)
+                      }}
+                    >
+                      <Text className='baby-picker__leave-text'>退出</Text>
+                    </View>
+                  ) : null}
+                </View>
+              ))}
+            </View>
+          </View>
+        </View>
+      )}
 
       {/* 底部导航栏 */}
       <TabBar activeTab='profile' />

@@ -6,9 +6,9 @@
 #   1. 清理项目根目录下的 code*.zip 残留
 #   2. 检查 dist/ 大小和内容是否异常（警告/阻止）
 #
-# 实际部署由 CloudBase MCP 工具负责：
-#   - 工具：manageCloudRun(action=deploy)
-#   - 无需 tcb CLI，无 zip 自包含问题，无交互提示
+# 实际部署由 CloudBase CLI (tcb) 负责：
+#   - 命令：tcb cloudrun deploy -s minicare-api --port 3000 --force -e minicare-cloud-6gqledlle0132cbe
+#   - 需先登录：tcb login
 #
 # 用法:
 #   npm run deploy            # 推荐入口（build → 预检）
@@ -121,12 +121,14 @@ fi
 # 预检完成
 # ══════════════════════════════════════════════════════════════
 echo ""
-success "预检通过！代码已就绪，可通过 CloudBase MCP 工具部署："
+success "预检通过！代码已就绪，可通过 CloudBase CLI 部署："
 echo ""
-echo -e "  ${BOLD}MCP 工具调用：${NC}"
-echo -e "  ${CYAN}manageCloudRun(action='deploy', serverName='minicare-api',"
-echo -e "    targetPath='${PROJECT_DIR}', serverType='container')${NC}"
+echo -e "  ${BOLD}CLI 部署命令（staging）：${NC}"
+echo -e "  ${CYAN}cd ${PROJECT_DIR} && echo \"n\" | tcb cloudrun deploy -s minicare-api --port 3000 --force -e minicare-cloud-6gqledlle0132cbe${NC}"
 echo ""
-echo -e "  ${BOLD}查看部署状态：${NC}"
-echo -e "  ${CYAN}queryCloudRun(action='detail', detailServerName='minicare-api')${NC}"
+echo -e "  ${BOLD}CLI 部署命令（production）：${NC}"
+echo -e "  ${CYAN}cd ${PROJECT_DIR} && echo \"n\" | tcb cloudrun deploy -s minicare-api-production --port 3000 --force -e minicare-cloud-6gqledlle0132cbe${NC}"
+echo ""
+echo -e "  ${BOLD}查看服务状态：${NC}"
+echo -e "  ${CYAN}tcb cloudrun list --serviceName minicare-api --json -e minicare-cloud-6gqledlle0132cbe${NC}"
 echo ""

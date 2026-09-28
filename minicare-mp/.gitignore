@@ -6,3 +6,6 @@ node_modules/
 .DS_Store
 .swc
 *.local
+private.*.key
+.preview/
+.preview-shots/

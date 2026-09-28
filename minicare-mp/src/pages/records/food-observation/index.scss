@@ -1,0 +1,496 @@
+@use '../../../styles/ipad-adapt-mixins' as ipad;
+
+.obs-page {
+  min-height: 100vh;
+  background: #fdf7f5;
+  font-family: -apple-system, 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+}
+
+.obs-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 0;
+  color: #9a7e82;
+  font-size: 14px;
+}
+
+.obs-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  background: #fdf7f5;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.obs-nav__back {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.obs-nav__back-arrow {
+  color: #3d2b2e;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.obs-nav__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #3d2b2e;
+}
+
+.obs-nav__add {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f87098;
+  flex-shrink: 0;
+}
+
+.obs-body {
+  padding-bottom: 40px;
+}
+
+.obs-filters {
+  display: flex;
+  gap: 8px;
+  padding: 8px 16px 12px;
+  white-space: nowrap;
+}
+
+.obs-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: #fff;
+  border: 1px solid #e8d8dc;
+  flex-shrink: 0;
+}
+
+.obs-filter-chip--active {
+  background: #fff0f4;
+  border-color: #f87098;
+}
+
+.obs-filter-chip__text {
+  font-size: 13px;
+  font-weight: 600;
+  color: #9a7e82;
+}
+
+.obs-filter-chip--active .obs-filter-chip__text {
+  color: #f87098;
+}
+
+.obs-list {
+  padding: 0 12px;
+}
+
+.obs-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 6px rgba(200, 100, 120, 0.08);
+}
+
+.obs-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.obs-card__food {
+  font-size: 16px;
+  font-weight: 700;
+  color: #3d2b2e;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.obs-card__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+
+.obs-card__tags {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.obs-card__tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 12px;
+  border: 1px solid #c0a8b0;
+  background: #f5eef0;
+}
+
+/* 与详情页 obs-dot--future 一致 */
+.obs-card__tag--future {
+  background: #f5eef0;
+  border-color: #c0a8b0;
+}
+
+/* 与详情页 obs-dot--done 一致：已完成天数(观察中) */
+.obs-card__tag--done {
+  background: #e4f8f0;
+  border-color: #2a9e70;
+}
+
+/* 与详情页 obs-dot--current 一致：当天 */
+.obs-card__tag--current {
+  background: #fff8ec;
+  border-color: #ddb870;
+}
+
+/* 已耐受(最终状态) */
+.obs-card__tag--safe {
+  background: #e4f8f0;
+  border-color: #2a9e70;
+}
+
+/* 确认过敏(最终状态) */
+.obs-card__tag--allergic {
+  background: #ffe0e8;
+  border-color: #e8305a;
+}
+
+/* 疑似过敏(最终状态) */
+.obs-card__tag--suspected {
+  background: #fff0d0;
+  border-color: #e07a00;
+}
+
+/* 已停用(最终状态) */
+.obs-card__tag--paused {
+  background: #f5eef0;
+  border-color: #9a8090;
+}
+
+.obs-card__tag-text {
+  font-size: 11px;
+  font-weight: 600;
+  color: #c0a8b0;
+  line-height: 1;
+}
+
+.obs-card__tag--done .obs-card__tag-text {
+  color: #2a9e70;
+}
+
+.obs-card__tag--current .obs-card__tag-text {
+  color: #ddb870;
+}
+
+.obs-card__tag--safe .obs-card__tag-text {
+  color: #2a9e70;
+}
+
+.obs-card__tag--allergic .obs-card__tag-text {
+  color: #e8305a;
+}
+
+.obs-card__tag--suspected .obs-card__tag-text {
+  color: #e07a00;
+}
+
+.obs-card__tag--paused .obs-card__tag-text {
+  color: #9a8090;
+}
+
+.obs-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.obs-card__progress {
+  font-size: 12px;
+  color: #9a7e82;
+  font-weight: 500;
+}
+
+.obs-card__date {
+  font-size: 11px;
+  color: #b0a0a4;
+}
+
+/* ── 空状态 ── */
+.obs-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 40px;
+}
+
+.obs-empty__icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #f5eef0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.obs-empty__icon-text {
+  font-size: 28px;
+  color: #c8a8b0;
+}
+
+.obs-empty__title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #9a7e82;
+  margin-bottom: 6px;
+}
+
+.obs-empty__subtitle {
+  font-size: 13px;
+  color: #b0a0a4;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.obs-empty__action {
+  margin-top: 20px;
+  padding: 10px 24px;
+  border-radius: 20px;
+  background: #f87098;
+}
+
+.obs-empty__action-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* ── 添加排敏任务弹层 ── */
+.obs-add-sheet {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.obs-add-sheet__mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.obs-add-sheet__panel {
+  position: relative;
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+  padding: 20px 16px 40px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.obs-add-sheet__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.obs-add-sheet__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #3d2b2e;
+}
+
+.obs-add-sheet__close {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #f5eef0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.obs-add-sheet__close-text {
+  color: #9a7e82;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.obs-add-sheet__date-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  background: #fdf7f5;
+  border-radius: 12px;
+}
+
+.obs-add-sheet__date-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #9a7e82;
+}
+
+.obs-add-sheet__date-value {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #f87098;
+}
+
+.obs-add-sheet__date-arrow {
+  font-size: 12px;
+  color: #f87098;
+}
+
+/* ── 输入框（复用辅食记录页样式） ── */
+.feed-food-input-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 0 16px;
+}
+
+.feed-food-input {
+  flex: 1;
+  height: 36px;
+  font-size: 13px;
+  color: #4a3035;
+  border: 1px solid #e8d8dc;
+  border-radius: 12px;
+  padding: 0 12px;
+  background: #fdf7f5;
+}
+
+.feed-food-add {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f87098;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.feed-food-add--loading {
+  opacity: 0.6;
+}
+
+.feed-food-add__text {
+  color: #fff;
+  font-size: 22px;
+  line-height: 1;
+}
+
+/* ── 预设辅食清单（复用辅食记录页样式） ── */
+.feed-food-presets {
+  padding: 0;
+}
+
+.feed-food-presets__group + .feed-food-presets__group {
+  margin-top: 12px;
+}
+
+.feed-food-presets__title {
+  display: block;
+  margin-bottom: 8px;
+  color: #9a8090;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.feed-food-presets__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.feed-food-presets__chip {
+  position: relative;
+  border: 1px solid #f0d8df;
+  border-radius: 16px;
+  background: #fff8fa;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.feed-food-presets__chip.is-active {
+  border-color: #f87098;
+  background: #fff0f4;
+}
+
+.feed-food-presets__chip.is-allergic {
+  border-color: #f05060;
+  background: #ffe8ee;
+}
+
+.feed-food-presets__chip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.feed-food-presets__chip-text {
+  color: #9a8090;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.feed-food-presets__chip.is-active .feed-food-presets__chip-text {
+  color: #f87098;
+  font-weight: 600;
+}
+
+.feed-food-presets__chip.is-allergic .feed-food-presets__chip-text {
+  color: #f05060;
+}
+
+.feed-food-presets__chip-badge {
+  font-size: 9px;
+  color: #9a7e82;
+  font-weight: 600;
+  line-height: 1;
+}
+
+@include ipad.food-observation;

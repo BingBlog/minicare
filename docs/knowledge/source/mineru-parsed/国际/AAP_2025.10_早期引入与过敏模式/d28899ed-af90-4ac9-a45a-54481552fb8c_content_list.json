@@ -1,0 +1,2382 @@
+[
+    {
+        "type": "text",
+        "text": "Published in final edited form as: . 2025 November 01; 156(5): . doi:10.1542/peds.2024-070516.",
+        "bbox": [
+            140,
+            97,
+            635,
+            130
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Guidelines for Early Food Introduction and Patterns of Food Allergy",
+        "text_level": 1,
+        "bbox": [
+            140,
+            159,
+            802,
+            210
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Stanislaw J. Gabryszewski, MD, PhD<sup>a,b</sup>, Jesse Dudley, MS<sup>b</sup>, Jennifer A. Faerber, PhD<sup>b</sup>, Robert W. Grundmeier, MD<sup>b</sup>, Alexander G. Fiks, MD, MSCE<sup>b,c</sup>, Jonathan M. Spergel, MD, PhD<sup>a,d</sup>, David A. Hill, MD, PhD<sup>a,d</sup>",
+        "bbox": [
+            140,
+            223,
+            826,
+            277
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "<sup>a</sup>Division of Allergy and Immunology, Children's Hospital of Philadelphia, Philadelphia, PA",
+        "bbox": [
+            140,
+            280,
+            795,
+            299
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "<sup>b</sup>Clinical Futures, Department of Biomedical and Health Informatics, Department of Pediatrics, Children’s Hospital of Philadelphia, Philadelphia, PA",
+        "bbox": [
+            140,
+            304,
+            826,
+            342
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "<sup>c</sup>American Academy of Pediatrics Pediatric Research in Office Settings Network",
+        "bbox": [
+            140,
+            347,
+            728,
+            367
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "<sup>d</sup>Department of Pediatrics and Institute for Immunology, Perelman School of Medicine at the University of Pennsylvania, Philadelphia, PA",
+        "bbox": [
+            140,
+            372,
+            812,
+            410
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Abstract",
+        "text_level": 2,
+        "bbox": [
+            142,
+            424,
+            232,
+            444
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Objective: To determine whether rates of peanut (or any) IgE-mediated food allergy (IgE-FA) changed following the publication of early peanut introduction guidelines and/or addendum guidelines.",
+        "bbox": [
+            168,
+            450,
+            803,
+            506
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Methods: Using electronic health record data from the multi-state, primary care-based American Academy of Pediatrics Comparative Effectiveness Research through Collaborative Electronic Reporting (CER<sup>2</sup>) network, we defined pre-guidelines, post-guidelines, and postaddendum guidelines cohorts (cohort entry during 9/1/2012-8/31/2014, 9/1/2015-8/31/2017, and 2/1/2017-1/31/2019, respectively). We determined the cumulative incidence of IgE-FA and/or atopic dermatitis (AD) in children ages 0-3 years, observed for either ≥1 or ≥2 years. Diagnosis rates during pre- versus post-guidelines periods were compared using logistic regression, Cox proportional hazards modeling, and interrupted time series analysis.",
+        "bbox": [
+            168,
+            512,
+            812,
+            656
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Results: The cumulative incidence and risk of development of peanut IgE-FA (0.79% to 0.53%; HR 0.65 [95% CI 0.55, 0.77]) and any IgE-FA (1.46% to 1.02%; HR 0.69 [95% CI 0.61, 0.78]) decreased significantly (<sub>p</sub><0.0001) from the pre-guidelines to post-guidelines period. Furthermore, the cumulative incidence and risk of development of peanut IgE-FA (0.79% to 0.45%; HR 0.55 [95% CI 0.46, 0.66]) and any IgE-FA (1.46% to 0.93%; HR 0.63 [95% CI 0.55, 0.72]) decreased significantly (<sub>p</sub><0.0001) from the pre-guidelines to post-addendum guidelines period. A decline in IgE-FA diagnosis post-guidelines was confirmed in interrupted time series analysis.",
+        "bbox": [
+            168,
+            661,
+            826,
+            789
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            79,
+            52,
+            208
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            26,
+            291,
+            52,
+            421
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            26,
+            505,
+            52,
+            636
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            718,
+            52,
+            848
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "header",
+        "text": "",
+        "bbox": [
+            88,
+            22,
+            181,
+            92
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "header",
+        "text": "HHS Public Access",
+        "bbox": [
+            210,
+            23,
+            547,
+            53
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "header",
+        "text": "Author manuscript . Author manuscript; available in PMC 2025 November 13.",
+        "bbox": [
+            209,
+            54,
+            714,
+            92
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "page_footnote",
+        "text": "Corresponding Author: David A. Hill, MD, PhD, Division of Allergy and Immunology, Children’s Hospital of Philadelphia, Abramson Research Building, 1208B, 3615 Civic Center Blvd., Philadelphia, PA 19104; Fax: (215) 590-6849; hilld3@chop.edu Contributors’ Statement Page",
+        "bbox": [
+            140,
+            811,
+            826,
+            848
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "page_footnote",
+        "text": "Dr. Gabryszewski and Dr. Hill developed the study, performed data analysis, drafted the initial manuscript, and reviewed and revised the manuscript. Ms. Dudley, Dr. Faerber, Dr. Grundmeier, Dr. Spergel, and Dr. Fiks were involved in the study design, data collection and analysis, and review and revision of the manuscript. All authors approved the final manuscript as submitted and agree to be accountable for all aspects of the work.",
+        "bbox": [
+            140,
+            845,
+            846,
+            895
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "page_footnote",
+        "text": "Conflict of Interest and Financial Disclosures: The authors have no conflicts of interest relevant to this article to disclose.",
+        "bbox": [
+            140,
+            893,
+            797,
+            910
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Conclusion: We detected decreased rates of peanut or any IgE-FA in the period following the publication of early introduction guidelines and addendum guidelines. Our results are supportive of the intended effect of these landmark public health recommendations.",
+        "bbox": [
+            168,
+            75,
+            810,
+            130
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "Introduction",
+        "text_level": 2,
+        "bbox": [
+            140,
+            148,
+            264,
+            166
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "IgE-mediated food allergy (IgE-FA), the most common cause of anaphylaxis in children, is associated with impaired quality of life, increased risk of allergic comorbidities, malnutrition, and high economic costs.<sup>1-3</sup> Peanut is one of the most common causes of $\\mathrm { I g E \\mathrm { - } F A } .$ , and the majority of children with peanut IgE-FA remain allergic into adulthood.<sup>4</sup> Recently, it has been postulated that IgE-FA can be prevented through early-life food antigen exposure in the gut, an immunologically tolerogenic environment. This paradigm is supported by the landmark Learning Early About Peanut Allergy (LEAP) trial, in which 4-11 month infants with severe atopic dermatitis (AD) and/or egg allergy who regularly ingested peanut experienced 81% reduction in peanut allergy risk by age five, an effect sustained into adolescence.<sup>5,6</sup> Following the LEAP trial, multi-organization consensus guidelines emerged, starting with initial guidelines in $2 0 1 5 ^ { 7 }$ for high-risk (i.e. severe AD and/or egg allergy) infants and addendum guidelines in $2 0 1 7 ^ { 8 }$ for high-risk and moderaterisk infants, with stratification guided by preemptive food allergy testing. These were followed by more recent $( 2 0 2 1 ^ { 3 } )$ guidelines, which recommended introduction of peanut, egg, and other major food allergens at 4-6-months, regardless of atopic history or food allergy testing.",
+        "bbox": [
+            236,
+            175,
+            836,
+            459
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "In practice, there has been variability in the uptake of early food introduction guidelines, likely due to multifactorial barriers to implementation.<sup>9</sup> In survey-based studies, 29% of general pediatricians<sup>10</sup> and 65% of allergists<sup>11</sup> endorsed full implementation of the 2017 early peanut introduction addendum guidelines, and only 17% of caregivers endorsed introducing peanut before 7 months of age following the 2021 guidelines.<sup>12</sup> Given the evolving landscape of food allergy prevention efforts, continuous monitoring of IgE-FA epidemiology is prudent. To date, it has been unclear whether rates of peanut, or any, IgE-FA have changed meaningfully after early food introduction guidelines were implemented in the United States. To address this knowledge gap, we compared the rates of clinician-diagnosed IgE-FA during pre- and post-guidelines periods using a multi-site, electronic health record (EHR)-based pediatric cohort.",
+        "bbox": [
+            236,
+            470,
+            856,
+            666
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "Methods",
+        "text_level": 2,
+        "bbox": [
+            142,
+            683,
+            230,
+            702
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "Study Design and Subjects.",
+        "text_level": 2,
+        "bbox": [
+            142,
+            710,
+            364,
+            728
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "To determine IgE-FA diagnosis patterns in children before and after the publication of early peanut introduction guidelines, we used the American Academy of Pediatrics (AAP) Comparative Effectiveness Research through Collaborative Electronic Reporting (CER<sup>2</sup>) database, a HIPAA-limited, EHR database comprised of primary care practices within the United $\\mathrm { S t a t e s . } ^ { 2 }$ We focused on a subset of $\\mathrm { C E R } ^ { 2 }$ practices that included 31 practices affiliated with an academic health system in the mid-Atlantic region and 17 independently owned private pediatric offices distributed across the US with continuous data availability across the time period considered (9/1/2012 to 1/31/2020) (Table S1). We first defined two cohorts, requiring presence of a primary care visit prior to age one for each cohort: (1) “Preguidelines” cohort, defined by cohort entry between 9/1/2012 and 10/31/2014, preceding the publication of initial guidelines (circa August 2015<sup>7</sup>); and (2) “Post-guidelines” cohort, defined by cohort entry between 9/1/2015 and 8/31/2017. Subjects were observed for minimally two years (Figure 1A) for the development of AD and/or IgE-FA. A second analysis was performed with a one-year observation window. This analysis included the same children enrolled in the pre-guidelines and post-initial guidelines cohorts and also allowed for the generation of a third “post-addendum guidelines” cohort, defined by cohort entry between 2/1/2017 and 1/31/2019, subsequent to the publication of early peanut introduction addendum guidelines (circa January $2 0 1 7 ^ { 8 } )$ (Figure 1B). Cohort observation times are summarized in Table S2. We abstracted sex and self-reported race and ethnicity, as documented by individual health systems in their respective EHRs. The latter were examined as proxies for non-biological social and institutional factors that may influence disease outcomes, as prior studies have documented higher burden of allergic disease in children from minoritized racial and ethnic groups.<sup>13,14</sup> The category “Unknown” includes children with unknown race, and “Other” is comprised of other race designations, such as American Indian and multiracial. The study was approved by the AAP institutional review board and determined to not be human subjects research at Children’s Hospital of Philadelphia.",
+        "bbox": [
+            236,
+            733,
+            839,
+            875
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            90,
+            52,
+            219
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            304,
+            52,
+            433
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            517,
+            50,
+            646
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            731,
+            52,
+            859
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "header",
+        "text": "Gabryszewski et al.",
+        "bbox": [
+            122,
+            45,
+            230,
+            59
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "page_number",
+        "text": "Page 2",
+        "bbox": [
+            813,
+            45,
+            856,
+            59
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "footer",
+        "text": ". Author manuscript; available in PMC 2025 November 13.",
+        "bbox": [
+            269,
+            898,
+            637,
+            914
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "",
+        "bbox": [
+            236,
+            75,
+            849,
+            411
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "Study Outcomes.",
+        "text_level": 2,
+        "bbox": [
+            142,
+            426,
+            282,
+            444
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "We identified children with peanut IgE-FA and one or more IgE-FA, with or without preceding atopic dermatitis (AD). As detailed previously,<sup>2</sup> we used corresponding International Classification of Diseases Ninth Revision (ICD-9) or Tenth Revision (ICD-10) diagnosis codes and/or Systematized Nomenclature of Medicine (SNOMED) codes. For IgE-FA diagnosis, we required subjects to have a corresponding diagnosis code, at least one food allergy item in the allergy module, and an epinephrine autoinjector prescription, without a prespecified order. Allergic disease cumulative incidence was determined using R software (version 4.4.2).",
+        "bbox": [
+            236,
+            449,
+            849,
+            590
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "Statistical Analyses.",
+        "text_level": 2,
+        "bbox": [
+            142,
+            606,
+            307,
+            623
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "First, univariable logistic regression was used to test if allergic outcome frequencies were significantly different in the pre- versus post-guidelines periods. Next, we performed Cox proportional hazards modeling adjusted for age at cohort entry, sex, race, and ethnicity to compute the risk of development of allergic disease in the post-guidelines versus preguidelines periods. Lastly, we performed interrupted time series analysis<sup>15</sup>, as detailed in Supplemental Methods. Briefly, we examined the monthly percentage of two-year olds with IgE-FA between 1/1/2014 and 1/1/2020 and determined the estimated slope change between the post-guidelines regression line slope and the counterfactual pre-guidelines trend line slope.",
+        "bbox": [
+            236,
+            628,
+            851,
+            787
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "Results",
+        "text_level": 2,
+        "bbox": [
+            142,
+            806,
+            220,
+            824
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "Cohort demographics (Table 1 and Tables S3-S6) included age at cohort entry, sex, and self-reported race and ethnicity as proxies for psychosocial factors that might influence disease rates. There were 38,594, 46,680, and 39,594 children in total in the pre-guidelines, post-guidelines, and post-addendum guidelines cohorts, respectively (Figure 1). The mean ages (age range) of children in the two-year observation analysis were 1.2 (0.3-3.9) and 0.9 (0.3-2) years for the pre-guidelines and post-guidelines cohorts, respectively. In the one-year observation analysis, they were 1.0 (0-2.9), 0.9 (0-2.7), and 0.8 (0-2.2) years for the pre-guidelines, post-guidelines, and post-addendum guidelines cohorts, respectively. From the pre- to post-guidelines periods, among children with IgE-FA, there was significantly (<sub>p</sub><0.05) increased representation of subjects who were 0-4 months and White and decreased representation of those who were Black, Asian or Pacific Islander, and Hispanic (Table 1).",
+        "bbox": [
+            236,
+            833,
+            818,
+            869
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            90,
+            52,
+            219
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            304,
+            52,
+            433
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            517,
+            52,
+            646
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            731,
+            52,
+            859
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "header",
+        "text": "Gabryszewski et al.",
+        "bbox": [
+            122,
+            45,
+            230,
+            59
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "page_number",
+        "text": "Page 3",
+        "bbox": [
+            813,
+            45,
+            854,
+            59
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "footer",
+        "text": ". Author manuscript; available in PMC 2025 November 13.",
+        "bbox": [
+            269,
+            898,
+            637,
+            914
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "",
+        "bbox": [
+            236,
+            75,
+            856,
+            236
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "Comparison of the cumulative incidence of IgE-FA before and after the publication of early introduction guidelines revealed significant decreases in the rates of peanut and any IgE-FA (Table 2). In the two-year observation analyses of post-initial guidelines versus preguidelines cohorts (Figure 1A), there were significant decreases in the cumulative incidences of peanut IgE-FA (0.67% vs. 0.92%, 27.2% decrease; <sub>p</sub><0.0001), one or more IgE-FA(s) (1.23% vs. 1.98%, 37.9% decrease; <sub>p</sub><0.0001), and two or more IgE-FAs (0.56% vs. 0.79%, 29.1% decrease; <sub>p</sub><0.0001) (Table 2). Results were similar in one-year observation analyses (Figure 1A), with evidence for a further decline in IgE-FA cumulative incidence in the post-addendum guidelines period (Table 2). The cumulative incidences of peanut IgE-FA (0.45% vs. 0.79%, 43.0% decrease; <sub>p</sub><0.0001), one or more IgE-FA(s) (0.93% vs. 1.46%, 28.6% decrease; <sub>p</sub><0.0001), and two or more IgE-FAs (0.40% vs. 0.56%, 28.6% decrease; <0.0001) were significantly lower in the post-addendum guidelines versus pre-guidelines cohorts (Table 2). In sub-analyses in children with preceding AD or egg IgE-FA (risk factors for peanut IgE-FA<sup>5</sup>), there were significantly (<sub>p</sub><0.05) decreased rates of peanut IgE-FA in children with prior egg IgE-FA but not in children with prior AD (Table 2). In the transition from the pre- to post-guidelines periods, egg surpassed peanut as the topmost documented food allergen (Table 3). While the cumulative incidence of egg allergy did not decrease significantly, the cumulative incidence of allergy to cow’s milk, the third most common documented food allergen, decreased significantly (<sub>p</sub><0.01) during this transition (Table 3).",
+        "bbox": [
+            236,
+            247,
+            854,
+            584
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "Next, to quantify the impact of pre- versus post-guidelines on the risk of diagnosis of peanut or any IgE-FA (Figure 2) or AD (Figure S1), we performed Cox proportional hazards modeling with adjustment for covariates (cohort entry age, sex, race, ethnicity) and computed hazard ratios (HRs) (Table S7). We detected significant (<sub>p</sub><0.0001) reductions in the risk of diagnosis of peanut IgE-FA (HR 0.65 [95% CI 0.55, 0.77] and 0.55 [95% CI 0.46, 0.66]) and any IgE-FA (HR 0.69 [95% CI 0.61, 0.78] and 0.63 [95% CI 0.55, 0.72]) in the pre-guidelines to post-guidelines and pre-guidelines to post-addendum guidelines periods, respectively (Figure 2, Table S7). During this transition, there was a concurrent, significant (<sub>p</sub><0.0001) increase in the risk of AD diagnosis (Figure S1, Table S7).",
+        "bbox": [
+            236,
+            597,
+            852,
+            756
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "Lastly, we performed interrupted time analysis to ascertain whether the publication of early introduction guidelines was associated with a change in the rate of two-year old children who were diagnosed with IgE-FA. Using monthly diagnosis data and segmented linear regression, we quantified the slopes of the post-guidelines trend line and the counterfactual trend line, an extrapolation of the pre-guidelines trend line (Table S8). We detected a possible reduction in the rate of peanut IgE-FA diagnosis during the entirety of the post-",
+        "bbox": [
+            236,
+            768,
+            844,
+            875
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            90,
+            52,
+            219
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            304,
+            52,
+            433
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            517,
+            52,
+            646
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            731,
+            52,
+            859
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "header",
+        "text": "Gabryszewski et al.",
+        "bbox": [
+            122,
+            45,
+            230,
+            59
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "page_number",
+        "text": "Page 4",
+        "bbox": [
+            813,
+            45,
+            854,
+            59
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "footer",
+        "text": ". Author manuscript; available in PMC 2025 November 13.",
+        "bbox": [
+            269,
+            898,
+            637,
+            914
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "guidelines period, although this difference was not statistically significant (slope change −0.012 [95% CI −0.031, 0.0074], <sub>p</sub>=0.23; Table S8). However, there was a significant reduction in the rate of diagnosis of one or more IgE-FAs (slope change −0.027 [95% CI −0.051, −0.0029], <sub>p</sub><0.05) during the entirety of the post-guidelines period (Figure 3), as opposed to exclusively the post-initial guidelines (Figure S2) or post-addendum guidelines (Figure S3) periods.",
+        "bbox": [
+            236,
+            75,
+            839,
+            181
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "Discussion",
+        "text_level": 2,
+        "bbox": [
+            142,
+            199,
+            254,
+            218
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "There has been considerable evolution in guidelines focused on identifying the optimal time to introduce potentially allergenic foods to children.<sup>9</sup> In 2008, the AAP rescinded prior guidance to delay introduction of peanut to at-risk children until age three, as this strategy was not protective against food allergy.<sup>16,17</sup> A pivotal paradigm shift occurred when the LEAP trial uncovered the effectiveness of early, sustained ingestion of peanut in protecting against peanut IgE-FA in at-risk (i.e. severe AD and/or egg allergy) infants.<sup>5</sup> Subsequently, multi-organization consensus guidelines advocated for early peanut introduction in at-risk children.<sup>7,8</sup> While these guidelines included a role for targeted screening (i.e. peanut-specific immunoglobulin IgE or skin prick test), it has become increasingly apparent that screening is not universally accessible and that the false positive rate of testing translates to unnecessary delays in food introduction and increased medical costs.<sup>18,19</sup> As such, in 2021, a panel of experts from premier organizations in allergy and immunology recommended that both peanut and egg be introduced around 6 months of life, without a need for risk stratification or food allergy testing.<sup>3</sup> By design and in practice, this important public health intervention has been implemented by general pediatricians during routine well child visits. However, it has not been clear whether the early introduction paradigm shift in the United States has been accompanied by changes in IgE-FA epidemiology.",
+        "bbox": [
+            236,
+            227,
+            854,
+            530
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "In this study, we used an EHR-based pediatric cohort to describe the diagnosis patterns of IgE-FA in children ages 0-3 years. We note that this age range is inclusive of the peak time of incidence of peanut (15 months) and any (13 months) IgE-FA, as previously identified within the pediatric CER<sup>2</sup> network.<sup>2</sup> As the early introduction guidelines and addendum guidelines were published between 2015 and 2017, it is currently not possible to assess their impact on IgE-FA rates across the entirety of childhood (i.e. age 0-18 years). Suggesting that overall food allergy rates have remained similar in the pre- and post-guidelines periods, in the National Health Interview Survey, the prevalences of parentreported food allergy in children less than 18 years of age were 5.6% and 5.8% in 2012 and 2021, respectively.<sup>20,21</sup> Accordingly, we focused on a younger population more likely to reveal a change if guidelines had an impact on food allergy rates.",
+        "bbox": [
+            238,
+            540,
+            854,
+            737
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "Our EHR-based approach complements survey-based approaches, which can be used to construct nationally representative cohorts, yet may be affected by reporting bias.<sup>22</sup> Here, we utilized clinician-entered diagnostic data within a subset of AAP CER<sup>2</sup> practices<sup>23</sup> for which data was continuously available throughout the time period of interest. Our results revealed significantly decreased rates of peanut and any IgE-FA in the post-guidelines period, as compared with the pre-guidelines period. We note the importance of accurately specifying the intervention point in analyses like interrupted time series, due to factors such as delayed uptake. To this end, in addition to considering two contiguous time periods, our analyses also compared IgE-FA diagnosis patterns between the pre-guidelines period and the period following publication of the addendum guidelines, a nuanced update of the initial early introduction guidelines. The 16-month gap between these periods effectively served as a “washout” period that enabled us to consider the possibility of delayed uptake of initial guidelines.",
+        "bbox": [
+            236,
+            747,
+            856,
+            872
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            90,
+            52,
+            219
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            304,
+            52,
+            433
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            517,
+            52,
+            646
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            731,
+            52,
+            859
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "header",
+        "text": "Gabryszewski et al.",
+        "bbox": [
+            122,
+            45,
+            230,
+            59
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "page_number",
+        "text": "Page 5",
+        "bbox": [
+            813,
+            45,
+            854,
+            59
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "footer",
+        "text": ". Author manuscript; available in PMC 2025 November 13.",
+        "bbox": [
+            269,
+            898,
+            637,
+            914
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "",
+        "bbox": [
+            238,
+            75,
+            841,
+            183
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "Of note, the decreases in peanut and IgE-FA cumulative incidence that we detected were statistically significant regardless of AD diagnosis. This finding aligns with recent de-emphasis of risk stratification in encouraging early introduction of peanut, egg, and other potentially allergenic foods.<sup>3</sup> Nevertheless, AD is a recognized IgE-FA risk factor and initiation point for the allergic march, as impairment of the skin barrier facilitates allergic sensitization. The fact that the post-guidelines cohorts had increased representation of very young (0-4 months) infants and those with AD diagnosis suggests that early recognition of AD as a risk factor may have contributed to the observed decline in IgE-FA rates. As the differences in IgE-FA rates were not significantly different in sub-analyses of children with preceding AD diagnosis, the possibility exists that food allergy prevention efforts could be further prioritized in this population. Interestingly, in the post-guidelines periods we detected a significant reduction in the cumulative incidence of milk IgE-FA, but not egg IgE-FA. These results suggest that early introduction practices may be variably applied to specific foods, underscoring the need to track the evolving landscape of early food introduction patterns.",
+        "bbox": [
+            238,
+            194,
+            852,
+            460
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "There has been interest in studying the effects of early introduction guidelines on food allergy on an international level. In a single-center center study in Canada, implementation of early introduction guidelines was associated with a significant decrease in new-onset anaphylaxis in children two years or younger.<sup>24</sup> In Australia, changes to infant feeding guidelines in 2007 and 2015 coincided with a slowing in the year-on-year rate of foodrelated anaphylaxis in children ages 1-14, although food-related anaphylaxis admission rates still increased in all age groups overall.<sup>25</sup> However, despite the increase in early peanut introduction in Australia, a non-significant (0.5%) absolute reduction in peanut allergy prevalence was observed in a recent cross-sectional study.<sup>26</sup> Similarly, following the revision of early introduction guidelines in Sweden, introduction of peanut, egg, and other potentially allergenic foods during the first year of life increased; however, no difference in the prevalence of self-reported IgE-FA was observed in children up to age 18 months in the post-guidelines period.<sup>27</sup> These modest effects highlight the importance of continued study of infant feeding practices and food allergy patterns as well as the value of examining EHR-based diagnostic information alongside self-reported data.",
+        "bbox": [
+            236,
+            472,
+            848,
+            738
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "Since socioeconomic disparities are known to adversely impact allergic outcomes in children from minoritized racial and ethnic groups,<sup>14</sup> we examined self-reported racial and ethnic characteristics as proxies for social and environmental factors that may impact disease outcomes. In the transition from the pre- to post-guidelines periods, we noted decreased proportions of food-allergic children who were Black, Asian or Pacific Islander, and Hispanic. It is unclear whether these reflect differences in feeding practices among different demographic groups and/or other factors that may have been disproportionately affected",
+        "bbox": [
+            236,
+            751,
+            854,
+            875
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            90,
+            52,
+            219
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            304,
+            50,
+            433
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            517,
+            50,
+            646
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            731,
+            52,
+            859
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "header",
+        "text": "Gabryszewski et al.",
+        "bbox": [
+            122,
+            45,
+            230,
+            59
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "page_number",
+        "text": "Page 6",
+        "bbox": [
+            813,
+            45,
+            856,
+            59
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "footer",
+        "text": ". Author manuscript; available in PMC 2025 November 13.",
+        "bbox": [
+            269,
+            898,
+            637,
+            914
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "by access to care. We note that, overall, our cohorts included a higher proportion of self-identified Black children (24-25% vs. 14%) and a lower proportion of self-identified Hispanic children (10-11% vs. 26%) as compared with United States census data.<sup>28</sup> As such, our cohort is not nationally representative, although it is inclusive of demographic groups that have not been universally included in prior research studies. We note that in our Cox proportional hazards models our results were comparable whether or not we adjusted for these demographic covariates.",
+        "bbox": [
+            238,
+            75,
+            854,
+            200
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "Several study limitations warrant consideration. First, we were unable to elicit information about actual infant and toddler feeding patterns, such as when specific foods were introduced and the amounts and frequencies of ingestion following initial introduction. Indeed, previous studies have highlighted that both early introduction and sustained ingestion are important factors that promote the development of protection against food allergy.<sup>5,29</sup> We also note that our study does not capture food allergy patterns in the time period following the liberalized 2021 early introduction guidelines,<sup>3</sup> although one strength of the dates selected is that consideration of the potential disruptive effects of the COVID-19 pandemic were not necessary. As predisposition to allergy reflects a complex interplay of environmental and genetic factors,<sup>30</sup> we cannot rule out roles for additional, nondietary factors in influencing food allergy rates over time. Further, while our diagnostic criteria required the presence of diagnosis codes, epinephrine prescription, and food allergen documentation, we did not consider other clinical data, such as food allergy testing or oral food challenges. Lastly, our study includes a subset of $\\mathrm { C E R } ^ { 2 }$ health systems and, as such, the generalizability of our findings to outside health systems is not fully clear.",
+        "bbox": [
+            238,
+            212,
+            854,
+            478
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "In summary, using multi-state clinical and diagnostic EHR data, we observed significant declines in the cumulative incidence of peanut and any IgE-FA following the publication of early introduction guidelines in 2016, with further decline in these rates after the publication of addendum guidelines in 2017, regardless of preceding AD diagnosis. Our study is one of the first to detect a significant shift towards reduced IgE-FA diagnosis in the United States following the evidence-based paradigm shift toward early food introduction as a means of preventing food allergy. Though significantly reduced, the percent reduction in peanut IgE-FA in our study was lower than that observed in the LEAP trial.<sup>5</sup> This is consistent with recent survey-based studies that demonstrate clinician variability in recommending early introduction<sup>10,11</sup> and suggests an opportunity to strengthen such efforts in the realworld setting. Our findings are relevant to caregivers of infants, providers of pediatric primary care, and allergists. Furthermore, they are supportive of efforts to increase education and advocacy related to early food introduction practices, which currently vary across different stakeholders.<sup>9-11</sup> Future studies should not only monitor IgE-FA epidemiology longitudinally but also delineate the specific feeding practices of families; these may help characterize the timing, frequency, and dose of foods associated with optimal protection against food allergy in children.",
+        "bbox": [
+            236,
+            491,
+            852,
+            791
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "Supplementary Material",
+        "text_level": 2,
+        "bbox": [
+            142,
+            808,
+            370,
+            828
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "Refer to Web version on PubMed Central for supplementary material.",
+        "bbox": [
+            238,
+            837,
+            656,
+            853
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            90,
+            52,
+            219
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            304,
+            52,
+            433
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            517,
+            52,
+            646
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            731,
+            52,
+            859
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "header",
+        "text": "Gabryszewski et al.",
+        "bbox": [
+            122,
+            45,
+            230,
+            59
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "page_number",
+        "text": "Page 7",
+        "bbox": [
+            813,
+            45,
+            854,
+            59
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "footer",
+        "text": ". Author manuscript; available in PMC 2025 November 13.",
+        "bbox": [
+            271,
+            898,
+            637,
+            914
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "Funding/Support:",
+        "text_level": 2,
+        "bbox": [
+            142,
+            79,
+            312,
+            99
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "This work was supported by the National Institutes of Health (NIH) (Grants T32HD043021 and K08AI182477 to SJG) and the Food Allergy Fund (to DAH). Allergy research in the Hill Lab is also supported by the NIH (Grant R01HL162715 to DAH), the Hartwell Foundation, the American Academy of Allergy Asthma and Immunology, the American Partnership for Eosinophilic Disorders, and the Children’s Hospital of Philadelphia Research Institute. Additional infrastructure funding was provided by the American Academy of Pediatrics and the Health Resources and Services Administration (HRSA) of the U.S. Department of Health and Human Services (HHS) under UA6MC15585 - National Research Network to Improve Children’s Health and U5DMC39344 - Pediatric Research Network Program. The contents are those of the authors and do not necessarily represent the official views of, nor an endorsement, by NIH, HRSA/HHS, or the U.S. Government. None of the funding sources had a role in the design or conduct of the study.",
+        "bbox": [
+            238,
+            107,
+            846,
+            229
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "Abbreviations:",
+        "text_level": 2,
+        "bbox": [
+            142,
+            247,
+            285,
+            263
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "table",
+        "img_path": "images/75bf4b938c92da79a39c108f57ef86fcbb7ce1ed7f59281d56d1eda16e3dffa8.jpg",
+        "table_caption": [],
+        "table_footnote": [],
+        "table_body": "<table><tr><td>AAP</td><td>American Academy of Pediatrics</td></tr><tr><td>AD</td><td>atopic dermatitis</td></tr><tr><td> $\\mathbf { C E R } ^ { 2 }$ </td><td>Comparative Effectiveness Research through Collaborative</td></tr><tr><td></td><td>Electronic Reporting</td></tr><tr><td>EHR</td><td>electronic health record</td></tr><tr><td>HR</td><td>hazard ratio</td></tr><tr><td>ICD</td><td>International Classification of Diseases</td></tr><tr><td>IgE-FA</td><td>Immunoglobulin E-mediated food allergy</td></tr><tr><td>LEAP</td><td>Learning Early About Peanut Allergy</td></tr><tr><td>SNOMED</td><td>Systematized Nomenclature of Medicine</td></tr></table>",
+        "bbox": [
+            250,
+            271,
+            785,
+            532
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "References",
+        "text_level": 2,
+        "bbox": [
+            142,
+            549,
+            254,
+            568
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "list",
+        "sub_type": "ref_text",
+        "list_items": [
+            "1. Trogen B, Jacobs S, Nowak-Wegrzyn A. Early Introduction of Allergenic Foods and the Prevention of Food Allergy. Nutrients. 2022 Jun 21;14(13):2565. [PubMed: 35807745]",
+            "2. Gabryszewski SJ, Dudley J, Shu D, Faerber JA, Grundmeier RW, Fiks AG, et al. Patterns in the Development of Pediatric Allergy. Pediatrics. 2023 Aug 1;152(2):e2022060531. [PubMed: 37489286]",
+            "3. Fleischer DM, Chan ES, Venter C, Spergel JM, Abrams EM, Stukus D, et al. A Consensus Approach to the Primary Prevention of Food Allergy Through Nutrition: Guidance from the American Academy of Allergy, Asthma, and Immunology; American College of Allergy, Asthma, and Immunology; and the Canadian Society for Allergy and Clinical Immunology. J Allergy Clin Immunol Pract. 2021 Jan;9(1):22–43.e4. [PubMed: 33250376]",
+            "4. Skolnick HS, Conover-Walker MK, Koerner CB, Sampson HA, Burks W, Wood RA. The natural history of peanut allergy. J Allergy Clin Immunol. 2001 Feb;107(2):367–74. [PubMed: 11174206]",
+            "5. Du Toit G, Sayre PH, Roberts G, Sever ML, Lawson K, Bahnson HT, et al. Effect of Avoidance on Peanut Allergy after Early Peanut Consumption. N Engl J Med. 2016 Apr 14;374(15):1435–43. [PubMed: 26942922]",
+            "6. Du Toit G, Huffaker MF, Radulovic S, Feeney M, Fisher HR, Byron M, et al. Follow-up to Adolescence after Early Peanut Introduction for Allergy Prevention. NEJM Evid. 2024 Jun;3(6):EVIDoa2300311. [PubMed: 38804779]"
+        ],
+        "bbox": [
+            241,
+            575,
+            846,
+            604
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            90,
+            52,
+            218
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            304,
+            52,
+            433
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            517,
+            52,
+            646
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            731,
+            52,
+            859
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "header",
+        "text": "Gabryszewski et al.",
+        "bbox": [
+            122,
+            45,
+            230,
+            59
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "page_number",
+        "text": "Page 8",
+        "bbox": [
+            813,
+            46,
+            854,
+            59
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "footer",
+        "text": ". Author manuscript; available in PMC 2025 November 13.",
+        "bbox": [
+            269,
+            900,
+            637,
+            914
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "list",
+        "sub_type": "ref_text",
+        "list_items": [
+            "7. Fleischer DM, Sicherer S, Greenhawt M, Campbell D, Chan E, Muraro A, et al. Consensus communication on early peanut introduction and the prevention of peanut allergy in high-risk infants. J Allergy Clin Immunol. 2015 Aug;136(2):258–61. [PubMed: 26100082]",
+            "8. Togias A, Cooper SF, Acebal ML, Assa’ad A, Baker JR, Beck LA, et al. Addendum guidelines for the prevention of peanut allergy in the United States: Report of the National Institute of Allergy and Infectious Diseases-sponsored expert panel. J Allergy Clin Immunol. 2017 Jan;139(1):29–44. [PubMed: 28065278]",
+            "9. Abrams EM, Shaker M, Stukus D, Mack DP, Greenhawt M. Updates in Food Allergy Prevention in Children. Pediatrics. 2023 Nov 1;152(5):e2023062836. [PubMed: 37818612]",
+            "10. Gupta RS, Bilaver LA, Johnson JL, Hu JW, Jiang J, Bozen A, et al. Assessment of Pediatrician Awareness and Implementation of the Addendum Guidelines for the Prevention of Peanut Allergy in the United States. JAMA Netw Open. 2020 Jul 15;3(7):e2010511. [PubMed: 32667655]",
+            "11. Johnson JL, Gupta RS, Bilaver LA, Hu JW, Martin J, Jiang J, et al. Implementation of the Addendum Guidelines for Peanut Allergy Prevention by US allergists, a survey conducted by the NIAID, in collaboration with the AAAAI. J Allergy Clin Immunol. 2020 Oct;146(4):875–83. [PubMed: 32745556]",
+            "12. Venter C, Warren C, Samady W, Nimmagadda SR, Vincent E, Zaslavsky J, et al. Food allergen introduction patterns in the first year of life: A US nationwide survey. Pediatr Allergy Immunol. 2022 Dec;33(12):e13896. [PubMed: 36564881]",
+            "13. Borrell LN, Elhawary JR, Fuentes-Afflick E, Witonsky J, Bhakta N, Wu AHB, et al. Race and Genetic Ancestry in Medicine - A Time for Reckoning with Racism. N Engl J Med. 2021 Feb 4;384(5):474–80. [PubMed: 33406325]",
+            "14. Davis CM, Apter AJ, Casillas A, Foggs MB, Louisias M, Morris EC, et al. Health disparities in allergic and immunologic conditions in racial and ethnic underserved populations: A Work Group Report of the AAAAI Committee on the Underserved. J Allergy Clin Immunol. 2021 May;147(5):1579–93. [PubMed: 33713767]",
+            "15. Schaffer AL, Dobbins TA, Pearson SA. Interrupted time series analysis using autoregressive integrated moving average (ARIMA) models: a guide for evaluating large-scale health interventions. BMC Med Res Methodol. 2021 Mar 22;21(1):58. [PubMed: 33752604]",
+            "16. American Academy of Pediatrics. Committee on Nutrition. Hypoallergenic infant formulas. Pediatrics. 2000 Aug;106(2 Pt 1):346–9. [PubMed: 10920165]",
+            "17. Greer FR, Sicherer SH, Burks AW, American Academy of Pediatrics Committee on Nutrition, American Academy of Pediatrics Section on Allergy and Immunology. Effects of early nutritional interventions on the development of atopic disease in infants and children: the role of maternal dietary restriction, breastfeeding, timing of introduction of complementary foods, and hydrolyzed formulas. Pediatrics. 2008 Jan;121(1):183–91. [PubMed: 18166574]",
+            "18. Shaker M, Stukus D, Chan ES, Fleischer DM, Spergel JM, Greenhawt M. “To screen or not to screen”: Comparing the health and economic benefits of early peanut introduction strategies in five countries. Allergy. 2018 Aug;73(8):1707–14. [PubMed: 29601091]",
+            "19. Greer FR, Sicherer SH, Burks AW, Committee On Nutrition, Section On Allergy and Immunology. The Effects of Early Nutritional Interventions on the Development of Atopic Disease in Infants and Children: The Role of Maternal Dietary Restriction, Breastfeeding, Hydrolyzed Formulas, and Timing of Introduction of Allergenic Complementary Foods. Pediatrics. 2019 Apr;143(4):e20190281. [PubMed: 30886111]",
+            "20. Bloom B, Jones L, Freeman G. Summary health statistics for U.S. children: National Health Interview Survey, 2012. National Center for Health Statistics. Vital Health Stat 10(258). 2013. 2023.",
+            "21. Zablotsky B, Black L, Akinbami L. Diagnosed allergic conditions in children aged 0–17 years: United States, 2021. NCHS Data Brief, no 459. National Center for Health Statistics. 2023 [cited 2024 Sep 23]; Available from: https://www.cdc.gov/nchs/data/databriefs/db459.pdf",
+            "22. Sutherland SM, Kaelber DC, Downing NL, Goel VV, Longhurst CA. Electronic Health Record-Enabled Research in Children Using the Electronic Health Record for Clinical Discovery. Pediatr Clin North Am. 2016 Apr;63(2):251–68. [PubMed: 27017033]"
+        ],
+        "bbox": [
+            240,
+            74,
+            813,
+            118
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            90,
+            52,
+            219
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            304,
+            52,
+            433
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            517,
+            52,
+            646
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            731,
+            52,
+            859
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "header",
+        "text": "Gabryszewski et al.",
+        "bbox": [
+            122,
+            45,
+            230,
+            59
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "page_number",
+        "text": "Page 9",
+        "bbox": [
+            813,
+            46,
+            854,
+            59
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "footer",
+        "text": ". Author manuscript; available in PMC 2025 November 13.",
+        "bbox": [
+            269,
+            900,
+            637,
+            914
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "list",
+        "sub_type": "ref_text",
+        "list_items": [
+            "23. Fiks AG, Grundmeier RW, Steffes J, Adams WG, Kaelber DC, Pace WD, et al. Comparative Effectiveness Research Through a Collaborative Electronic Reporting Consortium. Pediatrics. 2015 Jul;136(1):e215–224. [PubMed: 26101357]",
+            "24. Yu J, Lanoue D, Mir A, Kaouache M, Bretholz A, Clarke A, et al. Trends of Peanut-Induced Anaphylaxis Rates Before and After the 2017 Early Peanut Introduction Guidelines in Montreal, Canada. J Allergy Clin Immunol Pract. 2024 Sep;12(9):2439–2444.e4. [PubMed: 38876271]",
+            "25. Mullins RJ, Dear KBG, Tang MLK. Changes in Australian food anaphylaxis admission rates following introduction of updated allergy prevention guidelines. J Allergy Clin Immunol. 2022 Jul;150(1):140–145.e1. [PubMed: 35077775]",
+            "26. Soriano VX, Peters RL, Moreno-Betancur M, Ponsonby AL, Gell G, Odoi A, et al. Association Between Earlier Introduction of Peanut and Prevalence of Peanut Allergy in Infants in Australia. JAMA. 2022 Jul 5;328(1):48–56. [PubMed: 35788795]",
+            "27. Österlund J, Granåsen G, Bodén S, Silfverdal SA, Domellöf M, Winberg A, et al. Revised Swedish infant feeding guidelines are associated with earlier introduction of allergenic foods. J Allergy Clin Immunol. 2024 Feb;153(2):461–70. [PubMed: 37813287]",
+            "28. POP3 Race and Hispanic Origin Composition: Percentage of U.S. children ages 0–17 by race and Hispanic origin, 1980–2021 and projected 2022–2050. Available at https://www.childstats.gov/ americaschildren/tables/pop3.asp. Accessed October 30, 2022.",
+            "29. Natsume O, Kabashima S, Nakazato J, Yamamoto-Hanada K, Narita M, Kondo M, et al. Two-step egg introduction for prevention of egg allergy in high-risk infants with eczema (PETIT): a randomised, double-blind, placebo-controlled trial. Lancet Lond Engl. 2017 Jan 21;389(10066):276–86.",
+            "30. Gabryszewski SJ, Hill DA. One march, many paths: Insights into allergic march trajectories. Ann Allergy Asthma Immunol Off Publ Am Coll Allergy Asthma Immunol. 2021 Sep;127(3):293–300."
+        ],
+        "bbox": [
+            241,
+            75,
+            823,
+            117
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            90,
+            52,
+            218
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            304,
+            52,
+            433
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            517,
+            52,
+            646
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            731,
+            52,
+            859
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "header",
+        "text": "Gabryszewski et al.",
+        "bbox": [
+            122,
+            45,
+            230,
+            59
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "page_number",
+        "text": "Page 10",
+        "bbox": [
+            807,
+            46,
+            854,
+            59
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "footer",
+        "text": ". Author manuscript; available in PMC 2025 November 13.",
+        "bbox": [
+            271,
+            900,
+            637,
+            914
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "Summary:",
+        "text_level": 2,
+        "bbox": [
+            238,
+            90,
+            323,
+            109
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "Using a multi-state electronic health record-based network, we detected a decline in pediatric IgE-mediated food allergy diagnoses following the publication of early food introduction guidelines.",
+        "bbox": [
+            238,
+            116,
+            808,
+            170
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "What’s Known on This Subject:",
+        "text_level": 2,
+        "bbox": [
+            240,
+            176,
+            472,
+            195
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "The 2015 Learning Early About Peanut Allergy study motivated multi-organization guidelines encouraging early peanut introduction to at-risk children to prevent IgEmediated food allergy. Whether this translated to real-world changes in peanut or other food allergy rates has not been clear.",
+        "bbox": [
+            236,
+            202,
+            815,
+            273
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "What This Study Adds:",
+        "text_level": 2,
+        "bbox": [
+            240,
+            280,
+            413,
+            297
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "The prevalence of clinician-diagnosed peanut and overall IgE-mediated food allergy in infants decreased following the publication of early peanut introduction guidelines and addendum guidelines. Our findings suggest that promotion of early food introduction is relevant to food allergy prevention efforts.",
+        "bbox": [
+            236,
+            305,
+            820,
+            377
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            90,
+            52,
+            219
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            304,
+            52,
+            433
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            517,
+            52,
+            646
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            731,
+            52,
+            859
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "header",
+        "text": "Gabryszewski et al.",
+        "bbox": [
+            122,
+            45,
+            230,
+            59
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "page_number",
+        "text": "Page 11",
+        "bbox": [
+            807,
+            45,
+            852,
+            59
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "footer",
+        "text": ". Author manuscript; available in PMC 2025 November 13.",
+        "bbox": [
+            271,
+            898,
+            637,
+            914
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "image",
+        "img_path": "images/0382dde18d292dda208b2bf46dff8c31e594b42b29ca558efc4960261cd1288d.jpg",
+        "image_caption": [
+            "A. Minimum 2-year observation analysis",
+            "B. Minimum 1-year observation analysis"
+        ],
+        "image_footnote": [],
+        "bbox": [
+            287,
+            98,
+            779,
+            305
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "image",
+        "img_path": "images/a79992b560d431cb39a9e19cb844bd0566d02667098649877e4b3b02820f922d.jpg",
+        "image_caption": [
+            "Figure 1. Cohort design schematic."
+        ],
+        "image_footnote": [
+            "(A.) Pre-guidelines and post-guidelines cohorts with two-year observation period. (B.) Pre-guidelines, post-guidelines, and post-addendum guidelines cohorts with one-year observation period. Dates of cohort entry (dark shade) and/or observation (dark or light shade) are indicated. Dates of guidelines publication are indicated with arrows."
+        ],
+        "bbox": [
+            289,
+            334,
+            826,
+            619
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            90,
+            52,
+            219
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            303,
+            52,
+            433
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            517,
+            52,
+            646
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            729,
+            52,
+            859
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "header",
+        "text": "Gabryszewski et al.",
+        "bbox": [
+            122,
+            45,
+            230,
+            59
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "page_number",
+        "text": "Page 12",
+        "bbox": [
+            807,
+            45,
+            856,
+            60
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "footer",
+        "text": ". Author manuscript; available in PMC 2025 November 13.",
+        "bbox": [
+            269,
+            898,
+            637,
+            914
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "chart",
+        "img_path": "images/ee0071921686d4d6503cd463efea6235c5bc373868b040253faeca5c1e59fda6.jpg",
+        "content": "",
+        "chart_caption": [
+            "A. Peanut IgE-FA"
+        ],
+        "chart_footnote": [],
+        "bbox": [
+            200,
+            103,
+            537,
+            343
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "chart",
+        "img_path": "images/216eac89d381b06c3c9c0e0b5f0ef33eb75754e76017a207af1ff908eb1e4ae8.jpg",
+        "content": "",
+        "chart_caption": [],
+        "chart_footnote": [],
+        "bbox": [
+            558,
+            102,
+            893,
+            343
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "chart",
+        "img_path": "images/3e382c7c61598e82f6636e7dda76c3b7cad26c013139e0c427ce4387b4c3e743.jpg",
+        "content": "",
+        "chart_caption": [
+            "B. Any IgE-FA"
+        ],
+        "chart_footnote": [],
+        "bbox": [
+            200,
+            375,
+            539,
+            621
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "chart",
+        "img_path": "images/399595275c4e4d4357a84edf8c4432ac50a3fc39c6716e676a2c4120828de989.jpg",
+        "content": "",
+        "chart_caption": [
+            "Figure 2. Cox proportional hazards modeling.",
+            "Proportion of children with diagnosis of (A.) peanut IgE-mediated food allergy (IgE-FA) or (B.) any IgE-FA during the post-guidelines (or post-addendum guidelines) versus preguidelines periods. Results are shown for models adjusted for age at cohort entry, sex, race, and ethnicity. Dashed lines represent 95% confidence intervals. HR, hazard ratio."
+        ],
+        "chart_footnote": [],
+        "bbox": [
+            558,
+            372,
+            895,
+            619
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            90,
+            52,
+            219
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            303,
+            52,
+            433
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            517,
+            52,
+            646
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            731,
+            52,
+            859
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "header",
+        "text": "Gabryszewski et al.",
+        "bbox": [
+            122,
+            45,
+            230,
+            59
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "page_number",
+        "text": "Page 13",
+        "bbox": [
+            807,
+            45,
+            856,
+            59
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "footer",
+        "text": ". Author manuscript; available in PMC 2025 November 13.",
+        "bbox": [
+            269,
+            898,
+            637,
+            914
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "chart",
+        "img_path": "images/dd7f1c865ab9c036cb701c16027cab5b72371b9ee117ca67b2044641b03fb8bc.jpg",
+        "content": "",
+        "chart_caption": [
+            "Figure 3. Interrupted time analysis."
+        ],
+        "chart_footnote": [
+            "Monthly percentages of two-year old children with IgE-mediated food allergy (IgE-FA) diagnosis before and after the publication of initial early introduction guidelines (intervention, vertical black line). The solid teal, dashed red, and solid red lines represent the pre-intervention, counterfactual, and post-intervention trend lines, respectively."
+        ],
+        "bbox": [
+            223,
+            77,
+            882,
+            537
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            90,
+            52,
+            219
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            303,
+            52,
+            433
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            26,
+            517,
+            52,
+            646
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "aside_text",
+        "text": "Author Manuscript",
+        "bbox": [
+            27,
+            729,
+            52,
+            859
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "header",
+        "text": "Gabryszewski et al.",
+        "bbox": [
+            122,
+            45,
+            230,
+            59
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "page_number",
+        "text": "Page 14",
+        "bbox": [
+            807,
+            45,
+            856,
+            60
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "footer",
+        "text": ". Author manuscript; available in PMC 2025 November 13.",
+        "bbox": [
+            271,
+            898,
+            637,
+            914
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "table",
+        "img_path": "images/b1a1cc72080bc9338782b5fbc5e41ce1b62a4b605fde6902927c62be7b897f2f.jpg",
+        "table_caption": [
+            "<sub>a</sub>b<sup>le</sup> <sup>1</sup> Demographic features of study cohorts with and without IgE-mediated food allergy"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td colspan=\"13\">Demographic features of study cohorts with and without IgE-mediated food allergy Minimum 2-year observation</td></tr><tr><td rowspan=\"5\">Age at cohort entry</td><td rowspan=\"5\"></td><td colspan=\"11\">Pre-guidelines1</td></tr><tr><td colspan=\"4\">IgE-FA No IgE-FA</td><td colspan=\"4\">IgE-FA No IgE-FA</td><td rowspan=\"2\"></td></tr><tr><td>%</td><td colspan=\"3\">n %</td><td colspan=\"2\">n %</td><td colspan=\"2\">n %</td></tr><tr><td>n</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>P</td></tr><tr><td>0-4 months</td><td>711</td><td>93.0</td><td>34,869</td><td>92.0</td><td>547</td><td>95.0</td><td>43,574</td><td>95.0</td><td>****</td><td></td></tr><tr><td>5-8 months</td><td>30</td><td>4.0</td><td>1,618</td><td>4.0</td><td>16</td><td>3.0</td><td>1,408</td><td>3.0</td><td>NS</td><td></td></tr><tr><td>9-12 months</td><td>24</td><td>3.0</td><td>1,342</td><td>4.0</td><td>13</td><td>2.0</td><td>1,122</td><td>2.0</td><td>NS</td><td></td></tr><tr><td>Sex</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>Male</td><td>469</td><td>61.0</td><td>19,341</td><td>51.0</td><td>354</td><td>61.0</td><td>23,629</td><td>51.0</td><td>****</td><td></td></tr><tr><td>Female</td><td>296</td><td>39.0</td><td>18,487</td><td>49.0</td><td>222</td><td>39.0</td><td>22,475</td><td>49.0</td><td rowspan=\"2\" colspan=\"3\">****</td></tr><tr><td>Unknown</td><td>0</td><td>0.0</td><td>1</td><td>0.0</td><td>0 0.0</td><td>0</td><td>0.0</td></tr><tr><td>Race 6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>White</td><td>439</td><td>57.0</td><td>21,941</td><td>58.0</td><td>354</td><td>61.0</td><td>26,136</td><td>57.0</td><td>****</td><td></td></tr><tr><td>Black</td><td>156</td><td>20.0</td><td>9,362</td><td>25.0</td><td>84</td><td>15.0</td><td>10,898 24.0</td><td>****</td><td></td><td></td></tr><tr><td>Asian or Pacific Islander</td><td>70</td><td>9.0</td><td>1,609</td><td>4.0</td><td>51 9.0</td><td>1,955</td><td>4.0</td><td>***</td><td></td><td></td></tr><tr><td>Other</td><td>28</td><td>4.0</td><td>1,763</td><td>5.0</td><td>32 6.0</td><td>3,619</td><td>8.0</td><td>*</td><td></td><td></td></tr><tr><td>Unknown</td><td>72</td><td>9.0</td><td>3,154</td><td>8.0</td><td>55</td><td>10.0</td><td>3,496 8.0</td><td>*</td><td></td><td></td></tr><tr><td>Ethnicity</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>****</td><td></td></tr><tr><td>Non-Hispanic</td><td>713</td><td>93.0</td><td>33,067</td><td>87.0</td><td>526</td><td>91.0</td><td>40,150</td><td>87.0</td><td>NS</td><td></td></tr><tr><td>Hispanic</td><td>47</td><td>6.0</td><td>4,125</td><td>11.0</td><td>39</td><td>7.0 4,417</td><td></td><td>10.0</td></tr><tr><td>Other</td><td>5</td><td>1.0</td><td>637</td><td>2.0</td><td>11</td><td>2.0</td><td>1,537</td><td>3.0</td><td>NS</td></tr><tr><td>Total</td><td>765</td><td>100.0</td><td>37,829</td><td>100.0</td><td>576</td><td>100.0 46,104</td><td>100.0</td><td></td><td></td></tr><tr><td></td><td></td><td colspan=\"10\">Minimum 1-year observation</td></tr><tr><td></td><td></td><td colspan=\"2\">Pre-guidelines3</td><td colspan=\"4\">Post-guidelines4 No IgE-FA</td><td colspan=\"6\">Post-addendum guidelines5</td></tr><tr><td></td><td>IgE-FA</td><td colspan=\"2\">No IgE-FA</td><td colspan=\"4\">IgE-FA</td><td colspan=\"4\">IgE-FA No IgE-FA %</td></tr><tr><td></td><td>n</td><td>%</td><td>n</td><td>%</td><td>n</td><td>%</td><td>n %</td><td>P</td><td>n</td><td>n</td><td>%</td></tr><tr><td>Age at cohort entry</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>*</td><td>353</td><td>96.0 37,542</td><td>96.0</td></tr><tr><td>0-4 months</td><td>522</td><td>93.0</td><td>35,058</td><td>92.0</td><td>449</td><td>94.0</td><td>43,672 95.0</td><td></td><td></td><td></td><td>****</td></tr></table>",
+        "bbox": [
+            111,
+            267,
+            836,
+            856
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "aside_text",
+        "text": "<sup>thor</sup> M<sub>anusc</sub>",
+        "bbox": [
+            27,
+            131,
+            53,
+            260
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "aside_text",
+        "text": "<sup>thor</sup> M<sub>anusc</sub>",
+        "bbox": [
+            27,
+            344,
+            53,
+            473
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "aside_text",
+        "text": "<sup>thor</sup> M<sub>anusc</sub>",
+        "bbox": [
+            29,
+            558,
+            53,
+            688
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "aside_text",
+        "text": "<sup>thor</sup> M<sub>anusc</sub>",
+        "bbox": [
+            27,
+            771,
+            53,
+            900
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "header",
+        "text": "Gabryszewski et al.",
+        "bbox": [
+            122,
+            45,
+            232,
+            59
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "page_number",
+        "text": "Page 15",
+        "bbox": [
+            805,
+            45,
+            856,
+            60
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "footer",
+        "text": ". Author manuscript; available in PMC 2025 November 13.",
+        "bbox": [
+            269,
+            898,
+            640,
+            915
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "table",
+        "img_path": "images/b0bc776b26d8a1524bba3687cbb6db9ad63d9c594dccce9db50fe66d43be96e8.jpg",
+        "table_caption": [],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=2 colspan=17></td></tr><tr><td rowspan=1 colspan=2></td><td rowspan=1 colspan=1>4.0</td><td rowspan=1 colspan=1>1,625</td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>1,409</td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>NS</td><td rowspan=1 colspan=1>10</td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>945</td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>NS</td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>9-12 months</td><td rowspan=1 colspan=1>17</td><td rowspan=1 colspan=1>3.0</td><td rowspan=1 colspan=1>1,349</td><td rowspan=1 colspan=1>4.0</td><td rowspan=1 colspan=1>12</td><td rowspan=1 colspan=1>3.0</td><td rowspan=1 colspan=1>1,123</td><td rowspan=1 colspan=1>2.0</td><td rowspan=1 colspan=1>NS</td><td rowspan=1 colspan=1>5</td><td rowspan=1 colspan=1>1.0</td><td rowspan=1 colspan=1>739</td><td rowspan=1 colspan=1>2.0</td><td rowspan=1 colspan=2>NS</td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=2>Sex</td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=2 colspan=1></td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>Male</td><td rowspan=1 colspan=1>342</td><td rowspan=1 colspan=1>61.0</td><td rowspan=1 colspan=1>19,468</td><td rowspan=1 colspan=1>51.0</td><td rowspan=1 colspan=1>290</td><td rowspan=1 colspan=1>61.0</td><td rowspan=1 colspan=1>23,693</td><td rowspan=1 colspan=1>51.0</td><td rowspan=1 colspan=1>NS</td><td rowspan=1 colspan=1>224</td><td rowspan=1 colspan=1>61.0</td><td rowspan=1 colspan=1>20,227</td><td rowspan=1 colspan=1>52.0</td><td rowspan=1 colspan=1>***</td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=2>Female               220</td><td rowspan=1 colspan=1>39.0</td><td rowspan=1 colspan=1>18,563</td><td rowspan=1 colspan=1>49.0</td><td rowspan=1 colspan=1>186</td><td rowspan=1 colspan=1>39.0</td><td rowspan=1 colspan=1>22,511</td><td rowspan=1 colspan=1>49.0</td><td rowspan=1 colspan=1>NS</td><td rowspan=1 colspan=1>144</td><td rowspan=1 colspan=1>39.0</td><td rowspan=1 colspan=1>18,999</td><td rowspan=1 colspan=1>48.0</td><td rowspan=1 colspan=1>**</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=2>Unknown               0</td><td rowspan=1 colspan=1>0.0</td><td rowspan=1 colspan=1>1</td><td rowspan=1 colspan=1>0.0</td><td rowspan=1 colspan=1>0</td><td rowspan=1 colspan=1>0.0</td><td rowspan=1 colspan=1>0</td><td rowspan=1 colspan=1>0.0</td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>0</td><td rowspan=1 colspan=1>0.0</td><td rowspan=1 colspan=1>0</td><td rowspan=1 colspan=1>0.0</td><td rowspan=1 colspan=1></td><td rowspan=4 colspan=1></td></tr><tr><td rowspan=2 colspan=1>Race</td><td rowspan=2 colspan=2>7</td><td rowspan=2 colspan=1></td><td rowspan=2 colspan=1></td><td rowspan=2 colspan=1></td><td rowspan=2 colspan=1></td><td rowspan=2 colspan=1></td><td rowspan=2 colspan=1></td><td rowspan=2 colspan=1></td><td rowspan=2 colspan=1></td><td rowspan=2 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=2>White                 331</td><td rowspan=1 colspan=1>59.0</td><td rowspan=1 colspan=1>22,049</td><td rowspan=1 colspan=1>58.0</td><td rowspan=1 colspan=1>291</td><td rowspan=1 colspan=1>61.0</td><td rowspan=1 colspan=1>26,199</td><td rowspan=1 colspan=1>57.0</td><td rowspan=1 colspan=1>*</td><td rowspan=1 colspan=1>241</td><td rowspan=1 colspan=1>65.0</td><td rowspan=1 colspan=1>21,318</td><td rowspan=1 colspan=1>54.0</td><td rowspan=1 colspan=1>NS</td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>Black</td><td rowspan=1 colspan=1>101</td><td rowspan=1 colspan=1>18.0</td><td rowspan=1 colspan=1>9,417</td><td rowspan=1 colspan=1>25.0</td><td rowspan=1 colspan=1>70</td><td rowspan=1 colspan=1>15.0</td><td rowspan=1 colspan=1>10,912</td><td rowspan=1 colspan=1>24.0</td><td rowspan=1 colspan=1>NS</td><td rowspan=1 colspan=1>32</td><td rowspan=1 colspan=1>9.0</td><td rowspan=1 colspan=1>9,286</td><td rowspan=1 colspan=1>24.0</td><td rowspan=1 colspan=1>****</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>Asian or Pacific Islander</td><td rowspan=1 colspan=1>49</td><td rowspan=1 colspan=1>9.0</td><td rowspan=1 colspan=1>1,630</td><td rowspan=1 colspan=1>4.0</td><td rowspan=1 colspan=1>42</td><td rowspan=1 colspan=1>9.0</td><td rowspan=1 colspan=1>1,964</td><td rowspan=1 colspan=1>4.0</td><td rowspan=1 colspan=1>NS</td><td rowspan=1 colspan=1>26</td><td rowspan=1 colspan=1>7.0</td><td rowspan=1 colspan=1>1,761</td><td rowspan=1 colspan=1>4.0</td><td rowspan=1 colspan=1>*</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>Other</td><td rowspan=1 colspan=1>23</td><td rowspan=1 colspan=1>4.0</td><td rowspan=1 colspan=1>1,768</td><td rowspan=1 colspan=1>5.0</td><td rowspan=1 colspan=1>26</td><td rowspan=1 colspan=1>5.0</td><td rowspan=1 colspan=1>3,625</td><td rowspan=1 colspan=1>8.0</td><td rowspan=1 colspan=1>*</td><td rowspan=1 colspan=1>30</td><td rowspan=1 colspan=1>8.0</td><td rowspan=1 colspan=1>2,745</td><td rowspan=1 colspan=1>7.0</td><td rowspan=1 colspan=1>NS</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>Unknown</td><td rowspan=1 colspan=1>58</td><td rowspan=1 colspan=1>10.0</td><td rowspan=1 colspan=1>3,168</td><td rowspan=1 colspan=1>8.0</td><td rowspan=1 colspan=1>47</td><td rowspan=1 colspan=1>10.0</td><td rowspan=1 colspan=1>3,504</td><td rowspan=1 colspan=1>8.0</td><td rowspan=1 colspan=1>NS</td><td rowspan=1 colspan=1>39</td><td rowspan=1 colspan=1>11.0</td><td rowspan=1 colspan=1>4,116</td><td rowspan=1 colspan=1>10.0</td><td rowspan=1 colspan=1>**</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=2>Ethnicity</td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=2 colspan=1></td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>Non-Hispanic</td><td rowspan=1 colspan=1>519</td><td rowspan=1 colspan=1>92.0</td><td rowspan=1 colspan=1>33,261</td><td rowspan=1 colspan=1>87.0</td><td rowspan=1 colspan=1>438</td><td rowspan=1 colspan=1>92.0</td><td rowspan=1 colspan=1>40,238</td><td rowspan=1 colspan=1>87.0</td><td rowspan=1 colspan=1>*</td><td rowspan=1 colspan=1>339</td><td rowspan=1 colspan=1>92.0</td><td rowspan=1 colspan=1>34,238</td><td rowspan=1 colspan=1>87.0</td><td rowspan=1 colspan=1>****</td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>Hispanic</td><td rowspan=1 colspan=1>39</td><td rowspan=1 colspan=1>7.0</td><td rowspan=1 colspan=1>4,133</td><td rowspan=1 colspan=1>11.0</td><td rowspan=1 colspan=1>30</td><td rowspan=1 colspan=1>6.0</td><td rowspan=1 colspan=1>4,426</td><td rowspan=1 colspan=1>10.0</td><td rowspan=1 colspan=1>NS</td><td rowspan=1 colspan=1>17</td><td rowspan=1 colspan=1>5.0</td><td rowspan=1 colspan=1>3,732</td><td rowspan=1 colspan=1>10.0</td><td rowspan=1 colspan=1>*</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=2>Other                  4</td><td rowspan=1 colspan=1>1.0</td><td rowspan=1 colspan=1>638</td><td rowspan=1 colspan=1>2.0</td><td rowspan=1 colspan=1>8</td><td rowspan=1 colspan=1>2.0</td><td rowspan=1 colspan=1>1,540</td><td rowspan=1 colspan=1>3.0</td><td rowspan=1 colspan=1>NS</td><td rowspan=1 colspan=1>12</td><td rowspan=1 colspan=1>3.0</td><td rowspan=1 colspan=1>1,256</td><td rowspan=1 colspan=1>3.0</td><td rowspan=1 colspan=1>NS</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=2>Total                   562</td><td rowspan=1 colspan=1>100.0</td><td rowspan=1 colspan=1>38,032</td><td rowspan=1 colspan=1>100.0</td><td rowspan=1 colspan=1>476</td><td rowspan=1 colspan=1>100.0</td><td rowspan=1 colspan=1>46,204</td><td rowspan=1 colspan=1>100.0</td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>368</td><td rowspan=1 colspan=1>100.0</td><td rowspan=1 colspan=1>39,226</td><td rowspan=1 colspan=1>100.0</td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=3>Cohort entry between September 1, 2012 and Au</td><td rowspan=1 colspan=1>gust 31, 2</td><td rowspan=1 colspan=3>014 and observation unt</td><td rowspan=1 colspan=1>il August</td><td rowspan=1 colspan=5>31, 2016 (as illustrated in Figure 1A)</td><td rowspan=1 colspan=2></td><td rowspan=1 colspan=1></td></tr><tr><td></td><td rowspan=1 colspan=3>Cohort entry between September 1, 2015 and Au</td><td rowspan=1 colspan=1>gust 31, 2</td><td rowspan=1 colspan=2>017 and observa</td><td rowspan=1 colspan=1>tion unt</td><td rowspan=1 colspan=1>il August 3</td><td rowspan=1 colspan=1>1, 2019 (a</td><td rowspan=1 colspan=3>s illustrated in Figur</td><td rowspan=1 colspan=1>e 1A)</td><td rowspan=1 colspan=2></td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>3</td><td rowspan=1 colspan=3>Cohort entry between September 1, 2012 and Au</td><td rowspan=1 colspan=1>gust 31, 20</td><td rowspan=1 colspan=2>14 and observa</td><td rowspan=1 colspan=1>tion unt</td><td rowspan=1 colspan=1>il August 3</td><td rowspan=1 colspan=1>1, 2015 (</td><td rowspan=1 colspan=3>as illustrated in Figu</td><td rowspan=1 colspan=1>re 1B)</td><td rowspan=1 colspan=2></td><td rowspan=1 colspan=1></td></tr><tr><td></td><td rowspan=1 colspan=3>Cohort entry between September 1, 2015 and Au</td><td rowspan=1 colspan=1>gust 31, 2</td><td rowspan=1 colspan=2>017 and observa</td><td rowspan=1 colspan=1>tion unt</td><td rowspan=1 colspan=1>il August 3</td><td rowspan=1 colspan=1>1, 2018 (</td><td rowspan=1 colspan=4>as illustrated in Figure 1B)</td><td rowspan=1 colspan=2></td><td rowspan=3 colspan=1></td></tr><tr><td></td><td rowspan=2 colspan=3>Cohort entry between February 1, 2017 and Jan</td><td rowspan=2 colspan=10>uary 31, 2019 and observation until January 31, 2020 (as illustrated in Figure 1B)</td><td></td><td></td></tr><tr><td></td><td rowspan=2 colspan=2></td></tr><tr><td></td><td rowspan=2 colspan=3>The category \"Unknown\" is comprised of su</td><td rowspan=2 colspan=10>iects wit self-denified unno race whereas \"Other” comrse all oter entriesinc</td><td></td></tr><tr><td></td><td rowspan=1 colspan=2>ding“American</td><td rowspan=1 colspan=1>Indian or Alaska native.\" “Mixed racial group.\" and</td></tr><tr><td rowspan=1 colspan=17>IgE-FA, IgE-mediated food allergyStatistical testing was performed to compare the association of each demographic characteristic with IgE-FA status in the pre- versus post-guidelines periods.* p&lt;0.05; ** p&lt;0.01; *** p&lt;0.001; **** p&lt;0.0001; NS, not significant</td></tr></table>",
+        "bbox": [
+            65,
+            69,
+            759,
+            856
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "aside_text",
+        "text": "<sup>thor</sup> M<sub>anusc</sub>",
+        "bbox": [
+            27,
+            131,
+            55,
+            260
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "aside_text",
+        "text": "<sup>thor</sup> M<sub>anusc</sub>",
+        "bbox": [
+            27,
+            343,
+            53,
+            473
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "aside_text",
+        "text": "<sup>thor</sup> M<sub>anusc</sub>",
+        "bbox": [
+            27,
+            558,
+            55,
+            688
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "aside_text",
+        "text": "<sup>thor</sup> M<sub>anusc</sub>",
+        "bbox": [
+            27,
+            771,
+            55,
+            900
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "header",
+        "text": "Gabryszewski et al.",
+        "bbox": [
+            122,
+            45,
+            232,
+            59
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "page_number",
+        "text": "Page 16",
+        "bbox": [
+            805,
+            45,
+            856,
+            60
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "footer",
+        "text": ". Author manuscript; available in PMC 2025 November 13.",
+        "bbox": [
+            269,
+            898,
+            638,
+            915
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "table",
+        "img_path": "images/6274743577aa22b9d3a228ad0ba8117e1f6ff958e614f3624ce45225d360c13c.jpg",
+        "table_caption": [
+            "Table 2:Cumulative incidence of IgE-mediated food allergy or atopic dermatitis in study cohorts",
+            "<sub>c</sub> <sub>dermatitis;</sub> <sub>IgE-F</sub>A<sup>,</sup> <sup>IgE-mediated</sup> <sup>foo</sup> Statistical testing was performed to compare each allergic outcome in the pre- versus post-guidelines periods. <sub>\\*</sub> <sub>p<0</sub>.<sub>01;</sub> <sub>\\*\\*\\*</sub> <sub>p<0</sub>.<sub>001;</sub> <sub>\\*\\*\\*\\*</sub> <sub>p<0</sub>.<sub>0001;</sub> N<sup>S,</sup> <sup>not</sup>"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=\"4\"></td><td colspan=\"4\">Minimum 2-year observation</td><td colspan=\"3\"></td><td>Children with</td></tr><tr><td>All children</td><td></td><td>2IgE-FA AD</td><td></td><td>Children with preceding AD Peanut IgE-FA</td><td>1 IgE-FA</td><td>2 IgE-FA</td><td>preceding egg IgE-FA</td></tr><tr><td>Peanut IgE-FA 0.92% (355)</td><td>1 IgE-FA 1.98% (765)</td><td>0.79% (306)</td><td>13.4% (5,157)</td><td>0.38% (145)</td><td>0.58% (225)</td><td>0.23% (90)</td><td>Peanut IgE-FA 0.12% (46)</td></tr><tr><td>Pre-guidelines1</td><td>**** 1.23% (576)</td><td>****</td><td>****</td><td>0.33% (152) NS</td><td>0.52% (243) NS</td><td>0.26% (121) NS</td><td>*</td></tr><tr><td>Post-guidelines 2 Relative percent change6</td><td>0.67% (312) -27.2%</td><td>**** -37.9%</td><td>0.56% (263) -29.1%</td><td>19.7% (9,219) +47.0%</td><td>-13.2%</td><td>-10.3%</td><td>+13.0%</td><td>0.07% (34) -41.7%</td></tr><tr><td></td><td colspan=\"6\">Minimum 1-year observation</td><td colspan=\"2\"></td></tr><tr><td rowspan=\"5\"></td><td colspan=\"7\"></td></tr><tr><td>All children Peanut IgE-FA 1 IgE-FA</td><td>2 IgE-FA</td><td>AD</td><td>Peanut IgE-FA</td><td>Children with preceding AD 1 IgE-FA</td><td>2 IgE-FA</td><td>preceding egg IgE-FA Peanut IgE-FA</td></tr><tr><td>0.79% (306)</td><td>1.46% (562)</td><td>0.56% (217)</td><td>11.2% (4,313)</td><td>0.27% (105) 0.43% (166)</td><td>0.20% (81)</td><td>0.10% (39)</td></tr><tr><td>Pre-guidelines 3 Post-guidelines 4 0.53% (247)</td><td>**** 1.02% (476) ****</td><td>0.41% (193) **</td><td>18.0% (8,397) ****</td><td>0.25% (118) NS</td><td>0.43% (199) NS</td><td>0.21% (100) NS 0.06% (26) 水</td></tr><tr><td>Relative percent change6</td><td>-32.9% -30.1%</td><td>-26.8%</td><td>+60.7%</td><td>-7.4%</td><td>0%</td><td>+5%</td></tr><tr><td>Post-addendum guidelines 5</td><td>0.45% (176) ****</td><td>0.93% (368) ****</td><td>0.40% (157) ***</td><td>19.7% (7,816) ****</td><td>0.24% (96) NS</td><td>0.37% (148)NS</td><td>0.20% (83) NS</td><td>-40.0% 0.04% (15) **</td></tr><tr><td>Relative percent change6</td><td>-43.0%</td><td>-36.3%</td><td>-28.6%</td><td>+75.9%</td><td>-11.1%</td><td>-14.0%</td><td>0%</td><td>-60.0%</td></tr><tr><td colspan=\"7\">All listed cumulative incidences represent the number of subjects with the indicated diagnoses (absolute number listed in parentheses) divided by the total number of subjects in the cohort during the observation period (as reported in Table 1).</td><td></td></tr><tr><td colspan=\"8\"></td></tr><tr><td colspan=\"8\"></td></tr><tr><td colspan=\"8\"></td></tr><tr><td colspan=\"8\"></td></tr><tr><td colspan=\"8\"></td></tr><tr><td colspan=\"8\"></td></tr><tr><td colspan=\"8\">Percent change relative to pre-guidelines cohort</td></tr></table>",
+        "bbox": [
+            119,
+            77,
+            745,
+            858
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "aside_text",
+        "text": "<sup>thor</sup> M<sub>anusc</sub>",
+        "bbox": [
+            27,
+            131,
+            53,
+            261
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "aside_text",
+        "text": "<sup>thor</sup> M<sub>anusc</sub>",
+        "bbox": [
+            29,
+            343,
+            53,
+            473
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "aside_text",
+        "text": "<sup>thor</sup> M<sub>anusc</sub>",
+        "bbox": [
+            29,
+            558,
+            53,
+            688
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "aside_text",
+        "text": "<sup>thor</sup> M<sub>anusc</sub>",
+        "bbox": [
+            27,
+            771,
+            53,
+            900
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "header",
+        "text": "Gabryszewski et al.",
+        "bbox": [
+            122,
+            45,
+            230,
+            59
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "page_number",
+        "text": "Page 17",
+        "bbox": [
+            805,
+            45,
+            856,
+            60
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "footer",
+        "text": ". Author manuscript; available in PMC 2025 November 13.",
+        "bbox": [
+            269,
+            898,
+            640,
+            915
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "table",
+        "img_path": "images/0f31b5dadf11e768fad433a1aa0ec7efe10f592f96a982897986ccff527cdcfe.jpg",
+        "table_caption": [
+            "Table 3:Distribution of documented food allergens in study cohorts"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td colspan=\"10\">Minimum 2-year observation</td></tr><tr><td colspan=\"4\">Pre-guidelines1</td><td colspan=\"5\">Post-guidelines2</td><td colspan=\"4\"></td></tr><tr><td>Rank</td><td>Food</td><td>n</td><td>%</td><td>Rank</td><td>Food</td><td></td><td>n %</td><td>P</td><td></td><td></td><td></td><td></td></tr><tr><td>1</td><td>Peanut</td><td>355</td><td>0.920</td><td>1</td><td>Egg</td><td></td><td>326</td><td>0.698 NS</td><td></td><td></td></tr><tr><td>2</td><td>Egg</td><td>257</td><td>0.666</td><td>2</td><td>Peanut</td><td></td><td>312 0.668</td><td>****</td></tr><tr><td>3</td><td>Milk</td><td>170</td><td>0.440</td><td>3</td><td>Milk</td><td>138</td><td>0.296</td><td>***</td></tr><tr><td>4</td><td>Tree nut</td><td>62</td><td>0.161</td><td>4</td><td>Tree nut</td><td>64</td><td>0.137</td><td>NS</td></tr><tr><td>5</td><td>Shellfish</td><td>49</td><td>0.127</td><td>5</td><td>Sesame</td><td>43</td><td>0.092</td><td>NS</td></tr><tr><td>6</td><td>Fish</td><td>44</td><td>0.114</td><td>6</td><td>Shellfish</td><td>34</td><td>0.073</td><td>*</td></tr><tr><td>7</td><td>Sesame</td><td>38</td><td>0.098</td><td>7</td><td>Cashew</td><td>30</td><td>0.064</td><td>NS</td></tr><tr><td>8</td><td>Soy</td><td>33</td><td>0.086</td><td>8</td><td>Soy</td><td>24</td><td>0.051</td><td>NS</td></tr><tr><td>9</td><td>Cashew</td><td>19</td><td>0.049</td><td>9</td><td>Fish</td><td>22</td><td>0.047 ***</td><td></td></tr><tr><td>10</td><td>Walnut</td><td>14</td><td>0.036</td><td>10</td><td>Wheat</td><td>17</td><td>0.036 NS</td><td></td></tr><tr><td>11</td><td>Wheat</td><td>14</td><td>0.036</td><td>11</td><td>Pistachio</td><td>14</td><td>0.030</td><td>NS</td></tr><tr><td>12</td><td>Almond</td><td>7</td><td>0.018</td><td>12</td><td>Walnut</td><td>10</td><td>0.021</td><td>NS</td></tr><tr><td>13</td><td>Sunflower</td><td>7</td><td>0.018</td><td>13</td><td>Almond</td><td>9</td><td>0.019 NS</td><td></td></tr><tr><td>14</td><td>Hazelnut</td><td>6</td><td>0.016</td><td>14</td><td>Sunflower</td><td>8</td><td>0.017 NS</td><td></td></tr><tr><td>15</td><td>Pecan</td><td>6</td><td>0.016</td><td>15</td><td>Hazelnut</td><td>4</td><td>0.009 NS</td><td></td></tr><tr><td>16</td><td>Pistachio</td><td>5</td><td>0.013</td><td>16</td><td>Mustard</td><td>4</td><td>0.009 NS</td><td></td></tr><tr><td>17</td><td>Mustard</td><td>1</td><td>0.003</td><td>17 Pecan</td><td></td><td>3</td><td>0.006 NS</td><td></td></tr><tr><td colspan=\"6\">Minimum 1-year observation</td><td colspan=\"6\"></td></tr><tr><td colspan=\"6\">Pre-guidelines3 Post-guidelines4</td><td colspan=\"6\">Post-addendum guidelines5</td></tr><tr><td>Rank</td><td>Food</td><td>n</td><td>%</td><td>Rank Food</td><td></td><td>n</td><td>% P</td><td>Rank</td><td>Food</td><td>n %</td><td>P</td></tr><tr><td>1</td><td>Peanut</td><td>306</td><td>0.793</td><td>1 Egg</td><td></td><td>271 0.581</td><td>NS</td><td>1</td><td>Egg</td><td>223 0.563</td><td>NS</td></tr><tr><td>2</td><td>Egg</td><td>233 0.604</td><td></td><td>2 Peanut</td><td></td><td>247 0.529</td><td>NS</td><td>2</td><td>Peanut</td><td>176 0.445</td><td>****</td></tr><tr><td>3</td><td>Milk</td><td>146 0.378</td><td>3</td><td>Milk</td><td>116</td><td>0.249</td><td>NS</td><td>3</td><td>Milk</td><td>82 0.207</td><td>**</td></tr><tr><td>4</td><td>Tree nut</td><td>47 0.122</td><td></td><td>4 Tree nut</td><td></td><td>37 0.079</td><td>NS</td><td>4</td><td>Tree nut</td><td>39 0.098</td><td>NS</td></tr><tr><td>5</td><td>Shellfish</td><td>36</td><td>0.093</td><td>5</td><td>Sesame</td><td>28</td><td>0.060 NS</td><td>5</td><td>Sesame</td><td>24</td><td>0.061 NS</td></tr><tr><td>6</td><td>Fish</td><td>31</td><td>0.080</td><td>6</td><td>Shellfish</td><td>24</td><td>0.051 NS</td><td>6</td><td>Cashew</td><td>16</td><td>0.040 NS</td></tr><tr><td>7</td><td>Soy</td><td>29</td><td>0.075</td><td>7</td><td>Soy</td><td>21</td><td>0.045 NS</td><td>7</td><td>Soy</td><td>12</td><td>0.030 *</td></tr></table>",
+        "bbox": [
+            125,
+            343,
+            833,
+            857
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "aside_text",
+        "text": "<sup>thor</sup> M<sub>anusc</sub>",
+        "bbox": [
+            29,
+            131,
+            53,
+            260
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "aside_text",
+        "text": "<sup>thor</sup> M<sub>anusc</sub>",
+        "bbox": [
+            29,
+            344,
+            53,
+            473
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "aside_text",
+        "text": "<sup>thor</sup> M<sub>anusc</sub>",
+        "bbox": [
+            29,
+            558,
+            53,
+            688
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "aside_text",
+        "text": "<sup>thor</sup> M<sub>anusc</sub>",
+        "bbox": [
+            29,
+            772,
+            53,
+            900
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "header",
+        "text": "Gabryszewski et al.",
+        "bbox": [
+            122,
+            45,
+            230,
+            59
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "page_number",
+        "text": "Page 18",
+        "bbox": [
+            807,
+            45,
+            856,
+            60
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "footer",
+        "text": ". Author manuscript; available in PMC 2025 November 13.",
+        "bbox": [
+            269,
+            898,
+            638,
+            915
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "table",
+        "img_path": "images/72c14d98984abf2c3c6dd8a0790b5a44eb84cc934f84f53fd4bae00f7e64b95f.jpg",
+        "table_caption": [],
+        "table_footnote": [],
+        "table_body": "<table><tr><td>8</td><td>Sesame</td><td>22</td><td>0.057</td><td>8</td><td>Cashew</td><td>16</td><td>0.034</td><td>NS</td><td>8</td><td>Shellfish</td><td>10</td><td>0.025</td><td>**</td></tr><tr><td>9</td><td>Cashew</td><td>14</td><td>0.036</td><td>9</td><td>Wheat</td><td>16</td><td>0.034</td><td>NS</td><td>9</td><td>Wheat</td><td>10</td><td>0.025</td><td>NS</td></tr><tr><td>10</td><td>Wheat</td><td>13</td><td>0.034</td><td>10</td><td>Fish</td><td>14</td><td>0.030</td><td>NS</td><td>10</td><td>Pistachio</td><td>9</td><td>0.023</td><td>NS</td></tr><tr><td>11</td><td>Walnut</td><td>10</td><td>0.026</td><td>11</td><td>Almond</td><td>6</td><td>0.013</td><td>NS</td><td>11</td><td>Fish</td><td>8</td><td>0.020</td><td>*</td></tr><tr><td>12</td><td>Almond</td><td>5</td><td>0.013</td><td>12</td><td>Pistachio</td><td>6</td><td>0.013</td><td>NS</td><td>12</td><td>Almond</td><td>7</td><td>0.018</td><td>NS</td></tr><tr><td>13</td><td>Hazelnut</td><td>5</td><td>0.013</td><td>13</td><td>Walnut</td><td>6</td><td>0.013</td><td>NS</td><td>13</td><td>Sunflower</td><td>5</td><td>0.013</td><td>NS</td></tr><tr><td>14</td><td>Sunflower</td><td>5</td><td>0.013</td><td>14</td><td>Sunflower</td><td>4</td><td>0.009</td><td>NS</td><td>14</td><td>Walnut</td><td>5</td><td>0.013</td><td>NS</td></tr><tr><td>15</td><td>Pecan</td><td>4</td><td>0.010</td><td>15</td><td>Mustard</td><td>3</td><td>0.006</td><td>NS</td><td>15</td><td>Hazelnut</td><td>4</td><td>0.010</td><td>NS</td></tr><tr><td>16</td><td>Pistachio</td><td>4</td><td>0.010</td><td>16</td><td>Hazelnut</td><td>2</td><td>0.004</td><td>NS</td><td>16</td><td>Pecan</td><td>4</td><td>0.010</td><td>NS</td></tr><tr><td>17</td><td>Mustard</td><td>1</td><td>0.003</td><td>17</td><td>Pecan</td><td>2</td><td>0.004</td><td>NS</td><td>17</td><td>Mustard</td><td>1</td><td>0.003</td><td>NS</td></tr></table>",
+        "bbox": [
+            89,
+            74,
+            323,
+            582
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "text",
+        "text": "<sub>\\*</sub> <sub>p<0</sub>.<sub>01;</sub> <sub>\\*\\*\\*</sub> <sub>p<0</sub>.<sub>001;</sub> <sub>\\*\\*\\*\\*</sub> <sub>p<0</sub>.<sub>0001;</sub> N<sup>S,</sup> <sup>not</sup> Statistical testing was performed to compare each allergic outcome in the pre- versus post-guidelines periods. 1Cohort entry between September 1, 2012 and August 31, 2014 and observation until August 31, 2016 (as illustrated in Figure 1A)",
+        "bbox": [
+            331,
+            77,
+            526,
+            584
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "aside_text",
+        "text": "<sup>thor</sup> M<sub>anusc</sub>",
+        "bbox": [
+            29,
+            131,
+            53,
+            260
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "aside_text",
+        "text": "<sup>thor</sup> M<sub>anusc</sub>",
+        "bbox": [
+            29,
+            344,
+            53,
+            473
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "aside_text",
+        "text": "<sup>thor</sup> M<sub>anusc</sub>",
+        "bbox": [
+            29,
+            558,
+            53,
+            686
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "aside_text",
+        "text": "<sup>thor</sup> M<sub>anusc</sub>",
+        "bbox": [
+            29,
+            772,
+            53,
+            900
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "header",
+        "text": "Gabryszewski et al.",
+        "bbox": [
+            122,
+            45,
+            230,
+            59
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "page_number",
+        "text": "Page 19",
+        "bbox": [
+            807,
+            45,
+            854,
+            59
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "footer",
+        "text": ". Author manuscript; available in PMC 2025 November 13.",
+        "bbox": [
+            271,
+            898,
+            637,
+            914
+        ],
+        "page_idx": 18
+    }
+]

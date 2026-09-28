@@ -12,9 +12,11 @@
   "scripts": {
     "build:weapp": "node scripts/check-node.js && taro build --type weapp --mode production",
     "build:weapp:staging": "node scripts/check-node.js && taro build --type weapp --mode staging",
-    "dev:weapp": "node scripts/check-node.js && taro build --type weapp --watch",
+    "dev:weapp": "node scripts/check-node.js && taro build --type weapp --mode development --watch",
     "build:h5": "node scripts/check-node.js && taro build --type h5",
-    "dev:h5": "node scripts/check-node.js && taro build --type h5 --watch"
+    "dev:h5": "node scripts/check-node.js && taro build --type h5 --mode development --watch",
+    "preview": "NODE_OPTIONS=\"--dns-result-order=ipv4first --no-network-family-autoselection\" node scripts/mp-preview.js",
+    "preview:staging": "NODE_OPTIONS=\"--dns-result-order=ipv4first --no-network-family-autoselection\" node scripts/mp-preview.js --staging"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -60,6 +62,7 @@
     "eslint-config-taro": "4.2.0",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.4.0",
+    "miniprogram-ci": "^2.1.31",
     "postcss": "^8.5.6",
     "react-refresh": "^0.14.0",
     "sass": "^1.75.0",

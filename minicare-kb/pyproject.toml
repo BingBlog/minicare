@@ -1,0 +1,39 @@
+[project]
+name = "minicare-kb"
+version = "0.1.0"
+description = "敏宝知识库管线：MinerU 解析 → LlamaIndex 切块 → 校验 → 入库"
+requires-python = ">=3.11"
+dependencies = [
+    "llama-index-core>=0.12",
+    "pypdf>=5.0",
+    "click>=8.1",
+    "pydantic>=2.7",
+    "pydantic-settings>=2.3",
+    "httpx>=0.27",
+    "pymysql>=1.1",
+    "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.5",
+]
+
+[project.scripts]
+kb-pipeline = "kb_pipeline.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"

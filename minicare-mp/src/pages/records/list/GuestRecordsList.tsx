@@ -43,6 +43,9 @@ const DEMO_RECORDS: RecordItem[] = [
   makeMock('demo-5', 'health', `${TODAY}T10:30:00`, {
     temperature: 36.8,
   }),
+  makeMock('demo-10', 'health', `${TODAY}T09:45:00`, {
+    allergy_symptoms: ['皮疹/湿疹', '腹泻'],
+  }),
   // 昨天
   makeMock('demo-6', 'feeding', `${YESTERDAY}T07:00:00`, {
     feed_type: 'formula', formula_ml: 120, milk_types: ['ph'], milk_scoops: { ph: 4 },

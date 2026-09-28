@@ -11,9 +11,10 @@
  * │  └─ FabSheet（FAB 底部弹层）
  * └─ useToast（Toast 轻提示 hook）
  */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { familyApi, babyApi, recordsApi, authApi } from "@/api";
+import type { PendingInvite } from "@/api/family";
 import { useAppStore } from "@/lib/store";
 import { useToast } from "@/components/ui/Toast";
 import { FullPageSpinner } from "@/components/ui/LoadingSpinner";
@@ -26,6 +27,7 @@ import FeedingBanner from "./FeedingBanner";
 import GuestHome from "./GuestHome";
 import DailyComparison from "./DailyComparison";
 import RecordActionSheet from "@/pages/records-list/RecordActionSheet";
+import InviteModal from "@/components/ui/InviteModal";
 import { RECORD_ROUTES, FAB_GROUPS } from "@/lib/constants";
 import { useQuickActionKeys } from "@/lib/useQuickActionKeys";
 import type { TodayRecord, SleepRecord } from "@/api/types";
@@ -53,7 +55,7 @@ const deletableApis = recordsApi as unknown as Record<
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const { token, currentFamily, currentBaby, setCurrentFamily, setCurrentBaby } =
+  const { token, currentFamily, currentBaby, setCurrentFamily, setCurrentBaby, setAllBabies } =
     useAppStore();
 
   // 游客模式：未登录时展示 GuestHome
@@ -84,7 +86,53 @@ export default function HomePage() {
   );
   const [actionOpen, setActionOpen] = useState(false);
 
+  // ── 邀请相关状态 ─────────────────────────────────────────────────────
+  const [pendingInvites, setPendingInvites] = useState<PendingInvite[]>([]);
+  const [inviteModalOpen, setInviteModalOpen] = useState(false);
+  const [needsOnboarding, setNeedsOnboarding] = useState(false);
+  const [needsOnboardingReason, setNeedsOnboardingReason] = useState<'no_family' | 'no_baby'>('no_family');
+
   const { showToast, ToastNode } = useToast();
+
+  // 检查待处理邀请
+  const checkPendingInvites = useCallback(async () => {
+    if (!token) return;
+    try {
+      const invites = await familyApi.getPendingInvites();
+      if (invites.length > 0) {
+        setPendingInvites(invites);
+        setInviteModalOpen(true);
+      }
+    } catch {
+      // 静默失败
+    }
+  }, [token]);
+
+  // 接受邀请后的处理
+  const handleInviteAccept = useCallback(async () => {
+    setPendingInvites([]);
+    setInviteModalOpen(false);
+    try {
+      const babies = await babyApi.getMine();
+      if (babies.length > 0) {
+        setAllBabies(babies);
+        const baby = babies[0];
+        const family = { id: baby.family_id, name: baby.family_name || '', role: baby.family_role || 'member', createdAt: '' };
+        setCurrentFamily(family);
+        setCurrentBaby(baby);
+        setNeedsOnboarding(false);
+        loadTodayRecords(family.id);
+        loadYesterdayRecords(family.id);
+      }
+    } catch {
+      // 静默失败
+    }
+  }, [setCurrentFamily, setCurrentBaby, setAllBabies]);
+
+  const handleInviteDecline = useCallback(() => {
+    setPendingInvites([]);
+    setInviteModalOpen(false);
+  }, []);
 
   // 加载今日记录（可复用，删除后刷新）
   const loadTodayRecords = async (familyId: string) => {
@@ -123,7 +171,21 @@ export default function HomePage() {
         if (!family) {
           const families = await familyApi.getMine();
           if (families.length === 0) {
-            navigate("/onboarding", { replace: true });
+            // 检查是否存在待处理的邀请
+            try {
+              const invites = await familyApi.getPendingInvites();
+              if (invites.length > 0) {
+                setPendingInvites(invites);
+                setInviteModalOpen(true);
+                setLoading(false);
+                return;
+              }
+            } catch {
+              // 静默失败
+            }
+            setNeedsOnboarding(true);
+            setNeedsOnboardingReason('no_family');
+            setLoading(false);
             return;
           }
           family = families[0];
@@ -137,18 +199,26 @@ export default function HomePage() {
             baby = await babyApi.get(family.id);
             setCurrentBaby(baby);
           } catch {
-            navigate("/onboarding", { replace: true });
+            setNeedsOnboarding(true);
+            setNeedsOnboardingReason('no_baby');
+            setLoading(false);
             return;
           }
         }
 
-        // 3. 并发加载：今日记录 + 昨日记录 + 进行中睡眠
+        // 3. 并发加载：今日记录 + 昨日记录 + 进行中睡眠 + 检查邀请 + 加载所有宝宝
         await Promise.all([
           loadTodayRecords(family.id),
           loadYesterdayRecords(family.id),
           recordsApi.sleep
             .getOngoing(family.id, baby.id)
             .then((rec) => setOngoingSleep(rec))
+            .catch(() => {
+              /* 查询失败不影响主流程 */
+            }),
+          checkPendingInvites(),
+          babyApi.getMine()
+            .then((babies) => setAllBabies(babies))
             .catch(() => {
               /* 查询失败不影响主流程 */
             }),
@@ -166,6 +236,50 @@ export default function HomePage() {
   }, []);
 
   if (loading) return <FullPageSpinner />;
+
+  // ── 已登录但无家庭/宝宝 → 引导建档 ────────────────────────────────────────
+  if (needsOnboarding) {
+    return (
+      <div className="min-h-full bg-bg">
+        <div className="px-5 pt-12 pb-4">
+          <div className="text-[22px] font-extrabold text-[#4A3035] tracking-tight">
+            敏宝日记
+          </div>
+        </div>
+        <div className="px-4">
+          <div
+            className="rounded-2xl p-6 text-center"
+            style={{ background: '#FFFBFC', border: '1px solid #F5F0F2' }}
+          >
+            <p className="text-[17px] font-bold text-[#4A3035] mb-2">
+              {needsOnboardingReason === 'no_baby' ? '请创建宝宝档案' : '欢迎加入敏宝日记'}
+            </p>
+            <p className="text-[13px] text-[#9A8090] mb-4">
+              {needsOnboardingReason === 'no_baby'
+                ? '你已加入家庭，创建宝宝档案后即可开始记录'
+                : '创建宝宝档案，开始记录宝宝的成长点滴'}
+            </p>
+            <button
+              type="button"
+              onClick={() => navigate('/onboarding', { state: { mode: needsOnboardingReason === 'no_baby' ? 'invited' : undefined } })}
+              className="w-full py-3.5 rounded-2xl text-[15px] font-semibold border-none cursor-pointer transition-all active:scale-[0.98]"
+              style={{ background: '#F87098', color: '#fff' }}
+            >
+              创建宝宝档案
+            </button>
+          </div>
+        </div>
+        <InviteModal
+          invites={pendingInvites}
+          open={inviteModalOpen}
+          showToast={showToast}
+          onAccept={handleInviteAccept}
+          onDecline={handleInviteDecline}
+        />
+        {ToastNode}
+      </div>
+    );
+  }
 
   // ── 计算今日统计（4格数据） ────────────────────────────────────────────────
   const feedingRecs = todayRecords.filter((r) => r.type === "feeding");
@@ -327,6 +441,15 @@ export default function HomePage() {
         onClose={() => setActionOpen(false)}
         onEdit={handleEdit}
         onDelete={handleDelete}
+      />
+
+      {/* ── 邀请弹层 ── */}
+      <InviteModal
+        invites={pendingInvites}
+        open={inviteModalOpen}
+        showToast={showToast}
+        onAccept={handleInviteAccept}
+        onDecline={handleInviteDecline}
       />
 
       {/* ── Toast 轻提示 ── */}

@@ -1,0 +1,33 @@
+{
+  "name": "agent-poc",
+  "version": "0.2.0",
+  "private": true,
+  "description": "minicare-agent — claude-agent-sdk 直连 DeepSeek 对话服务（2026-09-04 自 OAK 迁移）",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "start:prod": "NODE_ENV=production node src/server.js",
+    "demo": "node src/demo.js",
+    "deploy": "node scripts/deploy-agent.mjs",
+    "deploy:check": "node scripts/check-agent-deploy.mjs",
+    "traces": "node scripts/check-traces.mjs",
+    "traces:stats": "node scripts/check-trace-stats.mjs",
+    "traces:import": "node scripts/langfuse-import.mjs",
+    "poc:sdk": "node scripts/poc-direct-sdk.mjs",
+    "poc:proxy": "node scripts/poc-wire-proxy.mjs"
+  },
+  "engines": {
+    "node": ">=20.19"
+  },
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "^0.3.237",
+    "@cloudbase/node-sdk": "^3.18.3",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mysql2": "^3.23.4",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@cloudbase/manager-node": "^5.8.4"
+  }
+}

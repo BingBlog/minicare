@@ -22,7 +22,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { familyApi, babyApi, recordsApi } from '@/api'
+import { babyApi, recordsApi } from '@/api'
+import { getStoredFamilyId } from '@/api/http'
 import { inferSleepPeriod } from '@/lib/utils'
 import type { RecordFormType } from './types'
 import { useDashboardData, getTodayStr } from './useDashboardData'
@@ -47,7 +48,8 @@ const RECORD_PAGE_MAP: Record<RecordFormType, string> = {
   diaper: '/pages/records/diaper/index',
   sleep: '/pages/records/sleep/index',
   activity: '/pages/records/activity/index',
-  health: '/pages/records/health/index',
+  temperature: '/pages/records/health/temperature/index',
+  allergy: '/pages/records/health/allergy/index',
 }
 
 export default function DashboardPage() {
@@ -70,18 +72,13 @@ export default function DashboardPage() {
         const cachedFamily = Taro.getStorageSync('currentFamily')
         const cachedBaby = Taro.getStorageSync('currentBaby')
 
-        let fId = cachedFamily?.id
+        let fId = cachedFamily?.id || getStoredFamilyId()
         let bName = cachedBaby?.name || '宝宝'
         let bId = cachedBaby?.id
 
         if (!fId) {
-          const families = await familyApi.getMine()
-          if (families.length === 0) {
-            Taro.redirectTo({ url: '/pages/login/index' })
-            return
-          }
-          fId = families[0].id
-          Taro.setStorageSync('currentFamily', families[0])
+          Taro.redirectTo({ url: '/pages/login/index' })
+          return
         }
 
         if (!bId) {
@@ -109,8 +106,9 @@ export default function DashboardPage() {
     init()
   }, [])
 
-  // 保持屏幕常亮
+  // 保持屏幕常亮（H5 无此 API，返回 rejected Promise 且 try/catch 捕获不到，直接跳过）
   useEffect(() => {
+    if (process.env.TARO_ENV !== 'weapp') return
     Taro.setKeepScreenOn({ keepScreenOn: true })
     return () => {
       Taro.setKeepScreenOn({ keepScreenOn: false })
@@ -251,7 +249,7 @@ export default function DashboardPage() {
             <ActivityColumn data={data} onAdd={() => handleAdd('activity')} />
           </View>
           <View className='db-col-wrap db-col-symptom'>
-            <SymptomColumn data={data} onAdd={() => handleAdd('health')} />
+            <SymptomColumn data={data} onAdd={() => handleAdd('allergy')} />
           </View>
           <View className='db-col-wrap db-col-timeline'>
             <TimelineColumn data={data} selectedDate={selectedDate} />

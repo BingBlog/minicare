@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -25,7 +26,7 @@ export class BabyController {
 
   @Post()
   @MinRole(FamilyRole.MEMBER)
-  @ApiOperation({ summary: '创建宝宝档案（MVP: 每家庭限 1 个）' })
+  @ApiOperation({ summary: '创建宝宝档案' })
   create(
     @Param('familyId') familyId: string,
     @CurrentUser() userId: string,
@@ -35,9 +36,15 @@ export class BabyController {
   }
 
   @Get()
-  @ApiOperation({ summary: '获取家庭宝宝档案' })
+  @ApiOperation({ summary: '获取家庭宝宝档案（第一个）' })
   getBaby(@Param('familyId') familyId: string) {
     return this.babyService.getBabyByFamily(familyId);
+  }
+
+  @Get('list')
+  @ApiOperation({ summary: '获取家庭所有宝宝档案' })
+  listBabies(@Param('familyId') familyId: string) {
+    return this.babyService.listBabies(familyId);
   }
 
   @Patch(':babyId')
@@ -49,5 +56,20 @@ export class BabyController {
     @Body() dto: Partial<CreateBabyDto>,
   ) {
     return this.babyService.updateBaby(babyId, familyId, dto);
+  }
+
+  /**
+   * 删除宝宝档案（级联删除全部记录）
+   * 仅 Owner 可操作
+   */
+  @Delete(':babyId')
+  @MinRole(FamilyRole.OWNER)
+  @ApiOperation({ summary: '删除宝宝档案（级联删除全部记录，仅创建者可操作）' })
+  deleteBaby(
+    @Param('familyId') familyId: string,
+    @Param('babyId') babyId: string,
+    @CurrentUser() userId: string,
+  ) {
+    return this.babyService.deleteBaby(babyId, familyId, userId);
   }
 }

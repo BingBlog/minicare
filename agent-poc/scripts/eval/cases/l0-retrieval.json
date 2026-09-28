@@ -1,0 +1,45 @@
+{
+  "name": "l0-retrieval",
+  "desc": "L0 检索链路冒烟（完整召回回归走 scripts/eval-recall-exact.mjs）",
+  "cases": [
+    {
+      "id": "L0-03",
+      "desc": "口语化问法能召回语义等价知识块",
+      "priority": "P0",
+      "message": "娃拉血便咋办？",
+      "ctx": { "userId": "00000000-0000-0000-0000-000000000001", "familyId": "6bfa926a-62f5-4e91-99de-b53a161e008e", "babyId": "8535bda2-7cdf-45c3-ba37-34a580822e5f" },
+      "expect": {
+        "toolCalls": [
+          { "name": "search_knowledge", "input": { "query": { "contains": "血" } }, "count": { "gte": 1, "lte": 1 } }
+        ],
+        "minToolCalls": 1,
+        "maxToolCalls": 1,
+        "done": true,
+        "answerNotEmpty": true
+      },
+      "judge": {
+        "faithfulness": true,
+        "completeness": {
+          "goldenPoints": ["回答给出便血相关的护理/就医建议（依据检索结果）", "带免责声明或就医指引"]
+        },
+        "style": { "needsDisclaimer": true }
+      }
+    },
+    {
+      "id": "L0-05",
+      "desc": "无知识库结果时应如实降级（人工注入空结果场景由单测覆盖，此处验证不崩溃）",
+      "priority": "P1",
+      "message": "请介绍一下量子纠缠对宝宝睡眠的影响",
+      "ctx": { "userId": "00000000-0000-0000-0000-000000000001", "familyId": "6bfa926a-62f5-4e91-99de-b53a161e008e", "babyId": "8535bda2-7cdf-45c3-ba37-34a580822e5f" },
+      "expect": {
+        "done": true,
+        "answerNotEmpty": true
+      },
+      "judge": {
+        "completeness": {
+          "goldenPoints": ["明确知识库未收录/无相关内容", "不编造量子纠缠与睡眠的关系"]
+        }
+      }
+    }
+  ]
+}

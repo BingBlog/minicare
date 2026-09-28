@@ -9,6 +9,19 @@ import type { Baby, CreateBabyDto, UpdateBabyDto } from './types'
 
 export const babyApi = {
   /**
+   * 获取当前用户所有家庭的宝宝列表
+   * 用于多宝宝切换场景
+   *
+   * @example 响应体
+   * [
+   *   { "id": "...", "family_id": "...", "name": "小宝", ... },
+   *   { "id": "...", "family_id": "...", "name": "二宝", ... }
+   * ]
+   */
+  getMine: () =>
+    request<Baby[]>('/api/baby/mine'),
+
+  /**
    * 获取家庭宝宝档案（MVP 每家庭唯一）
    * 若未创建宝宝档案，后端返回 404
    *

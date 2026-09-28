@@ -57,7 +57,7 @@ export class FamilyService {
       `SELECT fg.id, fg.name, fg.created_at, fm.role
        FROM family_group fg
        JOIN family_member fm ON fg.id = fm.family_id
-       WHERE fm.user_id = ? AND fm.status = 'active'
+       WHERE fm.user_id = ? AND fm.status = 'active' AND fg.deleted_at IS NULL
        ORDER BY fg.created_at DESC`,
       [userId],
     );
@@ -92,7 +92,6 @@ export class FamilyService {
    * - 不可邀请自己
    */
   async inviteByPhone(familyId: string, inviterId: string, phone: string) {
-    // 检查邀请人自身手机号
     const [selfRows] = await this.db.execute<any[]>(
       'SELECT phone FROM user_account WHERE id = ?',
       [inviterId],
@@ -101,9 +100,6 @@ export class FamilyService {
       throw new ConflictException('不能邀请自己');
     }
 
-    // 检查该手机号是否已有 active/pending 记录（两种情况）
-    // 1) 已注册用户通过 user_account.phone 关联
-    // 2) 尚未注册通过 invite_phone 直接关联
     const [existing] = await this.db.execute<any[]>(
       `SELECT fm.id, fm.status FROM family_member fm
        LEFT JOIN user_account ua ON fm.user_id = ua.id
@@ -122,7 +118,29 @@ export class FamilyService {
       }
     }
 
-    // 创建 pending 记录（user_id=NULL，待登录激活）
+    const [leftRows] = await this.db.execute<any[]>(
+      `SELECT id FROM family_member
+       WHERE family_id = ? AND invite_phone = ? AND status = 'left'
+       LIMIT 1`,
+      [familyId, phone],
+    );
+
+    if (leftRows.length > 0) {
+      const leftId = leftRows[0].id;
+      const [userRows] = await this.db.execute<any[]>(
+        'SELECT id FROM user_account WHERE phone = ?',
+        [phone],
+      );
+      await this.db.execute(
+        `UPDATE family_member
+         SET user_id = ?, role = 'member', status = 'pending',
+             invited_by = ?, joined_at = NULL
+         WHERE id = ?`,
+        [userRows.length > 0 ? userRows[0].id : null, inviterId, leftId],
+      );
+      return { memberId: leftId, status: 'pending' };
+    }
+
     const memberId = uuidv4();
     await this.db.execute(
       `INSERT INTO family_member (id, family_id, user_id, role, status, invite_phone, invited_by)
@@ -131,6 +149,85 @@ export class FamilyService {
     );
 
     return { memberId, status: 'pending' };
+  }
+
+  /**
+   * 获取当前用户的待处理邀请列表
+   * 通过 user_account.phone 匹配 family_member.invite_phone
+   * 返回 status='pending' 且 user_id IS NULL 的记录（尚未被登录激活的邀请）
+   */
+  async getPendingInvites(userId: string) {
+    const [userRows] = await this.db.execute<any[]>(
+      'SELECT phone FROM user_account WHERE id = ?',
+      [userId],
+    );
+    if (userRows.length === 0 || !userRows[0].phone) return [];
+
+    const phone = userRows[0].phone;
+
+    const [rows] = await this.db.execute<any[]>(
+      `SELECT fm.id, fm.family_id, fg.name AS family_name,
+              inviter.nickname AS inviter_name
+       FROM family_member fm
+       JOIN family_group fg ON fm.family_id = fg.id AND fg.deleted_at IS NULL
+       LEFT JOIN user_account inviter ON fm.invited_by = inviter.id
+       WHERE fm.invite_phone = ? AND fm.status = 'pending'
+         AND NOT EXISTS (
+           SELECT 1 FROM family_member fm2
+           WHERE fm2.family_id = fm.family_id AND fm2.user_id = ? AND fm2.status = 'active'
+         )`,
+      [phone, userId],
+    );
+
+    return rows;
+  }
+
+  /**
+   * 接受邀请（将 pending 记录激活为 active）
+   */
+  async acceptInvite(memberId: string, userId: string) {
+    const [rows] = await this.db.execute<any[]>(
+      'SELECT id, family_id, status FROM family_member WHERE id = ?',
+      [memberId],
+    );
+    if (rows.length === 0) {
+      throw new NotFoundException('邀请不存在');
+    }
+    if (rows[0].status !== 'pending') {
+      throw new ConflictException('邀请已处理');
+    }
+
+    await this.db.execute(
+      `UPDATE family_member
+       SET user_id = ?, status = 'active', joined_at = NOW()
+       WHERE id = ?`,
+      [userId, memberId],
+    );
+
+    return { familyId: rows[0].family_id, success: true };
+  }
+
+  /**
+   * 拒绝邀请（将 pending 记录标记为 left）
+   */
+  async declineInvite(memberId: string, userId: string) {
+    const [rows] = await this.db.execute<any[]>(
+      'SELECT id, status FROM family_member WHERE id = ?',
+      [memberId],
+    );
+    if (rows.length === 0) {
+      throw new NotFoundException('邀请不存在');
+    }
+    if (rows[0].status !== 'pending') {
+      throw new ConflictException('邀请已处理');
+    }
+
+    await this.db.execute(
+      `UPDATE family_member SET status = 'left' WHERE id = ?`,
+      [memberId],
+    );
+
+    return { success: true };
   }
 
   /**
@@ -197,10 +294,86 @@ export class FamilyService {
     return { success: true };
   }
 
+  async leaveFamily(familyId: string, userId: string) {
+    const [rows] = await this.db.execute<any[]>(
+      "SELECT id, role, status FROM family_member WHERE family_id = ? AND user_id = ? AND status = 'active'",
+      [familyId, userId],
+    );
+    if (rows.length === 0) {
+      throw new NotFoundException('您不是该家庭的成员');
+    }
+
+    if (rows[0].role === 'owner') {
+      throw new ForbiddenException('家庭创建者不能退出，请先转让或解散家庭');
+    }
+
+    await this.db.execute(
+      "UPDATE family_member SET status = 'left' WHERE id = ?",
+      [rows[0].id],
+    );
+
+    return { success: true };
+  }
+
   /**
-   * 生成（刷新）邀请码
-   * @deprecated 已被手机号邀请流程替代，保留接口用于兼容旧版本
+   * 解散/删除家庭（软删除，仅 Owner 可操作）
+   *
+   * 原则：全项目删除一律软删除，保留历史数据。事务内仅做标记：
+   * 1. family_group.deleted_at = NOW()（家庭不可见）
+   * 2. 家庭下所有宝宝 baby_profile.deleted_at = NOW()（宝宝不可见，记录全部保留）
+   * 3. 所有成员 family_member.status = 'left'（复用既有软删除模式）
+   *
+   * 所有记录数据原样保留在库中；查询统一按 deleted_at IS NULL / status='active' 过滤。
+   * FamilyMemberGuard 同时校验 fg.deleted_at IS NULL，解散后成员的所有接口访问均被拦截。
    */
+  async deleteFamily(familyId: string, operatorUserId: string) {
+    const conn = await this.db.getConnection();
+    try {
+      await conn.beginTransaction();
+
+      // 校验家庭存在且当前用户是 owner（owner 本身也是 active 成员）
+      const [memberRows] = await conn.execute<any[]>(
+        `SELECT fm.role
+         FROM family_member fm
+         JOIN family_group fg ON fg.id = fm.family_id AND fg.deleted_at IS NULL
+         WHERE fm.family_id = ? AND fm.user_id = ? AND fm.status = 'active'`,
+        [familyId, operatorUserId],
+      );
+      if (memberRows.length === 0) {
+        throw new NotFoundException('您不是该家庭的成员');
+      }
+      if (memberRows[0].role !== 'owner') {
+        throw new ForbiddenException('仅家庭创建者可删除家庭');
+      }
+
+      // 1. 软删家庭
+      await conn.execute(
+        'UPDATE family_group SET deleted_at = NOW() WHERE id = ?',
+        [familyId],
+      );
+
+      // 2. 软删家庭下所有宝宝（记录数据保留）
+      await conn.execute(
+        'UPDATE baby_profile SET deleted_at = NOW() WHERE family_id = ? AND deleted_at IS NULL',
+        [familyId],
+      );
+
+      // 3. 成员标记为 left（含 pending 邀请；已 left 的不动）
+      await conn.execute(
+        "UPDATE family_member SET status = 'left' WHERE family_id = ? AND status IN ('pending', 'active')",
+        [familyId],
+      );
+
+      await conn.commit();
+      return { success: true };
+    } catch (err) {
+      await conn.rollback();
+      throw err;
+    } finally {
+      conn.release();
+    }
+  }
+
   async createInviteCode(familyId: string): Promise<{ code: string }> {
     const code = Math.random().toString(36).slice(2, 8).toUpperCase();
     await this.db.execute(
@@ -218,9 +391,9 @@ export class FamilyService {
    * 供前端 getRecordSummary() 直接消费，无需额外请求。
    */
   async getTodayRecords(familyId: string, date?: string) {
-    // 先取 baby_id（MVP: 每家庭 1 个宝宝）
+    // 先取 baby_id（MVP: 每家庭 1 个宝宝；软删后不可见）
     const [babies] = await this.db.execute<any[]>(
-      'SELECT id FROM baby_profile WHERE family_id = ? LIMIT 1',
+      'SELECT id FROM baby_profile WHERE family_id = ? AND deleted_at IS NULL LIMIT 1',
       [familyId],
     );
     if (babies.length === 0) return [];
@@ -256,7 +429,17 @@ export class FamilyService {
       UNION ALL
       SELECT 'feeding' AS type, id, record_time AS time, note,
         JSON_OBJECT(
-          'feed_type', 'complementary'
+          'feed_type', 'complementary',
+          'complementary_food', (
+            SELECT GROUP_CONCAT(fi.food_name SEPARATOR '、')
+            FROM feeding_food_item fi
+            WHERE fi.record_id = feeding_food_record.id
+          ),
+          'amount_g', (
+            SELECT MAX(fi.amount_g)
+            FROM feeding_food_item fi
+            WHERE fi.record_id = feeding_food_record.id
+          )
         ) AS detail
       FROM feeding_food_record WHERE baby_id = ? AND DATE(record_time) = ?
       UNION ALL
@@ -272,9 +455,14 @@ export class FamilyService {
           'duration_min', duration_min,
           'sleep_period', sleep_period,
           'quality',      quality,
-          'status',       status
+          'status',       status,
+          'start_time',   start_time,
+          'end_time',     end_time
         ) AS detail
-      FROM sleep_record WHERE baby_id = ? AND DATE(start_time) = ?
+      FROM sleep_record WHERE baby_id = ? AND (
+        (status = 'ended' AND DATE(start_time) = ?) OR
+        (status = 'ongoing' AND DATE(start_time) <= ?)
+      )
       UNION ALL
       SELECT 'diaper' AS type, id, record_time AS time, note,
         JSON_OBJECT(
@@ -318,12 +506,22 @@ export class FamilyService {
         ) AS detail
       FROM growth_record WHERE baby_id = ? AND record_date = ?
       UNION ALL
-      SELECT 'medical' AS type, id, visit_date AS time, note,
+      SELECT 'medical' AS type, id,
+        CONCAT(visit_date, ' ', COALESCE(visit_time, '00:00'), ':00') AS time, note,
         JSON_OBJECT(
+          'visit_type', visit_type,
           'hospital',  hospital,
-          'diagnosis', diagnosis
+          'diagnosis', diagnosis,
+          'visit_time', visit_time
         ) AS detail
       FROM medical_record WHERE baby_id = ? AND visit_date = ?
+      UNION ALL
+      SELECT 'medication' AS type, id, record_time AS time, note,
+        JSON_OBJECT(
+          'medication_name', medication_name,
+          'dose', dose
+        ) AS detail
+      FROM medication_record WHERE baby_id = ? AND deleted_at IS NULL AND DATE(record_time) = ?
       ORDER BY time DESC
     `;
 
@@ -332,13 +530,14 @@ export class FamilyService {
       babyId, dateStr,  // feeding_formula_record
       babyId, dateStr,  // feeding_food_record
       babyId, dateStr,  // feeding_supplement_record
-      babyId, dateStr,  // sleep
+      babyId, dateStr, dateStr,  // sleep (ended: start_time date; ongoing: start_time <= date)
       babyId, dateStr,  // diaper
       babyId, dateStr,  // activity
       babyId, dateStr,  // health
       babyId, dateStr,  // symptom
       babyId, dateStr,  // growth
       babyId, dateStr,  // medical
+      babyId, dateStr,  // medication
     ];
 
     const [rows] = await this.db.execute<any[]>(sql, params);
@@ -383,7 +582,7 @@ export class FamilyService {
    */
   async joinByCode(userId: string, code: string) {
     const [rows] = await this.db.execute<any[]>(
-      `SELECT id FROM family_group WHERE invite_code = ?`,
+      `SELECT id FROM family_group WHERE invite_code = ? AND deleted_at IS NULL`,
       [code],
     );
 

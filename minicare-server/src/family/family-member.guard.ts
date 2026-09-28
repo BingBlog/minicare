@@ -33,14 +33,17 @@ export class FamilyMemberGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const userId: string = request.user?.sub;
     const familyId: string =
-      request.params?.familyId ?? request.body?.family_id;
+      request.params?.familyId ?? request.body?.family_id ?? request.query?.family_id;
 
     if (!familyId) {
       throw new ForbiddenException('缺少 family_id 参数');
     }
 
     const [rows] = await this.db.execute<any[]>(
-      "SELECT id, role FROM family_member WHERE family_id = ? AND user_id = ? AND status = 'active'",
+      `SELECT fm.id, fm.role
+       FROM family_member fm
+       JOIN family_group fg ON fg.id = fm.family_id AND fg.deleted_at IS NULL
+       WHERE fm.family_id = ? AND fm.user_id = ? AND fm.status = 'active'`,
       [familyId, userId],
     );
 

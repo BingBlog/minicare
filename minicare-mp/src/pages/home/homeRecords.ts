@@ -64,6 +64,14 @@ export function toHomeRecord(rec: HomeApiRecord): HomeRecord {
 }
 
 export function getTimelineIconType(record: HomeRecord): string {
+  if (record.type === 'health') {
+    const detail = record.detail ?? {}
+    const temp = detail.temperature
+    const symptoms = detail.allergy_symptoms as string[] | undefined
+    if (temp != null) return 'temperature'
+    if (Array.isArray(symptoms) && symptoms.length > 0) return 'allergy'
+    return 'health'
+  }
   if (record.type !== 'feeding') return record.type
   const feedType = record.detail?.feed_type as string | undefined
   if (feedType === 'formula') return 'formula'
@@ -98,11 +106,17 @@ export function getTimelineRecordDisplay(record: HomeRecord): TimelineRecordDisp
     }
     if (feedType === 'supplement') {
       const suppItems = (d.supplement_items as Array<{ label?: string; dose?: string; unit?: string }> | undefined) ?? []
-      const tags = suppItems.slice(0, 3).map((item) => `${item.label ?? ''}${item.dose ?? ''}${item.unit ?? ''}`.trim()).filter(Boolean)
+      const tags = suppItems.slice(0, 3).map((item) => {
+        const name = item.label ?? ''
+        const hasDose = item.dose != null && item.dose !== ''
+        return hasDose ? `${name} ${item.dose}${item.unit ?? ''}` : name
+      }).filter(Boolean)
       return { label: '营养素', tags, summary: '' }
     }
     if (feedType === 'complementary') {
-      const food = (d.complementary_food as string | undefined) ?? ''
+      const foodItems = (d.food_items as Array<{ food_name?: string }> | undefined) ?? []
+      const foodFromItems = foodItems.map((item) => item.food_name ?? '').filter(Boolean).join('、')
+      const food = (d.complementary_food as string | undefined) ?? foodFromItems
       const amount = Number(d.amount_g ?? 0)
       return { label: food === '营养素' ? '营养素' : '辅食', tags: food ? [food] : [], summary: amount > 0 ? `${amount}g` : '' }
     }
@@ -134,7 +148,19 @@ export function getTimelineRecordDisplay(record: HomeRecord): TimelineRecordDisp
 
   if (record.type === 'health') {
     const temp = d.temperature as number | undefined
-    return { label: '健康', tags: [temp != null && temp >= 37.5 ? '发热' : ''].filter(Boolean), summary: temp != null ? `${temp}℃` : '' }
+    const symptoms = (d.allergy_symptoms as string[] | undefined) ?? []
+    const hasTemp = temp != null
+    const hasAllergy = symptoms.length > 0
+    // 拆页后单维度记录占绝大多数；历史复合记录（体温+过敏同一条）兜底展示
+    const label = hasTemp && !hasAllergy ? '体温' : hasAllergy && !hasTemp ? '过敏表现' : '健康'
+    const tags: string[] = []
+    if (hasTemp && temp >= 37.5) tags.push('发热')
+    if (hasAllergy) {
+      tags.push(...symptoms.slice(0, 2))
+      if (symptoms.length > 2) tags.push(`等${symptoms.length}项`)
+    }
+    const summary = hasTemp ? `${temp}℃` : ''
+    return { label, tags, summary }
   }
 
   if (record.type === 'growth') {
@@ -152,6 +178,12 @@ export function getTimelineRecordDisplay(record: HomeRecord): TimelineRecordDisp
     const mood = MOOD_LABELS[(d.mood as string) ?? ''] ?? ''
     const spirit = SPIRIT_LABELS[(d.spirit as string) ?? ''] ?? ''
     return { label: '表现', tags: [mood, spirit].filter(Boolean), summary: '' }
+  }
+
+  if (record.type === 'medication') {
+    const name = (d.medication_name as string | undefined) ?? ''
+    const dose = (d.dose as string | undefined) ?? ''
+    return { label: '用药', tags: name ? [name] : [], summary: dose }
   }
 
   return { label: RECORD_TYPE_CFG[record.type]?.label ?? record.type, tags: [], summary: '' }

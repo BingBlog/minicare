@@ -16,13 +16,18 @@ export default defineConfig<'webpack5'>(async (merge) => {
       828: 1.81 / 2,
     },
     sourceRoot: 'src',
-    outputRoot: 'dist',
+    // 双端产物隔离：H5 输出到 dist-h5，避免覆盖 weapp 的 dist（微信开发者工具正在 watch）
+    outputRoot: process.env.TARO_ENV === 'h5' ? 'dist-h5' : 'dist',
     plugins: ['@tarojs/plugin-generator'],
     defineConstants: {},
     copy: {
-      patterns: [
-        { from: 'src/assets/sounds/', to: 'dist/assets/sounds/', ignore: ['.*'] },
-      ],
+      patterns:
+        process.env.TARO_ENV === 'h5'
+          ? []
+          : [
+              // 提示音仅小程序端使用（语音输入），H5 无需拷贝
+              { from: 'src/assets/sounds/', to: 'dist/assets/sounds/', ignore: ['.*'] },
+            ],
       options: {},
     },
     framework: 'react',
@@ -36,6 +41,9 @@ export default defineConfig<'webpack5'>(async (merge) => {
       enable: false,
     },
     mini: {
+      miniCssExtractPluginOption: {
+        ignoreOrder: true,
+      },
       postcss: {
         pxtransform: {
           enable: false,

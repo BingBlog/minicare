@@ -284,8 +284,8 @@ sequenceDiagram
 **后端（CloudRun）**：
 1. `cd minicare-server && npm run build`
 2. `bash scripts/deploy.sh`（预检查）
-3. CloudBase MCP `manageCloudRun(action='deploy', ...)` 部署
-4. 验证：`queryCloudRun(detail)` + `curl /health`
+3. CloudBase CLI `tcb cloudrun deploy -s minicare-api --port 3000 --force -e minicare-cloud-6gqledlle0132cbe` 部署
+4. 验证：`tcb cloudrun list` + `curl /health`
 
 **小程序（微信平台）**：
 1. `cd minicare-mp && npm run build:weapp`
@@ -336,4 +336,4 @@ sequenceDiagram
 
 *→ 完整建表 DDL 见 `docs/tech/DB-02-schema.md`*
 *→ 基础设施搭建执行清单见 `docs/tech/INFRA-cloudbase.md`*
-*→ 小程序开发规范见 `.cursor/rules/miniapp-development.mdc`*
+*→ 小程序开发规范见 `.agents/rules/miniapp-development.mdc`*

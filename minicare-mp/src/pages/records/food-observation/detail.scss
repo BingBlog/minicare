@@ -1,0 +1,648 @@
+@use '../../../styles/ipad-adapt-mixins' as ipad;
+
+.obs-detail-page {
+  min-height: 100vh;
+  background: #fdf7f5;
+  font-family: -apple-system, 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+}
+
+.obs-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 0;
+  color: #9a7e82;
+  font-size: 14px;
+}
+
+.obs-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: #fdf7f5;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.obs-nav__back {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.obs-nav__back-arrow {
+  color: #3d2b2e;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.obs-nav__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #3d2b2e;
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.obs-nav__spacer {
+  width: 36px;
+}
+
+.obs-body {
+  padding: 0 12px 120px;
+}
+
+.obs-progress-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 6px rgba(200, 100, 120, 0.08);
+}
+
+.obs-progress-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.obs-progress-food {
+  font-size: 18px;
+  font-weight: 700;
+  color: #3d2b2e;
+}
+
+.obs-progress-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.obs-progress-day {
+  font-size: 14px;
+  color: #9a7e82;
+  margin-bottom: 12px;
+}
+
+.obs-dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+/* 与看板列表页标签样式一致 */
+.obs-day-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 12px;
+  border: 1px solid #c0a8b0;
+  background: #f5eef0;
+}
+
+.obs-day-tag--future {
+  background: #f5eef0;
+  border-color: #c0a8b0;
+}
+
+.obs-day-tag--done {
+  background: #e4f8f0;
+  border-color: #2a9e70;
+}
+
+.obs-day-tag--current {
+  background: #fff8ec;
+  border-color: #ddb870;
+}
+
+.obs-day-tag--safe {
+  background: #e4f8f0;
+  border-color: #2a9e70;
+}
+
+.obs-day-tag--allergic {
+  background: #ffe0e8;
+  border-color: #e8305a;
+}
+
+.obs-day-tag--suspected {
+  background: #fff0d0;
+  border-color: #e07a00;
+}
+
+.obs-day-tag--paused {
+  background: #f5eef0;
+  border-color: #9a8090;
+}
+
+.obs-day-tag__text {
+  font-size: 11px;
+  font-weight: 600;
+  color: #c0a8b0;
+  line-height: 1;
+}
+
+.obs-day-tag--done .obs-day-tag__text {
+  color: #2a9e70;
+}
+
+.obs-day-tag--current .obs-day-tag__text {
+  color: #ddb870;
+}
+
+.obs-day-tag--safe .obs-day-tag__text {
+  color: #2a9e70;
+}
+
+.obs-day-tag--allergic .obs-day-tag__text {
+  color: #e8305a;
+}
+
+.obs-day-tag--suspected .obs-day-tag__text {
+  color: #e07a00;
+}
+
+.obs-day-tag--paused .obs-day-tag__text {
+  color: #9a8090;
+}
+
+.obs-status-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 6px rgba(200, 100, 120, 0.08);
+}
+
+.obs-status-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+}
+
+.obs-status-banner--safe {
+  background: #e4f8f0;
+}
+
+.obs-status-banner--suspected {
+  background: #fff3e0;
+}
+
+.obs-status-banner--allergic {
+  background: #ffe8ef;
+}
+
+.obs-status-icon {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.obs-status-text {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.obs-status-hint {
+  font-size: 13px;
+  color: #9a7e82;
+  line-height: 1.6;
+}
+
+.obs-checkin-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 6px rgba(200, 100, 120, 0.08);
+}
+
+.obs-checkin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.obs-checkin-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #3d2b2e;
+}
+
+.obs-checkin-date {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  background: #fdf7f5;
+}
+
+.obs-checkin-date-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #f87098;
+}
+
+.obs-checkin-date-arrow {
+  font-size: 11px;
+  color: #f87098;
+}
+
+.obs-field {
+  margin-bottom: 16px;
+}
+
+.obs-field__label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #9a7e82;
+  margin-bottom: 8px;
+}
+
+.obs-field__input {
+  width: 100%;
+  height: 44px;
+  border: 1px solid #e8e0e4;
+  border-radius: 12px;
+  padding: 0 16px;
+  font-size: 14px;
+  color: #3d2b2e;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.obs-flags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.obs-flag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: 1px solid #e8e0e4;
+  background: #fff;
+}
+
+.obs-flag--active {
+  background: #fff8ec;
+  border-color: #ddb870;
+}
+
+.obs-flag__check {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1.5px solid #d0c0c4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.obs-flag--active .obs-flag__check {
+  background: #ddb870;
+  border-color: #ddb870;
+}
+
+.obs-flag__mark {
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.obs-flag__text {
+  font-size: 13px;
+  font-weight: 500;
+  color: #3d2b2e;
+}
+
+.obs-note-input {
+  width: 100%;
+  height: 44px;
+  border: 1px solid #e8e0e4;
+  border-radius: 12px;
+  padding: 0 16px;
+  font-size: 14px;
+  color: #3d2b2e;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.obs-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.obs-action-btn {
+  flex: 1;
+  padding: 14px 0;
+  border-radius: 14px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.obs-action-btn--continue {
+  background: #e4f8f0;
+  color: #2a9e70;
+}
+
+.obs-action-btn--react {
+  background: #fff3e0;
+  color: #e07a00;
+}
+
+.obs-action-btn--loading {
+  opacity: 0.6;
+}
+
+.obs-reaction-flow {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 6px rgba(200, 100, 120, 0.08);
+}
+
+.obs-reaction-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #3d2b2e;
+  margin-bottom: 16px;
+}
+
+.obs-level-grid {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.obs-level-opt {
+  flex: 1;
+  text-align: center;
+  padding: 12px 0;
+  border-radius: 12px;
+  border: 1px solid #e8e0e4;
+  background: #fff;
+}
+
+.obs-level-opt--active {
+  border-color: #e07a00;
+  background: #fff3e0;
+}
+
+.obs-level-opt__text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #3d2b2e;
+}
+
+.obs-level-opt--active .obs-level-opt__text {
+  color: #e07a00;
+}
+
+.obs-reaction-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.obs-reaction-btn {
+  flex: 1;
+  padding: 14px 0;
+  border-radius: 14px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.obs-reaction-btn--suspected {
+  background: #fff3e0;
+  color: #e07a00;
+}
+
+.obs-reaction-btn--allergic {
+  background: #ffe8ef;
+  color: #e8305a;
+}
+
+.obs-reaction-btn--loading {
+  opacity: 0.6;
+}
+
+.obs-reaction-btn--disabled {
+  opacity: 0.4;
+}
+
+.obs-logs-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 6px rgba(200, 100, 120, 0.08);
+}
+
+.obs-logs-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #3d2b2e;
+  margin-bottom: 16px;
+}
+
+.obs-log-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f5eef0;
+}
+
+.obs-log-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.obs-log-dot-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 4px;
+}
+
+.obs-log-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ddb870;
+  flex-shrink: 0;
+}
+
+.obs-log-dot--safe {
+  background: #2a9e70;
+}
+
+.obs-log-dot--danger {
+  background: #e8305a;
+}
+
+.obs-log-line {
+  width: 1px;
+  flex: 1;
+  background: #f5eef0;
+  margin-top: 4px;
+}
+
+.obs-log-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.obs-log-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.obs-log-day {
+  font-size: 14px;
+  font-weight: 600;
+  color: #3d2b2e;
+}
+
+.obs-log-date {
+  font-size: 12px;
+  color: #9a7e82;
+}
+
+.obs-log-date--editable {
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: #f5eef0;
+}
+
+.obs-log-date-edit {
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: #fff0f4;
+  border: 1px solid #f87098;
+}
+
+.obs-log-date-edit Text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #f87098;
+}
+
+.obs-log-action {
+  display: inline-flex;
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.obs-log-action--continue {
+  background: #e4f8f0;
+  color: #2a9e70;
+}
+
+.obs-log-action--suspected {
+  background: #fff3e0;
+  color: #e07a00;
+}
+
+.obs-log-action--allergic {
+  background: #ffe8ef;
+  color: #e8305a;
+}
+
+.obs-log-detail {
+  font-size: 13px;
+  color: #9a7e82;
+  line-height: 1.5;
+}
+
+.obs-log-flags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.obs-log-flag {
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 500;
+  background: #fff3e0;
+  color: #e07a00;
+}
+
+.obs-log-ops {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.obs-log-op-btn {
+  padding: 4px 10px;
+  border-radius: 10px;
+  background: #f5f0f2;
+  color: #9a7e82;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.obs-log-op-btn--warn {
+  background: #fff3e0;
+  color: #e07a00;
+}
+
+.obs-empty-logs {
+  text-align: center;
+  padding: 20px 0;
+  color: #9a7e82;
+  font-size: 13px;
+}
+
+.obs-danger-zone {
+  margin-top: 10px;
+}
+
+.obs-danger-btn {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  text-align: center;
+  background: #ffe8ef;
+  color: #f05060;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.obs-danger-btn--loading {
+  opacity: 0.6;
+}
+
+@include ipad.feeding;

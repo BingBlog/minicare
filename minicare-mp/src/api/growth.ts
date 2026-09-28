@@ -42,6 +42,9 @@ export const growthApi = {
   list: (familyId: string, babyId: string, params?: GrowthListParams): Promise<GrowthListResponse> =>
     request<GrowthListResponse>(`/api/family/${familyId}/records/growth?${buildListQuery(babyId, params)}`),
 
+  getLatest: (familyId: string, babyId: string): Promise<GrowthRecord | null> =>
+    request<GrowthRecord | null>(`/api/family/${familyId}/records/growth/latest?baby_id=${babyId}`),
+
   create: (familyId: string, data: CreateGrowthDto) =>
     request<{ id: string }>(`/api/family/${familyId}/records/growth`, {
       method: 'POST',

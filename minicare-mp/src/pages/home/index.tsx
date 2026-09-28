@@ -1,14 +1,17 @@
-import { View, Text } from '@tarojs/components'
-import Taro, { useDidShow } from '@tarojs/taro'
+import { View, Text, Canvas } from '@tarojs/components'
+import Taro, { useDidShow, getCurrentInstance } from '@tarojs/taro'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { authApi, babyApi, familyApi, fetchAppConfig, recordsApi, sleepApi } from '@/api'
+import { authApi, babyApi, familyApi, fetchAppConfig, foodObservationApi, recordsApi, sleepApi } from '@/api'
+import type { PendingInvite } from '@/api/family'
 import type { OngoingSleepRecord } from '@/api/sleep'
+import type { FoodObservation } from '@/api'
+import { agentDiaryApi, type DiaryDetail } from '@/api/agent'
+import { getStoredFamilyId, setCurrentFamilyId, getToken } from '@/api/http'
 import { HOME_RECORD_ROUTES } from '@/lib/constants'
 import { navigateToRecord } from '@/lib/navigation'
 import { getStatusBarHeight } from '@/lib/safeArea'
 import { useIsIPad } from '@/lib/useIsIPad'
-import { getBabyAge, getGreeting, getTodayDateStr, compareTime } from '@/lib/utils'
-import { getToken } from '@/api/http'
+import { getBabyAge, getGreeting, getTodayDateStr, yesterdayStr, compareTime } from '@/lib/utils'
 
 import HeroSection from './HeroSection'
 import QuickActions from './QuickActions'
@@ -17,11 +20,42 @@ import TodayTimeline from './TodayTimeline'
 import DailyComparison from './DailyComparison'
 import SleepBanner from './SleepBanner'
 import FeedingBanner from './FeedingBanner'
+import NextFollowUpBanner from './NextFollowUpBanner'
+import AllergyProgressBar from './AllergyProgressBar'
+import HomeDiaryCard from './HomeDiaryCard'
 import RecordActionSheet from './RecordActionSheet'
 import TabBar from '@/components/TabBar/TabBar'
+import InviteModal from '@/components/InviteModal/InviteModal'
+import type { NextFollowUp } from '@/api/medical'
 import type { BabyStat, HomeRecord } from './types'
 import { toHomeRecord } from './homeRecords'
 import './index.scss'
+
+// 分享配置 - 转发给好友
+let shareImageUrl = ''
+export function onShareAppMessage() {
+  const baby = Taro.getStorageSync('minicare_baby') || {}
+  const familyId = getStoredFamilyId()
+  const babyName = baby.name || '宝宝'
+
+  return {
+    title: `${babyName}今天的护理记录`,
+    path: `/pages/home/index?familyId=${familyId}&babyId=${baby.id || ''}`,
+    imageUrl: shareImageUrl || undefined,
+  }
+}
+
+// 分享配置 - 分享到朋友圈
+export function onShareTimeline() {
+  const baby = Taro.getStorageSync('minicare_baby') || {}
+  const familyId = getStoredFamilyId()
+
+  return {
+    title: `${baby.name || '宝宝'}今天的护理记录`,
+    query: `familyId=${familyId}&babyId=${baby.id || ''}`,
+    imageUrl: shareImageUrl || undefined,
+  }
+}
 
 export default function HomePage() {
   const isIPad = useIsIPad()
@@ -37,13 +71,53 @@ export default function HomePage() {
   const [birthDate, setBirthDate] = useState('')
   const [familyId, setFamilyId] = useState('')
   const familyIdRef = useRef('')
+  const babyIdRef = useRef('')
   const [loading, setLoading] = useState(true)
+  const [babyGrowth, setBabyGrowth] = useState<{ weightKg?: string; heightCm?: string; headCm?: string } | null>(null)
+  const [foodObservations, setFoodObservations] = useState<FoodObservation[]>([])
+  const [nextFollowUp, setNextFollowUp] = useState<NextFollowUp | null>(null)
+  const [yesterdayDiary, setYesterdayDiary] = useState<DiaryDetail | null>(null)
+  // 初值 true：首帧即渲染等高骨架，避免「空态卡闪现 → 卡片消失 → 内容卡出现」的三重跳变
+  const [diaryLoading, setDiaryLoading] = useState(true)
+  const diaryLoadedRef = useRef(false)
 
-  /** 获取昨日日期字符串 YYYY-MM-DD */
-  const getYesterdayDateStr = useCallback(() => {
-    const d = new Date()
-    d.setDate(d.getDate() - 1)
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+  // 页面加载时，解析 URL 参数
+  useEffect(() => {
+    const instance = getCurrentInstance()
+    const routerParams = instance?.router?.params || {}
+
+    if (routerParams.familyId) {
+      const token = getToken()
+      if (token) {
+        setCurrentFamilyId(routerParams.familyId as string)
+      }
+    }
+  }, [])
+
+  /**
+   * 昨日日记摘要（首页卡片，失败静默）。
+   *
+   * 目标日期是「昨天」而非今天：日记定位为当日回顾式总结，当天数据还不全。
+   * 注意参数必须用 yesterdayStr()（YYYY-MM-DD）—— getTodayDateStr() 返回的是
+   * 「9月19日 星期六」这类展示串，传给接口会被日期校验拒收，卡片将恒显空态。
+   *
+   * silent=true 时跳过 loading 态：用于从子页面返回、以及 diary:changed 事件触发的刷新，
+   * 避免每次回首页都把卡片切回骨架（原实现在这里反复闪）。
+   */
+  const loadDiaryPreview = useCallback(async (fid: string, bid: string, silent = false) => {
+    babyIdRef.current = bid
+    const target = yesterdayStr()
+    const showSkeleton = !silent && !diaryLoadedRef.current
+    if (showSkeleton) setDiaryLoading(true)
+    try {
+      const item = await agentDiaryApi.detail(fid, bid, target)
+      setYesterdayDiary(item)
+    } catch {
+      setYesterdayDiary(null)
+    } finally {
+      diaryLoadedRef.current = true
+      if (showSkeleton) setDiaryLoading(false)
+    }
   }, [])
 
   /** 刷新今日记录 & 进行中睡眠（页面从子页面返回时复用） */
@@ -65,20 +139,69 @@ export default function HomePage() {
       setRecords(todayRecords.map(toHomeRecord))
       setOngoingSleep(ongoing)
 
+      try {
+        const latest = await recordsApi.growth.getLatest(fid, baby.id)
+        if (latest) {
+          const g: { weightKg?: string; heightCm?: string; headCm?: string } = {}
+          if (latest.weight_g != null) g.weightKg = (Number(latest.weight_g) / 1000).toFixed(1)
+          if (latest.height_mm != null) g.heightCm = (Number(latest.height_mm) / 10).toFixed(1)
+          if (latest.head_mm != null) g.headCm = (Number(latest.head_mm) / 10).toFixed(1)
+          setBabyGrowth(Object.keys(g).length > 0 ? g : null)
+        } else {
+          setBabyGrowth(null)
+        }
+      } catch {
+        setBabyGrowth(null)
+      }
+
       // 同时刷新昨日记录（用于对比）
       try {
-        const yRecords = await recordsApi.today(fid, getYesterdayDateStr())
+        const yRecords = await recordsApi.today(fid, yesterdayStr())
         setYesterdayRecords(yRecords.map(toHomeRecord))
       } catch {
         // 昨日记录获取失败不影响主流程
       }
+
+      try {
+        const observations = await foodObservationApi.list(fid, baby.id)
+        setFoodObservations(observations)
+      } catch {
+        setFoodObservations([])
+      }
+
+      loadDiaryPreview(fid, baby.id)
+
+      try {
+        const nf = await recordsApi.medical.getNextFollowUp(fid, baby.id)
+        setNextFollowUp(nf)
+      } catch {
+        setNextFollowUp(null)
+      }
     } catch {
       // 静默失败，保留已有数据
     }
-  }, [getYesterdayDateStr])
+  }, [yesterdayStr, loadDiaryPreview])
 
   // 是否处于游客模式（未登录）
   const [isGuest, setIsGuest] = useState(false)
+
+  // 是否需要建档（已登录但无家庭或无宝宝）
+  const [needsOnboarding, setNeedsOnboarding] = useState(false)
+  const [needsOnboardingReason, setNeedsOnboardingReason] = useState<'no_family' | 'no_baby'>('no_family')
+
+  const [pendingInvites, setPendingInvites] = useState<PendingInvite[]>([])
+  const [inviteModalOpen, setInviteModalOpen] = useState(false)
+
+  const checkPendingInvites = useCallback(async () => {
+    if (!getToken()) return
+    try {
+      const invites = await familyApi.getPendingInvites()
+      if (invites.length > 0) {
+        setPendingInvites(invites)
+        setInviteModalOpen(true)
+      }
+    } catch {}
+  }, [])
 
   useEffect(() => {
     let cancelled = false
@@ -92,21 +215,48 @@ export default function HomePage() {
         return
       }
       try {
-        // 先验证 token 在当前后端环境是否有效（防止跨环境 token 残留）
         await authApi.checkToken()
 
         await fetchAppConfig()
-        const families = await familyApi.getMine()
-        if (!families.length) {
-          if (!cancelled) setBackendStatus('暂无家庭数据，请先完成建档')
+        const fid = getStoredFamilyId()
+        if (!fid) {
+          if (cancelled) return
+          // 检查是否存在待处理的邀请，有邀请时优先展示邀请弹层
+          try {
+            const invites = await familyApi.getPendingInvites()
+            if (invites.length > 0) {
+              setPendingInvites(invites)
+              setInviteModalOpen(true)
+              setLoading(false)
+              return
+            }
+          } catch {}
+          setNeedsOnboarding(true)
+          setNeedsOnboardingReason('no_family')
+          setLoading(false)
           return
         }
 
-        const fid = families[0].id
-        const [baby, todayRecords] = await Promise.all([
-          babyApi.get(fid),
-          recordsApi.today(fid),
-        ])
+        let baby: any
+        try {
+          const storedBaby = Taro.getStorageSync('minicare_baby')
+          if (storedBaby && storedBaby.id) {
+            baby = storedBaby
+          } else {
+            baby = await babyApi.get(fid)
+          }
+        } catch {
+          if (!cancelled) {
+            setFamilyId(fid)
+            familyIdRef.current = fid
+            setNeedsOnboarding(true)
+            setNeedsOnboardingReason('no_baby')
+            setLoading(false)
+          }
+          return
+        }
+
+        const todayRecords = await recordsApi.today(fid)
 
         let ongoing: OngoingSleepRecord | null = null
         try {
@@ -125,16 +275,35 @@ export default function HomePage() {
           setOngoingSleep(ongoing)
           setBackendStatus('')
 
-          // 获取昨日记录用于对比
-          recordsApi.today(fid, getYesterdayDateStr())
+          recordsApi.growth.getLatest(fid, baby.id)
+            .then((latest) => {
+              if (cancelled) return
+              if (latest) {
+                const g: { weightKg?: string; heightCm?: string; headCm?: string } = {}
+                if (latest.weight_g != null) g.weightKg = (Number(latest.weight_g) / 1000).toFixed(1)
+                if (latest.height_mm != null) g.heightCm = (Number(latest.height_mm) / 10).toFixed(1)
+                if (latest.head_mm != null) g.headCm = (Number(latest.head_mm) / 10).toFixed(1)
+                setBabyGrowth(Object.keys(g).length > 0 ? g : null)
+              } else {
+                setBabyGrowth(null)
+              }
+            })
+            .catch(() => {})
+
+          recordsApi.today(fid, yesterdayStr())
             .then((yRecs) => { if (!cancelled) setYesterdayRecords(yRecs.map(toHomeRecord)) })
+            .catch(() => {})
+
+          loadDiaryPreview(fid, baby.id)
+
+          recordsApi.medical.getNextFollowUp(fid, baby.id)
+            .then((nf) => { if (!cancelled) setNextFollowUp(nf) })
             .catch(() => {})
         }
       } catch (err) {
         if (!cancelled) {
           const msg = err instanceof Error ? err.message : '请求失败'
-          if (msg.includes('缺少访问令牌') || msg.includes('Unauthorized') || msg.includes('401')) {
-            Taro.reLaunch({ url: '/pages/login/index' })
+          if (msg.includes('缺少访问令牌') || msg.includes('Unauthorized') || msg.includes('登录已过期')) {
             return
           }
           setBackendStatus(`后端未连通：${msg}`)
@@ -144,41 +313,104 @@ export default function HomePage() {
       }
     }
     loadHomeData()
+    checkPendingInvites()
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [checkPendingInvites])
 
-  // 从子页面返回 / 小程序前台恢复时，刷新家庭列表 + 今日记录
+  // 从子页面返回 / 小程序前台恢复时，刷新家庭列表 + 今日记录 + 检查新邀请
   useDidShow(() => {
     const token = getToken()
     if (!token) return
 
-    // 重新获取家庭列表，检测是否被邀请到新家庭
-    familyApi.getMine().then((families) => {
-      if (!families.length) return
-      const latestFid = families[0].id
-      if (latestFid !== familyIdRef.current) {
-        // 家庭发生变化（被邀请到新家庭），重新加载完整数据
+    if (!inviteModalOpen) {
+      checkPendingInvites()
+    }
+
+    const latestFid = getStoredFamilyId()
+    if (!latestFid) {
+      if (!needsOnboarding) {
+        setNeedsOnboarding(true)
+        setNeedsOnboardingReason('no_family')
+      }
+      return
+    }
+
+    if (needsOnboarding) {
+      babyApi.get(latestFid).then(() => {
+        setNeedsOnboarding(false)
         setFamilyId(latestFid)
         familyIdRef.current = latestFid
-        babyApi.get(latestFid).then((baby) => {
-          setBabyName(baby.name || '宝宝')
-          setBirthDate(baby.birth_date || '')
-        }).catch(() => {})
+        refreshTodayRecords(latestFid)
+      }).catch(() => {
+        setNeedsOnboardingReason('no_baby')
+      })
+      return
+    }
+
+    if (latestFid !== familyIdRef.current) {
+      setFamilyId(latestFid)
+      familyIdRef.current = latestFid
+    }
+
+    const storedBaby = Taro.getStorageSync('minicare_baby')
+    if (storedBaby && storedBaby.id) {
+      if (storedBaby.name !== babyName || storedBaby.birth_date !== birthDate) {
+        setBabyName(storedBaby.name || '宝宝')
+        setBirthDate(storedBaby.birth_date || '')
       }
-      refreshTodayRecords(latestFid)
-    }).catch(() => {
-      // 静默失败，继续使用已有数据
-      if (familyIdRef.current) refreshTodayRecords(familyIdRef.current)
-    })
+    } else {
+      babyApi.get(latestFid).then((baby) => {
+        setBabyName(baby.name || '宝宝')
+        setBirthDate(baby.birth_date || '')
+      }).catch(() => {})
+    }
+
+    refreshTodayRecords(latestFid)
   })
+
+  // 监听语音录入成功后的刷新事件
+  useEffect(() => {
+    const handler = () => {
+      if (familyIdRef.current) refreshTodayRecords(familyIdRef.current)
+    }
+    Taro.eventCenter.on('home:refresh', handler)
+    return () => { Taro.eventCenter.off('home:refresh', handler) }
+  }, [refreshTodayRecords])
+
+  // 监听日记变更事件（chat 页保存草稿 / 日记详情页保存后均会 trigger）→ 静默刷新卡片。
+  // 此前该事件全项目无监听者，导致保存完日记回到首页卡片仍是旧的。
+  useEffect(() => {
+    const handler = () => {
+      const fid = familyIdRef.current
+      const bid = babyIdRef.current
+      if (fid && bid) void loadDiaryPreview(fid, bid, true)
+    }
+    Taro.eventCenter.on('diary:changed', handler)
+    return () => { Taro.eventCenter.off('diary:changed', handler) }
+  }, [loadDiaryPreview])
+
+  // 启用分享菜单（H5 无此 API，编译期剔除）
+  useEffect(() => {
+    if (process.env.TARO_ENV !== 'weapp') return
+    Taro.showShareMenu({
+      withShareTicket: true,
+      menus: ['shareAppMessage', 'shareTimeline'],
+      success() {
+        console.log('分享菜单启用成功')
+      },
+      fail() {
+        console.log('分享菜单启用失败')
+      }
+    })
+  }, [])
 
   const stats = useMemo<BabyStat[]>(() => {
     const feedingRecs = records.filter((r) => r.type === 'feeding')
     const sleepRecs = records.filter((r) => r.type === 'sleep')
     const diaperRecs = records.filter((r) => r.type === 'diaper')
-    const symptomRecs = records.filter((r) => r.type === 'symptom')
+    const medicationRecs = records.filter((r) => r.type === 'medication')
 
     const totalMl = feedingRecs.reduce((acc, r) => {
       const detail = (r.detail as Record<string, unknown> | undefined) ?? {}
@@ -195,11 +427,41 @@ export default function HomePage() {
 
     const sleepStat: BabyStat = (() => {
       if (totalSleepMin <= 0) return { val: '—', unit: '', label: '今日睡眠' }
-      if (totalSleepMin < 60) return { val: `${totalSleepMin}`, unit: '分', label: '今日睡眠' }
       const hour = Math.floor(totalSleepMin / 60)
       const minute = totalSleepMin % 60
-      if (minute === 0) return { val: `${hour}`, unit: 'h', label: '今日睡眠' }
-      return { val: `${hour}h${minute}`, unit: 'm', label: '今日睡眠' }
+      if (hour > 0 && minute > 0) {
+        return {
+          val: `${hour}小时${minute}分`,
+          unit: '',
+          label: '今日睡眠',
+          parts: [
+            { text: String(hour) },
+            { text: '小时', small: true },
+            { text: String(minute) },
+            { text: '分', small: true },
+          ],
+        }
+      }
+      if (hour > 0) {
+        return {
+          val: `${hour}小时`,
+          unit: '',
+          label: '今日睡眠',
+          parts: [
+            { text: String(hour) },
+            { text: '小时', small: true },
+          ],
+        }
+      }
+      return {
+        val: `${minute}分`,
+        unit: '',
+        label: '今日睡眠',
+        parts: [
+          { text: String(minute) },
+          { text: '分', small: true },
+        ],
+      }
     })()
 
     return [
@@ -212,28 +474,32 @@ export default function HomePage() {
       diaperRecs.length > 0
         ? { val: diaperRecs.length, unit: '次', label: '换尿布' }
         : { val: '—', unit: '', label: '换尿布' },
-      symptomRecs.length > 0
-        ? { val: symptomRecs.length, unit: '项', label: '表现' }
-        : { val: '—', unit: '', label: '表现' },
+      medicationRecs.length > 0
+        ? { val: medicationRecs.length, unit: '次', label: '今日用药' }
+        : { val: '—', unit: '', label: '今日用药' },
     ]
   }, [records])
 
 
-  const lastFeedingRecord = [...records]
-    .filter((r) => {
-      if (r.type !== 'feeding') return false
-      const feedType = r.detail?.feed_type as string | undefined
-      // 排除营养素，只保留真正的喂奶记录
-      return feedType === 'formula' || feedType === 'breast' || feedType === 'complementary'
-    })
-    .sort((a, b) => compareTime(b.time, a.time))[0]
+  // 喂奶间隔仅受母乳和奶粉影响，辅食/营养素不计入
+  const feedingFilter = (r: HomeRecord) => {
+    if (r.type !== 'feeding') return false
+    const feedType = r.detail?.feed_type as string | undefined
+    return feedType === 'formula' || feedType === 'breast'
+  }
+
+  const lastFeedingRecord = (() => {
+    const todayFeedings = [...records].filter(feedingFilter).sort((a, b) => compareTime(b.time, a.time))
+    if (todayFeedings.length > 0) return { record: todayFeedings[0], isYesterday: false }
+    const yesterdayFeedings = [...yesterdayRecords].filter(feedingFilter).sort((a, b) => compareTime(b.time, a.time))
+    if (yesterdayFeedings.length > 0) return { record: yesterdayFeedings[0], isYesterday: true }
+    return null
+  })()
 
   const handleEndSleep = () => {
     setOngoingSleep(null)
     if (familyId) {
-      babyApi.get(familyId).then(() => {
-        recordsApi.today(familyId).then((recs) => setRecords(recs.map(toHomeRecord)))
-      }).catch(() => {})
+      refreshTodayRecords(familyId)
     }
   }
 
@@ -248,6 +514,27 @@ export default function HomePage() {
             </View>
           </View>
         </View>
+        <InviteModal
+          invites={pendingInvites}
+          open={inviteModalOpen}
+          onAccept={async () => {
+            setPendingInvites([])
+            setInviteModalOpen(false)
+            const babies = await babyApi.getMine()
+            if (babies.length > 0) {
+              const fid = babies[0].family_id
+              setCurrentFamilyId(fid)
+              setFamilyId(fid)
+              familyIdRef.current = fid
+              setNeedsOnboarding(false)
+              refreshTodayRecords(fid)
+            }
+          }}
+          onDecline={() => {
+            setPendingInvites([])
+            setInviteModalOpen(false)
+          }}
+        />
       </View>
     )
   }
@@ -273,10 +560,7 @@ export default function HomePage() {
         </View>
 
         <View className='home-content'>
-          {/* 快捷记录（与登录后同款网格，点击时引导登录） */}
           <GuestQuickActions />
-
-          {/* 登录引导 */}
           <View className='home-guest-login'>
             <Text className='home-guest-login__title'>登录后即可开始记录</Text>
             <Text className='home-guest-login__desc'>使用手机号登录，随时随地记录宝宝的成长点滴</Text>
@@ -289,6 +573,94 @@ export default function HomePage() {
           </View>
         </View>
         <TabBar activeTab='home' />
+        <InviteModal
+          invites={pendingInvites}
+          open={inviteModalOpen}
+          onAccept={async () => {
+            setPendingInvites([])
+            setInviteModalOpen(false)
+            const babies = await babyApi.getMine()
+            if (babies.length > 0) {
+              const fid = babies[0].family_id
+              setCurrentFamilyId(fid)
+              setFamilyId(fid)
+              familyIdRef.current = fid
+              setNeedsOnboarding(false)
+              refreshTodayRecords(fid)
+            }
+          }}
+          onDecline={() => {
+            setPendingInvites([])
+            setInviteModalOpen(false)
+          }}
+        />
+      </View>
+    )
+  }
+
+  // ── 已登录但无家庭/宝宝 → 引导建档 ──
+  if (needsOnboarding) {
+    const onboardingUrl = needsOnboardingReason === 'no_baby'
+      ? '/pages/onboarding/index?mode=invited'
+      : '/pages/onboarding/index'
+    return (
+      <View className={cls('home-page')}>
+        <View className='home-hero' style={{ paddingTop: `${getStatusBarHeight() + 8}px` }}>
+          <View className='home-hero__decor home-hero__decor--big' />
+          <View className='home-hero__decor home-hero__decor--small' />
+          <View className='home-hero__head'>
+            <View>
+              <Text className='home-hero__date'>{getTodayDateStr()}</Text>
+              <Text className='home-hero__greeting'>{getGreeting()}</Text>
+            </View>
+          </View>
+          <View className='home-baby-card home-baby-card--guest'>
+            <Text className='home-baby-card__name'>敏宝日记</Text>
+            <Text className='home-baby-card__sub'>记录每一口，呵护每一天</Text>
+          </View>
+          <View className='home-hero__bottom-mask' />
+        </View>
+
+        <View className='home-content'>
+          <View className='home-guest-login'>
+            <Text className='home-guest-login__title'>
+              {needsOnboardingReason === 'no_baby' ? '请创建宝宝档案' : '欢迎加入敏宝日记'}
+            </Text>
+            <Text className='home-guest-login__desc'>
+              {needsOnboardingReason === 'no_baby'
+                ? '你已加入家庭，创建宝宝档案后即可开始记录'
+                : '创建宝宝档案，开始记录宝宝的成长点滴'}
+            </Text>
+            <View
+              className='home-guest-login__btn'
+              onClick={() => Taro.navigateTo({ url: onboardingUrl })}
+            >
+              <Text className='home-guest-login__btn-text'>创建宝宝档案</Text>
+            </View>
+          </View>
+        </View>
+        <TabBar activeTab='home' />
+        <InviteModal
+          invites={pendingInvites}
+          open={inviteModalOpen}
+          onAccept={async () => {
+            setPendingInvites([])
+            setInviteModalOpen(false)
+            const babies = await babyApi.getMine()
+            if (babies.length > 0) {
+              const fid = babies[0].family_id
+              setCurrentFamilyId(fid)
+              setFamilyId(fid)
+              familyIdRef.current = fid
+              setNeedsOnboarding(false)
+              refreshTodayRecords(fid)
+            }
+          }}
+          onDecline={() => {
+            setPendingInvites([])
+            setInviteModalOpen(false)
+          }}
+        />
       </View>
     )
   }
@@ -316,16 +688,28 @@ export default function HomePage() {
             ) : null}
             {lastFeedingRecord ? (
               <FeedingBanner
-                lastFeedingTime={lastFeedingRecord.time}
+                lastFeedingTime={lastFeedingRecord.record.time}
+                isYesterday={lastFeedingRecord.isYesterday}
                 onRecordClick={() => {
                   navigateToRecord(HOME_RECORD_ROUTES.formula ?? '/records/form/feeding')
                 }}
               />
             ) : null}
+            {nextFollowUp ? (
+              <NextFollowUpBanner
+                followUpDate={nextFollowUp.follow_up_date}
+                followUpTime={nextFollowUp.follow_up_time}
+                visitType={nextFollowUp.visit_type}
+                hospital={nextFollowUp.hospital}
+                onRecordClick={() => navigateToRecord('/records/form/medical', nextFollowUp.id)}
+              />
+            ) : null}
+            <AllergyProgressBar observations={foodObservations} />
           </View>
         }
       />
       <View className='home-content'>
+        <HomeDiaryCard diary={yesterdayDiary} loading={diaryLoading} />
         <QuickActions
           birthDate={birthDate}
           onMoreClick={() => Taro.eventCenter.trigger('tabbar:openFab')}
@@ -357,7 +741,17 @@ export default function HomePage() {
           // feeding 类型需要根据 detail.feed_type 确定子类型路由
           let routeKey = record.type as string
           if (routeKey === 'feeding' && record.detail?.feed_type) {
-            routeKey = record.detail.feed_type as string
+            const feedType = record.detail.feed_type as string
+            if (feedType === 'complementary') {
+              routeKey = record.detail.complementary_food === '营养素' ? 'supplement' : 'food'
+            } else {
+              routeKey = feedType
+            }
+          }
+          // health 已拆分为体温/过敏两个独立页，按记录内容分流
+          if (routeKey === 'health') {
+            const detail = (record.detail ?? {}) as Record<string, unknown>
+            routeKey = detail.temperature != null ? 'temperature' : 'allergy'
           }
           const route = HOME_RECORD_ROUTES[routeKey]
           if (route) {
@@ -388,6 +782,27 @@ export default function HomePage() {
             .finally(() => {
               setDeletingId(null)
             })
+        }}
+      />
+      <InviteModal
+        invites={pendingInvites}
+        open={inviteModalOpen}
+        onAccept={async () => {
+          setPendingInvites([])
+          setInviteModalOpen(false)
+          const babies = await babyApi.getMine()
+          if (babies.length > 0) {
+            const fid = babies[0].family_id
+            setCurrentFamilyId(fid)
+            setFamilyId(fid)
+            familyIdRef.current = fid
+            setNeedsOnboarding(false)
+            refreshTodayRecords(fid)
+          }
+        }}
+        onDecline={() => {
+          setPendingInvites([])
+          setInviteModalOpen(false)
         }}
       />
     </View>

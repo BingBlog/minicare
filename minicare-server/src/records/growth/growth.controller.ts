@@ -25,6 +25,11 @@ export class GrowthController {
     return this.growthService.findAll(babyId, beforeDate);
   }
 
+  @Get('latest')
+  getLatest(@Query('baby_id') babyId: string) {
+    return this.growthService.getLatest(babyId);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.growthService.findOne(id);

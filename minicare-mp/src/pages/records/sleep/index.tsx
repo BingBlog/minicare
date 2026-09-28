@@ -27,7 +27,8 @@ import { View, Text, Input } from '@tarojs/components'
 import Taro, { useLoad } from '@tarojs/taro'
 import { useState, useEffect, useRef } from 'react'
 import dayjs from 'dayjs'
-import { babyApi, familyApi, recordsApi } from '@/api'
+import { babyApi, recordsApi } from '@/api'
+import { getStoredFamilyId } from '@/api/http'
 import { getStatusBarHeight } from '@/lib/safeArea'
 import { nowTime, nowDate, isoToLocalDate, isoToLocalTime, dateToLocalISO, nowLocalISO, buildLocalISOPair, calcDurationMinFromRange, inferSleepPeriod } from '@/lib/utils'
 import type { SleepRecord, SleepQuality } from '@/api/sleep'
@@ -121,21 +122,28 @@ export default function SleepFormPage() {
   // ── 初始化 ───────────────────────────────────────────────────────
   useLoad((options) => {
     const initRecordId = (options?.recordId as string | undefined) ?? ''
-    init(initRecordId)
+
+    const voiceFields: Record<string, string> = {}
+    for (const [key, value] of Object.entries(options ?? {})) {
+      if (key.startsWith('voice_') && value) {
+        voiceFields[key.replace('voice_', '')] = value
+      }
+    }
+
+    init(initRecordId, voiceFields)
   })
 
-  const init = async (initRecordId: string) => {
+  const init = async (initRecordId: string, voiceFields?: Record<string, string>) => {
     setEditRecordId(initRecordId)
     isEditModeRef.current = initRecordId !== ''
 
     try {
-      const families = await familyApi.getMine()
-      if (!families.length) {
+      const fid = getStoredFamilyId()
+      if (!fid) {
         Taro.showToast({ title: '请先完成建档', icon: 'none' })
         Taro.reLaunch({ url: '/pages/home/index' })
         return
       }
-      const fid = families[0].id
       const baby = await babyApi.get(fid)
       setFamilyId(fid)
       setBabyId(baby.id)
@@ -161,7 +169,18 @@ export default function SleepFormPage() {
           Taro.showToast({ title: '加载记录失败', icon: 'none' })
         }
       } else {
-        // 非编辑模式：查询是否有进行中的记录
+        if (voiceFields?.duration_min) {
+          const min = parseInt(voiceFields.duration_min, 10)
+          if (min > 0) {
+            setMode('manual')
+            const end = new Date()
+            const start = new Date(end.getTime() - min * 60 * 1000)
+            setStartDate(dayjs(start).format('YYYY-MM-DD'))
+            setStartTime(dayjs(start).format('HH:mm'))
+            setEndDate(dayjs(end).format('YYYY-MM-DD'))
+            setEndTime(dayjs(end).format('HH:mm'))
+          }
+        }
         checkOngoing(fid, baby.id)
       }
     } catch {

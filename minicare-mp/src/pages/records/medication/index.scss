@@ -1,0 +1,353 @@
+// ── 用药记录表单页（F14）──────────────────────────────────────
+
+.medication-page {
+  min-height: 100vh;
+  background: #fdf7f5;
+  display: flex;
+  flex-direction: column;
+}
+
+.medication-body {
+  flex: 1;
+  padding: 4px 16px 32px;
+}
+
+.medication-section-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 600;
+  color: #7a5a60;
+  margin: 14px 4px 8px;
+}
+
+.medication-section-label__hint {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6c5ce7;
+}
+
+.medication-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 0 16px;
+  box-shadow: 0 1px 6px rgba(200, 100, 120, 0.06);
+  overflow: hidden;
+}
+
+// ── 表单行 ──
+.medication-row {
+  display: flex;
+  align-items: center;
+  min-height: 50px;
+}
+
+.medication-row--border {
+  border-bottom: 0.5px solid #f5eeef;
+}
+
+.medication-row__label {
+  width: 80px;
+  flex-shrink: 0;
+  font-size: 14px;
+  color: #7a5a60;
+}
+
+.medication-row__picker {
+  flex: 1;
+  text-align: right;
+  padding: 12px 0;
+}
+
+.medication-row__picker-text {
+  font-size: 15px;
+  color: #3d2b2e;
+}
+
+.medication-dose__input,
+.medication-note__input {
+  padding: 12px 0;
+  font-size: 15px;
+  color: #3d2b2e;
+  width: 100%;
+}
+
+// ── 药品选择 ──
+.medication-pick-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 0;
+}
+
+.medication-pick-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 14px;
+  border-radius: 12px;
+  border: 1.5px solid #ece3e6;
+  background: #fdf9fa;
+}
+
+.medication-pick-chip--active {
+  border-color: #6c5ce7;
+  background: #f0efff;
+}
+
+.medication-pick-chip__name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #4a3035;
+}
+
+.medication-pick-chip__dose {
+  font-size: 11px;
+  color: #c0a8ad;
+}
+
+.medication-no-med {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.medication-no-med__text {
+  font-size: 13px;
+  color: #6c5ce7;
+  font-weight: 600;
+}
+
+// ── 弹层通用 ──
+.medication-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.medication-sheet {
+  width: 100%;
+  max-height: 90%;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 24px 24px 0 0;
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+}
+
+.medication-sheet__handle {
+  display: flex;
+  justify-content: center;
+  padding: 12px 0 4px;
+}
+
+.medication-sheet__bar {
+  width: 40px;
+  height: 4px;
+  border-radius: 2px;
+  background: #e8dcdf;
+}
+
+.medication-sheet__title {
+  display: block;
+  text-align: center;
+  font-size: 17px;
+  font-weight: 700;
+  color: #4a3035;
+  margin-bottom: 8px;
+}
+
+.medication-sheet__section-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 600;
+  color: #7a5a60;
+  margin: 14px 20px 8px;
+}
+
+.medication-sheet__section-hint {
+  font-size: 11px;
+  font-weight: 400;
+  color: #c0a8ad;
+}
+
+// ── 药品管理 ──
+.medication-manage-row {
+  display: flex;
+  align-items: center;
+  padding: 11px 0;
+  gap: 10px;
+}
+
+.medication-manage-row--bordered {
+  border-top: 0.5px solid #f5eeef;
+}
+
+.medication-manage-row__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: #f0efff;
+  flex-shrink: 0;
+}
+
+.medication-manage-row__info {
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+}
+
+.medication-manage-row__name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #3d2b2e;
+}
+
+.medication-manage-row__dose {
+  font-size: 13px;
+  color: #9a7e82;
+}
+
+// 行内删除按钮（每行右侧）
+.medication-manage-row__delete {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 11px;
+  border-radius: 10px;
+  background: #fff0f0;
+  flex-shrink: 0;
+}
+
+.medication-manage-row__delete-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #f05060;
+}
+
+// 常用药库（紧凑列表行）
+.medication-preset-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+}
+
+.medication-preset-row--bordered {
+  border-top: 0.5px solid #f5eeef;
+}
+
+.medication-preset-row__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: #f0efff;
+  flex-shrink: 0;
+}
+
+.medication-preset-row__name {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #3d2b2e;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.medication-preset-row__dose {
+  font-size: 12px;
+  color: #9a7e82;
+  flex-shrink: 0;
+}
+
+.medication-preset-row__add {
+  flex-shrink: 0;
+  min-width: 60px;
+  text-align: center;
+  padding: 4px 10px;
+  border-radius: 13px;
+  background: #f0efff;
+}
+
+.medication-preset-row__add-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6c5ce7;
+}
+
+.medication-preset-row__add--added {
+  background: #effaf4;
+}
+
+.medication-preset-row__add--added .medication-preset-row__add-text {
+  color: #1db954;
+}
+
+// 弹层空态
+.medication-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 22px 0;
+}
+
+.medication-empty__text {
+  font-size: 12px;
+  color: #c0a8ad;
+}
+
+.medication-manage__input {
+  flex: 1;
+  padding: 12px 0;
+  font-size: 15px;
+  color: #3d2b2e;
+  text-align: right;
+}
+
+// ── 弹层按钮 ──
+.medication-sheet__actions {
+  padding: 16px 20px 0;
+}
+
+.medication-sheet__btn {
+  width: 100%;
+  padding: 15px 0;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 50px;
+}
+
+.medication-sheet__btn--save {
+  background: linear-gradient(90deg, #6c5ce7, #a29bfe);
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+}
+
+.medication-sheet__btn--cancel {
+  margin-top: 10px;
+  background: #f5f0f2;
+  color: #9a8090;
+  font-weight: 600;
+}
+
+.medication-sheet__btn--disabled {
+  opacity: 0.6;
+}

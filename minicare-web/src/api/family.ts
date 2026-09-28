@@ -104,4 +104,46 @@ export const familyApi = {
       method: 'POST',
       body: JSON.stringify({ code }),
     }),
+
+  // ── 邀请接受/拒绝相关 ─────────────────────────────────────────────
+
+  /**
+   * 获取当前用户的待处理邀请列表
+   */
+  getPendingInvites: () =>
+    request<PendingInvite[]>('/api/family/pending-invites'),
+
+  /**
+   * 接受邀请
+   */
+  acceptInvite: (memberId: string) =>
+    request<{ familyId: string; success: boolean }>(
+      `/api/family/pending-invites/${memberId}/accept`,
+      { method: 'POST' },
+    ),
+
+  /**
+   * 拒绝邀请
+   */
+  declineInvite: (memberId: string) =>
+    request<{ success: boolean }>(
+      `/api/family/pending-invites/${memberId}/decline`,
+      { method: 'POST' },
+    ),
+
+  /**
+   * 退出家庭（仅非 owner 成员可调用）
+   */
+  leave: (familyId: string) =>
+    request<{ success: boolean }>(
+      `/api/family/${familyId}/leave`,
+      { method: 'POST' },
+    ),
+}
+
+export interface PendingInvite {
+  id: string
+  family_id: string
+  family_name: string
+  inviter_name: string | null
 }

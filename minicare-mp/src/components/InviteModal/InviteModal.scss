@@ -1,0 +1,79 @@
+.invite-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.invite-modal {
+  width: 300px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 28px 24px 24px;
+  text-align: center;
+}
+
+.invite-modal__title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #3d2b2e;
+  margin-bottom: 20px;
+}
+
+.invite-modal__list {
+  margin-bottom: 24px;
+}
+
+.invite-modal__item {
+  background: #fff0f4;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+}
+
+.invite-modal__name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #e8507a;
+}
+
+.invite-modal__inviter {
+  font-size: 12px;
+  color: #9a7e82;
+  margin-top: 4px;
+}
+
+.invite-modal__actions {
+  display: flex;
+  gap: 12px;
+}
+
+.invite-modal__btn {
+  flex: 1;
+  border-radius: 24px;
+  padding: 12px 0;
+}
+
+.invite-modal__btn--accept {
+  background: linear-gradient(135deg, #f87098, #f9a8c0);
+}
+
+.invite-modal__btn--decline {
+  background: #f5f0f1;
+}
+
+.invite-modal__btn-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.invite-modal__btn-text--decline {
+  color: #9a7e82;
+}

@@ -4,7 +4,7 @@
  * 后端各 DTO 的 enum 和整数映射常量均从此处导入，保证单点定义
  */
 
-export const CONFIG_VERSION = '2026-04-13.1'; // 修改配置时同步更新
+export const CONFIG_VERSION = '2026-05-10.1'; // 修改配置时同步更新
 
 // ============================================================
 // 喂养
@@ -168,15 +168,152 @@ export const BABY_GENDER_OPTIONS = [
 // ============================================================
 
 export const SUPPLEMENT_ITEMS = [
-  { key: 'vitD',      label: '维生素D',  unit: 'IU', hint: '通常 400IU/天',      group: '维生素' },
-  { key: 'iron',      label: '铁剂',     unit: 'mg', hint: '通常 1mg/kg/天',     group: '矿物质' },
-  { key: 'calcium',   label: '钙剂',     unit: 'mg', hint: '按医嘱',             group: '矿物质' },
-  { key: 'dha',       label: 'DHA',      unit: 'mg', hint: '通常 100mg/天',      group: '脂肪酸' },
-  { key: 'vitAD',     label: '维生素AD', unit: 'IU', hint: '维生素A+D 复合制剂', group: '维生素' },
-  { key: 'zinc',      label: '锌剂',     unit: 'mg', hint: '按医嘱',             group: '矿物质' },
-  { key: 'probiotic', label: '益生菌',   unit: '次', hint: '每天1次',            group: '其他' },
-  { key: 'vitC',      label: '维生素C',  unit: 'mg', hint: '按医嘱',             group: '维生素' },
+  { key: 'vitD3',     label: '维生素D3',  unit: 'IU', hint: '通常 400IU/天',      group: '维生素', aliases: ['D3', '维D', '维生素D', 'VD', '维D3'] },
+  { key: 'vitAD',     label: '维生素AD',  unit: 'IU', hint: '维生素A+D 复合制剂', group: '维生素', aliases: ['AD', '维AD', '伊可新', '维生素A和D'] },
+  { key: 'iron',      label: '铁剂',      unit: 'mg', hint: '通常 1mg/kg/天',     group: '矿物质', aliases: ['铁', '补铁', '右旋糖酐铁', '蛋白琥珀酸铁', '乳酸亚铁'] },
+  { key: 'dha',       label: 'DHA',       unit: 'mg', hint: '通常 100mg/天',      group: '脂肪酸', aliases: ['藻油', '藻油DHA', '鱼油', '脑黄金'] },
+  { key: 'probiotic', label: '益生菌',    unit: '次', hint: '每天1次',            group: '其他',   aliases: ['妈咪爱', '宝乐安', '合生元', '培菲康', '乳酸菌', '双歧杆菌'] },
+  { key: 'calcium',   label: '钙剂',      unit: 'mg', hint: '按医嘱',             group: '矿物质', aliases: ['钙', '补钙', '乳酸钙', '碳酸钙', '葡萄糖酸钙'] },
+  { key: 'zinc',      label: '锌剂',      unit: 'mg', hint: '按医嘱',             group: '矿物质', aliases: ['锌', '补锌', '葡萄糖酸锌', '甘草锌'] },
+  { key: 'vitC',      label: '维生素C',   unit: 'mg', hint: '按医嘱',             group: '维生素', aliases: ['VC', '维C', '抗坏血酸'] },
+  { key: 'vitB',      label: '维生素B',   unit: 'mg', hint: '按医嘱',             group: '维生素', aliases: ['VB', '维B', '复合维生素B'] },
+  { key: 'vitA',      label: '维生素A',   unit: 'IU', hint: '按医嘱',             group: '维生素', aliases: ['VA', '维A', '视黄醇'] },
+  { key: 'lactase',   label: '乳糖酶',    unit: '滴', hint: '每次喂奶前添加',     group: '其他',   aliases: ['乳糖酶滴剂'] },
+  { key: 'prebiotic', label: '益生元',    unit: 'g',  hint: '按产品说明',         group: '其他',   aliases: ['低聚果糖', 'FOS', 'GOS', '水苏糖'] },
+  { key: 'folicAcid', label: '叶酸',      unit: 'μg', hint: '按医嘱',             group: '维生素', aliases: ['维B9', '维生素B9'] },
 ] as const;
+
+// ============================================================
+// 语音 NLU 配置
+// ============================================================
+
+export const VOICE_NLU_CONFIG = {
+  recordTypes: [
+    {
+      type: 'formula',
+      label: '配方奶',
+      fields: [{ name: 'formula_ml', label: '奶量(ml)', required: true }],
+      triggers: ['喝奶', '吃奶', '喂奶', '冲奶', '奶量', 'ml奶', '毫升奶'],
+      examples: [
+        { input: '旺仔喝奶170ml', output: { recordType: 'formula', fields: { formula_ml: 170 }, confidence: 'high' } },
+        { input: '喝了120毫升奶', output: { recordType: 'formula', fields: { formula_ml: 120 }, confidence: 'high' } },
+        { input: '喂奶150', output: { recordType: 'formula', fields: { formula_ml: 150 }, confidence: 'high' } },
+      ],
+    },
+    {
+      type: 'breast',
+      label: '母乳',
+      fields: [
+        { name: 'breast_side', label: '侧', required: false, enum: ['left', 'right', 'both'] },
+        { name: 'duration_min', label: '时长(分钟)', required: false },
+      ],
+      triggers: ['母乳', '亲喂', '左边喂', '右边喂', '喂母乳'],
+      examples: [
+        { input: '左边喂了15分钟', output: { recordType: 'breast', fields: { breast_side: 'left', duration_min: 15 }, confidence: 'high' } },
+        { input: '母乳喂了20分钟', output: { recordType: 'breast', fields: { duration_min: 20 }, confidence: 'high' } },
+      ],
+    },
+    {
+      type: 'food',
+      label: '辅食',
+      fields: [{ name: 'complementary_food', label: '食物名称', required: true }],
+      triggers: ['吃辅食', '加辅食', '吃米糊', '吃果泥'],
+      examples: [
+        { input: '吃了半碗米糊', output: { recordType: 'food', fields: { complementary_food: '米糊' }, confidence: 'high' } },
+        { input: '吃了点苹果泥', output: { recordType: 'food', fields: { complementary_food: '苹果泥' }, confidence: 'high' } },
+      ],
+    },
+    {
+      type: 'diaper',
+      label: '尿布',
+      fields: [{ name: 'diaper_type', label: '类型', required: true, enum: ['wet', 'dirty', 'mixed', 'dry'] }],
+      triggers: ['换尿布', '尿了', '拉了', '拉屎', '大便', '小便', '尿布湿了'],
+      synonymMap: {
+        wet: ['尿了', '小便', '湿了', '尿布湿了'],
+        dirty: ['拉了', '大便', '臭臭', '粑粑', '拉屎'],
+        mixed: ['又尿又拉', '混合'],
+        dry: ['干的', '没尿'],
+      },
+      examples: [
+        { input: '拉了', output: { recordType: 'diaper', fields: { diaper_type: 'dirty' }, confidence: 'high' } },
+        { input: '尿了', output: { recordType: 'diaper', fields: { diaper_type: 'wet' }, confidence: 'high' } },
+      ],
+    },
+    {
+      type: 'sleep',
+      label: '睡眠(补录)',
+      fields: [{ name: 'duration_min', label: '时长(分钟)', required: true }],
+      triggers: ['睡了X小时', '午睡了X分钟', '小睡了X分钟'],
+      examples: [
+        { input: '宝宝睡了两个小时', output: { recordType: 'sleep', fields: { duration_min: 120 }, confidence: 'high' } },
+        { input: '睡了一个半小时', output: { recordType: 'sleep', fields: { duration_min: 90 }, confidence: 'high' } },
+      ],
+    },
+    {
+      type: 'sleep_start',
+      label: '开始睡觉',
+      fields: [],
+      triggers: ['刚睡了', '睡了', '入睡了', '睡觉了', '睡着了', '哄睡了'],
+      examples: [
+        { input: '刚睡了', output: { recordType: 'sleep_start', fields: {}, confidence: 'high' } },
+        { input: '睡着了', output: { recordType: 'sleep_start', fields: {}, confidence: 'high' } },
+      ],
+    },
+    {
+      type: 'sleep_end',
+      label: '醒来',
+      fields: [],
+      triggers: ['刚醒了', '醒了', '起来了', '睡醒了'],
+      examples: [
+        { input: '刚醒了', output: { recordType: 'sleep_end', fields: {}, confidence: 'high' } },
+        { input: '醒了', output: { recordType: 'sleep_end', fields: {}, confidence: 'high' } },
+      ],
+    },
+    {
+      type: 'temperature',
+      label: '体温',
+      fields: [{ name: 'temperature', label: '体温', required: true }],
+      triggers: ['体温', '发烧', '量体温', '烧到'],
+      examples: [
+        { input: '体温38度5', output: { recordType: 'temperature', fields: { temperature: 38.5 }, confidence: 'high' } },
+        { input: '发烧了39度', output: { recordType: 'temperature', fields: { temperature: 39 }, confidence: 'high' } },
+      ],
+    },
+    {
+      type: 'symptom',
+      label: '表现',
+      fields: [
+        { name: 'mood', label: '情绪', required: false, enum: ['happy', 'calm', 'fussy', 'crying'] },
+        { name: 'spirit', label: '精神', required: false, enum: ['active', 'normal', 'tired', 'low'] },
+      ],
+      triggers: ['开心', '哭闹', '烦躁', '精神好', '没精神', '闹腾'],
+      synonymMap: {
+        mood: { happy: ['开心'], calm: ['平静', '安静'], fussy: ['烦躁', '闹', '哼唧', '闹腾'], crying: ['哭', '大哭', '哭闹'] },
+        spirit: { active: ['精神好', '活跃'], normal: ['正常'], tired: ['困', '累'], low: ['没精神', '蔫', '嗜睡', '蔫蔫的'] },
+      },
+      examples: [
+        { input: '宝宝今天很开心', output: { recordType: 'symptom', fields: { mood: 'happy' }, confidence: 'high' } },
+        { input: '宝宝没精神', output: { recordType: 'symptom', fields: { spirit: 'low' }, confidence: 'high' } },
+      ],
+    },
+    {
+      type: 'supplement',
+      label: '营养素/补充剂',
+      fields: [
+        { name: 'supplement_key', label: '营养素代码', required: true },
+        { name: 'supplement_name', label: '营养素名称', required: true },
+        { name: 'dose', label: '剂量', required: false },
+      ],
+      triggers: ['补充了', '吃了(营养素)', '喝了(营养素)'],
+      examples: [
+        { input: '补充了D3', output: { recordType: 'supplement', fields: { supplement_key: 'vitD3', supplement_name: '维生素D3' }, confidence: 'high' } },
+        { input: '吃了妈咪爱', output: { recordType: 'supplement', fields: { supplement_key: 'probiotic', supplement_name: '益生菌' }, confidence: 'high' } },
+        { input: '喝了铁', output: { recordType: 'supplement', fields: { supplement_key: 'iron', supplement_name: '铁剂' }, confidence: 'high' } },
+        { input: '补充了AD', output: { recordType: 'supplement', fields: { supplement_key: 'vitAD', supplement_name: '维生素AD' }, confidence: 'high' } },
+      ],
+    },
+  ],
+} as const;
 
 // ============================================================
 // 数值范围
@@ -234,6 +371,7 @@ export const AppConfigData = {
       },
       limits:              LIMITS,
       supplements:         SUPPLEMENT_ITEMS,
+      voiceNlu:            VOICE_NLU_CONFIG,
       quickActionDefaults: QUICK_ACTION_DEFAULTS,
     };
   },

@@ -118,9 +118,9 @@ function PrivacyPolicy() {
         为提供家庭成员协作功能，当你邀请家庭成员加入时，开发者会收集被邀请人的手机号码，用于发送邀请和关联账号。被邀请人的手机号码仅用于此目的，不会用于其他用途。
       </Text>
 
-      <Text className='privacy-article__h3'>5. 选中的照片或视频信息</Text>
+      <Text className='privacy-article__h3'>5. 选中的照片信息</Text>
       <Text className='privacy-article__p'>
-        开发者收集你选中的照片或视频信息，用于就医记录中上传病历、检查报告等图片并进行 OCR 自动识别。该功能由你主动触发，你可以选择从相册选取或通过摄像头拍摄，仅在你主动操作时访问。
+        开发者收集你选中的照片信息，用于就医记录中上传病历、检查报告等图片留档保存。该功能由你主动触发，你可以选择从相册选取或通过摄像头拍摄，仅在你主动操作时访问。
       </Text>
 
       <Text className='privacy-article__h3'>6. 剪切板</Text>
@@ -150,7 +150,7 @@ function PrivacyPolicy() {
 
       <Text className='privacy-article__h3'>1. 撤回授权</Text>
       <Text className='privacy-article__p'>
-        关于收集你选中的照片或视频信息，你可以通过以下路径撤回对开发者的授权：小程序主页右上角"..." - "设置" - 点击特定信息 - 点击"不允许"。撤回授权后，就医记录的图片上传功能将不可用，但不影响其他功能的正常使用。
+        关于收集你选中的照片信息，你可以通过以下路径撤回对开发者的授权：小程序主页右上角"..." - "设置" - 点击特定信息 - 点击"不允许"。撤回授权后，就医记录的图片上传功能将不可用，但不影响其他功能的正常使用。
       </Text>
 
       <Text className='privacy-article__h3'>2. 访问和修改</Text>

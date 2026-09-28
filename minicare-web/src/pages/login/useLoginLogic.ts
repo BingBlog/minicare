@@ -63,11 +63,20 @@ export function useLoginLogic() {
   // ── 登录后检查家庭/宝宝档案，决定跳转目标 ──────────────────────────────
   const afterLogin = async (activatedFamilyIds: string[] = []) => {
     try {
-      const families = await familyApi.getMine()
+      const [families, pendingInvites] = await Promise.all([
+        familyApi.getMine(),
+        familyApi.getPendingInvites().catch(() => []),
+      ])
 
-      if (families.length === 0) {
-        // 没有任何家庭 → 去引导页
+      if (families.length === 0 && pendingInvites.length === 0) {
+        // 没有任何家庭且没有待处理邀请 → 去引导页
         navigate('/onboarding', { replace: true })
+        return
+      }
+
+      // 有待处理邀请时，直接跳转到首页展示邀请弹层
+      if (pendingInvites.length > 0 && families.length === 0) {
+        navigate('/', { replace: true })
         return
       }
 

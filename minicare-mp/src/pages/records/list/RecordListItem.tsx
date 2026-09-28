@@ -62,15 +62,29 @@ export default function RecordListItem({ record, showDivider, onClick }: RecordL
   const note = record.note as string | undefined
   const hasNote = !!note
 
-  // 使用与 Web 一致的展示逻辑
-  const { label, tags } = getRecordListParts(recType, record as Record<string, unknown>)
-  const summary = getRecordSummary(recType, record as Record<string, unknown>)
+  const feedSummary = (record as Record<string, unknown>).summary as
+    | { title?: string; tags?: string[]; value?: string; unit?: string; theme?: SummaryTheme; active?: boolean }
+    | undefined
+
+  // Feed API 优先使用后端 summary；无 summary 时回退到本地解析逻辑
+  const fallbackParts = getRecordListParts(recType, record as Record<string, unknown>)
+  const fallbackSummary = getRecordSummary(recType, record as Record<string, unknown>)
+  const label = feedSummary?.title ?? fallbackParts.label
+  const tags = feedSummary?.tags ?? fallbackParts.tags
+  const summary = feedSummary
+    ? {
+      value: feedSummary.value ?? '',
+      unit: feedSummary.unit,
+      theme: feedSummary.theme ?? 'pink',
+      active: feedSummary.active,
+    }
+    : fallbackSummary
 
   const iconSrc = RECORD_TYPE_ICON_SRC[iconType] ?? RECORD_TYPE_ICON_SRC.feeding
   const iconBgColor = (RECORD_TYPE_CFG[iconType]?.color ?? '#E8305A') + '1A'
 
   // summary 总字符长度决定是否紧凑模式
-  const summaryLen = summary ? (summary.value.length + (summary.unit?.length ?? 0)) : 0
+  const summaryLen = summary?.value ? (summary.value.length + (summary.unit?.length ?? 0)) : 0
   const summaryCompact = summaryLen > 5
 
   const cls = [
@@ -109,7 +123,7 @@ export default function RecordListItem({ record, showDivider, onClick }: RecordL
             </View>
 
             <View className='record-item__summary'>
-              {summary && (
+              {summary && summary.value && (
                 <View className={`${SUMMARY_BADGE_CLS[summary.theme]}${summaryCompact ? ' record-item__summary-badge--compact' : ''}`}>
                   <Text className={SUMMARY_VALUE_CLS[summary.theme]}>{summary.value}</Text>
                   {summary.unit && (

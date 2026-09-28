@@ -85,20 +85,44 @@
 .home-baby-card {
   position: relative;
   z-index: 2;
-  margin: 0 16px;
+  margin: 0;
   border-radius: 18px;
-  padding: 15px 16px 14px;
+  padding: 16px 18px 18px;
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.06) 100%);
   border: 1px solid rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(2px);
+  overflow: hidden;
+}
+
+.home-baby-card__info {
+  margin-bottom: 12px;
+}
+
+.home-baby-card__name-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.home-baby-card__greeting {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 15px;
+  font-weight: 500;
 }
 
 .home-baby-card__name {
-  display: block;
   color: #fff;
   font-size: 18px;
   font-weight: 700;
   letter-spacing: -0.3px;
+}
+
+.home-baby-card__age {
+  display: block;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 2px;
 }
 
 .home-baby-card__sub {
@@ -108,60 +132,62 @@
   margin-top: 3px;
 }
 
-.home-baby-card--guest {
-  background: rgba(255, 255, 255, 0.22);
-  margin-bottom: 32px;
-}
-
-.home-stats {
-  margin-top: 16px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
+.home-baby-card__stats {
+  display: flex;
   border-radius: 12px;
   overflow: hidden;
   background: rgba(0, 0, 0, 0.1);
 }
 
-.home-stats__item {
-  background: transparent;
-  padding: 8px 6px;
+.home-baby-card__stat-item {
+  flex: 1;
   text-align: center;
+  padding: 10px 6px;
   border-right: 1px solid rgba(255, 255, 255, 0.18);
 }
 
-.home-stats__item:last-child {
+.home-baby-card__stat-item:last-child {
   border-right: 0;
 }
 
-.home-stats__value {
+.home-baby-card__stat-item .home-stats__value {
   color: #fff;
   font-size: 20px;
   font-weight: 700;
   line-height: 1;
 }
 
-.home-stats__unit {
+.home-baby-card__stat-item .home-stats__small {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.home-baby-card__stat-item .home-stats__unit {
   margin-left: 2px;
   font-size: 11px;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.8);
 }
 
-.home-stats__label {
+.home-baby-card__stat-label {
   margin-top: 2px;
   display: block;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.65);
   font-size: 10px;
 }
 
+.home-baby-card--guest {
+  background: rgba(255, 255, 255, 0.22);
+}
+
 .home-content {
-  margin-top: 0;
+  margin-top: -24px;
   border-radius: 24px 24px 0 0;
   position: relative;
   z-index: 3;
   background: #fdf7f5;
-  padding: 12px 16px 26px;
+  padding: 20px 16px 26px;
 }
 
 .home-card {
@@ -584,23 +610,12 @@
   margin-top: 4px;
 }
 
-.home-hero__bottom-mask {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 28px;
-  background: #fdf7f5;
-  border-radius: 24px 24px 0 0;
-  z-index: 1;
-}
-
 .home-banners {
-  padding-bottom: 28px;
+  padding-bottom: 40px;
 }
 
 .home-inline-banner {
-  margin: 12px 16px 0;
+  margin: 12px 0 0;
   border-radius: 12px;
   padding: 11px 14px;
   display: flex;
@@ -619,6 +634,17 @@
   box-shadow: 0 4px 16px rgba(248, 144, 80, 0.18);
 }
 
+.home-inline-banner--allergy {
+  border-left: 3px solid #ddb870;
+  box-shadow: 0 4px 16px rgba(221, 184, 112, 0.18);
+}
+
+.home-inline-banner--followup {
+  border-left: 3px solid #ddb870;
+  box-shadow: 0 4px 16px rgba(221, 184, 112, 0.18);
+}
+
+
 .home-inline-banner__dot {
   width: 8px;
   height: 8px;
@@ -633,6 +659,15 @@
 .home-inline-banner__dot--feeding {
   background: #f8a070;
 }
+
+.home-inline-banner__dot--allergy {
+  background: #ddb870;
+}
+
+.home-inline-banner__dot--followup {
+  background: #ddb870;
+}
+
 
 .home-inline-banner__content {
   flex: 1;
@@ -653,10 +688,70 @@
   font-size: 11px;
 }
 
-.home-inline-banner__action {
+.home-inline-banner__action--sleep {
   font-size: 12px;
   font-weight: 600;
+  color: #F87098;
+  border: 1.5px solid rgba(248, 112, 152, 0.5);
+  border-radius: 8px;
+  padding: 6px 12px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.home-inline-banner__action--sleep--ending {
+  color: #C8A0B0;
+  border-color: #E8C8D0;
+}
+
+.home-inline-banner__action--feeding {
+  font-size: 12px;
+  font-weight: 600;
+  color: #F8A070;
+  border: 1.5px solid rgba(248, 160, 112, 0.5);
+  border-radius: 8px;
+  padding: 6px 12px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.home-inline-banner__action--followup {
+  font-size: 12px;
+  font-weight: 600;
+  color: #DDB870;
+  border: 1.5px solid rgba(221, 184, 112, 0.5);
+  border-radius: 8px;
+  padding: 6px 12px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+
+.home-inline-banner__content-inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.home-inline-banner__tag {
+  display: inline-block;
+  font-size: 11px;
+  color: #7a5a60;
+  background: #fff8ec;
+  border-radius: 6px;
+  padding: 2px 8px;
+}
+
+.home-inline-banner__tag--more {
+  background: #f5f0f2;
   color: #9a8090;
+}
+
+.home-inline-banner__arrow {
+  color: #c0a8ad;
+  font-size: 14px;
+  flex-shrink: 0;
 }
 
 .home-tabbar {
@@ -1028,3 +1123,81 @@
 
 @include ipad.home;
 
+
+/* ── 今日日记入口卡片（P3）── */
+.home-diary-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+}
+
+.home-diary-card__badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f9c8a0, #f89870);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.home-diary-card__badge--empty {
+  background: linear-gradient(135deg, #f9a8c0, #f87098);
+}
+
+.home-diary-card__badge-text {
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.home-diary-card__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.home-diary-card__title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #3d2b2e;
+}
+
+.home-diary-card__excerpt {
+  font-size: 11px;
+  color: #9a7e82;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.home-diary-card__more {
+  font-size: 12px;
+  color: #e8507a;
+  flex-shrink: 0;
+}
+
+// 加载骨架：与真实卡同高度（高度由 40px badge 决定），避免布局位移
+.home-diary-card--skeleton .home-diary-card__badge {
+  background: #f1ebea;
+}
+
+.home-diary-card__sk {
+  border-radius: 4px;
+  background: #f1ebea;
+}
+
+.home-diary-card__sk--title {
+  width: 64px;
+  height: 14px;
+}
+
+.home-diary-card__sk--text {
+  width: 148px;
+  height: 11px;
+}

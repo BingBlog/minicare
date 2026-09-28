@@ -3,7 +3,6 @@ export default {
   pages: [
     'pages/home/index',
     'pages/records/list/index',
-    'pages/report/index',
     'pages/profile/index',
     'pages/index/index',
   ],
@@ -25,6 +24,18 @@ export default {
       pages: ['index'],
     },
     {
+      root: 'pages/chat',
+      pages: ['index'],
+    },
+    {
+      root: 'pages/diary',
+      pages: ['index', 'detail'],
+    },
+    {
+      root: 'pages/device',
+      pages: ['index'],
+    },
+    {
       root: 'pages/records/feeding',
       pages: ['index'],
     },
@@ -42,11 +53,11 @@ export default {
     },
     {
       root: 'pages/records/health',
-      pages: ['index'],
+      pages: ['temperature/index', 'allergy/index'],
     },
     {
       root: 'pages/records/medical',
-      pages: ['index'],
+      pages: ['index', 'type-select/index'],
     },
     {
       root: 'pages/records/activity',
@@ -56,7 +67,25 @@ export default {
       root: 'pages/records/symptom',
       pages: ['index'],
     },
+    {
+      root: 'pages/records/medication',
+      pages: ['index'],
+    },
+    {
+      root: 'pages/records/food-observation',
+      pages: ['index', 'detail'],
+    },
+    {
+      root: 'pagesReport',
+      pages: ['index'],
+    },
   ],
+  preloadRule: {
+    'pages/home/index': {
+      network: 'all',
+      packages: ['pagesReport'],
+    },
+  },
   resizable: true,
   window: {
     backgroundTextStyle: 'light',
@@ -73,7 +102,6 @@ export default {
     list: [
       { pagePath: 'pages/home/index', text: '首页' },
       { pagePath: 'pages/records/list/index', text: '记录' },
-      { pagePath: 'pages/report/index', text: '分析' },
       { pagePath: 'pages/profile/index', text: '我的' },
     ],
   },

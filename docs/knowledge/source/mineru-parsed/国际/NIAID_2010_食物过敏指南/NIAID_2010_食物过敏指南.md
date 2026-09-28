@@ -1,0 +1,3678 @@
+Published in final edited form as: J Allergy Clin Immunol. 2010 December ; 126(6 0): S1–58. doi:10.1016/j.jaci.2010.10.007.
+
+# Guidelines for the Diagnosis and Management of Food Allergy in the United States:
+
+Report of the NIAID-Sponsored Expert Panel
+
+## Joshua A. Boyce, MD,
+
+Division of Rheumatology, Immunology and Allergy, Brigham and Women's Hospital, Department of Medicine Harvard Medical School, Boston, Mass
+
+## Amal Assa'ad, MD,
+
+Division of Allergy and Immunology, Cincinnati Children's Hospital Medical Center, University of Cincinnati, Cincinnati, Ohio
+
+## A. Wesley Burks, MD,
+
+Division of Allergy and Immunology, Department of Pediatrics, Duke University Medical Center, Durham, NC
+
+## Stacie M. Jones, MD,
+
+Division of Allergy and Immunology, Department of Pediatrics, University of Arkansas for Medical Sciences, Arkansas Children's Hospital, Little Rock, Ark
+
+## Hugh A. Sampson, MD,
+
+Elliot and Roslyn Jaffe Food Allergy Institute, Division of Allergy and Immunology, Department of Pediatrics, Mount Sinai School of Medicine, New York, NY
+
+## Robert A. Wood, MD,
+
+Division of Allergy and Immunology, Department of Pediatrics, The Johns Hopkins University School of Medicine, Baltimore, Md
+
+## Marshall Plaut, MD,
+
+Division of Allergy, Immunology, and Transplantation, National Institute of Allergy and Infectious Diseases, National Institutes of Health, Bethesda, Md
+
+## Susan F. Cooper, MSc,
+
+Division of Allergy, Immunology, and Transplantation, National Institute of Allergy and Infectious Diseases, National Institutes of Health, Bethesda, Md
+
+Matthew J. Fenton, PhD,
+
+Division of Allergy, Immunology, and Transplantation, National Institute of Allergy and Infectious Diseases, National Institutes of Health, Bethesda, Md
+
+## S. Hasan Arshad, MBBS, MRCP, DM, FRCP,
+
+School of Medicine, University of Southampton, Southampton, UK, The David Hide Asthma and Allergy Research Centre, St Mary's Hospital, Newport, Isle of Wight, UK, Southampton University Hospital NHS Trust, Southampton, UK
+
+## Sami L. Bahna, MD, DrPH,
+
+Department of Pediatrics, Section of Allergy and Immunology, Louisiana State University Health Sciences Center, Shreveport, La
+
+## Lisa A. Beck, MD,
+
+Department of Dermatology, University of Rochester Medical Center, Rochester, NY
+
+## Carol Byrd-Bredbenner, PhD, RD, FADA,
+
+Department of Nutritional Sciences, Rutgers University, New Brunswick, NJ
+
+## Carlos A. Camargo Jr, MD, DrPH,
+
+Department of Emergency Medicine, Division of Rheumatology, Allergy and Immunology, Department of Medicine, Massachusetts General Hospital, Harvard Medical School, Boston, Mass
+
+## Lawrence Eichenfield, MD,
+
+Division of Pediatric and Adolescent Dermatology, Rady Children's Hospital, San Diego, Calif, Departments of Pediatrics and Medicine, University of California, San Diego, San Diego, Calif
+
+## Glenn T. Furuta, MD,
+
+Section of Pediatric Gastroenterology, Hepatology, and Nutrition, Digestive Health Institute, Children's Hospital Denver, Aurora, Colo, Department of Pediatrics, National Jewish Health, Denver, Colo, Department of Pediatrics, University of Colorado Denver School of Medicine, Aurora, Colo
+
+## Jon M. Hanifin, MD,
+
+Department of Dermatology, Oregon Health and Science University, Portland, Ore
+
+## Carol Jones, RN, AE-C,
+
+Asthma Educator and Consultant, Allergy and Asthma Network Mother's of Asthmatics, McLean, Va
+
+## Monica Kraft, MD,
+
+Division of Pulmonary, Allergy, and Critical Care Medicine, Department of Medicine, Duke University Medical Center, Durham, NC
+
+## Bruce D. Levy, MD,
+
+Partners Asthma Center, Pulmonary and Critical Medicine, Brigham and Women's Hospital and Harvard Medical School, Boston, Mass
+
+## Phil Lieberman, MD,
+
+Division of Allergy and Immunology, Department of Medicine, University of Tennessee College of Medicine, Memphis, Tenn
+
+Stefano Luccioli, MD, Office of Food Additive Safety, US Food and Drug Administration, College Park, Md
+
+Kathleen M. McCall, BSN, RN, Children's Hospital of Orange County, Orange, Calif
+
+Lynda C. Schneider, MD, Division of Immunology, Children's Hospital Boston, Boston, Mass
+
+Ronald A. Simon, MD, Division of Allergy, Asthma and Immunology, Scripps Clinic, San Diego, Calif
+
+F. Estelle R. Simons, MD,   
+Departments of Pediatrics and Child Health and Immunology, Faculty of Medicine, University of   
+Manitoba, Winnipeg, Manitoba, Canada
+
+Stephen J. Teach, MD, MPH, Division of Emergency Medicine, Children's National Medical Center, Washington, DC
+
+Barbara P. Yawn, MD, MPH, MSc, and Department of Research, Olmsted Medical Center, Rochester, Minn, Department of Family and Community Health, University of Minnesota School of Medicine, Minneapolis, Minn
+
+Julie M. Schwaninger, MSc   
+Division of Allergy, Immunology, and Transplantation, National Institute of Allergy and Infectious   
+Diseases, National Institutes of Health, Bethesda, Md
+
+## Abstract
+
+Food allergy is an important public health problem that affects children and adults and may be increasing in prevalence. Despite the risk of severe allergic reactions and even death, there is no current treatment for food allergy: the disease can only be managed by allergen avoidance or treatment of symptoms. The diagnosis and management of food allergy also may vary from one clinical practice setting to another. Finally, because patients frequently confuse nonallergic food reactions, such as food intolerance, with food allergies, there is an unfounded belief among the public that food allergy prevalence is higher than it truly is. In response to these concerns, the National Institute of Allergy and Infectious Diseases, working with 34 professional organizations, federal agencies, and patient advocacy groups, led the development of clinical guidelines for the diagnosis and management of food allergy. These Guidelines are intended for use by a wide variety of health care professionals, including family practice physicians, clinical specialists, and nurse practitioners. The Guidelines include a consensus definition for food allergy, discuss comorbid conditions often associated with food allergy, and focus on both IgE-mediated and non-IgE-mediated reactions to food. Topics addressed include the epidemiology, natural history, diagnosis, and management of food allergy, as well as the management of severe symptoms and anaphylaxis. These Guidelines provide 43 concise clinical recommendations and additional guidance on points of current controversy in patient management. They also identify gaps in the current scientific knowledge to be addressed through future research.
+
+## Keywords
+
+food; allergy; anaphylaxis; diagnosis; disease management; guidelines
+
+## Preface
+
+Food allergy is an immune-based disease that has become a serious health concern in the United States. A recent study<sup>1</sup> estimates that food allergy affects 5% of children under the age of 5 years and 4% of teens and adults, and its prevalence appears to be on the increase. The symptoms of this disease can range from mild to severe and, in rare cases, can lead to anaphylaxis, a severe and potentially life-threatening allergic reaction. There are no therapies available to prevent or treat food allergy: the only prevention option for the patient is to avoid the food allergen, and treatment involves the management of symptoms as they appear. And because the most common food allergens―eggs, milk, peanuts, tree nuts, soy, wheat, crustacean shellfish, and fish―are highly prevalent in the US diet, patients and their families must remain constantly vigilant.
+
+The development of the Guidelines for the Diagnosis and Management of Food Allergy in the United States began in 2008 to meet a long-standing need for harmonization of best clinical practices related to food allergy across medical specialties. The resulting Guidelines reflect considerable effort by a wide range of participants to establish consensus and consistency in definitions, diagnostic criteria, and management practices. They provide concise recommendations on how to diagnose and manage food allergy and treat acute food allergy reactions. In addition, they provide guidance on addressing points of controversy in patient management and also identify gaps in our current knowledge, which will help focus the direction of future research in this area.
+
+The Guidelines were developed over a 2-year period through the combined efforts of an Expert Panel and Coordinating Committee representing 34 professional organizations, federal agencies, and patient advocacy groups. The Expert Panel drafted the Guidelines using an independent, systematic literature review and evidence report on the state of the science in food allergy, as well as their expert clinical opinion. The National Institute of Allergy and Infectious Diseases (NIAID), a component of the National Institutes of Health (NIH), provided funding for this project and played a pivotal role as organizer and “honest broker” of the Guidelines project.
+
+As the lead NIH institute for research on food allergy, NIAID is deeply committed to improving the lives of patients with food allergy and is proud to have been involved in the development of these Guidelines. As our basic understanding of the human immune system and food allergy in particular increases, we hope to translate this information into improved clinical applications. Although there are many challenges, the potential benefit for human health will be extraordinary.
+
+## 1. Introduction
+
+## 1.1. Overview
+
+Food allergy (FA) is an important public health problem that affects adults and children and may be increasing in prevalence. Despite the risk of severe allergic reactions and even death, there is no current treatment for FA: the disease can only be managed by allergen avoidance or treatment of symptoms. Moreover, the diagnosis of FA may be problematic, given that nonallergic food reactions, such as food intolerance, are frequently confused with FAs. Additional concerns relate to the differences in the diagnosis and management of FA in different clinical practice settings.
+
+Due to these concerns, the National Institute of Allergy and Infectious Diseases (NIAID), part of the National Institutes of Health, working with more than 30 professional organizations, federal agencies, and patient advocacy groups, led the development of “best practice” clinical guidelines for the diagnosis and management of FA (henceforth referred to as the Guidelines). Based on a comprehensive review and objective evaluation of the recent scientific and clinical literature on FA, the Guidelines were developed by and designed for allergists/immunologists, clinical researchers, and practitioners in the areas of pediatrics, family medicine, internal medicine, dermatology, gastroenterology, emergency medicine, pulmonary and critical care medicine, and others.
+
+The Guidelines focus on diseases that are defined as FA (see section 2.1) and include both IgE-mediated reactions to food and some non-IgE-mediated reactions to food. The Guidelines do not discuss celiac disease, which is an immunologic non-IgE-mediated reaction to certain foods. Although this is an immune-based disease involving food, existing clinical guidelines for celiac disease will not be restated here.<sup>2,3</sup>
+
+In summary, the Guidelines:
+
+Provide concise recommendations (guidelines numbered 1 through 43) to a wide variety of health care professionals on how to diagnose FA, manage ongoing FA, and treat acute FA reactions
+
+Identify gaps in the current scientific knowledge to be addressed through future research
+
+• Identify and provide guidance on points of current controversy in patient management
+
+A companion Summary of the NIAID-Sponsored Expert Panel Report has been prepared from the Guidelines. This Summary contains all 43 recommendations, all “In summary” statements, definitions (section 1.3.5), 1 diagnostic table for FA, and 1 summary table for the pharmacologic management of anaphylaxis. It does not contain background information, supporting evidence for the recommendations and “In summary” statements, and other summary tables of data. The Summary is not intended to be the sole source of guidance for the health care professional, who should consult the Guidelines for complete information.
+
+Finally, these Guidelines do not address the management of patients with FA outside of clinical care settings (for example, schools and restaurants) or the related public health policy issues. These issues are beyond the scope of this document.
+
+## 1.2. Relationship of the US Guidelines to other guidelines
+
+Other organizations have recently developed, or are currently developing, guidelines for FA.
+
+The European Academy of Allergy and Clinical Immunology (EAACI) has created a task force that is currently developing guidelines for the diagnosis and management of FA. The model for development of guidelines by this task force is very similar to that used to generate these US Guidelines. Following completion of the EAACI guidelines, additional efforts will be made to harmonize the US Guidelines with the EAACI guidelines.
+
+Clinical practice guidelines on FA in children and young people are being developed for use in the National Health Service in England, Wales, and Northern Ireland by the National Institute for Health and Clinical Excellence (NICE). These guidelines are intended for use predominantly in primary care and community settings. The model used for development of the NICE guidelines is also very similar to that used to generate the EAACI and US Guidelines. It is expected that NICE will release the final guidelines in early 2011.
+
+In 2008, the World Allergy Organization (WAO) Special Committee on Food Allergy identified cow's milk allergy (CMA) as a topic that would benefit from a reappraisal of the more recent literature and an updating of existing guidelines, which summarized the achievements of the preceding decade and dealt mainly with prevention. It is in this context that the WAO Diagnosis and Rationale for Action against Cow's Milk Allergy (DRACMA) was created.<sup>4</sup> The evidence-based DRACMA guidelines cover diagnostic algorithms, challenge-testing methodology, consideration of appropriate sensitization tests, and the limitations of diagnostic procedures for CMA. In addition, there is discussion of appropriate substitute feeding formulas that can be used in various clinical situations, with consideration, for example, of patient preferences, costs, and local availability.
+
+In 2006, an FA practice parameter was published by a task force established by the American College of Allergy, Asthma and Immunology, the American Academy of Allergy, Asthma, and Immunology, and the Joint Council of Allergy, Asthma and Immunology.<sup>5</sup> The document, Food Allergy: A Practice Parameter, has been an outstanding resource for the allergy and immunology clinical community, but may not have had broad impact outside of this community.
+
+Notably, the new US Guidelines are specifically aimed at all health care professionals who care for adult and pediatric patients with FA and related comorbidities. Thus, it is hoped that these Guidelines will have broad impact and benefit for all health care professionals.
+
+## 1.3. How the Guidelines were developed
+
+1.3.1. The Coordinating Committee—NIAID established a Coordinating Committee (CC), whose members are listed in Appendix A, to oversee the development of the Guidelines; review drafts of the Guidelines for accuracy, practicality, clarity, and broad utility of the recommendations in clinical practice; review the final Guidelines; and disseminate the Guidelines. The CC members were from 34 professional organizations, advocacy groups, and federal agencies, and each member was vetted for financial conflict of interest (COI) by NIAID staff. Potential COIs were posted on the NIAID Web site at http:// www.niaid.nih.gov/topics/foodAllergy/clinical/Pages/FinancialDisclosure.aspx.
+
+1.3.2. The Expert Panel—The CC convened an Expert Panel (EP) in March 2009 that was chaired by Joshua Boyce, MD (Brigham and Women's Hospital, Boston, Mass). Panel members were specialists from a variety of relevant clinical, scientific, and public health areas (see Appendix B). Each member was vetted for financial COI by NIAID staff and approved by the CC. Potential COIs were posted on the NIAID Web site provided in section 1.3.1.
+
+The charge to the EP was to use an independent, systematic literature review (see section 1.3.3), in conjunction with consensus expert opinion and EP-identified supplementary documents, to develop Guidelines that provide a comprehensive approach for diagnosing and managing FA based on the current state of the science.
+
+The EP organized the Guidelines into 5 major topic areas:
+
+• Definitions, prevalence, and epidemiology of FA (section 2)
+
+• Natural history of FA and associated disorders (section 3)
+
+• Diagnosis of FA (section 4)
+
+• Management of nonacute food-induced allergic reactions and prevention of FA (section 5)
+
+• Diagnosis and management of food-induced anaphylaxis and other acute allergic reactions to foods (section 6)
+
+Subtopics were developed for each of these 5 broad topic areas.
+
+## 1.3.3. The independent, systematic literature review and report—RAND
+
+Corporation prepared an independent, systematic literature review and evidence report on the state of the science in FA. RAND had responded to the NIAID Request for Proposal AI2008035, Systematic Literature Review and Evidence Based Report on Food Allergy, and was subsequently awarded the contract in September 2008. The contract's principal investigator was Paul G. Shekelle, MD, PhD, an internationally recognized expert in the fields of practice guidelines and meta-analysis.
+
+NIAID and the EP developed an extensive set of key questions,<sup>6</sup> which were further refined in discussions with RAND. Literature searches were performed on PubMed, Cochrane Database of Systematic Reviews, Cochrane Database of Abstracts of Reviews of Effects,
+
+Cochrane Central Register of Controlled Trials, and the World Allergy Organization Journal, a relevant journal that is not included in PubMed. In most cases, searches were limited to the years 1988 (January) to 2009 (September), with no language restrictions. Additional publications identified by the EP and others involved in the review process also were included in the RAND review if and only if they met the RAND criteria for inclusion.
+
+RAND researchers screened all titles found through searches, as well as those that were submitted by the EP or NIAID. Screening criteria were established to facilitate the identification of articles concerning definitions, diagnoses, prevention, treatment, management, and other topics. Articles were included or excluded based on article type and study purpose as follows:
+
+• Article type
+
+一 Included: Original research or systematic reviews
+
+Excluded: Background or contextual reviews; nonsystematic reviews; commentary; other types of articles
+
+• Study purpose
+
+Included: Incidence/prevalence/natural history; diagnosis; treatment/ management/prevention
+
+Excluded: Not about FA; about some aspect not listed in the “included” category
+
+RAND screened more than 12,300 titles, reviewed more than 1,200 articles, abstracted nearly 900 articles, and included 348 articles in the final RAND report. Two RAND investigators independently reviewed all titles and abstracts to identify potentially relevant articles. Articles that met the inclusion criteria were independently abstracted by a single RAND investigator. Because of the large number of articles and the short time for the review, articles were not independently abstracted by 2 RAND investigators (dualabstracted). However, team members worked together closely and data were doublechecked. Selected conclusions from the report have been published in a peer-reviewed journal,<sup>7</sup> and the full version of the report with a complete list of references is available at http://www.rand.org/pubs/working\_papers/WR757-1/.
+
+1.3.4. Assessing the quality of the body of evidence—For each key question, in addition to assessing the quality of each of the included studies, RAND assessed the quality of the body of evidence using the Grading of Recommendations Assessment, Development and Evaluation (GRADE) approach,<sup>8</sup> which was developed in 2004. GRADE provides a comprehensive and transparent methodology to develop recommendations for the diagnosis, treatment, and management of patients. In assessing the body of evidence, GRADE considers study design and other factors, such as the precision, consistency, and directness of the data. Using this approach, GRADE then provides a grade for the quality of the body of evidence.
+
+Based on the available scientific literature on FA, which in some areas was minimal, RAND used the GRADE approach to assess the overall quality of evidence for each key question assigned by the EP and assigned a grade according to the following criteria:<sup>9,10</sup>
+
+High—Further research is very unlikely to have an impact on the quality of the body of evidence, and therefore the confidence in the recommendation is high and unlikely to change.
+
+Moderate—Further research is likely to have an impact on the quality of the body of evidence and may change the recommendation.
+
+• Low—Further research is very likely to have an important impact on the body of evidence and is likely to change the recommendation.
+
+A GRADE designation of “Low” for the quality of evidence does not imply that an article is not factually correct or lacks scientific merit. For example, a perfectly designed and executed study of a treatment in a small sample that is from a single site of highly selected patients might still yield an overall GRADE of “Low.” This is because a single small study is characterized as “sparse” data, and the patient population may not be representative of the larger population of patients with FA. Each of these factors reduces the level of evidence from “High,” which is how randomized controlled trial (RCT) evidence is designated initially. It is worth emphasizing that these 2 limitations are not of the study per se, but of the body of evidence. Replication of the study's result on other populations would result in a GRADE of “High.” It should be noted that the EP recommendations made in these Guidelines are often based on a GRADE classification of the quality of evidence as “Low,” thus necessitating more contribution to the recommendation from expert opinion.
+
+For additional information to understand the concept of “quality of the body of evidence,” please see Appendix C.
+
+1.3.5. Preparation of draft Guidelines and Expert Panel deliberations—The EP prepared a draft version of the Guidelines based on the RAND evidence report and also supplementary documents that were identified by the EP but not included in the RAND report.
+
+The supplementary documents contained information of significant value that was not included in the systematic literature review due to the objective criteria for inclusion or exclusion established by RAND, such as limits on demographics, study population size, and study design. The EP used this additional information only to clarify and refine conclusions drawn from sources in the systematic literature review. These documents are denoted with an asterisk (\*) in Section 7: References.
+
+It also should be noted that included references are illustrative of the data and conclusions discussed in each section, and do not represent the totality of relevant references. For a full list of relevant references, the reader should refer to the full version of the RAND report.
+
+In October 2009, the EP discussed the first written draft version of the Guidelines and their recommendations. Following the meeting, the EP incorporated any panel-wide changes to the recommendations within the draft Guidelines. These revised recommendations were then subject to an initial panel-wide vote to identify where panel agreement was less than 90%. Controversial recommendations were discussed via teleconference and e-mail to achieve group consensus.
+
+Following discussion and revision as necessary, a second vote was held. All recommendations that received 90% or higher agreement were included in the draft Guidelines for public review and comment.
+
+In addition to the 43 recommendations, sections 3, 5, and 6 of the Guidelines contain “In summary” statements. These statements are intended to provide health care professionals with significant information that did not warrant a recommendation, or are in place of a recommendation when the EP or the CC could not reach consensus. All “In summary” statements received 90% or higher agreement.
+
+1.3.6. Public comment period and draft Guidelines revision—The draft Guidelines were posted to the NIAID Web site in February 2010 for a period of 60 days to allow for public review and comment. More than 550 comments were collected and reviewed by the CC, the EP, and NIAID. The EP revised the Guidelines in response to some of these comments.
+
+Further deliberation between the CC and the EP resulted in the revision of 5 recommendations. In addition, section 5.1.11, which discusses vaccination in patients with allergy to hen's egg (henceforth referred to as egg), also underwent substantial revision to bring it into better alignment with national vaccine policies. Consequently, the EP developed 1 recommendation for vaccination with MMR and MMRV, and 3 “In summary” statements for influenza, yellow fever, and rabies vaccinations. All new recommendations and “In summary” statements were subjected to a panel-wide vote and achieved 90% consensus or more.
+
+The final Guidelines were reviewed by the CC.
+
+1.3.7. Dissemination of the final Guidelines—The final Guidelines were published and made publically available via the Internet.
+
+## 1.4. Defining the strength of each clinical guideline
+
+The EP has used the verb “recommends” or “suggests” in each clinical guideline. These words convey the strength of the guideline, defined as follows:
+
+• Recommend is used when the EP strongly recommended for or against a particular course of action.
+
+• Suggest is used when the EP weakly recommended for or against a particular course of action.
+
+## 1.5. Summary
+
+The Guidelines present 43 recommendations by an independent EP for the diagnosis and management of FA and food-induced anaphylaxis. Three “In summary” statements provide a brief review of US national vaccine policy specifically related to vaccination of patients with egg allergy.
+
+The Guidelines are intended to assist health care professionals in making appropriate decisions about patient care in the United States. The recommendations are not fixed protocols that must be followed. Health care professionals should take these Guidelines into account when exercising their clinical judgment. However, this guidance does not override their responsibility to make decisions appropriate to the circumstances of the individual patient, in consultation with the patient, guardian, or caregiver. Clinical judgment on the management of individual patients remains paramount. Health care professionals, patients, and their families need to develop individual treatment plans that are tailored to the specific needs and circumstances of the patient. This document is intended as a resource to guide clinical practice and develop educational materials for patients, their families, and the public. It is not an official regulatory document of any government agency.
+
+## 2. Definitions, Prevalence, and Epidemiology of Food Allergy
+
+## 2.1. Definitions
+
+2.1.1. Definitions of food allergy, food, and food allergens—The EP came to consensus on definitions used throughout the Guidelines.
+
+A food allergy is defined as an adverse health effect arising from a specific immune response that occurs reproducibly on exposure to a given food.
+
+A food is defined as any substance—whether processed, semiprocessed, or raw—that is intended for human consumption, and includes drinks, chewing gum, food additives, and dietary supplements. Substances used only as drugs, tobacco products, and cosmetics (such as lip-care products) that may be ingested are not included.
+
+Food allergens are defined as those specific components of food or ingredients within food (typically proteins, but sometimes also chemical haptens) that are recognized by allergenspecific immune cells and elicit specific immunologic reactions, resulting in characteristic symptoms. Some allergens (most often from fruits and vegetables) cause allergic reactions primarily if eaten when raw. However, most food allergens can still cause reactions even after they have been cooked or have undergone digestion in the stomach and intestines. A phenomenon called cross-reactivity may occur when an antibody reacts not only with the original allergen, but also with a similar allergen. In FA, cross-reactivity occurs when a food allergen shares structural or sequence similarity with a different food allergen or aeroallergen, which may then trigger an adverse reaction similar to that triggered by the original food allergen. Cross-reactivity is common, for example, among different shellfish and different tree nuts. (See Appendix D, Table S-I.)
+
+Food oils—such as soy, corn, peanut, and sesame—range from very low allergenicity (if virtually all of the food protein is removed in processing) to very high allergenicity (if little of the food protein is removed in processing).
+
+2.1.2. Definitions of related terms—The terms allergy and allergic disease are broadly encompassing and include clinical conditions associated with altered immunologic reactivity that may be either IgE mediated or non-IgE mediated. IgE is a unique class of immunoglobulin that mediates an immediate allergic reaction.
+
+The term food hypersensitivity also is often used to describe FA, although other groups have used this term more broadly to describe all other food reactions, including food intolerances. In these Guidelines, the EP has refrained from using the term food hypersensitivity except for the term immediate gastrointestinal (GI) hypersensitivity, which is IgE mediated.
+
+Because individuals can develop allergic sensitization (as evidenced by the presence of allergen-specific IgE (sIgE)) to food allergens without having clinical symptoms on exposure to those foods, an sIgE-mediated FA requires both the presence of sensitization and the development of specific signs and symptoms on exposure to that food. Sensitization alone is not sufficient to define FA.
+
+Although FA is most often caused by sIgE-mediated reactions to food, the EP also considered literature relevant to reactions likely mediated by immunologic but non-IgEinduced mechanisms, including food protein-induced enteropathy, exacerbations of eosinophilic GI disorders (EGIDs) (eosinophilic gastritis, eosinophilic enteritis, eosinophilic colitis, and eosinophilic gastroenteritis), and food-induced allergic contact dermatitis. In these conditions, sensitization to food protein cannot be demonstrated based on sIgE. The diagnosis of non-IgE-mediated FA is based on signs and symptoms occurring reproducibly on exposure to food, resolution of those signs and symptoms with specific food avoidance, and, most often, histologic evidence of an immunologically mediated process, such as eosinophilic inflammation of the GI tract.
+
+These Guidelines generally use the term tolerate to denote a condition where an individual has either naturally outgrown an FA or has received therapy and no longer develops clinical symptoms following ingestion of the food. This ability to tolerate food does not distinguish 2 possible clinical states. Individuals may tolerate food only for a short term, perhaps because they have been desensitized by exposure to the food. Alternatively, they may develop long-term tolerance. The specific term tolerance is used in these Guidelines to mean that an individual is symptom free after consumption of the food or upon oral food challenge weeks, months, or even years after the cessation of treatment. The immunological mechanisms that underlie tolerance in humans are poorly understood.
+
+Although many different foods and food components have been recognized as food allergens,<sup>11</sup> these Guidelines focus on only those foods that are responsible for the majority of observed adverse allergic or immunologic reactions. Moreover, foods or food components that elicit reproducible adverse reactions but do not have established or likely immunologic mechanisms are not considered food allergens. Instead, these non-immunologic adverse reactions are termed food intolerances. For example, an individual may be allergic to cow's milk (henceforth referred to as milk) due to an immunologic response to milk protein, or alternatively, that individual may be intolerant to milk due to an inability to digest the sugar lactose. In the former situation, milk protein is considered an allergen because it triggers an adverse immunologic reaction. Inability to digest lactose leads to excess fluid production in the GI tract, resulting in abdominal pain and diarrhea. This condition is termed lactose intolerance, and lactose is not an allergen because the response is not immune based.
+
+Note: The words tolerance and intolerance are unrelated terms, even though the spelling of the words implies that they are opposites.
+
+Adverse reactions to food can therefore best be categorized as those involving immunemediated or non-immune-mediated mechanisms, as summarized in Fig 1.
+
+Non-immune mediated reactions or food intolerances include metabolic, pharmacologic, toxic, and undefined mechanisms. In some cases, these reactions may mimic reactions typical of an immunologic response. It is therefore important to keep these food components or mechanisms in mind when evaluating adverse food reactions. Most adverse reactions to food additives, such as artificial colors (for example, FD&C yellow 5 [tartrazine]) and various preservatives (for example, sulfites), have no defined immunologic mechanisms. These food components, as well as other foods contributing to food intolerances, are not specifically discussed in these Guidelines.
+
+2.1.3. Definitions of specific food-induced allergic conditions—A number of specific clinical syndromes may occur as a result of FA, and their definitions are as follows:
+
+Food-induced anaphylaxis is a serious allergic reaction that is rapid in onset and may cause death.<sup>12,13</sup> Typically, IgE-mediated food-induced anaphylaxis is believed to involve systemic mediator release from sensitized mast cells and basophils. In some cases, such as food-dependent, exercise-induced anaphylaxis, the ability to induce reactions depends on the temporal association between food consumption and exercise, usually within 2 hours.
+
+GI food allergies include a spectrum of disorders that result from adverse immunologic responses to dietary antigens. Although significant overlap may exist between these conditions, several specific syndromes have been described. These are defined as follows:
+
+Immediate GI hypersensitivity refers to an IgE-mediated FA in which upper GI symptoms may occur within minutes and lower GI symptoms may occur either immediately or with a delay of up to several hours.<sup>14,15</sup> This is commonly seen as a manifestation of anaphylaxis. Among the GI conditions, acute immediate vomiting is the most common reaction and the one best documented as immunologic and IgE mediated.
+
+Eosinophilic esophagitis (EoE) involves localized eosinophilic inflammation of the esophagus.<sup>16,18</sup> In some patients, avoidance of specific foods will result in normalization of histopathology. Although EoE is commonly associated with the presence of food-specific IgE, the precise causal role of FA in its etiology is not well defined. Both IgE-and non-IgE-mediated mechanisms appear to be involved. In children, EoE presents with feeding disorders, vomiting, reflux symptoms, and abdominal pain. In adolescents and adults, EoE most often presents with dysphagia and esophageal food impactions.
+
+Eosinophilic gastroenteritis (EG) also is both IgE- and non-IgE-mediated and commonly linked to FA.<sup>15</sup> EG describes a constellation of symptoms that vary depending on the portion of the GI tract involved and a pathologic infiltration of the GI tract by eosinophils, which may be localized or widespread. EoE is a common manifestation of EG.
+
+Food protein-induced allergic proctocolitis (AP) typically presents in infants who seem generally healthy but have visible specks or streaks of blood mixed with mucus in the stool.<sup>15</sup> IgE to specific foods is generally absent. The lack of systemic symptoms, vomiting, diarrhea, and growth failure helps differentiate this disorder from other GI FA disorders that present with similar stool patterns. Because there are no specific diagnostic laboratory tests, the causal role of food allergens such as those found in milk or soy is inferred from a characteristic history on exposure. Many infants present while being breast-fed, presumably as a result of maternally ingested proteins excreted in breast milk.
+
+Food protein-induced enterocolitis syndrome (FPIES) is another non-IgEmediated disorder that usually occurs in young infants and manifests as chronic emesis, diarrhea, and failure to thrive. Upon re-exposure to the offending food after a period of elimination, a subacute syndrome can present with repetitive emesis and dehydration.<sup>13,15</sup> Milk and soy protein are the most common causes, although some studies also report reactions to other foods, including rice, oat, or other cereal grains. A similar condition also has been reported in adults, most often related to crustacean shellfish ingestion.
+
+Oral allergy syndrome (OAS), also referred to as pollen-associated FA syndrome, is a form of localized IgE-mediated allergy, usually to raw fruits or vegetables, with symptoms confined to the lips, mouth, and throat. OAS most commonly affects patients who are allergic to pollens. Symptoms include itching of the lips, tongue, roof of the mouth, and throat, with or without swelling, and/or tingling of the lips, tongue, roof of the mouth, and throat.
+
+Cutaneous reactions to foods are some of the most common presentations of FA and include IgE-mediated (urticaria, angioedema, flushing, pruritus), cell-mediated (contact dermatitis, dermatitis herpetiformis), and mixed IgE- and cell-mediated (atopic dermatitis) reactions. These are defined as follows:
+
+Acute urticaria is a common manifestation of IgE-mediated FA, although FA is not the most common cause of acute urticaria and is rarely a cause of chronic urticaria.<sup>19</sup> Lesions develop rapidly after ingesting the problem food and appear as polymorphic, round, or irregular-shaped pruritic wheals, ranging in size from a few millimeters to several centimeters.
+
+Angioedema most often occurs in combination with urticaria and, if food induced, is typically IgE mediated. It is characterized by nonpitting, nonpruritic, welldefined edematous swelling that involves subcutaneous tissues (for example, face, hands, buttocks, and genitals), abdominal organs, or the upper airway.<sup>19</sup> When the upper airway is involved, laryngeal angioedema is a medical emergency requiring prompt assessment. Both acute angioedema and urticaria are common features of anaphylaxis.
+
+Atopic dermatitis (AD), also known as atopic eczema, is linked to a complex interaction between skin barrier dysfunction and environmental factors such as irritants, microbes, and allergens.<sup>20</sup> Null mutations of the skin barrier protein filaggrin may increase the risk for transcutaneous allergen sensitization and the development of FA in subjects with AD.<sup>21-23</sup> Although the EP does not mean to imply that AD results from FA, the role of FA in the pathogenesis and severity of this condition remains controversial.<sup>24</sup> In some sensitized patients, particularly infants and young children, food allergens can induce urticarial lesions, itching, and eczematous flares, all of which may aggravate AD.<sup>19</sup>
+
+Allergic contact dermatitis (ACD) is a form of eczema caused by cell-mediated allergic reactions to chemical haptens that are additives to foods or occur naturally in foods, such as mango.<sup>25</sup> Clinical features include marked pruritus, erythema, papules, vesicles, and edema.
+
+• Contact urticaria can be either immunologic (IgE-mediated reactions to proteins) or non-immunologic (caused by direct histamine release).
+
+Respiratory manifestations of IgE-mediated FA occur frequently during systemic allergic reactions and are an important indicator of severe anaphylaxis.<sup>26</sup> However, FA is an uncommon cause of isolated respiratory symptoms, namely those of rhinitis and asthma.
+
+Heiner syndrome is a rare disease in infants and young children. Caused primarily by the ingestion of milk, it is characterized by chronic or recurrent lower respiratory symptoms often associated with:<sup>27,28</sup>
+
+• Pulmonary infiltrates
+
+• Upper respiratory symptoms
+
+• GI symptoms
+
+• Failure to thrive
+
+• Iron-deficiency anemia
+
+The syndrome is associated with non-IgE-mediated immune responses, such as precipitating antibodies to milk protein fractions. Evidence often exists of peripheral eosinophilia, iron deficiency, and deposits of immunoglobulins and C3 in lung biopsies in some cases. Milk elimination leads to marked improvement in symptoms within days and clearing of pulmonary infiltrates within weeks.<sup>28</sup> The immunopathogenesis of this disorder is not understood, but seems to combine cellular and immune-complex reactions, causing alveolar vasculitis. In severe cases, alveolar bleeding leads to pulmonary hemosiderosis. There is no evidence for involvement of milk-specific IgE in this disease.
+
+## 2.2. Prevalence and epidemiology of food allergy
+
+The true prevalence of FA has been difficult to establish for several reasons.
+
+• Although more than 170 foods have been reported to cause IgE-mediated reactions, most prevalence studies have focused on only the most common foods.
+
+The incidence and prevalence of FA may have changed over time, and many studies have indeed suggested a true rise in prevalence over the past 10 to 20 years.<sup>1,29</sup>
+
+Studies of FA incidence, prevalence, and natural history are difficult to compare because of inconsistencies and deficiencies in study design and variations in the definition of FA.
+
+These Guidelines do not exclude studies based on the diagnostic criteria used, but the results must be viewed critically based on these diagnostic differences. In addition, prevalence and incidence studies from the United States and Canada are the focus of these Guidelines, but key studies from elsewhere also are included.
+
+2.2.1. Systematic reviews of the prevalence of food allergy—One meta-analysis<sup>30</sup> and 1 systematic review<sup>31</sup> of the literature on the prevalence of FA have recently been published.
+
+The meta-analysis by Rona et al,<sup>30</sup> which includes data from 51 publications, stratifies to children and adults and provides separate analyses for the prevalence of FA for 5 foods: milk, egg, peanut, fish, and crustacean shellfish. As shown in Table I, the investigators report an overall prevalence of self-reported FA of 12% and 13% for children and adults, respectively, to any of these 5 foods. This compares to a much lower value of 3% for adults and children combined when assessed by self-reported symptoms plus sensitization or by double-blind, placebo-controlled food challenge (DBPCFC). These data emphasize the fact that FAs are over-reported by patients and that objective measurements are necessary to establish a true FA diagnosis. For specific foods, results for all ages show that prevalence is highest for milk (3% by symptoms alone, 0.6% by symptoms plus positive skin prick test (SPT), and 0.9% by food challenge).
+
+The systematic review by Zuidmeer et al,<sup>31</sup> which includes data from 33 publications, presents an epidemiological data review of allergy to fruits, vegetables/nonpeanut legumes, tree nuts, wheat, and soy. The results, summarized in Table II, demonstrate that the reported prevalence for these foods is generally lower than for the 5 foods reported in Table I. Once again, the prevalence of FA is much higher when assessed using self-reporting than when using sensitization or food challenge.
+
+Two additional studies<sup>1,32</sup> also provide US prevalence data on FA.
+
+In data obtained via proxy that reported on FA from the National Health Interview Survey in 2007, the Centers for Disease Control and Prevention (CDC) found that approximately 3 million children under age 18 years (3.9%) reported an FA in the previous 12 months. In addition, from 2004 to 2006, there was an increase from approximately 2,000 to 10,000 hospital discharges per year of children under age 18 years with a diagnosis related to FA.<sup>1</sup>
+
+Another US study analyzed national data from the Infant Feeding Practices Study II, a longitudinal mail survey from 2005 to 2007 of women who gave birth to a healthy single child after a pregnancy of at least 35 weeks. The survey began in the third trimester of pregnancy and continued periodically thereafter up to age 1 of the infant.<sup>32</sup> In this analysis, probable FA was defined either as a doctor-diagnosed FA or as the presence of food-related symptoms (ie, swollen eyes, swollen lips, or hives). Of 2,441 mothers, 60% completed all serial questionnaires with detailed questions about problems with food. About 500 infants were characterized as having a food-related problem, and 143 (6%) were classified as probable FA cases by 1 year of age.
+
+## 2.2.2. Prevalence of allergy to specific foods, food-induced anaphylaxis, and food allergy with comorbid conditions
+
+Peanut and tree nut allergy: Investigators from the United States and several other countries have published prevalence rates for allergy to peanut and tree nuts. The results, which are presented in Appendix D, Tables S-II and S-III, include sensitization rates and other clinical results. Where prevalence and sensitization are measured in the same study, prevalence is always less than sensitization.
+
+## Peanut summary
+
+• Prevalence of peanut allergy in the United States is about 0.6% of the population.
+
+• Prevalence of peanut allergy in France, Germany, Israel, Sweden, and the United Kingdom varies between 0.06% and 5.9%.
+
+## Tree nut summary
+
+• Prevalence of tree nut allergy in the United States is 0.4% to 0.5% of the population.
+
+• Prevalence of tree nut allergy in France, Germany, Israel, Sweden, and the United Kingdom varies between 0.03% and 8.5%.
+
+Seafood allergy: Sicherer et al<sup>33</sup> used random calling by telephone of a US sample to estimate the lifetime prevalence rate for reported seafood allergy.
+
+Rates were significantly lower for children than for adults: fish allergy, 0.2% for children vs 0.5% for adults $( \mathbf { p } = 0 . 0 2 ) $ ; crustacean shellfish allergy, 0.5% vs 2.5% (p < 0.001); any seafood allergy, 0.6% vs 2.8% (p = 0.001).
+
+• Rates were higher for women than for men: crustacean shellfish allergy, 2.6% for women vs 1.5% for men $( \mathtt { p } < 0 . 0 0 1 )$ ; any fish, 0.6% vs 0.2% (p < 0.001).
+
+Milk and egg allergy: Two European studies have examined the prevalence of milk and egg allergy.
+
+In a Danish cohort of 1,749 children followed from birth through age 3, children were evaluated by history, milk elimination, oral food challenge, and SPTs or sIgE.<sup>34</sup>
+
+Allergy to milk was suspected in 6.7% (117 children) and confirmed in 2.2% (39). Of the 39 children, 54% had IgE-mediated allergy, and the remaining 46% were classified as non-IgE mediated.
+
+In a Norwegian cohort of 3,623 children followed from birth until age 2, parents completed questionnaires regarding adverse food reactions at 6-month intervals.
+
+In the first phase of the study,<sup>35</sup> the cumulative incidence of adverse food reactions was 35% by age 2, with milk being the single food item most commonly associated with an adverse food reaction, at 11.6%.
+
+In the second phase of the study,<sup>36,37</sup> those children who had persistent complaints of milk or egg allergy underwent a more detailed evaluation at the age of 2 years, including skin prick testing and open- and double-blind oral food challenges. At the age of 2.5 years, the combination of prevalence of allergy and intolerance to milk was estimated to be 1.1%. Most reactions to milk were not IgE mediated. The prevalence of egg allergy was estimated to be 1.6%, and most egg reactions were IgE mediated.
+
+Food-induced anaphylaxis: Five US studies assessed the incidence of anaphylaxis related to food; all used administrative databases or medical record review to identify cases of anaphylaxis.<sup>38-42</sup>
+
+These studies found wide differences in the rates (from 1/100,000 population to as high as 70/100,000 population) of hospitalization or emergency department visits for anaphylaxis, as assessed by International Classification of Diseases, Ninth Revision, Clinical Modification (ICD-9-CM) codes or medical record review. These variations may be due to differences in the study methods or differences in the populations (Florida, New York, Minnesota).
+
+The proportion of anaphylaxis cases thought to be due to foods also varied between 13% and 65%, with the lowest percentages found in studies that used more stringent diagnostic criteria for anaphylaxis.
+
+One study reported that the number of hospitalizations for anaphylaxis increased with increasing age, while another study reported that total cases of anaphylaxis were almost twice as high in children as in adults.
+
+The EP agreed that any estimate of the overall US incidence of anaphylaxis is unlikely to have utility because such an estimate fails to reflect the substantial variability in patient age, geographic distribution, criteria used to diagnose anaphylaxis, and the study methods used.
+
+Food allergy with comorbid conditions: According to a recent CDC study, children with FA are about 2 to 4 times more likely to have other related conditions such as asthma (4.0 fold), AD (2.4 fold), and respiratory allergies (3.6 fold), compared with children without FA.<sup>1</sup>
+
+Several studies report on the co-occurrence of other allergic conditions in patients with $\mathrm { F A } , ^ { 4 3 - 4 5 }$ such as:
+
+• 35% to 71% with evidence of AD
+
+• 33% to 40% with evidence of allergic rhinitis
+
+• 34% to 49% with evidence of asthma
+
+In patients with both AD and FA:<sup>46</sup>
+
+• 75% have another atopic condition
+
+• 44% have allergic rhinitis and asthma
+
+• 27% have allergic rhinitis
+
+• 4% have asthma, without another atopic condition
+
+The prevalence of FA in individuals with moderate to severe AD is 30% to 40%, and these patients have clinically significant IgE-mediated FA (as assessed by some combination of convincing symptoms, SPTs, sIgE levels, or oral food challenges)<sup>47</sup> or a definite history of immediate reactions to food.<sup>48</sup>
+
+A retrospective review of the records of 201 children with an ICD-9 diagnosis of asthma found that 44% (88 of 201) have concomitant FA.<sup>49</sup>
+
+Thus, children with FA may be especially likely to develop other allergic diseases. However, the above studies should be interpreted with caution, since they may be subject to selection bias.
+
+## 2.3. Knowledge gaps
+
+Studies on the incidence, prevalence, and epidemiology of FA are lacking, especially in the United States. It is essential that studies using consistent and appropriate diagnostic criteria be initiated to understand the incidence, prevalence, natural history, and temporal trends of FA and associated conditions.
+
+A recent example of a comprehensive approach to assessing the prevalence, health care costs, and basis for FA in Europe is the EuroPrevall project (http://www.europrevall.org). This European Union-supported effort has focused on characterizing the patterns and prevalence of FA in infants, children, and adults across 24 countries. The project also has investigated the impact that FA has on the quality of life and associated economic costs. EuroPrevall data have already revealed an unexpected diversity in the variety of foods to which Europeans are allergic, as well as the prevalence of FA across relatively small geographic distances. Given the size and diversity of the US population, it is likely that using a similar approach could yield important information about FA in the United States.
+
+## 3. Natural History of Food Allergy and Associated Disorders
+
+The EP reviewed the literature on the natural history of FA and summarized the available data for the most common food allergens in the United States: egg, milk, peanut, tree nuts, wheat, crustacean shellfish, and soy. Natural history data for fish allergy were unavailable as of the completion of the systematic literature review (September 2009). In addition, the EP sought to:
+
+• Identify changes in the manifestations of FA over time, as well as changes in coexisting allergic conditions
+
+• Identify the risk factors for FA and severity of the allergic reaction
+
+• Identify the frequency of unintentional exposure to food allergens and whether this has an impact on the natural history of FA
+
+It should be noted that published studies from the United States or Canada addressing the natural history of FA typically come from selected populations (for example, from a single clinic or hospital) that may not be representative of the general or community-based patient population with a specific FA condition. Thus, the findings of these studies may not necessarily be extrapolated to all patients with the condition.
+
+## 3.1. Natural history of food allergy in children
+
+In summary: Most children with FA eventually will tolerate milk, egg, soy, and wheat; far fewer will eventually tolerate tree nuts and peanut. The time course of FA resolution in children varies by food and may occur as late as the teenage years. A high initial level of sIgE against a food is associated with a lower rate of resolution of clinical allergy over time.
+
+An important part of the natural history of FA is determining the likelihood and the actual time of resolution of the FA.
+
+In children, a drop in sIgE levels over time is often a marker for the onset of tolerance to the food. In contrast, for some foods, the onset of allergy can occur in adult life, and the FA may persist despite a drop in sIgE levels over time.
+
+Changes in immediate SPTs in association with resolution of the FA are less well defined, since an SPT response to a food can remain positive long after tolerance to the food has developed. Nevertheless, a reduction in the size of the SPT wheal may be a marker for the onset of tolerance to the food.
+
+Because the natural history of FA varies by the food, the natural history of each of the most common FAs for which data are available is addressed below.
+
+3.1.1. Egg—Numerous studies, such as 1 from Sweden<sup>50</sup> and 1 from Spain,<sup>51</sup> indicate that most infants with egg allergy become tolerant to egg at a young age. An estimated 66% of children became tolerant by age 7 in both studies.
+
+In a retrospective review<sup>52</sup> of 4,958 patient records from a university allergy practice in the United States, the rate of egg allergy resolution was slower than in the studies mentioned above.
+
+• 17.8% (881) were diagnosed with egg allergy.
+
+• Egg allergy resolution or tolerance, defined as passing an egg challenge or having an egg sIgE level <2 kUa/L and no symptoms in 12 months, occurred in:
+
+11% of patients by age 4
+
+– 26% of patients by age 6
+
+– 53% of patients by age 10
+
+82% of patients by age 16
+
+Risk factors for persistence of egg allergy were a high initial level of egg sIgE, the presence of other atopic disease, and the presence of an allergy to another food.
+
+## 3.1.2. Milk
+
+Based on a study at a US university referral hospital, virtually all infants who had milk allergy developed this condition in the first year of life, with clinical tolerance developing in about 80% by their fifth birthday.<sup>53</sup> Approximately 35% developed allergies to other foods.
+
+A more recent US study at a different university referral hospital indicates a lower rate of development of clinical tolerance. As assessed by passing a milk challenge, 5% were tolerant at age 4 and 21% at age 8. Patients with persistent milk allergy had higher milk sIgE levels in the first 2 years of life, compared with those who developed tolerance (median 19.0 kUa/L vs 1.8 kUa/L; p < 0.001). Additional factors predictive of the acquisition of tolerance included the absence of asthma or allergic rhinitis and never having been formula fed.<sup>45</sup>
+
+The rate of decline of sIgE levels over time predicted the development of tolerance to milk in children, as confirmed by oral food challenge. However, this study was performed in a highly selected patient population.<sup>54</sup>
+
+3.1.3. Peanut—Several US studies, all involving selected populations from specialist clinics, provide data for the natural history of peanut allergy.<sup>44,55-60</sup> (Table III presents a summary of results from some of these studies.) In most of the studies, patients were diagnosed based on history, except in 1 study,<sup>44</sup> where 33% of the patients were diagnosed based on SPTs and sIgE to peanut. These studies examined the development of tolerance and found that a small percentage of children tolerated peanut several years after their initial diagnoses.
+
+In a study of the recurrence of peanut allergy after the development of apparent tolerance,<sup>58</sup> 68 children (median age at diagnosis 1.1 years) who had outgrown peanut allergy were evaluated (median age at evaluation 8.5 years). The results showed:
+
+• Tolerance in 69% (47 of 68), of whom 34 ingested concentrated peanut products at least once per month and 13 ate peanut infrequently or in limited amounts
+
+• Possible tolerance in 26% (18 of 68)
+
+• Recurrence in 4% (3 of 68) who consumed peanut infrequently or in limited amounts
+
+3.1.4. Tree nuts—In a US evaluation<sup>61</sup> of 278 patients with positive tree nuts sIgE:
+
+36% (101) had a history of acute reactions to tree nuts, 12% (12) of whom had reactions to multiple tree nuts and 63% (73) of whom had a history of moderate-tosevere reactions. Of the 115 reactions experienced by these 101 patients, 73 (63%) were moderate-to-severe.
+
+Testing by DBPCFC was offered to patients if all sIgE levels were less than 10 kUa/L. Nine of 20 patients who had previously reacted to tree nuts, including some who had prior severe reactions, passed the oral food challenge. Thus, 9% of 101 patients with a history of prior reactions to tree nuts outgrew the allergy.
+
+• 74% (14 of 19) of patients who had never ingested tree nuts, but had detectable tree nuts sIgE levels, passed oral food challenges.
+
+Looking at sIgE cutoffs, 58% with sIgE levels of 5 kUa/L or less and 63% with sIgE levels of 2 kUa/L or less passed an oral food challenge. Although an ideal sIgE cutoff for challenge cannot be firmly determined on the basis of these data, the authors conclude that patients aged 4 years or older with all sIgE levels of 5 kUa/L or less should be considered for challenge.
+
+3.1.5. Wheat—In a US study<sup>62</sup> of 103 patients with wheat allergy (IgE mediated, not celiac disease), rates of resolution were:
+
+• 29% by age 4
+
+• 56% by age 8
+
+• 65% by age 12
+
+Higher wheat sIgE levels were associated with poorer outcomes. The peak wheat sIgE level recorded was a useful predictor of persistent allergy $\mathrm { ( p < 0 . 0 0 1 ) }$ , although many children with even the highest levels of wheat sIgE outgrew their allergy to wheat. The median age of resolution of wheat allergy was approximately 6.5 years in this population. In a significant minority of patients, wheat allergy persisted into adolescence.
+
+3.1.6. Crustacean shellfish—Few studies have systematically assessed the natural history of allergy to crustacean shellfish, which commonly has onset in adult life. In 1 US study,<sup>63</sup> 25 sera were collected sequentially during a 24-month interval from 11 individuals, each with a clinical history suggesting allergy to shrimp, and 10 control individuals. The sera were evaluated for shrimp sIgE.
+
+Of the 11 individuals with suggestive histories and positive sIgE who underwent DBPCFC to shrimp:
+
+• Seven exhibited positive food challenges based on objective signs and symptoms.
+
+• Four reported the subjective symptom of oropharyngeal pruritus.
+
+All had relatively constant shrimp sIgE levels during the 24 months of the study, and these levels were not affected by shrimp challenge.
+
+3.1.7. Soy—In a retrospective review<sup>64</sup> of US patients with soy allergy seen in a tertiary referral clinic, 133 patients were studied (96 male and 37 female patients). The median age at the initial visit was 1 year (ranging from 2 months to 17.5 years); the median duration of follow-up was 5 years (ranging from 1 to 19 years). Kaplan-Meier analysis predicted resolution of soy allergy in:
+
+• 25% by age 4
+
+• 45% by age 6
+
+• 69% by age 10
+
+By age 6, tolerance to soy developed in:
+
+• 59% of children with a peak soy sIgE level of less than 5 kUa/L
+
+• 53% of children with a peak soy sIgE level of 5 to 9.9 kUa/L
+
+• 45% of children with a peak soy sIgE level of 10 to 49.9 kUa/L
+
+• 18% of children with a peak soy sIgE level of greater than 50 kUa/L
+
+These data demonstrate that absolute soy sIgE levels are useful predictors of developing tolerance to soy.
+
+## 3.2. Natural history of levels of allergen-specific IgE to foods in children
+
+In summary: For many patients, sIgE antibodies to foods appear within the first 2 years of life. Levels may increase or decrease; a decrease is often associated with the ability to tolerate the foods.
+
+Based on the previously discussed studies pertaining to individual foods (section 3.1), sIgE to a food commonly appears within the first 2 years of life, with the levels increasing or decreasing over time depending on the food. In a study<sup>54</sup> of patients with allergy to egg and milk who had repeated DBPCFC, sIgE levels to egg and milk were retrospectively determined from stored serum samples obtained at the time of the food challenges.
+
+• 42% (28 of 66) of patients with egg allergy and 48% (16 of 33) of patients with milk allergy developed clinical tolerance, and therefore lost their allergy over time.
+
+For egg, decreases in sIgE levels were significantly related to the probability of developing clinical tolerance (p = 0.0014).
+
+For milk, a significant relationship also existed between the decrease in sIgE levels and the probability of developing the ability to tolerate milk (p = 0.0175).
+
+Stratification into those patients below vs above 4 years of age at the time of first challenge revealed that in the younger age group the rate of decrease in sIgE levels over time was more predictive of the likelihood to develop clinical tolerance.
+
+The median level of sIgE at diagnosis was significantly lower for the group developing tolerance to egg $( \mathbf { p } < 0 . 0 0 1 )$ , and a similar trend was seen for milk allergy $\mathrm { ( p = 0 . 0 6 ) }$
+
+## 3.3. Natural history of food allergy in adults
+
+In summary: FA in adults can reflect persistence of pediatric FAs (for example, milk, peanut, and tree nuts) or de novo sensitization to food allergens encountered after childhood. Although there is a paucity of data from US studies, FA that starts in adult life tends to persist.
+
+In a retrospective study<sup>65</sup> of anaphylaxis in 601 patients with a mean age of 37 years (ranging from 1 to 79 years), 22% (133) of cases were food-related. The causative foods in descending order of frequency were crustacean shellfish, peanut, food additives or spices, tree nuts, beef, almond, and peach. In this study, however, it should be noted that anaphylaxis was used as a surrogate for the incidence of FA as measured by oral food challenge and includes non-life-threatening, and largely cutaneous, reactions.
+
+A non-US $\mathrm { \ s t u d y } ^ { 6 6 }$ compared 30 adults with milk allergy to 25 control individuals who were milk-sensitized but tolerant. The investigators found that:
+
+• 67% (20 of 30) of patients with milk allergy reported severe symptoms on milk ingestion.
+
+• Milk allergy was confirmed in all 11 patients participating in a DBPCFC.
+
+The dose of milk protein (0.3 to 300 mg) that elicited subjective symptoms was significantly lower than the dose that elicited objective signs of reaction (300 to 9,000 mg).
+
+The severity of milk allergy by history and eliciting dose did not correlate with the size of the SPT wheal or the level of milk sIgE.
+
+Patients with allergy had larger SPT reactivity than tolerant control individuals for whole milk, alpha-lactalbumin, and beta-lactoglobulin $( \mathbf { p } = 0 . 0 0 2 , \mathbf { p } = 0 . 0 1 4$ , and p = 0.004, respectively), but not for casein. In contrast, sIgE to casein was higher in patients than in control individuals $\left( \mathtt { p } = 0 . 0 1 6 \right)$ . No difference was observed for sIgE to alpha-lactalbumin and beta-lactoglobulin.
+
+The foods widely recognized to cause IgE-mediated FA in young children are, in order of prevalence, milk, egg, peanut, tree nuts, fish, and crustacean shellfish, followed by wheat and soy. Allergy to milk, egg, wheat, and soy generally resolves, thus becoming less prevalent in adults. In contrast, allergy to peanut and tree nuts is more likely to persist.<sup>15</sup> Allergy to crustacean shellfish, which most commonly develops in adulthood, is a relatively common allergy in adulthood, and usually persists.<sup>30,33</sup>
+
+## 3.4. Natural history of conditions that coexist with food allergy
+
+In summary: FA may coexist with asthma, AD, EoE, and exercise-induced anaphylaxis. In patients with asthma, the coexistence of FA may be a risk factor for severe asthma exacerbations. Moreover, food may be a trigger for exercise-induced anaphylaxis.
+
+Elimination of food allergens in sensitized individuals can improve symptoms of some comorbid conditions.
+
+3.4.1. Asthma—In summary: Asthma and FA often coexist in pediatric and adult patients.   
+FA is associated with severe asthma.
+
+Four US studies<sup>67-70</sup> assessed the relationship of FA to asthma. These studies drew several conclusions:
+
+Asthma patients who have FA are more likely than asthma patients who do not have FA to have a hospitalization for asthma and more emergency department visits for asthma.
+
+Children with asthma who are sensitized to foods, such as milk, wheat, peanut, or egg (as shown by the presence of sIgE), have a higher rate of hospitalization than children with asthma who are not sensitized. They also require more steroid use.
+
+The presence of self-reported FA is significantly more likely in patients with asthma admitted to the intensive-care unit (ICU), compared with patients with asthma who seek ambulatory care or are admitted to the hospital, but not to the ICU.
+
+• Patients with asthma with self-reported FA have significantly greater asthma severity and are more likely to be hospitalized for asthma.
+
+Two other studies<sup>71,72</sup> dealing with fatal or near-fatal anaphylaxis due to foods in US children reported that all or almost all patients who died also had asthma. Furthermore, as already noted in numerous studies, concomitant asthma is highly prevalent among patients diagnosed with FA.
+
+Although the EP did not find evidence for a causal link, the coexistence of FA and asthma is a risk factor for asthma exacerbations. Moreover, a high prevalence of asthma is reported among deaths from anaphylaxis due to food.
+
+3.4.2. Atopic dermatitis—In summary: AD and FA are highly associated. When tolerance develops to a food, the reintroduction of the food in the diet will not result in recurrence or worsening of the AD.
+
+Up to 37% of children under 5 years of age with moderate to severe AD will have IgEmediated FA.<sup>47</sup> Whether FA can exacerbate AD is still controversial, in part because the signs and symptoms of food allergen exposure are so pleomorphic and because welldesigned relevant food allergen avoidance trials have rarely been done in patients with AD. A systematic review of 9 RCTs,<sup>73</sup> which assessed the effects of dietary exclusions for the treatment of established AD in unselected patients, found little evidence to support the role for food avoidance. However, several studies<sup>74-76</sup> found an improvement in pruritus when patients with egg allergy and AD were placed on an egg-free diet.
+
+In a US study<sup>46</sup> of the natural history of FA in children with AD, 75 children with a mean age of 8 months (ranging from 3 to 18 months) were diagnosed using a DBPCFC.
+
+• 60%, 28%, 8%, and 4% were allergic to 1, 2, 3, and 4 foods, respectively.
+
+• Milk, peanut, and egg were most likely to produce positive food challenges.
+
+All the children were placed on allergen-restricted diets, with a history of compliance of 90%. After 1 or 2 years, the patients underwent repeat food challenge tests.
+
+• 26% of patients lost all evidence of symptomatic FA.
+
+• Overall, 31% of the 1,221 FAs had resolved.
+
+All patients who became tolerant to a specific food had the food reintroduced into their diets with no recurrence of symptoms and no worsening of AD at a follow-up from 6 months to 4 years.
+
+Patients who developed both skin and respiratory tract symptoms at the initial food challenge were much less likely to have their FA resolve than patients whose initial symptoms were limited to skin only or skin and GI tract symptoms.
+
+3.4.3. Eosinophilic esophagitis—In summary: EoE is commonly associated with sensitization to foods. The natural history of EoE is that of a chronic condition that resolves spontaneously or with therapy, and then relapses. There are insufficient data to judge the impact of food sensitization on the natural history of EoE, and vice versa. Only retrospective data exist that support a beneficial effect of dietary changes on the histopathologic changes in the esophagus in EoE.
+
+Three US studies<sup>77-79</sup> examined the natural history of EoE in children, and the results are presented in Appendix D, Table S-IV. Briefly:
+
+Most children were diagnosed within the first 3 years of life, with symptoms including emesis, abdominal pain, heartburn, dysphagia, airway symptoms, cough, and chest pain.<sup>77</sup>
+
+• One study<sup>78</sup> noted that 60% of tested patients had a positive sIgE to food.
+
+In 1 study,<sup>79</sup> symptoms were grouped into age-related categories as “refusal to eat” in toddlers, gastroesophageal reflux or vomiting in young school-aged children, and dysphagia and food impaction in older children.
+
+In 2 of the studies<sup>77,79</sup> with adequate follow-up, most patients remained symptomatic and resolution was uncommon (14% and 2%). One study<sup>77</sup> reported a high prevalence (77%) of limited mucosal eosinophilia and other abnormalities in parts of the GI tract other than the esophagus, although the significance of those changes was unclear.
+
+Two other retrospective studies<sup>80,81</sup> evaluated the effect of specific food elimination diets or elemental diets in treating EoE and found:
+
+A decrease in the number of esophageal eosinophils per high power field in 78% (112 of 146) of patients.<sup>80</sup>
+
+A reduction in clinical symptoms in 57% (75 of 132) of patients. Almost all patients (160 of 164) who underwent complete dietary elimination and feeding with only an amino-acid-based formula showed clinical improvement.<sup>81</sup>
+
+The influence of concomitant EoE on the natural history of FA is poorly understood. As discussed above, EoE is associated with a frequent sensitization to food allergens, as evidenced by the presence of sIgE by SPTs, or delayed reactions to food antigens by atopy patch tests (APTs). Patients who present with EoE often have either a medical history of, or ongoing, clinical FA. Food sensitization in patients with EoE is mainly against the most common food allergens, but sensitization to other uncommon food allergens, such as beans, peas, and mustard, is often detected. Some retrospective studies in children have shown that removal of the sensitizing foods may lead to resolution of EoE.<sup>79</sup> The natural history of clinical FA in patients with EoE has not been well studied, but clinical experience suggests that it is the same as in patients with clinical FA without EoE.
+
+3.4.4. Exercise-induced anaphylaxis—In summary: Exercise-induced anaphylaxis in adults is triggered by foods in about one third of patients and has a natural history marked by frequent recurrence of the episodes.
+
+There are no natural history studies of exercise-induced anaphylaxis in children. However, a US survey<sup>82</sup> of 279 adult patients (aged 18 or older) from a single center between 1980 and 1993 examined the natural history of exercise-induced anaphylaxis and found that:
+
+37% of the patients reported a food trigger, most commonly crustacean shellfish (16%), alcohol (11%), tomatoes (8%), cheese (8%), and celery (7%).
+
+All patients met criteria for exercise-induced anaphylaxis (anaphylactic symptoms, urticaria, or angioedema with symptoms consistent with upper respiratory obstruction) or had cardiovascular collapse during exercise.
+
+• 75% of the patients were female.
+
+• The mean age was 37 years with an onset of symptoms at age 26, and the mean duration of symptoms was 10.6 years.
+
+• The average number of episodes per year at the time of initial presentation was 14.5, but this frequency decreased to 8.3 at the time of the survey.
+
+• Approximately 33% of the patients had no attacks in the 12 months prior to the survey.
+
+• The most frequently occurring symptoms were pruritus (92%), urticaria (86%), angioedema (72%), flushing (70%), and shortness of breath (51%).
+
+• About 50% of the patients reported seasonal rhinitis or dust allergies, 19% also reported having asthma, and 10% had eczema.
+
+In most cases of exercise-induced anaphylaxis associated with food, the food can be ingested without symptoms in the absence of exercise. Although this study suggests a role for FA in the pathophysiology of exercise-induced anaphylaxis, the results must be interpreted cautiously since the diagnosis of FA was not based on objective testing.
+
+3.4.5. Allergic rhinitis—IgE-mediated FA does not commonly manifest as allergic rhinitis. Similarly, allergic rhinitis is not thought to be a risk factor for the development of $\mathrm { F A } . ^ { 8 3 }$
+
+## 3.5. Risk factors for the development of food allergy
+
+In summary: Family history of atopy and the presence of AD are risk factors for the development of both sensitization to food and confirmed FA.
+
+A family history of atopy is a risk factor for FA as well as all other atopic disorders, as illustrated by the following 3 studies:
+
+25% to 33% of children seen in a referral clinic under 5 years of age with moderate to severe AD had IgE-mediated FA, as determined by both the presence of sIgE to 1 of 6 common food allergens (milk, egg, wheat, soy, peanut, and fish) and either a positive DBPCFC, positive open food challenge, or a strong history of an allergic reaction to a food product.<sup>47</sup>
+
+• 82% of 138 patients allergic to peanut seen in a referral clinic had AD.<sup>56</sup>
+
+Patients with AD who developed severe dermatitis within the first 3 months of age most often had sIgE to milk, egg, and peanut, suggesting that this group is at risk for manifesting IgE-mediated FA.<sup>84</sup>
+
+These studies strongly suggest that FA and moderate to severe AD occur frequently in the same child and that early-onset severe AD is associated with risk for sensitization to food.
+
+The mechanism of early sensitization to foods is unclear. A recent study<sup>85</sup> has suggested that peanut sensitization is independently associated with:
+
+• Dermatitis over joints and in skin creases (clinical features of AD)
+
+• Household consumption of peanut
+
+## 3.6. Risk factors for severity of allergic reactions to foods
+
+In summary: The severity of allergic reactions to foods is multifactorial and
+
+variable.<sup>67,71,72,86,87</sup> The severity of a reaction cannot be accurately predicted by the degree of severity of past reactions nor by the level of sIgE or the size of the SPT wheal. The factor most commonly identified with the most severe reactions is the coexistence of asthma.
+
+The severity of allergic reactions to food varies based on:
+
+• The amount ingested
+
+• The food form (cooked, raw, or processed)
+
+• The co-ingestion of other foods
+
+The severity also may be influenced by:
+
+• The age of the patient
+
+• The degree of sensitization at the time of ingestion
+
+• The rapidity of absorption, based on whether
+
+The food is taken on an empty stomach
+
+– The ingestion is associated with exercise
+
+– The patient has other comorbid conditions (for example, asthma or AD)
+
+Some patients who have had near-fatal or fatal reactions also had 1 or more of the following:
+
+• Concomitant asthma, especially severe asthma with adrenal suppression caused by chronic glucocorticoid therapy<sup>87</sup>
+
+• Lack or delayed administration of epinephrine
+
+• Lack of skin symptoms
+
+• Denial of symptoms
+
+• Concomitant intake of alcohol (which may increase absorption of the food allergen)
+
+• Reliance on oral antihistamines alone to treat symptoms
+
+## 3.7. Incidence, prevalence, and consequences of unintentional exposure to food allergens
+
+In summary: Self-reported reactions to food frequently occur in patients with a known diagnosis of FA. Although a subset of these reactions is due to intentional exposure, most are due to unintentional exposure. Both types of exposure can be life-threatening. There is no evidence that unintentional or intentional exposures to the food allergen alter the natural history of the FA.
+
+Data on the incidence and prevalence of unintentional exposures to a food allergen and subsequent reactions are derived from several longitudinal studies of patients with individual FAs.
+
+In 1 study,<sup>55</sup> 83 children who had been diagnosed with clinical hypersensitivity to peanut prior to the age of 4 years were followed for 5 years. The nature and frequency of adverse reactions caused by accidental peanut exposure are shown in Fig 2. Briefly:
+
+60% (50 of 83) reported a total of 115 unintentional exposures to peanuts with adverse reactions, for a rate of 0.33 adverse reactions due to unintentional exposure per year.
+
+When the 83 patients were followed over time, the severity of the initial reaction to peanut did not predict the severity of subsequent reactions on unintentional exposures to peanut. Among these subsequent reactions, the rate of life-threatening reactions was high.
+
+In patients who had an initial reaction that was not life-threatening and had a subsequent reaction, 44% (19 of 43) had potentially life-threatening reactions during at least 1 of these subsequent reactions.
+
+In patients who had an initial reaction that was life-threatening and had a subsequent reaction, 71% (12 of 17) had potentially life-threatening symptoms during at least 1 of these subsequent reactions.
+
+A retrospective chart review study<sup>56</sup> of pediatric patients with peanut allergy seen in a university practice between 2000 and 2006 found that unintentional ingestions occurred in 39% of 140 patients, with a mean of 1.8 unintentional ingestions per patient and a range of 1 to 10 ingestions. The median time to first unintentional ingestion was 12.5 months after diagnosis, and 25% of patients reported a subsequent reaction that was more severe than the first.
+
+A telephone survey<sup>88</sup> about unintentional exposures to peanuts in 252 children found that 35 unintentional exposures occurred in 29 children over a period of 244 patient-years, yielding an annual incidence rate of 14.3%. Of interest, 85% of these children attended schools prohibiting peanuts.
+
+A survey study<sup>89</sup> of university students with FA found that 44% (122 of 278) reported having had a reaction to a food while enrolled in the university and 27% (76 of 278) had the reaction while on campus. When the students provided the locations where reactions occurred (could be multiple locations), the results were: restaurant (21.3%), residence hall (19.9%), parent's house (18.8%), apartment (17.1%), friend's house (16.7%), dining hall (13.6%), and other (5%).
+
+## 3.8. Knowledge gaps
+
+Many gaps exist in the published literature on the natural history of FA. In particular, although there are several follow-up studies from single clinics, there are no data from community-based populations in the United States. Thus, the true natural history of symptoms, comorbid conditions, and the frequency and impact of inadvertent exposures are largely unknown.
+
+Little is known about:
+
+• The factors that may cause higher morbidity and mortality from FA (aside from the association with asthma)
+
+The natural history of IgE-mediated FA in adults, with the exception that crustacean shellfish allergy is thought to be more common in adults than children and is possibly the most commonly recognized FA in adults
+
+The differences in the range of symptoms of FA based on the age of the patient, his or her comorbidities (for example, other atopic disorders), the food allergen, its mode of preparation, or the dose of allergen
+
+• The differences and similarities between pediatric and adult FA
+
+• The natural history of non-IgE but immunologic FA
+
+No information is available on:
+
+• The impact of treatment for ongoing asthma on the outcome of food-induced anaphylaxis
+
+Other important areas that need to be addressed include:
+
+• The clinical and immunopathogenic impact of relevant allergen avoidance in atopic individuals with FA
+
+• The clinical and immunopathogenic impact of asthma on the clinical course of AD and EoE
+
+The effect of standard management approaches for FA (for example, targeted food elimination diets) and more novel approaches (for example, anti-IgE, T<sub>H</sub>2 antagonists) on the severity or magnitude of the other comorbid conditions observed in patients with FA
+
+## 4. Diagnosis of Food Allergy
+
+## 4.1. When should food allergy be suspected?
+
+Guideline 1: The EP recommends that FA should be considered:
+
+In individuals presenting with anaphylaxis or any combination of symptoms listed in Table IV that occur within minutes to hours of ingesting food, especially in young children and/or if symptoms have followed the ingestion of a specific food on more than 1 occasion
+
+In infants, young children, and selected older children diagnosed with certain disorders, such as moderate to severe AD, EoE, enterocolitis, enteropathy, and allergic proctocolitis (AP)
+
+• In adults diagnosed with EoE
+
+Rationale: Sufficient evidence exists to support the evaluation of FA in patients presenting with specific allergic signs and symptoms following the ingestion of food or with certain disorders frequently associated with allergic reactions to food, even in some cases without an apparent relationship to eating.
+
+Balance of benefits and harms: Identification and avoidance of foods responsible for foodinduced allergic reactions improve quality of life and potentially prevent life-threatening reactions and disorders. With the appropriate evaluation, there is a low risk of erroneously diagnosing someone as food allergic and adversely affecting his or her nutritional well-being and social interactions.
+
+## Quality of evidence: Moderate
+
+## Contribution of expert opinion: Significant
+
+When an individual presents with anaphylaxis or any combination of the symptoms listed in Table IV shortly after ingesting food, a diagnosis of FA should be considered, especially if symptoms have followed the ingestion of a specific food on more than 1 occasion. However, as mentioned in section 2.1.3, FA rarely causes isolated respiratory symptoms, namely those of rhinitis and asthma.
+
+Food-induced allergic reactions may be mediated only by IgE mechanisms, only by non-IgE-mediated mechanisms, or by both IgE- and non-IgE-mediated mechanisms.
+
+Furthermore, some diseases (for example, contact urticaria) can be mediated by either IgEor non-IgE-mediated mechanisms. The diagnosis of IgE-mediated allergy is generally easier to make when tests for sIgE antibodies are positive.
+
+4.1.1. Timing of food-induced allergic reactions—Allergic reactions to a food or food additive may present with a variety of symptoms (Table IV). These reactions may be:
+
+Immediate, occurring within minutes to a few hours, and typically involve IgEmediated mechanisms
+
+Delayed, occurring within several hours to a few days, and thought to typically involve cellular mechanisms
+
+4.1.2. IgE-mediated reactions to food—IgE-mediated reactions to foods are more common in young children, affecting up to 6% of children under 5 years old, and are more frequently seen in children with certain atopic disorders, such as AD. For example, 1 study found that approximately 35% of children with moderate to severe AD had $\mathrm { F A } . ^ { 9 0 }$ Another study found that the younger the child and the more severe the AD, the greater the likelihood that the child had an $\mathrm { F A } . ^ { 9 1 }$ Although any food may cause an allergic reaction, symptoms following the ingestion of certain foods should raise greater suspicion of FA, especially in atopic individuals. For example:
+
+• Milk, egg, and peanut account for the vast majority of allergic reactions in young children.
+
+• Peanut, tree nuts, and seafood (fish and crustacean shellfish) account for the vast majority of reactions in teenagers and adults.
+
+Symptoms of FA should occur consistently following the ingestion of the causative food allergen, although small, sub-threshold quantities of a food allergen or extensively baked, heat-denatured foods (for example, milk and egg) may sometimes be ingested without inducing symptoms.
+
+When evaluating older patients, certain complementary factors must be considered, such as exercise, alcohol consumption, and use of aspirin or nonsteroidal anti-inflammatory drugs (NSAIDs). Some individuals will only experience allergic reactions if they ingest specific foods in association with these factors. For example, anaphylaxis that occurs following exercise is associated with sensitization to specific foods in approximately 30% of cases.<sup>92</sup>
+
+Sensitization to food proteins and allergic reactions to food are much more prevalent in individuals with certain clinical disorders. For example, more than 95% of a population consisting of children and adolescents with EoE experienced marked clinical and histological improvement when placed on a food elimination (often elemental) diet,<sup>93</sup> although the causative role of IgE-mediated mechanisms in EoE is unclear.
+
+4.1.3. Mixed IgE- and non-IgE-mediated reactions to food—Mixed IgE- and non-IgE-mediated mechanisms should be suspected when symptoms, which generally involve the GI tract, are of a more chronic nature, do not resolve quickly, and are not closely associated with ingestion of an offending food. An example of such a disorder is EoE. Thus, the presence of FA should be suspected but the differential diagnosis will be broader as compared with IgE-mediated FA.
+
+FA should be suspected when the results of an esophageal biopsy―performed as part of an evaluation for chronic/intermittent symptoms of gastroesophageal reflux―reveal EoE, as evidenced by greater than 15-20 eosinophils per high-powered field on biopsy.<sup>17</sup> EoE can be diagnosed at any age, but is most common in infants, children, and adolescents. In adults, symptoms of EoE include abdominal pain, dysphagia, and food impaction. Allergic eosinophilic gastroenteritis can manifest at any age and present as chronic abdominal pain, emesis, poor appetite, failure to thrive, weight loss, anemia, or protein-losing enteropathy.
+
+Although a single disease may have underlying pathophysiological mechanisms that involve both IgE-dependent and IgE-independent pathways (for example, EoE), some diseases can manifest in response to either IgE-dependent or IgE-independent triggers. An example is contact urticaria, which can be triggered by direct contact between the skin and offending food, but the symptoms may be IgE-mediated or non-IgE-mediated.
+
+4.1.4. Differential diagnosis of food allergy—In a meta-analysis<sup>30</sup> of studies evaluating the prevalence of FA, up to 35% of individuals reporting a reaction to food believe they have FA, whereas studies confirming FA by oral food challenge suggest a much lower prevalence of about 3.5%. Much of this discrepancy is due to a misclassification of adverse reactions to foods that are not allergic in origin, for example lactose intolerance causing bloating, abdominal pain, and diarrhea after consuming milk products. Many causes of reactions to foods are not allergic in origin.
+
+In the differential diagnosis of FAs, allergic disorders from other causes, such as drugs, as well as disorders that are not immunologic in nature, must be considered. The patient's medical history is vital in excluding these alternative diagnoses. For example:
+
+• Acute allergic reactions initially attributed to a food may be triggered by other allergens (for example, medications, insect stings).
+
+In children with AD, eczematous flares erroneously attributed to foods are sometimes precipitated by irritants, humidity, temperature fluctuations, and bacterial infections of the skin (for example, Staphylococcus aureus).
+
+• Chronic GI symptoms may result from reflux, infection, anatomical disorders, metabolic abnormalities (for example, lactose intolerance), and other causes.
+
+Chemical effects and irritant effects of foods may mimic allergic reactions. For example, gustatory rhinitis may occur from hot or spicy foods due to neurologic responses to temperature or capsaicin.<sup>94</sup>
+
+Tart foods may trigger an erythematous band on the skin of the cheek along the distribution of the auriculotemporal nerve in persons with gustatory flushing syndrome.<sup>95</sup>
+
+Food poisoning due to bacterial toxins, such as toxigenic E. coli, or scombroid poisoning caused by spoiled dark-meat fish, such as tuna and mahi-mahi, can mimic an allergic reaction.<sup>96</sup>
+
+For persons with EGIDs, alternative diagnoses such as parasite infections, gastroesophageal reflux disease, systemic eosinophilic disorders, and vasculitis should be considered.
+
+• Behavioral and mental disorders may result in food aversion (for example, anorexia nervosa, bulimia, and Munchausen syndrome by proxy).
+
+• Pharmacologic effects of chemicals that occur in foods (for example, tryptamine in tomatoes) and food additives may mimic some allergic symptoms of the skin and GI tract.<sup>97</sup>
+
+## 4.2. Diagnosis of IgE-mediated food allergy
+
+## 4.2.1. Medical history and physical examination—Guideline 2: The EP
+
+recommends using medical history and physical examination to aid in the diagnosis of FA.
+
+Medical history: The EP recommends using a detailed medical history to help focus the evaluation of an FA. Although the medical history often provides evidence for the type of food-induced allergic reaction and the potential causative food(s) involved, history alone cannot be considered diagnostic of FA.
+
+Physical examination: The EP recommends performing a focused physical examination of the patient, which may provide signs consistent with an allergic reaction or disorder often associated with FA. However, by itself, the physical examination cannot be considered diagnostic of FA.
+
+Rationale: Medical history is useful for identifying food allergens that may be responsible for IgE-mediated allergic reactions, but it lacks sufficient sensitivity and specificity to definitively make a diagnosis of FA. Moreover, medical history is more useful in diagnosing immediate food-induced allergic reactions compared with delayed reactions. Further evaluation, for example laboratory studies or oral food challenges, is required to confirm a diagnosis of FA.
+
+Balance of benefits and harms: The medical history and physical examination provide evidence for suspecting FA and focus the evaluation. However, basing the diagnosis of FA on either history or physical examination alone may lead to an erroneous diagnosis of FA and unnecessarily restrictive diets that could have adverse nutritional and social consequences.
+
+Quality of evidence: Low
+
+Contribution of expert opinion: Significant
+
+In evaluating a patient with suspected FA, a thorough medical history is very important in identifying symptoms associated with FA (Table IV) and focusing the diagnostic workup, but alone cannot be considered diagnostic.<sup>98,99</sup> The nature of the reaction often suggests the underlying mechanism, either IgE mediated (immediate) or non-IgE mediated (delayed), and will determine the diagnostic tests to be used. Because none of the symptoms of FA are pathognomonic for the disorder, the medical history may be used to help identify causative allergens or to differentiate the reaction from nonallergic disorders, even though history alone does not provide sufficient sensitivity or specificity to make a diagnosis of FA.<sup>100</sup>
+
+Critical questions should include the following:
+
+• What are the symptoms of concern?
+
+What food precipitates the symptoms, and has this food caused such symptoms more than once?
+
+• What quantity of food was ingested when the symptoms occurred?
+
+Was the food in a baked (extensively heated) or uncooked form?
+
+• When did symptoms occur in relation to exposure to a given food?
+
+• Can the food ever be eaten without these symptoms occurring?
+
+Were other factors involved, such as exercise, alcohol, or use of aspirin or NSAIDs?
+
+• Have the symptoms been present at times other than after exposure to a given food?
+
+What treatment was given, and how long did the symptoms last?
+
+No findings in a physical examination are diagnostic of FA. The presence of physical signs at the time of the physical examination may verify the diagnosis of an atopic disorder (for example, urticaria or AD) or suggest prolonged symptoms (for example, loss of body weight in patients with EoE). Physical examination also may reveal findings more suggestive of a nonallergic disorder that would require further investigation and testing.
+
+Guideline 3: The EP recommends that parent and patient reports of FA must be confirmed, because multiple studies demonstrate that 50% to 90% of presumed FAs are not allergies.
+
+Rationale: Given the low positive predictive value of self-reported symptoms, it is important that all suspected FA be confirmed by appropriate evaluation (for example, oral food challenge or tests for allergic sensitization).
+
+Balance of benefits and harms: Because unnecessary food avoidance affects quality of life and nutrition, there is possible harm in over-diagnosing FA.
+
+## Quality of evidence: High
+
+## Contribution of expert opinion: Minimal
+
+As described in section 2.2 (Tables I and II), 2 systematic reviews/meta-analyses found that the prevalence of FA based on self-reported symptoms of FA was several-fold higher
+
+compared with when the diagnosis was based on sensitization alone, sensitization with symptoms, or DBPCFC.
+
+4.2.2. Methods to identify the causative food—When evaluating a patient for FA, the diagnostic tests selected are based on a comprehensive medical history. The history should suggest the possible allergic mechanism involved (ie, IgE mediated or non-IgE mediated), which then determines the types of testing to be pursued and the possible foods involved. Tests selected to evaluate FA should be based on the patient's medical history and not comprise large general panels of food allergens. In addition, diagnostic tests for nonallergic disorders may be needed, depending on the differential diagnosis.<sup>99</sup>
+
+4.2.2.1. Skin prick test: Guideline 4: The EP recommends performing an SPT (also known as a skin puncture test) to assist in the identification of foods that may be provoking IgEmediated food-induced allergic reactions, but the SPT alone cannot be considered diagnostic of FA.
+
+Rationale: SPTs are safe and useful for identifying foods potentially provoking IgE mediated food-induced allergic reactions, but they have a low positive predictive value for the clinical diagnosis of FA.
+
+Balance of benefits and harms: The reagents and methods for performing SPTs are not standardized. Nevertheless, SPTs effectively detect the presence of sIgE, but many patients have sIgE without clinical FA. Compared with oral food challenges, SPTs have low specificity and low positive predictive value for making an initial diagnosis of FA. Thus, use of SPTs in the clinical setting may lead to over-diagnosis. However, in a patient with confirmed FA, an SPT is valuable in identifying the food(s) responsible for IgE-mediated FA. In the clinical setting, when compared with oral food challenges, SPTs have high sensitivity and high negative predictive values.
+
+Quality of evidence: Moderate
+
+## Contribution of expert opinion: Significant
+
+The results of an SPT are considered “immediate” because the wheal and flare develop typically within 30 minutes following injection of allergen. SPTs are the most commonly performed procedure in the evaluation of IgE-mediated FA.<sup>101-103</sup> However, there are no standard reagents for SPT testing, and no international standards for administering the test and interpreting the results.<sup>101</sup>
+
+A positive SPT is generally considered a wheal with a mean diameter 3 mm or greater than the negative control.<sup>102</sup> Various studies use different methods to define a positive test, from measuring the absolute wheal size to measuring the wheal size relative to the negative (diluent) and positive (histamine) controls. A positive SPT simply correlates with the presence of sIgE bound to the surface of cutaneous mast cells. Although the larger the mean wheal diameter provoked, the more likely that a food allergen will be of clinical relevance, the SPT alone is not diagnostic of FA.<sup>104-107</sup>
+
+When diagnosing OAS, or in cases where SPTs with commercial extracts do not correlate with clinical histories, the SPT technique with fresh or native foods, especially fruits and vegetables, may prove more sensitive.<sup>108,109</sup>
+
+Negative SPTs occasionally occur in patients with IgE-mediated FA. Therefore, in cases where the history is highly suggestive, further evaluation (for example, physician-supervised oral food challenge) is necessary before telling a patient that he or she is not allergic to a suspected food and may ingest it.
+
+4.2.2.2. Intradermal tests: Guideline 5: The EP recommends that intradermal testing should not be used to make a diagnosis of FA.
+
+Rationale: Insufficient evidence exists to support the use of intradermal testing for the diagnosis of FA. Moreover, intradermal tests carry a higher risk of adverse reactions than SPTs.
+
+Balance of benefits and harms: Although intradermal testing may be more sensitive than skin prick testing for the diagnosis of IgE-mediated FA, there is no evidence to support such claims for protein-induced FA and insufficient evidence to support its routine use in diagnosing carbohydrate-induced FA. In addition, there is a greater risk of systemic adverse allergic reactions from intradermal tests compared with SPTs.
+
+Quality of evidence: Low
+
+Contribution of expert opinion: Significant
+
+Intradermal testing for FA does not provide increased sensitivity in detecting food proteininduced allergic reactions.<sup>102</sup> There is suggestive but unconfirmed evidence to support its use in diagnosing a form of carbohydrate-induced IgE-mediated allergy that is a characteristic of some types of red meat allergy.<sup>110</sup>
+
+4.2.2.3. Total serum IgE: Guideline 6: The EP recommends that the routine use of measuring total serum IgE should not be used to make a diagnosis of FA.
+
+Rationale: Insufficient evidence exists to support the proposal that measurements of total serum IgE levels can be a sensitive and specific test for FA.
+
+Balance of benefits and harms: Although an elevated total serum IgE level is frequently found in atopic individuals and some investigators suggest that it may be useful when interpreting allergen-specific IgE levels, the EP could find no studies to support such a claim. In addition, the sensitivity and specificity of this test compared with the outcome of oral food challenges is insufficient to warrant routine use in evaluating FA.
+
+Quality of evidence: Low
+
+Contribution of expert opinion: Significant
+
+Mehl et al looked at the predictive value of the ratio of sIgE to total IgE for the diagnosis of FA compared with the DBPCFC and concluded that the ratio offered no advantage over sIgE alone in diagnosing FA.<sup>111</sup>
+
+4.2.2.4. Allergen-specific serum IgE: Guideline 7: The EP recommends sIgE tests for identifying foods that potentially provoke IgE-mediated food-induced allergic reactions, but alone these tests are not diagnostic of FA.
+
+Rationale: sIgE tests are useful for identifying foods potentially provoking IgE-mediated food-induced allergic reactions, and specified “cutoff” levels, defined as 95% predictive values, may be more predictive than SPTs of clinical reactivity in certain populations, but when used alone they are not diagnostic of FA.
+
+Balance of benefits and harms: sIgE tests are very useful for detecting the presence of sIgE antibodies, which indicates the presence of allergic sensitization. Fluorescence-labeled antibody assays have comparable sensitivity to that of SPTs, and the absolute levels of sIgE antibodies may directly correlate with the likelihood of clinical reactivity when compared with oral food challenges for the identification of foods provoking IgE-mediated FA.
+
+## Quality of evidence: Moderate
+
+## Contribution of expert opinion: Significant
+
+sIgE testing and skin prick testing both depend on the presence of allergen-specific antibodies. Because the former test measures sIgE in the serum and the latter reflects IgE bound to cutaneous mast cells, their results may not always correlate. Serum testing can be especially useful when SPTs cannot be done (for example, due to extensive dermatitis or dermatographism), or when antihistamines cannot be discontinued.
+
+sIgE levels were originally measured using the radioallergosorbent test (RAST), but this test has been replaced by more sensitive fluorescence enzyme-labeled assays and the term RAST should be abandoned.
+
+It is important to note that results from different laboratories or different assay systems may not be comparable. Wang et al<sup>112</sup> examined 50 patients who were between 2 and 20 years of age and used 3 different systems (Phadia ImmunoCAP, Agilent Turbo-MP, and Siemens Immulite 2000) to assess for allergy to milk, egg, and peanut, as well as 3 aeroallergens.<sup>112</sup> Each system used slightly different forms of the antigens (for example, skim milk vs freezedried milk vs whole milk). Of the 50 patients, 42 had diagnosed FA. Each system provided significantly different measurements of sIgE for the same serum samples. Thus, the predictive values associated with clinical evidence of allergy for ImmunoCAP cannot be applied to other test methods, for example, Turbo-MP and Immunlite.
+
+The presence of sIgE reflects allergic sensitization and not necessarily clinical allergy. Several studies comparing the quantity of sIgE to oral food challenges have reported that the greater the levels of sIgE, the higher the probability that ingestion of the food will lead to an allergic reaction. However, the predictive values varied from one study to
+
+another.<sup>44,51,113-120</sup> This inconsistency may be due to multiple factors, such as patients' ages, duration of food allergen avoidance at the time of testing, selection of patients, and clinical disorders of patients being studied.
+
+Undetectable sIgE levels occasionally occur in patients with IgE-mediated FA. Therefore, in cases where the history is highly suggestive, further evaluation (for example, physiciansupervised oral food challenge) is necessary before telling a patient that he or she is not allergic to a suspected food and may ingest it.
+
+4.2.2.5. Atopy patch test: Guideline 8: The EP suggests that the APT should not be used in the routine evaluation of non-contact FA.
+
+Rationale: Insufficient evidence exists to support the use of the APT for the evaluation of FA.
+
+Balance of benefits and harms: Although a number of studies have reported that the APT may be useful in the evaluation of FA in patients with AD and EoE, there is no agreement on the appropriate reagents, methods, or interpretation of these tests. When compared with oral food challenges, APTs show highly variable sensitivity and specificity among different studies.
+
+## Quality of evidence: Low
+
+## Contribution of expert opinion: Significant
+
+In general, a patch test is used to determine allergic sensitivity by applying small pads soaked with allergen to the unbroken skin. The APT is a specific type of patch test.<sup>121</sup> The only difference between the APT and other patch tests is the antigen that is being tested. The APT uses allergens (for example, food allergens) that provoke only IgE-mediated reactions, whereas all other patch tests use antigens that typically provoke T cell-mediated reactions. All patch tests are performed the same way.
+
+The APT is an investigational tool for diagnosing FA and is generally used to assess delayed, or non-IgE-mediated, reactions to an allergen. However, there are no standard reagents available, and no studies that specifically addressed the methodology of APTs met the criteria to be included in the RAND evidence report. Some studies reported that test material was applied directly to the skin for 48 hours and read at 72 hours following application,<sup>122,123</sup> although most studies reported applying foods (fresh or from powders) in aluminum discs to the skin for 48 hours, with a final reading at 72 hours after application. The sensitivity and specificity of the test varied between studies and may have been affected by the presence of AD and the age of the patient. No studies compare the use of different food allergen preparations. Two large studies conclude that there is no significant clinical value in using APTs for diagnosing FA.<sup>121,124</sup>
+
+## 4.2.2.6. Use of skin prick tests, sIgE tests, and atopy patch tests in combination:
+
+Guideline 9: The EP suggests not using the combination of SPTs, sIgE tests, and APTs for the routine diagnosis of FA.
+
+Rationale: No literature supports the proposal that the use of SPTs, sIgE tests, and APTs in combination for the evaluation of FA provides any significant advantage over the use of SPTs or sIgE tests alone.
+
+Balance of benefits and harms: Combining the results of SPTs, sIgE tests, and APTs may provide higher positive and negative predictive values than any test alone, but use of all 3 tests is time consuming, inconvenient for the patient, and provides marginally improved positive and negative predictive values that may not be clinically relevant. However, a combination of 2 of these methods is sometimes more helpful for identifying foods likely to induce allergic reactions.
+
+## Quality of evidence: Low
+
+## Contribution of expert opinion: Significant
+
+A few studies show that various combinations of SPTs, sIgE tests, and APTs improved the sensitivity and specificity over the use of individual tests.<sup>121,124,125</sup> However, the small number of studies that calculated the proportion of patients for whom 2 or more tests could obviate the need for a DBPCFC found these proportions to be quite small.
+
+4.2.2.7. Food elimination diets: Guideline 10: The EP suggests that elimination of 1 or a few specific foods from the diet may be useful in the diagnosis of FA, especially in identifying foods responsible for some non-IgE-mediated food-induced allergic disorders, such as FPIES, AP, and Heiner syndrome, and some mixed IgE- and non-IgE-mediated food-induced allergic disorders, such as EoE.
+
+Rationale: The use of an elimination diet in combination with a convincing history may be sufficient to diagnose FA in several food-induced allergic disorders, including FPIES, AP, and Heiner syndrome, and some mixed IgE- and non-IgE-mediated food-induced allergic disorders, such as EoE.
+
+Balance of benefits and harms: In several non-IgE-mediated FA disorders and EoE, a suggestive medical history plus the elimination of the suspected food resulting in the resolution of symptoms provides evidence for the diagnosis of FA. In these situations, there are no known laboratory tests that are diagnostic of the causative food, and the oral food challenge, while a potentially useful diagnostic test, may provoke significant morbidity. Thus, many health care professionals base the initial diagnosis on history and clearing of symptoms while on the elimination diet, and reserve the oral food challenge for evaluating the eventual resolution of the disorder (ie, development of tolerance).
+
+## Quality of evidence: Low
+
+## Contribution of expert opinion: Significant
+
+RAND found no studies meeting the inclusion criteria to support the diagnostic value of using dietary elimination trials or of food/symptoms diaries for the diagnosis of FA. However, given the morbidity of oral food challenges in some non-IgE-mediated foodinduced allergic disorders, some investigators believe that a convincing history plus clearing of symptoms with the initiation of an elimination diet for a particular food is sufficient to make the diagnosis of FA. However, prolonged elimination diets that omit multiple foods have been reported to induce severe malnutrition;<sup>126-128</sup> therefore, confirmatory diagnostic studies must be performed in such cases to confirm the diagnosis of FA.
+
+4.2.2.8. Oral food challenges: Guideline 11: The EP recommends using oral food challenges for diagnosing FA. The DBPCFC is the gold standard. However, a single-blind or an open-food challenge may be considered diagnostic under certain circumstances: if either of these challenges elicits no symptoms (ie, the challenge is negative), then FA can be ruled out; but when either challenge elicits objective symptoms (ie, the challenge is positive) and those objective symptoms correlate with medical history and are supported by laboratory tests, then a diagnosis of FA is supported.
+
+Rationale: DBPCFC is the most specific test for diagnosing FA. However, due to the expense and inconvenience of DBPCFCs, single-blind and open-food challenges may be used in the clinical setting.
+
+Balance of benefits and harms: The DBPCFC markedly reduces potential bias of patients and supervising health care professionals that may interfere with the appropriate interpretation of oral food challenges, and corresponds most closely to the natural ingestion of food. Other diagnostic tests lack specificity and may lead to the unnecessary exclusion of foods from patients' diets. However, the DBPCFC is time consuming, expensive, and, like any form of oral food challenge, subjects the patient to potential severe allergic reactions. Single-blind and open-food challenges are frequently used to screen patients for FA. When negative, they may be considered diagnostic in ruling out FA, and when positive (ie, when “immediate” objective allergic symptoms are elicited), they may be considered diagnostic in patients who have a supportive medical history and laboratory data.
+
+## Quality of evidence: High
+
+## Contribution of expert opinion: Moderate
+
+Note: Because of the inherent risk, an oral food challenge must be conducted at a medical facility that has onsite medical supervision and appropriate medicines and devices on hand.
+
+A positive SPT or sIgE test result is indicative of allergic sensitization, but these findings alone may or may not be clinically relevant. Most investigators in the field agree that verification of clinical reactivity requires well-designed oral food challenge testing.<sup>102,103,129-133</sup>
+
+Prior to initiating an oral food challenge, suspected foods are eliminated from the diet for 2 to 8 weeks, depending on the type of food-induced allergic reaction being examined (for example, urticaria vs EoE).<sup>133,134</sup> All foods in question must be strictly avoided simultaneously. An infant's diet can be limited to a hypoallergenic formula. For exclusively breast-fed infants, either the suspected food is eliminated from the mother's diet or the baby is fed a hypoallergenic formula until the allergic food is identified.
+
+After documenting significant improvement on dietary elimination, the challenge test is carried out while the patient is on minimal or no symptomatic medication. The test should be designed and performed under medical supervision to document the dose that provokes the reaction and to administer symptomatic treatment, which may require management of anaphylaxis (section 6), and the medical personnel should have experience in carrying out such challenges. Oral food challenge begins with a low dose (intended to be lower than a dose that can induce a reaction<sup>135,136</sup>). While monitoring for any allergic symptoms, the dose is gradually increased, until a cumulative dose at least equivalent to a standard portion for age is consumed. The challenge may be carried out in an open fashion in infants, but in older children, single-blind food challenges or DBPCFCs may be necessary to minimize patient and physician bias.
+
+Using DBPCFC, several studies have shown that only about one third of the suspected foods are found to be truly allergic.<sup>103</sup> In addition to verifying FA, challenge testing prevents unnecessary dietary avoidance and enhances compliance with the elimination diet. Nevertheless, because of the risk of a severe reaction, intentional challenge should be avoided in patients who have recently experienced a life-threatening reaction to a particular food, particularly if it occurred more than once. In the case of post-prandial exercise-induced reactions, food challenge should be followed by exercise.<sup>92</sup>
+
+There is currently no internationally accepted, standardized protocol for performing and interpreting DBPCFCs, although reviews outlining benefits and deficiencies have been published.<sup>133,135-137</sup>
+
+4.2.2.9. Nonstandardized and unproven procedures: Guideline 12: The EP recommends not using any of the following nonstandardized tests for the routine evaluation of IgEmediated FA:
+
+Basophil histamine release/activation<sup>138,139</sup>
+
+• Lymphocyte stimulation<sup>140,141</sup>
+
+• Facial thermography<sup>142</sup>
+
+• Gastric juice analysis<sup>143</sup>
+
+• Endoscopic allergen provocation<sup>144-146</sup>
+
+• Hair analysis
+
+• Applied kinesiology
+
+• Provocation neutralization
+
+• Allergen-specific IgG<sub>4</sub>
+
+• Cytotoxicity assays
+
+• Electrodermal test (Vega)
+
+Mediator release assay (LEAP diet)
+
+Rationale: There is a lack of evidence demonstrating that any of these nonstandardized tests has any value in the diagnosis of FA. However, although basophil histamine release/ activation is not a routine diagnostic test for IgE-mediated FA, it is commonly used as a research tool.
+
+Balance of benefits and harms: The utility of these tests has not been validated for the diagnosis of FA and may result in false positive or false negative diagnoses, leading to unnecessary dietary restrictions or delaying the appropriate diagnostic workup, respectively.
+
+Quality of evidence: Low
+
+Contribution of expert opinion: Significant
+
+## 4.3. Diagnosis of non-IgE-mediated immunologic adverse reactions to food
+
+The diagnosis of non-IgE-mediated FA can be challenging. Prior to a diagnostic workup, it may be difficult to distinguish an IgE-mediated allergy from a non-IgE-mediated allergy based on medical history and physical examination alone. Some distinct non-IgE-mediated conditions are associated with FA. T cells have been shown to play a central role in celiac disease. Studies have also shown that T cells may mediate the pathogenesis of some other non-IgE-mediated adverse reactions to food. A number of diagnostic tools have been suggested for use in diagnosing non-IgE-mediated reactions, including DBPCFC, contact dermatitis patch testing, APT, intradermal testing, lymphocyte activation assays, foodspecific IgG testing, and endoscopic biopsy.
+
+Specific examples of non-IgE-mediated adverse reactions to foods include:
+
+• Eosinophilic GI diseases (EGIDs)
+
+• Food protein-induced enterocolitis syndrome (FPIES)
+
+• Allergic proctocolitis (AP)
+
+• Allergic contact dermatitis (ACD)
+
+• Systemic contact dermatitis
+
+• Heiner syndrome (see section 2.1.3)
+
+4.3.1. Eosinophilic gastrointestinal diseases—Guideline 13: The EP suggests that SPTs, sIgE tests, and APTs may be considered to help identify foods that are associated with EoE, but these tests alone are not sufficient to make the diagnosis of FA. The role of these tests in the diagnosis of other EGIDs has not been established.
+
+Rationale: SPTs, sIgE tests, and APTs alone are insufficient to establish a causal role for FA in EoE, but they may be useful in identifying foods that should be investigated further with other diagnostic tests, such as dietary elimination, oral food challenge, and endoscopy and esophageal biopsy.
+
+Balance of benefits and harms: Some studies suggest that SPTs, sIgE tests, and APTs may be of value in identifying foods that cause symptoms of EoE. However, the utility of these tests has not been validated for the diagnosis of FA in EoE or other EGIDs and may result in false positive or false negative diagnoses.
+
+Quality of evidence: Low
+
+## Contribution of expert opinion: Significant
+
+EGIDs are a diverse group of intestinal diseases that require endoscopic analysis with mucosal biopsy to make the diagnosis. The diagnosis of EoE, which is a common form of EGID, is defined by an esophageal biopsy with the finding of >15-20 eosinophils per high power field. A method for demonstrating that FA is relevant to the course of EoE is resolution of symptoms and esophageal eosinophilia following dietary elimination, and recurrence of esophageal eosinophilia with reintroduction of the suspected food.<sup>17</sup>
+
+Because food allergens are thought to play a large role in the pathogenesis of these diseases, sIgE tests and SPTs are used to identify potentially relevant foods and design an optimal elimination diet. However, little evidence supports the use of these tests in predicting the severity of EGID symptoms,<sup>147</sup> and no studies have systematically assessed the positive and negative predictive values of SPT or sIgE results in evaluating the potential relevant role of FA in EoE. Results from 1 study suggest some benefit of APT in identifying suspect food allergens,<sup>147</sup> but this has not been confirmed in other studies.
+
+4.3.2. Food protein-induced enterocolitis syndrome—Guideline 14: The EP recommends using the medical history and oral food challenge to establish a diagnosis of FPIES. However, when history indicates that infants or children have experienced hypotensive episodes or multiple reactions to the same food, a diagnosis may be based on a convincing history and absence of symptoms when the causative food is eliminated from the diet.
+
+Rationale: FPIES is diagnosed based on a supportive medical history, resolution of symptoms with the elimination of the causative food, and, in many cases, provocation of symptoms following an open or single-blind oral food challenge.
+
+Balance of benefits and harms: There are no laboratory studies with demonstrated specificity and sensitivity to diagnose FPIES, so an oral food challenge is necessary to establish the diagnosis. Although the oral food challenge may induce significant symptoms, there are no alternative methods with adequate predictability to diagnose FPIES. However, when the history is very compelling (for example, 2 or more reactions with classic symptoms to the same food in a 6-month period and elimination of symptoms when the causative food is removed from the diet), an oral food challenge may not be necessary to make the diagnosis. Because this disorder often lasts only a few years, however, subsequent oral food challenge is warranted to determine when FPIES has resolved and the food elimination diet can be terminated.
+
+Quality of evidence: High
+
+Contribution of expert opinion: Moderate
+
+FPIES is a severe systemic response to food protein that typically occurs 1 to 4 hours after the ingestion of the causative food and frequently develops in the first few years of life. FPIES can manifest in young infants who frequently are breast-fed and presents as bloodstreaked or hemoccult-positive stools in an infant who otherwise appears healthy. Symptoms include vomiting, diarrhea, acidosis, and in some cases shock.<sup>13,148-150</sup> Laboratory studies consistent with this diagnosis include an elevated white blood cell count with a left shift and elevated platelet count.
+
+Since FPIES occurs when the infant's diet is quite limited, history is often helpful in identifying food triggers. Because FPIES is a non-IgE-mediated disorder, sIgE tests and SPTs are typically negative. Endoscopy may reveal a mixed eosinophilic and neutrophilic infiltrate but is not required to make the diagnosis. Young infants who develop FPIES in response to one formula or food are at greater risk of developing allergic reactions to other whole-protein formulas. Therefore, hypoallergenic formulas are recommended.<sup>148,151</sup> Because hypotension may develop in up to 15% of cases, children should be challenged in a setting where intravenous hydration is readily available.<sup>133</sup>
+
+## 4.3.3. Food protein-induced allergic proctocolitis—Guideline 15: The EP
+
+recommends using the medical history, resolution of symptoms when the causative food is eliminated from the diet, and recurrence of symptoms following an oral food challenge to diagnose AP.
+
+Rationale: The evidence supports the conclusion that food protein-induced AP can be diagnosed based on a supportive medical history, resolution of symptoms with the elimination of the causative food, and recurrence of symptoms following an oral food challenge.
+
+Balance of benefits and harms: Because there are no laboratory studies with sufficient specificity and sensitivity to diagnose food protein-induced AP, an oral food challenge is necessary to establish the diagnosis. Although the food challenge may induce blood in the stools, symptoms of AP are generally benign, and there are no alternative methods with adequate predictability to diagnose AP. In cases with a classic history of AP, a normal physical examination and resolution of symptoms following elimination of the causative food leads many investigators to believe that an oral food challenge is not required to establish the diagnosis. Since this disorder often lasts only 1 to 2 years, repeated challenges are warranted to determine when food elimination diets can be terminated.
+
+## Quality of evidence: Moderate
+
+## Contribution of expert opinion: Significant
+
+AP is a common transient disease of infancy, typically resolving in the first 1 to 2 years of life,<sup>152</sup> that manifests itself as the passage of mucoid, blood-streaked stools in an otherwise healthy infant. AP also can manifest as chronic emesis, diarrhea, and failure to thrive. Upon re-exposure to the offending food after a period of elimination, a subacute syndrome can present with repetitive emesis and dehydration. Typically AP is associated with the ingestion of cow's milk, soy milk, or human breast milk during infancy. Reports also exist of adults
+
+experiencing crampy abdominal pain, severe vomiting, light-headedness, and lethargy 2 to 3 hours following the ingestion of crustacean shellfish.<sup>153</sup> Because AP is a non-IgE-mediated FA, sIgE and SPT results are typically negative. Although colonoscopy and biopsy are not generally necessary to make the diagnosis, they will reveal lesions that are confined to the large bowel and consist of mucosal edema with infiltration of eosinophils in the epithelium and lamina propria. In severe lesions with crypt destruction, polymorphonuclear leukocytes are also prominent.<sup>154</sup> A recent study found that about one third of suspected infants had no evidence of eosinophils on biopsy, and AP resolved without a change in breast-feeding or formula.<sup>155</sup>
+
+enteropathy syndrome is an uncommon disorder that presents in young infants as chronic diarrhea (steatorrhea in up to 80% of cases), weight loss, and growth failure. Symptoms are similar to those observed in patients with celiac disease, except that they appear in young infants. The disorder is characterized by generalized malabsorption<sup>156</sup> (of fat, carbohydrates, and other nutrients), thought to be due to changes in the structure of the intestinal mucosa. It is most often due to milk allergy,<sup>157</sup> but also has been reported due to an allergy to soy, chicken, rice, and fish. Moderate anemia, hypoproteinemia, and deficiency of the vitamin K factors may occur. Diagnosis is based on the clinical symptoms, resolution with allergen elimination, and recurrence of symptoms following an oral food challenge. Treatment consists of strict allergen elimination from the diet. Virtually all affected patients “outgrow” their symptoms by 2 to 3 years of age, and therefore follow-up oral food challenges are recommended to determine when allergen elimination diets can be terminated.
+
+4.3.5. Allergic contact dermatitis—Guideline 16: The EP recommends using the medical history, including the absence of symptoms while the causative food is avoided, and positive patch tests to diagnose ACD.
+
+Rationale: There are a limited number of well-controlled studies demonstrating the utility of these methods in diagnosing ACD. However, the concept that patch testing can be useful in establishing the diagnosis of ACD is based on both the underlying immunologic mechanism involved in the disease and observations from general medical practice.
+
+Balance of benefits and harms: Traditionally, patch testing has been used to support history in diagnosing ACD. Although there are insufficient well-controlled studies to demonstrate the benefits of these methods in diagnosing ACD, the concept of patch testing largely fits with the immunopathogenic mechanism involved. The harm of avoiding contact with the food identified by this method appears minimal.
+
+## Quality of evidence: Moderate
+
+## Contribution of expert opinion: Significant
+
+ACD is a cell-mediated allergic reaction and may be triggered by foods or contaminants in foods. The immediate reactions in ACD may be initiated by contact with chemical moieties in the food, such as oleoresins in fruits and vegetables or spices. Examples include garlic causing contact dermatitis of the hands, mango causing perioral dermatitis, or raw chestnut causing hand and perianal dermatitis.<sup>27</sup> A detailed medical history will aid in the diagnosis of ACD. Patch testing may be performed with standardized contact allergens or suspected allergens (ie, food allergens) applied to a healthy area of the skin, with eczematous reactions assessed 48 to 72 hours later.<sup>28</sup> Positive reactions must be distinguished from simple irritant reactions. Furthermore, positive tests are a sign of sensitization to the allergen, but the clinical relevance of such sensitization needs to be assessed in the context of other clinical signs.
+
+4.3.6. Systemic contact dermatitis—Guideline 17: The EP suggests using the medical history, including the resolution of symptoms while the causative food is avoided, and positive patch tests to establish the diagnosis of systemic contact dermatitis.
+
+Rationale: Insufficient well-controlled studies exist to demonstrate the utility of these methods in diagnosing systemic contact dermatitis.
+
+Balance of benefits and harms: Traditionally, patch testing has been used to support a suggestive history in diagnosing this rare condition. Although there are few well-controlled studies to demonstrate the benefits of these methods in diagnosing systemic contact dermatitis, those that exist support the utility of these methods. The harm of eliminating a small number of foods on this basis appears minimal.
+
+## Quality of evidence: Low
+
+## Contribution of expert opinion: Significant
+
+Systemic contact dermatitis<sup>158</sup> is a rare disorder consisting of generalized eczematous dermatitis associated with systemic symptoms such as fever, headache, rhinitis, and GI complaints that develop after oral or parenteral exposure to an allergen, to which the individual has been sensitized through the skin. Metals and fragrances are allergens that play an important role in food-associated systemic contact dermatitis. Metals found in foods<sup>159</sup> and associated with systemic contact dermatitis include nickel, cobalt, and chromium. Balsam of Peru, a fragrance associated with systemic contact dermatitis, consists of several chemicals, including cinnamic acid, cinnamaldehyde, cinnamic alcohol, vanillin, eugenol, methyl cinnamate, and benzyl cinnamate. This fragrance may be present in alcohol, chocolate, citrus fruits, pickled vegetable, spices, and tomatoes.<sup>27</sup> Patch testing with standardized contact allergens or suspected allergens may assess contact allergen sensitization, but sIgE testing is usually negative. Clinical relevance of positive patch testing requires assessment of the clinical context and may require food elimination or food challenges.
+
+## 4.4. Diagnosis of IgE-mediated contact urticaria
+
+Guideline 18: The EP suggests using the medical history, including the absence of symptoms while the causative food is avoided, positive sIgE tests or SPTs, and positive immediate epicutaneous skin tests (for example, positive immediate responses to APTs), to establish the diagnosis of food-induced IgE-mediated contact urticaria.
+
+Rationale: There are a limited number of well-controlled studies demonstrating the utility of these methods in diagnosing IgE-mediated contact urticaria, but traditionally these methods have been used and found to correlate with clinical symptoms.
+
+Balance of benefits and harms: Although there are few well-controlled studies to demonstrate the benefits of these methods in diagnosing IgE-mediated contact urticaria, test results appear to correlate with clinical symptoms. The potential harm of avoiding contact with foods provoking contact urticaria appears to be minimal.
+
+## Quality of evidence: Low
+
+## Contribution of expert opinion: Significant
+
+Contact urticaria can be of 2 types, either IgE mediated or non-IgE mediated.<sup>160</sup> In IgEmediated contact urticaria, substances present in foods interact with sIgE bound to cutaneous mast cells, leading to the release of histamine and other inflammatory mediators. Localized or generalized urticaria, as well as systemic symptoms, may result. sIgE-mediated contact urticaria may be assessed with APTs, SPTs, or sIgE tests, although there is no standardization of diagnostic methodology. In non-IgE-mediated contact urticaria, systemic symptoms are rarely seen.
+
+## 4.5. Knowledge gaps
+
+At the current time, the oral food challenge is the gold standard for diagnosing FA. This test is accurate and sensitive, but also presents the greatest risk to the patient. Other laboratory tests used to diagnose FA, although safer for the patient, all have significant drawbacks, for example:
+
+SPTs and measurements of sIgE antibodies to detect sensitization to foods provide very sensitive means of identifying foods that may be responsible for IgE-mediated food-induced allergic reactions. However, these tests have poor specificity and show relatively poor overall correlation with clinical reactivity. Consequently, if used alone, they lead to a gross over-diagnosis of clinical allergic reactivity.
+
+Assays based on food allergen epitope specificity<sup>161,162</sup> or component proteinbased assays<sup>163</sup> may prove to be more specific, but further studies are necessary to determine their efficacy.
+
+• Sensitive and specific laboratory tests for diagnosing non-IgE-mediated FA are almost completely lacking.
+
+The lack of objective data available to adequately evaluate existing tests to diagnose FA is reflected in the fact that of 18 guidelines proposed in this section, 15 are heavily dependent on expert opinion and only 3 are based on evidence of “high quality.”
+
+In conclusion, studies to identify sensitive and specific biomarkers that correlate with clinical reactivity to both IgE- and non-IgE-mediated food-induced allergic reactions and clinical FA are needed for the development of newer and safer laboratory tests.
+
+## 5. Management of Nonacute Allergic Reactions and Prevention of Food Allergy
+
+This section of the Guidelines addresses the management and prevention of nonacute and nonsevere allergic reactions to food in individuals diagnosed with FA. Management and prevention of individuals at risk for developing FA and specific concerns about vaccination in individuals with egg allergy also are addressed.
+
+## 5.1. Management of individuals with food allergy
+
+5.1.1. Dietary avoidance of specific allergens in IgE-mediated food allergy— Guideline 19: The EP recommends that individuals with documented IgE-mediated FA should avoid ingesting their specific allergen or allergens.
+
+Rationale: The EP recognizes that allergen avoidance is a strategy that is unproven in RCTs. However, allergen avoidance is currently the safest strategy for managing FA.
+
+Balance of benefits and harms: For individuals with FA, ingesting food allergens can cause allergic reactions ranging in severity from mild to life-threatening. Carefully planned allergen-free diets can provide sufficient nutrients to maintain a healthy and active life. In addition, there is no evidence that strict food avoidance (compared with less strict avoidance) has any effect on the rate of natural remission to a specific food allergen.
+
+## Quality of evidence: Low
+
+## Contribution of expert opinion: Significant
+
+Individuals with documented IgE-mediated FA should avoid ingesting their specific allergen or allergens. However, health care professionals should work with their patients to decide whether certain cross-reactive foods also should be avoided. For patients with a known allergy to a food, the rate of clinically relevant cross-reactivity to related foods varies, as indicated in Appendix D Table S-I, which shows data based on limited studies. Therefore, the health care professional may need to individualize additional testing and patient instructions depending on the foods involved in these situations, taking into consideration that:
+
+• Skin prick or serum testing to related foods may be positive in many cases where the food may be tolerated.
+
+• Cross-contact among foods in preparation may be a concern.
+
+• Patients may have specific food preferences.
+
+5.1.2. Dietary avoidance of specific allergens in non-IgE-mediated food allergy —Guideline 20: The EP recommends that individuals with documented non-IgE-mediated FA should avoid ingesting their specific allergen or allergens.
+
+Rationale: The literature cannot readily be divided on the basis of IgE-mediated and non-IgE-mediated reactions. In general, the management of non-IgE-mediated FA is similar to that of IgE-mediated FA, in that the medical history, the age of the individual, and the specific food allergen are all-important considerations in developing the management plan. Although there are relatively few high-quality studies regarding treatment for non-IgEmediated FA, the bulk of the evidence suggests that food avoidance is the best management plan.
+
+Balance of benefits and harms: For individuals with FA, ingesting trigger foods can cause allergic reactions and serious illness. Carefully planned allergen-free diets can provide sufficient nutrients to maintain a healthy and active life. In addition, there is no evidence that strict food avoidance (compared with less strict avoidance) has any effect on the rate of natural remission to a specific food allergen.
+
+Quality of evidence: Low
+
+Contribution of expert opinion: Significant
+
+5.1.3. Effects of dietary avoidance on associated and comorbid conditions, such as atopic dermatitis, asthma, and eosinophilic esophagitis—Guideline 21: In individuals with documented or proven FA who also have 1 or more of the following―AD, asthma, or EoE―the EP recommends avoidance of their specific allergen or allergens.
+
+Rationale: Only limited study data exist on this issue. In appropriately diagnosed individuals with FA, food allergen avoidance may reduce the severity of AD or EoE. Current evidence is not available to indicate whether food allergen avoidance will alter the course of AD, asthma, or EoE.
+
+Balance of benefits and harms: This approach is not an additional burden for individuals already practicing food avoidance to manage FA.
+
+Quality of evidence: Low
+
+Contribution of expert opinion: Significant
+
+In a nonrandomized comparative study, Agata et al<sup>75</sup> concluded that an elimination diet was a good treatment for AD associated with FA and that sIgEs to food antigens were useful as indices of the effect of elimination diets. However, it is important to note that the study was conducted in a small number of patients and the evidence quality is considered low.
+
+Guideline 22: In individuals without documented or proven FA, the EP does not recommend avoiding potentially allergenic foods as a means of managing AD, asthma, or EoE.
+
+Rationale: No conclusive evidence exists to suggest that avoiding food allergens reduces the severity of AD, asthma, or EoE in individuals who are not sensitized and have not demonstrated specific clinical reactivity to foods.
+
+Balance of benefits and harms: Unnecessary food avoidance could place individuals at risk for nutritional deficiencies and growth deficits. There is no known benefit to avoiding potentially allergenic foods (such as (cow's) milk, egg, peanut, tree nuts, wheat, soy, fish, and crustacean shellfish).
+
+Quality of evidence: Moderate
+
+## Contribution of expert opinion: Moderate
+
+The EP identified 2 systematic, high-quality reviews that evaluated the effect of dietary exclusion for treating AD.
+
+The review by Kramer et al<sup>164</sup> assessed whether maternal dietary antigen avoidance during lactation by mothers of infants with AD could reduce severity. One small trial (n = 17) that met inclusion criteria for this part of the review found no significant reduction in the eczema area score (mean difference -0.8; 95% confidence interval (CI) -4.43 to 2.83) or eczema activity score (mean difference -1.4; 95% CI -7.18 to 4.38) between infants whose mothers avoided dietary antigens and those whose mothers followed a usual diet.
+
+The review by Bath-Hextall et al<sup>165</sup> evaluated the effect of dietary exclusion by patients for treating established AD. Nine low-quality RCTs were found, of which only 2 were sufficiently similar to combine. Six of the RCTs examined milk and egg exclusion, 1 was a study of a diet including only a few foods, and 2 evaluated elemental diets. The authors found no evidence to support the use of these dietary exclusion strategies for treating AD in an unselected population.
+
+Similarly, the EP found no high-quality studies specifically addressing food allergen avoidance in which the patients did not have documented or proven FA but did have other comorbid conditions, such as asthma or EoE.
+
+5.1.4. Food avoidance and nutritional status—Guideline 23: The EP recommends nutritional counseling and regular growth monitoring for all children with FA.
+
+Rationale: Although few studies have evaluated whether food allergen avoidance results in nutritional deficiency, the EP acknowledges that obtaining adequate nutrition is a concern in this population.
+
+Balance of benefits and harms: Avoidance of specific allergens can limit the availability of nutritious food choices. Nutrition counseling can help patients plan and consume an allergen-free yet nutritionally adequate diet.
+
+## Quality of evidence: Low
+
+## Contribution of expert opinion: Significant
+
+No randomized clinical studies have been undertaken to address whether food allergen avoidance diminishes nutritional status. However, studies<sup>166,167</sup> in which growth
+
+measurements were evaluated against diet records suggest that children with FA are at risk for inadequate nutritional intake.
+
+Christie et al<sup>166</sup> estimated energy and nutrient intakes based on 3-day diet records. The agematched, consecutive sampling, cross-sectional study had 98 children with FA and 99 without. The study found that:
+
+Children with 2 or more FAs were shorter than those with 1 FA $( \mathtt { p } < 0 . 0 5 )$ , based on height-for-age percentiles.
+
+Children with milk allergy or multiple FAs were more likely to consume dietary calcium at levels that were less than the age- and gender-specific recommendations, compared with children without milk allergy and/or 1 FA.
+
+The possibility of consuming a less-than-recommended intake of calcium and vitamin D in children with FA was less if the child received nutrition counseling (p < 0.05) or consumed a safe infant/toddler commercial formula or calcium-fortified soy beverage.
+
+Tiainen et al<sup>167</sup> collected 6-day diet records for 18 children with milk allergy and 20 healthy children, and found that:
+
+• There was no difference in caloric intake between the 2 groups.
+
+• Protein intake by the children with milk allergy was lower (39 g vs 48 g; p < 0.05) and fat intake was higher $( 4 7 { \mathrm { ~ g ~ v s ~ } } 3 9 { \mathrm { ~ g } } ; { \mathrm { ~ p } } < 0 . 0 5 )$ than that of the healthy children.
+
+Although no overt nutritional problems were found, the height-for-age percentile was lower in the children with milk allergy (-0.6 vs 0.2 SD units; $\mathsf { p } < 0 . 0 5 )$ , compared with healthy children.
+
+5.1.5. Food labeling in food allergy management—Guideline 24: The EP suggests that individuals with FA and their caregivers receive education and training on how to interpret ingredient lists on food labels and how to recognize labeling of the food allergens used as ingredients in foods. The EP also suggests that products with precautionary labeling, such as “this product may contain trace amounts of allergen,” be avoided.
+
+Rationale: Although current requirements under the Food Allergen Labeling and Consumer Protection Act (FALCPA) require food labels to disclose the presence of any of the 8 major food allergens when used as ingredients, the law does not address precautionary labeling. Precautionary labeling is voluntary and is used at the manufacturer's discretion. Ingredient labeling is not completely effective in preventing unintentional exposure to allergens.
+
+Balance of benefits and harms: Ingredient lists on food packages can help consumers identify the contents of products, but may be difficult to interpret. FALCPA provides for the use of plain-language labels for ingredients that are, or that contain, major food allergens. Difficult-to-interpret voluntary precautionary labeling statements place individuals at risk for unintentional exposure to allergens.
+
+Quality of evidence: Low
+
+## Contribution of expert opinion: Significant
+
+FALCPA, which was passed by the US Congress in 2004, identified 8 major food allergens (milk, egg, peanut, tree nuts, soy, wheat, fish, and crustacean shellfish) that are responsible for 90% or more of serious adverse food-induced reactions in the United States. Under FALCPA, products containing these major food allergens must clearly list the food allergen on the label in simple language. The 1 exemption is for highly refined oils and their derivatives that are produced from these major foods. However, less well-refined and coldpressed oils can contain protein and can be hazardous for individuals with FA.<sup>168</sup>
+
+FALCPA does not currently regulate voluntary disclaimers such as “this product does not contain peanuts, but was prepared in a facility that makes products containing peanuts” or “this product may contain trace amounts of peanut.” Such disclaimers can leave consumers without adequate knowledge to make objective decisions.
+
+The EP identified 10 studies that examined whether standards for precautionary food labeling are effective in preventing food-induced allergic reactions. No study explicitly attempted to infer a cause-and-effect relationship between changes in frequency of severe symptoms from unintentional exposure (for example, to peanut) as a consequence of implementing food labeling. The identified studies mostly assessed knowledge and preferences for food labeling.
+
+Two studies undertaken prior to FALCPA, and 1 published after FALCPA, were particularly helpful in evaluating food labels.
+
+The first study involved 91 parents of children attending the pediatric allergy clinic at Mount Sinai Medical Center in New York. The parents were asked to review 23 food product labels and name the food allergens to which their child was allergic and which also were present in the particular product.<sup>169</sup>
+
+7% of parents (4 of 60) correctly identified all 14 products containing milk.
+
+– 22% of parents (6 of 17) correctly identified all 7 products containing soy.
+
+– 54% of parents (44 of 82) correctly identified all 5 products containing peanut.
+
+Identification was much better for products containing wheat and egg.
+
+• The second relevant study assessed 489 respondents (84% response rate) from attendees at a Food Allergy and Anaphylaxis Network (FAAN) conference.<sup>170</sup>
+
+Survey results indicated that ingredient labels were “always” or “frequently” read before purchasing a product by 99% of consumers doing the shopping and by 94% of people doing the cooking for individuals with FA.
+
+Adverse reactions were attributed to misunderstanding of the food label in 16% of cases and to ingredients not declared on the label in 22% of cases.
+
+The third study<sup>171</sup> sought to determine the frequency and language used in voluntary advisory labels among commercially available products and to identify labeling ambiguities affecting consumers with allergy. Trained surveyors performed a supermarket survey of 20,241 unique manufactured food products (from an original assessment of 49,604 products) for use of advisory labels. Overall, 17% of the products surveyed contained advisory labels, and analysis of the language of these labels identified many ambiguities that present challenges to consumers with FA.
+
+Similar problems in identification were reported in a study of parents of children with milk allergy in Brazil,<sup>172</sup> and difficulties interpreting labels and general dissatisfaction with current labels were noted in studies from the United States, the United Kingdom, the Netherlands, and Greece.<sup>173-175</sup>
+
+With global variations in culinary practices, labeling laws vary among geographic regions. In the European Union, for example, celery, mustard, sesame, lupine, and molluscan shellfish have been identified as major allergens. In Japan, buckwheat is a major allergen. The globalization of the food supply and exposure of Americans to new foods or culinary practices may lead to increases in the number of major food allergens in the United States.
+
+5.1.6. When to re-evaluate patients with food allergy—Guideline 25: The EP suggests follow-up testing for individuals with FA depending on the specific food to which the individual is allergic. Whether testing is done annually or at other intervals depends on the food in question, the age of the child, and the intervening medical history.
+
+Rationale: Insufficient evidence exists to make a specific recommendation as to the timing for re-evaluating individuals for FA.
+
+Balance of benefits and harms: It is recognized that children will likely outgrow allergies to certain foods, such as milk, egg, soy, and wheat, and be less likely to outgrow allergies to other foods, such as peanut, tree nuts, fish, and crustacean shellfish. Results of follow-up testing can guide decision making regarding whether and when it is safe to introduce or reintroduce allergenic food into the diet.
+
+## Quality of evidence: Moderate
+
+## Contribution of expert opinion: Significant
+
+Insufficient evidence exists for the EP to recommend a specific optimal interval for FA follow-up testing for each food. It is known that allergy to some foods (such as milk and egg) is outgrown quickly, whereas allergy to other foods (such as peanut and tree nuts) is not. If the patient has had a recent FA reaction, then there is little reason to retest for several years. Annual testing is often the practice for determining whether allergy to milk, egg, soy, and wheat have been outgrown, and the testing interval is extended to 2 to 3 years for allergy to peanut, tree nuts, fish, and crustacean shellfish. However, the EP noted that these testing schedules are not supported by objective evidence.<sup>45,52,176</sup>
+
+## 5.1.7. Pharmacologic intervention for the prevention of food-induced allergic reactions
+
+5.1.7.1. IgE-mediated reactions: Guideline 26: There are no medications currently recommended by the EP to prevent IgE-mediated food-induced allergic reactions from occurring in an individual with existing FA.
+
+Rationale: The current evidence does not support the use of pharmacologic therapy for IgEmediated reactions to food.
+
+Balance of benefits and harms: Pharmacologic agents have the potential to prevent or lessen the severity of food-induced allergic reactions by altering the immune response, but these agents may display significant side effects and predispose individuals to an increased risk for infection. Only limited safety and cost-effectiveness data are currently available.
+
+Quality of evidence: Moderate
+
+Contribution of expert opinion: Significant
+
+5.1.7.2. Non-IgE-mediated reactions: Guideline 27: There are no medications currently recommended by the EP to prevent non-IgE-mediated food-induced allergic reactions from occurring in an individual with existing FA.
+
+Rationale: The current evidence does not support the use of pharmacologic therapy to prevent non-IgE-mediated FA reactions.
+
+Balance of benefits and harms: The use of swallowed corticosteroids has the potential to lessen the severity of or prevent future food-induced allergic reactions, but these medications may cause significant side effects and predispose individuals to an increased risk for infection. Nevertheless, swallowed corticosteroids have been shown to be beneficial in the treatment of EoE.<sup>177,178</sup>
+
+Quality of evidence: Moderate
+
+Contribution of expert opinion: Significant
+
+5.1.8. Pharmacologic intervention for the treatment of food-induced allergic reactions—Allergen avoidance is the first line of treatment for FA, and use of antihistamines, as needed, remains the mainstay of managing (as opposed to preventing) symptoms of nonsevere food-induced allergic reactions. However, drug therapy has been used to treat FA in cases where allergen avoidance is extremely difficult or results in nutritional deficiencies. Drugs that alter the immune response to the allergen are commonly considered the most likely candidates for such therapy in the future, but these treatments are not currently recommended (see Guideline 28). The EP identified several RCTs that have evaluated immune-altering drugs to treat FA.<sup>178-182</sup> These RCTs studied the effect of:
+
+Astemizole (an antihistamine that is no longer available) on OAS induced by consumption of hazelnuts in patients with a positive SPT to birch pollen<sup>179</sup> • Cromolyn in children with AD and documented allergy to egg.<sup>180</sup>
+
+• Anti-IgE therapy in patients with peanut allergy<sup>166</sup>
+
+Although astemizole and anti-IgE therapy showed positive results (cromolyn results were negative), these studies provide support for the value of antihistamine therapy and the continued evaluation of anti-IgE therapy for the treatment of FA.
+
+## 5.1.9. Immunotherapy for food allergy management
+
+5.1.9.1. Allergen-specific immunotherapy: Guideline 28: The EP does not recommend using allergen-specific immunotherapy to treat IgE-mediated FA.
+
+Rationale: Allergen-specific immunotherapy improves clinical symptoms of FA while on treatment. However, it is currently difficult to draw conclusions on the safety of such an approach and whether clinical tolerance (ie, improvement in clinical symptoms that persists even after allergen-specific immunotherapy is discontinued) will develop with long-term treatment.
+
+Balance of benefits and harms: Allergen-specific immunotherapy can improve clinical symptoms of FA for some patients. However, additional safety and efficacy data are needed before such treatment can be recommended. Because of the risk of severe reactions, the approach should only be used in highly controlled settings.
+
+## Quality of evidence: Low
+
+## Contribution of expert opinion: Significant
+
+Immunotherapy, which alters the immune response to allergens as a means to treat FA, can be accomplished by using small amounts of the allergic food (allergen-specific immunotherapy) or cross-reactive allergens (specific immunotherapy with cross-reactive allergens) to desensitize the patient. Immunotherapy is a promising approach for achieving desensitization and perhaps even long-term tolerance. Achieving either of these outcomes is likely to depend, in part, on:
+
+• The dose of allergen
+
+• The dose escalation
+
+• The duration of therapy
+
+• The route of administration (for example oral, sublingual, or subcutaneous)
+
+In several research clinical trials, oral and sublingual immunotherapy for FA have been found to be generally well-tolerated and safe in highly controlled clinical settings.<sup>183-189</sup> However, few studies have provided extensive safety data, and systemic reactions can occur at previously tolerated doses of allergen, especially after exercise or viral illness.<sup>190</sup>
+
+5.1.9.2. Immunotherapy with cross-reactive allergens: Guideline 29: The EP does not recommend immunotherapy with cross-reactive allergens for treating IgE-mediated FA.
+
+Rationale: Although some evidence exists to suggest that specific immunotherapy with cross-reactive allergens is beneficial in treating FA, additional safety and efficacy data are needed before such treatment can be recommended.
+
+Balance of benefits and harms: It has been hypothesized that immunotherapy with crossreactive antigens could benefit patients with FA, yet the safety of this approach has been evaluated in a highly controlled setting in only 1 study to date.<sup>191</sup> Replication of these findings with additional safety and efficacy data in clinical practice settings is needed.
+
+Quality of evidence: Low
+
+Contribution of expert opinion: Significant
+
+Food allergen cross-reactivity was previously defined in section 2.1.1.
+
+5.1.10. Quality-of-life issues associated with food allergy—Guideline 30: The EP recommends that patients with FA and their caregivers be provided with information on food allergen avoidance and emergency management that is age and culturally appropriate.
+
+Rationale: Food-allergen avoidance and the risk of severe allergic reactions can have substantial daily consequences for patients and their caregivers.
+
+Balance of benefits and harms: Patients with FA and their caregivers (especially mothers) can experience anxiety and diminished quality of life because of the risk of anaphylaxis and the burden of selecting or preparing allergen-free foods. Concerns may change as patients with FA mature. Knowledge and skills related to management of FA may improve patient and caregiver self-efficacy, quality of life, and successful allergen avoidance.
+
+Quality of evidence: Low
+
+## Contribution of expert opinion: Significant
+
+5.1.10.1. Effects of food allergy on anxiety and quality of life: There is a moderate amount of evidence on the disruptive impact of FA on patient anxiety and quality of life, yet only limited information exists on successful therapeutic strategies by caregivers. A survey by King $\operatorname { e t } \mathrm { a l } ^ { 1 9 2 }$ of 46 families who had a child with peanut allergy asked members of the family to complete quality of life, anxiety, and perceived stress scales. The survey found that:
+
+Mothers rated their own psychological $( \mathtt { p } < 0 . 0 1 )$ and physical $( \mathtt { p } < 0 . 0 5 )$ quality of life significantly worse than fathers rated theirs, and mothers also had higher scores than fathers for anxiety $( \mathtt { p } < 0 . 0 5 )$ and stress $( \mathtt { p } < 0 . 0 0 1 )$ .
+
+Children with peanut allergy had significantly poorer physical health-related quality of life $( \mathtt { p } < 0 . 0 5 )$ , quality of life within school $( \mathtt { p } < 0 . 0 1 )$ , and general quality of life $( \mathtt { p } < 0 . 0 5 )$ than their siblings did, as well as greater separation anxiety $( \mathtt { p } < 0 . 0 5 )$
+
+Another survey, by Ostblom et al,<sup>193</sup> compared 212 children who were 9 years old with FA with 221 children with allergic diseases and no FA. The survey found that:
+
+Children with FA exhibited significantly lower scores on 2 subscales, physical functioning and social limitations, within the Child Health Questionnaire Parent Form 28.
+
+Children with food-related symptoms from the lower airways scored lower on selfesteem and family cohesion subscales.
+
+As children transition into adolescence and adulthood, they have increased responsibility regarding food selection. Their vigilance in avoiding allergens may depend in part on whether they remember experiencing anaphylaxis. One study found that young adults with FA, who were aged 18 to 22 years and reported having experienced an anaphylactic reaction, described their disease as more severe, reported more worry about their disease, and rated their parents as more overprotective than young adults without FA who reported never having experienced anaphylaxis.<sup>194</sup> In contrast, 7 teenagers interviewed when they were 13 to 16 year old and who had a history of clinically diagnosed anaphylaxis reported perceiving anaphylaxis as “no big deal.”<sup>195</sup> However, most of the teens did not remember experiencing anaphylaxis. Interviewed parents reported anxiety about “handing over” responsibility for avoidance and emergency management to their children.
+
+5.1.10.2. Effects of food allergy on family activities: Bollinger et al<sup>196</sup> asked caregivers of children with FA to complete a questionnaire that evaluated their perception of the impact of their child's FA on family activities. Among the 87 families who completed the study:
+
+• More than 60% of caregivers reported that FA significantly affected meal preparation.
+
+• 49% or more indicated that FA affected family social activities.
+
+• 10% chose to home school their children because of FA.
+
+5.1.11. Vaccinations in patients with egg allergy—In summary: Patients who have generated IgE antibodies to an allergen are at risk for anaphylaxis with systemic exposure to that allergen. Thus, patients who have IgE-mediated egg allergy are at risk for anaphylaxis if injected with vaccines containing egg protein. More detailed information on specific eggcontaining vaccines (MMR, MMRV, influenza, yellow fever, and rabies) is provided in sections 5.1.11.1 to 5.1.11.4.
+
+Several vaccines are grown in chick embryos or embryonic tissues and always contain egg protein, although the concentration varies widely. Recommendations from the Advisory Committee on Immunization Practices (ACIP) and American Academy of Pediatrics (AAP) Red Book and vaccine manufacturer's package inserts (PIs) for administering such vaccines to patients with egg allergy (summarized in Table V) vary on the basis of the concentration of egg protein in the vaccine and patient history of reactions.
+
+The EP recognizes that changes in these recommendations may occur in the future as there is an increased understanding of the risk factors for allergic reactions and as vaccine
+
+manufacturing processes improve and decrease the final egg protein content of vaccines. For the most current recommendations, health care professionals should refer to the AAP and ACIP Web sites:
+
+• http://aapredbook.aappublications.org
+
+http://www.cdc.gov/vaccines/recs/acip
+
+Although ovalbumin is only 1 of the egg proteins in vaccines grown in chick embryos or embryonic tissues, the ovalbumin concentration is often used as a surrogate for the total egg protein concentration. The risk of an egg-allergic reaction to the vaccine appears to correlate with increasing ovalbumin concentration. Therefore manufacturers often, but not always, report the ovalbumin concentration or concentration range in final vaccine lots. Health care professionals should consider this information when evaluating the benefits and risks of the vaccine for a patient with egg allergy. It should be noted that the actual ovalbumin content is often much lower than reported<sup>207</sup> and careful testing may permit the eventual safe and efficacious use of the vaccine.
+
+Among vaccines potentially contaminated with egg proteins, MMR, MMRV, and Imovax (rabies vaccine) are the only currently available vaccines that may be given without concern in patients with egg allergy because the ovalbumin concentrations are known to be very low.
+
+For vaccines with higher concentrations of ovalbumin, their administration to patients with egg allergy presents risk. Published studies describe approaches to reduce the risk, including choosing vaccines with the lowest possible concentrations of ovalbumin and using 2-dose or multiple-dose protocols for administering the vaccine. Although the EP is not able to recommend these approaches at this time, they are briefly described, in the context of influenza vaccine, in section 5.1.11.2.
+
+In conclusion, the EP believes that insufficient evidence exists to make broad recommendations concerning the use of all of the vaccines containing egg protein. Moreover, based on their expert opinion and recently published data, the EP suggests that the current ACIP and AAP Red Book recommendations and PI information may be too conservative.
+
+5.1.11.1. Measles, mumps, rubella, and varicella vaccine: Guideline 31: The EP recognizes the varying consensus recommendations of the different organizations on this particular vaccine and recommends that children with egg allergy, even those with a history of severe reactions, receive vaccines for measles, mumps, and rubella (MMR) and for MMR with varicella (MMRV). The safety of this practice has been recognized by ACIP and AAP and is noted in the approved product prescribing information for these vaccines.<sup>198,199,208</sup>
+
+Rationale: MMR and MMRV vaccines are safe for children with egg allergy, even for those with a history of severe reactions.
+
+Balance of benefits and harms: Vaccinations can prevent severe disease, and in most states proof of MMR vaccination is required for school entry. Varicella vaccine also is required in most states. The measles component of the vaccine is produced in chicken-embryo
+
+fibroblasts, which may be of concern to parents of children with egg allergy. However, MMR and MMRV vaccines are safe to administer to these children because the egg protein content of these vaccines is very low. Severe allergic adverse events attributable to varicella vaccination are extremely rare, and serious allergic reactions could be due to non-egg vaccine components, including gelatin.
+
+## Quality of evidence: Moderate
+
+## Contribution of expert opinion: Significant
+
+Although the measles component of the MMR vaccine is produced in chicken-embryo fibroblast culture, the vaccine is safe for children with egg allergy, even those with a history of anaphylaxis.<sup>209</sup> The monovalent varicella vaccine does not contain egg protein. Therefore, children with egg allergy may be given MMR or the quadrivalent MMRV vaccine without previous skin prick testing.<sup>210</sup> Many reactions to the MMR and other vaccines originally attributed to egg have been shown to be due to gelatin in the vaccine.<sup>209</sup>
+
+5.1.11.2. Influenza vaccine: In summary: The EP concludes that insufficient evidence exists to recommend administering influenza vaccine, either inactivated or live-attenuated, to patients with a history of severe reactions to egg proteins. Severe reactions include a history of hives, angioedema, allergic asthma, or systemic anaphylaxis to egg proteins (or chicken proteins). Less severe or local manifestations of allergy to egg or feathers are not contraindications. However, the EP notes that egg allergy is relatively common among the very patients who would highly benefit from influenza vaccination. Such patients include children and young adults (from 6 months to 18 years old for seasonal influenza, and from 6 months to 24 years old for H1N1 influenza) and all patients with asthma. It should be noted that live-attenuated vaccine is not licensed for use in patients with asthma.<sup>211</sup>
+
+Although ACIP and AAP, and also the vaccine manufacturers, do not recommend influenza vaccination in patients who are allergic to egg (see Table V), several publications have described different approaches to giving the influenza vaccine to patients with severe allergic reactions to egg. These approaches, which depend on the ovalbumin content and the results of SPTs or intradermal tests with the vaccine, include a single dose of vaccine, 2 doses of vaccine, or multiple doses. However, the evidence supporting these approaches is limited by the small numbers of patients included in each study. Moreover, data indicate that, although the vaccines are relatively safe, there remains some, albeit low, risk of systemic reactions. Also, negative SPT results do not accurately predict safety of vaccination, in that 5% of patients with negative SPTs had systemic reactions to vaccination.<sup>212</sup>
+
+Briefly:
+
+The single-dose approach described by Zeiger<sup>213</sup> uses SPT to egg, followed by SPT and intradermal testing with influenza vaccine with appropriate saline and histamine controls. If the skin tests are negative, a single dose of vaccine can be given safely, but a positive SPT or intradermal test would require that vaccination occur only after a careful evaluation of risks and benefits by a health care professional skilled in managing anaphylaxis.
+
+In the 2-dose approach described by James,<sup>214</sup> the approach is used only if the maximum ovalbumin content of the vaccine is less than 1.2 μg/mL. The vaccine is administered in 2 divided doses—first a 10% dose, and if no reaction after 30 minutes, then the remaining 90% of the dose. The results suggest that the influenza vaccine can be safely given to individuals with egg allergy, even with a history of asthma or systemic anaphylaxis. A more recent study by Chung<sup>212</sup> used the 2-dose approach with a vaccine of unknown egg content. Approximately 95% of the children had no systemic reactions to the vaccine, but 5% of children did have systemic allergic reactions, albeit none were severe. In the Chung study, subjects with recent egg anaphylaxis were excluded.
+
+The multiple-dose approach described by $\mathrm { K l e t z } ^ { 2 1 5 }$ and Rank and $\mathrm { L i } ^ { 2 1 6 }$ divides the vaccine into 4 to 6 doses, gradually increasing the amount of vaccine given to reach the total vaccine dose.
+
+A 2010 editorial by $\mathrm { K e l s o } ^ { 2 1 7 }$ strongly argues that patients with egg allergy for whom influenza vaccine is indicated can and should be vaccinated to decrease the morbidity and mortality associated with the disease. The author suggests that based on available data, consideration should be given to administering an influenza vaccine with a stated ovalbumin content of less than 1 μg per 0.5 mL dose as a single dose without prior vaccine skin testing. Such immunization would have to take place in a setting where personnel and equipment are available to recognize and treat anaphylaxis. Certainly, the author continues, future studies are needed to validate this approach. However, the editorial concludes with an “editorial opinion” stating that if a low-ovalbumin vaccine is not available, or in the case of more severe egg allergy, a more conservative approach might be warranted.
+
+5.1.11.3. Yellow fever vaccine: In summary: The EP recognizes the current guidelines from the different organizations and recommends against administering yellow fever vaccine to patients with a history of hives, angioedema, allergic asthma, or systemic anaphylaxis to egg proteins, unless an allergy evaluation and testing with the vaccine is done first. This approach has been recognized by ACIP and AAP and is noted in the approved product prescribing information for this vaccine.<sup>204,205</sup>
+
+Although yellow fever vaccines may contain egg protein, no data are available on whether the concentrations of ovalbumin in these vaccines are low enough to administer without allergy evaluation and testing. Allergy evaluation and testing can provide insight into the potential for risk to an individual.
+
+5.1.11.4. Rabies vaccines: In summary: The EP recognizes the current guidelines from the different organizations and recommends against administering rabies vaccines to patients with a history of hives, angioedema, allergic asthma, or systemic anaphylaxis to egg proteins, unless an allergy evaluation and testing with the vaccine is done first. This approach has been recognized by ACIP and AAP and is noted in the approved product prescribing information for these vaccines.<sup>204,205</sup>
+
+One rabies vaccine (Imovax) is not made in chick embryos and does not contain egg protein. This vaccine is not contraindicated in egg-allergic individuals. All other rabies vaccines may contain egg protein but no data are available on whether the concentrations of ovalbumin in these vaccines are low enough to administer without allergy evaluation and testing.
+
+## 5.2. Management of individuals at risk for food allergy
+
+5.2.1. Nonfood allergen avoidance in at-risk patients—Guideline 32: The EP suggests that patients at risk for developing FA do not limit exposure to potential nonfood allergens (for example, dust mites, pollen, or pet dander). Patients at risk for developing FA are defined as those with a biological parent or sibling with existing, or history of, allergic rhinitis, asthma, AD, or FA. This definition of “at risk” is used throughout sections 5.2 and 5.3.
+
+Rationale: Insufficient evidence exists to suggest that avoidance of allergens that are not food allergens has any effect on the natural history of FA.
+
+Balance of benefits and harms: It has been hypothesized that exposure to nonfood allergens could increase the likelihood of developing an FA in patients at risk for atopic disease, but there are insufficient data to support this hypothesis.
+
+Quality of evidence: Low
+
+## Contribution of expert opinion: Significant
+
+It should be noted that the definition of “at risk”<sup>218-220</sup> used above differs from the definition of “high risk” used below in section 5.2.3.
+
+5.2.2. Dietary avoidance of foods with cross-reactivities in at-risk patients— Guideline 33: The EP suggests that patients at risk for developing FA do not need to limit exposure to foods that may be cross-reactive with the 8 major food allergens in the United States (milk, egg, peanut, tree nuts, soy, wheat, fish, and crustacean shellfish).
+
+Rationale: Insufficient evidence exists to determine whether eating foods that cross-react with the major allergenic foods will cause symptoms.
+
+Balance of benefits and harms: It has been hypothesized that exposure to possible crossreactive foods could result in an allergic response. However, unnecessary food avoidance can result in inadequate nutrient intake and growth deficits.
+
+## Quality of evidence: Low
+
+## Contribution of expert opinion: Significant
+
+This guideline addresses the question of whether an individual at risk for developing FA (but without a documented allergy to food) should avoid cross-reactive foods that could induce either sensitization or allergy to another food in that food family. For example, should a person be told to avoid eating any legume because it could induce sensitization or allergy to peanut? Because allergenic food proteins may share structural or sequence
+
+similarity with other allergenic substances, sensitization to a particular food or even an aeroallergen can result in allergic responses to other foods containing homologous proteins. Despite this theoretical justification for limiting exposure to cross-reactive foods, insufficient evidence exists to evaluate the individual for allergenic cross-reactivity or to limit eating of cross-reactive foods. In addition, there is the potential for inadequate nutrition and growth if otherwise healthful foods are not eaten.
+
+## 5.2.3. Testing of allergenic foods in patients at high risk prior to introduction
+
+—In summary: The EP concludes that insufficient evidence exists to recommend routine FA testing prior to the introduction of highly allergenic foods (such as milk, egg, and peanut) in children who are at high risk of reacting to the introduction of such foods. The definition of children at high risk, in this specific situation, is children with pre-existing severe allergic disease and/or a family history of FA. Nevertheless, there may be some value in FA evaluations that include an oral food challenge for a select group of patients with certain risk factors, such as having a sibling with peanut allergy<sup>221</sup> or evidence of another underlying FA (for example, testing for tree nut allergy in a child with peanut allergy). It is possible that an FA evaluation prior to introduction of a food could potentially prevent allergic reactions. However, widespread SPTs and sIgE tests are not recommended because of their poor predictive value. These tests would lead to many clinically irrelevant results and unnecessary dietary restrictions, especially if unconfirmed by oral food challenges. Overall, the risk-to-benefit ratio of FA evaluation should be considered on an individual basis, especially for the highly allergenic foods in high-risk young children.
+
+Guideline 34: The EP suggests that the general population of children not be tested for FA to highly allergenic foods prior to their introduction into the diet. The general population of children does not have pre-existing severe allergic disease and also does not have a family history of FA.
+
+Rationale: Insufficient evidence exists to suggest whether, or which, foods should be tested prior to introduction.
+
+Balance of benefits and harms: Testing prior to introduction could potentially prevent allergic reactions, but there is currently no practical consensus on which (if any) foods should be tested.
+
+Quality of evidence: Low
+
+Contribution of expert opinion: Significant
+
+## 5.2.4. Testing in infants and children with persistent atopic dermatitis—
+
+Guideline 35: The EP suggests that children less than 5 years old with moderate to severe AD be considered for FA evaluation for milk, egg, peanut, wheat, and soy, if at least 1 of the following conditions is met:
+
+• The child has persistent AD in spite of optimized management and topical therapy.
+
+• The child has a reliable history of an immediate reaction after ingestion of a specific food.
+
+Rationale: Insufficient evidence exists to determine the appropriate age to test for response to foods known to commonly cause IgE-mediated FA in infants or young children with AD or other risk factors. In spite of the lack of evidence, the opinion of the EP is that if a child is less than 5 years old and has persistent AD, there is benefit to finding out whether the child is allergic to a food.
+
+Balance of benefits and harms: Early diagnosis can lead to better management of FA and reduce the risk of exposure to food antigens. However, testing is time-consuming and costly for patients and their families. In addition, severely restrictive diets may be harmful. Care should be taken to ensure these children are clinically allergic to a food prior to removing it completely from their diet.
+
+## Quality of evidence: Low
+
+## Contribution of expert opinion: Significant
+
+The question of when to evaluate a child who is less than 5 years old and has moderate to severe AD for FA has been somewhat controversial in the past 20 years. The EP identified the group of children thought to be most at risk for having FA and described them in Guideline 32 (section 5.2.1). It should be noted that milk, egg, and peanut are most often found to be allergenic in this population. Many of these children also have sIgE to wheat and soy.
+
+The question of what to recommend for children with delayed food-induced reactions also was considered by the EP. Although a history of a possible delayed reaction to a food is clinically important, it is not diagnostic of FA, and a proper evaluation (medical history and diagnostic testing) should be completed.
+
+## 5.3. Prevention of food allergy
+
+5.3.1. Maternal diet during pregnancy and lactation—Guideline 36: The EP does not recommend restricting maternal diet during pregnancy or lactation as a strategy for preventing the development or clinical course of FA.
+
+Rationale: Insufficient evidence exists that maternal diet during pregnancy or lactation affects the development or clinical course of FA.
+
+Balance of benefits and harms: Restricting exposure to food antigens either during pregnancy or through breast milk has been hypothesized as a means of preventing the development of FA, but it has not been shown conclusively to prevent FA. Adequate nutritional status during pregnancy and lactation is essential for optimal infant health, growth, and development.
+
+## Quality of evidence: Low
+
+## Contribution of expert opinion: Significant
+
+Several authors have observed that maternal dietary antigens can pass into breast milk and have hypothesized a protective effect of a diet in which certain common allergens are
+
+reduced or avoided during pregnancy and lactation by women at risk of having infants likely to go on to develop atopic disease. However, the results of several studies are conflicting, as follows:
+
+Kramer et $\mathrm { { a l } } ^ { 1 6 4 }$ conducted a systematic review that evaluated the effect of maternal dietary avoidance on either treating or preventing atopic disease in children. The authors found no significant difference in the incidence of AD (relative risk (RR) 1.01; 95% CI 0.57-1.79), asthma (RR 2.22; 95% CI 0.39-12.67), positive SPTs to egg (RR 0.95; 95% CI 0.52-1.74), or milk (RR 0.86; 95% CI 0.16-4.59) during the first 18 months of life in infants whose mothers avoided dietary antigens during pregnancy. Avoidance of dietary antigens had no significant effect on the incidence of AD (RR 0.73; 95% CI 0.32-1.64).
+
+A nonrandomized comparative study evaluated the effect of restricting maternal diet during lactation for the first 3 months after birth on the incidence of FA. Hattevig et $\mathrm { a l } ^ { 2 2 2 }$ reported study results at 18 months, and Sigurs et al<sup>223</sup> reported results at 4 years of age. The authors found significantly reduced cumulative incidence and prevalence of AD at 4 years in children in the intervention group, compared with the control group. Although this study was rated as low quality, the authors report that the 2 groups were comparable and matched through recruitment.
+
+5.3.2. Breast-feeding—Guideline 37: The EP recommends that all infants be exclusively breast-fed until 4 to 6 months of age, unless breast-feeding is contraindicated for medical reasons.
+
+Rationale: There is not strong evidence that breast-feeding has a protective role in preventing atopic disease. However, because of other benefits of breast-feeding, it is recommended that all infants, including those with a family history of atopic disease, be exclusively breast-fed until 4 to 6 months of age, unless breast-feeding is contraindicated for medical reasons.
+
+Balance of benefits and harms: Whether exclusive breast-feeding has a beneficial role in preventing atopic disease is unclear, but there are no potential harms associated with exclusive breast-feeding until 4 to 6 months of age.
+
+## Quality of evidence: Low
+
+## Contribution of expert opinion: Significant
+
+The protective role of breast-feeding (compared with formula feeding) in preventing atopic disease is uncertain, with some studies reporting favorable outcomes associated with breastfeeding<sup>224,225</sup> and others reporting no effects.<sup>226,227</sup> One RCT showed that early exposure to infant formula instead of breast milk increased the risk of a wide range of allergic reactions, especially AD, in neonates with a family history of atopy.<sup>228</sup> The effectiveness of combining exclusive breast-feeding with other interventions, such as dietary avoidance of potential allergenic foods by the mother, to prevent atopic disease is also unclear.
+
+In the German Nutritional Intervention Study (GINI), participants were randomly assigned to partial or complete cow's milk formula, if they were not going to exclusively breast-feed. The incidence of AD was compared.
+
+In a subgroup analysis, Schoetzau et al<sup>229</sup> found a significantly lower risk of AD at 1 year of age in infants who were exclusively breast-fed, compared with infants who were not (9.5% vs 14.8%, respectively; p = 0.015).
+
+Filipiak et al<sup>230</sup> compared breast-feeding, use of hydrolyzed infant formulas, and delayed introduction of solid foods in intervention group infants with a separate control group of infants whose mothers did not receive these recommendations. They concluded that there was no evidence to support a protective effect of delayed introduction of solids for AD.
+
+The quality of evidence for whether breast-feeding reduces the likelihood of AD is low because there is only 1 fair-quality nonrandomized comparative study addressing this question, and the evidence from the study is conflicting.
+
+## 5.3.3. Special diets in infants and young children
+
+5.3.3.1. Soy infant formula versus cow's milk infant formula: Guideline 38: The EP does not recommend using soy infant formula instead of cow's milk infant formula as a strategy for preventing the development of FA or modifying its clinical course in at-risk infants (“at risk” is defined in Guideline 32, section 5.2.1).
+
+Rationale: The literature reports little difference between soy infant formula and cow's milk infant formula for the prevention of FA in at-risk infants.
+
+Balance of benefits and harms: There appears to be neither long-term harm nor significant benefit in using soy infant formula.
+
+Quality of evidence: Moderate
+
+Contribution of expert opinion: Minimal
+
+Osborn and Sinn<sup>231</sup> conducted a review to determine the effect of feeding adapted soy infant formula compared with human milk, hydrolyzed infant formulas, or cow's milk infant formula to infants who did not have a clinical FA in the first 6 months of life. They found 3 studies that compared soy infant formula with cow's milk infant formula. They reported no significant differences in incidence of childhood allergies, infant or childhood asthma, infant or childhood AD, or infant or childhood allergic rhinitis.
+
+5.3.3.2. Hydrolyzed infant formulas versus cow's milk infant formula or breastfeeding: Guideline 39: The EP suggests that the use of hydrolyzed infant formulas, as opposed to cow's milk formula, may be considered as a strategy for preventing the development of FA in at-risk infants who are not exclusively breast-fed (“at risk” is defined in Guideline 32, section 5.2.1). Cost and availability of extensively hydrolyzed infant formulas may be weighed as prohibitive factors.
+
+Rationale: Only a limited number of studies exist to indicate that extensively or partially hydrolyzed infant formulas reduce the development of CMA in at-risk infants.
+
+Balance of benefits and harms: The preventive effects of hydrolyzed infant formulas on allergy in infants and children vary considerably from study to study. Evidence from a small number of large-population studies shows that feeding hydrolyzed infant formulas, as compared with cow's milk infant formula, to at-risk infants may reduce, albeit to a small extent, allergy in infants and children and CMA in infants. None of the studies show reduction in allergy to foods other than cow's milk.<sup>232-235</sup> Practical and cost considerations of extensively hydrolyzed infant formulas may limit their use to infants who are at risk and not being exclusively breast-fed. There is no evidence to suggest exclusive feeding with a hydrolyzed infant formula is more likely to prevent atopic disease than exclusive breastfeeding. The influence of duration of use on the effect of hydrolyzed infant formula on the development of allergy is not known.
+
+## Quality of evidence: Moderate
+
+## Contribution of expert opinion: Moderate
+
+The documented benefits of nutritional intervention that may prevent or delay the onset of atopic disease are largely limited to infants at risk of developing allergy. Current evidence does not support a major role for maternal dietary restrictions during pregnancy or lactation. There is evidence that breast-feeding for at least 4 months, compared with feeding formula made with intact cow's milk protein, prevents or delays the occurrence of AD, CMA, and wheezing in early childhood. In studies of infants who are at risk of developing atopy and not exclusively breastfed for 4 to 6 months, there is modest evidence that the onset of atopic disease (particularly AD) may be delayed or prevented by the use of hydrolyzed infant formulas, compared with formula made with intact cow's milk protein. Comparative studies of the various hydrolyzed formulas also indicate that not all formulas have the same protective benefit. There is also little evidence that delaying the timing of the introduction of complementary foods beyond 4 to 6 months of age prevents the occurrence of atopic disease. At present, there are insufficient data to document a protective effect of any dietary intervention beyond 4 to 6 months of age for the development of atopic disease.
+
+Several studies have examined the effect of infant formulas and breast-feeding on the development of subsequent atopic disease. For example:
+
+• Osborn and Sinn conducted a Cochrane review comparing the effect of hydrolyzed infant formulas to cow's milk infant formula or human milk in preventing FA.<sup>232</sup>
+
+Among 4 trials comparing short-term hydrolyzed infant formula feeding to human milk or cow's milk infant formula, there were no significant differences in infant or childhood CMA.
+
+In a meta-analysis of 7 studies comparing prolonged feeding with hydrolyzed infant formula or cow's milk infant formula in infants at risk, the hydrolyzed infant formula resulted in a significant decrease in infant allergies (RR 0.79; 95% CI 0.66 to 0.94), but no difference in the
+
+incidence of childhood allergy (2 studies, RR 0.85; 95% CI 0.68 to 1.04). There were no significant differences in infant or childhood AD or infant or childhood asthma, allergic rhinitis, and FA. The review provides limited evidence that prolonged feeding with hydrolyzed infant formulas in at-risk infants may reduce infant allergy and infant CMA when compared with cow's milk infant formula.
+
+A review by Hays and Wood<sup>233</sup> included controlled trials to assess the effect of hydrolyzed infant formulas in preventing allergies when compared with breastfeeding, cow's milk infant formula, or soy infant formula, and the difference between extensively (eHF) and partially (pHF) hydrolyzed infant formulas. The authors included 9 trials on eHFs (all were casein hydrolysate formulas) and 11 studies on pHFs (10 whey formulas and 1 casein formula). They concluded that, for both eHFs and pHFs, “the data support a protective effect…but the research falls short of meeting the American Academy of Pediatrics criteria<sup>234</sup> for evidence of allergy prevention.”
+
+In the GINI study,<sup>235,236</sup> 2,252 infants, who were less than 2 weeks old and had a parent or sibling with a history of atopy, were randomly assigned to receive 1 of 3 hydrolyzed infant formulas or cow's milk infant formula. Children were followed to 6 years. Children fed with partially hydrolyzed whey formula (pHF-W) and extensively hydrolyzed casein formula (eHF-C) were less likely to have “any allergy diagnosis from a physician” compared with children fed cow's milk infant formula (47.1%, 46.1%, and 56%, respectively). However, there was no difference between extensively hydrolyzed whey infant formula (eHF-W) and cow's milk infant formula.
+
+The EP found no information in the literature on the effects of specialized diets on overall growth and development.
+
+A summary of 5 RCTs that evaluated specialized infant formulas is provided in Appendix D, Table S-V.
+
+5.3.4. Timing of introduction of allergenic foods to infants—Guideline 40: The EP suggests that the introduction of solid foods should not be delayed beyond 4 to 6 months of age. Potentially allergenic foods may be introduced at this time as well.
+
+Rationale: Insufficient evidence exists for delaying introduction of solid foods, including potentially allergenic foods, beyond 4 to 6 months of age, even in infants at risk (as defined in Guideline 32, section 5.2.1) of developing allergic disease.
+
+Balance of benefits and harms: Restricting exposure to food antigens during infancy has been hypothesized as a means of preventing development of FA. However, restricting developmentally appropriate solid food variety beyond age 6 months can lead to inadequate nutrient intake, growth deficits, and feeding problems.
+
+Quality of evidence: Low
+
+## Contribution of expert opinion: Significant
+
+Several guidelines developed by other organizations recommend delaying the introduction of solid foods to infants for 4 or 6 months after birth in an effort to prevent atopic disease.<sup>78,237-240</sup> However, no clear consensus exists regarding the risks and benefits of delaying the introduction of solid foods in infants beyond 4 to 6 months after birth.
+
+The EP identified the following 2 studies that evaluated the effect of breast-feeding in combination with delayed introduction of solid foods in infants at risk for all allergies.
+
+Halmerbauer et $\mathrm { a l } ^ { 2 4 1 }$ conducted an RCT on environmental procedures to reduce house dust mites and an educational intervention to delay introduction of solid foods. They found a significantly reduced risk of parent-reported food intolerance (vomiting, prolonged crying, diarrhea, and swollen lips after eating) in the intervention group. However, the study findings should be interpreted with caution because the study was only of fair quality and the intervention included both breastfeeding and education on delayed introduction of solid foods.
+
+Kajosaari<sup>242</sup> reported results from a comparative study that evaluated the effect of exclusive breast-feeding and delayed introduction of solid foods until 6 months in at-risk infants. She found a possible protective effect of exclusive breast-feeding for 6 months. This study was rated as poor quality because it was not randomized and no information was provided on the comparability of the 2 groups.
+
+In a comparative study of more than 900 families by Venter et al,<sup>243</sup> introduction of solid foods after weaning or after 16 weeks increased the likelihood of FA at 1 and 3 years $( { \mathfrak { p } } =$ 0.02 for both ages).
+
+The quality of evidence for when to introduce allergenic solid foods to infants is low, given that only 2 controlled trials of relatively low quality address it. No controlled studies have addressed delayed introduction of solid foods in children who are not at risk for atopic disease.
+
+## 5.4. Knowledge gaps
+
+With the lack of large numbers of well-controlled studies in managing and preventing FA, there are several areas where expert opinion was important in making either recommendations or suggestions. These areas, in need of further research, include:
+
+• Food avoidance and the rate of remission of a specific FA
+
+• The possibility of avoiding potentially allergenic foods as a means of managing AD, asthma, or EoE in patients without documented or proven FA
+
+Determination of the timing of follow-up testing for individuals with FA on the basis of the specific allergenic food
+
+• The safety and efficacy of allergen-specific immunotherapy as primary treatment for FA in clinical practice settings
+
+• The practice of restricting maternal diet during pregnancy or lactation as a strategy to prevent the development or clinical course of FA
+
+The exclusive use of extensively or partially hydrolyzed infant formulas in infants who are not exclusively breast-fed and are at risk for developing atopic disease
+
+## 6. Diagnosis and Management of Food-Induced Anaphylaxis and other Acute Allergic Reactions to Foods
+
+This section of the Guidelines focuses on the diagnosis and management of food-induced anaphylaxis that arises through IgE-mediated immune mechanisms.
+
+Food-induced anaphylaxis is a potentially fatal disorder and, like other forms of anaphylaxis, is increasing in incidence in industrialized countries.<sup>30,42,244-247</sup> Although food-induced anaphylaxis is not always easily recognized, the early recognition of specific signs and symptoms associated with a reaction, the timing of the reaction, and the existence of concomitant factors and disease processes help make the diagnosis. Prompt recognition and management are essential to ensure a good outcome.<sup>12</sup> Anaphylaxis is significantly under-recognized and under-treated.<sup>244-246,248</sup> One possible reason for this is the failure to appreciate that anaphylaxis can present without obvious cutaneous symptoms, which happens in 10% to 20% of cases, or without overt shock.
+
+The systematic review of the literature on food-induced anaphylaxis found a paucity of studies meeting standards for inclusion in these Guidelines. Thus, the evidence base for the recognition, diagnosis, and especially the management of food-induced anaphylaxis is significantly limited. Consequently, the EP supplied much of this section's information and provided literature based on individual citations deemed to be relevant and their own experience. In addition, much of this information is gleaned from the available literature related to anaphylaxis in general and applied specifically to FA.
+
+## 6.1. Definition of anaphylaxis
+
+Anaphylaxis is defined as a serious allergic reaction that is rapid in onset and may cause death.<sup>245,249</sup> Typically, IgE-mediated food-induced anaphylaxis is believed to involve systemic mediator release from sensitized mast cells and basophils.<sup>250</sup> The term anaphylactoid has been used in the past to indicate adverse reactions that are not IgE mediated and typically are not life-threatening. This term is imprecise and will not be used in these Guidelines.
+
+## 6.2. Diagnosis of acute, life-threatening, food-induced allergic reactions
+
+Guideline 41: The EP recommends that the health care professional considering a diagnosis of food-induced anaphylaxis should understand:
+
+• The signs and symptoms characteristic of anaphylaxis
+
+• The timing of symptoms in association with food ingestion/exposure
+
+• Comorbid conditions, such as asthma, that may affect treatment and outcome
+
+• The limited utility of laboratory parameters in the acute-care setting
+
+Rationale: The evidence and expert opinion support prompt recognition and diagnosis of food-induced anaphylaxis.
+
+Balance of benefits and harms: Prompt recognition and diagnosis of food-induced anaphylaxis are essential and necessary to ensure appropriate health outcomes and to prevent progression to life-threatening reactions. Potential harm, including the possibility of death, exists if the diagnosis is delayed or not recognized.
+
+## Quality of evidence: Low
+
+## Contribution of expert opinion: Significant
+
+The diagnosis of anaphylaxis in general is based on clinical findings and a detailed description of the acute episode. Food-induced anaphylaxis also includes the association with known or suspected food exposure. The contribution of laboratory testing to the diagnosis of anaphylaxis is minimal, except where it may be important to diagnose the condition of FA. The most common food triggers for anaphylaxis are peanut, tree nuts, milk, egg, fish, and crustacean shellfish. The incidence is variable depending on age, regional diets, food preparation, amount of exposure, and timing of first exposure.<sup>153,251</sup> A review of findings from administrative databases and acute-care settings<sup>38,40-42,252-257</sup> shows that association with a specific food is reported in up to 80% of anaphylaxis cases.
+
+The patient's medical history is essential in establishing a diagnosis of food-induced anaphylaxis. A history of prior food-induced allergic reactions or prior diagnosis of FA (as defined in section 4) in association with known ingestion of a food protein aids in making a diagnosis. However, anaphylaxis in association with first-time food ingestion can occur at any age and is more common in young children. Studies have shown that 20% of episodes of anaphylaxis in the school setting occur with exposure to a food for the first time.<sup>258</sup>
+
+6.2.1. Diagnostic criteria for anaphylaxis—New diagnostic criteria for anaphylaxis were published in $2 0 0 6 ^ { 1 2 }$ to help health care professionals both recognize the spectrum of signs and symptoms that constitute anaphylaxis and establish a more systematic approach to its diagnosis and management. The following 3 criteria were established, and the presence of any 1 of these criteria indicates that anaphylaxis is highly likely:
+
+Acute onset of an illness (over minutes to several hours) involving skin, mucosal tissue, or both (for example, generalized hives, pruritus or flushing, swollen lipstongue-uvula), and at least 1 of the following:
+
+Respiratory compromise (for example, dyspnea, wheeze-bronchospasm, stridor, reduced peak expiratory flow rate, hypoxemia)
+
+Reduced blood pressure (BP) or associated symptoms of end-organ dysfunction (for example, hypotonia (circulatory collapse), syncope, incontinence) or
+
+• Two or more of the following that occur rapidly after exposure to a likely allergen for that patient (minutes to several hours):
+
+Involvement of the skin-mucosal tissue (for example, generalized hives, itch-flush, swollen lips-tongue-uvula)
+
+Respiratory compromise (for example, dyspnea, wheeze-bronchospasm, stridor, reduced peak expiratory flow rate, hypoxemia)
+
+– Reduced BP or associated symptoms of end-organ dysfunction (for example, hypotonia, syncope, incontinence)
+
+Persistent GI symptoms (for example, crampy abdominal pain, vomiting) or
+
+• Reduced BP after exposure to a known allergen for that patient (minutes to several hours). Reduced BP is defined:
+
+– In adults, as a systolic BP of less than 90 mm Hg or greater than 30% decrease from that person's baseline
+
+– In infants and children, as a low systolic BP (age-specific) or greater than 30% decrease in systolic BP. Low systolic BP is defined as:
+
+♦ Less than 70 mm Hg for ages 1 month to 1 year
+
+♦ Less than (70 mm Hg plus twice the age) for ages 1 to 10 years
+
+♦ Less than 90 mm Hg for ages 11 to 17 years
+
+Note: In infants and young children, hypotension may be a late manifestation of hypovolemic shock. Tachycardia, in the absence of hypotension, also may indicate shock.<sup>259</sup>
+
+6.2.2. Signs and symptoms of food-induced anaphylaxis—Usually, anaphylaxis involves more than 1 organ system, which helps distinguish it from other acute reactions such as asthma exacerbations, respiratory symptoms, urticaria/angioedema, or GI symptoms. The signs and symptoms for anaphylaxis in general are the same for food-induced anaphylaxis<sup>12,247,251,260-262</sup> and include:
+
+Cutaneous symptoms—occur in the majority of patients, and include flushing, pruritus, urticaria, and angioedema. However, 10% to 20% of cases have no cutaneous manifestations.
+
+Respiratory symptoms—occur in up to 70% of cases, and include nasal congestion and rhinorrhea, throat pruritus and laryngeal edema, stridor, choking, wheeze, cough, and dyspnea.
+
+• GI symptoms—occur in up to 40% of cases, and include cramping, abdominal pain, nausea, emesis, and diarrhea.
+
+• Cardiovascular symptoms—occur in up to 35% of cases, and include dizziness, tachycardia, hypotension, and hypotonia.
+
+• Other symptoms—may include anxiety, mental confusion, lethargy, and seizures.
+
+6.2.3. Time course of food-induced anaphylaxis—Food-induced anaphylaxis is typically characterized by a defined exposure to a food allergen that is followed by a rapid onset and evolution of symptoms over minutes to several hours. Deaths from food-induced anaphylaxis have been reported within 30 minutes to 2 hours of exposure<sup>71,72,263</sup> and usually result from cardiorespiratory compromise.<sup>251</sup> Food-induced anaphylaxis also can have a milder course and resolve spontaneously, most likely due to endogenous production of vasoconstrictors (for example, epinephrine, endothelin, angiotensin II, and others).<sup>261,264,265</sup>
+
+The time course of an anaphylactic reaction may be uniphasic, biphasic, or protracted. Each is defined as follows:
+
+A uniphasic reaction occurs immediately after exposure and resolves with or without treatment within the first minutes to hours, and then does not recur during that anaphylactic episode.
+
+A biphasic reaction includes a recurrence of symptoms that develops after apparent resolution of the initial reaction. Biphasic reactions have been reported to occur in 1% to 20% of anaphylaxis episodes and typically occur about 8 hours after the first reaction, although recurrences have been reported up to 72 hours later.<sup>72,266,267</sup>
+
+• A protracted reaction is any anaphylaxis episode that lasts for hours or days following the initial reaction.<sup>72</sup>
+
+Fatalities associated with food-induced anaphylaxis are most commonly associated with peanut or tree nut ingestion.<sup>71,72,263</sup> Such fatalities are associated with delayed use or lack of proper epinephrine dosing. The highest risk groups for fatal anaphylaxis associated with food ingestion are:
+
+• Adolescents and young adults
+
+Individuals with known FA and with a prior history of anaphylaxis
+
+Individuals with asthma, especially those with poor control (although fatal reactions may occur even in individuals with mild asthma)
+
+6.2.4. Comorbid diseases and factors that increase the risk of food-induced anaphylaxis—Comorbidities may affect symptom severity and treatment response in patients with food-induced anaphylaxis.<sup>261,262,264,268</sup>
+
+• Asthma is an important risk factor for death from anaphylaxis, especially in adolescents and young adults.<sup>71,72,263,269,270</sup>
+
+• Cardiovascular disease is also an important risk factor for death from anaphylaxis, especially in middle-aged and older individuals.<sup>270</sup>
+
+• Other disorders, such as mastocytosis, chronic lung disease (chronic obstructive pulmonary disease and recurrent pneumonia), and anatomic airway obstruction (for example, airway hemangiomas and laryngotracheomalacia), also may increase the risk of anaphylaxis.
+
+Certain medications also may affect symptom severity and treatment response in patients with food-induced anaphylaxis, for example:
+
+• β-adrenergic antagonists may decrease the response to epinephrine therapy in patients undergoing anaphylaxis.
+
+Angiotensin-converting enzyme inhibitors and, to a lesser extent, angiotensin II receptor blockers may interfere with endogenous compensatory mechanisms, resulting in more severe or prolonged symptoms.<sup>271</sup>
+
+α-adrenergic blockers may decrease the effects of endogenous or exogenous epinephrine at a-adrenergic receptors, rendering patients less responsive to epinephrine.<sup>272</sup>
+
+6.2.5. Other diseases associated with acute reactions to food—Several other FA disorders, both IgE and non-IgE mediated, described in detail in sections 2, 3, and 4, may have acute symptoms after food ingestion.
+
+Some disorders share IgE-mediated mechanisms such as localized urticaria or angioedema, generalized flushing, OAS, and food-dependent exercise-induced anaphylaxis and may progress to life-threatening anaphylaxis.
+
+Other non-IgE-mediated disorders such as FPIES and AP may present with acute, repetitive GI symptoms. In particular, FPIES may be confused with anaphylaxis because, minutes to hours after food or formula ingestion, patients often develop repetitive emesis in association with pallor, diarrhea, lethargy, and hypotension due to massive intravascular fluid shifts. Patients with FPIES require treatment via aggressive fluid resuscitation and possibly corticosteroids. These patients typically do not respond to epinephrine, in contrast to patients with acute reactions due to IgE-mediated disease.
+
+6.2.6. Value of laboratory testing in the acute setting—Laboratory testing is of limited value while a patient is experiencing an anaphylaxis reaction when immediate treatment is paramount. However, the diagnosis of food-induced anaphylaxis may be supported by tests that identify sensitization to the suspect food allergen. The diagnosis is rarely supported by tests that document elevated mast cell and basophil mediators, including plasma histamine and serum or plasma total tryptase.<sup>273-277</sup> The use of these assays to diagnose food-induced anaphylaxis is unrealistic<sup>86,275,276,278</sup> because (1) histamine is very labile and samples require special handling prior to processing and (2) tryptase lacks specificity and is not typically elevated in food-induced anaphylaxis. However, in a case of suspected anaphylaxis, elevated serum tryptase or urinary histamine levels may confirm the diagnosis of anaphylaxis unrelated to food (or possibly systemic mastocytosis). A negative tryptase finding also does not rule out food-induced anaphylaxis.
+
+Epicutaneous skin prick testing (section 4.2.2.1) and serum allergen-specific IgE testing (for example, ImmunoCAP) may provide information regarding a specific FA (section 4.2.2.4), but do not yield information about the cause of or risk for anaphylaxis. Rather, these tests evaluate allergen sensitization, while other tests (such as DBPCFC) determine clinical allergy (section 4.2.2.8). Correlation of testing with timing of ingestion and associated reaction, symptom profile, and response to therapy are important to make a definitive diagnosis. Additionally, no tests are available to predict severity of IgE-mediated reactions.
+
+## 6.3. Treatment of acute, life-threatening, food-induced allergic reactions
+
+6.3.1. First-line and adjuvant treatment for food-induced anaphylaxis— Guideline 42: The EP recommends that treatment for food-induced anaphylaxis should focus on the following:
+
+• Prompt and rapid treatment after onset of symptoms (see Table VI for a summary of treatment in an outpatient or hospital setting)
+
+• Intramuscular (IM) epinephrine as first-line therapy
+
+• Other treatments, which are adjunctive to epinephrine dosing
+
+Rationale: Evidence supports the implementation of rapid response and treatment for foodinduced anaphylaxis and the use of IM epinephrine as first-line therapy.
+
+Balance of benefits and harms: The benefits of appropriate treatment for anaphylaxis begin with IM epinephrine injection. Benefits of epinephrine treatment far outweigh the risks of unnecessary dosing. Delays in instituting therapy with epinephrine are associated with risks of death and morbidity.
+
+## Quality of evidence: Moderate
+
+## Contribution of expert opinion: Significant
+
+As in all cases of anaphylaxis, whether food induced or not, prompt assessment and treatment are critical. Failure to respond promptly can result in rapid decline and death within 30-60 minutes.<sup>72,257,263,269,280,281</sup>
+
+Epinephrine is the first-line treatment in all cases of anaphylaxis. All other drugs have a delayed onset of action. When there is suboptimal response to the initial dose of epinephrine, or if symptoms progress, repeat epinephrine dosing remains first-line therapy over adjunctive treatments.
+
+The cornerstones of initial management should begin with the following concurrent steps:<sup>282</sup>
+
+• Elimination of additional allergen exposure
+
+• IM injection of epinephrine
+
+Call for help (summon a resuscitation team in the hospital setting, call 911 or an equivalent service in the community setting), although attempts to summon help should not delay use of epinephrine
+
+These actions should be quickly followed by these additional steps:<sup>279,283-285</sup> • Placement of the patient in a recumbent position (if tolerated), with the lower extremities elevated
+
+• Provision of supplemental oxygen
+
+• Administration of intravenous (IV) fluid (volume resuscitation)
+
+Administer epinephrine as soon as possible once anaphylaxis is recognized, and transport the patient to the nearest emergency facility. Delayed administration of epinephrine has been implicated in contributing to fatalities.<sup>71,72,86,263</sup> In a study of 13 fatal or near-fatal foodinduced anaphylactic reactions in children, 6 of the 7 children who survived received epinephrine within 30 minutes of ingesting the food, whereas only 2 of the 6 children who died received epinephrine within the first hour.<sup>72</sup> Similar outcomes have been found in a fatal anaphylaxis registry<sup>71,263</sup> established through the American Academy of Allergy, Asthma, and Immunology with the assistance of the Food Allergy and Anaphylaxis Network. Epinephrine, therefore, should be available at all times to patients at risk. A recent study in schools also highlights the fact that children with FA often do not have ready access to epinephrine at school, thus placing them at increased risk.<sup>286</sup>
+
+Pharmacologic treatment of food-induced anaphylaxis is based on extrapolation from therapies used in cardiac arrest and asthma, from uncontrolled human trials of anaphylaxis during insect sting challenges, and from studies of anaphylaxis in animal models.<sup>245</sup> RCTs that meet current standards have not been performed for any therapeutic interventions during anaphylaxis in humans. Placebo-controlled trials for epinephrine use have not been performed during anaphylaxis and likely will never be performed due to ethical considerations regarding a disease that can kill within minutes and requires prompt intervention.<sup>287</sup>
+
+The evidence base for the pharmacologic management of an acute anaphylaxis episode has been extensively studied in 3 Cochrane collaborative reviews.<sup>288-290</sup> Although these reviews do not include any RCTs on epinephrine use in anaphylaxis, they do highlight that epinephrine has been relatively well-investigated in:
+
+• Observational studies
+
+• RCTs in patients not experiencing anaphylaxis at the time of administration
+
+• Epidemiologic studies
+
+• Fatality studies
+
+In vitro studies and studies in animal models
+
+Experts in the field agree that epinephrine is the only first-line treatment for anaphylaxis. There is no substitute for epinephrine, thus all other treatments are adjunctive. In the treatment of anaphylaxis, $\mathrm { H } _ { 1 }$ and $\mathrm { H } _ { 2 }$ antihistamines and corticosteroids are commonly used, but little or no data exist demonstrating their functional role or effectiveness.
+
+In summary: The use of antihistamines is the most common reason reported for not using epinephrine<sup>265</sup> and may place a patient at significantly increased risk for progression toward a life-threatening reaction.
+
+6.3.1.1. Epinephrine—first-line treatment: Epinephrine is the drug of choice for anaphylaxis and should be administered as first-line therapy. The pharmacologic actions of this agent address the pathophysiologic changes that occur in anaphylaxis better than any other single drug. Failure to administer epinephrine early in the course of treatment has been repeatedly implicated in anaphylaxis fatalities.<sup>71,72,244,247,248,263,291</sup> Despite this fact, physicians often fail to prescribe epinephrine. In addition, the timing of emergency responses can determine when epinephrine is injected.<sup>40,65,245,265,292</sup>
+
+The therapeutic actions of epinephrine, which encompass a broad range of effects germane to the mechanisms of anaphylaxis, include the following:<sup>285</sup>
+
+• Increased vasoconstriction, increased peripheral vascular resistance, and decreased mucosal edema via $\mathrm { a } _ { 1 } .$ -adrenergic agonist receptor effects
+
+• Increased inotropy and increased chronotropy via $\beta _ { 1 }$ -adrenergic receptor agonist effects
+
+• Bronchodilation and decreased release of mediators of inflammation from mast cells and basophils via $\beta _ { 2 } .$ -adrenergic receptor agonist effects
+
+Epinephrine has a narrow toxic-therapeutic index (risk-to-benefit ratio). In therapeutic doses and by any route, epinephrine frequently causes mild transient adverse effects in individuals of all ages. These include anxiety, fear, restlessness, headache, dizziness, palpitations, pallor, and tremor.<sup>285</sup> Rarely, epinephrine may lead to ventricular arrhythmias, angina, myocardial infarction, pulmonary edema, sudden sharp increase in BP, and intracranial hemorrhage.<sup>285</sup> These severe adverse effects are more likely to occur when epinephrine is given in overdose by any route; for example, after an intravenous bolus injection or intravenous injection of a 1:1,000 epinephrine solution instead of a 1:10,000 epinephrine solution.
+
+Epinephrine has an onset of action within minutes but is rapidly metabolized. Therefore, the effect is often short-lived and repeated doses may be necessary.<sup>265,293,294</sup> If a patient responds poorly to the initial dose or has ongoing or progressive symptoms despite initial dosing, repeated dosing may be required after 5 to 15 minutes. Reports of patients receiving epinephrine for food-induced or nonfood-induced anaphylaxis<sup>293,294</sup> note that as high as 10% to 20% of individuals who receive epinephrine will require more than 1 dose before recovery of symptoms. In many of the cases, the subsequent doses of epinephrine were given more than 15 minutes after the first dose (some more than 1 hour), despite recommendations to repeat dosing as frequently as every 5 to 15 minutes. The optimal dosing interval for repeated dosing has not been studied prospectively.
+
+Epinephrine can be delivered through a variety of routes, including IM, IV, and endotracheal or intraosseous.<sup>284</sup>
+
+IM epinephrine is recommended over subcutaneous injection because it provides a more rapid increase in plasma and tissue concentrations of epinephrine.<sup>12,269,284</sup> The IM dose should be given in the anterolateral thigh in the vastus lateralis muscle. The needle used should be of adequate length to reach the muscle beneath the subcutaneous adipose tissue over the vastus lateralis muscle. IM injection into the thigh may be impossible in overweight or obese individuals, especially women who have thicker subcutaneous fat tissue.<sup>295,296</sup> In the circumstance of inadequate IM dosing, subcutaneous dosing will provide some benefit but will be less effective than IM dosing. When an epinephrine auto-injector is used, children weighing less than 25 kg should receive the 0.15 mg dose.<sup>297</sup> Children over 25 kg through adults should receive the 0.3 mg dose auto-injector. When a 1:1,000 epinephrine solution is used, patients should receive a dose of 0.01 mg/kg with a maximum dose of 0.5 mg.
+
+IV epinephrine (1:10,000 solution) is recommended for patients who do not respond to an initial (or repeated) IM injection of epinephrine and fluid resuscitation and may not be adequately perfusing muscle tissues.<sup>261</sup>
+
+Endotracheal or intra-osseous epinephrine can be delivered if IV access cannot be obtained immediately. The efficacy of this delivery method is based on a single study of a small number of patients experiencing cardiac arrest.<sup>262</sup>
+
+6.3.1.2. Adjunctive treatment (pharmacologic and other): Note: These treatments often occur concomitantly, and are not meant to be sequential, with the exception of epinephrine as first-line treatment.
+
+Bronchodilator medications. For the treatment of bronchospasm not responsive to IM epinephrine, inhaled bronchodilators such as albuterol should be used as needed and should be considered to be adjunctive therapy to the administration of epinephrine. Albuterol does not relieve airway edema (for example, laryngeal edema) and should not be substituted for IM epinephrine dosing in the treatment of anaphylaxis. In most emergency care settings, nebulized therapy may be more practical than metered-dose inhalers (MDIs) (with spacers) for patients with respiratory distress, but MDIs also can be helpful when the respiratory distress is mild or when nebulized therapy is not available. Moreover, the effectiveness of albuterol delivery via nebulizer vs MDI (with spacer) remains uncertain for patients with severe respiratory distress. Therefore, albuterol administration via nebulizer (if available) is recommended in this setting.
+
+H<sub>1</sub>antihistamines. In contrast to epinephrine, very limited scientific evidence supports the use of $\mathrm { H } _ { 1 }$ antihistamines in the emergency treatment of anaphylaxis.<sup>246</sup>
+
+$\mathrm { H } _ { 1 }$ antihistamines are useful only for relieving itching and urticaria. They do not relieve stridor, shortness of breath, wheezing, GI symptoms, or shock. Therefore, they should be considered adjunctive therapy and should not be substituted for   
+epinephrine.<sup>71,72,254,263,281,288,298</sup>
+
+For oral and IV dosing, first-generation H1 antihistamines such as diphenhydramine 25-50 mg are used. Sedation and cognitive and psychomotor impairment are recognized side effects of the first-generation $\mathrm { H } _ { 1 }$ antihistamines, and these may contribute to decreased awareness of anaphylaxis symptoms.<sup>288,298</sup> Alternative oral dosing with a less-sedating, second-generation $\mathrm { H } _ { 1 }$ antihistamine (such as cetirizine 10 mg) may be used because it has a relatively rapid onset of action compared with other second-generation $\mathrm { H } _ { 1 }$ antihistamines and is available in generic formulations.
+
+$\mathbf { H } _ { 2 }$ antihistamines. Minimal evidence supports the use of $\mathrm { H } _ { 2 }$ antihistamines in the emergency treatment of anaphylaxis.<sup>299</sup> Some health care professionals use these medications concurrently with $\mathrm { H } _ { 1 }$ antihistamines for relief of symptoms; however, rigorous studies in anaphylaxis that support this idea are lacking.
+
+Corticosteroids. Very little information is available to support or refute the use of corticosteroids for the treatment of acute anaphylaxis. However, their empiric use is prevalent and supported by many health care professionals. Corticosteroids are not helpful in the treatment of acute anaphylaxis due to their slow onset of action (4 to 6 hours). These agents often are given because of their anti-inflammatory properties that benefit allergic and inflammatory disease and also because they may help prevent biphasic or protracted reactions, which occur in up to 20% of individuals.<sup>244,267</sup> Treatment should be stopped within 2 to 3 days, since all biphasic reactions reported to date have occurred within 3 days.<sup>267</sup>
+
+Vasopressors. Patients who have persistent hypotension despite the administration of epinephrine and IV fluids should receive vasopressor medications titrated to the desired effect of restoring BP. Ideally, continuous non-invasive monitoring of blood pressure and heart rate should be performed. Due to the narrow risk-tobenefit ratio of these medications,<sup>300</sup> patients requiring vasopressors should be transferred to a hospital setting for acute care. No compelling evidence exists to support one vasopressor over another in this clinical scenario.
+
+Glucagon. Treatment of anaphylaxis may be complicated by concomitant use of β- adrenergic receptor antagonists. When administered orally, parenterally, or topically (for example, eye drops), these antagonists may decrease the effects of endogenous or exogenous epinephrine at β-adrenergic receptors and render patients less responsive to epinephrine.<sup>301</sup> This class of drugs may cause patients to be resistant to treatment with epinephrine, and they can develop refractory hypotension and bradycardia. Glucagon should be administered in this setting because it has inotropic and chronotropic effects that are not mediated through β- receptors.<sup>65</sup> A single dose of 1 to 5 mg in adults (in children, 20 to 30 μg/kg, to a maximum of 1 mg) administered intravenously over 5 minutes is recommended, which may be repeated or followed by an infusion of 5 to 15 μg/minute.<sup>262</sup> Rapid administration of glucagon can induce vomiting.
+
+• Atropine. Consider intravenously administered atropine for patients with bradycardia.
+
+Supplemental oxygen therapy. Oxygen should be administered initially to all patients experiencing anaphylaxis, especially those with evidence of hypoxia or respiratory distress. Supplemental oxygen helps not only with optimization of oxygen delivery and organ perfusion, but also with bronchodilation.<sup>260</sup>
+
+IV fluids. Many patients with anaphylaxis require IV fluids. Massive fluid shifts can occur rapidly in anaphylaxis due to increased vascular permeability, with
+
+transfer of up to 35% of the intravascular volume into the extravascular space within minutes.<sup>273</sup> Any patient who does not respond promptly and completely to injected epinephrine should be assumed to have intravascular volume depletion causing persistent hypotension despite maximum vasoconstriction. These patients should receive large-volume fluid resuscitation, with normal saline being the preferred treatment. Large-volume fluid resuscitation should be initiated immediately in patients who present with orthostasis, hypotension, or incomplete response to IM epinephrine.<sup>260</sup>
+
+Patient positioning. The patient should be placed in a recumbent position (when tolerated) with the lower extremities elevated to maximize perfusion of vital organs. This also helps prevent empty ventricle syndrome, in which severe hypotension leads to inadequate cardiac filling and electrical cardiac activity without a pulse.<sup>302</sup> Individuals with respiratory distress or vomiting may not tolerate a recumbent position.
+
+6.3.2. Treatment of refractory anaphylaxis—No published prospective studies exist on the optimal management of refractory anaphylactic shock. Repeated use of epinephrine, as well as IV fluids, corticosteroids, and vasopressor agents, may be needed.<sup>260</sup> Prompt transfer to an acute-care facility and ICU for treatment and monitoring is essential.
+
+6.3.3. Possible risks of acute therapy for anaphylaxis—There are no absolute contraindications to epinephrine use in anaphylaxis.<sup>260,276</sup> However, there are subgroups of patients who might theoretically be at higher risk for adverse effects during epinephrine therapy. Because the risk of death or serious disability from anaphylaxis itself usually outweighs other concerns,<sup>260,276</sup> existing evidence clearly favors the benefit of epinephrine administration in most situations. Some level of decision making regarding the risk-tobenefit ratio may be warranted, and especially for patients:
+
+Who have cardiovascular disease and are reluctant to receive epinephrine due to fear of adverse cardiac effects. These patients should be made aware that myocardial ischemia and dysrhythmias can occur in untreated anaphylaxis.<sup>273</sup>
+
+Receiving monoamine oxidase inhibitors (which block epinephrine metabolism) or tricyclic antidepressants (which prolong epinephrine duration of action).
+
+Receiving stimulant medications (for example, amphetamines or methylphenidate used in the treatment of attention-deficit-hyperactivity disorder) or abusing cocaine.
+
+• With certain pre-existing conditions, such as recent intracranial surgery, aortic aneurysm, uncontrolled hyperthyroidism, or hypertension.
+
+## 6.3.4. Treatment to prevent biphasic or protracted food-induced allergic
+
+reactions—Very little information exists that defines the mechanism of biphasic or protracted allergic reactions. Similarly, little information exists to support specific therapy to prevent biphasic or protracted food-induced allergic reactions. In general, induction and recruitment of inflammatory cells and release of preformed, long-acting mediators from mast cells have been implicated as mechanisms.<sup>267</sup> Due to their anti-inflammatory
+
+properties, systemic corticosteroids are often recommended to prevent biphasic or protracted food-induced allergic reactions, but little data support their use.
+
+## 6.3.5. Management of milder, acute food-induced allergic reactions in health
+
+care settings—Milder forms of allergic reactions, such as flushing, urticaria, isolated mild angioedema, or symptoms of OAS, can be treated with $\mathrm { H } _ { 1 }$ and $\mathrm { H } _ { 2 }$ antihistamine medications.<sup>153,299</sup> When antihistamines alone are given, ongoing observation and monitoring are warranted to ensure a lack of progression to more significant symptoms of anaphylaxis. If progression or increased severity is noted, epinephrine should be administered immediately. Additionally, if there is a history of a prior severe allergic reaction, epinephrine should be administered promptly and earlier in the course of treatment (for example, at the onset of even mild symptoms).
+
+## 6.4. Management of food-induced anaphylaxis
+
+Guideline 43: The EP recommends that the management of food-induced anaphylaxis should focus on the following:
+
+• Dosing with IM epinephrine followed by transfer to an emergency facility for observation and possible further treatment
+
+• Observation for 4 to 6 hours or longer based on severity of the reaction
+
+• Education for patient and family on:
+
+– Allergen avoidance
+
+– Early recognition of signs and symptoms of anaphylaxis
+
+一 Anaphylaxis emergency action plan implementation
+
+– Appropriate IM epinephrine administration
+
+Medical identification jewelry or an anaphylaxis wallet card
+
+• Epinephrine auto-inj ector prescription and training provided at the time of discharge
+
+• Continuation of adjunctive treatment after patient discharge:
+
+$\mathrm { H } _ { 1 }$ antihistamine: diphenhydramine every 6 hours for 2-3 days; alternative dosing with a non-sedating second generation antihistamine
+
+$\mathrm { H } _ { 2 }$ antihistamine: ranitidine twice daily for 2-3 days
+
+Corticosteroid: prednisone daily for 2-3 days
+
+Follow-up appointment with primary health care professional (after the foodinduced anaphylactic reaction), with consideration for additional follow-up with a clinical specialist such as an allergist/immunologist
+
+Rationale: Despite the lack of evidence, the EP recommends close monitoring, scheduled follow-up, and patient education for effective management following anaphylaxis.
+
+Balance of benefits and harms: The benefits of appropriate management following foodinduced anaphylaxis should serve to further protect the patient through long-term follow-up care and education, with the benefit of preventing subsequent events. The potential harm is minimal if appropriate education is employed.
+
+Quality of evidence: Low
+
+Contribution of expert opinion: Significant
+
+6.4.1. Observation period—There is no consensus in the literature regarding the optimal amount of time that a patient who has been successfully treated for anaphylaxis should be observed prior to discharge. All patients who receive epinephrine for food-induced anaphylaxis should proceed to an emergency facility for observation and possibly additional treatment. A reasonable length of time for observation of most patients who have experienced anaphylaxis is 4 to 6 hours, with prolonged observation times or hospital admission for patients with severe or refractory symptoms.<sup>249,262</sup>
+
+6.4.2. Discharge plan following treatment for food-induced anaphylaxis—All patients who have experienced anaphylaxis should be sent home with the following:
+
+• Anaphylaxis emergency action plan
+
+• Epinephrine auto-inj ector (2 doses)
+
+• Plan for monitoring auto-inj ector expiration dates
+
+• Plan for arranging further evaluation
+
+• Printed information about anaphylaxis and its treatment<sup>265</sup>
+
+The treating health care professional should consider referral of the patient to a specialist such as an allergist/immunologist for further evaluation.
+
+6.4.2.1. Anaphylaxis emergency action plan: Patients should be given a written anaphylaxis emergency action plan that contains information about self-injection of epinephrine prior to discharge<sup>261,303</sup> (see sample action plan in Appendix E). Patients should be instructed on the value of medical identification jewelry to easily identify themselves as patients with anaphylaxis potential and their food allergen triggers.
+
+6.4.2.2. Epinephrine auto-injector (or 2-dose prescription): All patients experiencing anaphylaxis should be provided directly with an epinephrine auto-injector or, if this is not possible, with a prescription (recommended prescription is for 2 doses of epinephrine), and advised to fill it immediately.
+
+Other patients who should be prescribed an epinephrine auto-injector include:
+
+• Patients with a history of a prior systemic allergic reaction
+
+• Patients with FA and asthma
+
+Patients with a known FA to peanut, tree nuts, fish, and crustacean shellfish (ie, allergens known to be associated with more fatal and near-fatal allergic reactions)
+
+In addition, consideration should be given to prescribing an epinephrine auto-injector for all patients with FA having IgE-mediated reactions because it is impossible to predict the severity of any subsequent reactions with accuracy.
+
+Instructions in the proper use of epinephrine auto-injectors should be reviewed verbally with the patient and accompanied by a DVD (if available) and a written anaphylaxis emergency action plan. Special care should be taken to explain the importance of carrying epinephrine at all times and on advising the patient to make sure that family and friends are aware of the risks of anaphylaxis, the patient's triggers, and how to administer epinephrine. Where allowed by state law, students should be advised to carry their epinephrine auto-injector at school and at all school-related events and activities and to self-administer when needed.
+
+6.4.2.3. Plan for monitoring auto-injector expiration dates: Patients and family members should be advised to regularly check the epinephrine auto-injector expiration dates (these expire after 1 year) and to ensure that the color of the liquid within the device remains clear. Ideally, the prescribing physician's office should see patients annually or notify patients (or the family members of patients who are minors) by telephone or mail that their auto-injector will soon reach its expiration date and that the prescription should be renewed. Patients are also encouraged to register for automated pharmacy reminders for epinephrine renewal. Epinephrine auto-injectors are temperature sensitive and should be stored at room temperature to prevent degradation of the medication.
+
+6.4.2.4. Plan for arranging further evaluation: Advice should be provided to the patient regarding follow-up with his or her primary health care professional within 1 to 2 weeks after a food-induced anaphylaxis event. Additional information may be needed about obtaining a referral to a specialist such as an allergist/immunologist for testing, diagnosis, and ongoing management of the allergy. Direct communication between the treating physician and the primary health care professional is recommended to ensure that appropriate follow-up is attained.
+
+6.4.2.5. Printed information about anaphylaxis and its treatment: The emergency doctor, treating physician, or health care professional should give the patient who has been treated for anaphylaxis and is subsequently leaving the emergency department or hospital printed information about anaphylaxis and its treatment.<sup>304</sup> The mnemonic “SAFE” has been developed to remind health care professionals of the 4 basic action steps suggested for these patients.<sup>304</sup> The SAFE (Seek support, Allergen identification and avoidance, Follow up with specialty care, Epinephrine for emergencies) counseling is outlined below and has been incorporated within printable patient information materials.
+
+• Seek support—The health care professional should advise patients that:
+
+They have experienced anaphylaxis, which is a life-threatening condition.
+
+– Symptoms of the current episode may recur up to 3 days after the initial onset of symptoms.
+
+They are at risk for repeat episodes of anaphylaxis in the future.
+
+At the first sign of recurrence of symptoms, the patient should give himself/herself epinephrine and then immediately call an ambulance or go to the nearest emergency facility.
+
+• Allergen identification and avoidance—The health care professional should:
+
+Make efforts to identify the patient's trigger (through history and with follow-up for further testing) before the patient is discharged.
+
+– Emphasize the importance of subsequent testing to determine and verify the trigger, so that it can be successfully avoided in the future.
+
+• Follow-up with specialty care—The health care professional should:
+
+Advise the patient that he or she may benefit from consulting a specialist for an allergy evaluation.
+
+• Epinephrine for emergencies—The health care professional should:
+
+Provide the patient with self-injectable epinephrine or a prescription, and educate the patient about its use prior to discharge.
+
+Advise the patient and/or family members to routinely check the expiration date of the auto-injector.
+
+Other sources of accurate patient information, accessible through the Internet, include the American Academy of Allergy, Asthma and Immunology (www.aaaai.org) and the American College of Allergy, Asthma and Immunology (www.acaai.org).
+
+## 6.5. Knowledge gaps
+
+Due to a lack of controlled studies in the area of food-induced anaphylaxis management, significant knowledge gaps exist in several areas, including:
+
+• The role of a variety of medications (for example, corticosteroids, antihistamines, others) in acute management and prevention of follow-up reactions
+
+The true incidence of biphasic and protracted reactions related to food-induced anaphylaxis and appropriate medical management to prevent or effectively treat these reactions
+
+• The relative benefits of certain alternative routes of epinephrine administration (for example, sublingual)
+
+The most effective methods for appropriate education of patients, families, health care professionals, and others to most effectively protect patients at risk for anaphylaxis related to food proteins
+
+## Acknowledgments
+
+Sources of funding: J. A. Boyce has served on the Advisory Board of GlaxoSmithKline. He has served as a consultant and/or speaker for Altana, GlaxoSmithKline, and Merck. He has received funding/grant support from the National Institutes of Health.
+
+A. Assa'ad holds, or is listed as an inventor on, US patent application #10/566903, entitled “Genetic markers of food allergy.” She has served as a consultant for GlaxoSmithKline and as a speaker for the American College of Allergy, Asthma, and Immunology, the North East Allergy Society, the Virginia Allergy Society, the New England Allergy Society, and the American Academy of Pediatrics. Dr Assa'ad has received funding/grant support from GlaxoSmithKline.
+
+A. W. Burks holds, or is listed as an inventor on, multiple US patents related to food allergy. He owns stock in Allertein and MastCell, Inc, and is a minority stockholder in Dannon Co Probiotics. He has served as a consultant for ActoGeniX NV, McNeil Nutritionals, Mead Johnson, and Novartis. He has served on the speaker's bureau for EpiPen/Dey, LP, and has served on the data monitoring committee for Genentech. He has served on an expert panel for Nutricia. Dr Burks has received funding/grant support from the Food Allergy and Anaphylaxis Network, Gerber, Mead Johnson, and the National Institutes of Health.
+
+S. M. Jones has served as a speaker and grant reviewer and has served on the medical advisory committee for the Food Allergy and Anaphylaxis Network. She has received funding/grant support from Dyax Corp, the Food Allergy and Anaphylaxis Network, Mead Johnson, the National Peanut Board, and the National Institutes of Health.
+
+H. A. Sampson holds, or is listed as an inventor on, multiple US patents related to food allergy. He owns stock in Allertein Therapeutics. He is the immediate past president of the American Academy of Allergy, Asthma, and Immunology. He has served as a consultant for Allertein Therapeutics, the American Academy of Allergy, Asthma, and Immunology, the Food Allergy Initiative, and Schering Plough. He has received funding/grant support for research projects from the Food Allergy Initiative, the National Institutes of Health (Division of Receipt and Referral, National Institute of Allergy and Infectious Diseases, National Center for Complementary and Alternative Medicine), and Phadia AB. He is a co-owner of Herbal Spring, LLC.
+
+R. A. Wood has served as a speaker/advisory board member for GlaxoSmithKline, Merck, and Dey. He has received funding/grant support from Genentech and the National Institutes of Health (National Institute of Allergy and Infectious Diseases).
+
+S. H. Arshad has received funding/grant support from the National Institutes of Health and the National Institute of Health Research, UK.
+
+S. L. Bahna has received funding/grant support from Genentech.
+
+L. A. Beck has received funding/grant support from the American Academy of Allergy, Asthma, and Immunology, the National Eczema Association, and the National Institutes of Health.
+
+C. Byrd-Bredbenner owns stock in Johnson & Johnson. She has received funding/grant support from the US Department of Agriculture, the Canned Food Alliance, and the New Jersey Department of Health and Senior Services.
+
+C. A. Camargo Jr has consulted for Dey and Novartis. He has received funding/grant support from a variety of government agencies and not-for-profit research foundations, as well as Dey and Novartis.
+
+L. Eichenfield has received funding/grant support from a variety of not-for-profit foundations, as well as Astellas, Ferndale, Johnson & Johnson, Novartis, Sinclair, Stiefel, and Therapeutics Inc.
+
+G. T. Furuta has served as a consultant and/or speaker to Ception Therapeutics and TAP. He has received funding/ grant support from the American Gastrointestinal Association and the National Institutes of Health.
+
+J. M. Hanifin has served as served as a consultant for ALZA, Anesiva, Inc, Barrier Therapeutics, Inc, Milliken & Company, Nordic Biotech, Novartis Pharmaceuticals Corporation, Shionogi USA, Taisho Pharmaceutical R&D, Inc, Teikoku Pharma USA, Inc, UCB, York Pharma, ZARS, Inc, and ZymoGenetics. He has served as an investigator or received research funding from ALZA, Astellas Pharma US, Inc, Asubio Pharmaceuticals, Inc, Centocor, Inc, Corgentech, Novartis, Nucryst Pharmaceuticals, Seattle Genetics, and Shionogi USA.
+
+M. Kraft has served as a consultant and/or speaker for Astra-Zeneca, Genentech, GlaxoSmithKline, Merck, Novartis, and Sepracor. She has received funding/grant support from Genentech, GlaxoSmithKline, the National Institutes of Health and Novartis.
+
+B. D. Levy holds, or is listed as an inventor on, US patent applications #20080064746 entitled “Lipoxins and aspirin-triggered lipoxins and their stable analogs in the treatment of asthma and inflammatory airway diseases” and #20080096961 entitled “Use of docosatrienes, resolvins and their stable analogs in the treatment of airway diseases and asthma.” He owns stock in Resolvyx Pharmaceuticals. He has served as a consultant for Bayer Healthcare and Resolvyx Pharmaceuticals. Dr Levy has received funding/grant support from the National Institutes of Health.
+
+P. Lieberman has served as a consultant and/or speaker to Dey Laboratories, Novartis, Schering-Plough, AstraZenica, Merck, TEVA, Pfizer, MEDA, Alcon, Genentech, Intelliject, and the Food Allergy and Anaphylaxis Network. He is past president of the American Academy of Allergy, Asthma, and Immunology.
+
+L. C. Schneider has served as a consultant/clinical advisor for the Food Allergy Initiative. She has received funding/ grant support from a variety of not-for-profit research foundations, as well as Novartis and the National Institutes of Health.
+
+R. A. Simon has served as a speaker for Dey Laboratories, Genentech, GlaxoSmithKline, Merck, Novartis, and the US Food and Drug Administration.
+
+F. E. R. Simons holds a patent on “Fast-disintegrating epinephrine tablets for sublingual administration.” She is a past-president of the American Academy of Allergy, Asthma, and Immunology and of the Canadian Society of Allergy and Clinical Immunology. She is a member of the advisory boards of Dey, Intelliject, and ALK-Abello. She has received funding/grant support from AllerGen, the Canadian Allergy, Asthma and Immunology Foundation/Anaphylaxis Canada, and the Canadian Institutes of Health Research.
+
+S. J. Teach has served as a speaker for AstraZeneca. He has received funding/grant support from the AstraZeneca Foundation, Aventis, the Child Health Center Board, the CNMC Research Advisory Council, the National Association of Chain Drug Stores Foundation, the National Institutes of Health (National Institute of Allergy and Infectious Diseases; National Heart, Lung, and Blood Institute), Novartis/Genentech, the Robert Woods Johnson Foundation, the US Centers for Disease Control and Prevention, the US Public Health Service, and the Washington, DC, Department of Health.
+
+## Appendix A. Coordinating Committee Member Organizations and Representatives
+
+Agency for Healthcare Research and Quality (AHRQ)
+
+http://www.ahrq.gov/
+
+Stephanie Chang, MD, MPH
+
+Allergy & Asthma Network Mothers of Asthmatics (AANMA)
+
+http://www.aanma.org/
+
+Nancy Sander
+
+Sandra J. Fusco-Walker (alternate\*)
+
+American Academy of Allergy, Asthma & Immunology (AAAAI)
+
+http://www.aaaai.org/
+
+Hugh A. Sampson, MD
+
+American Academy of Dermatology (AAD)
+
+http://www.aad.org/
+
+Lawrence F. Eichenfield, MD, FAAD
+
+American Academy of Emergency Medicine (AAEM)
+
+http://www.aaem.org/
+
+J Allergy Clin Immunol. Author manuscript; available in PMC 2014 November 24.
+
+Joseph P. Wood, MD, JD
+
+American Academy of Pediatrics (AAP)
+
+http://www.aap.org/
+
+Scott Sicherer, MD, FAAP
+
+American Academy of Physician Assistants (AAPA)
+
+http://www.aapa.org/
+
+Bob McNellis, MPH, PA
+
+American College of Allergy, Asthma and Immunology (ACAAI)
+
+http://www.acaai.org/
+
+Sami Bahna, MD, DrPH
+
+American College of Emergency Physicians (ACEP)
+
+http://www.acep.org/
+
+Wyatt W. Decker, MD
+
+American College of Gastroenterology (ACG)
+
+http://www.acg.gi.org/
+
+Steven J. Czinn, MD
+
+Dawn L. Francis, MD
+
+American College of Physicians (ACP)
+
+http://www.acponline.org
+
+Raymond J. Dattwyler, MD
+
+American Dietetic Association (ADA)
+
+http://www.eatright.org/
+
+Marianne Smith Edge
+
+American Nurses Association (ANA)
+
+http://www.nursingworld.org/
+
+Karen Huss, PhD, RN, APRN-BC
+
+## American Partnership for Eosinophilic Disorders (APFED)
+
+http://www.apfed.org/
+
+Beth Mays
+
+Wendy Book (alternate)
+
+American Society for Nutrition (ASN)
+
+http://www.nutrition.org/
+
+George J. Fuchs III, MD
+
+American Thoracic Society (ATS)
+
+http://www.thoracic.org/
+
+Joel N. Kline, MD, MSc
+
+Asthma and Allergy Foundation of America (AAFA)
+
+http://www.aafa.org/
+
+Charlotte Collins, JD
+
+Mary Brasler, MSN, EdD
+
+Centers for Disease Control and Prevention (CDC)
+
+http://www.cdc.gov/
+
+Thomas Sinks, PhD
+
+Eunice Kennedy Shriver National Institute of Child Health & Human Development (NICHD)
+
+http://www.nichd.nih.gov/
+
+Gilman Grave, MD
+
+European Academy of Allergy and Clinical Immunology (EAACI)
+
+http://eaaci.net/
+
+Nikolaos G. Papadopoulos, MD, PhD
+
+Antonella Muraro, MD, PhD
+
+Food Allergy & Anaphylaxis Network (FAAN)
+
+http://www.foodallergy.org/
+
+J Allergy Clin Immunol. Author manuscript; available in PMC 2014 November 24.
+
+Julia E. Bradsher, PhD, MBA
+
+Anne Muñoz-Furlong
+
+Food Allergy Initiative (FAI)
+
+http://www.faiusa.org/
+
+Mary Jane Marchisotto
+
+Robert Pacenza
+
+David Bunning
+
+Inflammatory Skin Disease Institute (ISDI)
+
+http://www.isdionline.org/
+
+LaDonna Finch
+
+National Association of School Nurses (NASN)
+
+http://www.nasn.org/
+
+Donna Heller, MS, RN, NCSN
+
+National Eczema Association (NEA)
+
+http://www.nationaleczema.org/
+
+Julie Block
+
+National Heart, Lung, and Blood Institute (NHLBI)
+
+http://www.nhlbi.nih.gov/
+
+Virginia Taggart, MPH
+
+National Institute of Allergy and Infectious Diseases (NIAID)
+
+http://www.niaid.nih.gov/
+
+Daniel Rotrosen, MD
+
+Matthew J. Fenton, PhD
+
+Dean D. Metcalfe, MD
+
+Marshall Plaut, MD
+
+Alkis Togias, MD
+
+National Institute of Diabetes and Digestive and Kidney Diseases (NIDDK)
+
+http://www.niddk.nih.gov/
+
+Frank A Hamilton, MD
+
+National Institute of Nursing Research (NINR)
+
+http://www.ninr.nih.gov/
+
+Karen Huss, PhD, RN, APRN-BC
+
+National Institutes of Health Division of Nutrition Research Coordination (NIH DNRC)
+
+http://dnrc.nih.gov/
+
+Van Hubbard, MD, PhD
+
+Margaret A. McDowell, PhD, MPH, RD
+
+Jean Pennington PhD, RD
+
+North American Society for Pediatric Gastroenterology, Hepatology and Nutrition
+
+(NASPGHAN)
+
+http://www.naspghan.org/
+
+Barry K. Wershil, MD
+
+Society for Pediatric Dermatology (SPD)
+
+http://www.pedsderm.net/
+
+James Bergman, MD
+
+Society of Pediatric Nurses (SPN)
+
+https://www.pedsnurses.org
+
+Kathleen McCall, BSN, RN
+
+United States Department of Agriculture (USDA)
+
+http://www.usda.gov/
+
+David M. Klurfeld, PhD
+
+United States Environmental Protection Agency (EPA)
+
+http://www.epa.gov/
+
+J Allergy Clin Immunol. Author manuscript; available in PMC 2014 November 24.
+
+John Kough, PhD
+
+MaryJane Selgrade, PhD
+
+United States Food and Drug Administration (FDA) (observer organization)
+
+http://www.fda.gov/
+
+Badrul A. Chowdhury, MD, PhD
+
+Jay E. Slater, MD
+
+Ronald L. Rabin, MD
+
+\*The person who represented the organization on the CC when the primary representative was unable to attend.
+
+## Appendix B. Expert Panel Members
+
+Chair
+
+Joshua A. Boyce, MD
+
+Associate Professor of Medicine
+
+Harvard Medical School
+
+Specialty: Allergy/pediatric pulmonology
+
+## Panelists
+
+## S. Hasan Arshad, MBBS, MRCP, DM, FRCP
+
+Chair in Allergy and Clinical Immunology
+
+University of Southampton
+
+Specialty: Allergy/epidemiology
+
+Amal Assa'ad, MD
+
+Professor of Pediatrics
+
+Director, Allergy and Immunology Fellowship
+
+Associate Director, Division of Allergy and Immunology
+
+Cincinnati Children's Hospital Medical Center
+
+Specialty: Allergy/pediatrics
+
+Sami L. Bahna, MD, DrPH
+
+J Allergy Clin Immunol. Author manuscript; available in PMC 2014 November 24.
+
+Professor of Pediatrics and Medicine
+
+Chief, Allergy and Immunology Section
+
+Louisiana State University Health Sciences Center-Shreveport
+
+Specialty: Allergy
+
+Lisa A. Beck, MD
+
+Associate Professor of Dermatology, Director of Translational Research
+
+University of Rochester Medical Center
+
+Specialty: Dermatology
+
+A. Wesley Burks, MD
+
+Professor, Department of Pediatrics
+
+Duke University
+
+Specialty: Allergy/pediatrics
+
+Carol Byrd-Bredbenner, PhD, RD, FADA
+
+Professor of Nutrition/Extension Specialist
+
+Rutgers, The State University of New Jersey
+
+Specialty: Nutrition/education
+
+Carlos A. Camargo, MD, DrPH
+
+Director, EMNet Coordinating Center
+
+Massachusetts General Hospital
+
+Harvard Medical School
+
+Specialty: Epidemiology/emergency medicine
+
+Lawrence Eichenfield, MD
+
+Professor, Department of Pediatrics and Medicine
+
+University of California, San Diego School of Medicine
+
+Director, Children's Specialists of San Diego
+
+Rady Children's Hospital, San Diego
+
+Specialty: Dermatology/pediatrics
+
+Glenn T. Furuta, MD
+
+Professor of Pediatrics
+
+University of Colorado Denver, School of Medicine
+
+Specialty: Gastroenterology/pediatrics
+
+Jon M. Hanifin, MD
+
+Professor of Dermatology
+
+Oregon Health and Science University
+
+Specialty: Dermatology
+
+Carol Jones, RN, AE-C
+
+Certified Asthma Nurse Educator and Consultant
+
+Specialty: Nursing/education
+
+Stacie M. Jones, MD
+
+Professor of Pediatrics, Chief of Allergy/Immunology
+
+University of Arkansas for Medical Sciences and Arkansas Children's Hospital
+
+Specialty: Allergy/pediatrics
+
+Monica Kraft, MD
+
+Professor of Medicine
+
+Director, Duke University Asthma, Allergy and Airway Center
+
+Vice Chair for Research, Department of Medicine
+
+Duke University Medical Center
+
+Specialty: Pulmonology/internal medicine/critical care
+
+Bruce D. Levy, MD
+
+Assistant Professor in Medicine
+
+Pulmonary and Critical Care Medicine Division
+
+Brigham and Women's Hospital
+
+Specialty: Pulmonology
+
+Phil Lieberman, MD
+
+Clinical Professor of Medicine, Division of Allergy and Immunology
+
+Clinical Professor of Pediatrics
+
+University of Tennessee
+
+Specialty: Allergy
+
+Stefano Luccioli, MD
+
+Senior Medical Advisor
+
+Office of Food Additive Safety, Center for Food Safety and Applied Nutrition
+
+US Food and Drug Administration
+
+Specialty: Allergy/internal medicine
+
+Kathleen M. McCall, BSN, RN
+
+Case Manager, Primary Care
+
+Children's Hospital of Orange County
+
+Specialty: Nursing
+
+Hugh A. Sampson, MD
+
+Professor of Pediatrics
+
+Mount Sinai School of Medicine
+
+Specialty: Allergy/pediatrics
+
+Lynda C. Schneider, MD
+
+Director, Allergy Program, Director, Atopic Dermatitis Center
+
+Children's Hospital, Boston
+
+Associate Professor of Pediatrics
+
+Harvard Medical School
+
+Specialty: Allergy/pediatrics
+
+Ronald A. Simon, MD
+
+Head, Division of Allergy, Asthma and Immunology
+
+Adjunct Professor, Department of Molecular and Experimental Medicine
+
+The Scripps Research Institute
+
+Specialty: Allergy/internal medicine
+
+F. Estelle R. Simons, MD
+
+Professor, Department of Pediatrics and Child Health
+
+Professor, Department of Immunology
+
+University of Manitoba
+
+Specialty: Allergy/pediatrics
+
+Stephen J. Teach, MD, MPH
+
+Associate Chief, Division of Emergency Medicine
+
+Children's National Medical Center
+
+Specialty: Pediatrics/emergency medicine
+
+Robert A. Wood, MD
+
+Professor of Pediatrics
+
+Johns Hopkins University School of Medicine
+
+Specialty: Allergy/pediatrics
+
+Barbara P. Yawn, MD, MPH, MSc
+
+Director, Department of Research
+
+Olmsted Medical Center
+
+Specialty: Family medicine
+
+## Appendix C. Understanding “Quality of the Body of Evidence”
+
+Quality is a technical term adopted by guidelines developers to describe the body of evidence used to develop a recommendation or guideline. The body of evidence refers to all the papers reviewed about a given clinical topic, for example, the prevalence of food allergies (FAs) or the effectiveness of immunotherapy. It usually is applied to a group of relevant papers, but in some cases could be applied to a single paper if that is the only one published on that topic. Quality is dependent on both objective features of the studies and
+
+their conclusions. The quality rating ultimately reflects the confidence in the literature under review.
+
+Objective features include the study population size, how the clinical trial was blinded (for example, no blinding, single-blinded, or double-blinded), and whether the trial was placebocontrolled. For example, a body of evidence obtained from randomized controlled trials (RCTs) is rated as high quality, whereas evidence obtained from observational studies is rated as low quality. However, if strong conclusions can be made from an observational study, this can raise the quality from “Low” to a higher grade (see below for the grading system used in these Guidelines).
+
+Quality also reflects the likelihood that the conclusions of the study or studies will affect the confidence of the recommendation being made and whether further research is likely to affect that confidence.
+
+For these Guidelines, RAND reviewed the available scientific literature and assessed the quality of the evidence relating to each key question provided by the Expert Panel and NIAID. Using the Grading of Recommendations Assessment, Development and Evaluation (GRADE) approach, RAND provided a grade of high, moderate, or low as a measure of the quality of evidence, according to the following criteria:
+
+High—Further research is very unlikely to have an impact on the quality of the body of evidence, and therefore the confidence in the recommendation is high and unlikely to change.
+
+• Moderate—Further research is likely to have an impact on the quality of the body of evidence and may change the recommendation.
+
+• Low—Further research is very likely to have an important impact on the body of evidence and is likely to change the recommendation.
+
+Assessment of the quality of evidence does not necessarily question the veracity of the scientific results in the papers reviewed, although serious limitations in study quality would result in a lowering of the quality grade. Similarly, the quality grade does not necessarily question the accuracy of the methods used to generate the scientific results. A guideline with a GRADE rating of “Low” indicates that the objective features of the relevant clinical studies were low. However, the conclusions of the studies are presumed to be correct (in the absence of clear bias, lack of appropriate contrails, or methodological deficiencies) and the data presumed to have been generated and reported accurately.
+
+## Appendix D. Summary Tables
+
+Table S-I  
+Food allergen cross-reactivity
+<table><tr><td>Ref #</td><td>Food group</td><td>Major allergens</td><td>Sensitization (%)</td><td>Clinical reactivity (%)</td><td>Comments</td><td></td></tr><tr><td>305-308</td><td>Avian and mammalian proteins</td><td>Milk: cow vs other</td><td>20-100</td><td>4-92</td><td></td><td>High cross- reactivity with goat,</td></tr><tr><td>Ref #</td><td>Food group</td><td>Major allergens</td><td>Sensitization (%)</td><td>Clinical reactivity (%)</td><td>Comments</td><td>sheep, and</td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td>buffalo milk Low cross- reactivity with mare, donkey, and camel milk</td></tr><tr><td>309-311</td><td></td><td>Milk vs beef/meat</td><td></td><td>10-20</td><td></td><td>Sensitization to bovine serum albumin is predictor</td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td>73-93% of children with beef allergy reactive to cow's milk</td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td>reactivity varies among species, but common</td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td>Bird-egg syndrome- sensitization to alpha- livetin Tropomyosins</td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td>are panallergens that also are responsible for cross- reactions to crustacea in those with dust mite and</td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td>cockroach allergy</td></tr><tr><td></td><td></td><td>Crustacea vs molluscsa Molluscsa vs molluscsa</td><td>47</td><td> $1 4 ^ { ^ { * } }$   ${ 4 9 } ^ { * }$ </td><td></td><td></td></tr><tr><td>33,317-320</td><td>Fish</td><td>Codfish vs other fish</td><td>5-100</td><td>30-75</td><td></td><td>Gad c 1 (codfish parvalbumin) is panallergen</td></tr><tr><td>61,321-323</td><td>Tree nuts</td><td>Tree nut vs other tree nut</td><td>92</td><td> $1 2 { - } 3 7 ^ { * }$ </td><td></td><td>Higher serum IgE correlations between cashew and pistachio and</td></tr><tr><td>321,322</td><td></td><td>Tree nuts vs peanut</td><td>59-86</td><td>33-34*</td><td></td><td>pecan and walnut Higher sIgE</td></tr></table>
+
+J Allergy Clin Immunol. Author manuscript; available in PMC 2014 November 24.
+
+<table><tr><td>Ref #</td><td>Food group</td><td>Major allergens</td><td>Sensitization (%)</td><td>Clinical reactivity (%)</td><td>Comments</td><td>with almond</td></tr><tr><td>57,324-327</td><td>Legumes</td><td>Peanut vs soy (other)</td><td>19-79</td><td>3-5; (28-30)†</td><td></td><td>and hazelnut Sensitization</td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td>to lentils and chick peas may be associated with increased chance for multiple legume allergy</td></tr><tr><td>328,329</td><td>Cereals</td><td>Wheat vs other</td><td>47-88</td><td>21</td><td></td><td>Most available data from patients with atopic dermatitis</td></tr></table>
+
+Percentage based on reported clinical reactions and not systematically evaluated by double-blind, placebo-controlled food challenge (DBPCFC).  
+Represents DBPCFC data for lupine challenge in peanut-sensitized patients.
+
+Table S-II Peanut allergy prevalence studies
+<table><tr><td>Ref #</td><td>Age (years)</td><td>Country</td><td>Prevalence (%)</td><td>Sensitized (%)</td><td>Oral challenge + SPT</td></tr><tr><td>330</td><td>1-65</td><td>US</td><td>0.6% (71/12,032)</td><td>一</td><td>-</td></tr><tr><td>330</td><td>1-65</td><td>US</td><td>0.6% (84/13,493)</td><td></td><td></td></tr><tr><td>331</td><td>1-85</td><td>US</td><td>-</td><td>7.6% (625/8203)</td><td>-</td></tr><tr><td>332</td><td>20-45</td><td>Australia</td><td></td><td></td><td>0.6% (7/1,141)</td></tr><tr><td>333</td><td>2-14</td><td>France</td><td>0.7% (20/2,716)</td><td></td><td></td></tr><tr><td>334</td><td>9-11</td><td>France</td><td>0.3% (21/6,672)</td><td>1.1% (70/6672)</td><td></td></tr><tr><td>335</td><td>25-74</td><td>Germany</td><td>2.1% (33/1,537)</td><td>11.1% (170/1537)</td><td>-</td></tr><tr><td>336</td><td>0-2</td><td>Israel</td><td>0.06% (6/9,040)</td><td></td><td>0.04% (4/9,040)</td></tr><tr><td>337</td><td>13-21</td><td>Sweden</td><td>5.9% (86/1,451)</td><td></td><td>一</td></tr><tr><td>338</td><td>4</td><td>UK</td><td></td><td>1.1% (13/1218)</td><td>0.5% (6/1,218)</td></tr><tr><td>339</td><td>3-4</td><td>UK</td><td>1.0% (13/1,273)</td><td>3.3% (41/1246)</td><td>1.4% (18/1,246)</td></tr><tr><td>340</td><td>3</td><td>UK</td><td></td><td>2.0% (13/642)</td><td>1.2% (11/891)</td></tr><tr><td>341</td><td>6</td><td>UK</td><td>1.9% (15 of 798)</td><td>2.6% (18/700)</td><td>0.8% (6/798)</td></tr><tr><td>342</td><td>11</td><td>UK</td><td>1.8% (14/775)</td><td>3.7% (26/699)</td><td>1% (8/775)</td></tr><tr><td>342</td><td>15</td><td>UK</td><td>2.5% (19/757)</td><td>2.6% (17/649)</td><td>0.8% (6/757)</td></tr><tr><td>343</td><td>4-18</td><td>UK</td><td>UK: 1.9% (73/3,943)</td><td></td><td>-</td></tr><tr><td colspan="3"></td><td>Israel: 0.2% (8/4,657)</td><td></td><td></td></tr></table>
+
+SPT, skin prick test.
+
+Table S-III Tree nut allergy prevalence studies
+<table><tr><td>Ref #</td><td>Age (years)</td><td>Country</td><td>Prevalence (%)</td><td>Sensitized</td><td>Oral challenge + SPT</td></tr><tr><td>330</td><td>1-65</td><td>US</td><td>0.5% (64/12,032)</td><td></td><td>-</td></tr><tr><td>330</td><td>1-65</td><td>US</td><td>0.4% (57/13,493)</td><td>=</td><td>-</td></tr><tr><td>333</td><td>2-14</td><td>France</td><td>0.7% (19/2,716)</td><td></td><td>-</td></tr><tr><td>335</td><td>25-74</td><td>Germany</td><td>8.5% (130/1,537)</td><td>17.8% (274/1,537)</td><td>-</td></tr><tr><td>336</td><td>0-2</td><td>Israel</td><td>0.03% (3/9,040)</td><td>1</td><td>0.02% (2/9,040)</td></tr><tr><td>337</td><td>13-21</td><td>Sweden</td><td>4.1% (60/1,451)</td><td></td><td>-</td></tr><tr><td>338</td><td>4</td><td>UK</td><td></td><td>0.2% (2/1,218)</td><td>0.2% (2/1,218)</td></tr><tr><td>340</td><td>3</td><td>UK</td><td>-</td><td>1</td><td>0.7% (6/891)</td></tr><tr><td>341</td><td>6</td><td>UK</td><td>1.4% (11/798)</td><td>1</td><td>0.4% (3 of 798)</td></tr><tr><td>342</td><td>11</td><td>UK</td><td>1.2% (9/775)</td><td></td><td></td></tr><tr><td>342</td><td>15</td><td>UK</td><td>2.2% (17/757)</td><td></td><td></td></tr></table>
+
+SPT, skin prick test.
+
+Table S-IV US studies of the natural history of EoE
+<table><tr><td>Ref #</td><td>Clinical site</td><td>Sample size</td><td>Years of study</td><td></td><td colspan="2">Population characteristics</td><td>Sensitization</td><td colspan="2"></td></tr><tr><td>77</td><td>Cincinnati Children&#x27;s Hospital</td><td>89 (57 to data follow-</td><td>1997-2004</td><td></td><td colspan="2">Male 79%</td><td>39% to egg</td><td></td><td>14% re</td></tr><tr><td></td><td></td><td>up)</td><td></td><td></td><td colspan="2">White 94%</td><td>39% to</td><td></td><td>53% re with re</td></tr><tr><td></td><td></td><td></td><td></td><td></td><td colspan="2">Age at diagnosis:</td><td>peanut</td><td></td><td>33% p</td></tr><tr><td></td><td></td><td></td><td></td><td></td><td colspan="2">Mean 6</td><td>34% to soy</td><td></td><td>77% h</td></tr><tr><td></td><td></td><td></td><td></td><td></td><td colspan="2">years</td><td></td><td></td><td>mucos</td></tr><tr><td></td><td></td><td></td><td></td><td></td><td colspan="2">Mode</td><td>beans</td><td>29% to</td><td>eosino non-</td></tr><tr><td></td><td></td><td></td><td></td><td></td><td colspan="2">1</td><td></td><td></td><td>eosino</td></tr><tr><td></td><td></td><td></td><td></td><td></td><td colspan="2">year</td><td>milk</td><td>29% to</td><td>histop in ston</td></tr><tr><td></td><td></td><td></td><td></td><td></td><td colspan="2"></td><td></td><td>29% to</td><td>duoder</td></tr><tr><td></td><td></td><td></td><td></td><td></td><td colspan="2"></td><td>pea</td><td></td><td>and co</td></tr><tr><td></td><td></td><td></td><td></td><td></td><td colspan="2"></td><td>mustard</td><td>26% to</td><td></td></tr><tr><td>78</td><td>Mayo Clinic</td><td>71</td><td>1992-2003</td><td></td><td colspan="2">Male 65%</td><td>60% of patients had food allergies; most</td><td></td><td>17 of 2 patient</td></tr><tr><td></td><td></td><td></td><td></td><td></td><td colspan="2">Age at diagnosis:</td><td>common foods:</td><td></td><td>treated flutica</td></tr><tr><td></td><td></td><td></td><td></td><td></td><td colspan="2">Mean 10.5</td><td>Milk</td><td></td><td>had “c</td></tr><tr><td></td><td></td><td></td><td></td><td></td><td colspan="2">years</td><td></td><td>Peanuts</td><td>respon</td></tr><tr><td></td><td></td><td></td><td></td><td></td><td colspan="2">Mode 12</td><td>Soy</td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td colspan="2">years</td><td>beans</td><td></td><td></td></tr><tr><td>79</td><td>Children&#x27;s Hospital of</td><td>562</td><td></td><td></td><td colspan="2"></td><td></td><td></td><td></td></tr><tr><td></td><td>Philadelphia</td><td></td><td>1996-2006</td><td></td><td colspan="2">Male 75%</td><td>17% to milk</td><td></td><td>2% res</td></tr><tr><td></td><td></td><td></td><td></td><td></td><td colspan="2">White 90%</td><td></td><td></td><td>6% pa</td></tr><tr><td></td><td></td><td></td><td></td><td></td><td colspan="2"></td><td>11% to</td><td></td><td>resolut</td></tr><tr><td></td><td></td><td></td><td></td><td></td><td colspan="2">Age at diagnosis:</td><td>egg</td><td></td><td>0%</td></tr></table>
+
+J Allergy Clin Immunol. Author manuscript; available in PMC 2014 November 24.
+
+<table><tr><td>Ref #</td><td>Clinical site</td><td>Sample size</td><td>Years of study</td><td>Population characteristics</td><td></td><td>Sensitization</td><td></td><td>Clinical EoE</td></tr><tr><td></td><td></td><td></td><td></td><td></td><td>Mean 6</td><td></td><td>10% to wheat</td><td>eosino colon</td></tr><tr><td></td><td></td><td></td><td></td><td></td><td>years</td><td></td><td></td><td>stomac</td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>8% to</td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td>Mode</td><td></td><td>soy</td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td>1 to 3</td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td>years</td><td></td><td>8% to corn</td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>5% to</td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>peanut</td><td></td></tr></table>
+
+EoE, Eosinophilic esophagitis.
+
+Table S-V  
+RCTs of specialized formulas for infants and young children
+<table><tr><td>Ref #</td><td>Study quality</td><td colspan="2">Experimental intervention description</td><td>Control</td><td>Timing info</td><td>Experimental sample size</td><td></td><td>Control s</td></tr><tr><td rowspan="4">235,236</td><td rowspan="4">Good</td><td>Received one of these formulas:</td><td rowspan="4">Cow&#x27;s milk infant formula</td><td rowspan="4"></td><td rowspan="4">6 years</td><td></td><td>557 pHF-W</td><td rowspan="4">556</td></tr><tr><td>pHF-W</td><td></td><td>559 eHF-W</td></tr><tr><td>eHF-W</td><td rowspan="2"></td><td rowspan="2"></td><td rowspan="2">580 eHF-C</td></tr><tr><td>eHF-C</td></tr><tr><td rowspan="4">344</td><td rowspan="4">Fair</td><td>Lactating mothers and infants on elimination diets for cow&#x27;s milk, egg,</td><td rowspan="4">Continued breast milk for &gt;9 months. Lactating mothers and</td><td rowspan="4"></td><td rowspan="4">18 months</td><td rowspan="4"></td><td rowspan="4">32 eHF-W 39 CMF</td><td rowspan="4">20</td></tr><tr><td rowspan="3">and fish, then assigned to either:</td></tr><tr><td>eHF-W</td></tr><tr><td>CMF</td></tr><tr><td rowspan="4">345</td><td rowspan="4"></td><td rowspan="4"></td><td rowspan="4">Infants received a</td><td rowspan="4"></td><td></td><td></td><td rowspan="4"></td><td rowspan="4"></td></tr><tr><td>Evaluated</td></tr><tr><td>4-5 months</td><td>20 eHF 22 pHF</td></tr><tr><td>intervention and again at 12 months</td><td>32 BMF</td></tr><tr><td></td><td></td><td>Formula made from chicken meat</td><td>Soy infant formula</td><td>14 days</td><td></td><td></td><td></td></tr></table>
+
+<table><tr><td>Ref #</td><td>Study quality</td><td>Experimental intervention description</td><td>Control</td><td>Timing info</td><td>Experimental sample size</td><td>Control s</td></tr><tr><td>347</td><td>Good</td><td>Hypoallergenic formula supplemented with a mixture of short-and long-chain oligosaccharides</td><td>Hypoaller-genic infant formula without the added supplement</td><td>2 years</td><td>66</td><td>68</td></tr></table>
+
+BMF, fortified breast milk; CMF, cow's milk formula; eHF, extensively hydrolyzed infant formula; eHF-C, extensively hydrolyzed casein formula; eHF-W, extensively hydrolyzed whey formula; pHF, partially hydrolyzed formula; pHF-W, partially hydrolyzed whey formula; RCT, randomized clinical trial; SPT, skin prick test.
+
+## Appendix E. Sample Anaphylaxis Emergency Action Plan
+
+Anaphylaxis Emergency Action Plan (adapted from JACI publications†)
+
+NAME: AGE:
+
+ALLERGY TO:
+
+Asthma: Yes (high risk for severe reaction) No
+
+Other health problems besides anaphylaxis:
+
+Concurrent medications, if any:
+
+Wear medical identification jewelry that identifies the anaphylaxis potential and the food
+
+allergen triggers.
+
+## SYMPTOMS OF ANAPHYLAXIS INCLUDE:
+
+• MOUTH itching, swelling of lips and/or tongue
+
+• SKIN itching, hives, redness, swelling
+
+• THROAT\* itching, tightness/closure, hoarseness
+
+• GUT vomiting, diarrhea, cramps
+
+• LUNG\* shortness of breath, cough, wheeze
+
+• HEART\* weak pulse, dizziness, passing out
+
+Only a few symptoms may be present. Severity of symptoms can change quickly
+
+\* Some symptoms can be life-threatening! ACT FAST!
+
+## WHAT TO DO:
+
+1. INJECT EPINEPHRINE IN THIGH USING (check one):
+
+EpiPen Jr (0.15 mg)
+
+Adrenaclick 0.15 mg
+
+EpiPen (0.3 mg)
+
+Adrenaclick 0.30 mg
+
+\*\* Patients should be allowed to self-carry and self-administer epinephrine.
+
+Other medication/dose/route:
+
+IMPORTANT: Asthma inhalers and/or antihistamines can't be depended on in anaphylaxis!
+
+2. CALL 911 or RESCUE SQUAD (before calling contacts)!
+
+3. EMERGENCY CONTACTS
+
+#1: home work cell
+
+#2: home work cell
+
+#3: home work cell
+
+DO NOT HESITATE TO GIVE EPINEPHRINE!
+
+COMMENTS:
+
+Doctor's Signature/Date Parent's Signature (for individuals under age 18 yrs)/Date
+
+† Adapted from J Allergy Clin Immunol 1998; 102:173-176 and J Allergy Clin Immunol 2006;117:367-377.
+
+## Appendix F. Additional Resources
+
+Allergy & Asthma Network Mothers of Asthmatics (AANMA)
+
+http://www.aanma.org/
+
+American Academy of Allergy, Asthma & Immunology (AAAAI)
+
+http://www.aaaai.org/
+
+American College of Allergy, Asthma and Immunology (ACAAI)
+
+http://www.acaai.org/
+
+Association of Asthma Educators (AAE)
+
+http://www.asthmaeducators.org/
+
+Asthma and Allergy Foundation of America (AAFA)
+
+http://www.aafa.org/
+
+Coalition of Skin Disease
+
+http://www.coalitionofskindiseases.org/
+
+The EuroPrevall Project
+
+www.europrevall.org/
+
+Food Allergy & Anaphylaxis Network (FAAN)
+
+J Allergy Clin Immunol. Author manuscript; available in PMC 2014 November 24.
+
+http://www.foodallergy.org/
+
+Food Allergy Initiative (FAI)
+
+http://www.faiusa.org/
+
+Immune Deficiency Foundation (IDF)
+
+http://www.primaryimmune.org/
+
+The Itchy Kids Club
+
+http://www.itchykidsclub.com
+
+Kids With Food Allergies (KFA)
+
+http://www.kidswithfoodallergies.org/
+
+National Eczema Association (NEA)
+
+http://www.nationaleczema.org/
+
+National Institute of Allergy and Infectious Diseases (NIAID)
+
+http://www.niaid.nih.gov/
+
+Northwestern University Eczema Care & Education Center
+
+http://www.eczemacarecenter.com
+
+Rady’s Children’s Hospital Eczema Center
+
+http://www.eczemacenter.org/eczema\_center/
+
+## Related guidelines of interest
+
+American Gastroenterological Association (AGA) Institute Medical Position Statement on the Diagnosis and Management of Celiac Disease
+
+http://www.gastrojournal.org/article/S0016-5085(06)02226-8/fulltext/
+
+American Gastroenterological Association (AGA) Institute Technical Review on the Diagnosis and Management of Celiac Disease
+
+http://www.gastrojournal.org/article/S0016-5085(06)02227-X/fulltext/
+
+Guidelines for the Diagnosis and Management of Asthma (EPR-3)
+
+http://www.nhlbi.nih.gov/guidelines/asthma/
+
+J Allergy Clin Immunol. Author manuscript; available in PMC 2014 November 24.
+
+Guideline for the Diagnosis and Treatment of Celiac Disease in Children: Recommendations of the North American Society for Pediatric Gastroenterology, Hepatology and Nutrition
+
+http://www.naspghan.org/user-assets/Documents/pdf/PositionPapers/ celiac\_guideline\_2004\_jpgn.pdf
+
+Eosinophilic Esophagitis in Children and Adults: A Systematic Review and Consensus Recommendations for Diagnosis and Treatment: Sponsored by the American Gastroenterological Association (AGA) Institute and North American Society of Pediatric Gastroenterology, Hepatology and Nutrition
+
+http://www.gastrojournal.org/article/PIIS0016508507014746/fulltext
+
+World Allergy Organization (WAO) Diagnosis and Rationale for Action against Cow’s Milk Allergy (DRACMA) Guidelines
+
+http://journals.lww.com/waojournal/Fulltext/2010/04000/ World\_Allergy\_Organization\_\_WAO\_\_Diagnosis\_and.1.aspx
+
+National Guidelines Clearinghouse
+
+A public resource for evidence-based clinical practice guidelines
+
+http://www.guidelines.gov/
+
+## References
+
+The asterisks (\*) denote supplementary publications not included in the RAND evidence report, but included by the EP because they provide valuable additional information.
+
+1. Branum AM, Lukacs SL. Food allergy among children in the United States. Pediatrics. 2009 Dec; 124(6):1549–55. [PubMed: 19917585]
+
+2\*. Hill ID, Dirks MH, Liptak GS, Colletti RB, Fasano A, Guandalini S, et al. Guideline for the diagnosis and treatment of celiac disease in children: recommendations of the North American Society for Pediatric Gastroenterology, Hepatology and Nutrition. J Pediatr Gastroenterol Nutr. 2005 Jan; 40(1):1–19. [PubMed: 15625418]
+
+3\*. Rostom A, Murray JA, Kagnoff MF. American Gastroenterological Association (AGA) Institute technical review on the diagnosis and management of celiac disease. Gastroenterology. 2006 Dec; 131(6):1981–2002. [PubMed: 17087937]
+
+4. Fiocchi A, Brozek J, Schünemann H, Bahna S, von Berg A, Beyer K, et al. World Allergy Organization (WAO) Diagnosis and Rationale for Action against Cow's Milk Allergy (DRACMA) Guidelines. World Allergy Organization Journal. 2010; 3(4):57–161. [PubMed: 23268426]
+
+5. Chapman JA, Bernstein IL, Lee RE, Oppenheimer J. Food allergy: A practice parameter. Ann Allergy Asthma Immunol. 2006 Mar; 96(3 Suppl 2):S1–68. [PubMed: 16597066]
+
+6. Chafen, JJ.; Newberry, S.; Riedl, M.; Bravata, DM.; Maglione, M.; Suttorp, M., et al. RAND Corporation. RAND working paper, prepared for the National Institute of Allergy and Infectious Diseases. Santa Monica (CA): RAND Corporation; 2010. Prevalence, natural history, diagnosis, and treatment of food allergy: a systematic review of the evidence. Available from: http:// www.rand.org/pubs/working\_papers/WR757-1/
+
+7\*. Chafen JJ, Newberry SJ, Riedl MA, Bravata DM, Maglione M, Suttorp MJ, et al. Diagnosing and managing common food allergies: a systematic review. JAMA. 2010 May 12; 303(18):1848–56. [PubMed: 20460624]
+
+8. GRADE working group. 2000-present. InternetAvailable from: http://www.gradeworkinggroup.org/
+
+9. Schunemann HJ, Oxman AD, Brozek J, Glasziou P, Jaeschke R, Vist GE, et al. Grading quality of evidence and strength of recommendations for diagnostic tests and strategies. BMJ. 2008 May 17; 336(7653):1106–10. [PubMed: 18483053]
+
+10\*. Brozek JL, Akl EA, Jaeschke R, Lang DM, Bossuyt P, Glasziou P, et al. GRADE Working Group. Grading quality of evidence and strength of recommendations in clinical practice guidelines: Part 2 of 3. The GRADE approach to grading quality of evidence about diagnostic tests and strategies. Allergy. 2009; 64(8):1109–16. [PubMed: 19489757]
+
+11\*. Hefle SL, Nordlee JA, Taylor SL. Allergenic foods. Crit Rev Food Sci Nutr. 1996; 36 Suppl:S69– 89. [PubMed: 8959379]
+
+12\*. Sampson HA, Munoz-Furlong A, Bock SA, Schmitt C, Bass R, Chowdhury BA, et al. Symposium on the definition and management of anaphylaxis: summary report. J Allergy Clin Immunol. 2005 Mar; 115(3):584–91. [PubMed: 15753908]
+
+13\*. Nowak-Wegrzyn A, Sampson HA, Wood RA, Sicherer SH. Food protein-induced enterocolitis syndrome caused by solid food proteins. Pediatrics. 2003 Apr; 111(4 Pt 1):829–35. [PubMed: 12671120]
+
+14. Jones, SM. The spectrum of allergic reactions to foods. In: Metcalfe, DD.; Sampson, HA.; Simon, RA., editors. Food allergy: adverse reactions to foods and food additives. 4th. Malden (MA): Wiley-Blackwell; 2008. p. 101-9.
+
+15. Sicherer SH. Clinical aspects of gastrointestinal food allergy in childhood. Pediatrics. 2003 Jun; 111(6 Pt 3):1609–16. [PubMed: 12777600]
+
+16. Chehade M, Sampson HA. The role of lymphocytes in eosinophilic gastrointestinal disorders. Immunol Allergy Clin North Am. 2009 Feb; 29(1):149–58. xii. [PubMed: 19141350]
+
+17\*. Furuta GT, Liacouras CA, Collins MH, Gupta SK, Justinich C, Putnam PE, et al. Eosinophilic esophagitis in children and adults: a systematic review and consensus recommendations for diagnosis and treatment. Gastroenterology. 2007 Oct; 133(4):1342–63. [PubMed: 17919504]
+
+18\*. Rothenberg ME. Biology and treatment of eosinophilic esophagitis. Gastroenterology. 2009 Oct; 137(4):1238–49. [PubMed: 19596009]
+
+19. Burks W. Skin manifestations of food allergy. Pediatrics. 2003 Jun; 111(6 Pt 3):1617–24. [PubMed: 12777601]
+
+20\*. Lack G. Epidemiologic risks for food allergy. J Allergy Clin Immunol. 2008 Jun; 121(6):1331–6. [PubMed: 18539191]
+
+21\*. Marenholz I, Kerscher T, Bauerfeind A, Esparza-Gordillo J, Nickel R, Keil T, et al. An interaction between filaggrin mutations and early food sensitization improves the prediction of childhood asthma. J Allergy Clin Immunol. 2009 Apr; 123(4):911–6. [PubMed: 19348926]
+
+22\*. Leung DY. Our evolving understanding of the functional role of filaggrin in atopic dermatitis. J Allergy Clin Immunol. 2009 Sep; 124(3):494–5. [PubMed: 19733296]
+
+23. van den Oord RA, Sheikh A. Filaggrin gene defects and risk of developing allergic sensitisation and allergic disorders: systematic review and meta-analysis. BMJ. 2009; 339:b2433. [PubMed: 19589816]
+
+24\*. Rowlands D, Tofte SJ, Hanifin JM. Does food allergy cause atopic dermatitis? Food challenge testing to dissociate eczematous from immediate reactions. Dermatol Ther. 2006 Mar; 19(2):97– 103. [PubMed: 16669992]
+
+25\*. Warshaw EM, Belsito DV, DeLeo VA, Fowler JF Jr, Maibach HI, Marks JG, et al. North American Contact Dermatitis Group patch-test results, 2003-2004 study period. Dermatitis. 2008 May; 19(3):129–36. [PubMed: 18627684]
+
+26\*. James JM. Respiratory manifestations of food allergy. Pediatrics. 2003 Jun; 111(6 Pt 3):1625–30. [PubMed: 12777602]
+
+27\*. Amado A, Jacob SE. Contact dermatitis caused by foods. Actas Dermosifiliogr. 2007 Sep; 98(7): 452–8. [PubMed: 17669298]
+
+28\*. del Savio B, Sherertz EF. Is allergic contact dermatitis being overlooked? Arch Fam Med. 1994 Jun; 3(6):537–43. [PubMed: 8081533]
+
+29. Sicherer SH, Munoz-Furlong A, Sampson HA. Prevalence of peanut and tree nut allergy in the United States determined by means of a random digit dial telephone survey: a 5-year follow-up study. J Allergy Clin Immunol. 2003 Dec; 112(6):1203–7. [PubMed: 14657884]
+
+30. Rona RJ, Keil T, Summers C, Gislason D, Zuidmeer L, Sodergren E, et al. The prevalence of food allergy: a meta-analysis. J Allergy Clin Immunol. 2007 Sep; 120(3):638–46. [PubMed: 17628647]
+
+31. Zuidmeer L, Goldhahn K, Rona RJ, Gislason D, Madsen C, Summers C, et al. The prevalence of plant food allergies: a systematic review. J Allergy Clin Immunol. 2008 May; 121(5):1210–8. [PubMed: 18378288]
+
+32. Luccioli S, Ross M, Labiner-Wolfe J, Fein SB. Maternally reported food allergies and other foodrelated health problems in infants: characteristics and associated factors. Pediatrics. 2008; 122(Suppl 2):S105–12. [PubMed: 18829825]
+
+33. Sicherer SH, Munoz-Furlong A, Sampson HA. Prevalence of seafood allergy in the United States determined by a random telephone survey. J Allergy Clin Immunol. 2004; 114:159–65. [PubMed: 15241360]
+
+34\*. Host A, Halken S. A prospective study of cow milk allergy in Danish infants during the first 3 years of life. Clinical course in relation to clinical and immunological type of hypersensitivity reaction. Allergy. 1990 Nov; 45(8):587–96. [PubMed: 2288394]
+
+35\*. Eggesbo M, Halvorsen R, Tambs K, Botten G. Prevalence of parentally perceived adverse reactions to food in young children. Pediatr Allergy Immunol. 1999 May; 10(2):122–32. [PubMed: 10478614]
+
+36. Eggesbo M, Botten G, Halvorsen R, Magnus P. The prevalence of allergy to egg: a populationbased study in young children. Allergy. 2001 May; 56(5):403–11. [PubMed: 11350303]
+
+37. Eggesbo M, Botten G, Halvorsen R, Magnus P. The prevalence of CMA/CMPI in young children: the validity of parentally perceived reactions in a population-based study. Allergy. 2001 May; 56(5):393–402. [PubMed: 11350302]
+
+38. Mulla ZD, Simon MR. Hospitalizations for anaphylaxis in Florida: epidemiologic analysis of a population-based dataset. Int Arch Allergy Immunol. 2007; 144(2):128–36. [PubMed: 17536221]
+
+39. Ross MP, Ferguson M, Street D, Klontz K, Schroeder T, Luccioli S. Analysis of food-allergic and anaphylactic events in the National Electronic Injury Surveillance System. J Allergy Clin Immunol. 2008 Jan; 121(1):166–71. [PubMed: 18206508]
+
+40. Clark S, Bock SA, Gaeta TJ, Brenner BE, Cydulka RK, Camargo CA. Multicenter study of emergency department visits for food allergies. J Allergy Clin Immunol. 2004 Feb; 113(2):347– 52. [PubMed: 14767453]
+
+41. Decker WW, Campbell RL, Manivannan V, Luke A, St Sauver JL, Weaver A, et al. The etiology and incidence of anaphylaxis in Rochester, Minnesota: a report from the Rochester Epidemiology Project. J Allergy Clin Immunol. 2008 Dec; 122(6):1161–5. [PubMed: 18992928]
+
+42. Lin RY, Anderson AS, Shah SN, Nurruzzaman F. Increasing anaphylaxis hospitalizations in the first 2 decades of life: New York State, 1990-2006. Ann Allergy Asthma Immunol. 2008 Oct; 101(4, 6):387–93. [PubMed: 18939727]
+
+43\*. Sicherer SH, Furlong TJ, Munoz-Furlong A, Burks AW, Sampson HA. A voluntary registry for peanut and tree nut allergy: characteristics of the first 5149 registrants. J Allergy Clin Immunol. 2001 Jul; 108(1):128–32. [PubMed: 11447394]
+
+44. Skolnick HS, Conover-Walker MK, Koerner CB, Sampson HA, Burks W, Wood RA. The natural history of peanut allergy. J Allergy Clin Immunol. 2001 Feb; 107(2):367–74. [PubMed: 11174206]
+
+45. Skripak JM, Matsui EC, Mudd K, Wood RA. The natural history of IgE-mediated cow's milk allergy. J Allergy Clin Immunol. 2007 Nov; 120(5):1172–7. [PubMed: 17935766]
+
+46. Sampson HA, Scanlon SM. Natural history of food hypersensitivity in children with atopic dermatitis. J Pediatr. 1989 Jul; 115(1):23–7. [PubMed: 2738792]
+
+47. Eigenmann PA, Sicherer SH, Borkowski TA, Cohen BA, Sampson HA. Prevalence of IgEmediated food allergy among children with atopic dermatitis. Pediatrics. 1998 Mar.101(3):E8. [PubMed: 9481027]
+
+48\*. Thompson MM, Tofte SJ, Simpson EL, Hanifin JM. Patterns of care and referral in children with atopic dermatitis and concern for food allergy. Dermatol Ther. 2006 Mar; 19(2):91–6. [PubMed: 16669991]
+
+49\*. Simpson AB, Glutting J, Yousef E. Food allergy and asthma morbidity in children. Pediatr Pulmonol. 2007 Jun; 42(6):489–95. [PubMed: 17469157]
+
+50\*. Hattevig G, Kjellman B, Björksten B. Clinical symptoms and IgE responses to common food proteins and inhalants in the first 7 years of life. Clin Allergy. 1987 Nov; 17(6):571–8. [PubMed: 3436035]
+
+51\*. Boyano-Martinez T, García-Ara C, Díaz-Pena JM, Martin-Esteban M. Prediction of tolerance on the basis of quantification of egg white-specific IgE antibodies in children with egg allergy. J Allergy Clin Immunol. 2002 Aug; 110(2):304–9. [PubMed: 12170273]
+
+52. Savage JH, Matsui EC, Skripak JM, Wood RA. The natural history of egg allergy. J Allergy Clin Immunol. 2007 Dec; 120(6):1413–7. [PubMed: 18073126]
+
+53\*. Sampson HA. Food allergy. Part 1: immunopathogenesis and clinical disorders. J Allergy Clin Immunol. 1999 May; 103(5 Pt 1):717–28. [PubMed: 10329801]
+
+54. Shek LP, Soderstrom L, Ahlstedt S, Beyer K, Sampson HA. Determination of food specific IgE levels over time can predict the development of tolerance in cow's milk and hen's egg allergy. J Allergy Clin Immunol. 2004 Aug; 114(2):387–91. [PubMed: 15316521]
+
+55. Vander Leek TK, Liu AH, Stefanski K, Blacker B, Bock SA. The natural history of peanut allergy in young children and its association with serum peanut-specific IgE. J Pediatr. 2000 Dec; 137(6): 749–55. [PubMed: 11113829]
+
+56. Green TD, LaBelle VS, Steele PH, Kim EH, Lee LA, Mankad VS, et al. Clinical characteristics of peanut-allergic children: recent changes. Pediatrics. 2007 Dec; 120(6):1304–10. [PubMed: 18055680]
+
+57. Bock SA, Atkins FM. The natural history of peanut allergy. J Allergy Clin Immunol. 1989 May; 83(5):900–4. [PubMed: 2715549]
+
+58. Fleischer DM, Conover-Walker MK, Christie L, Burks AW, Wood RA. Peanut allergy: recurrence and its management. J Allergy Clin Immunol. 2004 Nov; 114(5):1195–201. [PubMed: 15536431]
+
+59\*. Savage JH, Limb SL, Brereton NH, Wood RA. The natural history of peanut allergy: Extending our knowledge beyond childhood. J Allergy Clin Immunol. 2007 Sep; 120(3):717–9. [PubMed: 17765758]
+
+60\*. Spergel JM, Beausoleil JL, Pawlowski NA. Resolution of childhood peanut allergy. Ann Allergy Asthma Immunol. 2000 Dec; 85(6 Pt 1):473–6. [PubMed: 11152168]
+
+61. Fleischer DM, Conover-Walker MK, Matsui EC, Wood RA. The natural history of tree nut allergy. J Allergy Clin Immunol. 2005 Nov; 116(5):1087–93. [PubMed: 16275381]
+
+62. Keet CA, Matsui EC, Dhillon G, Lenehan P, Paterakis M, Wood RA. The natural history of wheat allergy. Ann Allergy Asthma Immunol. 2009 May; 102(5):410–5. [PubMed: 19492663]
+
+63\*. Daul CB, Morgan JE, Lehrer SB. The natural history of shrimp hypersensitivity. J Allergy Clin Immunol. 1990 Jul; 86(1):88–93. [PubMed: 2370391]
+
+64\*. Savage JH, Kaeding AJ, Matsui EC, Wood RA. The natural history of soy allergy. J Allergy Clin Immunol. 2010 Mar; 125(3):683–6. [PubMed: 20226303]
+
+65\*. Webb LM, Lieberman P. Anaphylaxis: a review of 601 cases. Ann Allergy Asthma Immunol. 2006 Jul; 97(1):39–43. [PubMed: 16892779]
+
+66\*. Lam HY, van Hoffen E, Michelsen A, Guikers K, van der Tas CH, Bruijnzeel-Koomen CA, et al. Cow's milk allergy in adults is rare but severe: both casein and whey proteins are involved. Clin Exp Allergy. 2008 Jun; 38(6):995–1002. [PubMed: 18384430]
+
+67. Vogel NM, Katz HT, Lopez R, Lang DM. Food allergy is associated with potentially fatal childhood asthma. J Asthma. 2008 Dec; 45(10):862–6. [PubMed: 19085574]
+
+68. Berns SH, Halm EA, Sampson HA, Sicherer SH, Busse PJ, Wisnivesky JP. Food allergy as a risk factor for asthma morbidity in adults. J Asthma. 2007 Jun; 44(5):377–81. [PubMed: 17613633]
+
+69. Emery NL, Vollmer WM, Buist AS, Osborne ML. Self-reported food reactions and their associations with asthma. West J Nurs Res. 1996 Dec; 18(6):643–54. [PubMed: 9000872]
+
+70. Wang J, Visness CM, Sampson HA. Food allergen sensitization in inner-city children with asthma. J Allergy Clin Immunol. 2005 May; 115(5):1076–80. [PubMed: 15867869]
+
+71. Bock SA, Munoz-Furlong A, Sampson HA. Fatalities due to anaphylactic reactions to foods. J Allergy Clin Immunol. 2001 Jan; 107(1):191–3. [PubMed: 11150011]
+
+72. Sampson HA, Mendelson L, Rosen JP. Fatal and near-fatal anaphylactic reactions to food in children and adolescents. N Engl J Med. 1992 Aug 6; 327(6):380–4. [PubMed: 1294076]
+
+73. Bath-Hextall F, Delamere FM, Williams HC. Dietary exclusions for improving established atopic eczema in adults and children: systematic review. Allergy. 2009 Feb; 64(2):258–64. [PubMed: 19178405]
+
+74\*. Atherton DJ, Sewell M, Soothill JF, Wells RS, Chilvers CE. A double-blind controlled crossover trial of an antigen-avoidance diet in atopic eczema. Lancet. 1978 Feb 25; 1(8061):401–3. [PubMed: 75438]
+
+75. Agata H, Kondo N, Fukutomi O, Shinoda S, Orii T. Effect of elimination diets on food-specific IgE antibodies and lymphocyte proliferative responses to food antigens in atopic dermatitis patients exhibiting sensitivity to food allergens. J Allergy Clin Immunol. 1993 Feb; 91(2):668–79. [PubMed: 8436780]
+
+76. Lever R, MacDonald C, Waugh P, Aitchison T. Randomised controlled trial of advice on an egg exclusion diet in young children with atopic eczema and sensitivity to eggs. Pediatr Allergy Immunol. 1998 Feb; 9(1):13–9. [PubMed: 9560837]
+
+77. Assa'ad AH, Putnam PE, Collins MH, Akers RM, Jameson SC, Kirby CL, et al. Pediatric patients with eosinophilic esophagitis: an 8-year follow-up. J Allergy Clin Immunol. 2007 Mar; 119(3): 731–8. [PubMed: 17258309]
+
+78. Dauer EH, Freese DK, El-Youssef M, Thompson DM. Clinical characteristics of eosinophilic esophagitis in children. Ann Otol Rhinol Laryngol. 2005 Nov; 114(11):827–33. [PubMed: 16358601]
+
+79. Spergel JM, Brown-Whitehorn TF, Beausoleil JL, Franciosi J, Shuker M, Verma R, et al. 14 years of eosinophilic esophagitis: clinical features and prognosis. J Pediatr Gastroenterol Nutr. 2009 Jan; 48(1):30–6. [PubMed: 19172120]
+
+80. Spergel JM, Andrews T, Brown-Whitehorn TF, Beausoleil JL, Liacouras CA. Treatment of eosinophilic esophagitis with specific food elimination diet directed by a combination of skin prick and patch tests. Ann Allergy Asthma Immunol. 2005 Oct; 95(4):336–43. [PubMed: 16279563]
+
+81. Liacouras CA, Spergel JM, Ruchelli E, Verma R, Mascarenhas M, Semeao E, et al. Eosinophilic esophagitis: a 10-year experience in 381 children. Clin Gastroenterol Hepatol. 2005 Dec; 3(12): 1198–206. [PubMed: 16361045]
+
+82. Shadick NA, Liang MH, Partridge AJ, Bingham C, Wright E, Fossel AH, et al. The natural history of exercise-induced anaphylaxis: survey results from a 10-year follow-up study. J Allergy Clin Immunol. 1999 Jul; 104(1):123–7. [PubMed: 10400849]
+
+83. Malik V, Ghosh S, Woolford TJ. Rhinitis due to food allergies: fact or fiction? J Laryngol Otol. 2007 Jun; 121(6):526–9. [PubMed: 17156516]
+
+84\*. Hill DJ, Hosking CS, de Benedictis FM, Oranje AP, Diepgen TL, Bauchau V. Confirmation of the association between high levels of immunoglobulin E food sensitization and eczema in infancy: an international study. Clin Exp Allergy. 2008 Jan; 38(1):161–8. [PubMed: 18028467]
+
+85. Fox AT, Sasieni P, Du Toit G, Syed H, Lack G. Household peanut consumption as a risk factor for the development of peanut allergy. J Allergy Clin Immunol. 2009 Feb; 123(2):417–23. [PubMed: 19203660]
+
+86. Yunginger JW, Squillace DL, Jones RT, Helm RM. Fatal anaphylactic reactions induced by peanuts. Allergy Proc. 1989 Jul; 10(4):249–53. [PubMed: 2792750]
+
+87\*. Yunginger JW, Sweeney KG, Sturner WQ, Giannandrea LA, Teigland JD, Bray M, et al. Fatal food-induced anaphylaxis. JAMA. 1988 Sep 9; 260(10):1450–2. [PubMed: 3404604]
+
+88\*. Yu JW, Kagan R, Verreault N, Nicolas N, Joseph L, St Pierre Y, et al. Accidental ingestions in children with peanut allergy. J Allergy Clin Immunol. 2006 Aug; 118(2):466–72. [PubMed: 16890773]
+
+89\*. Greenhawt MJ, Singer AM, Baptist AP. Food allergy and food allergy attitudes among college students. J Allergy Clin Immunol. 2009 Aug; 124(2):323–7. [PubMed: 19560802]
+
+90. Eigenmann PA, Sicherer SH, Borkowski TA, Cohen BD, Sampson HA. Prevalence of IgEmediated food allergy among children with atopic dermatitis. Pediatr. 1998; 101:e8.
+
+91\*. Guillet G, Guillet MH. Natural history of sensitizations in atopic dermatitis. A 3-year follow-up in 250 children: food allergy and high risk of respiratory symptoms. Arch Dermatol. 1992 Feb; 128(2):187–92. [PubMed: 1739296]
+
+92\*. Romano A, Di Fonso M, Giuffreda F, Papa G, Artesani MC, Viola M, et al. Food-dependent exercise-induced anaphylaxis: clinical and laboratory findings in 54 subjects. Int Arch Allergy Immunol. 2001 Jul; 125(3):264–72. [PubMed: 11490160]
+
+93. Markowitz JE, Spergel JM, Ruchelli E, Liacouras CA. Elemental diet is an effective treatment for eosinophilic esophagitis in children and adolescents. Am J Gastroenterol. 2003 Apr; 98(4):777–82. [PubMed: 12738455]
+
+94\*. Raphael G, Raphael MH, Kaliner M. Gustatory rhinitis: a syndrome of food-induced rhinorrhea. J Allergy Clin Immunol. 1989 Jan; 83(1):110–5. [PubMed: 2643657]
+
+95\*. Sicherer SH, Sampson HA. Auriculotemporal syndrome: a masquerader of food allergy. J Allergy Clin Immunol. 1996 Mar; 97(3):851–2. [PubMed: 8613642]
+
+96\*. Russell FE, Maretic Z. Scombroid poisoning: mini-review with case histories. Toxicon. 1986; 24(10):967–73. [PubMed: 3824404]
+
+97. Sampson HA. Differential diagnosis in adverse reactions to foods. J Allergy Clin Immunol. 1986; 78:212–9. [PubMed: 3722648]
+
+98\*. Bock SA, Lee WY, Remigio LK, May CD. Studies of hypersensitivity reactions to foods in infants and children. J Allergy Clin Immunol. 1978 Dec; 62(6):327–34. [PubMed: 81844]
+
+99\*. Sampson HA. Food allergy. Part 2: diagnosis and management. J Allergy Clin Immunol. 1999 Jun; 103(6):981–9. [PubMed: 10359874]
+
+100\*. Niggemann B, Sielaff B, Beyer K, Binder C, Wahn U. Outcome of double-blind, placebocontrolled food challenge tests in 107 children with atopic dermatitis. Clin Exp Allergy. 1999 Jan; 29(1):91–6. [PubMed: 10051707]
+
+101. Bernstein IL, Li JT, Bernstein DI, Hamilton R, Spector SL, Tan R, et al. Allergy diagnostic testing: an updated practice parameter. Ann Allergy Asthma Immunol. 2008 Mar; 100(3 Suppl 3):S1–148.
+
+102\*. Bock SA, Buckley J, Holst A, May CD. Proper use of skin tests with food extracts in diagnosis of hypersensitivity to food in children. Clin Allergy. 1978; 8:559–64. [PubMed: 81723]
+
+103\*. Sampson HA, Albergo R. Comparison of results of skin tests, RAST, and double-blind, placebocontrolled food challenges in children with atopic dermatitis. J Allergy Clin Immunol. 1984 Jul; 74(1):26–33. [PubMed: 6547461]
+
+104. Saarinen KM, Suomalainen H, Savilahti E. Diagnostic value of skin-prick and patch tests and serum eosinophil cationic protein and cow's milk-specific IgE in infants with cow's milk allergy. Clin Exp Allergy. 2001 Mar; 31(3):423–9. [PubMed: 11260154]
+
+105\*. Sporik R, Hill DJ, Hosking CS. Specificity of allergen skin testing in predicting positive open food challenges to milk, egg and peanut in children. Clin Exp Allergy. 2000 Nov; 30(11):1540–6. [PubMed: 11069561]
+
+106\*. Verstege A, Mehl A, Rolinck-Werninghaus C, Staden U, Nocon M, Beyer K, et al. The predictive value of the skin prick test weal size for the outcome of oral food challenges. Clin Exp Allergy. 2005 Sep; 35(9):1220–6. [PubMed: 16164451]
+
+107\*. Pucar F, Kagan R, Lim H, Clarke AE. Peanut challenge: a retrospective study of 140 patients. Clin Exp Allergy. 2001 Jan; 31(1):40–6. [PubMed: 11167949]
+
+108\*. Ortolani C, Ispano M, Pastorello EA, Ansaloni R, Magri GC. Comparison of results of skin prick tests (with fresh foods and commercial food extracts) and RAST in 100 patients with oral allergy syndrome. J Allergy Clin Immunol. 1989 Mar; 83(3):683–90. [PubMed: 2926087]
+
+109\*. Rosen JP, Selcow JE, Mendelson LM, Grodofsky MP, Factor JM, Sampson HA. Skin testing with natural foods in patients suspected of having food allergies: is it a necessity? J Allergy Clin Immunol. 1994 Jun; 93(6):1068–70. [PubMed: 8006311]
+
+110\*. Commins SP, Satinover SM, Hosen J, Mozena J, Borish L, Lewis BD, et al. Delayed anaphylaxis, angioedema, or urticaria after consumption of red meat in patients with IgE
+
+antibodies specific for galactose-alpha-1,3-galactose. J Allergy Clin Immunol. 2009 Feb; 123(2): 426–33. [PubMed: 19070355]
+
+111\*. Mehl A, Verstege A, Staden U, Kulig M, Nocon M, Beyer K, et al. Utility of the ratio of foodspecific IgE/total IgE in predicting symptomatic food allergy in children. Allergy. 2005 Aug; 60(8):1034–9. [PubMed: 15969684]
+
+112. Wang J, Godbold JH, Sampson HA. Correlation of serum allergy (IgE) tests performed by different assay systems. J Allergy Clin Immunol. 2008 May; 121(5):1219–24. [PubMed: 18243289]
+
+113\*. Sampson HA, Ho DG. Relationship between food-specific IgE concentrations and the risk of positive food challenges in children and adolescents. J Allergy Clin Immunol. 1997 Oct; 100(4): 444–51. [PubMed: 9338535]
+
+114. Sampson HA. Utility of food-specific IgE concentrations in predicting symptomatic food allergy. J Allergy Clin Immunol. 2001 May; 107(5):891–6. [PubMed: 11344358]
+
+115. García-Ara C, Boyano-Martínez T, Díaz-Pena JM, Martin-Muñoz F, Reche-Frutos M, Martín-Esteban M. Specific IgE levels in the diagnosis of immediate hypersensitivity to cows' milk protein in the infant. J Allergy Clin Immunol. 2001 Jan; 107(1):185–90. [PubMed: 11150010]
+
+116\*. Clark AT, Ewan PW. Interpretation of tests for nut allergy in one thousand patients, in relation to allergy or tolerance. Clin Exp Allergy. 2003 Aug; 33(8):1041–5. [PubMed: 12911776]
+
+117\*. Fleischer DM, Conover-Walker MK, Christie L, Burks AW, Wood RA. The natural progression of peanut allergy: resolution and the possibility of recurrence. J Allergy Clin Immunol. 2003 Jul; 112(1):183–9. [PubMed: 12847497]
+
+118. Celik-Bilgili S, Mehl A, Verstege A, Staden U, Nocon M, Beyer K, et al. The predictive value of specific immunoglobulin E levels in serum for the outcome of oral food challenges. Clin Exp Allergy. 2005 Mar; 35(3):268–73. [PubMed: 15784102]
+
+119\*. Komata T, Soderstrom L, Borres MP, Tachimoto H, Ebisawa M. The predictive relationship of food-specific serum IgE concentrations to challenge outcomes for egg and milk varies by patient age. J Allergy Clin Immunol. 2007 May; 119(5):1272–4. [PubMed: 17337292]
+
+120\*. Perry TT, Matsui EC, Kay Conover-Walker M, Wood RA. The relationship of allergen-specific IgE levels and oral food challenge outcome. J Allergy Clin Immunol. 2004 Jul; 114(1):144–9. [PubMed: 15241358]
+
+121. Mehl A, Rolinck-Werninghaus C, Staden U, Verstege A, Wahn U, Beyer K, et al. The atopy patch test in the diagnostic workup of suspected food-related symptoms in children. J Allergy Clin Immunol. 2006 Oct; 118(4):923–9. [PubMed: 17030247]
+
+122. Spergel JM, Beausoleil JL, Mascarenhas M, Liacouras CA. The use of skin prick tests and patch tests to identify causative foods in eosinophilic esophagitis. J Allergy Clin Immunol. 2002 Feb; 109(2):363–8. [PubMed: 11842310]
+
+123. Isolauri E, Turjanmaa K. Combined skin prick and patch testing enhances identification of food allergy in infants with atopic dermatitis. J Allergy Clin Immunol. 1996 Jan; 97(1 Pt 1):9–15. [PubMed: 8568142]
+
+124. Keskin O, Tuncer A, Adalioglu G, Sekerel BE, Sackesen C, Kalayci O. Evaluation of the utility of atopy patch testing, skin prick testing, and total and specific IgE assays in the diagnosis of cow's milk allergy. Ann Allergy Asthma Immunol. 2005 May; 94(5):553–60. [PubMed: 15945559]
+
+125. Cudowska B, Kaczmarski M. Atopy patch test in the diagnosis of food allergy in children with atopic eczema dermatitis syndrome. Rocz Akad Med Bialymst. 2005; 50:261–7. [PubMed: 16358980]
+
+126. Bierman CW, Shapiro GG, Christie DL, et al. Eczema, rickets, and food allergy. J Allergy Clin Immunol. 1978; 61:119–27. [PubMed: 621348]
+
+127\*. David TJ, Waddington E, Stanton RH. Nutritional hazards of elimination diets in children with atopic eczema. Arch Dis Child. 1984 Apr; 59(4):323–5. [PubMed: 6721557]
+
+128\*. Lloyd-Still JD. Chronic diarrhea of childhood and the misuse of elimination diets. J Pediatr. 1979 Jul; 95(1):10–3. [PubMed: 479988]
+
+129\*. Sampson HA, Jolie PL. Increased plasma histamine concentrations after food challenges in children with atopic dermatitis. N Engl J Med. 1984 Aug 9; 311(6):372–6. [PubMed: 6204202]
+
+130\*. Sicherer SH, Morrow EH, Sampson HA. Dose-response in double-blind, placebo-controlled oral food challenges in children with atopic dermatitis. J Allergy Clin Immunol. 2000 Mar; 105(3): 582–6. [PubMed: 10719311]
+
+131\*. Hansen TK, Bindslev-Jensen C. Codfish allergy in adults. Identification and diagnosis. Allergy. 1992 Dec; 47(6):610–7. [PubMed: 1283656]
+
+132. Norgaard A, Bindslev-Jensen C. Egg and milk allergy in adults. Allergy. 1992; 47:503–9. [PubMed: 1283061]
+
+133. Nowak-Wegrzyn A, Assa'ad AH, Bahna SL, Bock SA, Sicherer SH, Teuber SS. Work Group report: oral food challenge testing. J Allergy Clin Immunol. 2009 Jun; 123(6 Suppl):S365–83. [PubMed: 19500710]
+
+134\*. Bock SA, Sampson HA, Atkins FM, Zeiger RS, Lehrer S, Sachs M, et al. Double-blind, placebo-controlled food challenge (DBPCFC) as an office procedure: a manual. J Allergy Clin Immunol. 1988 Dec; 82(6):986–97. [PubMed: 3060514]
+
+135\*. Sampson HA. Immunologically mediated food allergy: the importance of food challenge procedures. Ann Allergy. 1988 Mar; 60(3):262–9. [PubMed: 2894786]
+
+136. Niggemann B, Beyer K. Pitfalls in double-blind, placebo-controlled oral food challenges. Allergy. 2007 Jul; 62(7):729–32. [PubMed: 17573719]
+
+137\*. Bindslev-Jensen C, Ballmer-Weber BK, Bengtsson U, Blanco C, Ebner C, Knulst AC, et al. Standardization of food challenges in patients with immediate reactions to foods—position paper from the European Academy of Allergology and Clinical Immunology. Allergy. 2004; 59(7): 690–7. [PubMed: 15180754]
+
+138\*. Nolte H, Schiotz PO, Kruse A, Stahl SP. Comparison of intestinal mast cell and basophil histamine release in children with food allergic reactions. Allergy. 1989 Nov; 44(8):554–65. [PubMed: 2481985]
+
+139\*. Wanich N, Nowak-Wegrzyn A, Sampson HA, Shreffler WG. Allergen-specific basophil suppression associated with clinical tolerance in patients with milk allergy. J Allergy Clin Immunol. 2009 Apr; 123(4):789–94. [PubMed: 19348919]
+
+140. Tainio VM, Savilahti E. Value of immunologic tests in cow milk allergy. Allergy. 1990 Apr; 45(3):189–96. [PubMed: 2327558]
+
+141. Hoffman KM, Ho DG, Sampson HA. Evaluation of the usefulness of lymphocyte proliferation assays in the diagnosis of allergy to cow's milk. J Allergy Clin Immunol. 1997 Mar; 99(3):360–6. [PubMed: 9058692]
+
+142. Clark AT, Mangat JS, Tay SS, King Y, Monk CJ, White PA, et al. Facial thermography is a sensitive and specific method for assessing food challenge outcome. Allergy. 2007 Jul; 62(7): 744–9. [PubMed: 17573721]
+
+143. Hwang JB, Song JY, Kang YN, Kim SP, Suh SI, Kam S, et al. The significance of gastric juice analysis for a positive challenge by a standard oral challenge test in typical cow's milk proteininduced enterocolitis. J Korean Med Sci. 2008 Apr; 23(2):251–5. [PubMed: 18437008]
+
+144\*. Pollard H, Stuart G. Experimental reproduction of gastric allergy in human beings with controlled observations on the mucosa. J Allergy. 1942; 13:467–73.
+
+145\*. Reimann HJ, Ring J, Ultsch B, Wendt P. Intragastral provocation under endoscopic control (IPEC) in food allergy: mast cell and histamine changes in gastric mucosa. Clin Allergy. 1985 Mar; 15(2):195–202. [PubMed: 3995725]
+
+146. Bischoff SC, Herrmann A, Manns MP. Prevalence of adverse reactions to food in patients with gastrointestinal disease. Allergy. 1996 Nov; 51(11):811–8. [PubMed: 8947339]
+
+147. Spergel JM, Brown-Whitehorn T, Beausoleil JL, Shuker M, Liacouras CA. Predictive values for skin prick test and atopy patch test for eosinophilic esophagitis. J Allergy Clin Immunol. 2007 Feb; 119(2):509–11. [PubMed: 17291865]
+
+148\*. Sicherer SH, Eigenmann PA, Sampson HA. Clinical features of food protein-induced enterocolitis syndrome. J Pediatr. 1998 Aug; 133(2):214–9. [PubMed: 9709708]
+
+149\*. Powell GK. Food protein-induced enterocolitis of infancy: differential diagnosis and management. Compr Ther. 1986 Feb; 12(2):28–37. [PubMed: 3956146]
+
+150\*. Mehr S, Kakakios A, Frith K, Kemp AS. Food protein-induced enterocolitis syndrome: 16-year experience. Pediatrics. 2009 Mar; 123(3):e459–e464. [PubMed: 19188266]
+
+151\*. Burks AW, Casteel HB, Fiedorek SC, Williams LW, Pumphrey CL. Prospective oral food challenge study of two soybean protein isolates in patients with possible milk or soy protein enterocolitis. Pediatr Allergy Immunol. 1994 Feb; 5(1):40–5. [PubMed: 8173638]
+
+152\*. Lake AM. Food-induced eosinophilic proctocolitis. J Pediatr Gastroenterol Nutr. 2000; 30 Suppl:S58–60. [PubMed: 10634300]
+
+153. Sampson HA. Update on food allergy. J Allergy Clin Immunol. 2004 May; 113(5, 6):805–19. [PubMed: 15131561]
+
+154\*. Odze RD, Wershil BK, Leichtner AM, Antonioli DA. Allergic colitis in infants. J Pediatr. 1995 Feb; 126(2):163–70. [PubMed: 7844660]
+
+155. Xanthakos SA, Schwimmer JB, Melin-Aldana H, Rothenberg ME, Witte DP, Cohen MB. Prevalence and outcome of allergic colitis in healthy infants with rectal bleeding: a prospective cohort study. J Pediatr Gastroenterol Nutr. 2005 Jul; 41(1):16–22. [PubMed: 15990624]
+
+156\*. Savilahti E. Food-induced malabsorption syndromes. J Pediatr Gastroenterol Nutr. 2000; 30 Supp:S61–6. [PubMed: 10634301]
+
+157\*. Verkasalo M, Kuitunen P, Savilahti E, Tiilikainen A. Changing pattern of cow's milk intolerance. Acta Paediatr Scand. 1981; 70(3):289–95. [PubMed: 7195640]
+
+158\*. Nijhawan RI, Molenda M, Zirwas MJ, Jacob SE. Systemic contact dermatitis [review]. Dermatol Clin. 2009 Jul; 27(3):355–64. [PubMed: 19580929]
+
+159. Warshaw EM, Botto NC, Zug KA, Belsito DV, Maibach HI, Sasseville D, et al. Contact dermatitis associated with food: retrospective cross-sectional analysis of North American Contact Dermatitis Group data, 2001-2004. Dermatitis. 2008 Sep-Oct;19(5):252–60. [PubMed: 18845115]
+
+160\*. Wakelin SH. Contact urticaria. Clin Exp Dermatol. 2001 Mar; 26(2):132–6. [PubMed: 11298101]
+
+161\*. Chatchatee P, Jarvinen KM, Bardina L, Beyer K, Sampson HA. Identification of IgE- and IgGbinding epitopes on alpha(s1)-casein: differences in patients with persistent and transient cow's milk allergy. J Allergy Clin Immunol. 2001 Feb; 107(2):379–83. [PubMed: 11174208]
+
+162\*. Beyer K, Ellman-Grunther L, Jarvinen KM, Wood RA, Hourihane J, Sampson HA. Measurement of peptide-specific IgE as an additional tool in identifying patients with clinical reactivity to peanuts. J Allergy Clin Immunol. 2003 Jul; 112(1):202–7. [PubMed: 12847500]
+
+163\*. Nicolaou N, Poorafshar M, Murray C, Simpson A, Winell H, Kerry G, et al. Allergy or tolerance in children sensitized to peanut: prevalence and differentiation using component-resolved diagnostics. J Allergy Clin Immunol. 2010 Jan; 125(1):191–7. [PubMed: 20109746]
+
+164. Kramer MS, Kakuma R. Maternal dietary antigen avoidance during pregnancy or lactation, or both, for preventing or treating atopic disease in the child. Cochrane Database Syst Rev. 2006; (3):CD000133. [PubMed: 16855951]
+
+165. Bath-Hextall F, Delamere FM, Williams HC. Dietary exclusions for established atopic eczema. Cochrane Database Syst Rev. 2008 Jan.23(1):CD005203. [PubMed: 18254073]
+
+166\*. Christie L, Hine RJ, Parker JG, Burks W. Food allergies in children affect nutrient intake and growth. J Am Diet Assoc. 2002 Nov; 102(11):1648–51. [PubMed: 12449289]
+
+167\*. Tiainen JM, Nuutinen OM, Kalavainen MP. Diet and nutritional status in children with cow's milk allergy. Eur J Clin Nutr. 1995 Aug; 49(8):605–12. [PubMed: 7588511]
+
+168\*. Hefle SL, Taylor SL. Allergenicity of edible oils. Food Technol. 1999; 53:62–70.
+
+169. Haboubi NY, Taylor S, Jones S. Coeliac disease and oats: a systematic review. Postgrad Med J. 2006; 82(972):672–8. [PubMed: 17068278]
+
+170. Simons E, Weiss CC, Furlong TJ, Sicherer SH. Impact of ingredient labeling practices on food allergic consumers. Ann Allergy Asthma Immunol. 2005 Nov; 95(5):426–8. [PubMed: 16312164]
+
+171\*. Pieretti MM, Chung D, Pacenza R, Slotkin T, Sicherer SH. Audit of manufactured products: use of allergen advisory labels and identification of labeling ambiguities. J Allergy Clin Immunol. 2009 Aug; 124(2):337–41. [PubMed: 19596145]
+
+172. Weber TK, Speridião PG, Sdepanian VL, Neto UF, de Morais MB. The performance of parents of children receiving cow's milk free diets at identification of commercial food products with and without cow's milk. J Pediatr (Rio J). 2007 Sep; 83(5):459–64. [PubMed: 17940690]
+
+173. Vierk KA, Koehler KM, Fein SB, Street DA. Prevalence of self-reported food allergy in American adults and use of food labels. J Allergy Clin Immunol. 2007 Jun; 119(6):1504–10. [PubMed: 17451802]
+
+174. Noimark L, Gardner J, Warner JO. Parents' attitudes when purchasing products for children with nut allergy: a UK perspective. Pediatr Allergy Immunol. 2009 Aug; 20(5):500–4. [PubMed: 19538437]
+
+175. Cornelisse-Vermaat JR, Voordouw J, Yiakoumaki V, Theodoridis G, Frewer LJ. Food-allergic consumers' labelling preferences: a cross-cultural comparison. Eur J Public Health. 2008 Apr; 18(2):115–20. [PubMed: 17584733]
+
+176. Fleischer DM, Conover-Walker MK, Wood RA. The natural progression of peanut allergy. J Allergy Clin Immunol. 2003; 111(1 Suppl 2):S193.
+
+177. Konikoff MR, Noel RJ, Blanchard C, Kirby C, Jameson SC, Buckmeier BK, et al. A randomized, double-blind, placebo-controlled trial of fluticasone propionate for pediatric eosinophilic esophagitis. Gastroenterology. 2006 Nov; 131(5):1381–91. [PubMed: 17101314]
+
+178. Schaefer ET, Fitzgerald JF, Molleston JP, Croffie JM, Pfefferkorn MD, Corkins MR, et al. Comparison of oral prednisone and topical fluticasone in the treatment of eosinophilic esophagitis: a randomized trial in children. Clin Gastroenterol Hepatol. 2008 Feb; 6(2):165–73. [PubMed: 18237866]
+
+179. Bindslev-Jensen C, Vibits A, Stahl SP, Weeke B. Oral allergy syndrome: the effect of astemizole. Allergy. 1991 Nov; 46(8):610–3. [PubMed: 1724116]
+
+180. Burks AW, Sampson HA. Double-blind placebo-controlled trial of oral cromolyn in children with atopic dermatitis and documented food hypersensitivity. J Allergy Clin Immunol. 1988 Feb; 81(2):417–23. [PubMed: 3123539]
+
+181. Leung DY, Sampson HA, Yunginger JW, Burks AW Jr, Schneider LC, Wortel CH, et al. Effect of anti-IgE therapy in patients with peanut allergy. N Engl J Med. 2003 Mar 13; 348(11):986–93. [PubMed: 12637608]
+
+182. Cavagni G, Piscopo E, Rigoli E, Iuliano P, Bertolini P, Cazzola P. Food allergy in children: an attempt to improve the effects of the elimination diet with an immunomodulating agent (thymomodulin). A double-blind clinical trial. Immunopharmacol Immunotoxicol. 1989; 11(1): 131–42. [PubMed: 2668397]
+
+183. Staden U, Rolinck-Werninghaus C, Brewe F, Wahn U, Niggemann B, Beyer K. Specific oral tolerance induction in food allergy in children: efficacy and clinical patterns of reaction. Allergy. 2007 Nov; 62(11):1261–9. [PubMed: 17919140]
+
+184. Morisset M, Moneret-Vautrin DA, Guenard L, Cuny JM, Frentz P, Hatahet R, et al. Oral desensitization in children with milk and egg allergies obtains recovery in a significant proportion of cases. A randomized study in 60 children with cow's milk allergy and 90 children with egg allergy. Eur Ann Allergy Clin Immunol. 2007 Jan; 39(1):12–9. [PubMed: 17375736]
+
+185. Skripak JM, Nash SD, Rowley H, Brereton NH, Oh S, Hamilton RG, et al. A randomized, double-blind, placebo-controlled study of milk oral immunotherapy for cow's milk allergy. J Allergy Clin Immunol. 2008 Dec; 122(6):1154–60. [PubMed: 18951617]
+
+186\*. Longo G, Barbi E, Berti I, Meneghetti R, Pittalis A, Ronfani L, et al. Specific oral tolerance induction in children with very severe cow's milk-induced reactions. J Allergy Clin Immunol. 2008 Feb; 121(2):343–7. [PubMed: 18158176]
+
+187. Patriarca G, Nucera E, Pollastrini E, Roncallo C, De Pasquale T, Lombardo C, et al. Oral specific desensitization in food-allergic children. Dig Dis Sci. 2007 Jul; 52(7):1662–72. [PubMed: 17245630]
+
+188. Enrique E, Pineda F, Malek T, Bartra J, Basagana M, Tella R, et al. Sublingual immunotherapy for hazelnut food allergy: a randomized, double-blind, placebo-controlled study with a standardized hazelnut extract. J Allergy Clin Immunol. 2005 Nov; 116(5):1073–9. [PubMed: 16275379]
+
+189. Nelson HS, Lahr J, Rule R, Bock A, Leung D. Treatment of anaphylactic sensitivity to peanuts by immunotherapy with injections of aqueous peanut extract. J Allergy Clin Immunol. 1997 Jun; 99(6 Pt 1):744–51. [PubMed: 9215240]
+
+190. Jones SM, Pons L, Roberts JL, Scurlock AM, Perry TT, Kulis M, et al. Clinical efficacy and immune regulation with peanut oral immunotherapy. J Allergy Clin Immunol. 2009 Aug; 124(2): 292–300. 300.e1–97. [PubMed: 19577283]
+
+191. Asero R. Effects of birch pollen-specific immunotherapy on apple allergy in birch pollenhypersensitive patients. Clin Exp Allergy. 1998 Nov; 28(11):1368–73. [PubMed: 9824409]
+
+192. King RM, Knibb RC, Hourihane JO. Impact of peanut allergy on quality of life, stress and anxiety in the family. Allergy. 2009 Mar; 64(3):461–8. [PubMed: 19076542]
+
+193\*. Ostblom E, Egmar AC, Gardulf A, Lilja G, Wickman M. The impact of food hypersensitivity reported in 9-year-old children by their parents on health-related quality of life. Allergy. 2008 Feb; 63(2):211–8. [PubMed: 18186811]
+
+194\*. Herbert LJ, Dahlquist LM. Perceived history of anaphylaxis and parental overprotection, autonomy, anxiety, and depression in food allergic young adults. J Clin Psychol Med Settings. 2008 Dec; 15(4):261–9. [PubMed: 19104982]
+
+195\*. Akeson N, Worth A, Sheikh A. The psychosocial impact of anaphylaxis on young people and their parents. Clin Exp Allergy. 2007 Aug; 37(8):1213–20. [PubMed: 17651152]
+
+196. Bollinger ME, Dahlquist LM, Mudd K, Sonntag C, Dillinger L, McKenna K. The impact of food allergy on the daily activities of children and their families. Ann Allergy Asthma Immunol. 2006 Mar; 96(3):415–21. [PubMed: 16597075]
+
+197. Measles mumps, and rubella—vaccine use and strategies for elimination of measles, rubella, and congenital rubella syndrome and control of mumps: recommendations of the Advisory Committee on Immunization Practices (ACIP). MMWR. 1998 May 22; 47(RR-8):1–57. Available from: http://www.cdc.gov/mmwr/preview/mmwrhtml/00053391.htm.
+
+198. American Academy of Pediatrics. Measles. In: Pickering, LK.; Baker, CJ.; Kimberlin, DW.; Long, SS., editors. Red book: 2009 report of the Committee on Infectious Diseases. 28th. Elk Grove Village (IL): American Academy of Pediatrics; 2009. p. 444-55.Available from Red Book Online: http://aapredbook.aappubliations.org/cgi/content/full/2009/1/3.77
+
+199. Merck & Co, Inc. ProQuad package insert. Whitehouse Station (NJ): Merck; 2009 Sep. Available from: http://www.vaccinesafety.edu/package\_inserts.htm
+
+200. Prevention and control of seasonal influenza with vaccines: recommendations of the Advisory Committee on Immunization Practices (ACIP). MMWR. 2009 Jul 31; 58(RR08):1–52. Available from: http://www.cdc.gov/mmwr/preview/mmwrhtml/rr5808a1.htm.
+
+201. American Academy of Pediatrics. Influenza. In: Pickering, LK.; Baker, CJ.; Kimberlin, DW.; Long, SS., editors. Red book: 2009 report of the Committee on Infectious Diseases. 28th. Elk Grove Village (IL): American Academy of Pediatrics; 2009. p. 400-12.Available from Red Book Online: http://aapredbook.aappublications.org/cgi/content/full/2009/1/3.64
+
+202. Human rabies prevention—United States, 2008: recommendations of the Advisory Committee on Immunization Practices (ACIP). MMWR. 2008 May 7; 57(Early Release):1–26. 28. Available from: http://www.cdc.gov/mmwr/preview/mmwrhtml/rr57e507a1.htm.
+
+203. Novartis Vaccines. RabAvert package insert. Cambridge (MA): Novartis; 2006 Oct. Available from: http://www.vaccinesafety.edu/package\_inserts.htm
+
+204. Yellow fever vaccine recommendations of the Advisory Committee on Immunization Practices (ACIP), 2002. MMWR. 2002 Nov 8; 51(RR17):1–10. Available from: http://www.cdc.gov/ mmwr/preview/mmwrhtml/rr5117a1.htm.
+
+205. American Academy of Pediatrics. Arboviruses. In: Pickering, LK.; Baker, CJ.; Kimberlin, DW.; Long, SS., editors. Red book: 2009 report of the Committee on Infectious Diseases. 28th. Elk Grove Village (IL): American Academy of Pediatrics; 2009. p. 214-20.Available from Red Book Online: http://aapredbook.aappublications.org/cgi/content/full/2009/1/3.6
+
+206. Sanofi Pasteur, Inc. YF-Vax package insert. Lyon, France: Sanofi Pasteur; 2008 Feb. Available from: http://www.vaccinesafety.edu/package\_inserts.htm
+
+207\*. Waibel KH, Gomez R. Ovalbumin content in 2009 to 2010 seasonal and H1N1 monovalent influenza vaccines. J Allergy Clin Immunol. 2010 Mar; 125(3):749–51. 751.e1. [PubMed: 20060576]
+
+208\*. Measles, mumps, and rubella--vaccine use and strategies for elimination of measles, rubella, and congenital rubella syndrome and control of mumps: recommendations of the Advisory
+
+Committee on Immunization Practices (ACIP). MMWR. 1998 May 22; 47(RR-8):1–57. Available from: http://www.cdc.gov/mmwr/preview/mmwrhtml/00053391.htm.
+
+209\*. James JM, Burks AW, Roberson PK, Sampson HA. Safe administration of the measles vaccine to children allergic to eggs. N Engl J Med. 1995 May 11; 332(19):1262–6. [PubMed: 7708070]
+
+210\*. American Academy of Pediatrics Committee on Infectious Diseases. Prevention of varicella: recommendations for use of varicella vaccines in children, including a recommendation for a routine 2-dose varicella immunization schedule. Pediatrics. 2007 Jul; 20(1):221–31.
+
+211\*. Harper SA, Fukuda K, Uyeki TM, Cox NJ, Bridges CB. Prevention and control of influenza: recommendations of the Advisory Committee on Immunization Practices (ACIP). MMWR. 2004 May 28; 53(RR06):1–40. Available from: http://www.cdc.gov/mmwr/preview/mmwrhtml/ rr5306a1.htm. [PubMed: 15163927]
+
+212. Chung EY, Huang L, Schneider L. Safety of influenza vaccine administration in egg-allergic patients. Pediatrics. 2010 May; 125(5):e1024–e1030. [PubMed: 20368312]
+
+213. Zeiger RS. Current issues with influenza vaccination in egg allergy. J Allergy Clin Immunol. 2002 Dec; 110(6):834–40. [PubMed: 12464947]
+
+214. James JM, Zeiger RS, Lester MR, Fasano MB, Gern JE, Mansfield LE, et al. Safe administration of influenza vaccine to patients with egg allergy. J Pediatr. 1998 Nov; 133(5):624–8. [PubMed: 9821418]
+
+215. Kletz MR, Holland CL, Mendelson JS, Bielory L. Administration of egg-derived vaccines in patients with history of egg sensitivity. Ann Allergy. 1990 Jun; 64(6):527–9. [PubMed: 2346238]
+
+216\*. Rank MA, Li JT. Clinical pearls for preventing, diagnosing, and treating seasonal and 2009 H1N1 influenza infection in patients with asthma. J Allergy Clin Immunol. 2009 Nov; 124(5): 1123–6. Epub 2009 Oct 9. [PubMed: 19818998]
+
+217. Kelso JM. Administration of influenza vaccines to patients with egg allergy. J Allergy Clin Immunol. 2010 Apr; 125(4):800–2. [PubMed: 20226505]
+
+218\*. Bousquet J, Kjellman NI. Predictive value of tests in childhood allergy. J Allergy Clin Immunol. 1986 Nov; 78(5 Pt 2):1019–22. [PubMed: 3537085]
+
+219\*. Kjellman NI. Atopic disease in seven-year-old children. Incidence in relation to family history. Acta Paediatr Scand. 1977 Jul; 66(4):465–71. [PubMed: 899762]
+
+220\*. Halken S, Host A. The lessons of noninterventional and interventional prospective studies on the development of atopic disease during childhood. Allergy. 2000 Sep; 55(9):793–802. [PubMed: 11003443]
+
+221\*. Hourihane JO, Dean TP, Warner JO. Peanut allergy in relation to heredity, maternal diet, and other atopic diseases: results of a questionnaire survey, skin prick testing, and food challenges. BMJ. 1996 Aug 31; 313(7056):518–21. [PubMed: 8789975]
+
+222. Hattevig G, Kjellman B, Sigurs N, Björksten B, Kjellman NI. Effect of maternal avoidance of eggs, cow's milk and fish during lactation upon allergic manifestations in infants. Clin Exp Allergy. 1989 Jan; 19(1):27–32. [PubMed: 2702510]
+
+223. Sigurs N, Hattevig G, Kjellman B. Maternal avoidance of eggs, cow's milk, and fish during lactation: effect on allergic manifestations, skin-prick tests, and specific IgE antibodies in children at age 4 years. Pediatrics. 1992 Apr; 89(4 Pt 2):735–9. [PubMed: 1557270]
+
+224. Hide DW, Guyer BM. Clinical manifestations of allergy related to breast and cows' milk feeding. Arch Dis Child. 1981 Mar; 56(3):172–5. [PubMed: 6894227]
+
+225. Grulee CG. The influence of breast and artificial feeding on infantile eczema. J Pediatr. 1936; 9:223–5.
+
+226. Kramer MS, Moroz B. Do breast-feeding and delayed introduction of solid foods protect against subsequent atopic eczema? J Pediatr. 1981 Apr; 98(4):546–50. [PubMed: 7205479]
+
+227. van Asperen PP, Kemp AS, Mellis CM. Relationship of diet in the development of atopy in infancy. Clin Allergy. 1984; 14(5):525–32. [PubMed: 6509767]
+
+228\*. Lucas A, Brooke OG, Morley R, Cole TJ, Bamford MF. Early diet of preterm infants and development of allergic or atopic disease: randomised prospective study. BMJ. 1990 Mar 31; 300(6728):837–40. [PubMed: 2186825]
+
+229. Schoetzau A, Filipiak-Pittroff B, Franke K, Koletzko S, von Berg A, Gruebl A, et al. German Infant Nutritional Intervention Study Group. Effect of exclusive breast-feeding and early solid
+
+food avoidance on the incidence of atopic dermatitis in high-risk infants at 1 year of age. Pediatr Allergy Immunol. 2002; 13(4):234–42. [PubMed: 12390439]
+
+230. Filipiak B, Zutavern A, Koletzko S, von Berg A, Brockow I, Grübl A, et al. GINI Group. Solid food introduction in relation to eczema: results from a four-year prospective birth cohort study. J Pediatr. 2007; 151(4):352–8. [PubMed: 17889067]
+
+231. Osborn DA, Sinn J. Soy formula for prevention of allergy and food intolerance in infants. Cochrane Database Syst Rev. 2006; (4):CD003741. [PubMed: 17054183]
+
+232. Osborn DA, Sinn J. Formulas containing hydrolysed protein for prevention of allergy and food intolerance in infants. Cochrane Database Syst Rev. 2006; (4):CD003664. [PubMed: 17054180]
+
+233. Hays T, Wood RA. A systematic review of the role of hydrolyzed infant formulas in allergy prevention. Arch Pediatr Adolesc Med. 2005 Sep; 159(9):810–6. [PubMed: 16143739]
+
+234\*. American Academy of Pediatrics Committee on Nutrition. Hypoallergenic infant formulas. Pediatrics. 2000 Aug; 106(2 Pt 1):346–9. [PubMed: 10920165]
+
+235. von Berg A, Koletzko S, Filipiak-Pittroff B, Laubereau B, Grübl A, Wichmann HE, et al. German Infant Nutritional Intervention Study Group. Certain hydrolyzed formulas reduce the incidence of atopic dermatitis but not that of asthma: three-year results of the German Infant Nutritiona Intervention Study. J Allergy Clin Immunol. 2007; 119(3):718–25. [PubMed: 17240440]
+
+236. von Berg A, Filipiak-Pittroff B, Krämer U, Link E, Bollrath C, Brockow I, et al. GINIplus Study Group. Preventive effect of hydrolyzed infant formulas persists until age 6 years: long-term results from the German Infant Nutritional Intervention Study (GINI). J Allergy Clin Immunol. 2008; 121(6):1442–7. [PubMed: 18539195]
+
+237. Host A, Koletzko B, Dreborg S, Muraro A, Wahn U, Aggett P, et al. Dietary products used in infants for treatment and prevention of food allergy. Joint Statement of the European Society for Paediatric Allergology and Clinical Immunology (ESPACI) Committee on Hypoallergenic Formulas and the European Society for Paediatric Gastroenterology, Hepatology and Nutrition (ESPGHAN) Committee on Nutrition. Arch Dis Child. 1999 Jul; 81(1):80–4. [PubMed: 10373144]
+
+238. American Academy of Pediatrics Committee on Nutrition. Pediatric nutrition handbook. 5th. Elk Grove Village (IL): American Academy of Pediatrics; 2004.
+
+239. Fifty-Fourth World Health Assembly. Infant and young child nutrition. Geneva, Switzerland: World Health Assembly; 2001 May. Available from: http://apps.who.int/gb/archive/pdf\_files/ WHA54/ea54r2.pdf
+
+240. Fiocchi A, Assa'ad A, Bahna S. Food allergy and the introduction of solid foods to infants: a consensus document. Adverse Reactions to Foods Committee, American College of Allergy, Asthma and Immunology. Ann Allergy Asthma Immunol. 2006 Jul; 97(1):10–20. [PubMed: 16892776]
+
+241. Halmerbauer G, Gartner C, Schier M, Arshad H, Dean T, Koller DY, et al. Study on the prevention of allergy in Children in Europe (SPACE): allergic sensitization in children at 1 year of age in a controlled trial of allergen avoidance from birth. Pediatr Allergy Immunol. 2002; 13(Suppl 15):47–54. [PubMed: 12688625]
+
+242. Kajosaari M. Atopy prevention in childhood: the role of diet. Prospective 5-year follow-up of high-risk infants with six months exclusive breastfeeding and solid food elimination. Pediatr Allergy Immunol. 1994; 5(6 Suppl):26–8. [PubMed: 7728225]
+
+243. Venter C, Pereira B, Voigt K, Grundy J, Clayton CB, Higgins B, et al. Factors associated with maternal dietary intake, feeding and weaning practices, and the development of food hypersensitivity in the infant. Pediatr Allergy Immunol. 2009 Jun; 20(4):320–7. [PubMed: 19220769]
+
+244\*. Klein JS, Yocum MW. Underreporting of anaphylaxis in a community emergency room. J Allergy Clin Immunol. 1995 Feb; 95(2):637–8. [PubMed: 7852677]
+
+245. Lieberman P, Camargo CA Jr, Bohlke K, Jick H, Miller RL, Sheikh A, et al. Epidemiology of anaphylaxis: findings of the American College of Allergy, Asthma and Immunology Epidemiology of Anaphylaxis Working Group. Ann Allergy Asthma Immunol. 2006 Nov; 97(5): 596–602. [PubMed: 17165265]
+
+246\*. Neugut AI, Ghatak AT, Miller RL. Anaphylaxis in the United States: an investigation into its epidemiology. Arch Intern Med. 2001 Jan 8; 161(1):15–21. [PubMed: 11146694]
+
+247\*. Helbling A, Hurni T, Mueller UR, Pichler WJ. Incidence of anaphylaxis with circulatory symptoms: a study over a 3-year period comprising 940,000 inhabitants of the Swiss Canton Bern. Clin Exp Allergy. 2004 Feb; 34(2):285–90. [PubMed: 14987309]
+
+248. Moneret-Vautrin DA, Morisset M, Flabbee J, Beaudouin E, Kanny G. Epidemiology of lifethreatening and lethal anaphylaxis: a review. Allergy. 2005 Apr; 60(4):443–51. [PubMed: 15727574]
+
+249\*. Sampson HA, Munoz-Furlong A, Campbell RL, Adkinson NF Jr, Bock SA, Branum A, et al. Second symposium on the definition and management of anaphylaxis: summary report—Second National Institute of Allergy and Infectious Disease/Food Allergy and Anaphylaxis Network symposium. J Allergy Clin Immunol. 2006 Feb; 117(2):391–7. [PubMed: 16461139]
+
+250. Metcalfe, DD.; Sampson, HA.; Simon, RA. Food allergy: adverse reactions to foods and food additives. 4th. Walden (MA): Wiley-Blackwell; 2008.
+
+251. Keet CA, Wood RA. Food allergy and anaphylaxis. Immunol Allergy Clin North Am. 2007; 27:193–212. [PubMed: 17493498]
+
+252. Braganza SC, Acworth JP, Mckinnon DR, Peake JE, Brown AF. Paediatric emergency department anaphylaxis: different patterns from adults. Arch Dis Child. 2006 Feb; 91(2):159–63. [PubMed: 16308410]
+
+253. Cianferoni A, Novembre E, Mugnaini L, Lombardi E, Bernardini R, Pucci N, et al. Clinical features of acute anaphylaxis in patients admitted to a university hospital: an 11-year retrospective review (1985-1996). Ann Allergy Asthma Immunol. 2001 Jul; 87(1):27–32. [PubMed: 11476457]
+
+254. Mehl A, Wahn U, Niggemann B. Anaphylactic reactions in children—a questionnaire-based survey in Germany. Allergy. 2005 Nov; 60(11):1440–5. [PubMed: 16197479]
+
+255. Novembre E, Cianferoni A, Bernardini R, Mugnaini L, Caffarelli C, Cavagni G, et al. Anaphylaxis in children: clinical and allergologic features. Pediatrics. 1998 Apr.101(4):E8. [PubMed: 9521974]
+
+256. de Silva IL, Mehr SS, Tey D, Tang ML. Paediatric anaphylaxis: a 5 year retrospective review. Allergy. 2008; 63:1071–6. [PubMed: 18691309]
+
+257\*. Simons FE, Chad ZH, Gold M. Anaphylaxis in children. Real-time reporting from a national network. Allergy Clin Immunol Int: J World Allergy Org. 2004; (1):242–4.
+
+258\*. Young MC, Munoz-Furlong A, Sicherer SH. Management of food allergies in schools: a perspective for allergists. J Allergy Clin Immunol. 2009 Aug; 124(2):175–82. 182. [PubMed: 19493563]
+
+259\*. Dieckmann, RA. APLS: the pediatric emergency medicine resource. Pediatric assessment. In: Gausche-Hill, MS.; Fuchs, S.; Yamamoto, L., editors. American Academy of Pediatrics and American College of Emergency Physicians. 4th. Sudbury (MA): Jones and Bartlett Publishers, Inc; p. 2004p. 41
+
+260\*. Oswalt ML, Kemp SF. Anaphylaxis: office management and prevention. Immunol Allergy Clin North Am. 2007 May; 27(2):177–91. vi. [PubMed: 17493497]
+
+261\*. Simons FE. Anaphylaxis, killer allergy: long-term management in the community. J Allergy Clin Immunol. 2006 Feb; 117(2):367–77. [PubMed: 16461138]
+
+262. Joint Task Force on Practice Parameters; American Academy of Allergy, AaI; American College of Allergy, AaI; Joint Council of Allergy, AaI. The diagnosis and management of anaphylaxis: an updated practice parameter. J Allergy Clin Immunol. 2005; 115:S483–523. [PubMed: 15753926]
+
+263. Bock SA, Munoz-Furlong A, Sampson HA. Further fatalities caused by anaphylactic reactions to food, 2001-2006. J Allergy Clin Immunol. 2007 Apr; 119(4):1016–8. [PubMed: 17306354]
+
+264\*. Kemp SF, Lockey RF. Anaphylaxis: a review of causes and mechanisms. J Allergy Clin Immunol. 2002 Sep; 110(3):341–8. [PubMed: 12209078]
+
+265\*. Simons FE, Clark S, Camargo CA Jr. Anaphylaxis in the community: learning from the survivors. J Allergy Clin Immunol. 2009 Aug; 124(2):301–6. [PubMed: 19540575]
+
+266. Lee JM, Greenes DS. Biphasic anaphylactic reactions in pediatrics. Pediatrics. 2000 Oct; 106(4): 762–6. [PubMed: 11015520]
+
+267. Lieberman P. Biphasic anaphylactic reactions. Ann Allergy Asthma Immunol. 2005 Sep; 95(3): 217–26. [PubMed: 16200811]
+
+268. Mullins RJ. Anaphylaxis: risk factors for recurrence. Clin Exp Allergy. 2003 Aug; 33(8):1033– 40. [PubMed: 12911775]
+
+269\*. Pumphrey RS. Lessons for management of anaphylaxis from a study of fatal reactions. Clin Exp Allergy. 2000 Aug; 30(8):1144–50. [PubMed: 10931122]
+
+270. Pumphrey RS, Gowland MH. Further fatal allergic reactions to food in the United Kingdom, 1999-2006. J Allergy Clin Immunol. 2007 Apr; 119(4):1018–9. [PubMed: 17349682]
+
+271\*. Anderson MW, deShazo RD. Studies of the mechanism of angiotensin-converting enzyme (ACE) inhibitor-associated angioedema: the effect of an ACE inhibitor on cutaneous responses to bradykinin, codeine, and histamine. J Allergy Clin Immunol. 1990 May; 85(5):856–8. [PubMed: 2185292]
+
+272\*. Watson A. Alpha adrenergic blockers and adrenaline. A mysterious collapse. Aust Fam Physician. 1998 Aug; 27(8):714–5. [PubMed: 9735490]
+
+273\*. Brown SG, Blackman KE, Heddle RJ. Can serum mast cell tryptase help diagnose anaphylaxis? Emerg Med Australas. 2004 Apr; 16(2):120–4. [PubMed: 15239726]
+
+274\*. Lin RY, Schwartz LB, Curry A, Pesola GR, Knight RJ, Lee HS, et al. Histamine and tryptase levels in patients with acute allergic reactions: An emergency department-based study. J Allergy Clin Immunol. 2000 Jul; 106(1 Pt 1):65–71. [PubMed: 10887307]
+
+275\*. Schwartz LB. Diagnostic value of tryptase in anaphylaxis and mastocytosis. Immunol Allergy Clin North Am. 2006 Aug; 26(3):451–63. [PubMed: 16931288]
+
+276. Simons FE, Frew AJ, Ansotegui IJ, Bochner BS, Golden DB, Finkelman FD, et al. Risk assessment in anaphylaxis: current and future approaches. J Allergy Clin Immunol. 2007 Jul; 120(1 Suppl):S2–24. [PubMed: 17602945]
+
+277\*. Shanmugam G, Schwartz LB, Khan DA. Prolonged elevation of serum tryptase in idiopathic anaphylaxis. J Allergy Clin Immunol. 2006 Apr; 117(4):950–1. [PubMed: 16630958]
+
+278. Sampson HA, Broadbent KR, Bernhisel-Broadbent J. Spontaneous release of histamine from basophils and histamine-releasing factor in patients with atopic dermatitis and food hypersensitivity. N Engl J Med. 1989 Jul 27; 321(4):228–32. [PubMed: 2473400]
+
+279. Liberman DB, Teach SJ. Management of anaphylaxis in children. Pediatr Emerg Care. 2008 Dec; 24(12):861–6. [PubMed: 19092569]
+
+280\*. Greenberger PA, Rotskoff BD, Lifschultz B. Fatal anaphylaxis: postmortem findings and associated comorbid diseases. Ann Allergy Asthma Immunol. 2007 Mar; 98(3):252–7. [PubMed: 17378256]
+
+281\*. Pumphrey R. Anaphylaxis: can we tell who is at risk of a fatal reaction? Curr Opin Allergy Clin Immunol. 2004 Aug; 4(4):285–90. [PubMed: 15238794]
+
+282\*. Simons, FE.; Camargo, CA, Jr. UpToDate [Internet]. Waltham (MA): 2009. Anaphylaxis: rapid recognition and treatment. Available from: http://www.uptodate.com/patients/content/topic.do? topicKey=∼.nVQMivoL5ixi.&selectedTitle=13%7E150&source=search\_result
+
+283\*. Simons FE, Roberts JR, Gu X, Simons KJ. Epinephrine absorption in children with a history of anaphylaxis. J Allergy Clin Immunol. 1998 Jan; 101(1 Pt 1):33–7. [PubMed: 9449498]
+
+284\*. Simons FE, Gu X, Simons KJ. Epinephrine absorption in adults: intramuscular versus subcutaneous injection. J Allergy Clin Immunol. 2001 Nov; 108(5):871–3. [PubMed: 11692118]
+
+285. Simons FE. First-aid treatment of anaphylaxis to food: focus on epinephrine. J Allergy Clin Immunol. 2004 May; 113(5):837–44. [PubMed: 15131564]
+
+286. Ben-Shoshan M, Kagan R, Primeau MN, Alizadehfar R, Verreault N, Yu JW, et al. Availability of the epinephrine autoinjector at school in children with peanut allergy. Ann Allergy Asthma Immunol. 2008 Jun; 100(6):570–5. [PubMed: 18592821]
+
+287\*. Simons FE. Emergency treatment of anaphylaxis. BMJ. 2008 May 24.336:1141–2. [PubMed: 18497373]
+
+288\*. Sheikh A, ten Broek VM, Brown SG, Simons FE. H1-antihistamines for the treatment of anaphylaxis: Cochrane systematic review. Allergy. 2007 Aug; 62(8):830–7. [PubMed: 17620060]
+
+289\*. Sheikh A, Shehata YA, Brown SG, Simons FE. Adrenaline for the treatment of anaphylaxis: Cochrane systematic review. Allergy. 2009 Feb; 64(2):204–12. [PubMed: 19178399]
+
+290\*. Choo KJL, Simons FER, Sheikh A. Glucocorticoids for the treatment of anaphylaxis: Cochrane systematic review. Allergy. 2010; 65:1205–11. [PubMed: 20584003]
+
+291\*. Lieberman P. Anaphylactic reactions during surgical and medical procedures. J Allergy Clin Immunol. 2002 Aug; 110(2 Suppl):S64–9. [PubMed: 12170245]
+
+292. Wang J, Sampson HA. Food anaphylaxis. Clin Exp Allergy. 2007 May; 37(5):651–60. [PubMed: 17456212]
+
+293. Jarvinen KM, Sicherer SH, Sampson HA, Nowak-Wegrzyn A. Use of multiple doses of epinephrine in food-induced anaphylaxis in children. J Allergy Clin Immunol. 2008 Jul; 122(1): 133–8. [PubMed: 18547626]
+
+294. Oren E, Banerji A, Clark S, Camargo CA Jr. Food-induced anaphylaxis and repeated epinephrine treatments. Ann Allergy Asthma Immunol. 2007 Nov; 99(5):429–32. [PubMed: 18051213]
+
+295\*. Song TT, Nelson MR, Chang JH, Engler RJ, Chowdhury BA. Adequacy of the epinephrine autoinjector needle length in delivering epinephrine to the intramuscular tissues. Ann Allergy Asthma Immunol. 2005 May; 94(5):539–42. [PubMed: 15945556]
+
+296. Stecher D, Bulloch B, Sales J, Schaefer C, Keahey L. Epinephrine auto-injectors: is needle length adequate for delivery of epinephrine intramuscularly? Pediatrics. 2009 Jul; 124(1):65–70. [PubMed: 19564284]
+
+297\*. Simons FE, Gu X, Silver NA, Simons KJ. EpiPen Jr versus EpiPen in young children weighing 15 to 30 kg at risk for anaphylaxis. J Allergy Clin Immunol. 2002 Jan; 109(1):171–5. [PubMed: 11799385]
+
+298\*. Simons FE. Advances in H1-antihistamines. N Engl J Med. 2004 Nov 18; 351(21):2203–17. [PubMed: 15548781]
+
+299\*. Runge JW, Martinez JC, Caravati EM, Williamson SG, Hartsell SC. Histamine antagonists in the treatment of acute allergic reactions. Ann Emerg Med. 1992 Mar; 21(3):237–42. [PubMed: 1536481]
+
+300\*. Choong K, Bohn D, Fraser DD, Gaboury I, Hutchison JS, Joffe AR, et al. Vasopressin in pediatric vasodilatory shock: a multicenter randomized controlled trial. Am J Respir Crit Care Med. 2009 Oct 1; 180(7):632–9. [PubMed: 19608718]
+
+301\*. Toogood JH. Risk of anaphylaxis in patients receiving beta-blocker drugs. J Allergy Clin Immunol. 1988 Jan; 81(1):1–5. [PubMed: 2892872]
+
+302. Pumphrey RS. Fatal posture in anaphylactic shock. J Allergy Clin Immunol. 2003 Aug; 112(2): 451–2. [PubMed: 12897756]
+
+303\*. Simons FE. Anaphylaxis: evidence-based long-term risk reduction in the community. Immunol Allergy Clin North Am. 2007 May.27(2):231. vii. [PubMed: 17493500]
+
+304\*. Lieberman P, Decker W, Camargo CA Jr, O'Connor R, Oppenheimer J, Simons FE. SAFE: a multidisciplinary approach to anaphylaxis education in the emergency department. Ann Allergy Asthma Immunol. 2007 Jun; 98(6):519–23. [PubMed: 17601263]
+
+305\*. Restani P, Beretta B, Fiocchi A, Ballabio C, Galli CL. Cross-reactivity between mammalian proteins. Ann Allergy Asthma Immunol. 2002 Dec; 89(6 Suppl 1):11–5. [PubMed: 12487198]
+
+306\*. Bellioni-Businco B, Paganelli R, Lucenti P, Giampietro PG, Perborn H, Businco L. Allergenicity of goat's milk in children with cow's milk allergy. J Allergy Clin Immunol. 1999 Jun; 103(6):1191–4. [PubMed: 10359905]
+
+307\*. Businco L, Giampietro PG, Lucenti P, Lucaroni F, Pini C, Di Felice G, et al. Allergenicity of mare's milk in children with cow's milk allergy. J Allergy Clin Immunol. 2000 May; 105(5): 1031–4. [PubMed: 10808187]
+
+308\*. Jarvinen KM, Chatchatee P. Mammalian milk allergy: clinical suspicion, cross-reactivities and diagnosis. Curr Opin Allergy Clin Immunol. 2009 Jun; 9(3):251–8. [PubMed: 19412090]
+
+309\*. Martelli A, De Chiara A, Corvo M, Restani P, Fiocchi A. Beef allergy in children with cow's milk allergy; cow's milk allergy in children with beef allergy. Ann Allergy Asthma Immunol. 2002 Dec; 89(6 Suppl 1):38–43. [PubMed: 12487203]
+
+310\*. Restani P, Ballabio C, Tripodi S, Fiocchi A. Meat allergy. Curr Opin Allergy Clin Immunol. 2009 Jun; 9(3):265–9. [PubMed: 19369863]
+
+311\*. Werfel SJ, Cooke SK, Sampson HA. Clinical reactivity to beef in children allergic to cow's milk. J Allergy Clin Immunol. 1997 Mar; 99(3):293–300. [PubMed: 9058683]
+
+312\*. Langeland T. A clinical and immunological study of allergy to hen's egg white. VI. Occurrence of proteins cross-reacting with allergens in hen's egg white as studied in egg white from turkey, duck, goose, seagull, and in hen egg yolk, and hen and chicken sera and flesh. Allergy. 1983 Aug; 38(6):399–412. [PubMed: 6625124]
+
+313\*. Szépfalusi Z, Ebner C, Pandjaitan R, Orlicek F, Scheiner O, Boltz-Nitulescu G, et al. Egg yolk alpha-livetin (chicken serum albumin) is a cross-reactive allergen in the bird-egg syndrome. J Allergy Clin Immunol. 1994 May; 93(5):932–42. [PubMed: 8182236]
+
+314\*. Leung PS, Chow WK, Duffey S, Kwan HS, Gershwin ME, Chu KH. IgE reactivity against a cross-reactive allergen in crustacea and mollusca: evidence for tropomyosin as the common allergen. J Allergy Clin Immunol. 1996 Nov; 98(5 Pt 1):954–61. [PubMed: 8939159]
+
+315\*. Lehrer SB, McCants ML. Reactivity of IgE antibodies with crustacea and oyster allergens: evidence for common antigenic structures. J Allergy Clin Immunol. 1987 Aug; 80(2):133–9. [PubMed: 2440933]
+
+316\*. Waring NP, Daul CB, deShazo RD, McCants ML, Lehrer SB. Hypersensitivity reactions to ingested crustacea: clinical evaluation and diagnostic studies in shrimp-sensitive individuals. J Allergy Clin Immunol. 1985 Sep; 76(3):440–5. [PubMed: 4031316]
+
+317\*. Bernhisel-Broadbent J, Scanlon SM, Sampson HA. Fish hypersensitivity. I. In vitro and oral challenge results in fish-allergic patients. J Allergy Clin Immunol. 1992 Mar; 89(3):730–7. [PubMed: 1545094]
+
+318\*. Hansen TK, Bindslev-Jensen C, Skov PS, Poulsen LK. Codfish allergy in adults: IgE crossreactivity among fish species. Ann Allergy Asthma Immunol. 1997 Feb; 78(2):187–94. [PubMed: 9048527]
+
+319\*. de Martino M, Novembre E, Galli L, de Marco A, Botarelli P, Marano E, et al. Allergy to different fish species in cod-allergic children: in vivo and in vitro studies. J Allergy Clin Immunol. 1990 Dec; 86(6 Pt 1):909–14. [PubMed: 2262645]
+
+320\*. Bugajska-Schretter A, Elfman L, Fuchs T, Kapiotis S, Rumpold H, Valenta R, et al. Parvalbumin, a cross-reactive fish allergen, contains IgE-binding epitopes sensitive to periodate treatment and Ca2+ depletion. J Allergy Clin Immunol. 1998 Jan; 101(1 Pt 1):67–74. [PubMed: 9449503]
+
+321\*. Sicherer SH, Burks AW, Sampson HA. Clinical features of acute allergic reactions to peanut and tree nuts in children. Pediatrics. 1998 Jul.102(1):e6. [PubMed: 9651458]
+
+322. Maloney JM, Rudengren M, Ahlstedt S, Bock SA, Sampson HA. The use of serum-specific IgE measurements for the diagnosis of peanut, tree nut, and seed allergy. J Allergy Clin Immunol. 2008 Jul; 122(1):145–51. [PubMed: 18502490]
+
+323\*. Ewan PW. Clinical study of peanut and nut allergy in 62 consecutive patients: new features and associations. BMJ. 1996 Apr 27; 312(7038):1074–8. [PubMed: 8616415]
+
+324\*. Bernhisel-Broadbent J, Sampson HA. Cross-allergenicity in the legume botanical family in children with food hypersensitivity. J Allergy Clin Immunol. 1989 Feb; 83(2 Pt 1):435–40. [PubMed: 2918186]
+
+325\*. Peeters KA, Koppelman SJ, Penninks AH, Lebens A, Bruijnzeel-Koomen CA, Hefle SL, et al. Clinical relevance of sensitization to lupine in peanut-sensitized adults. Allergy. 2009 Apr; 64(4): 549–55. [PubMed: 19076544]
+
+326\*. Moneret-Vautrin DA, Guérin L, Kanny G, Flabbee J, Frémont S, Morisset M. Crossallergenicity of peanut and lupine: the risk of lupine allergy in patients allergic to peanuts. J Allergy Clin Immunol. 1999 Oct; 104(4 Pt 1):883–8. [PubMed: 10518837]
+
+327\*. Crespo JF, Pascual C, Burks AW, Helm RM, Esteban MM. Frequency of food allergy in a pediatric population from Spain. Pediatr Allergy Immunol. 1995 Feb; 6(1):39–43. [PubMed: 7550764]
+
+328\*. Jones SM, Magnolfi CF, Cooke SK, Sampson HA. Immunologic cross-reactivity among cereal grains and grasses in children with food hypersensitivity. J Allergy Clin Immunol. 1995 Sep; 96(3):341–51. [PubMed: 7560636]
+
+329\*. Varjonen E, Vainio E, Kalimo K, Juntunen-Backman K, Savolainen J. Skin-prick test and RAST responses to cereals in children with atopic dermatitis. Characterization of IgE-binding components in wheat and oats by an immunoblotting method. Clin Exp Allergy. 1995 Nov; 25(11):1100–7. [PubMed: 8581843]
+
+330. Sicherer SH, Munoz-Furlong A, Burks AW, Sampson HA. Prevalence of peanut and tree nut allergy in the US determined by a random digit dial telephone survey. J Allergy Clin Immunol. 1999; 103:559–62. [PubMed: 10200001]
+
+331\*. Liu AH, Sicherer SH, Wood RA, Bock SA, Burks AW, Jaramillo R, et al. Abstract 1037: In the United States, black male children have an increased risk of food allergy: results from NHANES 2005-2006. J Allergy Clin Immunol. 2009; 123(2):S267.
+
+332\*. Woods RK, Thien F, Raven J, Walters EH, Abramson M. Prevalence of food allergies in young adults and their relationship to asthma, nasal allergies, and eczema. Ann Allergy Asthma Immunol. 2002 Feb; 88(2):183–9. [PubMed: 11868923]
+
+333\*. Rance F, Grandmottet X, Grandjean H. Prevalence and main characteristics of schoolchildren diagnosed with food allergies in France. Clin Exp Allergy. 2005 Feb; 35(2):167–72. [PubMed: 15725187]
+
+334\*. Penard-Morand C, Raherison C, Kopferschmitt C, Caillaud D, Lavaud F, Charpin D, et al. Prevalence of food allergy and its relationship to asthma and allergic rhinitis in schoolchildren. Allergy. 2005 Sep; 60(9):1165–71. [PubMed: 16076302]
+
+335\*. Schafer T, Bohler E, Ruhdorfer S, Weigl L, Wessner D, Heinrich J, et al. Epidemiology of food allergy/food intolerance in adults: associations with other manifestations of atopy. Allergy. 2001 Dec; 56(12):1172–9. [PubMed: 11736746]
+
+336. Dalal I, Binson I, Reifen R, Amitai Z, Shohat T, Rahmani S, et al. Food allergy is a matter of geography after all: sesame as a major cause of severe IgE-mediated food allergic reactions among infants and young children in Israel. Allergy. 2002 Apr; 57(4):362–5. [PubMed: 11906370]
+
+337\*. Marklund B, Ahlstedt S, Nordstrom G. Health-related quality of life among adolescents with allergy-like conditions—with emphasis on food hypersensitivity. Health Qual Life Outcomes. 2004; 2:65. [PubMed: 15555064]
+
+338\*. Tariq SM, Stevens M, Matthews S, Ridout S, Twiselton R, Hide DW. Cohort study of peanut and tree nut sensitisation by age of 4 years. BMJ. 1996 Aug 31; 313(7056):514–7. [PubMed: 8789974]
+
+339. Grundy J, Matthews S, Bateman B, Dean T, Arshad SH. Rising prevalence of allergy to peanut in children: Data from 2 sequential cohorts. J Allergy Clin Immunol. 2002 Nov; 110(5):784–9. [PubMed: 12417889]
+
+340\*. Venter C, Pereira B, Voigt K, Grundy J, Clayton CB, Higgins B, et al. Prevalence and cumulative incidence of food hypersensitivity in the first 3 years of life. Allergy. 2008 Mar; 63(3):354–9. [PubMed: 18053008]
+
+341\*. Venter C, Pereira B, Grundy J, Clayton CB, Arshad SH, Dean T. Prevalence of sensitization reported and objectively assessed food hypersensitivity amongst six-year-old children: a population-based study. Pediatr Allergy Immunol. 2006 Aug; 17(5):356–63. [PubMed: 16846454]
+
+342\*. Pereira B, Venter C, Grundy J, Clayton CB, Arshad SH, Dean T. Prevalence of sensitization to food allergens, reported adverse reaction to foods, food avoidance, and food hypersensitivity among teenagers. J Allergy Clin Immunol. 2005 Oct; 116(4):884–92. [PubMed: 16210065]
+
+343. Du Toit G, Katz Y, Sasieni P, Mesher D, Maleki SJ, Fisher HR, et al. Early consumption of peanuts in infancy is associated with a low prevalence of peanut allergy. J Allergy Clin Immunol. 2008 Nov; 122(5):984–91. [PubMed: 19000582]
+
+344. Odelram H, Vanto T, Jacobsen L, Kjellman NI. Whey hydrolysate compared with cow's milkbased formula for weaning at about 6 months of age in high allergy-risk infants: effects on atopic disease and sensitization. Allergy. 1996 Mar; 51(3):192–5. [PubMed: 8781676]
+
+345. Szajewska H, Mrukowicz JZ, Stoinska B, Prochowska A. Extensively and partially hydrolysed preterm formulas in the prevention of allergic diseases in preterm infants: a randomized, doubleblind trial. Acta Paediatr. 2004 Sep; 93(9):1159–65. [PubMed: 15384877]
+
+346. Jirapinyo P, Densupsoontorn N, Wongarn R, Thamonsiri N. Comparisons of a chicken-based formula with soy-based formula in infants with cow milk allergy. Asia Pac J Clin Nutr. 2007; 16(4):711–5. [PubMed: 18042533]
+
+347. Arslanoglu S, Moro GE, Schmitt J, Tandoi L, Rizzardi S, Boehm G. Early dietary intervention with a mixture of prebiotic oligosaccharides reduces the incidence of allergic manifestations and infections during the first two years of life. J Nutr. 2008 Jun; 138(6):1091–5. [PubMed: 18492839]
+
+## Abbreviations
+
+<table><tr><td>AAP</td><td>American Academy of Pediatrics</td></tr><tr><td>ACD</td><td>Allergic contact dermatitis</td></tr><tr><td>ACIP</td><td>Advisory Committee on Immunization Practices</td></tr><tr><td>AD</td><td>Atopic dermatitis</td></tr><tr><td>AP</td><td>Allergic proctocolitis</td></tr><tr><td>APT</td><td>Atopy patch test</td></tr><tr><td>BP</td><td>Blood pressure</td></tr><tr><td>CC</td><td>Coordinating Committee</td></tr><tr><td>CDC</td><td>Centers for Disease Control and Prevention</td></tr><tr><td>CI</td><td>Confidence interval</td></tr><tr><td>CMA</td><td>Cow's milk allergy</td></tr><tr><td>COI</td><td>Conflict of interest</td></tr><tr><td>DBPCFC</td><td>Double-blind, placebo-controlled food challenge</td></tr><tr><td>DRACMA</td><td>Diagnosis and Rationale for Action against Cow's Milk Allergy</td></tr><tr><td>EAACI</td><td>European Academy of Allergy and Clinical Immunology</td></tr><tr><td>EG</td><td>Eosinophilic gastroenteritis</td></tr><tr><td>EGID</td><td>Eosinophilic gastrointestinal disorder</td></tr><tr><td>eHF</td><td>Extensively hydrolyzed infant formula</td></tr><tr><td>eHF-C</td><td>Extensively hydrolyzed casein formula</td></tr><tr><td>eHF-W</td><td>Extensively hydrolyzed whey infant formula</td></tr><tr><td>EoE</td><td>Eosinophilic esophagitis</td></tr><tr><td>EP</td><td>Expert Panel</td></tr><tr><td>FA</td><td>Food allergy</td></tr><tr><td>FAAN</td><td>Food Allergy and Anaphylaxis Network</td></tr><tr><td>FALCPA</td><td>Food Allergen Labeling and Consumer Protection Act</td></tr><tr><td>FPIES</td><td>Food protein-induced enterocolitis syndrome</td></tr><tr><td>GI</td><td>Gastrointestinal</td></tr><tr><td>GINI</td><td>German Nutritional Intervention Study</td></tr><tr><td>GRADE</td><td>Grading of Recommendations Assessment, Development and Evaluatior</td></tr><tr><td>ICD-9-CM</td><td>International Classification of Diseases, Ninth Revision, Clinical</td></tr><tr><td></td><td>Modification</td></tr><tr><td>ICU</td><td>Intensive-care unit</td></tr><tr><td>IM</td><td>Intramuscular</td></tr><tr><td>IV</td><td>Intravenous</td></tr><tr><td>MDI</td><td>Metered-dose inhaler</td></tr><tr><td>MMR</td><td>Measles, mumps, and rubella</td></tr><tr><td>MMRV</td><td>Measles, mumps, rubella, and varicella</td></tr><tr><td>NIAID</td><td>National Institute of Allergy and Infectious Diseases</td></tr><tr><td>NICE</td><td>National Institute for Health and Clinical Excellence (England/Wales)</td></tr><tr><td>NSAID</td><td>Nonsteroidal anti-inflammatory drug</td></tr><tr><td>OAS</td><td>Oral allergy syndrome</td></tr><tr><td>pHF</td><td>Partially hydrolyzed infant formula</td></tr><tr><td>pHF-W</td><td>Partially hydrolyzed whey formula</td></tr><tr><td>PI</td><td>Package insert</td></tr><tr><td>RCT</td><td>Randomized controlled trial</td></tr><tr><td>RR SAFE</td><td>Relative risk Seek support, Allergen identification and avoidance, Follow up with</td></tr><tr><td></td><td>specialty care, Epinephrine for emergencies</td></tr><tr><td>sIgE</td><td>Allergen-specific IgE</td></tr><tr><td>SPT</td><td>Skin prick test</td></tr><tr><td>WAO</td><td>World Allergy Organization</td></tr></table>
+
+![](images/2c5ce27642ec678a22e2e7b497acc99d5e91d412ad146d86ad83c7698f949daa.jpg)  
+Fig 1. Types of adverse reactions to food
+
+![](images/053a2c7e21ac91897b5a19197ff1cd614fab51f1debeb7490a254317f97dcf49.jpg)  
+Fig 2. The severity of the subsequent reactions to peanuts LTR, Life-threatening reaction.
+
+<sub>ot</sub> <sub>esti</sub>m<sup>ated;</sup> <sup>SPT,</sup> <sup>skin</sup> <sup>pri</sup>
+<table><tr><td>Diagnostic criteria</td><td>Overall prevalence</td><td>Peanut</td><td>Milk</td><td>Egg</td><td>Fish</td><td>Crustacean shellfish</td></tr><tr><td>Self-reported symptoms: Children</td><td>12%</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>Self-reported symptoms: Adults</td><td>13%</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>Self-reported symptoms: All ages</td><td></td><td>0.6%</td><td>3% *</td><td>1%</td><td>0.6%</td><td>1.2%</td></tr><tr><td>Symptoms plus SPT or serum IgE: All ages</td><td>3%</td><td>0.75%</td><td>0.6%</td><td>0.9%</td><td>0.2%</td><td>0.6%</td></tr><tr><td>Food challenge: All ages</td><td>3%</td><td>NE</td><td>0.9%</td><td>0.3%</td><td>0.3%</td><td>NE</td></tr><tr><td colspan="7">Greater prevalence in children than adults, not specifically estimated but it appears to be about 6% to 7% in children and 1%</td></tr></table>
+
+Prevalence of allergy to peanut, milk, egg, fish, and crustacean shellfish30
+
+<sub>a</sub>b<sup>le</sup> <sup>I</sup>  
+<sub>ot</sub> <sub>esti</sub>m<sup>ated;</sup> <sup>SPT,</sup> <sup>skin</sup> <sup>pric</sup>  
+Prevalence of allergy to fruits, vegetables/nonpeanut legumes, tree nuts, wheat, and soy31
+<table><tr><td>Diagnostic criteria</td><td>Fruits</td><td>Vegetables/nonpeanut legumes</td><td>Tree nuts</td><td>Wheat</td><td>Soy</td></tr><tr><td>Self-reported symptoms</td><td>0.02-8.5%</td><td>0.01-13.7%</td><td>0-4.1%</td><td>0.2-1.3%</td><td>0-0.6%</td></tr><tr><td>SPT</td><td>0.02-4.2%</td><td>0.01-2.7%</td><td>0.04-4.5%</td><td>0.2-1.2%</td><td>0.03-0.2%</td></tr><tr><td>Food challenge</td><td>0.1-4.3%</td><td>0.1-0.3%</td><td>0.1-4.3%</td><td>0-0.5%</td><td>0-0.7%</td></tr><tr><td>Meta-analysis: Adult studies</td><td>1.22% (symptoms)</td><td>0.1% (symptoms)</td><td>NE</td><td>0.4% (symptoms) 2% (sensitization)</td><td>NE</td></tr><tr><td>Meta-analysis: Children studies</td><td>NE</td><td>NE</td><td>0.5% (symptoms)</td><td>0.4% (sensitization)</td><td>NE</td></tr></table>
+
+<sub>a</sub>b<sup>le</sup> <sup>II</sup> Summary of US studies of the natural history of peanut allergy in children
+<table><tr><td>Ref #</td><td>Clinical site</td><td colspan="2">Criteria for diagnosis</td><td>Sample size</td><td>Years of study</td><td colspan="2">Population characteristics</td><td colspan="2">Natural history</td></tr><tr><td rowspan="4">55</td><td rowspan="4">National Jewish Medical and Research Center</td><td rowspan="4"></td><td rowspan="4">History of clinical peanut hypersensitivity and/or a positive oral</td><td rowspan="4">102 (83 contributed data to the</td><td rowspan="4">Mean duration of follow-up 5.9 years</td><td></td><td>2-4 years old at start of study</td><td></td><td rowspan="4">60% had accidental exposure to peanut during follow-up, and the severity of the initial reaction did not predict the</td></tr><tr><td></td><td>Male 69% Initial symptoms non-life-</td><td>severity of the subsequent reactions</td></tr><tr><td></td><td>threatening in 73%</td><td>0.33/year was the mean adverse reaction due to unintentional exposure</td></tr><tr><td></td><td></td><td></td><td>(approximately 1 every 3 years) 4 children selected on the basis of a low peanut sIgE had oral food</td></tr><tr><td rowspan="5">44</td><td rowspan="5">95% from Johns Hopkins University</td><td rowspan="5"></td><td rowspan="5">History of acute reaction to peanut, and positive</td><td rowspan="5">223</td><td rowspan="5">1998-2000</td><td></td><td></td><td rowspan="5"></td><td rowspan="5">10, 8, 6, and 4 years Based on the history and a low level of peanut sIgE, 85 patients underwent either open peanut challenge or</td></tr><tr><td>&gt;4 years old</td><td>Male 63%</td></tr><tr><td></td><td>Median age at diagnosis 1.5 years</td></tr><tr><td>years</td><td>Median age at evaluation 6.5</td></tr><tr><td></td><td>33% of patients identified based on a positive SPT response or peanut sIgE without history of peanut</td></tr><tr><td rowspan="2"></td><td rowspan="2">Duke</td><td rowspan="2"></td><td rowspan="2">Convincing clinical</td><td rowspan="2"></td><td rowspan="2"></td><td></td><td>exposure</td><td></td><td></td></tr><tr><td></td><td>Male 66% Median age at first visit 28 months</td><td></td><td>39% had an unintentional exposure to peanut after diagnosis 3% developed tolerance</td></tr><tr><td rowspan="2">57</td><td rowspan="2">National Jewish Medical</td><td rowspan="2"></td><td rowspan="2">All had symptoms and a positive DBPCFC</td><td rowspan="2">32</td><td rowspan="2">1973-1985</td><td></td><td>2-14 years old</td><td rowspan="2"></td><td rowspan="2">No patients developed tolerance</td></tr><tr><td>years</td><td>Median age at diagnosis 7</td></tr><tr><td rowspan="2">60</td><td rowspan="2">Children&#x27;s Hospital of Philadelphia</td><td rowspan="2"></td><td rowspan="2">History of peanut allergy</td><td rowspan="2">293</td><td rowspan="2">1997-2000</td><td rowspan="2"></td><td></td><td rowspan="2"></td><td rowspan="2">33 patients challenged</td></tr><tr><td>age of 3.8 years (range 1.5 to 8 years)</td></tr><tr><td rowspan="2"></td><td rowspan="2"></td><td rowspan="2"></td><td rowspan="2"></td><td rowspan="2"></td><td rowspan="2"></td><td rowspan="2"></td><td>Challenge was 1.8 years</td><td rowspan="2"></td><td rowspan="2">anaphylaxis did not develop tolerance Patients with a history of urticaria and</td></tr><tr><td>following last known clinical reaction (range 0.5 to 6.8 years)</td></tr></table>
+
+<sub>atitis;</sub> <sub>DB</sub>P<sup>CFC,</sup> <sup>double-blind</sup> <sup>placebo-controlled</sup> <sup>food</sup> <sup>challenge;</sup> <sup>SP</sup>
+<table><tr><td>Ref #</td><td>Clinical site</td><td>Criteria for diagnosis</td><td>Sample size</td><td>Years of study</td><td>Population characteristics</td><td>Natural history</td></tr><tr><td></td><td></td><td></td><td></td><td></td><td>●</td><td>Small size of SPT wheal predicted a negative challenge to peanut</td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>Patients with positive SPT responses and histories of only refusing to eat peanut had positive challenges to</td></tr></table>
+
+Table IV Symptoms of food-induced allergic reactions
+<table><tr><td>Target organ</td><td>Immediate symptoms</td><td>Delayed symptoms</td></tr><tr><td>Cutaneous</td><td>Erythema</td><td>Erythema</td></tr><tr><td></td><td>Pruritus</td><td>Flushing</td></tr><tr><td></td><td>Urticaria</td><td>Pruritus</td></tr><tr><td></td><td>Morbilliform eruption</td><td>Morbilliform eruption</td></tr><tr><td></td><td>Angioedema</td><td>Angioedema</td></tr><tr><td></td><td></td><td>Eczematous rash</td></tr><tr><td>Ocular</td><td>Pruritus</td><td>Pruritus</td></tr><tr><td></td><td>Conjunctival erythema</td><td>Conjunctival erythema</td></tr><tr><td></td><td>Tearing</td><td>Tearing</td></tr><tr><td></td><td>Periorbital edema</td><td>Periorbital edema</td></tr><tr><td>Upper respiratory</td><td>Nasal congestion</td><td></td></tr><tr><td></td><td>Pruritus</td><td></td></tr><tr><td></td><td>Rhinorrhea</td><td></td></tr><tr><td></td><td>Sneezing</td><td></td></tr><tr><td></td><td>Laryngeal edema</td><td></td></tr><tr><td></td><td>Hoarseness</td><td></td></tr><tr><td></td><td>Dry staccato cough</td><td></td></tr><tr><td>Lower respiratory</td><td>Cough</td><td>Cough, dyspnea, and wheezing</td></tr><tr><td></td><td>Chest tightness</td><td></td></tr><tr><td></td><td>Dyspnea</td><td></td></tr><tr><td></td><td>Wheezing</td><td></td></tr><tr><td></td><td>Intercostal retractions</td><td></td></tr><tr><td></td><td>Accessory muscle use</td><td></td></tr><tr><td>GI (oral)</td><td>Angioedema of the lips, tongue, or palate</td><td></td></tr><tr><td></td><td>Oral pruritus</td><td></td></tr><tr><td></td><td>Tongue swelling</td><td></td></tr><tr><td>GI (lower)</td><td>Nausea</td><td>Nausea</td></tr><tr><td></td><td>Colicky abdominal pain</td><td>Abdominal pain</td></tr><tr><td></td><td>Reflux</td><td>Reflux</td></tr><tr><td></td><td>Vomiting</td><td>Vomiting</td></tr><tr><td></td><td>Diarrhea</td><td>Diarrhea</td></tr><tr><td></td><td></td><td>Hematochezia</td></tr><tr><td></td><td></td><td>Irritability and food refusal with weight</td></tr><tr><td></td><td></td><td>loss (young children)</td></tr></table>
+
+Cardiovascular Tachycardia (occasionally bradycardia in anaphylaxis)  
+Hypotension
+
+<table><tr><td>Target organ</td><td>Immediate symptoms</td><td>Delayed symptoms</td></tr><tr><td></td><td>Dizziness</td><td></td></tr><tr><td></td><td>Fainting</td><td></td></tr><tr><td></td><td>Loss of consciousness</td><td></td></tr><tr><td>Miscellaneous</td><td>Uterine contractions</td><td></td></tr><tr><td></td><td>Sense of “impending doom”</td><td></td></tr></table>
+
+GI, Gastrointestinal.
+
+Table V  
+2010 ACIP and AAP Red Book recommendations and PI information for administering vaccines to patients with egg allergy
+<table><tr><td>Vaccine</td><td>ACIP</td><td>AAP Red Book</td><td>PI</td></tr><tr><td>MMR/MMRV</td><td>May be used197</td><td>May be used198</td><td>May be used with cautions, citing the 1997 AAP recommendations199</td></tr><tr><td>Influenza</td><td>Consult a physician200</td><td>Contraindicated201</td><td>Contraindicated199</td></tr><tr><td>Rabies</td><td>Use caution202</td><td>No specific recommendation</td><td>May be used with caution203</td></tr><tr><td>Yellow fever</td><td>Contraindicated, but desensitization protocols may be followed to administer vaccine if necessary (citing  $\mathrm { P I } ) ^ { 2 0 4 }$ </td><td>Contraindicated, but desensitization protocols may be followed to administer vaccine if necessary (citing  $\mathrm { P I } ) ^ { 2 0 5 }$ </td><td>Skin testing and desensitization protocols (citing 2000 AAP recommendations) provided in the  $\mathrm { P I } ^ { 2 0 6 }$ </td></tr></table>
+
+AAP, American Academy of Pediatrics; ACIP, Advisory Committee on Immunization Practices; PI, package insert.
+
+## Summary of the pharmacologic management of anaphylaxis (modified<sup>279</sup>)
+
+## In the outpatient setting
+
+## First-line treatment:
+
+Epinephrine, IM; auto-injector or 1:1,000 solution
+
+♦ 10 to 25 kg: 0.15 mg epinephrine autoinjector, IM (anterior-lateral thigh)
+
+◆ >25 kg: 0.3 mg epinephrine autoinjector, IM (anterior-lateral thigh)
+
+♦ Epinephrine (1:1,000 solution) (IM), 0.01 mg/kg per dose; maximum dose, 0.5 mg per dose (anteriorlateral thigh)
+
+Epinephrine doses may need to be repeated every 5-15 minutes
+
+## • Adjunctive treatment:
+
+Bronchodilator (β<sub>2</sub>-agonist): albuterol
+
+♦ MDI (child: 4-8 puffs; adult: 8 puffs) or
+
+Nebulized solution (child: 1.5 ml; adult: 3 ml) every 20 minutes or continuously as needed
+
+H<sub>1</sub> antihistamine: diphenhydramine
+
+♦ 1 to 2 mg/kg per dose
+
+♦ Maximum dose, 50 mg IV or oral (oral liquid is more readily absorbed than tablets)
+
+♦ Alternative dosing may be with a less-sedating second generation antihistamine
+
+Supplemental oxygen therapy
+
+IV fluids in large volumes if patient presents with orthostasis, hypotension, or incomplete response to IM epinephrine
+
+Place the patient in recumbent position if tolerated, with the lower extremities elevated
+
+## In the hospital-based setting
+
+## First-line treatment:
+
+Epinephrine IM as above, consider continuous epinephrine infusion for persistent hypotension (ideally with continuous non-invasive monitoring of blood pressure and heart rate); alternatives are endotracheal or intraosseous epinephrine
+
+## Adjunctive treatment:
+
+Bronchodilator (β<sub>2</sub>-agonist): albuterol
+
+♦ MDI (child: 4-8 puffs; adult: 8 puffs) or
+
+Nebulized solution (child: 1.5 ml; adult: 3 ml) every 20 minutes or continuously as needed
+
+H<sub>1</sub> antihistamine: diphenhydramine
+
+♦ 1 to 2 mg/kg per dose
+
+♦ Maximum dose, 50 mg IV or oral (oral liquid is more readily absorbed than tablets)
+
+♦ Alternative dosing may be with a less-sedating second generation antihistamine
+
+## – H<sub>2</sub> antihistamine: ranitidine
+
+♦ 1 to 2 mg/kg per dose
+
+Maximum dose, 75 to 150 mg oral and IV
+
+## Corticosteroids
+
+Prednisone at 1 mg/kg with a maximum dose of 60 to 80 mg oral or
+
+♦ Methylprednisolone at 1 mg/kg with a maximum dose of 60 to 80 mg IV
+
+Vasopressors (other than epinephrine) for refractory hypotension, titrate to effect
+
+Glucagon for refractory hypotension, titrate to effect
+
+Child: 20-30 μg/kg
+
+J Allergy Clin Immunol. Author manuscript; available in PMC 2014 November 24.
+
+♦ Adult: 1-5 mg
+
+♦ Dose may be repeated or followed by infusion of 5-15 μg/min
+
+Atropine for bradycardia, titrate to effect
+
+Supplemental oxygen therapy
+
+IV fluids in large volumes if patients present with orthostasis, hypotension, or incomplete response to IM epinephrine
+
+Place the patient in recumbent position if tolerated, with the lower extremities elevated
+
+## Therapy for the patient at discharge
+
+First-line treatment:
+
+Epinephrine auto-injector prescription (2 doses) and instructions
+
+Education on avoidance of allergen
+
+Follow-up with primary care physician
+
+Consider referral to an allergist
+
+• Adjunctive treatment:
+
+– $\mathrm { H } _ { 1 }$ antihistamine: diphenhydramine every 6 hours for 2-3 days; alternative dosing with a non-sedating second generation antihistamine
+
+H<sub>2</sub> antihistamine: ranitidine twice daily for 2-3 days
+
+Corticosteroid: prednisone daily for 2-3 days
+
+Note: These treatments often occur concomitantly, and are not meant to be sequential, with the exception of epinephrine as first-line treatment.   
+IM, Intramuscular; IV, intravenous; MDI, metered-dose inhaler.

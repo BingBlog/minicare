@@ -4,10 +4,14 @@ import { v4 as uuidv4 } from 'uuid';
 import { DATABASE_POOL } from '../../common/database/database.module';
 import { CreateGrowthDto, UpdateGrowthDto } from './dto/create-growth.dto';
 import { toMysqlDate, getBeijingToday, addDays } from '../../common/utils/date.util';
+import { TimelineService } from '../timeline/timeline.service';
 
 @Injectable()
 export class GrowthService {
-  constructor(@Inject(DATABASE_POOL) private readonly db: Pool) {}
+  constructor(
+    @Inject(DATABASE_POOL) private readonly db: Pool,
+    private readonly timelineService: TimelineService,
+  ) {}
 
   async create(userId: string, dto: CreateGrowthDto) {
     const id = uuidv4();
@@ -42,7 +46,9 @@ export class GrowthService {
       'SELECT id FROM growth_record WHERE baby_id = ? AND record_date = ?',
       [dto.baby_id, dateStr],
     );
-    return { id: rows[0]?.id ?? id };
+    const actualId = rows[0]?.id ?? id;
+    await this.timelineService.upsertFromSource('growth', actualId);
+    return { id: actualId };
   }
 
   async findAll(babyId: string, beforeDate?: string) {
@@ -78,6 +84,29 @@ export class GrowthService {
     return rows[0];
   }
 
+  /**
+   * 获取各生长指标「各自最近一次非空」的数值（跨记录回溯）。
+   *
+   * 生长记录允许单条只填部分维度（如只称体重），若仅取最新一条记录，
+   * 身高/头围等本维度数据会因最新记录未填写而显示为空。因此每个字段
+   * 独立按 record_date 倒序找最近一条非空值，返回结构与原单条记录一致：
+   * { weight_g, height_mm, head_mm }（任一字段可能为 null）。
+   */
+  async getLatest(babyId: string) {
+    const [rows] = await this.db.query<any[]>(
+      `SELECT
+         (SELECT weight_g  FROM growth_record WHERE baby_id = ? AND weight_g  IS NOT NULL ORDER BY record_date DESC LIMIT 1) AS weight_g,
+         (SELECT height_mm FROM growth_record WHERE baby_id = ? AND height_mm IS NOT NULL ORDER BY record_date DESC LIMIT 1) AS height_mm,
+         (SELECT head_mm   FROM growth_record WHERE baby_id = ? AND head_mm   IS NOT NULL ORDER BY record_date DESC LIMIT 1) AS head_mm`,
+      [babyId, babyId, babyId],
+    );
+    const row = rows[0];
+    if (!row) return null;
+    // 与旧行为对齐：宝宝完全没有任何生长数据时返回 null
+    if (row.weight_g == null && row.height_mm == null && row.head_mm == null) return null;
+    return row;
+  }
+
   async update(id: string, dto: UpdateGrowthDto) {
     const [rows] = await this.db.execute<any[]>('SELECT id FROM growth_record WHERE id = ?', [id]);
     if (rows.length === 0) throw new NotFoundException('找不到该生长记录');
@@ -95,6 +124,7 @@ export class GrowthService {
     if (setClauses.length > 0) {
       values.push(id);
       await this.db.execute(`UPDATE growth_record SET ${setClauses.join(', ')} WHERE id = ?`, values);
+      await this.timelineService.upsertFromSource('growth', id);
     }
 
     const [updated] = await this.db.execute<any[]>('SELECT * FROM growth_record WHERE id = ?', [id]);
@@ -103,6 +133,7 @@ export class GrowthService {
 
   async remove(id: string) {
     await this.db.execute('DELETE FROM growth_record WHERE id = ?', [id]);
+    await this.timelineService.removeBySource('growth', id);
     return { id };
   }
 }

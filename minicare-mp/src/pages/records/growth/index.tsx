@@ -217,20 +217,6 @@ export default function GrowthFormPage() {
           </View>
         </View>
 
-        {/* 上传测量单 */}
-        <View className='growth-section-label'><Text>上传测量单（可选）</Text></View>
-        <View className='growth-card-box'>
-          <View className='growth-photo-btn' onClick={() => Taro.showToast({ title: '拍照上传（功能开发中）', icon: 'none' })}>
-            <View className='growth-photo-btn__icon'>
-              <Text className='growth-photo-btn__icon-text'>+</Text>
-            </View>
-            <View>
-              <Text className='growth-photo-btn__title'>拍照或上传测量报告</Text>
-              <Text className='growth-photo-btn__desc'>JPG / PNG，与结构化数据一并保存</Text>
-            </View>
-          </View>
-        </View>
-
         {/* 备注 */}
         <View className='growth-section-label'><Text>备注（可选）</Text></View>
         <View className='growth-card-box'>

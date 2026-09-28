@@ -10,6 +10,9 @@ import { SymptomModule } from './symptom/symptom.module';
 import { ActivityModule } from './activity/activity.module';
 import { GrowthModule } from './growth/growth.module';
 import { MedicalModule } from './medical/medical.module';
+import { MedicationModule } from './medication/medication.module';
+import { FeedModule } from './feed/feed.module';
+import { FoodObservationModule } from './food-observation/food-observation.module';
 
 /**
  * RecordsModule — 汇总 8 类业务记录子模块
@@ -32,6 +35,9 @@ import { MedicalModule } from './medical/medical.module';
     ActivityModule,
     GrowthModule,
     MedicalModule,
+    MedicationModule,
+    FeedModule,
+    FoodObservationModule,
   ],
 })
 export class RecordsModule {}

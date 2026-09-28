@@ -1,43 +1,130 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsArray,
+  IsBoolean,
   IsDateString,
   IsEnum,
+  IsIn,
+  IsInt,
   IsOptional,
   IsString,
   IsUUID,
+  Matches,
+  Max,
+  Min,
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
 /**
- * DDL: medical_record（迁移 001 基础字段 + 003 扩展字段）
- *   visit_date     DATE          -- 就诊日期
- *   hospital       VARCHAR(100)  -- 医院名称
- *   diagnosis      TEXT          -- 诊断结论
- *   medications    JSON          -- [{"name":"xx","dose":"xx"}]
- *   photo_ids      JSON          -- 照片 fileID 列表
- *   visit_type     VARCHAR(20)   -- 就诊类型（Migration 003）
- *   doctor         VARCHAR(50)   -- 主诊医生（Migration 003）
- *   result_summary TEXT          -- 结果摘要（Migration 003）
- *   follow_up_date DATE          -- 复查日期（Migration 003）
+ * DDL: medical_record（迁移 001 基础字段 + 003 扩展字段 + 020 类型化扩展字段）
+ *   基础: visit_date/hospital/diagnosis/medications(JSON)/photo_ids(JSON)/note
+ *   003 : visit_type/doctor/result_summary/follow_up_date (+014 visit_time +015 follow_up_time)
+ *   020 : 疫苗(vaccine_*)、儿保(checkup_*)、就诊(sick_*) 类型化列，见 TECH-011 §2.1
  */
 
-/** 就诊类型枚举 */
+/**
+ * 就诊类型枚举（2026-08-22 精简 blood/allergy 后，020 保留 4 型；blood/allergy 仅老数据展示）
+ */
 export enum VisitType {
-  CHECKUP = 'checkup',   // 常规体检
-  ALLERGY = 'allergy',   // 过敏专科
-  SICK    = 'sick',      // 生病就诊
+  CHECKUP = 'checkup',   // 儿保检查
+  SICK    = 'sick',      // 就诊记录
   VACCINE = 'vaccine',   // 疫苗接种
-  BLOOD   = 'blood',     // 血液检查
-  OTHER   = 'other',     // 其他
+  OTHER   = 'other',     // 其他检查
 }
 
-/** 单条用药记录 */
+/** 废弃就诊类型（仅老数据展示/归一），不参与新建 */
+export const LEGACY_VISIT_TYPES = ['blood', 'allergy'] as const;
+
+/** 疫苗参考库程序类别 */
+export const VACCINE_CATEGORY_LABELS: Record<string, string> = {
+  free: '免费',
+  paid: '自费',
+};
+
+/** 接种后反应枚举 */
+export enum VaccineReaction {
+  NONE = 'none',
+  FEVER = 'fever',
+  LOCAL_REDNESS = 'local_redness',
+  INDURATION = 'induration',
+  RASH = 'rash',
+  SLEEPY_IRRITABLE = 'sleepy_irritable',
+  OTHER = 'other',
+}
+
+/** 接种部位 */
+export enum VaccineSite {
+  LEFT_ARM = 'left_arm',
+  RIGHT_ARM = 'right_arm',
+  THIGH = 'thigh',
+  ORAL = 'oral',
+  OTHER = 'other',
+  UNKNOWN = 'unknown',
+}
+
+/** 儿保里程碑维度 */
+export enum CheckupMilestoneDim {
+  GROSS = 'gross',           // 大运动
+  FINE = 'fine',             // 精细动作
+  LANGUAGE = 'language',     // 语言
+  COGNITIVE = 'cognitive',   // 认知
+  SOCIAL = 'social',         // 社会适应
+}
+
+/** 里程碑状态 */
+export enum MilestoneStatus {
+  OK = 'ok',                 // 正常
+  WATCH = 'watch',           // 待观察
+  NA = 'na',                 // 未评估
+}
+
+/** 儿保测量同步生长记录状态 */
+export enum CheckupGrowthSync {
+  NONE = 'none',
+  SYNCED = 'synced',
+  OVERWRITTEN = 'overwritten',
+  SKIPPED = 'skipped',
+}
+
+/** 单条用药记录（medications JSON item；P1 就诊开药扩展 days） */
 export class MedicationItemDto {
   @ApiProperty({ description: '药品名称' }) @IsString() name: string;
   @ApiPropertyOptional({ description: '剂量描述，如 5ml 每次' }) @IsOptional() @IsString() dose?: string;
+  @ApiPropertyOptional({ description: '服药天数（选填）' }) @IsOptional() @IsInt() @Min(1) @Max(365) days?: number;
 }
+
+/** 儿保里程碑单条 */
+export class MilestoneItemDto {
+  @ApiProperty({ enum: CheckupMilestoneDim, description: '发育维度' })
+  @IsEnum(CheckupMilestoneDim)
+  dim: string;
+
+  @ApiProperty({ enum: MilestoneStatus, description: 'ok=正常 watch=待观察 na=未评估' })
+  @IsIn(['ok', 'watch', 'na'])
+  status: string;
+
+  @ApiPropertyOptional({ description: '该维度备注' }) @IsOptional() @IsString() note?: string;
+}
+
+/** 儿保家长问答单条（answer 空 = 待补答复） */
+export class QaItemDto {
+  @ApiProperty({ description: '我的问题' }) @IsString() question: string;
+  @ApiPropertyOptional({ description: '医生答复（空 = 待补答复）' }) @IsOptional() @IsString() answer?: string;
+}
+
+/** 各类型专属字段组（service 校验/白名单用，避免跨类型写入错列） */
+export const TYPED_FIELD_GROUPS = {
+  vaccine: [
+    'vaccine_name', 'vaccine_schedule_key', 'vaccine_dose_seq', 'vaccine_site',
+    'vaccine_batch', 'vaccine_reactions', 'vaccine_reaction_note',
+  ],
+  checkup: [
+    'checkup_height_mm', 'checkup_weight_g', 'checkup_head_mm', 'checkup_milestones',
+    'checkup_assessment', 'checkup_qa', 'checkup_growth_sync',
+  ],
+  sick: ['sick_complaint', 'sick_symptom_flags'],
+} as const;
 
 export class CreateMedicalDto {
   @ApiProperty() @IsUUID() baby_id: string;
@@ -46,10 +133,12 @@ export class CreateMedicalDto {
   @IsDateString()
   visit_date: string;
 
-  @ApiPropertyOptional({
-    enum: VisitType,
-    description: '就诊类型（checkup/allergy/sick/vaccine/blood/other）',
-  })
+  @ApiPropertyOptional({ description: '就诊/检查时间（HH:mm，可选）', example: '10:30' })
+  @IsOptional()
+  @Matches(/^([01]\d|2[0-3]):[0-5]\d$/)
+  visit_time?: string;
+
+  @ApiPropertyOptional({ enum: VisitType, description: '就诊类型（checkup/sick/vaccine/other）' })
   @IsOptional()
   @IsEnum(VisitType)
   visit_type?: VisitType;
@@ -63,7 +152,7 @@ export class CreateMedicalDto {
   @ApiPropertyOptional({ description: '结果摘要（如检测指标等）' }) @IsOptional() @IsString() result_summary?: string;
 
   @ApiPropertyOptional({
-    description: '用药列表，如 [{"name":"布洛芬","dose":"5ml"}]',
+    description: '用药列表，如 [{"name":"布洛芬","dose":"5ml","days":3}]',
     type: [MedicationItemDto],
   })
   @IsOptional()
@@ -83,7 +172,46 @@ export class CreateMedicalDto {
   @IsDateString()
   follow_up_date?: string;
 
+  @ApiPropertyOptional({ description: '下次复查时间（HH:mm，可选）' })
+  @IsOptional()
+  @Matches(/^([01]\d|2[0-3]):[0-5]\d$/)
+  follow_up_time?: string;
+
   @ApiPropertyOptional() @IsOptional() @IsString() note?: string;
+
+  // ── 020 类型化扩展 ──
+  @ApiPropertyOptional({ description: '疫苗名称（自定义名或参考库名快照）' }) @IsOptional() @IsString() vaccine_name?: string;
+  @ApiPropertyOptional({ description: '参考库程序键（自定义疫苗不传）' }) @IsOptional() @IsString() vaccine_schedule_key?: string;
+  @ApiPropertyOptional({ description: '第几剂（1 起）' }) @IsOptional() @IsInt() @Min(1) @Max(20) vaccine_dose_seq?: number;
+  @ApiPropertyOptional({ enum: VaccineSite }) @IsOptional() @IsEnum(VaccineSite) vaccine_site?: string;
+  @ApiPropertyOptional({ description: '疫苗批号' }) @IsOptional() @IsString() vaccine_batch?: string;
+  @ApiPropertyOptional({ description: '接种后反应枚举数组', enum: VaccineReaction, isArray: true })
+  @IsOptional() @IsArray() @IsEnum(VaccineReaction, { each: true })
+  vaccine_reactions?: string[];
+  @ApiPropertyOptional({ description: '接种反应文字说明' }) @IsOptional() @IsString() vaccine_reaction_note?: string;
+
+  @ApiPropertyOptional({ description: '身高（mm，与 growth 同单位）' }) @IsOptional() @IsInt() @Min(100) @Max(1600) checkup_height_mm?: number;
+  @ApiPropertyOptional({ description: '体重（g）' }) @IsOptional() @IsInt() @Min(500) @Max(60000) checkup_weight_g?: number;
+  @ApiPropertyOptional({ description: '头围（mm）' }) @IsOptional() @IsInt() @Min(200) @Max(700) checkup_head_mm?: number;
+  @ApiPropertyOptional({ description: '发育里程碑（5 维可选）', type: [MilestoneItemDto] })
+  @IsOptional() @IsArray() @ValidateNested({ each: true }) @Type(() => MilestoneItemDto)
+  checkup_milestones?: MilestoneItemDto[];
+  @ApiPropertyOptional({ description: '医生综合评估与建议' }) @IsOptional() @IsString() checkup_assessment?: string;
+  @ApiPropertyOptional({ description: '家长问答列表（answer 空=待补答复）', type: [QaItemDto] })
+  @IsOptional() @IsArray() @ValidateNested({ each: true }) @Type(() => QaItemDto)
+  checkup_qa?: QaItemDto[];
+  @ApiPropertyOptional({ description: '同步生长记录状态（系统回填；前端仅可传 skipped）', enum: CheckupGrowthSync })
+  @IsOptional() @IsIn(['none', 'synced', 'overwritten', 'skipped'])
+  checkup_growth_sync?: string;
+
+  @ApiPropertyOptional({ description: '主诉描述' }) @IsOptional() @IsString() sick_complaint?: string;
+  @ApiPropertyOptional({ description: '主诉症状标签枚举数组', type: [String] })
+  @IsOptional() @IsArray() @IsString({ each: true })
+  sick_symptom_flags?: string[];
+
+  @ApiPropertyOptional({ description: '就诊开药是否同步加入药箱（P1；true 时按 medications 逐条去重写入药箱）' })
+  @IsOptional() @IsBoolean()
+  sync_meds_to_stock?: boolean;
 }
 
 export class UpdateMedicalDto {
@@ -91,6 +219,11 @@ export class UpdateMedicalDto {
   @IsOptional()
   @IsDateString()
   visit_date?: string;
+
+  @ApiPropertyOptional({ description: '就诊/检查时间（HH:mm，可选）' })
+  @IsOptional()
+  @Matches(/^([01]\d|2[0-3]):[0-5]\d$/)
+  visit_time?: string;
 
   @ApiPropertyOptional({ enum: VisitType })
   @IsOptional()
@@ -120,5 +253,42 @@ export class UpdateMedicalDto {
   @IsDateString()
   follow_up_date?: string;
 
+  @ApiPropertyOptional({ description: '下次复查时间（HH:mm，可选）' })
+  @IsOptional()
+  @Matches(/^([01]\d|2[0-3]):[0-5]\d$/)
+  follow_up_time?: string;
+
   @ApiPropertyOptional() @IsOptional() @IsString() note?: string;
+
+  // ── 020 类型化扩展（同 Create）──
+  @ApiPropertyOptional() @IsOptional() @IsString() vaccine_name?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() vaccine_schedule_key?: string;
+  @ApiPropertyOptional() @IsOptional() @IsInt() @Min(1) @Max(20) vaccine_dose_seq?: number;
+  @ApiPropertyOptional() @IsOptional() @IsEnum(VaccineSite) vaccine_site?: string;
+  @ApiPropertyOptional() @IsOptional() @IsString() vaccine_batch?: string;
+  @ApiPropertyOptional({ type: [String] })
+  @IsOptional() @IsArray() @IsEnum(VaccineReaction, { each: true })
+  vaccine_reactions?: string[];
+  @ApiPropertyOptional() @IsOptional() @IsString() vaccine_reaction_note?: string;
+
+  @ApiPropertyOptional() @IsOptional() @IsInt() @Min(100) @Max(1600) checkup_height_mm?: number;
+  @ApiPropertyOptional() @IsOptional() @IsInt() @Min(500) @Max(60000) checkup_weight_g?: number;
+  @ApiPropertyOptional() @IsOptional() @IsInt() @Min(200) @Max(700) checkup_head_mm?: number;
+  @ApiPropertyOptional({ type: [MilestoneItemDto] })
+  @IsOptional() @IsArray() @ValidateNested({ each: true }) @Type(() => MilestoneItemDto)
+  checkup_milestones?: MilestoneItemDto[];
+  @ApiPropertyOptional() @IsOptional() @IsString() checkup_assessment?: string;
+  @ApiPropertyOptional({ type: [QaItemDto] })
+  @IsOptional() @IsArray() @ValidateNested({ each: true }) @Type(() => QaItemDto)
+  checkup_qa?: QaItemDto[];
+  @ApiPropertyOptional() @IsOptional() @IsIn(['none', 'synced', 'overwritten', 'skipped'])
+  checkup_growth_sync?: string;
+
+  @ApiPropertyOptional() @IsOptional() @IsString() sick_complaint?: string;
+  @ApiPropertyOptional({ type: [String] })
+  @IsOptional() @IsArray() @IsString({ each: true })
+  sick_symptom_flags?: string[];
+
+  @ApiPropertyOptional() @IsOptional() @IsBoolean()
+  sync_meds_to_stock?: boolean;
 }

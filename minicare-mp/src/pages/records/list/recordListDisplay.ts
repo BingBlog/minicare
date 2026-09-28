@@ -120,9 +120,9 @@ export function getRecordListParts(
         const tags: string[] = []
         if (suppItems && suppItems.length > 0) {
           suppItems.forEach((item) => {
-            const pillLabel = item.dose
-              ? `${item.label ?? ''} ${item.dose}${item.unit ?? ''}`
-              : (item.label ?? '')
+            const name = item.label ?? ''
+            const hasDose = item.dose != null && item.dose !== ''
+            const pillLabel = hasDose ? `${name} ${item.dose}${item.unit ?? ''}` : name
             if (pillLabel.trim()) tags.push(pillLabel.trim())
           })
         }
@@ -130,18 +130,21 @@ export function getRecordListParts(
       }
 
       if (feedType === 'complementary') {
+        const foodItems = d.food_items as Array<{ food_name?: string }> | undefined
+        const foodFromItems = (foodItems ?? []).map((item) => item.food_name ?? '').filter(Boolean).join('、')
+        const displayFood = food || foodFromItems
         if (isSupp && suppItems && suppItems.length > 0) {
           const tags: string[] = []
           suppItems.forEach((item) => {
-            const pillLabel = item.dose
-              ? `${item.label ?? ''} ${item.dose}${item.unit ?? ''}`
-              : (item.label ?? '')
+            const name = item.label ?? ''
+            const hasDose = item.dose != null && item.dose !== ''
+            const pillLabel = hasDose ? `${name} ${item.dose}${item.unit ?? ''}` : name
             if (pillLabel.trim()) tags.push(pillLabel.trim())
           })
           return { label: '营养素', tags }
         }
-        if (!isSupp && food) {
-          return { label: '辅食', tags: [food] }
+        if (!isSupp && displayFood) {
+          return { label: '辅食', tags: [displayFood] }
         }
       }
 
@@ -204,14 +207,21 @@ export function getRecordListParts(
       const temp = d.temperature as number | undefined
       const isFever = temp != null && temp >= 37.5
       const meds = d.medications as Array<{ name: string }> | undefined
-      const hasAllergy = (d.allergy_symptoms as string[] | undefined)?.length
+      const symptoms = (d.allergy_symptoms as string[] | undefined) ?? []
+      const hasAllergy = symptoms.length > 0
+
+      // 拆页后单维度记录占绝大多数；历史复合记录（体温+过敏同一条）兜底展示
+      const label = temp != null && !hasAllergy ? '体温' : hasAllergy && temp == null ? '过敏表现' : '健康'
 
       const tags: string[] = []
       if (isFever) tags.push('发热')
-      if (hasAllergy) tags.push('过敏')
+      if (hasAllergy) {
+        tags.push(...symptoms.slice(0, 2))
+        if (symptoms.length > 2) tags.push(`等${symptoms.length}项`)
+      }
       if (meds && meds.length > 0) tags.push(meds[0].name)
 
-      return { label: '健康', tags }
+      return { label, tags }
     }
 
     case 'growth': {
@@ -233,6 +243,13 @@ export function getRecordListParts(
       const typeLabel = visitType ? (VISIT_TYPE_LABELS[visitType] ?? '就诊') : '就诊'
       const tags = [typeLabel, hospital, diagnosis].filter(Boolean) as string[]
       return { label: '医疗', tags }
+    }
+
+    case 'medication': {
+      const name = d.medication_name as string | undefined
+      const note = d.note as string | undefined
+      const tags = [name, note].filter(Boolean) as string[]
+      return { label: '用药', tags }
     }
 
     default: {
@@ -309,6 +326,14 @@ export function getRecordSummary(
     case 'diaper':
     case 'symptom':
     case 'medical':
+      return null
+
+    case 'medication': {
+      const dose = d.dose as string | undefined
+      if (dose) return { value: dose, theme: 'purple' }
+      return null
+    }
+
     default:
       return null
   }

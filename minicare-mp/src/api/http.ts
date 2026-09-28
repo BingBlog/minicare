@@ -1,12 +1,5 @@
 import Taro from '@tarojs/taro'
-
-// Taro 编译时会将 process.env.TARO_APP_* 替换为字面量字符串，
-// 小程序运行时无 process 全局，不可用运行时判断。
-// 各环境 .env 文件中配置：
-//   .env.development  → http://127.0.0.1:3001
-//   .env.staging      → staging CloudRun URL
-//   .env.production   → production CloudRun URL
-const API_BASE_URL = process.env.TARO_APP_API_BASE_URL || 'http://localhost:3001'
+import { API_BASE_URL } from './base'
 
 export function getToken(): string | null {
   return Taro.getStorageSync('minicare_token') || null
@@ -39,8 +32,43 @@ export function removeUser(): void {
   Taro.removeStorageSync(USER_KEY)
 }
 
+const CURRENT_FAMILY_ID_KEY = 'minicare_current_family_id'
+const CURRENT_BABY_ID_KEY = 'minicare_current_baby_id'
+
+export function getCurrentFamilyId(families: { id: string }[]): string | null {
+  if (families.length === 0) return null
+  const stored = Taro.getStorageSync(CURRENT_FAMILY_ID_KEY)
+  if (stored && families.some((f) => f.id === stored)) return stored
+  return families[0].id
+}
+
+export function setCurrentFamilyId(familyId: string): void {
+  Taro.setStorageSync(CURRENT_FAMILY_ID_KEY, familyId)
+}
+
+export function getStoredFamilyId(): string | null {
+  return Taro.getStorageSync(CURRENT_FAMILY_ID_KEY) || null
+}
+
+export function getStoredBabyId(): string | null {
+  return Taro.getStorageSync(CURRENT_BABY_ID_KEY) || null
+}
+
+export function getCurrentBabyId(babies: { id: string }[]): string | null {
+  if (babies.length === 0) return null
+  const stored = Taro.getStorageSync(CURRENT_BABY_ID_KEY)
+  if (stored && babies.some((b) => b.id === stored)) return stored
+  return babies[0].id
+}
+
+export function setCurrentBabyId(babyId: string): void {
+  Taro.setStorageSync(CURRENT_BABY_ID_KEY, babyId)
+}
+
+let isRedirectingToLogin = false
+
 interface RequestOptions {
-  method?: 'GET' | 'POST' | 'PATCH' | 'DELETE'
+  method?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE'
   auth?: boolean
   data?: unknown
   timeoutMs?: number
@@ -67,10 +95,16 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
     })
   } catch (err) {
     const errMsg = (err as { errMsg?: string })?.errMsg ?? ''
+    // 请求被主动中止（开发者工具终止会话 / 页面销毁 / 小程序切后台时，
+    // 微信框架会 abort 所有挂起的请求）。属正常生命周期行为，静默处理，
+    // 避免向上抛出形成 unhandled rejection 误报（MiniProgramError）。
+    if (errMsg.includes('abort')) {
+      return undefined as T
+    }
     if (errMsg.includes('timeout')) {
       throw new Error(`请求超时（>${timeoutMs}ms）：请确认本地后端已启动并可访问 ${API_BASE_URL}`)
     }
-    if (errMsg.includes('fail') || errMsg.includes('abort')) {
+    if (errMsg.includes('fail')) {
       throw new Error(`网络请求失败：${errMsg}`)
     }
     // wx.request 底层异常（如 Failed to fetch）——给出可操作的诊断信息
@@ -90,7 +124,12 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
   if (res.statusCode === 401) {
     removeToken()
     removeUser()
-    Taro.reLaunch({ url: '/pages/login/index' })
+    if (!isRedirectingToLogin) {
+      isRedirectingToLogin = true
+      Taro.reLaunch({ url: '/pages/login/index' }).finally(() => {
+        isRedirectingToLogin = false
+      })
+    }
     throw new Error('登录已过期，请重新登录')
   }
 
