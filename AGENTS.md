@@ -29,21 +29,29 @@ These 6 project rules are referenced by `opencode.json` and auto-apply to matchi
 | `.agents/rules/miniapp-development.mdc` | Miniprogram platform constraints |
 | `.agents/rules/mp-preview.mdc` | CI preview (miniprogram-ci, IP whitelist, proxy handling) |
 
-> ⚠️ **`.agents/` 是 rules 和 skills 的唯一数据源**。`.cursor/`、`.trae/`、`.opencode/`、`.workbuddy/skills/` 中的 rules 和 skills 均为 symlink 指向 `.agents/`，**禁止直接编辑这些目录中的文件**。所有修改必须通过 `.agents/rules/` 或 `.agents/skills/` 路径进行。
+> ⚠️ **`.agents/` 是 rules 和 skills 的唯一数据源**。`.cursor/`、`.trae/` 中的 rules 和 skills 均为 symlink 指向 `.agents/`，**禁止直接编辑这些目录中的文件**。所有修改必须通过 `.agents/rules/` 或 `.agents/skills/` 路径进行。（`.opencode/` 不使用目录，`opencode.json` 直接引用 `.agents/rules/*.mdc`。）
+
+> 🖥️ **换机器 / 新 clone 后自检（10 秒）**：运行 `bash .agents/scripts/setup-links.sh --check`。
+> `.cursor/`、`.trae/`、`.workbuddy/skills` 的镜像软链均为**相对路径**且已进版本库，正常 clone 后由 git 自动重建，通常无需任何操作。
+> 若自检报 `BROKEN` / `WRONG` / `CONFLICT`，运行 `bash .agents/scripts/setup-links.sh`（不带 `--check`）修复。
+> ⚠️ **新增软链时禁止使用绝对路径**——绝对路径软链在提交者机器上完全正常、`git status` 也干净，但换机器或换 clone 目录后会静默断链。CI（`.github/workflows/verify-links.yml`）会拦截这类提交。详见 `.agents/README.md`。
 
 ---
 
 ## Project structure
 
-Monorepo with 3 independent packages (no root `package.json`):
+Monorepo with 5 independent projects (no root `package.json`):
 
 | Directory | Stack | Role |
 |---|---|---|
 | `minicare-server/` | NestJS v10 + TypeScript + mysql2 | Backend API (CloudRun) |
 | `minicare-mp/` | Taro 4.2 + React 18 | **Primary platform** — WeChat miniprogram |
 | `minicare-web/` | React 18 + Vite 6 + Tailwind | Web frontend (secondary, maintenance mode) |
+| `minicare-platform/` | FastAPI（Python 3.13）+ React 18 + Vite | **本机管理端**（127.0.0.1:8787，单用户）：`api/` = 平台后端（KB 六步管线 + 检索质检 + 平台服务，原 `minicare-kb`）；`web/` = 管理界面（React SPA，同端口托管） |
+| `agent-poc/` | Node.js + DeepSeek（Claude Agent SDK 运行时） | 养娃智能体「敏宝助手」服务（被测对象）+ agent 测评 harness（`scripts/eval/`，由平台调度） |
 
 > **Platform strategy**: WeChat miniprogram (`minicare-mp/`) is the **primary distribution channel**. MVP has been released on the miniprogram platform. `minicare-web/` served as the prototyping platform during early development and is now in maintenance mode.
+> **管理端策略**：`minicare-platform/` 是本机单用户管理端（知识库 + Agent 测评两个能力域），**不做云端部署**；`agent-poc/` 是被测智能体本体。
 
 All commands run from within the specific project directory.
 
@@ -66,6 +74,14 @@ npm run start:debug        # dev + debugger
 npm run dev                # dev server on :3000, /api proxies to :3001
 npm run build:staging      # tsc -b + vite build (staging mode)
 npm run build:prod         # tsc -b + vite build (production mode)
+
+# Platform — 本机管理端（must be in minicare-platform/api/ 或 web/）
+.venv/bin/kb-pipeline serve    # 平台服务 :8787（同端口托管 web/dist；--reload 开发热载）
+cd ../web && npm run dev       # 前端 Vite :5173（/api 代理到 8787）；npm run build → dist/
+
+# Agent 测评（must be in agent-poc/，详见 scripts/eval/README.md）
+node scripts/eval/eval-agent.mjs --all --no-judge   # harness 全量（不含 judge）
+node scripts/eval/gate.mjs                          # P0 上线闸门
 ```
 
 ## Environment setup
@@ -123,7 +139,7 @@ npm run build:prod         # tsc -b + vite build (production mode)
 - **索引同步（硬性）**：新增/移动/删除 docs/ 下任何文档，**必须同步更新 `docs/README.md` 的索引与状态列**；docs 变更后检查是否影响 `minicare-dev` SKILL 的引用路径
 - **命名规范**：英文小写 + 前缀编号（`TECH-NNN-*` / `INFRA-*` / `DB-NN-*` / `FNN-*` / `PRD-NNN` / `REVIEW-*` / `MNN-*`），**禁止中文文件名**
 - **生命周期**：文档 frontmatter 标注 `status: draft | active | superseded | archived`，修改后更新 `updated` 日期；被取代的文档标 `superseded` 或移入 `docs/archive/`，不物理删除
-- **知识库**：资料在 `docs/knowledge/`（source/ = 原始文献，research/ = 调研），管线工程在 `minicare-kb/`，二者引用用完整路径
+- **知识库**：资料在 `docs/knowledge/`（source/ = 原始文献，research/ = 调研），管线工程在 `minicare-platform/api/`，二者引用用完整路径
 - **文档归属速查**：商业/战略 → `docs/business/`；产品 → `docs/product/`；PRD → `docs/prd/`（注册表 `docs/PRD_REGISTRY.md`）；功能规格 → `docs/features/`；技术方案 → `docs/tech/`；智能体模块 → `docs/agent/`；硬件 → `docs/hardware/`；审查复盘 → `docs/reviews/`；数据分析 → `docs/analytics/`；公众号文章 → `docs/wechat-articles/`
 
 ## Deploy

@@ -8,4 +8,10 @@
 # opencode local config (generated from .cursor/ source of truth)
 .opencode/
 
-.workbuddy
+# .workbuddy 本体是本地数据目录（memory 等），不进版本库；
+# 但 .workbuddy/skills 是指向 .agents/skills 的软链，必须进版本库，
+# 这样换机器 clone 后本工具能自动感知项目技能，无需手工重建。
+# 注意：必须写成 ".workbuddy/*" 再否定。若写成 ".workbuddy"（目录整体排除），
+# 按 git 规则无法再用 "!" 重新包含其内部路径。
+.workbuddy/*
+!.workbuddy/skills

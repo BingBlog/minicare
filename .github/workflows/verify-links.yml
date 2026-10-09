@@ -1,0 +1,21 @@
+name: Verify IDE symlinks
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  verify-symlinks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 防止有人把镜像软链改成绝对路径：这类软链在提交者的机器上完全正常，
+      # git status 也是干净的，但换机器 / 换 clone 目录后会静默断链。
+      # 此门禁在干净 clone 出的工作区上校验，因此能可靠地暴露该问题。
+      - name: Verify mirror symlinks are relative and resolvable
+        run: bash .agents/scripts/setup-links.sh --check
