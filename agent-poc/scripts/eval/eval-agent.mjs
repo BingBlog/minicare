@@ -8,6 +8,9 @@
  *   --group      只跑指定组（l0/l1/l2/l3/l4/l5/l6）
  *   --id         只跑单个用例
  *   --no-judge   跳过 LLM-as-judge（只做确定性断言）
+ *   --emit-progress  逐用例输出进度行（`@@EVAL@@ {json}`，供平台子进程逐行解析）
+ *   --cases-file=路径   从指定 JSON 读用例（平台物化产物；缺省读 cases/ 目录，行为不变）
+ *   --judges-file=路径  裁判配置（平台物化产物 {key:{prompt,model,temperature}}；缺省用内置模板）
  *   --json=路径   导出完整报告 JSON
  *   --runs=N     每个用例重复次数（默认 1，用于消抖）
  *
@@ -36,11 +39,14 @@ const CASES_DIR = path.join(__dirname, 'cases')
 // ---------- 参数解析 ----------
 function parseArgs() {
   const args = process.argv.slice(2)
-  const opt = { all: false, group: null, id: null, noJudge: false, noTrace: false, json: null, runs: 1 }
+  const opt = { all: false, group: null, id: null, noJudge: false, noTrace: false, emitProgress: false, casesFile: null, judgesFile: null, json: null, runs: 1 }
   for (const a of args) {
     if (a === '--all') opt.all = true
     else if (a === '--no-judge') opt.noJudge = true
     else if (a === '--no-trace') opt.noTrace = true
+    else if (a === '--emit-progress') opt.emitProgress = true
+    else if (a.startsWith('--cases-file=')) opt.casesFile = a.slice('--cases-file='.length)
+    else if (a.startsWith('--judges-file=')) opt.judgesFile = a.slice('--judges-file='.length)
     else if (a.startsWith('--group=')) opt.group = a.slice(8)
     else if (a.startsWith('--id=')) opt.id = a.slice(5)
     else if (a.startsWith('--json=')) opt.json = a.slice(7)
@@ -50,7 +56,13 @@ function parseArgs() {
 }
 
 // ---------- 用例加载 ----------
-function loadCases() {
+/** 用例来源：`--cases-file`（平台物化产物）优先；缺省读 cases/ 目录（行为不变）。 */
+function loadCases(casesFile) {
+  if (casesFile) {
+    const data = JSON.parse(fs.readFileSync(casesFile, 'utf8'))
+    const list = Array.isArray(data) ? data : data.cases
+    return (list || []).map((c) => ({ file: 'external', ...c }))
+  }
   const files = fs.readdirSync(CASES_DIR).filter((f) => f.endsWith('.json'))
   const cases = []
   for (const f of files) {
@@ -61,6 +73,17 @@ function loadCases() {
   return cases
 }
 
+/** 裁判配置（平台物化产物；缺失/损坏时返回 null → judge.mjs 使用内置默认模板）。 */
+function loadJudges(judgesFile) {
+  if (!judgesFile) return null
+  try {
+    return JSON.parse(fs.readFileSync(judgesFile, 'utf8'))
+  } catch (e) {
+    console.warn(`⚠ 读取 judges-file 失败（${e.message}），回退内置模板`)
+    return null
+  }
+}
+
 // ---------- 工具结果汇总（供 judge 溯源） ----------
 function collectToolOutputs(result) {
   return result.toolCalls
@@ -69,7 +92,7 @@ function collectToolOutputs(result) {
 }
 
 // ---------- 单用例执行 ----------
-async function runCase(config, c, opt) {
+async function runCase(config, c, opt, judges) {
   const runs = opt.runs || 1
     const outcomes = []
     for (let i = 0; i < runs; i++) {
@@ -86,26 +109,26 @@ async function runCase(config, c, opt) {
     // 确定性断言不通过则不进入 judge（省钱且聚焦失败根因）
     let judge = { skipped: true }
     if (pass && !opt.noJudge && c.judge) {
-      judge = await runJudge(result, c.judge)
+      judge = await runJudge(result, c.judge, judges)
     }
     outcomes.push({ result, deterministic: { pass, reasons }, judge })
   }
   return outcomes
 }
 
-async function runJudge(result, j) {
+async function runJudge(result, j, judges) {
   const out = {}
   if (j.faithfulness) {
-    out.faithfulness = await judgeFaithfulness({ answer: result.answer, toolOutputs: collectToolOutputs(result) })
+    out.faithfulness = await judgeFaithfulness({ answer: result.answer, toolOutputs: collectToolOutputs(result), cfg: judges?.faithfulness })
   }
   if (j.completeness) {
-    out.completeness = await judgeCompleteness({ answer: result.answer, goldenPoints: j.completeness.goldenPoints })
+    out.completeness = await judgeCompleteness({ answer: result.answer, goldenPoints: j.completeness.goldenPoints, cfg: judges?.completeness })
   }
   if (j.guardrail) {
-    out.guardrail = await judgeGuardrail({ answer: result.answer })
+    out.guardrail = await judgeGuardrail({ answer: result.answer, cfg: judges?.guardrail })
   }
   if (j.style) {
-    out.style = await judgeStyle({ answer: result.answer, needsDisclaimer: j.style.needsDisclaimer })
+    out.style = await judgeStyle({ answer: result.answer, needsDisclaimer: j.style.needsDisclaimer, cfg: judges?.style })
   }
   return out
 }
@@ -155,7 +178,8 @@ function renderReport(rows) {
 export async function runSuite(optOverride = {}) {
   const opt = { ...parseArgs(), ...optOverride }
   const config = loadConfig()
-  const cases = loadCases()
+  const cases = loadCases(opt.casesFile)
+  const judges = loadJudges(opt.judgesFile)
 
   // 过滤
   let selected = cases
@@ -177,10 +201,15 @@ export async function runSuite(optOverride = {}) {
   if (config.db) initDb(config)
 
   const rows = []
+  // 进度行（--emit-progress）：`@@EVAL@@ {json}` —— 供平台以子进程方式解析进度；不影响既有输出
+  const emit = (o) => { if (opt.emitProgress) console.log('@@EVAL@@ ' + JSON.stringify(o)) }
+  let caseIdx = 0
   for (const c of selected) {
+    caseIdx++
+    emit({ type: 'case-start', id: c.id, idx: caseIdx, total: selected.length, desc: c.desc })
     process.stdout.write(`运行 ${c.id} ${c.desc}… `)
     try {
-      const outcomes = await runCase(config, c, opt)
+      const outcomes = await runCase(config, c, opt, judges)
       const verdict = caseVerdict(outcomes, c.judge)
       const last = outcomes[outcomes.length - 1]
       rows.push({
@@ -200,6 +229,7 @@ export async function runSuite(optOverride = {}) {
         judge: last.judge.skipped ? null : last.judge,
       })
       console.log(verdict.pass ? '✅' : '❌ ' + verdict.detail.slice(0, 80))
+      emit({ type: 'case-end', id: c.id, idx: caseIdx, total: selected.length, pass: verdict.pass, stage: verdict.stage, ms: last.result.ms, forceFinished: last.result.forceFinished })
     } catch (e) {
       rows.push({
         id: c.id,
@@ -216,8 +246,10 @@ export async function runSuite(optOverride = {}) {
         error: String(e),
       })
       console.log('❌ 异常')
+      emit({ type: 'case-end', id: c.id, idx: caseIdx, total: selected.length, pass: false, stage: 'error', ms: 0 })
     }
   }
+  emit({ type: 'done', total: selected.length, passed: rows.filter((r) => r.pass).length })
 
   if (config.db) await closeDb()
 

@@ -19,6 +19,7 @@ scripts/eval/
 │   ├── l4-session.json    # L4 对话与会话
 │   └── r1-realdata.json   # R1 线上真实数据用例（旺仔，生产库，运行方法见 R1-realdata-用例说明.md）
 ├── eval-agent.mjs         # 主 harness
+├── rejudge.mjs            # 裁判试跑：用当前裁判配置对**历史回答**重判（不跑 agent、不写台账；平台「测评裁判」页调用）
 └── gate.mjs               # 上线闸门（P0 指标汇总）
 ```
 
@@ -78,6 +79,10 @@ node scripts/eval/eval-agent.mjs --all --json=report.json
 
 # 上线闸门（P0 指标：完整率/幻觉率/护栏/收敛/done）
 node scripts/eval/gate.mjs
+
+# 裁判试跑：对历史回答重判（校准裁判 prompt 用；判分器与主 harness 完全一致）
+node scripts/eval/rejudge.mjs --case-file=<单用例 json> --fixture-file=<{answer,toolCalls} json> \
+  [--judges-file=<judges.json>] --out=<verdict json>
 ```
 
 ## 指标口径（对齐 TECH-010 §2.1）
