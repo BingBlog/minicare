@@ -50,10 +50,10 @@
 |---|---|---|---|
 | **助手层** | 对话产品面 | 说什么、怎么判断、怎么表述 | 话术、断言强度、建议卡产出、护栏口径 |
 | **小程序层** | `minicare-mp/` | 录入、展示、执行 | 页面、表单预填、打卡、语音入口、结构化卡片 |
-| **agent 层** | `agent-poc/` | AI 运行时 | systemPrompt 注入契约、只读工具、SSE 事件、KB、评估 |
+| **agent 层** | `minicare-agent/` | AI 运行时 | systemPrompt 注入契约、只读工具、SSE 事件、KB、评估 |
 | **服务端层** | `minicare-server/` | 确定性逻辑与真相源 | 聚合 SQL、计划引擎、状态派生、migration、出口校验 |
 
-> **映射关系**：需求口径的"助手 / 小程序 / agent"三层 = [§8](04-实施派工.md) 的**助手层 / 小程序层 / agent 层**；其中"agent 层"的落地必然同时涉及 **`agent-poc`（AI）与 `minicare-server`（数据与算法）**，故单列服务端层。
+> **映射关系**：需求口径的"助手 / 小程序 / agent"三层 = [§8](04-实施派工.md) 的**助手层 / 小程序层 / agent 层**；其中"agent 层"的落地必然同时涉及 **`minicare-agent`（AI）与 `minicare-server`（数据与算法）**，故单列服务端层。
 
 ---
 
@@ -271,7 +271,7 @@ sequenceDiagram
 16. `minicare-mp/src/pages/dashboard/RemindersColumn.tsx`
 17. `minicare-mp/src/lib/growth-standards.ts`、`pagesReport/tabs/GrowthTab.tsx`
 18. `minicare-mp/src/pages/chat/index.tsx`、`src/api/agent.ts`
-19. `agent-poc/src/lib/tools/index.js`（当前四个只读工具，本版**不新增**写工具）
+19. `minicare-agent/src/lib/tools/index.js`（当前四个只读工具，本版**不新增**写工具）
 20. `minicare-server/migrations/011_food_observation_workflow.sql`
 
 **语音链路（TECH-001）**

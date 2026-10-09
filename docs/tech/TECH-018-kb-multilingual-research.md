@@ -208,10 +208,10 @@
 - 第一步（随 P1 或紧接 P1）：`index` 将**译文**作为第二索引字段（向量 + FULLTEXT 均可），中文查询走译文通道，英文查询/术语查询仍可命中原文通道（FULLTEXT ngram 对英文同样有效）。
 - 第二步：按 §6.3 实测数据决定是否需要更激进的重排。
 
-**LLM 消费侧**：agent-poc 拼装上下文时，英文块给"译文为主 + 原文标题/术语保留"；引用格式仍锚定原件（文件名 + 页码），**引用不指向译文** —— 防止"引了一处翻译错误"。
+**LLM 消费侧**：minicare-agent 拼装上下文时，英文块给"译文为主 + 原文标题/术语保留"；引用格式仍锚定原件（文件名 + 页码），**引用不指向译文** —— 防止"引了一处翻译错误"。
 
 **影响面清单（开工时同步核对）**：
-`registry.py`（步骤表）｜`orchestrator.default_params`（翻译参数哈希）｜`src/lib/steps.ts`（六步状态推导唯一口径 → 变七步）｜前端工作台步骤条 / 产物面板｜`KB-CONTRACT.md`（产物契约）｜agent-poc `search-knowledge.js`（上下文拼装）｜gotchas 文档（新增踩坑节）。
+`registry.py`（步骤表）｜`orchestrator.default_params`（翻译参数哈希）｜`src/lib/steps.ts`（六步状态推导唯一口径 → 变七步）｜前端工作台步骤条 / 产物面板｜`KB-CONTRACT.md`（产物契约）｜minicare-agent `search-knowledge.js`（上下文拼装）｜gotchas 文档（新增踩坑节）。
 
 ### 6.3 P2：跨语言检索评测（先测再改索引）
 

@@ -2,7 +2,7 @@
 """种子：把现有 harness 配置导入测评台配置对象表（TECH-021 §3.6）。
 
 导入逻辑在 `kb_pipeline.agent_eval.seed`（与 API `POST /cases/import` 共用）：
-  1. 用例：agent-poc/scripts/eval/cases/*.json → eval_case
+  1. 用例：minicare-agent/scripts/eval/cases/*.json → eval_case
   2. 维度：case 级 4 + run 级 6（阈值/一票否决对齐现行 gate，共 10 条）
   3. 裁判：4 条 llm 型，prompt 逐字抄录自 lib/judge.mjs（改前 = 改后）
 

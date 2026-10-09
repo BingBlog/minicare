@@ -13,9 +13,9 @@
 
 | # | 必答项 | 结论 | 改动面 |
 |---|---|---|---|
-| 1 | 聚合归属与部署形态 | 期 1 物理落在 `agent-poc` 进程内（扩 `profile.js`），**算法只此一份**；期 2 随"首页改服务端数据源"下沉 `minicare-server`，接口契约提前冻结 | agent 小改 / 期 2 服务端新增模块 |
+| 1 | 聚合归属与部署形态 | 期 1 物理落在 `minicare-agent` 进程内（扩 `profile.js`），**算法只此一份**；期 2 随"首页改服务端数据源"下沉 `minicare-server`，接口契约提前冻结 | agent 小改 / 期 2 服务端新增模块 |
 | 2 | 跨进程缓存失效 | **pull 版本戳**（`baby_profile.data_version`）为主，5 分钟 TTL 兜底，push 失效**默认关闭**（CloudRun 缩容到 0，push 会冷启动 agent） | migration 022 + 服务端 1 个拦截器 |
-| 3 | 护栏出口校验 | **同步拦截放 `agent-poc/src/lib/runtime.js`**（有全文与感知上下文，且已有后处理先例）；`minicare-server` 保持帧级透传；服务端只承担留痕与抽检 | 新增 `lib/guard.js` |
+| 3 | 护栏出口校验 | **同步拦截放 `minicare-agent/src/lib/runtime.js`**（有全文与感知上下文，且已有后处理先例）；`minicare-server` 保持帧级透传；服务端只承担留痕与抽检 | 新增 `lib/guard.js` |
 | 4 | 机制分型采集 + migration 022 | 4 个业务字段 + 2 个技术字段（来源、版本戳），**不回填 `unknown`**；采集仍走"对话 → 建议卡 → `EditBabyModal` 保存"的零写入链路 | 022 + 建议卡 target |
 | 5 | 五态迁移 | **枚举层已经五态**（前后端都有 `paused`），实际只剩三件事：列注释、标签口径（"已停用"→"已暂停"）、活跃判定语义；**存量数据零修复** | 022 MODIFY COMMENT + 前端 1 行 |
 | 6 | flag 频控存储 | MySQL 新表 `profile_flag_log`（期 1 唯一新增表），阈值全部 env 参数化，便于 §14.2-#8 拍板后不改代码 | 022 建表 + agent 读取 |
@@ -33,7 +33,7 @@ flowchart TB
     S2["版本戳拦截器"]
     S3["SSE 帧级透传代理"]
   end
-  subgraph AG["agent-poc"]
+  subgraph AG["minicare-agent"]
     A1["profile.js 聚合 5→7 组"]
     A2["stage.js 阶段判定"]
     A3["flags.js 8 flags + 频控"]
@@ -110,15 +110,15 @@ PRD-006 §4 已经把感知层的**契约**写到可开工的粒度——注入�
 
 | 位置 | 文件 | 实况 |
 |---|---|---|
-| 画像聚合 | `agent-poc/src/lib/profile.js`（570 行） | 已实现 5 组（basic / formula / feeding / growth / freshness）+ 5 分钟 TTL + `invalidateProfile()` + `renderProfileBlock()`；每组 `safe()` 独立降级 |
-| prompt 注入 | `agent-poc/src/prompts/system.js:31` | `const profileBlock = profile ? renderProfileBlock(profile) : ''` ——**画像已进 systemPrompt** |
+| 画像聚合 | `minicare-agent/src/lib/profile.js`（570 行） | 已实现 5 组（basic / formula / feeding / growth / freshness）+ 5 分钟 TTL + `invalidateProfile()` + `renderProfileBlock()`；每组 `safe()` 独立降级 |
+| prompt 注入 | `minicare-agent/src/prompts/system.js:31` | `const profileBlock = profile ? renderProfileBlock(profile) : ''` ——**画像已进 systemPrompt** |
 | 日期注入 | 同上 `dateBlock` | 已注入【当前日期】+ 昨天 |
-| 出口后处理 | `agent-poc/src/lib/runtime.js:230` `emitText()` | 已有"丢弃纯英文文本片段 / 英文开头旁白"的确定性过滤 |
+| 出口后处理 | `minicare-agent/src/lib/runtime.js:230` `emitText()` | 已有"丢弃纯英文文本片段 / 英文开头旁白"的确定性过滤 |
 | 排敏状态枚举 | `minicare-server/src/records/food-observation/dto/food-observation.dto.ts` | `ObservationStatus` 已含 `PAUSED = 'paused'` |
 | 排敏状态类型 | `minicare-mp/src/api/foodObservation.ts:3` | `'observing' \| 'paused' \| 'safe' \| 'suspected' \| 'allergic'` |
 | 排敏状态标签 | `minicare-mp/src/lib/constants.ts:277,285` | `paused: '已停用'`（bg/color 也已配） |
 | 状态解绑动作 | `minicare-server/.../dto` `UnlinkObservationHealthDto` | `target_status` 已允许 `observing \| paused \| suspected` |
-| agent 内部鉴权 | `agent-poc/src/server.js:47` `internalToken(config)` | `/health` `/diag` `/chat` 全在内部 token 之后 |
+| agent 内部鉴权 | `minicare-agent/src/server.js:47` `internalToken(config)` | `/health` `/diag` `/chat` 全在内部 token 之后 |
 | 失母判定 | `profile.js:71` `WEANED_DAYS = 14` | 按"最近一次母乳记录距今 ≥14 天"判已停，且显式标注窗口内旧记录属历史数据 |
 | 分位复用 | `profile.js:22` | `percentileOf` 来自 `lib/growth.js`，agent 侧只有一份 |
 
@@ -132,7 +132,7 @@ PRD-006 §4 已经把感知层的**契约**写到可开工的粒度——注入�
 
 ### 2.3 本方案要填的空白
 
-- 聚合物理归属（§4.8 指向 agent-poc 与 §8.5 要求服务端接口并存）
+- 聚合物理归属（§4.8 指向 minicare-agent 与 §8.5 要求服务端接口并存）
 - 跨进程缓存失效机制（只有"写记录后主动失效"的目标，没有实现）
 - 护栏规则集、动作档位、流式缓冲策略、留痕结构
 - migration 022 具体 SQL、字段类型与枚举
@@ -148,7 +148,7 @@ PRD-006 §4 已经把感知层的**契约**写到可开工的粒度——注入�
 |---|---|---|
 | 小程序 | 唯一的记录入口与执行界面；渲染建议卡的落点 | 近零（2 处） |
 | minicare-server | 记录写入（唯一写路径）、版本戳维护、SSE 帧级透传 | 1 个拦截器 + 022 |
-| agent-poc | 聚合、阶段判定、flags、护栏、prompt 组装 | 主要改动面 |
+| minicare-agent | 聚合、阶段判定、flags、护栏、prompt 组装 | 主要改动面 |
 | MySQL | 记录真相源 + 版本戳 + flag 频控日志 | 022 |
 | FlexDB / Langfuse | telemetry trace 与观测 | 复用既有 |
 
@@ -158,7 +158,7 @@ PRD-006 §4 已经把感知层的**契约**写到可开工的粒度——注入�
 sequenceDiagram
   participant MP as 小程序
   participant SRV as minicare-server
-  participant AG as agent-poc
+  participant AG as minicare-agent
   participant DB as MySQL
   MP->>SRV: POST /api/agent/chat
   SRV->>AG: POST /chat（内部 token）
@@ -208,11 +208,11 @@ flowchart LR
 
 ### 4.1 ADR-001 聚合归属与部署形态
 
-**问题**：570 行聚合算法放 `agent-poc` 进程内，还是下沉 `minicare-server`？
+**问题**：570 行聚合算法放 `minicare-agent` 进程内，还是下沉 `minicare-server`？
 
 | 方案 | 聚合物理位置 | 优点 | 缺点 |
 |---|---|---|---|
-| **A** | `agent-poc` 进程内（扩 `profile.js`） | 5 组已跑通；零跨服务跳数；进程内 Map 缓存天然可用；改动面最小 | 小程序成为第二消费方时无法复用；判定算法若被复制到服务端即成两套 |
+| **A** | `minicare-agent` 进程内（扩 `profile.js`） | 5 组已跑通；零跨服务跳数；进程内 Map 缓存天然可用；改动面最小 | 小程序成为第二消费方时无法复用；判定算法若被复制到服务端即成两套 |
 | **B** | `minicare-server` 新增 `src/profile/` module，agent 经内部 HTTP 取 | 天然单一真相源；小程序与助手同源同版；缓存只维护一处 | 570 行迁移 + 新模块；每轮 +1 次内部 HTTP |
 | **C** | 抽共享算法包（纯函数），两端各自查库调用 | 算法一份 | SQL 与数据组装仍两份，照样漂移；引入跨仓库包管理成本 |
 
@@ -229,7 +229,7 @@ flowchart LR
 
 ### 4.2 ADR-002 跨进程缓存失效
 
-**问题**：写库在 `minicare-server`，画像缓存在 `agent-poc` 进程内 Map；§4.8 要求"写记录后主动失效"，但两进程之间目前只有 `minicare-server → agent-poc` 一个方向的调用（`/chat`），没有回程通道。
+**问题**：写库在 `minicare-server`，画像缓存在 `minicare-agent` 进程内 Map；§4.8 要求"写记录后主动失效"，但两进程之间目前只有 `minicare-server → minicare-agent` 一个方向的调用（`/chat`），没有回程通道。
 
 | 方案 | 机制 | 优点 | 缺点 |
 |---|---|---|---|
@@ -248,7 +248,7 @@ flowchart LR
 
 | 候选位置 | 可行性 | 结论 |
 |---|---|---|
-| `agent-poc/src/lib/runtime.js` | 有组装完成的全文与事件流；已有 `emitText` 确定性过滤先例；感知上下文（阶段判定 / 覆盖率 / flags）就在同进程 | **采用** |
+| `minicare-agent/src/lib/runtime.js` | 有组装完成的全文与事件流；已有 `emitText` 确定性过滤先例；感知上下文（阶段判定 / 覆盖率 / flags）就在同进程 | **采用** |
 | `minicare-server` SSE 代理 | 该代理的设计原则是"帧级透传、不解析不缓存上游业务内容"（`agent.service.ts` 头注释 + M8 §2）。要拦就得把它改成**有状态 SSE 转换器**，并让它持有感知上下文 | 不采用 |
 | 独立护栏服务 | 新增一跳与一个部署单元，收益不明 | 不采用 |
 
@@ -261,12 +261,12 @@ flowchart LR
 
 **问题**：§4.5 要求"同 flag 7 天去重、单轮最多 1 条"，状态存哪？
 
-`agent-poc` 部署在 CloudRun，会缩容到 0、可能多实例。任何"同 flag 7 天去重"的状态放进程内都会在缩容/切实例后失效。
+`minicare-agent` 部署在 CloudRun，会缩容到 0、可能多实例。任何"同 flag 7 天去重"的状态放进程内都会在缩容/切实例后失效。
 
 | 候选 | 优点 | 缺点 | 结论 |
 |---|---|---|---|
 | 进程内 Map | 零依赖、零时延 | 缩容与多实例下失效，等于没有频控 | 不采用 |
-| FlexDB（agent-poc 已用） | 已接入，无需 DDL | flag 由服务端算（§4.5-1），服务端读不到；把观测数据放到非权威库 | 不采用 |
+| FlexDB（minicare-agent 已用） | 已接入，无需 DDL | flag 由服务端算（§4.5-1），服务端读不到；把观测数据放到非权威库 | 不采用 |
 | **MySQL 新表 `profile_flag_log`** | 服务端与 agent 都能读写；与业务同库同事务边界；可审计 | 需一张新表（期 1 唯一） | **采用** |
 
 **决议**：新建 `profile_flag_log`（DDL 见 §5.2），阈值全 env 参数化（§7.4），§14.2-#8 拍板后只改配置。
@@ -464,7 +464,7 @@ INSERT IGNORE INTO `schema_migrations` (`version`) VALUES ('022_state_awareness'
 
 ### 7.3 阶段判定
 
-按 PRD §4.4 顺序即优先级实现，落 `agent-poc/src/lib/stage.js`：
+按 PRD §4.4 顺序即优先级实现，落 `minicare-agent/src/lib/stage.js`：
 
 | 序 | 判定 | 输出 `stage.key` | 实现依赖 |
 |---|---|---|---|
@@ -564,7 +564,7 @@ VALUES (?, ?, ?, ?, ?, ?, ?);
 **留痕与抽检**：
 
 - **同步**：命中写 telemetry `metadata.guard = { hits: [{ rule, action, snippet }], rewritten: bool, forcedStage: string|null }`，随 trace 落 FlexDB `agent_traces`（复用 TECH-007 链路）。
-- **异步**：`agent-poc/scripts/guard-audit.mjs` 抽样（默认每周 100 条 trace），输出命中率 / 各规则分布 / 人工核对清单，支撑 §12.3"护栏漏报率目标 0（人工抽检 100%）"。
+- **异步**：`minicare-agent/scripts/guard-audit.mjs` 抽样（默认每周 100 条 trace），输出命中率 / 各规则分布 / 人工核对清单，支撑 §12.3"护栏漏报率目标 0（人工抽检 100%）"。
 - 与既有 `emitText` 过滤的关系：**同一位置、两次规则**——先做语言过滤（丢英文旁白），再做护栏规则。合并为一次调用，避免两处 flush 逻辑。
 
 ### 7.6 注入层
@@ -722,7 +722,7 @@ sequenceDiagram
 
 ### 9.3 抽检流程
 
-1. 每周执行 `node agent-poc/scripts/guard-audit.mjs --days 7 --limit 100`；
+1. 每周执行 `node minicare-agent/scripts/guard-audit.mjs --days 7 --limit 100`；
 2. 输出：命中规则分布 / 改写片段对照表 / 疑似漏报清单（含原始回答）；
 3. 疑似漏报进 §14.2 待确认或直接补规则（补规则走 `GUARD_DISABLED_RULES` 的同一套开关）。
 
@@ -784,11 +784,11 @@ sequenceDiagram
 
 | 层 | 工具 | 覆盖 | 频率 |
 |---|---|---|---|
-| 聚合单测 | `agent-poc/scripts/verify-profile.mjs` | 22 项 → 目标 ≥40 项断言（含双源、五态、覆盖率、版本戳） | 改 `profile.js` / `growth.js` / `system.js` 后必跑 |
-| 会话还原 | `agent-poc/scripts/session-replay.mjs` | 逐轮链路（tool 入参/输出 + token）回归 | 改注入或护栏后 |
-| 在线 harness | `agent-poc/scripts/eval/` | 信号计算正确性 | 每次改动核心算法 |
+| 聚合单测 | `minicare-agent/scripts/verify-profile.mjs` | 22 项 → 目标 ≥40 项断言（含双源、五态、覆盖率、版本戳） | 改 `profile.js` / `growth.js` / `system.js` 后必跑 |
+| 会话还原 | `minicare-agent/scripts/session-replay.mjs` | 逐轮链路（tool 入参/输出 + token）回归 | 改注入或护栏后 |
+| 在线 harness | `minicare-agent/scripts/eval/` | 信号计算正确性 | 每次改动核心算法 |
 | 离线行为 | `evals/`（deepeval，见 `minicare-agent-eval` 技能） | 行为层与护栏用例 | 发版前 |
-| 护栏抽检 | `agent-poc/scripts/guard-audit.mjs` | 漏报 / 误伤 | 每周 |
+| 护栏抽检 | `minicare-agent/scripts/guard-audit.mjs` | 漏报 / 误伤 | 每周 |
 
 ### 12.2 关键用例矩阵
 
@@ -919,16 +919,16 @@ sequenceDiagram
 | `minicare-server/src/common/interceptors/baby-data-version.interceptor.ts` | 新增（§7.2） |
 | `minicare-server/src/records/food-observation/dto/food-observation.dto.ts` | 修改：注释口径五态（枚举已有 `PAUSED`） |
 | `minicare-server/src/baby/*.service.ts` | 修改：分型变更钩子（期 1 仅事件日志） |
-| `agent-poc/src/lib/profile.js` | 修改：5 组 → 7 组 + 元信号 + 版本戳比对 |
-| `agent-poc/src/lib/food-alias.js` | 新增：食材名称归一化字典（§7.1） |
-| `agent-poc/src/lib/stage.js` | 新增：阶段判定（§7.3） |
-| `agent-poc/src/lib/flags.js` | 新增：8 flags + 频控读写（§7.4） |
-| `agent-poc/src/lib/guard.js` | 新增：护栏规则集 + 句缓冲（§7.5） |
-| `agent-poc/src/lib/runtime.js` | 修改：`emitText` 接入句缓冲与护栏，合并既有语言过滤 |
-| `agent-poc/src/prompts/system.js` | 修改：感知块扩展 + 口径段 |
-| `agent-poc/scripts/verify-profile.mjs` | 修改：断言扩容 |
-| `agent-poc/scripts/guard-audit.mjs` | 新增：漏报抽检 |
-| `agent-poc/src/server.js` | 修改：预留 `/internal/invalidate`（默认不启用） |
+| `minicare-agent/src/lib/profile.js` | 修改：5 组 → 7 组 + 元信号 + 版本戳比对 |
+| `minicare-agent/src/lib/food-alias.js` | 新增：食材名称归一化字典（§7.1） |
+| `minicare-agent/src/lib/stage.js` | 新增：阶段判定（§7.3） |
+| `minicare-agent/src/lib/flags.js` | 新增：8 flags + 频控读写（§7.4） |
+| `minicare-agent/src/lib/guard.js` | 新增：护栏规则集 + 句缓冲（§7.5） |
+| `minicare-agent/src/lib/runtime.js` | 修改：`emitText` 接入句缓冲与护栏，合并既有语言过滤 |
+| `minicare-agent/src/prompts/system.js` | 修改：感知块扩展 + 口径段 |
+| `minicare-agent/scripts/verify-profile.mjs` | 修改：断言扩容 |
+| `minicare-agent/scripts/guard-audit.mjs` | 新增：漏报抽检 |
+| `minicare-agent/src/server.js` | 修改：预留 `/internal/invalidate`（默认不启用） |
 | `minicare-mp/src/lib/constants.ts` | 修改：`paused` 标签"已停用"→"已暂停" |
 | `minicare-mp/src/pages/profile/EditBabyModal.tsx` | 修改：分型/确诊展示 + "待确认"态 |
 
@@ -961,9 +961,9 @@ sequenceDiagram
 
 | 用途 | 命令 |
 |---|---|
-| 聚合断言 | `node agent-poc/scripts/verify-profile.mjs` |
-| 会话还原 | `node agent-poc/scripts/session-replay.mjs --session <id>` |
-| 护栏抽检 | `node agent-poc/scripts/guard-audit.mjs --days 7 --limit 100` |
+| 聚合断言 | `node minicare-agent/scripts/verify-profile.mjs` |
+| 会话还原 | `node minicare-agent/scripts/session-replay.mjs --session <id>` |
+| 护栏抽检 | `node minicare-agent/scripts/guard-audit.mjs --days 7 --limit 100` |
 | 直写路径清点 | `grep -rn "INSERT INTO\|UPDATE " minicare-server/src/` |
 | 注释核对 | `SELECT COLUMN_NAME, COLUMN_COMMENT FROM information_schema.COLUMNS WHERE TABLE_NAME='food_observation' AND COLUMN_NAME='status';` |
 | 频控核对 | `SELECT flag_key, COUNT(*) FROM profile_flag_log WHERE baby_id=? AND shown_at > NOW() - INTERVAL 7 DAY GROUP BY flag_key;` |

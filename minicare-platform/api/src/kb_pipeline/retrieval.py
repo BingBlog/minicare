@@ -1,7 +1,7 @@
 """检索层（平台侧参考实现）
 
 **为什么平台要自己有一份检索实现**：`检索质检`（US-11）必须能独立评测知识库，
-不能依赖 `agent-poc` 是否在跑。因此这里按 `agent-poc/src/lib/tools/search-knowledge.js`
+不能依赖 `minicare-agent` 是否在跑。因此这里按 `minicare-agent/src/lib/tools/search-knowledge.js`
 的同一套逻辑复刻：FULLTEXT ngram + 向量余弦 + RRF(k=60) → topK。
 
 ⚠️ **两份实现必须保持一致**：`contract.py` 的语义校验与未来的 A/B 都依赖这点。
@@ -139,7 +139,7 @@ def retrieve(
                 )
                 fts = [dict(r) if isinstance(r, dict) else _row(cur, r) for r in cur.fetchall()]
 
-            # 2) 向量路（全表余弦；与 agent-poc 同口径）。mode=fts（实验参数）时整段跳过
+            # 2) 向量路（全表余弦；与 minicare-agent 同口径）。mode=fts（实验参数）时整段跳过
             vec_rows: list[dict] = []
             qvec = _query_vector(query, settings, trace) if mode != "fts" else None
             if qvec is not None:
@@ -218,8 +218,8 @@ def _query_vector(query: str, settings: Settings, trace: dict | None = None) -> 
                 trace["vector_degraded"] = "embedding 返回为空"
             return None
         return vecs[0]
-    except Exception as e:      # noqa: BLE001 - 向量不可用则只走 FULLTEXT（与 agent-poc 降级链一致）
-        # 降级原因只写给「检索测试」诊断，默认路径（trace=None）保持静默，与 agent-poc 行为一致
+    except Exception as e:      # noqa: BLE001 - 向量不可用则只走 FULLTEXT（与 minicare-agent 降级链一致）
+        # 降级原因只写给「检索测试」诊断，默认路径（trace=None）保持静默，与 minicare-agent 行为一致
         if trace is not None:
             trace["vector_degraded"] = f"{type(e).__name__}: {e}"[:300]
         return None

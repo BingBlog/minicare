@@ -30,7 +30,7 @@
 |---|---|---|
 | ASR 语音识别 | **腾讯云**、火山、讯飞、阿里、百度、FunASR(本地)、SherpaASR | ⭐ 已有腾讯云 TCB 密钥，直接复用 |
 | TTS 语音合成 | **腾讯云**、火山流式、讯飞、EdgeTTS(免费)、阿里、本地 FishSpeech/GPT-SoVITS | ⭐ 与 ASR 同源密钥 |
-| LLM 大模型 | openai 兼容接口：DeepSeek、智谱、阿里百炼、火山、**任何 openai 格式** | 可接 DeepSeek（minicare agent-poc 已在用） |
+| LLM 大模型 | openai 兼容接口：DeepSeek、智谱、阿里百炼、火山、**任何 openai 格式** | 可接 DeepSeek（minicare minicare-agent 已在用） |
 | VAD 语音活动检测 | SileroVAD（本地免费） | 免第三方 |
 | 声纹识别 | 3D-Speaker（本地免费） | ⭐ 多家庭成员自动识别说话人 |
 | 意图识别 | function_call（LLM 函数调用）/ intent_llm / nointent | ⭐ 自定义工具入口 |
@@ -121,7 +121,7 @@ ESP32 音箱 (xiaozhi 固件)
         ↓
 xiaozhi-esp32-server (自建, Docker)
   ├─ ASR: 腾讯云 (复用 TCB_SECRET_ID/KEY)
-  ├─ LLM: DeepSeek (minicare agent-poc 同款) 或 qwen
+  ├─ LLM: DeepSeek (minicare minicare-agent 同款) 或 qwen
   ├─ 工具: 自定义插件 record_baby / 或 MCP 接入点挂 minicare-mcp
   ├─ 上下文源: GET minicare /api/.../daily-summary → 注入"旺仔今日状态"
   └─ TTS: 腾讯云 (同密钥)

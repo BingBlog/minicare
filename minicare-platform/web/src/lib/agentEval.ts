@@ -123,7 +123,7 @@ export interface EvalRunDetail extends EvalRunMeta {
 export interface EvalHealth {
   ok: boolean
   node: string | null
-  agent_poc: string
+  agent_dir: string
   env_local: boolean
   harness: boolean
   running: boolean

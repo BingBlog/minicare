@@ -13,7 +13,7 @@
 
 | 决策点 | 结论 | 理由 |
 |---|---|---|
-| 承载形态 | 独立 CloudRun 服务 `minicare-agent`（agent-poc 演进） | 用户已拍板，不集成进 NestJS |
+| 承载形态 | 独立 CloudRun 服务 `minicare-agent`（原 agent-poc） | 用户已拍板，不集成进 NestJS |
 | Agent 框架 | 继续 OAK @cloudbase/open-agent-kernel 0.1.1 | POC 已验证全链路 |
 | 文本模型 | DeepSeek 官方 API（Anthropic 兼容端点），默认 deepseek-v4-flash | 零平台依赖，已验证 |
 | 视觉模型 | **deepseek-v4-flash-vision-exp**（图片问诊，用户拍板） | Anthropic 端点 image block 支持 + CLI 白名单映射需 P0 实测（风险 13） |
@@ -370,7 +370,7 @@ CREATE TABLE IF NOT EXISTS `baby_diary` (
 >   → DeepSeek 端点直接接受 base64 图片并正确解读（无需自组 Anthropic image block）；
 > - **模型名白名单映射已废弃**——当前 SDK 直接传 `deepseek-v4-flash-vision-exp` 即可路由；
 > - 解读质量高（测试图准确定位 UI 元素）；首字 4-7s（含思考），UI 层加载态缓解；
-> - 测试脚本：`agent-poc/scripts/test-vision.mjs`。
+> - 测试脚本：`minicare-agent/scripts/test-vision.mjs`。
 
 ### 2.6 语音输入链路（新增，复用 TECH-001）
 
@@ -464,7 +464,7 @@ minicare-mp/src/pages/diary/detail.tsx  # 日记详情/编辑（配图上传）
 ## 三、执行计划（对齐 PRD-003，22-28 人日）
 
 #### P0 基础服务与视觉实测（✅ 2026-08-23 完成，4-5 人日）
-1. ~~minicare-agent 目录拆分（config/agent/routes 分层）~~ ✅ `agent-poc/src/` 已完成分层；
+1. ~~minicare-agent 目录拆分（config/agent/routes 分层）~~ ✅ `minicare-agent/src/` 已完成分层；
 2. ~~内部 token + ctx 注入；/chat 增强~~ ✅ 完成（conversationId 服务端生成、meta/session/tool_call/tool_result/text/done/error 事件；sources/diary 事件随 P1/P2 补充）；
 3. ~~图片问诊视觉链路实测~~ ✅ 通过：attachments 传图 + `deepseek-v4-flash-vision-exp` 直接路由（白名单映射废弃）；
 4. ~~minicare-server `src/agent/` 代理模块~~ ✅ 完成（chat SSE 帧级透传 + health + baby 归属校验 + ctx 注入；diary REST P2）；
@@ -475,8 +475,8 @@ minicare-mp/src/pages/diary/detail.tsx  # 日记详情/编辑（配图上传）
 #### P1 知识库（5-6 人日，✅ 2026-08-23 完成）
 1. ✅ 迁移 017_knowledge_base.sql（dev 库已建表；生产库待部署时执行）
 2. ✅ 数据导入：1586 条入 dev 库（MinerU pipeline 解析 + 自研切块 + TokenHub embedding 1584 条），见 minicare-platform/api/var/chunks.jsonl
-3. ✅ search_knowledge RRF 融合 + 向量 + 检索先行规则：agent-poc `search-knowledge.js` 重写（FULLTEXT ngram + BLOB 向量余弦 + RRF k=60，topK=5；review 条目 REGEXP 过滤）
-- ✅ 验收：**精确 Recall@10 = 97.8%（44/45）通过闸门**（agent-poc/scripts/eval-recall-exact.mjs）；回答带来源（items.source）；空库降级返回"未找到"
+3. ✅ search_knowledge RRF 融合 + 向量 + 检索先行规则：minicare-agent `search-knowledge.js` 重写（FULLTEXT ngram + BLOB 向量余弦 + RRF k=60，topK=5；review 条目 REGEXP 过滤）
+- ✅ 验收：**精确 Recall@10 = 97.8%（44/45）通过闸门**（minicare-agent/scripts/eval-recall-exact.mjs）；回答带来源（items.source）；空库降级返回"未找到"
 - ⏳ 待部署：生产库建表 + 导入 + embedding 拷贝；云端 EnvParams 补 DB_*/TOKENHUB_API_KEY；重新部署 minicare-agent
 
 #### P2 数据查询、总结分析与日记生成（5-7 人日，✅ 2026-08-23 agent 侧 + 日记 REST 完成；部署待续）

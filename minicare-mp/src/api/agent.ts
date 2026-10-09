@@ -9,7 +9,7 @@ import Taro from '@tarojs/taro'
 import { request, getToken } from './http'
 import { API_BASE_URL } from './base'
 
-// ── SSE 事件类型（对齐 agent-poc/routes/chat.js）──────────────────────
+// ── SSE 事件类型（对齐 minicare-agent/routes/chat.js）──────────────────────
 
 export interface AgentSourceItem {
   id: string

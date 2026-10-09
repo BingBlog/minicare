@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """迁移 021 · 第 5 阶段：清理 [待复核] 前缀（**不可逆**）
 
-对应 TECH-015 §9.1 的第 ⑤ 步，**必须先完成第 ④ 阶段**（agent-poc 已切到
+对应 TECH-015 §9.1 的第 ⑤ 步，**必须先完成第 ④ 阶段**（minicare-agent 已切到
 `retrieval_status='enabled'` 过滤）。否则删掉前缀会让 review 条目进入检索。
 
 ⚠️ 用 `SUBSTRING(content, 6)` 而不是 `TRIM(LEADING '[待复核]' FROM content)`：
@@ -58,7 +58,7 @@ def main(dry_run: bool = False, assume_yes: bool = False) -> int:
                 print("（dry-run：未写库）")
                 return 0
             if not assume_yes:
-                print("⚠️ 本操作不可逆。确认 agent-poc 已切换过滤条件后，加 --yes 执行。")
+                print("⚠️ 本操作不可逆。确认 minicare-agent 已切换过滤条件后，加 --yes 执行。")
                 return 1
 
             cur.execute(

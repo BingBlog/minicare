@@ -186,7 +186,7 @@ class EvalLedger:
         }
 
 
-# ── 闸门汇总（口径对齐 agent-poc/scripts/eval/gate.mjs，TECH-021 §4.3）─────
+# ── 闸门汇总（口径对齐 minicare-agent/scripts/eval/gate.mjs，TECH-021 §4.3）─────
 
 # 六个 run 级闸门 → 维度 id 映射（阈值/一票否决可用维度配置覆盖）
 _GATE_DIM_MAP: dict[str, str] = {

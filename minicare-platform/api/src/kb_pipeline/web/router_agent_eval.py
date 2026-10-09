@@ -176,7 +176,7 @@ def list_cases(grp: str | None = None, tag: str | None = None,
 
 @router.post("/cases/import")
 def import_cases(payload: dict = Body(default={})) -> dict:
-    """从 harness 目录（agent-poc/scripts/eval/cases/*.json）导入用例（幂等）。"""
+    """从 harness 目录（minicare-agent/scripts/eval/cases/*.json）导入用例（幂等）。"""
     force = bool((payload or {}).get("force"))
     try:
         return eval_seed.import_cases(_catalog().db, force=force)

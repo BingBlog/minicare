@@ -1,7 +1,7 @@
 """翻译网关（TECH-019 §3.6）
 
 LLM 主路径 + 内容级缓存（platform.db 的 kb_translate_cache）+ 预算 + 并发 + 降级。
-- LLM：OpenAI 兼容接口（复用 agent-poc 同款 DeepSeek 通道），key 取 Settings（不要只用 os.environ）
+- LLM：OpenAI 兼容接口（复用 minicare-agent 同款 DeepSeek 通道），key 取 Settings（不要只用 os.environ）
 - 缓存键 = sha256(model | prompt_version | 命中术语 | 源文本)：同内容跨文档复用，不重复烧 token
 - 降级：无 key / 失败 → 逐块标 failed，**步骤不失败**（由步骤汇总 warnings）
 - 干跑（dry_run）照常翻译：翻译无库副作用，dry 与 write 产物一致（TECH-019 决策②）

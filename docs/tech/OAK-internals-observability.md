@@ -172,7 +172,7 @@ user message 内容匹配」关联（enqueue 行就是原始问题），实测�
 
 ## 8. 附录：实测记录与代码位置
 
-- transcript 样本：`~/.minicare-agent/claude-config/projects/-Users-bing-Documents-minicare-v1-agent-poc/<sessionId>.jsonl`
+- transcript 样本：`~/.minicare-agent/claude-config/projects/-Users-bing-Documents-minicare-v1-minicare-agent/<sessionId>.jsonl`
   （OAK 时期为 ~/.oak/agent/.claude/projects/...，样本 807dd565-b738-47a1-a208-350813dcf741.jsonl）
 - P0 落地代码：`scripts/transcript-enrich.mjs`（解析+匹配+回填）、`scripts/langfuse-import.mjs`
   （cliEnriched 重建 + usage 明细/metadata 透传）、`scripts/check-traces.mjs`（cache/usage 展示）

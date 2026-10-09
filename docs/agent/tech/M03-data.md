@@ -1,7 +1,7 @@
 # M3 · 健康数据查询与家庭共享（技术方案）
 
 > 模块：M3 ｜ 状态：**P2 已落地** ｜ 优先级：P2
-> **2026-08-23 P2 完成**：agent-poc `lib/query.js`（7 维度 × list/sum/avg/count/trend）+ `lib/tools/query-baby-data.js` 工具 + ctx.babyId 注入（服务端 x-agent-ctx，工具层不可见）；`lib/db.js` 连接池 timezone=+08:00 + dateStrings。端到端 chat 实测模型正确触发工具并基于结果作答。
+> **2026-08-23 P2 完成**：minicare-agent `lib/query.js`（7 维度 × list/sum/avg/count/trend）+ `lib/tools/query-baby-data.js` 工具 + ctx.babyId 注入（服务端 x-agent-ctx，工具层不可见）；`lib/db.js` 连接池 timezone=+08:00 + dateStrings。端到端 chat 实测模型正确触发工具并基于结果作答。
 
 ## 1. 技术设计概览
 

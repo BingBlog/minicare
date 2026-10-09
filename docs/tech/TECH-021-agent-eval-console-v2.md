@@ -42,7 +42,7 @@
 
 | 对象 | 现状 | 缺什么 |
 |---|---|---|
-| 用例 | 46 条 JSON 埋在 `agent-poc/scripts/eval/cases/`（git） | 页面不可见/不可编辑；无标签/启停；无法从运行沉淀 |
+| 用例 | 46 条 JSON 埋在 `minicare-agent/scripts/eval/cases/`（git） | 页面不可见/不可编辑；无标签/启停；无法从运行沉淀 |
 | 任务 | "运行"每次临时发起 | 无命名任务模板；运行与任务无关联；无"同任务历轮"视角 |
 | 裁判 | 4 个判分器硬编码 `lib/judge.mjs`；模型写死 v4-pro | prompt/模型/温度不可配；无法开关；无校准（L3-01 假阳性为实例） |
 | 维度 | gate 六项目标值硬编码 `ledger.compute_gate` | 阈值不可配；不可选子集；无维度级统计 |
@@ -178,7 +178,7 @@ ALTER TABLE eval_run ADD COLUMN task_id TEXT  -- 仅当 PRAGMA 探测无该列
 
 `scripts/seed-eval-config.py`（一次性、可重跑）：
 
-1. **用例**：读 `agent-poc/scripts/eval/cases/*.json` → 46 条 upsert 进 `eval_case`；打标签
+1. **用例**：读 `minicare-agent/scripts/eval/cases/*.json` → 46 条 upsert 进 `eval_case`；打标签
    （l0-l4→`capability`，r1→`realdata`，l3→另加 `safety`）；
 2. **维度**：默认 10 条——case 级 4（faithfulness/guardrail/completeness/style）+ run 级 6
    （det/converge/done/hallucination/guardrail-rate/completeness-rate）；阈值对齐现行 gate；
@@ -419,5 +419,5 @@ Agent 测评（一级 = 总览页，现有）
 
 - `docs/tech/TECH-020-agent-eval-platform-research.md`（行业调研：四对象模型、六平台对标、实践做法）
 - `docs/prd/PRD-010.md`（测评台首期：运行链路、台账、四视图）
-- `agent-poc/scripts/eval/README.md`（harness 用法与用例格式）
+- `minicare-agent/scripts/eval/README.md`（harness 用法与用例格式）
 - `minicare-platform/api/src/kb_pipeline/agent_eval/`（runner / ledger 现实现）

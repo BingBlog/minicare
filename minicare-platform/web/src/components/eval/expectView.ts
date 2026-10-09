@@ -1,7 +1,7 @@
 /**
  * 期望断言渲染（TECH-022 B3）：把 harness 的 `expect`（assert.mjs 语义）渲染成中文人话。
  *
- * 与 `agent-poc/scripts/eval/lib/assert.mjs` 的字段一一对应；未知字段以 JSON 兜底展示，不丢信息。
+ * 与 `minicare-agent/scripts/eval/lib/assert.mjs` 的字段一一对应；未知字段以 JSON 兜底展示，不丢信息。
  * 两个消费点：运行详情的「期望 vs 实际」证据链、用例编辑器的结构化预览。
  */
 

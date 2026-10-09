@@ -1,7 +1,7 @@
 """关键词网关（US-09 / TECH-015 §4.5 §8.9）
 
 主路径 LLM，**不可用时降级规则抽取并告警**；结果按**块内容 hash 缓存**（同内容不重复调用）。
-- LLM：OpenAI 兼容接口（复用 agent-poc 同款 DeepSeek 通道），key 取 `DEEPSEEK_API_KEY`
+- LLM：OpenAI 兼容接口（复用 minicare-agent 同款 DeepSeek 通道），key 取 `DEEPSEEK_API_KEY`
 - 规则：标题词 ∪ 医学词典命中 ∪ 正文高频 2–6 字词
 - 预算：单文档调用数与 token 上限可配，超限即降级（不是报错中断）
 """

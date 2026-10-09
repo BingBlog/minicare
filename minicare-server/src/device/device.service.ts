@@ -2,7 +2,7 @@
  * 音箱设备服务（device.service.ts，TECH-008 §2/§3）
  *
  * 职责：绑定码生成/校验、设备绑定签发 token、设备列表/解绑、活跃时间戳，
- *       以及 xiaozhi LLM Adapter（/api/device/llm，openai 流式 ↔ agent-poc SSE）。
+ *       以及 xiaozhi LLM Adapter（/api/device/llm，openai 流式 ↔ minicare-agent SSE）。
  * token 生成：randomBytes(32).hex（64 位十六进制），DB 仅存 sha256 哈希。
  */
 import {
@@ -26,7 +26,7 @@ export interface BindResult {
   device_token: string;
 }
 
-/** 从 agent-poc SSE data 字段解析 JSON（失败返回 null） */
+/** 从 minicare-agent SSE data 字段解析 JSON（失败返回 null） */
 function safeJson(data: string): Record<string, unknown> | null {
   try {
     return JSON.parse(data) as Record<string, unknown>;
@@ -231,13 +231,13 @@ export class DeviceService {
   }
 
   /**
-   * openai 兼容流式 → agent-poc SSE → openai 流式（协议转换）
+   * openai 兼容流式 → minicare-agent SSE → openai 流式（协议转换）
    *
    * xiaozhi-server 把 LLM 配为 openai 兼容指向本端点，这里：
    * - 取最后一条 user 消息作为对话内容
    * - conversationId 优先取 header `x-conversation-id` → messages system 里携带 → 设备上次会话线程
    * - familyId/babyId 由 DeviceGuard 解析注入，userId 用 deviceId（设备维度会话历史）
-   * - agent-poc 的 text 事件 → openai `choices[].delta.content` 流式帧
+   * - minicare-agent 的 text 事件 → openai `choices[].delta.content` 流式帧
    * - 结束时持久化 last_conversation_id（跨唤醒延续）
    */
   async proxyLlm(

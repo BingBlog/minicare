@@ -1,6 +1,6 @@
 """测评台配置对象的种子导入（TECH-021 §3.6）。
 
-- `import_cases`：把 harness 目录（`agent-poc/scripts/eval/cases/*.json`）中的用例导入 `eval_case`；
+- `import_cases`：把 harness 目录（`minicare-agent/scripts/eval/cases/*.json`）中的用例导入 `eval_case`；
 - `seed_all`：用例 + 维度（10 条）+ 裁判（4 条，prompt 抄录自 `lib/judge.mjs`）一次性导入。
 
 被 `scripts/seed-eval-config.py` 与 API（`POST /cases/import`）共用。
@@ -15,7 +15,7 @@ from pathlib import Path
 from ..config import REPO_ROOT
 from ..platform_db import PlatformDB
 
-CASES_DIR = REPO_ROOT / "agent-poc" / "scripts" / "eval" / "cases"
+CASES_DIR = REPO_ROOT / "minicare-agent" / "scripts" / "eval" / "cases"
 
 
 def _now() -> str:

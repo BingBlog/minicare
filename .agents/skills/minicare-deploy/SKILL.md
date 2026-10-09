@@ -64,11 +64,11 @@ description: minicare 项目构建发布操作手册。包含前端静态托管�
 >
 > **两者不对齐会导致登录失败**（前端用真实短信 + 后端用固定验证码 = 400 错误）。
 
-### 1.4 Agent 服务参数（agent-poc，minicare-agent）
+### 1.4 Agent 服务参数（minicare-agent）
 
 | 属性            | 值                                                                                     |
 | --------------- | -------------------------------------------------------------------------------------- |
-| 项目目录        | `/Users/bing/Documents/minicare-v1/agent-poc`                                          |
+| 项目目录        | `/Users/bing/Study/minicare/minicare-agent`                                          |
 | CloudRun 服务名 | `minicare-agent`                                                                        |
 | 部署方式        | `node scripts/deploy-agent.mjs`（manager-node 源码上传 + 云端 Docker 构建，EnvParams 保留合并） |
 | 状态/构建日志   | `node scripts/check-agent-deploy.mjs`；`app.cloudrun.getDeployRecords/getBuildLog`       |
@@ -79,7 +79,7 @@ description: minicare 项目构建发布操作手册。包含前端静态托管�
 
 > ⚠️ 踩坑（2026-09-04）：
 > 1. `@cloudbase/manager-node` 5.x 的 `init()` 参数从 `env` 改名为 **`envId`**（旧写法报 `[DescribeEnvInfo] EnvId is required`）；deploy 脚本已适配。
-> 2. manager-node 是 agent-poc 的 devDependency（部署时曾被误删），缺了先 `npm i -D @cloudbase/manager-node`。
+> 2. manager-node 是 minicare-agent 的 devDependency（部署时曾被误删），缺了先 `npm i -D @cloudbase/manager-node`。
 > 3. 直连 SDK 版镜像依赖 `@anthropic-ai/claude-agent-sdk` 的 linux-x64 CLI 二进制，云端 `npm install` 自动按平台拉取；部署后必须跑一次 `/chat` 端到端验证 CLI 可用。
 > 4. 验收时 `x-agent-token` 必须用 **CloudRun EnvParams 里的 AGENT_INTERNAL_TOKEN**。2026-09-20 实测：线上 agent 与线上 `minicare-api-production` 的值一致（48 位），而本地 `minicare-server/.env.local` 是 **18 位** —— 两者早已脱钩（拿本地值调线上会一直 401，现象像"发版失败"）。**真正的风险**：minicare-server 部署若把本地 EnvParams 整体写入，会把线上 48 位冲成 18 位，而 agent 侧仍是 48 位 → **生产聊天全线 401**。部署 minicare-server 前先核对这一项；`verify-online.mjs` 会主动比对并告警。
 > 5. Dockerfile 非root用户（oak）+ `CLAUDE_CONFIG_DIR` 兜底 /tmp；`.dockerignore` 已排除 `.env.local`/`.wire-logs`。

@@ -48,10 +48,10 @@ Monorepo with 5 independent projects (no root `package.json`):
 | `minicare-mp/` | Taro 4.2 + React 18 | **Primary platform** — WeChat miniprogram |
 | `minicare-web/` | React 18 + Vite 6 + Tailwind | Web frontend (secondary, maintenance mode) |
 | `minicare-platform/` | FastAPI（Python 3.13）+ React 18 + Vite | **本机管理端**（127.0.0.1:8787，单用户）：`api/` = 平台后端（KB 六步管线 + 检索质检 + 平台服务，原 `minicare-kb`）；`web/` = 管理界面（React SPA，同端口托管） |
-| `agent-poc/` | Node.js + DeepSeek（Claude Agent SDK 运行时） | 养娃智能体「敏宝助手」服务（被测对象）+ agent 测评 harness（`scripts/eval/`，由平台调度） |
+| `minicare-agent/` | Node.js + DeepSeek（Claude Agent SDK 运行时） | 养娃智能体「敏宝助手」服务（被测对象）+ agent 测评 harness（`scripts/eval/`，由平台调度） |
 
 > **Platform strategy**: WeChat miniprogram (`minicare-mp/`) is the **primary distribution channel**. MVP has been released on the miniprogram platform. `minicare-web/` served as the prototyping platform during early development and is now in maintenance mode.
-> **管理端策略**：`minicare-platform/` 是本机单用户管理端（知识库 + Agent 测评两个能力域），**不做云端部署**；`agent-poc/` 是被测智能体本体。
+> **管理端策略**：`minicare-platform/` 是本机单用户管理端（知识库 + Agent 测评两个能力域），**不做云端部署**；`minicare-agent/` 是被测智能体本体。
 
 All commands run from within the specific project directory.
 
@@ -79,7 +79,7 @@ npm run build:prod         # tsc -b + vite build (production mode)
 .venv/bin/kb-pipeline serve    # 平台服务 :8787（同端口托管 web/dist；--reload 开发热载）
 cd ../web && npm run dev       # 前端 Vite :5173（/api 代理到 8787）；npm run build → dist/
 
-# Agent 测评（must be in agent-poc/，详见 scripts/eval/README.md）
+# Agent 测评（must be in minicare-agent/，详见 scripts/eval/README.md）
 node scripts/eval/eval-agent.mjs --all --no-judge   # harness 全量（不含 judge）
 node scripts/eval/gate.mjs                          # P0 上线闸门
 ```

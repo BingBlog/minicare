@@ -9,7 +9,7 @@
 > **运维速查**：[`docs/tech/TECH-015-kb-platform-gotchas.md`](../../tech/TECH-015-kb-platform-gotchas.md)（11 节，含「原文↔解析」源码调研在 `TECH-015-kb-source-research.md`）
 > 上游依据：`.agents/skills/prd-doc-writer`（三步确认法，2026-10-02 全部阶段与故事已单点确认）
 > 适用范围：`minicare-platform/api/` 知识库构建全链路 —— 从语料登记到 Agent 消费与线上验证
-> 代码基线：`minicare-platform/api/`（Python 包 `kb_pipeline`，含 `web/` 后端）、`minicare-platform/web/`（React 前端）、`agent-poc/src/lib/tools/search-knowledge.js`、`minicare-server/migrations/017_knowledge_base.sql` + `021_knowledge_retrieval_status.sql`
+> 代码基线：`minicare-platform/api/`（Python 包 `kb_pipeline`，含 `web/` 后端）、`minicare-platform/web/`（React 前端）、`minicare-agent/src/lib/tools/search-knowledge.js`、`minicare-server/migrations/017_knowledge_base.sql` + `021_knowledge_retrieval_status.sql`
 
 ---
 
@@ -32,7 +32,7 @@
 
 1. **§2 现状盘点全部带代码路径与行号**，不是转述文档。旧 v3 文档的核心问题就是"假设了一个不存在的平台"，所以本文所有现状描述都以代码为准。
 2. **§19 决策记录**是本文的"合宪审查依据"——21 条决策（D-01 ~ D-21）全部来自 2026-10-02 的逐条确认，改动任何一条都需先改这里。
-3. **§13 影响面清单**是开工前必查项：本次有**唯一一处会动生产库结构 + 需回填存量数据 + 需同步改 agent-poc** 的改动（迁移 021），它在 §13 里被单独标红。
+3. **§13 影响面清单**是开工前必查项：本次有**唯一一处会动生产库结构 + 需回填存量数据 + 需同步改 minicare-agent** 的改动（迁移 021），它在 §13 里被单独标红。
 
 ---
 
@@ -40,7 +40,7 @@
 
 ### 1.1 项目背景与核心问题
 
-**背景**：minicare 的知识库已经**可用且质量达标**——20 份语料（16 PDF + 4 HTML）经 MinerU 解析、自研切块、数字校验后入 `knowledge_base` 共 1586 条，TokenHub 生成 1024 维向量，`agent-poc` 通过 `search_knowledge` 工具做 FULLTEXT + 向量 RRF 混合检索，**精确 Recall@10 = 97.8%（44/45），已过上线闸门**。
+**背景**：minicare 的知识库已经**可用且质量达标**——20 份语料（16 PDF + 4 HTML）经 MinerU 解析、自研切块、数字校验后入 `knowledge_base` 共 1586 条，TokenHub 生成 1024 维向量，`minicare-agent` 通过 `search_knowledge` 工具做 FULLTEXT + 向量 RRF 混合检索，**精确 Recall@10 = 97.8%（44/45），已过上线闸门**。
 
 **问题不在效果，在"这套东西无法被人维护"**。当前形态是一个 Python CLI（`kb-pipeline parse / chunk / import / embed`），全部靠手工敲命令 + 手工分步 + 手工判断该重跑哪一步。核实出的六个具体缺陷：
 
@@ -208,8 +208,8 @@ sequenceDiagram
 | `minicare-platform/api/docs/KB-MAPPING.md` | gold 映射表（噪声块污染的现场证据） |
 | `minicare-platform/api/scripts/sync-kb-to-prod.py` | 现有发布脚本（硬编码库名） |
 | `docs/agent/tech/M02-knowledge.md` | 知识问答模块技术方案（消费侧） |
-| `agent-poc/src/lib/tools/search-knowledge.js` | 混合检索实现，US-13 契约的现状基线 |
-| `agent-poc/src/lib/embeddings.js` | 查询向量化（与离线同模型同维度） |
+| `minicare-agent/src/lib/tools/search-knowledge.js` | 混合检索实现，US-13 契约的现状基线 |
+| `minicare-agent/src/lib/embeddings.js` | 查询向量化（与离线同模型同维度） |
 | `minicare-server/migrations/017_knowledge_base.sql` | `knowledge_base` 表结构 |
 | `docs/prd/PRD-008/archive/` | 被推翻的 v3 设计（骨架沿用、假设作废） |
 

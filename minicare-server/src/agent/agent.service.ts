@@ -79,7 +79,7 @@ export class AgentService {
   }
 
   /**
-   * 调 agent-poc /chat，返回上游 fetch Response（供 proxyChat 与 DeviceModule 复用）。
+   * 调 minicare-agent /chat，返回上游 fetch Response（供 proxyChat 与 DeviceModule 复用）。
    * - 上游 60s 无数据 → AbortSignal.timeout 兜底（防模型悬挂）
    * - conversationId 未传由服务端生成（UUID，Claude CLI 强校验）
    */

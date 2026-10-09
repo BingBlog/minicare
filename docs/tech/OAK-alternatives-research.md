@@ -1,6 +1,6 @@
 # OAK 替代方案调研（2026-09-04）
 
-> 背景：agent-poc 当前栈为 OAK 0.1.1 → claude-agent-sdk 0.3.237 → Claude CLI 子进程 →
+> 背景：minicare-agent 当前栈为 OAK 0.1.1 → claude-agent-sdk 0.3.237 → Claude CLI 子进程 →
 > DeepSeek anthropic 端点。OAK 薄壳带来一系列已确认的问题（延迟、黑盒、不可配置），
 > 本文评估替代/演进路线。前置文档：`docs/tech/OAK-internals-observability.md`（内部
 > 机制拆包）、延迟诊断（2026-09-03，`scripts/diag-latency.mjs`）。
@@ -155,7 +155,7 @@ LangGraph/LangChain/CrewAI 适配器，Web/小程序 UI 客户端，CloudBase �
 
 ## 4. 推荐路线
 
-> **4A. POC 实测结果（2026-09-04，`agent-poc/scripts/poc-direct-sdk.mjs`，直连 claude-agent-sdk 0.3.237）**
+> **4A. POC 实测结果（2026-09-04，`minicare-agent/scripts/poc-direct-sdk.mjs`，直连 claude-agent-sdk 0.3.237）**
 
 | 假设 | 结果 | 实测数据 |
 |---|---|---|
@@ -165,7 +165,7 @@ LangGraph/LangChain/CrewAI 适配器，Web/小程序 UI 客户端，CloudBase �
 
 附带发现：SDK 直连单轮 spawn 首轮仅 1.4-1.5s（含 CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1），比 OAK 链路的 3-4s 重建开销低；POC 脚本留存于 `scripts/poc-direct-sdk.mjs`（CLAUDE_CONFIG_DIR 指向 /tmp 独立目录，不污染 ~/.claude）。
 
-**4A+ 内置代理注入 thinking 实测（同日追加，`scripts/poc-wire-proxy.mjs`）**：在 agent-poc
+**4A+ 内置代理注入 thinking 实测（同日追加，`scripts/poc-wire-proxy.mjs`）**：在 minicare-agent
 进程内起 http 反代（`ANTHROPIC_BASE_URL=http://127.0.0.1:<ephemeral>/anthropic`，转发
 `api.deepseek.com` 时改写 body 注入 `thinking:{type:'disabled'}`，SSE 逐块透传）：
 
@@ -174,7 +174,7 @@ LangGraph/LangChain/CrewAI 适配器，Web/小程序 UI 客户端，CloudBase �
 | 代理直通（不注入） | 有（161 字） | 4093ms | 3773ms |
 | **代理注入 disabled** | **无** ✅ | **1974ms（-52%）** | 1931ms |
 
-→ **内置代理方案验证通过**：无需独立进程，agent-poc 进程内即可关闭思考；因代理在
+→ **内置代理方案验证通过**：无需独立进程，minicare-agent 进程内即可关闭思考；因代理在
 localhost，生产 CloudRun 容器内同样可用（思考延迟收益可覆盖生产）。该组件同时承担
 wire 级 prompt 抓取（§4B/方案 C），落地时合并为一个 `wire-proxy` 模块
 （env 开关：`THINKING_MODE` / `WIRE_LOG`）。
@@ -183,7 +183,7 @@ wire 级 prompt 抓取（§4B/方案 C），落地时合并为一个 `wire-proxy
 
 > **4B. 改造已实施（2026-09-04 凌晨）**：方案 1 已落地为生产代码，OAK 从依赖中移除。
 >
-> 改动清单（agent-poc）：
+> 改动清单（minicare-agent）：
 > - `src/lib/runtime.js`（新）：核心运行时。直连 `query()`，产出归一化事件流
 >   （text/tool_call/tool_result/usage/done/error），chat.js 与 eval/agent-runner 共同消费；
 >   工具经 `createSdkMcpServer`（zod raw shape 直喂），循环防护（同工具≤2/总≤3）内置于
@@ -220,7 +220,7 @@ wire 级 prompt 抓取（§4B/方案 C），落地时合并为一个 `wire-proxy
    b. `resume` 是否可用（省每请求重建）；
    c. 自定义 string systemPrompt + 关内置工具后 prefill 降幅。
    这三项结论直接决定短期优化幅度，也为终态迁移提供基线数据。
-2. **短期（1-2 周内）**：基于 POC 结果二选一——POC 全过 → 直连 SDK 作为 agent-poc
+2. **短期（1-2 周内）**：基于 POC 结果二选一——POC 全过 → 直连 SDK 作为 minicare-agent
    过渡运行时（快速兑现延迟收益）；POC 有坑 → 直接启动方案 2 迁移。
 3. **中期**：迁移到 Vercel AI SDK v5 自持 agent loop（终态）；telemetry 直连
    Langfuse（或 @langfuse/vercel），FlexDB 索引层保留；transcript JSONL 方案随

@@ -1,6 +1,6 @@
 """Agent 测评运行调度器（TECH-021 §4）：配置物化 + 子进程驱动 + 进度解析 + 结果入库。
 
-一次运行 = 一个后台线程 + 一个 Node 子进程（`agent-poc/scripts/eval/eval-agent.mjs`）：
+一次运行 = 一个后台线程 + 一个 Node 子进程（`minicare-agent/scripts/eval/eval-agent.mjs`）：
 
   1. **物化**（§4.1）：按「任务或手工 scope」从 `eval_case` 选取用例，联同 `eval_judge` /
      `eval_dimension` 配置写成 `data/eval/runs/<run_id>/{cases.json, judges.json, meta.json}`；
@@ -29,7 +29,7 @@ from ..platform_db import PlatformDB
 from .catalog import EvalCatalog, case_to_harness_item, effective_ctx
 from .ledger import EvalLedger, compute_gate, group_label, priority_label
 
-AGENT_POC = REPO_ROOT / "agent-poc"
+AGENT_DIR = REPO_ROOT / "minicare-agent"
 HARNESS_REL = "scripts/eval/eval-agent.mjs"
 PROGRESS_PREFIX = "@@EVAL@@ "
 LOG_TAIL_MAX = 60
@@ -100,7 +100,7 @@ def scope_label_of(scope: dict) -> str:
 
 
 def _read_env_local(key: str) -> str | None:
-    f = AGENT_POC / ".env.local"
+    f = AGENT_DIR / ".env.local"
     if not f.is_file():
         return None
     try:
@@ -148,24 +148,24 @@ class EvalRunner:
 
     def check(self) -> dict:
         node = find_node()
-        env_file = AGENT_POC / ".env.local"
+        env_file = AGENT_DIR / ".env.local"
         env_ok = False
         if env_file.is_file():
             try:
                 env_ok = "DEEPSEEK_API_KEY=" in env_file.read_text(encoding="utf-8", errors="ignore")
             except OSError:
                 env_ok = False
-        harness_ok = (AGENT_POC / HARNESS_REL).is_file()
+        harness_ok = (AGENT_DIR / HARNESS_REL).is_file()
         cases_row = self._catalog().db.query_one("SELECT COUNT(*) AS n FROM eval_case WHERE enabled = 1")
         cases_ready = bool(cases_row and cases_row["n"] > 0)
         running = self._active is not None
         issues: list[str] = []
-        if not AGENT_POC.is_dir():
-            issues.append("agent-poc 目录不存在")
+        if not AGENT_DIR.is_dir():
+            issues.append("minicare-agent 目录不存在")
         if not node:
             issues.append("未找到 node 可执行文件")
         if not env_ok:
-            issues.append("agent-poc/.env.local 缺失或未配置 DEEPSEEK_API_KEY")
+            issues.append("minicare-agent/.env.local 缺失或未配置 DEEPSEEK_API_KEY")
         if not harness_ok:
             issues.append(f"{HARNESS_REL} 不存在")
         if not cases_ready:
@@ -175,7 +175,7 @@ class EvalRunner:
         return {
             "ok": not issues,
             "node": node,
-            "agent_poc": str(AGENT_POC),
+            "agent_dir": str(AGENT_DIR),
             "env_local": env_ok,
             "harness": harness_ok,
             "cases_ready": cases_ready,
@@ -465,7 +465,7 @@ class EvalRunner:
                f"--judges-file={judges_path}", f"--out={out_path}"]
         try:
             proc = subprocess.run(
-                cmd, cwd=str(AGENT_POC), capture_output=True, text=True,
+                cmd, cwd=str(AGENT_DIR), capture_output=True, text=True,
                 env=clean_child_env(), timeout=240)
         except subprocess.TimeoutExpired as e:
             raise TimeoutError("试跑超时（240s）——判分模型无响应，请重试") from e
@@ -488,7 +488,7 @@ class EvalRunner:
     def _worker(self, run_id: str, mz: dict, judge: bool, runs_n: int) -> None:
         settings = get_settings()
         report_dir = ensure_dir(settings.platform_cfg.data_root / "eval" / "reports")
-        # 绝对化：子进程 cwd=agent-poc，相对路径会把报告写到错误位置（曾踩：ENOENT 崩溃）
+        # 绝对化：子进程 cwd=minicare-agent，相对路径会把报告写到错误位置（曾踩：ENOENT 崩溃）
         report_path = (report_dir / f"{run_id}.json").resolve()
         log_path = (report_dir / f"{run_id}.log").resolve()
         node = find_node()
@@ -508,7 +508,7 @@ class EvalRunner:
 
         try:
             self._proc = subprocess.Popen(
-                cmd, cwd=str(AGENT_POC),
+                cmd, cwd=str(AGENT_DIR),
                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                 text=True, bufsize=1, env=clean_child_env(),
             )

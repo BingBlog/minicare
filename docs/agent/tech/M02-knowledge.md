@@ -1,7 +1,7 @@
 # M2 · 知识问答（技术方案）
 
 > 模块：M2 ｜ 状态：**P1 已落地** ｜ 优先级：P1
-> **2026-08-23 P1 完成**：agent-poc `search-knowledge.js` 重写为 hybridSearch（FULLTEXT ngram + 向量余弦 + RRF），数据 1586 条入 dev 库，**精确 Recall@10 = 97.8%（44/45）通过上线闸门**（agent-poc/scripts/eval-recall-exact.mjs）；生产库建表+导入待部署时执行。
+> **2026-08-23 P1 完成**：minicare-agent `search-knowledge.js` 重写为 hybridSearch（FULLTEXT ngram + 向量余弦 + RRF），数据 1586 条入 dev 库，**精确 Recall@10 = 97.8%（44/45）通过上线闸门**（minicare-agent/scripts/eval-recall-exact.mjs）；生产库建表+导入待部署时执行。
 > **2026-08-22 更新**：文档解析层切换为 **MinerU 云端 pipeline 引擎**（vlm 丢数字问题），切块改用 **LlamaIndex NodeParser 家族**（行业最佳），新增图片三层处理策略与数字校验门禁。检索链路（表/hybridSearch/工具）不变。
 
 ## 1. 技术设计概览

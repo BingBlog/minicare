@@ -380,7 +380,7 @@ class Publisher:
             {"key": "sample_retrieval", "label": "抽样检索", "status": "not_executed",
              "detail": "需指定抽样问题；由 kb-pipeline quality run 覆盖"},
             {"key": "agent_connectivity", "label": "Agent 连通", "status": "not_executed",
-             "detail": "agent-poc 未在本机运行时不校验"},
+             "detail": "minicare-agent 未在本机运行时不校验"},
         ]
         result["ok"] = all(c["status"] != "fail" for c in result["checks"])
         return result

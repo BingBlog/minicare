@@ -7,8 +7,8 @@
 | 关联 | PRD-006 §4「状态感知能力」、§6 US-20、§12.4 第 1 期 |
 | 上游 | `RESEARCH-20260920-转奶与排敏行业参考值.md`（参考值出处） |
 | 下位 | `TECH-013-state-awareness-implementation.md`（完整感知层蓝图，本文是其最小可验证切片） |
-| 实现 | `agent-poc/src/lib/perception.js`（算法，518 行）→ 注入 `prompts/system.js` |
-| 验证 | `agent-poc/scripts/verify-perception.mjs`（52 项断言）、`scripts/perception-preview.mjs`（人眼核对）、`scripts/ask-agent.mjs`（实跑一轮对话） |
+| 实现 | `minicare-agent/src/lib/perception.js`（算法，518 行）→ 注入 `prompts/system.js` |
+| 验证 | `minicare-agent/scripts/verify-perception.mjs`（52 项断言）、`scripts/perception-preview.mjs`（人眼核对）、`scripts/ask-agent.mjs`（实跑一轮对话） |
 
 ---
 
@@ -104,11 +104,11 @@ flowchart LR
 
 | 组件 | 现状 | 本文增量 |
 |---|---|---|
-| `agent-poc/src/lib/profile.js`（570 行） | 已实现 A 基本 / B 配方 / C 喂养 / E 生长 / I 新鲜度 5 组，进程内 5 分钟 TTL，`renderProfileBlock()` 已进 `systemPrompt` | 复用 B、I；**不改其逻辑** |
-| `agent-poc/scripts/verify-profile.mjs` | 22 项断言，覆盖字段完整性、缓存命中、生长分位同源、配方空档兜底 | 保持为回归基线 |
+| `minicare-agent/src/lib/profile.js`（570 行） | 已实现 A 基本 / B 配方 / C 喂养 / E 生长 / I 新鲜度 5 组，进程内 5 分钟 TTL，`renderProfileBlock()` 已进 `systemPrompt` | 复用 B、I；**不改其逻辑** |
+| `minicare-agent/scripts/verify-profile.mjs` | 22 项断言，覆盖字段完整性、缓存命中、生长分位同源、配方空档兜底 | 保持为回归基线 |
 | 排敏数据 | `food_observation` 五态 + `current_day`/`observation_days`/`retry_after_date`/`severity` + `intro_count`；另有 `food_observation_log` 逐日打卡 与 `feeding_food_item` 实际食用明细 | 首次被消费 |
 | 摄入数据 | `feeding_food_item` 逐食材行（含 `amount_g`），已可算"一天几种" | 首次被消费 |
-| 干跑脚本 | 本文新增 `agent-poc/scripts/perception-preview.mjs` | 新增 |
+| 干跑脚本 | 本文新增 `minicare-agent/scripts/perception-preview.mjs` | 新增 |
 
 **关键判断**：排敏与摄入这两组数据**已经积累了足够密度**（生产 18 条建档 / 138 条食材明细 / 42 条打卡），长期缺的不是数据，而是"没人算过"。所以本期是纯计算工作，没有数据前置依赖。
 
@@ -371,7 +371,7 @@ dev 实测暴露了一个反例：`强化铁米`（建档名）与 `高铁米粉
 
 ### 9.1 聚合归属
 
-期 1 物理落在 `agent-poc` 进程内。判据是消费方数量：目前只有 agent 一个消费方；等首页要展示同一批数字（第二个消费方出现）时再下沉服务端——这正是 TECH-013 §4.1 ADR-001 的既有结论，本文不改。
+期 1 物理落在 `minicare-agent` 进程内。判据是消费方数量：目前只有 agent 一个消费方；等首页要展示同一批数字（第二个消费方出现）时再下沉服务端——这正是 TECH-013 §4.1 ADR-001 的既有结论，本文不改。
 
 **缓存实现（修正原稿的说法）**：`perception.js` 用**自己的**进程内 Map + 5 分钟 TTL，**不是**与 `profile.js` 共用同一个对象——两者数据不同、失效时机也不同，共用只会互相拖累。但 `getPerception(babyId, { profile })` 接受已取到的画像对象，因此**不会重复执行画像那 5 条 SQL**；`runtime.js` 里的取值顺序是"先画像（与 CLI 冷启动并行）→ 再感知（3 条只读 SQL）"，串行是刻意的：并行会让两份画像各算一遍（缓存要写入后才命中，不是预占）。
 
@@ -385,7 +385,7 @@ dev 实测暴露了一个反例：`强化铁米`（建档名）与 `高铁米粉
 
 | 步 | 动作 | 通过标准 | 实测 |
 |---|---|---|---|
-| 1 | `cd agent-poc && NODE_OPTIONS= node scripts/verify-perception.mjs` | 58 项断言全过（归一化 / 空值语义 / 计数自洽 / flag 与字段一致 / 注入效果 / 缓存 / 参数化参考值 / 边界：无配方记录不降级） | 58 PASS / 0 FAIL |
+| 1 | `cd minicare-agent && NODE_OPTIONS= node scripts/verify-perception.mjs` | 58 项断言全过（归一化 / 空值语义 / 计数自洽 / flag 与字段一致 / 注入效果 / 缓存 / 参数化参考值 / 边界：无配方记录不降级） | 58 PASS / 0 FAIL |
 | 2 | `NODE_OPTIONS= node scripts/perception-preview.mjs` | 七段全部输出（含 §⑦ 实际注入文本），进程正常退出 | 通过 |
 | 3 | `NODE_OPTIONS= node scripts/verify-profile.mjs` | 22 项断言仍全过（确认复用未破坏既有画像） | 22 PASS / 0 FAIL |
 | 4 | `NODE_OPTIONS= node scripts/eval/eval-agent.mjs --group=l1 --no-judge` | 工具组用例不因注入而回归 | 8/8 通过 |
@@ -477,20 +477,20 @@ E5 是元信号的典型：**"没有记录"与"记录显示不达标"必须区�
 
 | 路径 | 动作 | 说明 |
 |---|---|---|
-| `agent-poc/src/lib/perception.js` | 新增 518 行 | 六板块算法 + `REF` 参考值 + `getPerception()` / `renderPerceptionBlock()` / `invalidatePerception()` |
-| `agent-poc/src/prompts/system.js` | 改 3 处 | 注入现状块（`buildSystemPrompt` 第 4 个参数） |
-| `agent-poc/src/lib/runtime.js` | 改 2 处 | 取感知并传入；`PERCEPTION_INJECT=off` 一键回滚 |
-| `agent-poc/src/lib/profile.js` | 改（仅加 `export`） | 5 个既有符号对外，避免第二份日期/阶梯实现 |
-| `agent-poc/scripts/perception-preview.mjs` | 重写 159 行 | 人眼核对；算法改为 `import` 同一份实现 |
-| `agent-poc/scripts/verify-perception.mjs` | 新增 168 行 | 52 项断言，失败退出码 1，可进 CI |
-| `agent-poc/scripts/ask-agent.mjs` | 新增 93 行 | 单轮实跑对话，`--context` 打印注入文本，`--no-perception` 做对照 |
+| `minicare-agent/src/lib/perception.js` | 新增 518 行 | 六板块算法 + `REF` 参考值 + `getPerception()` / `renderPerceptionBlock()` / `invalidatePerception()` |
+| `minicare-agent/src/prompts/system.js` | 改 3 处 | 注入现状块（`buildSystemPrompt` 第 4 个参数） |
+| `minicare-agent/src/lib/runtime.js` | 改 2 处 | 取感知并传入；`PERCEPTION_INJECT=off` 一键回滚 |
+| `minicare-agent/src/lib/profile.js` | 改（仅加 `export`） | 5 个既有符号对外，避免第二份日期/阶梯实现 |
+| `minicare-agent/scripts/perception-preview.mjs` | 重写 159 行 | 人眼核对；算法改为 `import` 同一份实现 |
+| `minicare-agent/scripts/verify-perception.mjs` | 新增 168 行 | 52 项断言，失败退出码 1，可进 CI |
+| `minicare-agent/scripts/ask-agent.mjs` | 新增 93 行 | 单轮实跑对话，`--context` 打印注入文本，`--no-perception` 做对照 |
 | `docs/tech/TECH-014-state-perception-v1.md` | 改 | 本文（状态 → 已实现） |
 | `docs/prd/PRD-006/*.md` | 待同步 | 第 1 期范围指针指向本文（下一步） |
 
 ## 附录 B 命令速查
 
 ```bash
-cd agent-poc
+cd minicare-agent
 
 # ① 断言（最该先跑这个）
 NODE_OPTIONS= node scripts/verify-perception.mjs        # 52 项

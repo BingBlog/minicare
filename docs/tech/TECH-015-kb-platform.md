@@ -2,7 +2,7 @@
 
 > 文档编号：TECH-015 ｜ 版本：**v1.1** ｜ 日期：**2026-10-09**（v1.0：2026-10-03）｜ 状态：**已实施，待真实路径验收**
 > 上游 PRD：[`docs/prd/PRD-008/`](../prd/PRD-008/README.md)（v1.0，2026-10-02；实施进展以 `06-开发进展与交接.md` 为准）
-> 代码基线：`minicare-platform/api/`（Python 包 `kb_pipeline` + `web/` 后端）、`minicare-platform/web/`（React 前端）、`agent-poc/src/lib/tools/search-knowledge.js`、`minicare-server/migrations/{017_knowledge_base,021_knowledge_retrieval_status}.sql`
+> 代码基线：`minicare-platform/api/`（Python 包 `kb_pipeline` + `web/` 后端）、`minicare-platform/web/`（React 前端）、`minicare-agent/src/lib/tools/search-knowledge.js`、`minicare-server/migrations/{017_knowledge_base,021_knowledge_retrieval_status}.sql`
 > 本文性质：**实现级设计**。现状描述一律以代码为准；所有选型结论附证据与反面论证（什么情况下会被推翻）。
 >
 > **v1.1 变更**：新增 **[§0.4 实施落地实况](#04-实施落地实况2026-10-09-重核)**（权威现状快照，与 §0.3 并列）；
@@ -99,7 +99,7 @@
 | staging / 正式库 | 仍停在 **019** |
 
 > 🔴 **阶段 1 做了、阶段 3 没做，是当前最危险的状态**：字段可读写但不是真相源。
-> 此时若推进 §9.1 阶段 4（agent-poc 切换），那 2 条 review **会直接进检索**。**阶段 4 前必须先跑阶段 3。**
+> 此时若推进 §9.1 阶段 4（minicare-agent 切换），那 2 条 review **会直接进检索**。**阶段 4 前必须先跑阶段 3。**
 
 #### E. 界面形态
 
@@ -114,7 +114,7 @@
 
 ### 1.1 要解决什么
 
-知识库**已经可用且达标**：20 份语料（16 PDF + 4 HTML）→ MinerU 解析 → 自研切块 → 数字校验 → `knowledge_base` 1586 条 → TokenHub 1024 维向量 → `agent-poc` 混合检索，**精确 Recall@10 = 97.8%（44/45），已过上线闸门**。
+知识库**已经可用且达标**：20 份语料（16 PDF + 4 HTML）→ MinerU 解析 → 自研切块 → 数字校验 → `knowledge_base` 1586 条 → TokenHub 1024 维向量 → `minicare-agent` 混合检索，**精确 Recall@10 = 97.8%（44/45），已过上线闸门**。
 
 问题不在效果，在**这套东西无法被人维护**：不可分步、产物无版本、质量闭环是断的、噪声块进了检索、发布与回归游离在流程外。完整缺陷清单见 PRD §2.1 与 §4（T1–T11）。
 
@@ -126,7 +126,7 @@
 |---|---|---|---|
 | G-1 | 单步可重跑 | 改切块参数只跑 `segment/validate/index`，`preflight/parse/normalize` 命中缓存 | 日志可见上游 `skipped_cached`；缓存命中 < 1s |
 | G-2 | 产物可追溯 | 每个 `run_id` 可复现：记录引擎版本 + 参数 hash + 平台代码版本 | 同参数重跑产物字节级一致（除时间戳） |
-| G-3 | 质量门禁生效 | `retrieval_status != 'enabled'` 的条目在检索结果中**永不出现** | agent-poc 侧集成测试 |
+| G-3 | 质量门禁生效 | `retrieval_status != 'enabled'` 的条目在检索结果中**永不出现** | minicare-agent 侧集成测试 |
 | G-4 | 发布可退 | 任意一次发布可在 1 步操作内回滚，回滚后库内切片数 = 快照记录值 | 发布/回滚演练 |
 | G-5 | 零命令行 | 登记 → 可检索全程只通过浏览器完成 | 端到端手工验收 |
 | G-6 | 断点可恢复 | 进程重启后已完成步骤产物不丢失、不重算 | 中断演练 |
@@ -159,14 +159,14 @@
 
 ### 2.2 消费侧（唯一消费方）
 
-`agent-poc/src/lib/tools/search-knowledge.js` 直读 `knowledge_base`：
+`minicare-agent/src/lib/tools/search-knowledge.js` 直读 `knowledge_base`：
 
 | 项 | 事实 |
 |---|---|
 | 检索方式 | FULLTEXT ngram（`title`+`content`+`keywords`）top20 + 内存全表余弦 top20 → RRF（k=60）→ top5 |
 | 向量缓存 | 进程级全表缓存，10 分钟 TTL + stale-while-revalidate + 启动预热（`:58-114`） |
 | 过滤条件 | `status=1` **且** `content NOT REGEXP '^\\[待复核\\]'`（`:27`）← **本方案要改的那一行** |
-| 查询向量 | `agent-poc/src/lib/embeddings.js`，模型 `kinfra-text-embedding-0.6b` / 1024 维（与离线同空间） |
+| 查询向量 | `minicare-agent/src/lib/embeddings.js`，模型 `kinfra-text-embedding-0.6b` / 1024 维（与离线同空间） |
 | 输出契约 | `{ found, items[{ id, kb_id, title, content, content_truncated, source, risk_level }], topK }`；单条 `content` 截断 800 字 |
 
 ### 2.3 现状中的三处"文档与代码不符"（本文新核出）
@@ -401,7 +401,7 @@ mineru.net  api.deepseek.com  tokenhub…   远程 MySQL（CynoSDB）
 
 **结论：维持 TokenHub `kinfra-text-embedding-0.6b`（S-3，不变更现状）。**
 
-理由：① **本项目实测最优**；② 换模型 = **全量重嵌入 1584 条 + 重建召回基线**，而换来的收益未知（候选都未在 45 题上测过）；③ 现有 `embed/runner.py` 与 `agent-poc/src/lib/embeddings.js` **必须同模型同维度**，换模型要同步改两处 —— 这是最容易出隐蔽 bug 的地方（向量空间不一致会静默降质，不报错）。
+理由：① **本项目实测最优**；② 换模型 = **全量重嵌入 1584 条 + 重建召回基线**，而换来的收益未知（候选都未在 45 题上测过）；③ 现有 `embed/runner.py` 与 `minicare-agent/src/lib/embeddings.js` **必须同模型同维度**，换模型要同步改两处 —— 这是最容易出隐蔽 bug 的地方（向量空间不一致会静默降质，不报错）。
 
 **成本量级（用于判断免费额度是否够）**：
 - 全库重嵌入一次：1584 条 × 平均约 600 字 ≈ 95 万字符。按中文约 0.7–1 token/字估算 ≈ **60–95 万 token**（**估算值，需实测**）。TokenHub 免费体验包 100 万 token/90 天，量级刚好覆盖一次全量 + 日常增量。
@@ -427,7 +427,7 @@ mineru.net  api.deepseek.com  tokenhub…   远程 MySQL（CynoSDB）
 | sqlite-vec | <10 万 | 单文件 | 需新增本地文件 + 双写 | 本机方案，但引入第二份真相 |
 | Milvus / Elasticsearch | 百万级 | 重 | 与"单机单用户"完全不匹配 | PRD §5.1 已排除 |
 
-**现状性能事实**：`agent-poc` 实测全表向量加载**冷启动约 6s**（1584 行 / 6.5MB BLOB），已用三层优化：启动预热 `preheatVectors()` + 进程级缓存 + 10 分钟 TTL + stale-while-revalidate（先返回旧数据、后台刷新）。**首个知识库问题不再付 6s 成本。**
+**现状性能事实**：`minicare-agent` 实测全表向量加载**冷启动约 6s**（1584 行 / 6.5MB BLOB），已用三层优化：启动预热 `preheatVectors()` + 进程级缓存 + 10 分钟 TTL + stale-while-revalidate（先返回旧数据、后台刷新）。**首个知识库问题不再付 6s 成本。**
 
 **打分**
 
@@ -455,7 +455,7 @@ mineru.net  api.deepseek.com  tokenhub…   远程 MySQL（CynoSDB）
 
 | 候选 | 质量 | 成本（全库 1586 块） | 出域 | 本机可跑 | 备注 |
 |---|---|---|---|---|---|
-| **云端 LLM（DeepSeek）** | 高（语义相关术语） | 约 60–130 万 token（估） | 切片标题+正文 | ❌ | 可复用 agent-poc 已有通道与 key |
+| **云端 LLM（DeepSeek）** | 高（语义相关术语） | 约 60–130 万 token（估） | 切片标题+正文 | ❌ | 可复用 minicare-agent 已有通道与 key |
 | 规则增强（标题 + 正文 + 医学词典） | 中（词典覆盖决定上限） | **0** | 无 | ✅ | 现引擎已有正则能力 |
 | 现状（仅标题抽 2–6 字词） | 低 | 0 | 无 | ✅ | `metadata/annotate.py:14` |
 | 本机小模型（Qwen2.5-1.5B 级） | 中（需实测） | 0（一次性模型体积） | 无 | ✅ 1–3GB | 吞吐与质量都需实测 |
@@ -678,8 +678,8 @@ mineru.net  api.deepseek.com  tokenhub…   远程 MySQL（CynoSDB）
 
 | 数据 | 存放位置 | 理由 |
 |---|---|---|
-| `knowledge_base`（+ 迁移 021 两字段） | **远程 MySQL** | 被 `agent-poc`（生产跑在 CloudRun）读取，是最终检索数据 |
-| `kb_search_log`（线上检索日志） | **远程 MySQL** | ⚠️ **写入方是生产环境的 agent-poc（CloudRun）**，它无法写本机文件 —— 这决定了它必须在远程库 |
+| `knowledge_base`（+ 迁移 021 两字段） | **远程 MySQL** | 被 `minicare-agent`（生产跑在 CloudRun）读取，是最终检索数据 |
+| `kb_search_log`（线上检索日志） | **远程 MySQL** | ⚠️ **写入方是生产环境的 minicare-agent（CloudRun）**，它无法写本机文件 —— 这决定了它必须在远程库 |
 | `kb_corpus`（文档档案 / 台账） | **本机 SQLite** | 纯平台运行态；登记、台账编辑不产生远程写 |
 | `kb_task`（任务队列） | **本机 SQLite** | 队列是本机调度器的工作台 |
 | `kb_doc_state`（**实现新增**） | **本机 SQLite** | 文档级人工产物：只存"信息确认"表单取值（`meta_json`），无闸门标记 |
@@ -738,7 +738,7 @@ UPDATE `knowledge_base`
  WHERE `content` LIKE '[待复核]%';
 ```
 
-**新增表 `kb_search_log`**（远程，写入方为生产 agent-poc）：
+**新增表 `kb_search_log`**（远程，写入方为生产 minicare-agent）：
 
 ```sql
 CREATE TABLE IF NOT EXISTS `kb_search_log` (
@@ -941,7 +941,7 @@ CREATE TABLE kb_publish (
 
 错误码（枚举，前端按码映射文案）：`VALIDATION_FAILED` / `STEP_FAILED` / ~~`GATE_BLOCKED`~~（已随暂停点移除） / `CONFLICT_DUPLICATE` / `EXTERNAL_UNAVAILABLE` / `DB_UNAVAILABLE` / `CONTRACT_VIOLATION` / `NOT_FOUND`。
 
-### 7.3 检索契约（对齐 agent-poc 现状，PRD §9.1）
+### 7.3 检索契约（对齐 minicare-agent 现状，PRD §9.1）
 
 | 类别 | 内容 |
 |---|---|
@@ -957,7 +957,7 @@ CREATE TABLE kb_publish (
 
 ### 7.4 与 `minicare-server` 的边界
 
-**零接口**。`minicare-server` 没有也没有必要有知识库模块（PRD §2.3）。平台不经服务端，`agent-poc` 也不用服务端。
+**零接口**。`minicare-server` 没有也没有必要有知识库模块（PRD §2.3）。平台不经服务端，`minicare-agent` 也不用服务端。
 
 ---
 
@@ -1179,16 +1179,16 @@ def validate_contract(db, impl) -> list[Violation]:
 
 ### 9.1 H1：迁移 021 的 expand-contract 执行序 ★★
 
-> 这是本方案**风险最高**的一处改动：同时动生产库结构、1586 条存量数据、以及另一个独立项目（`agent-poc`）。顺序错了会导致**要么被屏蔽的参考文献块重新进检索，要么检索直接报错**。
+> 这是本方案**风险最高**的一处改动：同时动生产库结构、1586 条存量数据、以及另一个独立项目（`minicare-agent`）。顺序错了会导致**要么被屏蔽的参考文献块重新进检索，要么检索直接报错**。
 
 **必须严格按此序执行**（每步含验收断言）：
 
 | 阶段 | 动作 | 为什么这个顺序 | 验收断言 |
 |---|---|---|---|
-| **1. 加列** | 上迁移 021 的 `ALTER TABLE`（只加列 + 索引，**不含回填 UPDATE**） | 新列默认 `enabled`，此时 2 条 review 在字段上是 `enabled`，但 **`content` 前缀还在** → agent-poc 的旧 REGEXP 过滤仍然挡得住 | 列存在；`SELECT COUNT(*) WHERE content LIKE '[待复核]%'` = 2 |
+| **1. 加列** | 上迁移 021 的 `ALTER TABLE`（只加列 + 索引，**不含回填 UPDATE**） | 新列默认 `enabled`，此时 2 条 review 在字段上是 `enabled`，但 **`content` 前缀还在** → minicare-agent 的旧 REGEXP 过滤仍然挡得住 | 列存在；`SELECT COUNT(*) WHERE content LIKE '[待复核]%'` = 2 |
 | **2. 平台写入** | 平台代码开始写 `retrieval_status`/`review_state`；**同时保留 `content` 前缀**（双写） | 双写窗口内两条过滤条件**都能**正确工作 → 任一侧未完成都不出错 | 新入库的 review 条目字段正确 **且** 前缀仍在 |
 | **3. 回填状态** | 执行迁移 021 的 `UPDATE`：把 2 条置 `review/pending`，**前缀不动** | 只改字段不动前缀 → 旧过滤继续有效 | 字段位为 `review/pending`；前缀仍存在 |
-| **4. agent-poc 切换** | `search-knowledge.js:27` 过滤条件改为 `retrieval_status='enabled'`；向量缓存加载条件（`:64-66`）同步 | 此时字段已是准确的真相源 → 可以安全切换 | 集成测试：插入一条 `excluded` 样本，**检索不返回**（这是 §8.11 的契约校验第 1 项） |
+| **4. minicare-agent 切换** | `search-knowledge.js:27` 过滤条件改为 `retrieval_status='enabled'`；向量缓存加载条件（`:64-66`）同步 | 此时字段已是准确的真相源 → 可以安全切换 | 集成测试：插入一条 `excluded` 样本，**检索不返回**（这是 §8.11 的契约校验第 1 项） |
 | **5. 清理前缀** | 执行清理脚本 `UPDATE ... SET content = SUBSTRING(content, 6) WHERE content LIKE '[待复核]%'`；平台去掉双写 | 旧过滤已不生效，前缀成为冗余脏数据 | 全库 `content LIKE '[待复核]%'` = 0；检索语义与第 4 步一致 |
 
 **📌 实施进度（2026-10-09 实测）**
@@ -1198,7 +1198,7 @@ def validate_contract(db, impl) -> list[Violation]:
 | 1. 加列 | ✅ **已在 dev 完成** | `SHOW COLUMNS knowledge_base` 含 `retrieval_status` / `review_state` |
 | 2. 平台写入 | 🟡 代码就位（`store/knowledge_base.py` 会写两字段），**未跑过真实入库**（`ALLOW_WRITE=False`） | — |
 | 3. 回填状态 | ❌ **未执行** | 全库 1586 行均为 `enabled/NULL`，2 条 `[待复核]` 前缀仍在 ⇒ 字段还不是真相源 |
-| 4. agent-poc 切换 | ❌ 未做 | `search-knowledge.js` 仍用 `content NOT REGEXP` 前缀过滤（双写兜底**正在**起作用） |
+| 4. minicare-agent 切换 | ❌ 未做 | `search-knowledge.js` 仍用 `content NOT REGEXP` 前缀过滤（双写兜底**正在**起作用） |
 | 5. 清理前缀 | ❌ 未做（不可逆，必须最后） | — |
 
 > 🔴 **当前处于"阶段 1 已做、阶段 3 未做"的中间态，这是本迁移最危险的窗口**：字段可读写但不是真相源。
@@ -1207,7 +1207,7 @@ def validate_contract(db, impl) -> list[Violation]:
 >
 > ⚠️ 另：`kb_search_log`（远程新表，§6.2）**尚未建**，US-13 的"线上检索观察"暂无数据源。
 
-**回滚设计**：阶段 1–3 可回滚（删列 / 恢复字段）；阶段 4 回滚需同时回退 agent-poc 与平台；阶段 5 **不可逆**（前缀已删）→ 但此时系统已在新语义上稳定运行，回滚价值低。
+**回滚设计**：阶段 1–3 可回滚（删列 / 恢复字段）；阶段 4 回滚需同时回退 minicare-agent 与平台；阶段 5 **不可逆**（前缀已删）→ 但此时系统已在新语义上稳定运行，回滚价值低。
 
 **分期约束（PRD §14.4 硬约束 3 的落地）**：阶段 1–3 在 **dev 库**完成并演练；阶段 4–5 才上生产。**第 1 期只在 dev 演练，不碰生产**。
 
@@ -1352,7 +1352,7 @@ cd ../../minicare-platform/api && .venv/bin/kb-pipeline serve       # 监听 127
 | 期 | 本方案交付模块 | 技术收口项 | 独立验收 | 实施状态（2026-10-09 重核） |
 |---|---|---|---|---|
 | **第 1 期 · 地基** | `artifact/`（ArtifactStore + manifest）+ `orchestrator/`（队列/调度/失效/派生）+ 6 步注册表 + `api/` 骨架 + 处理详情/处理进度页 | **F-1 配置 YAML 落文件**、**F-2 llama-index 降为 optional**、F-3 环境定义；迁移 021 **仅 dev 演练** | 改切块参数只重跑 ④⑤⑥；杀进程重启能续跑 | ✅ 代码 + 实测完成（§14.5） |
-| **第 2 期 · 安全底线** | `quality/`（噪声规则引擎 + 内容复核四态 + 编辑存续）+ **§9.1 阶段 1–4 上生产** | `agent-poc` 过滤条件切换；双写过渡 | 参考文献块不进检索；回填一条数字后再检索能命中 | 🟡 代码完成；**021 仅 dev 加列，阶段 3 未跑；agent-poc 未同步** |
+| **第 2 期 · 安全底线** | `quality/`（噪声规则引擎 + 内容复核四态 + 编辑存续）+ **§9.1 阶段 1–4 上生产** | `minicare-agent` 过滤条件切换；双写过渡 | 参考文献块不进检索；回填一条数字后再检索能命中 | 🟡 代码完成；**021 仅 dev 加列，阶段 3 未跑；minicare-agent 未同步** |
 | **第 3 期 · 接入与把关** | `corpus/`（登记 + 判重 + 台账）+ 信息确认页 + 内容校对页 | `doc_mapping` 20 条迁入 `kb_corpus`；**§9.1 阶段 5 清理** | 新增语料零改代码；重切后旧编辑可找回 | 🟡 代码完成；US-01 上传已实测；**「文档详情」无独立页面**（§0.4 E） |
 | **第 4 期 · 发布闭环** | `publish/`（快照 + 增量写入 + 发布后验证 + 回滚）+ `regression/`（质检 + gold 维护） | `kb_publish` 表；gold 迁移到 `kb_recall_gold`（口径 v2） | 发布前 4 项检查各自能拦；一键回滚不重解析 | 🟡 代码完成；**未对真实库实跑** |
 | **第 5 期 · 自我改进** | `index/` 关键词网关升级 + `gap/`（缺口归因）+ `contract/`（契约校验器） | **关键词 A/B 实测**（§4.5）；prompt 版本化目录 | 关键词含正文词；未命中能归因；删契约字段被拦下 | 🟡 代码完成；**A/B 未做；`kb_search_log` 未建** |
@@ -1495,7 +1495,7 @@ minicare-platform/                  # ← 规划容器；实际为 api/ + web/�
 | `minicare-platform/api/src/kb_pipeline/mineru/{result,uploader}.py` | 保留 `middle.json`（供 span 级 bbox）；`ensure_dir` | 低 |
 | `minicare-platform/api/src/kb_pipeline/web/{api,ui}.py` | **实际承载后端 Web 层**（`api.py` 建应用 + 13 端点 + StaticFiles 托管；`ui.py` 内嵌回退页） | 中 |
 | `minicare-server/migrations/021_knowledge_retrieval_status.sql` | **新增**（**dev 已应用，回填未跑**） | **高** |
-| `agent-poc/src/lib/tools/search-knowledge.js` | 过滤条件改字段（`:27`、`:64-66`）；旁路写检索日志 —— **尚未改动** | **高**（跨项目） |
+| `minicare-agent/src/lib/tools/search-knowledge.js` | 过滤条件改字段（`:27`、`:64-66`）；旁路写检索日志 —— **尚未改动** | **高**（跨项目） |
 
 ### 17.3 脚本
 
@@ -1648,6 +1648,6 @@ docs/knowledge/research/MinerU功能深入调研.md        # MinerU 引擎/部�
 # 阶段 1：加列        mysql < minicare-server/migrations/021_knowledge_retrieval_status.sql   ✅ dev 已完成
 # 阶段 2：平台双写    （部署平台代码）                                                          🟡 代码就位
 # 阶段 3：回填状态    .venv/bin/python scripts/backfill-retrieval-status.py                     ❌ 未执行 ← 下一步
-# 阶段 4：agent 切换  （部署 agent-poc）                                                        ❌ 未做
+# 阶段 4：agent 切换  （部署 minicare-agent）                                                        ❌ 未做
 # 阶段 5：清理前缀    .venv/bin/python scripts/clean-review-prefix.py   # 不可逆                  ❌ 未做
 ```

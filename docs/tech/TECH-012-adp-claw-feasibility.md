@@ -2,7 +2,7 @@
 
 > 日期：2026-09-18 ｜ 状态：评估完成，待 P0 验证后决策
 > 评估对象：https://cloud.tencent.com/document/product/1759/133868 （腾讯云智能体开发平台 ADP，Claw 模式，API 版本 2026-05-20）
-> 被替换对象：`agent-poc`（claude-agent-sdk 0.3.237 直连 + wire-proxy → DeepSeek，CloudRun `minicare-agent`）
+> 被替换对象：`minicare-agent`（claude-agent-sdk 0.3.237 直连 + wire-proxy → DeepSeek，部署于 CloudRun）
 
 ---
 
@@ -17,7 +17,7 @@
 | 最大风险 | ① 数据隔离从「服务端 ctx 硬注入」退化为「模型填参数」，需 sessionToken 签名校验补回（方案见 §4.3）② 图片问诊的视觉模型在 Claw 场景是否可用 **未确认** ③ 可观测性自建链路（transcript→Langfuse）退役，降级为平台 TraceId + 工具侧打点 |
 | 迁移成本 | 约 1-1.5 周（P0 验证 0.5-1d + 工具服务化 2-3d + 代理切换 1-2d + 验收 1-2d） |
 | 成本 | token 单价与直连持平（≈¥1/1M 输入、¥2/1M 输出，全时段无峰谷）；新增 PU 订阅（免费版 15,000 PU/月，专业版 188 元/月）；省下 minicare-agent CloudRun 实例 |
-| 建议 | 先做 §6 的 P0 验证清单（半天），三个硬性项通过再拍板迁移；agent-poc 保留一个观察期作为回退 |
+| 建议 | 先做 §6 的 P0 验证清单（半天），三个硬性项通过再拍板迁移；minicare-agent 保留一个观察期作为回退 |
 
 ---
 
@@ -36,7 +36,7 @@
 
 ## 2. 现状盘点：替换什么、保留什么
 
-| 层 | 现状（agent-poc v0.2.0） | 处置 |
+| 层 | 现状（minicare-agent v0.2.0） | 处置 |
 |---|---|---|
 | Agent 运行时 | claude-agent-sdk + CLI spawn + wire-proxy（thinking 注入、请求行归一化、DNS 缓存重试） | **替换**（ADP 托管，连带消灭 CLI spawn 3-5s 与该 bug 类） |
 | 模型接入 | DeepSeek 官方 API Anthropic 端点，自持 API Key | **替换**（ADP 内置 DeepSeek-V4-Flash，Key 不再自持） |
@@ -65,7 +65,7 @@
 
 ### 4.1 架构变化
 
-- 退役：`agent-poc`（runtime/wire-proxy/CLI/FlexDB 会话）+ CloudRun `minicare-agent` 服务
+- 退役：`minicare-agent`（runtime/wire-proxy/CLI/FlexDB 会话）+ CloudRun 服务
 - 保留：小程序对话页（**对外 SSE 协议不变**）、minicare-server（JWT 层不变，新增工具 API + ADP 代理）、CynosDB、COS 直传、日记 REST
 - 新增：ADP 空间/应用/Agent/插件（可全 API 创建）；conversationId 映射表；sessionToken 签发与验签
 
@@ -121,8 +121,8 @@
 |---|---|---|
 | P1 工具服务化 | 4 工具搬入 minicare-server 新模块（lib/db.js、search-knowledge.js、growth.js 逻辑原样迁移），REST + OpenAPI schema + APIKey/sessionToken 验签 | 2-3d |
 | P2 代理切换 | `/api/agent/chat` 内部实现换 ADP：会话映射表、sessionToken 签发、SSE 事件映射（§4.2） | 1-2d |
-| P3 验收 | eval 重跑（Recall@10、R1 基线对比）、延迟实测（SSE 首字 <3s 目标）、双写观察期（ADP 与 agent-poc 可切换） | 1-2d |
-| P4 退役 | agent-poc 归档、minicare-agent CloudRun 下线、FlexDB agent_chat_history 停写（数据保留） | 0.5d |
+| P3 验收 | eval 重跑（Recall@10、R1 基线对比）、延迟实测（SSE 首字 <3s 目标）、双写观察期（ADP 与 minicare-agent 可切换） | 1-2d |
+| P4 退役 | minicare-agent 归档、CloudRun 服务下线、FlexDB agent_chat_history 停写（数据保留） | 0.5d |
 
 ## 8. 风险清单
 
@@ -132,7 +132,7 @@
 | 2 | 数据经腾讯 ADP 平台及其模型供应商 | 中 | 与现状流经 DeepSeek API 相比隐私面变化有限，但需明确接受；不可接受则不自建转托管 |
 | 3 | 工具过程 SSE 实时性不足，前端工具状态降级 | 中 | P0 第 2 项实测；降级为「思考中」统一态 |
 | 4 | 越权风险（模型填参数） | 中（有方案） | §4.3 sessionToken 签名校验 |
-| 5 | 平台锁定（SSE 协议、插件格式、发布流程耦合） | 中 | 对外协议由 minicare-server 隔离，前端/评测无感知；agent-poc 保留回退 |
+| 5 | 平台锁定（SSE 协议、插件格式、发布流程耦合） | 中 | 对外协议由 minicare-server 隔离，前端/评测无感知；minicare-agent 保留回退 |
 | 6 | 会话历史数据主权（平台托管，留存/删除策略未知） | 中 | P0 确认导出与删除接口；本地会话映射表双记录 |
 | 7 | 平台限流/可用性（管理 API 20 qps；对话接口限流未知） | 低-中 | minicare-server 侧连接复用与重试 |
 | 8 | 订阅费用超预期（PU 消耗、沙箱计费） | 低-中 | P0 第 5 项确认后再拍板 |

@@ -4,10 +4,10 @@
 --
 -- ⚠️⚠️ 本文件**只加列，不回填**。这是 expand-contract 五阶段执行序的第 1 步：
 --
---    ① 只加列（本文件）            → 新列默认 enabled，旧前缀仍在 → agent-poc 的旧过滤继续有效
+--    ① 只加列（本文件）            → 新列默认 enabled，旧前缀仍在 → minicare-agent 的旧过滤继续有效
 --    ② 平台双写（写字段 + 保留前缀） → 两侧过滤都能工作
 --    ③ 回填字段（scripts/backfill-retrieval-status.py，前缀不动）
---    ④ agent-poc 切到 retrieval_status='enabled' 过滤
+--    ④ minicare-agent 切到 retrieval_status='enabled' 过滤
 --    ⑤ 清理前缀（scripts/clean-review-prefix.py，**不可逆**）
 --
 --    顺序错任一环：要么 2 条 review 条目直接进检索，要么检索报错。

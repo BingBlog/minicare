@@ -6,11 +6,11 @@
     ① 只加列（021_knowledge_retrieval_status.sql，不含回填）
     ② 平台双写（写字段 + 保留 content 前缀）
  →  ③ **本脚本**：把历史 [待复核] 条目置 review/pending；其余保持 enabled
-    ④ agent-poc 切到 retrieval_status='enabled' 过滤
+    ④ minicare-agent 切到 retrieval_status='enabled' 过滤
     ⑤ clean-review-prefix.py 清理前缀（不可逆）
 
 ⚠️ 本脚本**不改动 content**。去掉前缀是第 ⑤ 阶段的事，因为第 ④ 阶段之前
-   agent-poc 还在用前缀过滤 —— 提前删掉会让那 2 条 review 条目进入检索。
+   minicare-agent 还在用前缀过滤 —— 提前删掉会让那 2 条 review 条目进入检索。
 
 用法：
     cd minicare-platform/api && .venv/bin/python scripts/backfill-retrieval-status.py [--dry-run]
@@ -71,7 +71,7 @@ def main(dry_run: bool = False) -> int:
         conn.commit()
         print(f"✔ 已置 review/pending {marked} 条；前缀**保持不动**（第 ⑤ 阶段才清理）")
         print("  状态分布：" + ", ".join(f"{k}={v}" for k, v in dist))
-        print("  下一步：④ 部署 agent-poc（过滤条件改为 retrieval_status='enabled'）")
+        print("  下一步：④ 部署 minicare-agent（过滤条件改为 retrieval_status='enabled'）")
         return 0
     finally:
         conn.close()

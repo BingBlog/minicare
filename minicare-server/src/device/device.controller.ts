@@ -4,7 +4,7 @@
  * 设备端 API（供 xiaozhi-server / 音箱调用）：
  *   POST /api/device/bind      绑定码换取 device token（无鉴权，凭绑定码）
  *   GET  /api/device/health    探活（DeviceGuard）
- *   POST /api/device/llm       openai 兼容流式对话 → agent-poc（DeviceGuard，TECH-008 §4.2 方案 A）
+ *   POST /api/device/llm       openai 兼容流式对话 → minicare-agent（DeviceGuard，TECH-008 §4.2 方案 A）
  */
 import {
   Body,
@@ -50,7 +50,7 @@ export class DeviceController {
   @Post('llm')
   @UseGuards(DeviceGuard)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'xiaozhi LLM Adapter：openai 流式对话（转 agent-poc）' })
+  @ApiOperation({ summary: 'xiaozhi LLM Adapter：openai 流式对话（转 minicare-agent）' })
   async llm(
     @Req() req: any,
     @Res() res: import('express').Response,

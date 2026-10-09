@@ -1,7 +1,7 @@
 # TECH-007 — Agent 观测能力方案（Langfuse + FlexDB）
 
 > 状态：已实施并验收通过（2026-08-30）；transcript 细节增强已落地（2026-09-05，见 §8）
-> 背景：agent 链路（agent-poc，OAK + DeepSeek）已跑通，但数据查询类问题回答准确率不高，
+> 背景：agent 链路（minicare-agent，OAK + DeepSeek）已跑通，但数据查询类问题回答准确率不高，
 > 缺乏对执行过程的可观测性：无法看到模型实际调了哪些工具、工具返回了什么、每轮 LLM 输出了什么。
 > 目标：构建 agent 观测能力，记录 **用户问题 / LLM 调用与返回 / tools 调用** 全链路。
 >
@@ -23,7 +23,7 @@
 ## 1. 总体架构
 
 ```
-小程序 → minicare-server → agent-poc（CloudRun / 本地 :3000）
+小程序 → minicare-server → minicare-agent（CloudRun / 本地 :3000）
                               │
                               ├─ lib/telemetry.js 埋点（Langfuse 数据模型兼容，纯内存组装）
                               │        │  异步写（不阻塞对话）
@@ -119,12 +119,12 @@
 
 ## 3. 本地 Langfuse 部署
 
-- 位置：`agent-poc/langfuse/docker-compose.yml`（基于官方 v3 compose，本地评估用途）
+- 位置：`minicare-agent/langfuse/docker-compose.yml`（基于官方 v3 compose，本地评估用途）
 - 组件：langfuse-web + langfuse-worker + Postgres + ClickHouse + Redis + MinIO
-- **web 端口映射 `127.0.0.1:3100`**（避开 agent-poc 本地服务的 :3000）
+- **web 端口映射 `127.0.0.1:3100`**（避开 minicare-agent 本地服务的 :3000）
 - 密钥（NEXTAUTH_SECRET / SALT / ENCRYPTION_KEY）本地随机生成，不入库
 - 首次启动：浏览器打开 http://localhost:3100 注册账号 → 建 Organization/Project →
-  Project Settings 创建 API Key（pk-lf-… / sk-lf-…）→ 写入 `agent-poc/.env.local`：
+  Project Settings 创建 API Key（pk-lf-… / sk-lf-…）→ 写入 `minicare-agent/.env.local`：
 
 ```
 LANGFUSE_HOST=http://localhost:3100
@@ -189,10 +189,10 @@ transcript JSONL ──scripts/transcript-enrich.mjs──▶ FlexDB agent_trace
 
 | 文件 | 动作 |
 |------|------|
-| `agent-poc/src/lib/telemetry.js` | 新增：trace recorder（内存组装 + FlexDB 落库） |
-| `agent-poc/src/routes/chat.js` | 修改：按 §2 点位接入 recorder（SSE 协议不变） |
-| `agent-poc/scripts/langfuse-import.mjs` | 新增：FlexDB → Langfuse 导入；cliEnriched 重建 |
-| `agent-poc/scripts/transcript-enrich.mjs` | 新增（09-05）：transcript → FlexDB 增强 |
-| `agent-poc/scripts/check-traces.mjs` | 修改（09-05）：cache/usage 明细展示 |
-| `agent-poc/langfuse/docker-compose.yml` | 新增：本地 Langfuse v3 栈（web :3100） |
-| `agent-poc/.env.local` | 追加 LANGFUSE_* （首次部署后手工填入） |
+| `minicare-agent/src/lib/telemetry.js` | 新增：trace recorder（内存组装 + FlexDB 落库） |
+| `minicare-agent/src/routes/chat.js` | 修改：按 §2 点位接入 recorder（SSE 协议不变） |
+| `minicare-agent/scripts/langfuse-import.mjs` | 新增：FlexDB → Langfuse 导入；cliEnriched 重建 |
+| `minicare-agent/scripts/transcript-enrich.mjs` | 新增（09-05）：transcript → FlexDB 增强 |
+| `minicare-agent/scripts/check-traces.mjs` | 修改（09-05）：cache/usage 明细展示 |
+| `minicare-agent/langfuse/docker-compose.yml` | 新增：本地 Langfuse v3 栈（web :3100） |
+| `minicare-agent/.env.local` | 追加 LANGFUSE_* （首次部署后手工填入） |

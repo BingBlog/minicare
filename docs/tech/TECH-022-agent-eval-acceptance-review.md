@@ -148,7 +148,7 @@ hero 结论区 + delta 卡 + 钻取证据链 + 报告导出 + 用例编辑器分
 - `docs/prd/PRD-010.md`（US-03 结论区 / US-04 钻取 / US-06 历史字段 为本次验收口径）
 - `docs/tech/TECH-021-agent-eval-console-v2.md`（四管理面验收基线 §8.1a；二期规划 §8.2）
 - `docs/tech/TECH-020-agent-eval-platform-research.md`（六平台对标；行业四对象模型与双循环）
-- `agent-poc/scripts/eval/gate.mjs`（gate 口径源头；D2 展示问题的历史来源）
+- `minicare-agent/scripts/eval/gate.mjs`（gate 口径源头；D2 展示问题的历史来源）
 
 ---
 
@@ -180,7 +180,7 @@ hero 结论区 + delta 卡 + 钻取证据链 + 报告导出 + 用例编辑器分
 | B3 | 钻取**证据链**：失败原因(逐条) → 问题原文+ctx → 期望 vs 实际（assert 语义人话渲染）→ 工具轨迹（含入参+返回折叠）→ 回答（轻量 markdown + 复制）→ judge 卡 → trace。期望来自**运行快照**（`case_defs`，运行当时定义） | `CaseEvidence.tsx` + `expectView.ts` + `RichText.tsx`；`GET /runs/{id}` 增加 `case_defs` | L0-03 全链可见「娃拉血便咋办？」+「参数 query 包含「血」」（截图 `23b`） |
 | B4 | 报告导出 MD / JSON / HTML（单文件内联样式） | `lib/evalExport.ts` + 卡片头「导出 ▾」菜单 | 点击出 toast「已导出报告（MD）」✓ |
 | B5 | 用例编辑器**表单 / JSON 双模**：ctx KV 编辑、expect 结构化断言（工具断言行 + 参数条件 + 实时断言预览）、judge 要点勾选 + goldenPoints；未知字段原样保留 | `components/eval/CaseEditor.tsx` | **往返无损实测**：L0-03 保存后 judge/expect/ctx 三字段 JSON 级比对完全一致 ✓（截图 `25/26`） |
-| B6 | 裁判**试跑**（校准闭环）：对历史回答重判，不写台账；历史判分 vs 本次判分并排 + 变化提示 | 新端点 `POST /judges/{id}/try` + `runner.rejudge()` + 新脚本 `agent-poc/scripts/eval/rejudge.mjs`（复用 lib/judge.mjs，零语义漂移） | L3-01 护栏实测：历史 ✗（演示强制不通过）→ 本次 ✓（当前 prompt），变化提示正确（截图 `28`） |
+| B6 | 裁判**试跑**（校准闭环）：对历史回答重判，不写台账；历史判分 vs 本次判分并排 + 变化提示 | 新端点 `POST /judges/{id}/try` + `runner.rejudge()` + 新脚本 `minicare-agent/scripts/eval/rejudge.mjs`（复用 lib/judge.mjs，零语义漂移） | L3-01 护栏实测：历史 ✗（演示强制不通过）→ 本次 ✓（当前 prompt），变化提示正确（截图 `28`） |
 | B7 | ETA 动态估算（用例数 × 历史单例均时，按 judge 口径分桶；无样本回退经验值） | 新端点 `GET /estimate` + 发起区实时显示 | 46 条 judge 开 → 「预计约 24m44s（参考 2 轮历史）」✓ |
 
 ### 7.3 新增接口（`/api/agent-eval/*` +3）

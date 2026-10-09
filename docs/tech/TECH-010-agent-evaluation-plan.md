@@ -2,7 +2,7 @@
 
 > 版本：v1.0 ｜ 日期：2026-08-23 ｜ 作者：评测设计
 > 关联：TECH-006《养娃智能体服务设计方案 v2.0》、PRD-003《敏宝助手 V1.0》
-> 被测对象：agent-poc（`@cloudbase/open-agent-kernel` + DeepSeek，P0~P3 已完成）
+> 被测对象：minicare-agent（`@cloudbase/open-agent-kernel` + DeepSeek，P0~P3 已完成）
 > 状态：方案定稿，用例库与 harness 待 P4 落地
 
 ---
@@ -26,7 +26,7 @@
 
 | 项 | 值 |
 |---|---|
-| 服务 | agent-poc → CloudRun `minicare-agent`（版本 002，100% 流量） |
+| 服务 | minicare-agent（CloudRun，版本 002，100% 流量） |
 | Agent 内核 | OAK `@cloudbase/open-agent-kernel` 0.1.1（封装 Claude Agent SDK 0.3.x） |
 | 模型 | DeepSeek `deepseek-v4-flash`（文本）/ `deepseek-v4-flash-vision-exp`（视觉），Anthropic 兼容端点 |
 | 协议 | POST /chat（SSE：`meta/session/tool_call/tool_result/text/done/error`） |
@@ -57,10 +57,10 @@
 |---|---|---|
 | 召回测试集-种子50题（45 题可用） | docs/敏宝知识库/召回测试集-种子50题.md | ✅ 已用 |
 | KB 映射表 | minicare-platform/api/var/kb_mapping.json | ⚠️ 粒度过粗待精修 |
-| 精确 Recall@10 评测脚本 | agent-poc/scripts/eval-recall-exact.mjs | ✅ 97.8% 达标 |
-| 检索自测脚本 | agent-poc/scripts/test-search.mjs | ✅ |
-| 会话续聊脚本 | agent-poc/scripts/test-continuation.mjs | ✅ |
-| 视觉链路脚本 | agent-poc/scripts/test-vision.mjs | ✅ |
+| 精确 Recall@10 评测脚本 | minicare-agent/scripts/eval-recall-exact.mjs | ✅ 97.8% 达标 |
+| 检索自测脚本 | minicare-agent/scripts/test-search.mjs | ✅ |
+| 会话续聊脚本 | minicare-agent/scripts/test-continuation.mjs | ✅ |
+| 视觉链路脚本 | minicare-agent/scripts/test-vision.mjs | ✅ |
 | 测试数据/清理脚本 | test-data.mjs / cleanup-test-data.mjs | ✅ |
 
 ---
@@ -300,7 +300,7 @@ Agent 层已有结构化事件流，**即使不接外部平台也能先落地最
 
 | 步骤 | 内容 | 产出 |
 |---|---|---|
-| 1. 用例库落盘 | 建 `agent-poc/scripts/eval/` 目录：`cases/`（JSON/YAML 用例）+ `judge/`（prompt 模板） | 评测用例文件（§三 全部用例入库，先 P0） |
+| 1. 用例库落盘 | 建 `minicare-agent/scripts/eval/` 目录：`cases/`（JSON/YAML 用例）+ `judge/`（prompt 模板） | 评测用例文件（§三 全部用例入库，先 P0） |
 | 2. Harness | 复用 `eval-recall-exact.mjs` 模式写 `eval-agent.mjs`：驱动 /chat（本地起 server 或直调 buildAgent）、收集 SSE 事件流、执行确定性断言 | `eval-agent.mjs` |
 | 3. LLM-judge | 接 deepseek-v4-pro 跑忠实/完整/风格/护栏判分，双 judge + 人工抽审 10% | `judge/` + 报告模板 |
 | 4. 测试数据 | 扩展 `test-data.mjs` 预置多维度已知记录（含异常点/空窗/跨宝宝），供数值断言 | 已知数据集 |
@@ -322,7 +322,7 @@ Agent 层已有结构化事件流，**即使不接外部平台也能先落地最
 4. **judge 波动真实存在**：L3-01 style 判分一次 fail 一次 pass（免责声明是否识别存在波动）。→ 默认 `--runs=3` 取多数；双 judge 待落地。
 5. **LLM 会改写 query 措辞**：断言 `query contains "便血"` 失败（模型实际 query="宝宝大便带血丝 要紧吗 原因"，更优）。→ 断言放宽为语义包含（"血"），避免过拟合。
 
-**评测 harness 落地状态**：`agent-poc/scripts/eval/`（lib/agent-runner+assert+judge、eval-agent.mjs、gate.mjs、cases/、README.md）已可用；`--no-judge` 全量约 13 分钟，带 judge 约 30 分钟。
+**评测 harness 落地状态**：`minicare-agent/scripts/eval/`（lib/agent-runner+assert+judge、eval-agent.mjs、gate.mjs、cases/、README.md）已可用；`--no-judge` 全量约 13 分钟，带 judge 约 30 分钟。
 
 ### 6.2 上线闸门（P4 验收映射）
 
@@ -358,7 +358,7 @@ Agent 层已有结构化事件流，**即使不接外部平台也能先落地最
 ## 附录 A：推荐的自建用例文件结构
 
 ```
-agent-poc/scripts/eval/
+minicare-agent/scripts/eval/
 ├── cases/
 │   ├── l0-retrieval.json        # 45+ 召回题（复用现有测试集）
 │   ├── l1-tools.json            # 工具调用 40 例
@@ -380,5 +380,5 @@ agent-poc/scripts/eval/
 
 - TECH-006-minicare-agent-plan.md（P4 验收：关键信息完整率 100%、幻觉率 0、高危护栏 100%）
 - minicare-platform/api/docs/RECALL-REPORT.md（基线：Recall@10 = 97.8%）
-- agent-poc/scripts/eval-recall-exact.mjs（现有评测 harness 范式）
+- minicare-agent/scripts/eval-recall-exact.mjs（现有评测 harness 范式）
 - 外部调研：DeepEval / promptfoo / openevals / RAGAS / τ-bench / BFCL / AgentBench / GAIA / AgentBoard；Langfuse / OpenLIT / Helicone / Arize Phoenix / LangSmith / Traceloop / Langtrace / Opik

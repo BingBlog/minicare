@@ -19,7 +19,7 @@ minicare-v1/                              ← 根目录 13 个条目
 ├── hardware-specs.md        4KB  ← 音箱硬件规格（孤立无家）
 ├── AGENTS.md / CLAUDE.md          ← agent 规则入口（有效）
 ├── Claw/                          ← 空目录！无任何内容
-├── agent-poc/       419MB   ← node_modules 占 418MB，代码仅 172KB
+├── minicare-agent/       419MB   ← node_modules 占 418MB，代码仅 172KB
 ├── minicare-platform/api/      239MB  ← 知识库管线工程（Python）
 ├── minicare-mp/ server/ web/      ← 三个正式包
 ├── Design-Reference/  53 张 png   ← 历史图标参考
@@ -108,7 +108,7 @@ minicare-v1/
 ├── CLAUDE.md                   ← gitnexus 自动生成，不动
 ├── .agents/ .workbuddy/ .gitnexus/   ← 隐藏配置，不动
 ├── minicare-server/  minicare-mp/  minicare-web/   ← 三个包，不动
-├── agent-poc/                  ← 保留（README 已有状态与结论，无需改动）
+├── minicare-agent/                  ← 保留（README 已有状态与结论，无需改动）
 ├── minicare-platform/api/                ← 保留（工程代码）
 ├── Design-Reference/  ui-draft/     ← 原位保留 + 状态标注（只加 README，不移动）
 ├── docs/                       ← 所有文档唯一收纳地
@@ -277,7 +277,7 @@ Phase 4 收尾：git commit 重组 → node .gitnexus/run.cjs analyze          �
 - `minicare-mp/` 微信小程序（主平台，Taro 4.2）
 - `minicare-server/` NestJS 后端（CloudRun）
 - `minicare-web/` Web 端（维护模式，历史原型）
-- `agent-poc/` 养娃智能体 POC（已验证完成，见其 README）
+- `minicare-agent/` 养娃智能体 POC（已验证完成，见其 README）
 - `minicare-platform/api/` 敏宝知识库管线工程
 - `docs/` 全部文档（从 docs/README.md 进入）
 - `Design-Reference/` `ui-draft/` 历史原型，仅供追溯

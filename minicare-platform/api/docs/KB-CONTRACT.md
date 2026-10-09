@@ -1,7 +1,7 @@
 # 检索契约 v1（冻结于 2026-10-02）
 
 > 状态：**已冻结** ｜ 校验方式：发布前自动执行 `kb-pipeline contract validate`，不符即阻断发布
-> 契约实现：平台侧 `src/kb_pipeline/retrieval.py`；消费侧 `agent-poc/src/lib/tools/search-knowledge.js`
+> 契约实现：平台侧 `src/kb_pipeline/retrieval.py`；消费侧 `minicare-agent/src/lib/tools/search-knowledge.js`
 > ⚠️ **两份实现必须保持一致**；改一侧必须同步改另一侧并递增本文版本号。
 
 ---
@@ -62,12 +62,12 @@
 
 | 版本 | 日期 | 变更 | 影响 |
 |---|---|---|---|
-| v1 | 2026-10-02 | 首次冻结：对齐 `agent-poc` 现存实现 | — |
+| v1 | 2026-10-02 | 首次冻结：对齐 `minicare-agent` 现存实现 | — |
 | v1（增补） | 2026-10-03 | 明确「屏蔽块（`excluded`）在迁移 021 前不写入库」，因此语义约束①在两种状态下都成立；补"两份实现必须一致"的说明 | 无破坏性变更 |
 
 ## 7. 相关文件
 
 - 实现（平台侧）：`minicare-platform/api/src/kb_pipeline/retrieval.py`
-- 实现（消费侧）：`agent-poc/src/lib/tools/search-knowledge.js`
+- 实现（消费侧）：`minicare-agent/src/lib/tools/search-knowledge.js`
 - 校验器：`minicare-platform/api/src/kb_pipeline/contract.py`
 - 命令：`kb-pipeline contract show | validate | observe`

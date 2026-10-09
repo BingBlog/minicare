@@ -74,7 +74,7 @@ export const MODEL_VISION = 'deepseek-v4-flash-vision-exp'
 | 3 | 图片解读质量 | ✅ **高**：测试图（母婴变化 App 界面）准确定位 Tab/选中态/卡片内容 |
 | 4 | 延迟 | ⚠️ 首字约 4-7s（含思考）、总耗时 13-14s——略超"首字 <5s"目标，UI 层用加载态缓解；可优化 systemPrompt 减少思考或路由 pro |
 
-**测试脚本**：`agent-poc/scripts/test-vision.mjs`（保留作回归）。
+**测试脚本**：`minicare-agent/scripts/test-vision.mjs`（保留作回归）。
 
 ## 6. 错误处理与降级矩阵
 

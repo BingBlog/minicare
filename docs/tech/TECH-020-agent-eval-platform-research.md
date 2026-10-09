@@ -139,7 +139,7 @@ single-step（单次调用）→ **full-turn / trace（一整轮 agent 执行）
 
 | 对象 | 现状（2026-10-09 首期后） | 行业基线 | 差距 |
 |---|---|---|---|
-| **用例** | 46 条 JSON 在 git（`agent-poc/scripts/eval/cases/*.json`），页面不可见、不可编辑 | Dataset 一等对象 + CRUD + 版本 + 标签 + 从 trace 入集 | 🔴 无管理面；无从运行沉淀；无版本追溯（只有整体 hash） |
+| **用例** | 46 条 JSON 在 git（`minicare-agent/scripts/eval/cases/*.json`），页面不可见、不可编辑 | Dataset 一等对象 + CRUD + 版本 + 标签 + 从 trace 入集 | 🔴 无管理面；无从运行沉淀；无版本追溯（只有整体 hash） |
 | **任务** | "运行"= 一次性发起 + 台账 + 简版 delta | Experiment = 可保存/复刻/对比的配置对象 | 🔴 无任务模板（每次重选）；无并排对比视图；无 trials 语义（有 runs 参数但未产品化）；无定时/CI |
 | **裁判** | 4 个判分器硬编码在 harness `lib/judge.mjs`；模型固定 v4-pro | 裁判库：模板可编辑 / 模型可选 / 温度可配 / 可开关 / 可校准 | 🔴 完全不可配；**无校准**（L3-01 假阳性即此缺口实例）；"裁判错"与"agent 错"未分离统计 |
 | **维度** | L0-L6 + gate 六项目标值硬编码在 Python（`compute_gate`） | 维度对象：名称/评分方式/阈值/权重/一票否决/挂载裁判 | 🔴 目标值不可配；无维度子集选择（每次全测）；无维度级趋势 |

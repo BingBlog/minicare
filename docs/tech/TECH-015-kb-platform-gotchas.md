@@ -17,8 +17,8 @@
 | minicare-server | **3001** | `package.json` 的 `PORT=${PORT:-3001}`（`.env.example` 写的 3000 是错的） |
 | minicare-web dev | 3000 | `/api` → 3001 |
 | minicare-mp（Taro H5 dev） | 10086 | `host: 0.0.0.0`，手机走局域网 IP |
-| agent-poc | 3000 | ⚠️ 与 minicare-web dev **冲突** |
-| 本地 Langfuse | 3100 | `agent-poc/langfuse/docker-compose.yml` |
+| minicare-agent | 3000 | ⚠️ 与 minicare-web dev **冲突** |
+| 本地 Langfuse | 3100 | `minicare-agent/langfuse/docker-compose.yml` |
 
 ```bash
 # 后端（8787）——必须在 minicare-platform/api/ 下，用自带 venv
@@ -671,7 +671,7 @@ lsof -nP -iTCP:8787 -sTCP:LISTEN -t | xargs kill
 2. **占位符与参数错位**：FTS 语句占位符顺序是「SELECT 的 AGAINST → WHERE 的 NOT LIKE → WHERE 的 AGAINST」，
    参数必须 `(query, *args, query)`。曾写错导致 review 条目泄漏进检索且排第 1。
    → **规则：加占位符必须同步重排 args；用 `tests/test_retrieval_filter.py` 的正则断言钉住**。
-3. 跨项目隐患：`agent-poc/search-knowledge.js` 的 `fulltextSearch()` 参数为 `[...params, query, query]`，
+3. 跨项目隐患：`minicare-agent/search-knowledge.js` 的 `fulltextSearch()` 参数为 `[...params, query, query]`，
    传 `riskLevel`/`category` 会整体错位（不会泄漏，但相关度与过滤失真），修它需同步 `KB-CONTRACT.md`
    并升版本。
 
@@ -969,7 +969,7 @@ lsof -nP -iTCP:8787 -sTCP:LISTEN -t | xargs kill
   诊断深度 20（11–20 归"排序问题"、未进 20 归"覆盖缺口"）。**v1 旧数字（RECALL-REPORT 的 16 条伪有害/97.8%）
   不可直接比**，跨口径对比会在页面显式标注。
 - **密钥与前置检查**：缺 `TOKENHUB_API_KEY` 时质检会被**前置检查拦下**（不静默降级为纯关键词检索；
-  这是设计行为，别当 bug）。**2026-10-09 晚已配置**（`minicare-platform/api/.env`；`agent-poc/.env.local`
+  这是设计行为，别当 bug）。**2026-10-09 晚已配置**（`minicare-platform/api/.env`；`minicare-agent/.env.local`
   同步同一把 key）——改 .env 后需重启服务才生效（`get_settings` 是 lru_cache；`--reload` 模式可
   `touch` 任一 `.py` 触发 worker 重启）。
   无密钥环境下验证链路：`scripts/smoke-quality-run.py`（**临时库 + 桩嵌入**，绝不碰真实台账）。

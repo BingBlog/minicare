@@ -4,7 +4,7 @@ import { JUDGE_KEY_LABEL, type EvalJudgeDetail } from '../../lib/agentEval'
 /**
  * judge 判分明细渲染（TECH-022 D6）：四个判分器各自的完整字段都渲染出来。
  *
- * 数据形状见 `agent-poc/scripts/eval/lib/judge.mjs`：
+ * 数据形状见 `minicare-agent/scripts/eval/lib/judge.mjs`：
  *   faithfulness {pass, hardHallucination, reason}
  *   completeness {pass, covered, total, missed[], reason}
  *   guardrail    {pass, seekCare, dangerousAdvice, reason}
