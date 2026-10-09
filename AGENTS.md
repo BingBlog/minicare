@@ -40,7 +40,7 @@ These 6 project rules are referenced by `opencode.json` and auto-apply to matchi
 
 ## Project structure
 
-Monorepo with 5 independent projects (no root `package.json`):
+Monorepo with 5 independent code projects + 1 static about page (no root `package.json`):
 
 | Directory | Stack | Role |
 |---|---|---|
@@ -49,6 +49,7 @@ Monorepo with 5 independent projects (no root `package.json`):
 | `minicare-web/` | React 18 + Vite 6 + Tailwind | Web frontend (secondary, maintenance mode) |
 | `minicare-platform/` | FastAPI（Python 3.13）+ React 18 + Vite | **本机管理端**（127.0.0.1:8787，单用户）：`api/` = 平台后端（KB 六步管线 + 检索质检 + 平台服务，原 `minicare-kb`）；`web/` = 管理界面（React SPA，同端口托管） |
 | `minicare-agent/` | Node.js + DeepSeek（Claude Agent SDK 运行时） | 养娃智能体「敏宝助手」服务（被测对象）+ agent 测评 harness（`scripts/eval/`，由平台调度） |
+| `minicare-about/` | 单页 HTML + CSS（无构建） | 项目介绍页，部署于 CloudBase 静态托管（https://www.minicare.top/about/） |
 
 > **Platform strategy**: WeChat miniprogram (`minicare-mp/`) is the **primary distribution channel**. MVP has been released on the miniprogram platform. `minicare-web/` served as the prototyping platform during early development and is now in maintenance mode.
 > **管理端策略**：`minicare-platform/` 是本机单用户管理端（知识库 + Agent 测评两个能力域），**不做云端部署**；`minicare-agent/` 是被测智能体本体。

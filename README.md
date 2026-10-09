@@ -7,6 +7,7 @@
 - **主平台**：微信小程序（MVP 已于 2026-04-28 上线）
 - **智能体**：「敏宝助手」已上线 CloudRun（知识问答 / 图片问诊 / 数据查询 / 每日日记）
 - **内容生态**：公众号 CMPA 科普系列同步运营，形成「工具 + 内容」双轮
+- **在线介绍**：[minicare 介绍页](https://www.minicare.top/about/)（CloudBase 静态托管）
 - 项目源自团队自身的敏宝养育经历，按「自己会用、家人能用、医生认可」的标准推进
 
 ---
@@ -66,6 +67,7 @@
 | `minicare-agent/` | Node.js + DeepSeek + Claude Agent SDK | 「敏宝助手」智能体服务 |
 | `minicare-platform/` | FastAPI（Python 3.13）+ React 18 | 本机管理端：知识库 + Agent 测评（不做云端部署） |
 | `minicare-web/` | React 18 + Vite 6 + Tailwind | Web 端（早期原型，维护模式） |
+| `minicare-about/` | 单页 HTML（无构建） | 项目介绍页 → [www.minicare.top/about](https://www.minicare.top/about/)（CloudBase 静态托管） |
 
 其余：`docs/` 全部文档（入口 [`docs/README.md`](docs/README.md)）；`Design-Reference/`、`ui-draft/` 历史设计与原型（仅参考）。
 

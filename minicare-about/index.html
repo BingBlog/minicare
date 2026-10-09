@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>minicare 敏宝日记 · MiniCare — 敏宝家庭的结构化健康记录 + AI 护理分析平台</title>
+<meta name="description" content="minicare（敏宝日记）：面向过敏体质婴幼儿家庭的结构化健康记录 + AI 护理分析平台。记录饮食、转奶、症状、睡眠、生长，由「敏宝助手」智能体做分析与解读 —— 科学排敏、规范转奶、高效就医。">
+<meta property="og:title" content="minicare 敏宝日记 · MiniCare">
+<meta property="og:description" content="敏宝家庭的结构化健康记录 + AI 护理分析平台：小程序记录、智能体分析，科学排敏 · 规范转奶 · 高效就医。">
+<meta property="og:type" content="website">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<style>
+  :root {
+    --primary: #f87098;
+    --primary-deep: #e8507a;
+    --primary-lt: #fff0f4;
+    --primary-md: #f8b8cc;
+    --green: #4caf82;
+    --yellow: #ddb870;
+    --purple: #9b8ed8;
+    --text: #3d2b2e;
+    --sub: #9a7e82;
+    --bg: #fdf7f5;
+    --card: #ffffff;
+    --line: #f3e4e6;
+    --shadow: 0 10px 30px rgba(61, 43, 46, 0.07);
+    --radius: 18px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- 顶栏 ---------- */
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(253, 247, 245, 0.88);
+    backdrop-filter: saturate(180%) blur(12px);
+    -webkit-backdrop-filter: saturate(180%) blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar .inner { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 16px; color: var(--text); text-decoration: none; }
+  .brand img { width: 30px; height: 30px; border-radius: 8px; }
+  .brand small { font-weight: 400; color: var(--sub); font-size: 13px; }
+  .topbar .gh {
+    font-size: 13px; color: var(--text); text-decoration: none;
+    border: 1px solid var(--line); background: var(--card);
+    padding: 7px 14px; border-radius: 999px; transition: all .15s ease;
+  }
+  .topbar .gh:hover { border-color: var(--primary-md); color: var(--primary-deep); }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    text-align: center; padding: 88px 0 72px;
+    background:
+      radial-gradient(560px 300px at 18% 0%, rgba(248, 184, 204, 0.22), transparent 70%),
+      radial-gradient(560px 300px at 82% 8%, rgba(155, 142, 216, 0.12), transparent 70%);
+  }
+  .hero .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13px; letter-spacing: .12em; color: var(--primary-deep);
+    background: var(--primary-lt); border: 1px solid #fbdce6;
+    padding: 6px 16px; border-radius: 999px; margin-bottom: 26px; font-weight: 600;
+  }
+  .hero h1 {
+    font-size: clamp(26px, 4.2vw, 40px); font-weight: 800; letter-spacing: .01em;
+    line-height: 1.35; margin: 0 auto 18px; max-width: 720px;
+  }
+  .hero h1 em { font-style: normal; color: var(--primary-deep); }
+  .hero p.lead { font-size: 16px; color: var(--sub); max-width: 680px; margin: 0 auto 30px; }
+  .chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+  .chip {
+    font-size: 13px; color: var(--text); background: var(--card);
+    border: 1px solid var(--line); border-radius: 999px; padding: 7px 16px;
+    box-shadow: 0 2px 8px rgba(61, 43, 46, 0.04);
+  }
+  .chip b { color: var(--primary-deep); font-weight: 600; }
+
+  /* ---------- 通用 section ---------- */
+  .sec { padding: 64px 0; }
+  .eyebrow2 {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 700; letter-spacing: .14em; color: var(--primary-deep);
+    margin-bottom: 14px;
+  }
+  .eyebrow2::before { content: ""; width: 18px; height: 3px; border-radius: 2px; background: var(--primary); }
+  h2 { font-size: clamp(21px, 3vw, 29px); font-weight: 800; line-height: 1.4; margin-bottom: 14px; }
+  .lead2 { color: var(--sub); font-size: 15px; max-width: 760px; margin-bottom: 34px; }
+
+  /* ---------- 问题卡片 ---------- */
+  .pgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .pcard {
+    background: var(--card); border-radius: var(--radius); padding: 24px 22px;
+    border: 1px solid var(--line); box-shadow: var(--shadow);
+  }
+  .pcard .no { font-size: 13px; font-weight: 800; color: var(--primary); letter-spacing: .08em; }
+  .pcard h3 { font-size: 16.5px; font-weight: 700; margin: 8px 0 8px; }
+  .pcard p { font-size: 13.5px; color: var(--sub); }
+
+  /* ---------- 图卡 ---------- */
+  .shot {
+    background: var(--card); border-radius: 20px; padding: 12px;
+    border: 1px solid var(--line); box-shadow: var(--shadow); margin-bottom: 26px;
+  }
+  .shot a { display: block; }
+  .shot img { display: block; width: 100%; height: auto; border-radius: 12px; }
+  .shot .cap { text-align: center; font-size: 12.5px; color: var(--sub); padding: 12px 8px 6px; }
+
+  /* ---------- 设计边界 / 亮点 ---------- */
+  .bgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .bcard {
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+    padding: 18px 18px; box-shadow: 0 4px 14px rgba(61, 43, 46, 0.04);
+  }
+  .bcard h4 { font-size: 14.5px; font-weight: 700; margin-bottom: 6px; }
+  .bcard h4::before { content: "✓ "; color: var(--green); font-weight: 800; }
+  .bcard p { font-size: 12.5px; color: var(--sub); }
+
+  .hgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+  .hcard {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 22px 20px; box-shadow: var(--shadow);
+  }
+  .hcard .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--primary); margin-bottom: 12px; }
+  .hcard:nth-child(2) .dot { background: var(--green); }
+  .hcard:nth-child(3) .dot { background: var(--yellow); }
+  .hcard:nth-child(4) .dot { background: var(--purple); }
+  .hcard:nth-child(5) .dot { background: var(--primary-deep); }
+  .hcard:nth-child(6) .dot { background: var(--green); }
+  .hcard h3 { font-size: 15.5px; font-weight: 700; margin-bottom: 7px; }
+  .hcard p { font-size: 13px; color: var(--sub); }
+  .hcard p b { color: var(--primary-deep); font-weight: 700; }
+
+  /* ---------- 子仓 ---------- */
+  .repos { display: flex; flex-wrap: wrap; gap: 10px; }
+  .repo {
+    display: inline-flex; align-items: baseline; gap: 8px;
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 10px 16px; font-size: 13px; box-shadow: 0 3px 10px rgba(61, 43, 46, 0.04);
+  }
+  .repo code { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace; font-size: 12.5px; color: var(--primary-deep); }
+  .repo span { color: var(--sub); }
+
+  /* ---------- 状态 ---------- */
+  .slist { display: grid; gap: 12px; }
+  .srow {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+    padding: 16px 20px; box-shadow: 0 4px 14px rgba(61, 43, 46, 0.04);
+  }
+  .srow .sdot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+  .srow.done .sdot { background: var(--green); box-shadow: 0 0 0 4px rgba(76, 175, 130, 0.14); }
+  .srow.wip .sdot { background: var(--yellow); box-shadow: 0 0 0 4px rgba(221, 184, 112, 0.16); }
+  .srow.evo .sdot { background: var(--primary); box-shadow: 0 0 0 4px rgba(248, 112, 152, 0.14); }
+  .srow h3 { font-size: 15px; font-weight: 700; }
+  .srow p { font-size: 13px; color: var(--sub); }
+  .srow .when { margin-left: auto; font-size: 12.5px; color: var(--sub); white-space: nowrap; }
+
+  /* ---------- Footer ---------- */
+  footer { border-top: 1px solid var(--line); padding: 44px 0 56px; text-align: center; }
+  footer .links { display: flex; justify-content: center; gap: 26px; margin-bottom: 18px; flex-wrap: wrap; }
+  footer .links a { color: var(--text); text-decoration: none; font-size: 14px; border-bottom: 2px solid var(--primary-md); padding-bottom: 2px; }
+  footer .links a:hover { color: var(--primary-deep); border-color: var(--primary); }
+  footer .note { font-size: 12.5px; color: var(--sub); max-width: 640px; margin: 0 auto 14px; }
+  footer .copy { font-size: 12.5px; color: var(--sub); }
+
+  /* ---------- 响应式 ---------- */
+  @media (max-width: 900px) {
+    .pgrid, .hgrid { grid-template-columns: repeat(2, 1fr); }
+    .bgrid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 620px) {
+    .hero { padding: 64px 0 52px; }
+    .sec { padding: 48px 0; }
+    .pgrid, .hgrid, .bgrid { grid-template-columns: 1fr; }
+    .brand small { display: none; }
+    .srow { flex-wrap: wrap; }
+    .srow .when { margin-left: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap inner">
+    <a class="brand" href="#top">
+      <img src="icon.svg" alt="minicare logo">
+      minicare&nbsp;<small>敏宝日记 · MiniCare</small>
+    </a>
+    <a class="gh" href="https://github.com/BingBlog/minicare" target="_blank" rel="noopener">GitHub 仓库 ↗</a>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="wrap">
+    <div class="eyebrow">敏宝家庭的结构化健康记录 + AI 护理分析平台</div>
+    <h1>把敏宝的日常护理，<br>记成一份<em>看得懂</em>的健康档案</h1>
+    <p class="lead">饮食、转奶、症状、睡眠、生长结构化记录，由「敏宝助手」智能体做分析与解读 —— 科学排敏、规范转奶、高效就医。</p>
+    <div class="chips">
+      <span class="chip"><b>微信小程序</b> · 已上线</span>
+      <span class="chip"><b>敏宝助手</b> · 智能体已上线</span>
+      <span class="chip"><b>公众号</b> · CMPA 科普系列</span>
+    </div>
+  </div>
+</section>
+
+<main>
+  <!-- 01 核心问题 -->
+  <section class="sec" id="problem">
+    <div class="wrap">
+      <div class="eyebrow2">01 · 核心问题</div>
+      <h2>过敏管理是长期过程，却只能靠记忆</h2>
+      <p class="lead2">辅食排敏持续数周、转奶以月计、症状需要回溯关联 —— 这些关键信息，目前大多停留在家长的记忆和零散记录里。</p>
+      <div class="pgrid">
+        <div class="pcard"><div class="no">PAIN 01</div><h3>排敏无规范记录</h3><p>辅食添加、转奶过程全凭记忆，缺乏系统化手段。</p></div>
+        <div class="pcard"><div class="no">PAIN 02</div><h3>因果无法关联</h3><p>难以回溯「吃了什么 → 出现什么反应」，排查全靠猜。</p></div>
+        <div class="pcard"><div class="no">PAIN 03</div><h3>就医沟通成本高</h3><p>就诊时手动整理零散记录，信息不完整、说不清。</p></div>
+        <div class="pcard"><div class="no">PAIN 04</div><h3>祖辈参与门槛高</h3><p>71.8% 的婴幼儿由祖辈承担主要照料，复杂工具难上手。</p></div>
+        <div class="pcard"><div class="no">PAIN 05</div><h3>现有产品不匹配</h3><p>综合母婴 App 功能繁杂、广告多，没有敏宝垂直能力。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 解决思路 -->
+  <section class="sec" id="idea">
+    <div class="wrap">
+      <div class="eyebrow2">02 · 解决思路</div>
+      <h2>记录面 × 分析面：一条完整的数据闭环</h2>
+      <p class="lead2">小程序负责记录、助手负责分析 —— 两个面不对称分工：「录入 → 感知 → 分析 → 建议 → 再记录」，数据越记越有价值。</p>
+      <div class="shot">
+        <a href="assets/business-loop.png" target="_blank" rel="noopener">
+          <img src="assets/business-loop.png" alt="minicare 业务闭环图：核心问题、数据闭环、记录内容 × 场景价值、敏宝专属业务线" loading="lazy">
+        </a>
+        <div class="cap">minicare 业务全景：从「靠记忆」到「数据闭环」（点击查看大图）</div>
+      </div>
+      <div class="bgrid">
+        <div class="bcard"><h4>单一写入口</h4><p>记录只从界面进（表单 / 打卡 / 语音预填），数据质量可追溯。</p></div>
+        <div class="bcard"><h4>助手只读</h4><p>分析路径不写库，避免对话产生脏数据。</p></div>
+        <div class="bcard"><h4>建议落卡</h4><p>建议以卡片呈现，采纳后带来源标记回界面执行。</p></div>
+        <div class="bcard"><h4>感知决定断言强度</h4><p>数据不足时不下结论，宁可提问引导补记录。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 实现方案 -->
+  <section class="sec" id="arch">
+    <div class="wrap">
+      <div class="eyebrow2">03 · 实现方案</div>
+      <h2>从记录到分析，全链路自研</h2>
+      <p class="lead2">微信小程序 × NestJS 后端 × DeepSeek 智能体，配套知识库平台与 Agent 测评台 —— 让「分析有据、质量有底」。</p>
+      <div class="shot">
+        <a href="assets/tech-architecture.png" target="_blank" rel="noopener">
+          <img src="assets/tech-architecture.png" alt="minicare 技术架构图：小程序、后端、敏宝助手智能体、数据底座、知识库与 Agent 测评" loading="lazy">
+        </a>
+        <div class="cap">技术架构：Agent 重点 · 知识库 / Agent 测评双域（点击查看大图）</div>
+      </div>
+      <div class="hgrid">
+        <div class="hcard"><div class="dot"></div><h3>知识供应链</h3><p>20 份权威文献 → <b>1586 条</b>知识，全文 + 向量混合检索，实测召回率 <b>97.8%</b>。</p></div>
+        <div class="hcard"><div class="dot"></div><h3>有据可查</h3><p>回答带来源引用与风险分级；未收录话题主动引导就医。</p></div>
+        <div class="hcard"><div class="dot"></div><h3>安全护栏</h3><p>不诊断、不给药、不替代医生；高危症状强制就医引导。</p></div>
+        <div class="hcard"><div class="dot"></div><h3>质量闸门</h3><p>检索质检 + Agent 测评台：知识发布与智能体上线都有硬门槛。</p></div>
+        <div class="hcard"><div class="dot"></div><h3>家庭协作</h3><p>手机号邀请全家参与，多端实时同步，祖辈也能轻松上手。</p></div>
+        <div class="hcard"><div class="dot"></div><h3>全界面维护</h3><p>知识入库 / 质检 / 发布 / 回滚全界面操作，不需要敲一行命令。</p></div>
+      </div>
+      <div class="repos">
+        <span class="repo"><code>minicare-mp</code><span>微信小程序（主平台）</span></span>
+        <span class="repo"><code>minicare-server</code><span>后端 API</span></span>
+        <span class="repo"><code>minicare-agent</code><span>敏宝助手智能体</span></span>
+        <span class="repo"><code>minicare-platform</code><span>本机管理端</span></span>
+        <span class="repo"><code>minicare-web</code><span>Web 端（维护模式）</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 项目状态 -->
+  <section class="sec" id="status">
+    <div class="wrap">
+      <div class="eyebrow2">04 · 项目状态</div>
+      <h2>走到哪一步了</h2>
+      <p class="lead2">真实进度，不吹不藏 —— 已完成的上线，进行中的如实标注。</p>
+      <div class="slist">
+        <div class="srow done"><span class="sdot"></span><div><h3>微信小程序 MVP</h3><p>8 大类记录 · 家庭协作 · 数据报告</p></div><span class="when">已上线 · 2026-04-28</span></div>
+        <div class="srow done"><span class="sdot"></span><div><h3>敏宝助手智能体</h3><p>对话 / 知识问答 / 数据查询 / 每日日记</p></div><span class="when">已上线 CloudRun</span></div>
+        <div class="srow wip"><span class="sdot"></span><div><h3>知识库平台化</h3><p>语料 → 管线 → 质检 → 发布全流程</p></div><span class="when">功能全量落地，验收中</span></div>
+        <div class="srow wip"><span class="sdot"></span><div><h3>Agent 测评台</h3><p>用例 / 运行 / 裁判 / 闸门 一体化</p></div><span class="when">已落地，全量运行待验证</span></div>
+        <div class="srow evo"><span class="sdot"></span><div><h3>转奶 / 排敏教练 V3.0</h3><p>状态感知已落地，持续深化</p></div><span class="when">演进中</span></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="links">
+      <a href="https://github.com/BingBlog/minicare" target="_blank" rel="noopener">GitHub 开源仓库</a>
+      <a href="#top">回到顶部</a>
+    </div>
+    <p class="note">医学提示：本产品提供健康记录与参考信息，不构成诊断或医疗建议；如有不适请及时就医，并以就诊医生的意见为准。</p>
+    <p class="copy">© 2026 minicare（敏宝日记 · MiniCare）· 由敏宝家庭自己打造</p>
+  </div>
+</footer>
+
+</body>
+</html>
