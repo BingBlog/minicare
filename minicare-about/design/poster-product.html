@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:-apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; }
+  .poster {
+    width:1000px; height:620px; position:relative; overflow:hidden;
+    background-color:#FFF8F4;
+    background-image:
+      radial-gradient(460px 280px at 10% 6%, rgba(248,112,152,.16), transparent 70%),
+      radial-gradient(460px 300px at 92% 10%, rgba(155,142,216,.13), transparent 70%),
+      radial-gradient(560px 320px at 62% 104%, rgba(248,112,152,.10), transparent 70%),
+      radial-gradient(rgba(61,43,46,.045) 1px, transparent 1.3px);
+    background-size:auto, auto, auto, 26px 26px;
+  }
+  /* ---------- header ---------- */
+  .head { text-align:center; padding-top:30px; position:relative; z-index:5; }
+  .brand-pill {
+    display:inline-flex; align-items:center; gap:8px; background:#fff; border:1px solid #F3E0E6;
+    box-shadow:0 4px 14px rgba(61,43,46,.06); border-radius:999px; padding:5px 15px 5px 7px;
+    font-weight:700; font-size:13px; color:#3D2B2E;
+  }
+  .brand-pill img { width:22px; height:22px; border-radius:6px; }
+  .head h1 { font-size:31px; font-weight:800; color:#3D2B2E; margin:13px 0 7px; letter-spacing:.01em; }
+  .head h1 em { font-style:normal; color:#E8507A; }
+  .head p { font-size:14px; color:#9A7E82; }
+
+  /* ---------- stage ---------- */
+  .stage { position:relative; height:452px; margin-top:12px; }
+
+  /* 手机 mockup */
+  .phone {
+    position:absolute; left:150px; top:14px; width:232px; height:424px;
+    background:#37322F; border-radius:36px; padding:8px;
+    box-shadow:0 26px 60px rgba(61,43,46,.24);
+  }
+  .screen { background:#FFFBFA; border-radius:29px; height:100%; overflow:hidden; display:flex; flex-direction:column; }
+  .p-status { display:flex; justify-content:space-between; font-size:9.5px; color:#8A7075; padding:9px 16px 0; font-weight:700; }
+  .p-status i { letter-spacing:1px; font-style:normal; }
+  .p-head { padding:7px 16px 0; }
+  .p-head b { font-size:15px; color:#3D2B2E; }
+  .p-head span { display:block; font-size:9.5px; color:#9A7E82; margin-top:2px; }
+  .p-stats { display:flex; gap:6px; padding:10px 12px 0; }
+  .p-stat { flex:1; background:#fff; border:1px solid #F5E8EA; border-radius:12px; padding:7px 4px 6px; text-align:center; box-shadow:0 2px 6px rgba(61,43,46,.04); }
+  .p-stat i { display:block; width:6px; height:6px; border-radius:50%; margin:0 auto 4px; }
+  .p-stat b { font-size:12.5px; color:#3D2B2E; }
+  .p-stat span { display:block; font-size:8.5px; color:#9A7E82; margin-top:1px; }
+  .p-sec { font-size:9.5px; color:#9A7E82; font-weight:700; padding:11px 16px 2px; }
+  .p-row { display:flex; gap:8px; padding:5.5px 14px; align-items:center; }
+  .p-dot { width:22px; height:22px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:10px; flex:none; }
+  .p-row b { font-size:10px; color:#3D2B2E; display:block; }
+  .p-row span { font-size:8.8px; color:#9A7E82; }
+  .p-tab { margin-top:auto; display:flex; justify-content:space-around; padding:11px 12px 11px; border-top:1px solid #F5E8EA; position:relative; }
+  .p-tab span { font-size:8.8px; color:#B79AA0; }
+  .p-tab .on { color:#E8507A; font-weight:700; }
+  .p-fab {
+    position:absolute; top:-17px; left:50%; transform:translateX(-50%);
+    width:34px; height:34px; border-radius:50%; background:#F87098; color:#fff;
+    display:flex; align-items:center; justify-content:center; font-size:17px; font-weight:600;
+    box-shadow:0 6px 14px rgba(248,112,152,.45); border:3px solid #FFFBFA;
+  }
+
+  /* 对话 mockup */
+  .chat {
+    position:absolute; right:148px; top:44px; width:348px; height:398px;
+    background:#fff; border-radius:22px; border:1px solid #F3E4E6;
+    box-shadow:0 26px 60px rgba(61,43,46,.16); display:flex; flex-direction:column; overflow:hidden;
+  }
+  .chat-head { display:flex; align-items:center; gap:10px; padding:13px 16px; border-bottom:1px solid #F6EDEF; }
+  .chat-ava {
+    width:32px; height:32px; border-radius:50%; color:#fff; font-size:12px; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg,#F87098,#E8507A);
+  }
+  .chat-head b { font-size:13.5px; color:#3D2B2E; }
+  .chat-head .st { display:flex; align-items:center; gap:5px; font-size:10px; color:#9A7E82; margin-top:1px; }
+  .chat-head .st i { width:6px; height:6px; border-radius:50%; background:#4CAF82; }
+  .chat-body { padding:13px 16px 6px; display:flex; flex-direction:column; gap:9px; }
+  .msg-u { align-self:flex-end; background:#F87098; color:#fff; font-size:12px; line-height:1.5; padding:9px 13px; border-radius:14px 14px 4px 14px; max-width:82%; box-shadow:0 6px 14px rgba(248,112,152,.25); }
+  .msg-a { align-self:flex-start; background:#F8F4F5; color:#3D2B2E; font-size:12px; line-height:1.55; padding:9px 13px; border-radius:14px 14px 14px 4px; max-width:90%; }
+  .msg-tag { align-self:flex-start; font-size:9px; color:#B79AA0; margin:-4px 0 0 4px; }
+  .sugg { align-self:flex-start; background:#FFF6F9; border:1px solid #FBDCE6; border-left:3px solid #F87098; border-radius:12px; padding:9px 12px; max-width:94%; }
+  .sugg b { font-size:10.5px; color:#E8507A; display:block; margin-bottom:3px; letter-spacing:.04em; }
+  .sugg p { font-size:11px; color:#5C4448; line-height:1.55; }
+  .chat-input { margin-top:auto; display:flex; gap:8px; padding:10px 14px 13px; }
+  .chat-input .in { flex:1; border:1px solid #F0E3E6; background:#FBF7F7; border-radius:999px; padding:8px 14px; font-size:11px; color:#B79AA0; }
+  .chat-input .send { width:33px; height:33px; border-radius:50%; background:#F87098; color:#fff; display:flex; align-items:center; justify-content:center; font-size:14px; box-shadow:0 5px 12px rgba(248,112,152,.4); }
+
+  /* 中间流程箭头 */
+  .flow { position:absolute; left:386px; width:116px; text-align:center; z-index:4; }
+  .flow .line { height:0; border-top:2px dashed #F5BFCD; position:relative; margin:0 4px; }
+  .flow-r .line::after { content:""; position:absolute; right:-2px; top:-5px; border:5px solid transparent; border-left-color:#F5BFCD; border-right:0; }
+  .flow-l .line::after { content:""; position:absolute; left:-2px; top:-5px; border:5px solid transparent; border-right-color:#F5BFCD; border-left:0; }
+  .flow b { display:block; font-size:10px; color:#C08A97; margin-top:6px; font-weight:600; }
+  .flow-l b { margin:6px 0 0; }
+  .f-top { top:96px; }
+  .f-bot { top:266px; }
+
+  /* 浮动标签 */
+  .fchip {
+    position:absolute; background:#fff; border:1px solid #F3E4E6; border-radius:999px;
+    padding:7px 13px; font-size:11px; color:#5C4448; font-weight:600;
+    box-shadow:0 10px 24px rgba(61,43,46,.10); display:flex; align-items:center; gap:7px; z-index:6;
+  }
+  .fchip i { width:7px; height:7px; border-radius:50%; }
+  .f1 { left:26px; top:6px; transform:rotate(-3deg); }
+  .f2 { right:22px; top:6px; transform:rotate(2.5deg); }
+  .f3 { left:26px; bottom:8px; transform:rotate(-2deg); }
+  .f4 { right:22px; bottom:10px; transform:rotate(2deg); }
+</style>
+</head>
+<body>
+<div class="poster">
+  <div class="head">
+    <div class="brand-pill"><img src="../icon.svg" alt="">minicare · 敏宝日记</div>
+    <h1>记录 <em>×</em> 分析，陪敏宝安心长大</h1>
+    <p>8 大类护理记录 · AI 智能分析 · 全家协作</p>
+  </div>
+
+  <div class="stage">
+    <!-- 手机：记录面 -->
+    <div class="phone">
+      <div class="screen">
+        <div class="p-status"><span>9:41</span><i>5G · 100%</i></div>
+        <div class="p-head"><b>旺仔</b><span>3 个月 12 天 · 轻度牛奶过敏</span></div>
+        <div class="p-stats">
+          <div class="p-stat"><i style="background:#F87098"></i><b>620ml</b><span>今日奶量</span></div>
+          <div class="p-stat"><i style="background:#9B8ED8"></i><b>12.5h</b><span>睡眠</span></div>
+          <div class="p-stat"><i style="background:#DDB870"></i><b>6 次</b><span>尿布</span></div>
+        </div>
+        <div class="p-sec">今日时间线</div>
+        <div class="p-row"><span class="p-dot" style="background:#FFF0F4;color:#E8507A">奶</span><div><b>配方奶 120ml</b><span>07:30 · 深度水解</span></div></div>
+        <div class="p-row"><span class="p-dot" style="background:#FBF3E4;color:#BA8A2E">便</span><div><b>便便 · 正常</b><span>08:10 · Bristol 4 型</span></div></div>
+        <div class="p-row"><span class="p-dot" style="background:#F1EEFA;color:#7B6BC8">眠</span><div><b>睡眠中 · 已 2h</b><span>09:40 · 质量良好</span></div></div>
+        <div class="p-tab">
+          <span class="on">首页</span><span>记录</span><span>报告</span><span>我的</span>
+          <div class="p-fab">＋</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 中间流转 -->
+    <div class="flow flow-r f-top"><div class="line"></div><b>结构化数据 →</b></div>
+    <div class="flow flow-l f-bot"><div class="line"></div><b>← 建议 · 日记回界面</b></div>
+
+    <!-- 对话：分析面 -->
+    <div class="chat">
+      <div class="chat-head">
+        <div class="chat-ava">敏</div>
+        <div><b>敏宝助手</b><span class="st"><i></i>在线 · 已读今天的记录</span></div>
+      </div>
+      <div class="chat-body">
+        <div class="msg-u">今天旺仔喝了多少奶？和前几天比呢？</div>
+        <div class="msg-a">今天共 <b>620ml</b>，比近 7 天日均多 40ml；深度水解配比 3:1，保持稳定。</div>
+        <div class="msg-tag">依据：今日喂养记录 · 近 7 天趋势</div>
+        <div class="sugg"><b>助手建议</b><p>维持当前配比，3 天后复评；若出现皮疹请暂停并记录到「健康」。</p></div>
+      </div>
+      <div class="chat-input"><div class="in">问问宝宝的情况…</div><div class="send">➤</div></div>
+    </div>
+
+    <!-- 浮动标签 -->
+    <div class="fchip f1"><i style="background:#4CAF82"></i>排敏任务 · 观察中 Day3</div>
+    <div class="fchip f2"><i style="background:#9B8ED8"></i>生长曲线 · P50</div>
+    <div class="fchip f3"><i style="background:#DDB870"></i>转奶 · 深度水解阶段</div>
+    <div class="fchip f4"><i style="background:#F87098"></i>家庭协作 · 3 位成员</div>
+  </div>
+</div>
+</body>
+</html>
