@@ -39,6 +39,7 @@ docs/
 ├── knowledge/                ← 敏宝知识库资料（源文件 PDF + 调研；管线工程在 minicare-platform/api/）
 │   ├── source/               ← 原始资料（国内/国际文献）
 │   └── research/             ← 知识库建设调研（KAG / MinerU / 图谱工具 / 召回评测）
+├── assets/                   ← 配图（draw.io 源文件 + SVG / PNG 导出，供 README 与文档引用）
 ├── reviews/                  ← 审查与复盘（过程性文档）
 │   ├── cr-mvp.md             ← MVP 发布前代码审查报告
 │   └── REVIEW-1.0-issues.md  ← 敏宝日记 1.0 问题分析与解决方案

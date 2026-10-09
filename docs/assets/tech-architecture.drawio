@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" version="26.0.0">
+  <diagram name="tech-architecture" id="ta-page-1">
+    <mxGraphModel dx="1700" dy="1600" grid="1" gridSize="10" page="1" pageWidth="1640" pageHeight="1740" background="#ffffff">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t1" value="minicare 技术架构 · 核心实现（Agent 重点）" style="text;html=1;fontSize=26;fontStyle=1;fontColor=#1a1a1a;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="26" width="1200" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="t2" value="「记录面」小程序 × 「分析面」智能体 —— 单一写入口 · 只读分析 · 全链路生产部署形态" style="text;html=1;fontSize=14;fontColor=#666666;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="72" width="1360" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="mp" value="&lt;b&gt;&lt;font style='font-size:16px'&gt;微信小程序 · 主平台（Taro 4.2 + React 18）&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:13px' color='#555555'&gt;分包加载（主包 4 Tab）· ECharts 截图模式 · 双认证（test / sms）&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:13px' color='#555555'&gt;SSE 流式对话页 + 日记页 · 大字模式 · 游客预览&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="40" y="120" width="1100" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl1" value="HTTPS REST + SSE（JWT Bearer）" style="text;html=1;fontSize=12;fontColor=#888888;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="610" y="248" width="420" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endSize=8;strokeWidth=2;strokeColor=#888888;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="mp" target="srv">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="srv" value="minicare-server · NestJS v10 · 部署 CloudRun" style="swimlane;startSize=32;html=1;fillColor=#f7f7f7;strokeColor=#999999;fontSize=14;fontStyle=1;fontColor=#333333;align=left;spacingLeft=12;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="290" width="1100" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="s1" value="&lt;b&gt;三层鉴权链&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;JWT → 家庭成员 → 角色&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;fontColor=#333333;" vertex="1" parent="srv">
+          <mxGeometry x="20" y="50" width="230" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="s2" value="&lt;b&gt;记录与报告 API&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;8 类记录 · 报告 · 存储&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;fontColor=#333333;" vertex="1" parent="srv">
+          <mxGeometry x="290" y="50" width="230" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="s3" value="&lt;b&gt;实时同步&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;WebSocket 家庭广播&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;fontColor=#333333;" vertex="1" parent="srv">
+          <mxGeometry x="560" y="50" width="230" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="s4" value="&lt;b&gt;对话反代&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;内部 token → Agent&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;fontColor=#333333;" vertex="1" parent="srv">
+          <mxGeometry x="830" y="50" width="230" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl2" value="对话反代 · 内部 token 鉴权" style="text;html=1;fontSize=12;fontColor=#888888;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="610" y="488" width="420" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endSize=8;strokeWidth=2;strokeColor=#888888;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="srv" target="ag">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ag" value="minicare-agent · 敏宝助手 —— 分析面核心（Node.js · CloudRun）" style="swimlane;startSize=32;html=1;fillColor=#fff6ec;strokeColor=#d79b00;strokeWidth=2;fontSize=15;fontStyle=1;fontColor=#7a4a00;align=left;spacingLeft=12;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="530" width="1100" height="490" as="geometry" />
+        </mxCell>
+        <mxCell id="a1" value="&lt;b&gt;运行时 Runtime&lt;/b&gt;&lt;br&gt;Claude Agent SDK（OAK）× DeepSeek&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;deepseek-v4-flash · Anthropic 兼容端点 · 文本 + 视觉&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=13;fontColor=#333333;" vertex="1" parent="ag">
+          <mxGeometry x="20" y="55" width="520" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="a2" value="&lt;b&gt;会话与记忆&lt;/b&gt;&lt;br&gt;多用户隔离：userId + 对话 UUID&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;自管历史：FlexDB 近 20 条 → 注入 systemPrompt&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=13;fontColor=#333333;" vertex="1" parent="ag">
+          <mxGeometry x="560" y="55" width="520" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="bl" value="&lt;b&gt;工具系统 · 全部只读（模型调用 → 宿主执行 → 回传）&lt;/b&gt;" style="text;html=1;fontSize=13;fontColor=#333333;align=left;verticalAlign=middle;" vertex="1" parent="ag">
+          <mxGeometry x="20" y="160" width="800" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tt1" value="&lt;b&gt;search_knowledge&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;知识库 RRF 混合检索&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;来源引用 + 风险分级&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;fontColor=#333333;" vertex="1" parent="ag">
+          <mxGeometry x="20" y="198" width="240" height="92" as="geometry" />
+        </mxCell>
+        <mxCell id="tt2" value="&lt;b&gt;query_baby_data&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;7 维度健康数据&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;list / sum / avg / trend&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;fontColor=#333333;" vertex="1" parent="ag">
+          <mxGeometry x="290" y="198" width="240" height="92" as="geometry" />
+        </mxCell>
+        <mxCell id="tt3" value="&lt;b&gt;analyze_baby_data&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;生长分位 · 趋势解读&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;中国 2023 标准&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;fontColor=#333333;" vertex="1" parent="ag">
+          <mxGeometry x="560" y="198" width="240" height="92" as="geometry" />
+        </mxCell>
+        <mxCell id="tt4" value="&lt;b&gt;generate_diary&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;当日记录 + 对话事件&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;→ 日记草稿（可编辑）&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;fontColor=#333333;" vertex="1" parent="ag">
+          <mxGeometry x="830" y="198" width="240" height="92" as="geometry" />
+        </mxCell>
+        <mxCell id="c1" value="&lt;b&gt;提示注入层&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;角色与护栏指令&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;宝宝画像块（SQL · 5 分钟 TTL）&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;状态感知信号（事实 / 推断 / 元）&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=13;fontColor=#333333;" vertex="1" parent="ag">
+          <mxGeometry x="20" y="320" width="320" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="c2" value="&lt;b&gt;输出通道 · SSE 流式&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;text / tool_call / tool_result&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;session / done / error&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;→ 小程序对话页实时渲染&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=13;fontColor=#333333;" vertex="1" parent="ag">
+          <mxGeometry x="380" y="320" width="320" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="c3" value="&lt;b&gt;安全护栏&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;风险分级：常规 / 警示 / 急诊&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#b85450'&gt;emergency → 强制就医引导&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;不诊断 · 不给药 · 不替代医生&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=13;fontColor=#333333;" vertex="1" parent="ag">
+          <mxGeometry x="740" y="320" width="320" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="l_d1" value="业务读写 · 知识检索" style="text;html=1;fontSize=12;fontColor=#888888;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="268" y="1046" width="220" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="l_d2" value="会话 / 文件" style="text;html=1;fontSize=12;fontColor=#888888;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="598" y="1046" width="160" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="l_d3" value="query 向量化" style="text;html=1;fontSize=12;fontColor=#888888;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="928" y="1046" width="160" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="e_d1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endSize=8;strokeWidth=2;strokeColor=#888888;exitX=0.2;exitY=1;exitDx=0;exitDy=0;entryX=0.6061;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="ag" target="d1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_d2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endSize=8;strokeWidth=2;strokeColor=#888888;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="ag" target="d2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_d3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endSize=8;strokeWidth=2;strokeColor=#888888;exitX=0.8;exitY=1;exitDx=0;exitDy=0;entryX=0.3939;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="ag" target="d3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ds" value="数据与嵌入底座" style="swimlane;startSize=32;html=1;fillColor=#f7f7f7;strokeColor=#999999;fontSize=14;fontStyle=1;fontColor=#333333;align=left;spacingLeft=12;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1100" width="1100" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="d1" value="&lt;b&gt;CynosDB MySQL&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;业务 ~18 表（记录 / 家庭 / 日记）&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;knowledge_base 1586 条&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;向量 + 全文索引&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=13;fontColor=#333333;" vertex="1" parent="ds">
+          <mxGeometry x="20" y="40" width="330" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="d2" value="&lt;b&gt;CloudBase&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;Auth：手机号短信登录&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;对象存储：照片 / 头像&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=13;fontColor=#333333;" vertex="1" parent="ds">
+          <mxGeometry x="385" y="40" width="330" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="d3" value="&lt;b&gt;TokenHub 嵌入服务&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;查询向量化（1024 维）&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;供 search_knowledge 检索&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=13;fontColor=#333333;" vertex="1" parent="ds">
+          <mxGeometry x="750" y="40" width="330" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="l_kb" value="发布知识上库" style="text;html=1;fontSize=12;fontColor=#888888;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="310" y="1266" width="210" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="l_ev" value="harness 调度 · 保障线上质量" style="text;html=1;fontSize=12;fontColor=#888888;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1240" y="944" width="320" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="pf" value="minicare-platform · 本机管理端（单用户）" style="swimlane;startSize=32;html=1;fillColor=#f7f7f7;strokeColor=#999999;fontSize=14;fontStyle=1;fontColor=#333333;align=left;spacingLeft=12;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1340" width="1540" height="370" as="geometry" />
+        </mxCell>
+        <mxCell id="kbl" value="知识库域 · 语料 → 解析切片 → 翻译 → 检索质检 → 发布（出口：knowledge_base）" style="text;html=1;fontSize=13;fontStyle=1;fontColor=#333333;align=left;verticalAlign=middle;" vertex="1" parent="pf">
+          <mxGeometry x="20" y="44" width="900" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="k1" value="&lt;b&gt;① 语料登记&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;20 份权威文献（16 PDF + 4 HTML）&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;sha256 判重 · 来源台账&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=13;fontColor=#333333;" vertex="1" parent="pf">
+          <mxGeometry x="20" y="70" width="260" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="k2" value="&lt;b&gt;② 六步管线&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;预检→解析→清洗→切块→复核→索引&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;MinerU 解析 · 自研切块 · 数字校验&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=13;fontColor=#333333;" vertex="1" parent="pf">
+          <mxGeometry x="330" y="70" width="260" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="k3" value="&lt;b&gt;③ 块级翻译&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;英文语料 → 中文双语对&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;逐块对照 · 人工修正入口&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=13;fontColor=#333333;" vertex="1" parent="pf">
+          <mxGeometry x="640" y="70" width="260" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="k4" value="&lt;b&gt;④ 检索质检&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;三态用例 · 五项指标（Recall / MRR）&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;发布闸门读台账 · 不达标硬阻塞&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=13;fontColor=#333333;" vertex="1" parent="pf">
+          <mxGeometry x="950" y="70" width="260" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="k5" value="&lt;b&gt;⑤ 发布上线&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;快照发布 · 一键回滚&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;发布后四项验证 → 1586 条入库&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=13;fontColor=#333333;" vertex="1" parent="pf">
+          <mxGeometry x="1260" y="70" width="260" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="ek1" style="edgeStyle=none;html=1;endArrow=block;endFill=1;endSize=7;strokeWidth=1.5;strokeColor=#999999;" edge="1" parent="pf" source="k1" target="k2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ek2" style="edgeStyle=none;html=1;endArrow=block;endFill=1;endSize=7;strokeWidth=1.5;strokeColor=#999999;" edge="1" parent="pf" source="k2" target="k3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ek3" style="edgeStyle=none;html=1;endArrow=block;endFill=1;endSize=7;strokeWidth=1.5;strokeColor=#999999;" edge="1" parent="pf" source="k3" target="k4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ek4" style="edgeStyle=none;html=1;endArrow=block;endFill=1;endSize=7;strokeWidth=1.5;strokeColor=#999999;" edge="1" parent="pf" source="k4" target="k5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="evl" value="Agent 测评域 · 用例 → 运行 → 裁判 → 闸门（出口：线上 Agent 质量水位 · 历史对比）" style="text;html=1;fontSize=13;fontStyle=1;fontColor=#333333;align=left;verticalAlign=middle;" vertex="1" parent="pf">
+          <mxGeometry x="20" y="206" width="900" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="m1" value="&lt;b&gt;① 用例集管理&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;用例双模编辑（表单 / JSON）&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;全量留档 · 用例只读&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=13;fontColor=#333333;" vertex="1" parent="pf">
+          <mxGeometry x="20" y="232" width="260" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="m2" value="&lt;b&gt;② 发起运行&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;配置物化执行（模型 / 裁判 / 维度）&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;全局 ctx 注入 · 单运行并发&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=13;fontColor=#333333;" vertex="1" parent="pf">
+          <mxGeometry x="330" y="232" width="260" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="m3" value="&lt;b&gt;③ harness 执行&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;分层用例 · 子进程调度&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;进度实时可见 · 可中止&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=13;fontColor=#333333;" vertex="1" parent="pf">
+          <mxGeometry x="640" y="232" width="260" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="m4" value="&lt;b&gt;④ 裁判评分&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;裁判 / 维度配置化 · 试跑&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;幻觉率口径 · 结果留档&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=13;fontColor=#333333;" vertex="1" parent="pf">
+          <mxGeometry x="950" y="232" width="260" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="m5" value="&lt;b&gt;⑤ 闸门 · 报告&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;闸门三态：pass / fail / na&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;未测≠未通过 · delta 对比 · 报告导出&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=13;fontColor=#333333;" vertex="1" parent="pf">
+          <mxGeometry x="1260" y="232" width="260" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="em1" style="edgeStyle=none;html=1;endArrow=block;endFill=1;endSize=7;strokeWidth=1.5;strokeColor=#999999;" edge="1" parent="pf" source="m1" target="m2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="em2" style="edgeStyle=none;html=1;endArrow=block;endFill=1;endSize=7;strokeWidth=1.5;strokeColor=#999999;" edge="1" parent="pf" source="m2" target="m3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="em3" style="edgeStyle=none;html=1;endArrow=block;endFill=1;endSize=7;strokeWidth=1.5;strokeColor=#999999;" edge="1" parent="pf" source="m3" target="m4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="em4" style="edgeStyle=none;html=1;endArrow=block;endFill=1;endSize=7;strokeWidth=1.5;strokeColor=#999999;" edge="1" parent="pf" source="m4" target="m5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_kb" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endSize=8;strokeWidth=2;strokeColor=#888888;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.7273;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="k5" target="d1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1430" y="1315" />
+              <mxPoint x="300" y="1315" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_ev" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endSize=8;strokeWidth=2;strokeColor=#888888;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.9184;entryDx=0;entryDy=0;" edge="1" parent="1" source="m5" target="ag">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1610" y="1628" />
+              <mxPoint x="1610" y="980" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sf" value="&lt;b&gt;音箱「小宝小宝」&lt;/b&gt;（规划中）&lt;br&gt;&lt;font style='font-size:12px' color='#666666'&gt;ESP32-S3 · 只做语音桥&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#666666'&gt;复用 Agent 全部能力&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;dashed=1;fontSize=13;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="530" width="360" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="ls" value="语音桥" style="text;html=1;fontSize=12;fontColor=#888888;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1150" y="554" width="70" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="e_sf" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endSize=8;strokeWidth=2;strokeColor=#999999;dashed=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.1122;entryDx=0;entryDy=0;" edge="1" parent="1" source="sf" target="ag">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lt_lf" value="trace" style="text;html=1;fontSize=12;fontColor=#888888;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1150" y="798" width="60" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="e_lf" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endSize=8;strokeWidth=2;strokeColor=#888888;exitX=1;exitY=0.602;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="ag" target="lf">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lf" value="&lt;b&gt;可观测性 · Langfuse（本地）&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;对话 trace + CLI transcript&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;全链路汇聚 · 问题可复盘&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=13;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="760" width="360" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="pr" value="&lt;b&gt;核心设计约束&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;· 单一写入口：记录只从界面进&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;· 助手只读：分析路径不写库&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;· 建议落卡：采纳后回界面执行&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;· 感知决定断言强度&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fbfbfb;strokeColor=#aaaaaa;fontSize=13;fontColor=#333333;align=left;spacingLeft=14;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="120" width="360" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="lg" value="图例" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fbfbfb;strokeColor=#aaaaaa;verticalAlign=top;fontStyle=1;fontSize=13;fontColor=#333333;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="1080" width="360" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="l1s" value="" style="rounded=0;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="lg">
+          <mxGeometry x="14" y="40" width="26" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="l1t" value="触点渠道（小程序）" style="text;html=1;fontSize=12;fontColor=#444444;align=left;verticalAlign=middle;" vertex="1" parent="lg">
+          <mxGeometry x="48" y="36" width="300" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="l2s" value="" style="rounded=0;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="lg">
+          <mxGeometry x="14" y="64" width="26" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="l2t" value="后端服务（server）" style="text;html=1;fontSize=12;fontColor=#444444;align=left;verticalAlign=middle;" vertex="1" parent="lg">
+          <mxGeometry x="48" y="60" width="300" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="l3s" value="" style="rounded=0;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="lg">
+          <mxGeometry x="14" y="88" width="26" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="l3t" value="智能体（Agent 核心）" style="text;html=1;fontSize=12;fontColor=#444444;align=left;verticalAlign=middle;" vertex="1" parent="lg">
+          <mxGeometry x="48" y="84" width="300" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="l4s" value="" style="rounded=0;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="lg">
+          <mxGeometry x="14" y="112" width="26" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="l4t" value="智能体工具（只读）" style="text;html=1;fontSize=12;fontColor=#444444;align=left;verticalAlign=middle;" vertex="1" parent="lg">
+          <mxGeometry x="48" y="108" width="300" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="l5s" value="" style="rounded=0;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="lg">
+          <mxGeometry x="14" y="136" width="26" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="l5t" value="数据与嵌入" style="text;html=1;fontSize=12;fontColor=#444444;align=left;verticalAlign=middle;" vertex="1" parent="lg">
+          <mxGeometry x="48" y="132" width="300" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="l6s" value="" style="rounded=0;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="lg">
+          <mxGeometry x="14" y="160" width="26" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="l6t" value="本机管理端" style="text;html=1;fontSize=12;fontColor=#444444;align=left;verticalAlign=middle;" vertex="1" parent="lg">
+          <mxGeometry x="48" y="156" width="300" height="22" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
