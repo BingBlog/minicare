@@ -425,7 +425,6 @@ export default function HomePage() {
     const feedingRecs = records.filter((r) => r.type === 'feeding')
     const sleepRecs = records.filter((r) => r.type === 'sleep')
     const diaperRecs = records.filter((r) => r.type === 'diaper')
-    const medicationRecs = records.filter((r) => r.type === 'medication')
 
     const totalMl = feedingRecs.reduce((acc, r) => {
       const detail = (r.detail as Record<string, unknown> | undefined) ?? {}
@@ -489,9 +488,6 @@ export default function HomePage() {
       diaperRecs.length > 0
         ? { val: diaperRecs.length, unit: '次', label: '换尿布' }
         : { val: '—', unit: '', label: '换尿布' },
-      medicationRecs.length > 0
-        ? { val: medicationRecs.length, unit: '次', label: '今日用药' }
-        : { val: '—', unit: '', label: '今日用药' },
     ]
   }, [records])
 
