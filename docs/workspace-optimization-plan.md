@@ -20,7 +20,7 @@ minicare-v1/                              ← 根目录 13 个条目
 ├── AGENTS.md / CLAUDE.md          ← agent 规则入口（有效）
 ├── Claw/                          ← 空目录！无任何内容
 ├── agent-poc/       419MB   ← node_modules 占 418MB，代码仅 172KB
-├── minicare-kb/      239MB  ← 知识库管线工程（Python）
+├── minicare-platform/api/      239MB  ← 知识库管线工程（Python）
 ├── minicare-mp/ server/ web/      ← 三个正式包
 ├── Design-Reference/  53 张 png   ← 历史图标参考
 ├── ui-draft/          15 个 html  ← 历史原型
@@ -80,7 +80,7 @@ minicare-v1/                              ← 根目录 13 个条目
 - 影响：agent 检索模式识别失败，编号冲突导致引用混乱
 
 **P1-2 知识库位置割裂、目录命名混淆**
-- 知识"资料"在 `docs/敏宝知识库/`（86MB：源文件 PDF + 12 份调研文档混放），知识"工程"在 `minicare-kb/`（239MB 管线代码 + 产物），两处互无指引
+- 知识"资料"在 `docs/敏宝知识库/`（86MB：源文件 PDF + 12 份调研文档混放），知识"工程"在 `minicare-platform/api/`（239MB 管线代码 + 产物），两处互无指引
 - 中文目录名被 15+ 个文档引用，agent 和开发者都难以快速分清"资料 vs 工程"
 
 **P1-3 历史产物无状态标记**
@@ -109,7 +109,7 @@ minicare-v1/
 ├── .agents/ .workbuddy/ .gitnexus/   ← 隐藏配置，不动
 ├── minicare-server/  minicare-mp/  minicare-web/   ← 三个包，不动
 ├── agent-poc/                  ← 保留（README 已有状态与结论，无需改动）
-├── minicare-kb/                ← 保留（工程代码）
+├── minicare-platform/api/                ← 保留（工程代码）
 ├── Design-Reference/  ui-draft/     ← 原位保留 + 状态标注（只加 README，不移动）
 ├── docs/                       ← 所有文档唯一收纳地
 │   ├── README.md               ← 【重写】全量索引 + 生命周期状态列
@@ -221,7 +221,7 @@ superseded_by: docs/features/F03-feeding.md   # 仅 superseded 时填写
 | 项 | 值 |
 |----|----|
 | 图谱索引范围 | **仅代码符号**（998 文件 / 9305 节点 / 15872 边 / 201 流程）——`csv/` 全是代码元素类型（codeelement/variable/function…），**md 文档不入图** |
-| 图谱新鲜度 | lastCommit `4fbe216`（今日 04:53 索引），当前 HEAD `c3df7b9` → **已落后 1 个 commit**（minicare-kb 工程化落地后未跑 analyze，与本次重组无关，但应现在补齐） |
+| 图谱新鲜度 | lastCommit `4fbe216`（今日 04:53 索引），当前 HEAD `c3df7b9` → **已落后 1 个 commit**（minicare-platform/api 工程化落地后未跑 analyze，与本次重组无关，但应现在补齐） |
 | 数据位置 | `.gitnexus/`（227MB，已 gitignore），`run.cjs` 每次 analyze 自动刷新 |
 
 ### 6.2 文档重组对图谱的影响评估
@@ -278,7 +278,7 @@ Phase 4 收尾：git commit 重组 → node .gitnexus/run.cjs analyze          �
 - `minicare-server/` NestJS 后端（CloudRun）
 - `minicare-web/` Web 端（维护模式，历史原型）
 - `agent-poc/` 养娃智能体 POC（已验证完成，见其 README）
-- `minicare-kb/` 敏宝知识库管线工程
+- `minicare-platform/api/` 敏宝知识库管线工程
 - `docs/` 全部文档（从 docs/README.md 进入）
 - `Design-Reference/` `ui-draft/` 历史原型，仅供追溯
 

@@ -1,0 +1,199 @@
+# ============================================================================
+# minicare-platform/api 管线阈值唯一来源（PRD-008 §12.2 / TECH-015 §4.9 S-10）
+# ----------------------------------------------------------------------------
+# 背景：本文件曾长期**不存在**（技术债 T12）。config.py 的 YAML 覆盖逻辑靠
+#       CONFIG_FILE.exists() 判断，缺文件时静默回落代码默认值 —— 导致
+#       「阈值集中配置」只是纸面声明，调参实际要改 Python 源码。
+#
+# 规则：
+#   1. 本文件是阈值的**唯一权威来源**；代码里的默认值只是兜底，不得单独调参。
+#   2. 启动时平台会打印「生效阈值表」并标注每项的来源（yaml / code-default），
+#      若显示 code-default 说明本文件缺该键或本文件未生效。
+#   3. 阈值变更会改变 cache_key（属于步骤参数 hash），等效于重跑该步骤及下游 —— 符合预期。
+#   4. 新增阈值必须同时补：本文件 + config.py 的模型字段 + `tests/test_config.py` 断言。
+#
+# 标注说明：
+#   【已接入】当前代码已读取
+#   【第 N 期】已声明、待对应里程碑接入（避免将来硬编码，不代表已生效）
+# ============================================================================
+
+# ── 解析（MinerU 云端）【已接入】─────────────────────────────────────────
+mineru:
+  base_url: https://mineru.net
+  # 引擎：pipeline（文字层保真、低幻觉，医疗文档推荐）
+  # ⚠️ 不要用 vlm：实测丢剂量数字（0.5mg/次、25% 等），与官方基准高分相悖
+  model_pdf: pipeline
+  model_html: MinerU-HTML
+  language: ch
+  poll_interval_s: 8
+  poll_timeout_s: 600
+  batch_max: 50
+  is_ocr: false
+  # 需强制 OCR 的文件名清单（临时兜底；预检步骤落地后由逐页判定替代）
+  ocr_files: []
+
+# ── 切块【已接入】────────────────────────────────────────────────────────
+chunk:
+  # 超长章节降级阈值（按空行段落聚合切分）
+  max_section_chars: 1200
+  # 以下两项为定长兜底预留，当前切块按章节/段落边界，不按 token（见 ARCHITECTURE §5.3）
+  chunk_size: 600
+  chunk_overlap: 100
+  header_path_separator: "/"
+
+# ── 内容复核（医疗安全门禁）【已接入】─────────────────────────────────────
+validate:
+  enabled: true
+  # 用原 PDF 文字层交叉校验缺失数字，给出候选值供人工核对
+  pypdf_cross_check: true
+  # 数字缺失模式库（命中 → retrieval_status=review，不进检索）
+  # 单引号保留反斜杠字面量，勿改双引号
+  patterns:
+    剂量缺值: '为\s*次'
+    剂量缺值2: '为\s*[∶:]\s*肾上腺素'
+    最大剂量缺值: '最大剂量\s*[，。]'
+    百分比缺值: '仅有\s*[^0-9%]{0,4}严重过敏反应'
+    重复次数缺值: '重复注射\s*次'
+    年龄范围缺值: '（\s*岁）'
+    儿童剂量缺值: '儿童\s*[，,]\s*每次'
+    每次剂量缺值: '每次\s*[，,]'
+    剂次缺值: '需要\s*剂以上'
+  # 风险分级关键词（命中 → caution / emergency）
+  risk_caution_keywords:
+    - 急救
+    - 肾上腺素
+    - 剂量
+    - 禁忌
+    - 监测
+  risk_emergency_keywords:
+    - 休克
+    - 死亡
+    - 禁用
+    - 心跳呼吸骤停
+    - 立即转诊
+
+# ── 平台运行态【已接入】──────────────────────────────────────────────────
+platform:
+  # 平台代码版本 —— 参与 cache_key（PRD D-11：避免"代码改了但缓存还命中"）
+  version: "0.2.0"
+  # 解析步骤并发度（IO 密集）；本地步骤（归一/切块/校验/索引）始终串行（CPU 密集）
+  parse_concurrency: 2
+  # 非 current run 的产物保留个数（raw/ 与 edits/ 除外，永不清理）
+  artifact_keep_runs: 3
+  # 本机 SQLite（平台运行态：队列/档案/评测集/缺口/发布记录）
+  db_path: data/platform.db
+  # 产物根目录（相对仓库根；平台自管，不进 git）
+  data_root: data
+
+# ── 存储路径【已接入】────────────────────────────────────────────────────
+store:
+  chunk_jsonl: var/chunks.jsonl
+  review_report: var/review.md
+
+# ── 预检【第 2 期】──────────────────────────────────────────────────────
+# 逐页判定扫描页，替代手工维护 mineru.ocr_files 清单
+preflight:
+  # 单页文字层字符数低于此值 → 判为扫描页
+  min_text_chars_per_page: 50
+  # 扫描页占比高于此值 → 建议档位锁到含 OCR
+  scan_page_ratio_for_ocr: 0.3
+
+# ── 噪声块规则【第 2 期】────────────────────────────────────────────────
+# 命中 → retrieval_status=excluded（不参与向量化与全文索引），但保留可见、可逐块恢复；
+# 人工恢复过的块不会被规则再次屏蔽（人工决定优先于规则）
+noise:
+  reference_title_pattern: '^(参考文献|引用文献|References?|Bibliography)$'
+  # 参考文献块位置阈值：位于文档后 N 分之 1 才判为参考文献块。
+  # ⚠️ 两条实测教训（2026-10-03，NIAID_2010_食物过敏指南）：
+  #   ① 位置必须用**页码**推导，不能用块列表序号 —— 切块结果按 header_path 排序，
+  #      「参考文献」的汉字编码小于「第N节」，排序后会跑到最前面，用序号判断永远失效
+  #   ② 用的是**起始页**，对多页大块会系统性低估：该文档的 References 块起始于 104 页
+  #      （占比 0.782，全文 133 页）却横跨到文末，原定 0.2 阈值判不到它 → 放宽到 0.3
+  reference_tail_ratio: 0.3
+  # 空表辅助阈值（字节数）。**主判据是"行数 ≤ 1"**；此阈值只用于兜"HTML 残渣"。
+  # 原定 20 经实测会误杀短而有效的表格（2×2 剂量表仅 19 字），故下调到 8
+  empty_table_min_chars: 8
+  page_furniture_max_chars: 40
+  # 是否默认屏蔽（false 时只标记不屏蔽，用于规则上线前的试跑核对）
+  exclude_default: true
+
+# ── 元信息 LLM 抽取【已接入】────────────────────────────────────────────
+# 注意：`doc_mapping`（文件名 → 来源/证据级别/适用年龄）**故意不在本文件里** ——
+# 它属业务数据而非阈值，PRD-008 §19 D-04 要求迁入 kb_corpus；迁完之前保留在 config.py
+# 的代码默认值，避免两处维护与转写错漏（见 TECH-015 §4.9 第 4 点）。
+metadata:
+  # 喂给 LLM 的正文上限（字符）。摘要 = 标题树（全部）+ 正文前 N 字，
+  # 所以长文档尾部可能漏抽 —— 结果里会记下实际喂入量与是否截断。
+  # 调大 = 覆盖更全，但更贵更慢。
+  llm_brief_chars: 12000
+  # 归纳「语料级共享 schema」时取多少份文档当样本
+  llm_schema_samples: 6
+
+# ── 检索质检【第 4 期；PRD-011 扩展为五项指标 + 三态口径】────────────────
+regression:
+  recall_at_10_min: 0.95
+  # @5 参考门槛（"够不够准"）；与 @10 并行展示
+  recall_at_5_min: 0.90
+  harmful_recall_max: 0.10
+  # 高危必召回（emergency 题 gold 命中率）；emergency_gate=false 则只展示不阻塞
+  emergency_min: 1.00
+  emergency_gate: true
+  # 诊断检索深度（归因用：最佳位次 ≤depth 归"排序问题"，否则归"覆盖缺口"）
+  diag_depth: 20
+  # 指标口径版本：v1=非 gold 即有害；v2=三态（仅 negative 记有害）。口径变化须留痕
+  metric_version: v2-tri-state
+  page_anchor_min: 1.00
+  # gold 口径版本（口径变更须留痕，避免把口径变化误读为质量变化）
+  gold_version: v3-tri-state
+
+# ── 发布【第 4 期】──────────────────────────────────────────────────────
+publish:
+  require_meta_complete: true
+  require_no_red_flags: true
+  require_excludes_confirmed: true
+  require_regression_pass: true
+  # 快照保留个数
+  snapshot_keep: 5
+
+# ── LLM 预算（关键词生成）【第 5 期】─────────────────────────────────────
+llm:
+  keyword_enabled: true
+  # 单文档调用上限与 token 上限（超限降级为规则抽取并告警）
+  budget_calls_per_doc: 80
+  budget_tokens_per_doc: 60000
+  # 并发度（关键词按块调用）
+  concurrency: 4
+  prompt_version: v1
+
+# ── 翻译（块级双语对，第 7 步 translate）【已接入】──────────────────────
+# TECH-019：validate 之后、index 之前；译文旁挂、原文不动；
+# 干跑（dry-run）照常翻译（无库副作用）；LLM/预算失败降级不阻塞（步骤仍成功 + 告警）。
+# 术语表在 config/glossary.yaml（数据文件，不在此处；其 hash 进缓存参数）。
+translate:
+  enabled: true
+  prompt_version: v1
+  # CJK 占比 ≥ 此值判为中文块 → 跳过（国内文档近零成本）
+  skip_cjk_ratio: 0.5
+  # 是否翻译被屏蔽块（默认否：参考文献等省 token；恢复屏蔽后重跑自然补齐）
+  translate_excluded: false
+  # 单文档调用上限与 token 上限（超限剩余块标 failed，不中断；重跑只补未译块）。
+  # ⚠️ 表格块按 HTML 逐单元格翻译，输出 token 明显高于正文（实测含大表的 20 块文档
+  #    ≈ 15 万 token）—— 默认 40 万是安全阀，不是成本闸。
+  budget_calls_per_doc: 200
+  budget_tokens_per_doc: 400000
+  # 每块注入术语表的条数上限（控 token、保相关）
+  max_glossary_hits: 20
+  concurrency: 4
+
+# ── Agent 测评 · 全局身份（TECH-021 增补）【已接入】─────────────────────
+# 口径：**ctx 中的用户信息是全局设置的，用例无需各自携带**。
+# 运行物化 / 导出（catalog.effective_ctx）时注入到每条用例，覆盖用例内同名的
+# userId / familyId / babyId；全局留空（全空）时回落用例自带值。
+# 当前值 = dev 库真实数据身份（测试账号 member b42b4c6f… ＋ 旺仔 babyId=8535bda2…）：
+# R1 真实数据用例与 L 组用例共用这一身份。切换评测数据集 / 账号时只改这里
+# （「全局配置」页可改，热生效，无需重启）。
+eval:
+  ctx:
+    userId: b42b4c6f-5a57-413d-815a-af16e790f4a1
+    familyId: 5143aa2e-5d18-4a04-af9f-d783e24a528d
+    babyId: 8535bda2-7cdf-45c3-ba37-34a580822e5f

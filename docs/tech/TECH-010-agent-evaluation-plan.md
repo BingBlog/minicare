@@ -56,7 +56,7 @@
 | 资产 | 位置 | 状态 |
 |---|---|---|
 | 召回测试集-种子50题（45 题可用） | docs/敏宝知识库/召回测试集-种子50题.md | ✅ 已用 |
-| KB 映射表 | minicare-kb/var/kb_mapping.json | ⚠️ 粒度过粗待精修 |
+| KB 映射表 | minicare-platform/api/var/kb_mapping.json | ⚠️ 粒度过粗待精修 |
 | 精确 Recall@10 评测脚本 | agent-poc/scripts/eval-recall-exact.mjs | ✅ 97.8% 达标 |
 | 检索自测脚本 | agent-poc/scripts/test-search.mjs | ✅ |
 | 会话续聊脚本 | agent-poc/scripts/test-continuation.mjs | ✅ |
@@ -379,6 +379,6 @@ agent-poc/scripts/eval/
 ## 附录 B：一次性引用清单
 
 - TECH-006-minicare-agent-plan.md（P4 验收：关键信息完整率 100%、幻觉率 0、高危护栏 100%）
-- minicare-kb/docs/RECALL-REPORT.md（基线：Recall@10 = 97.8%）
+- minicare-platform/api/docs/RECALL-REPORT.md（基线：Recall@10 = 97.8%）
 - agent-poc/scripts/eval-recall-exact.mjs（现有评测 harness 范式）
 - 外部调研：DeepEval / promptfoo / openevals / RAGAS / τ-bench / BFCL / AgentBench / GAIA / AgentBoard；Langfuse / OpenLIT / Helicone / Arize Phoenix / LangSmith / Traceloop / Langtrace / Opik

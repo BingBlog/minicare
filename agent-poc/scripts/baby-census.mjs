@@ -6,7 +6,7 @@
  * 用途：找出"记录信息最多"的宝宝 —— 按各业务表条数加权排序，
  * 供后续画像/现状感知复算选目标（避免按名字 LIKE 查，生产库同名宝宝不止一个）。
  *
- * 连接：与 deploy-agent.mjs 同源 —— minicare-kb/.env 的 DB_* + 库名固定生产库。
+ * 连接：与 deploy-agent.mjs 同源 —— minicare-platform/api/.env 的 DB_* + 库名固定生产库。
  */
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url'
 import mysql from 'mysql2/promise'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const KB_ENV = path.resolve(__dirname, '../../minicare-kb/.env')
+const KB_ENV = path.resolve(__dirname, '../../minicare-platform/api/.env')
 const PROD_DB_NAME = 'minicare-cloud-6gqledlle0132cbe'
 
 const kb = {}

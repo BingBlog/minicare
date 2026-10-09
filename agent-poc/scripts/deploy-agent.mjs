@@ -17,7 +17,7 @@ import { fileURLToPath } from 'node:url'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const AGENT_POC_DIR = path.resolve(__dirname, '..')
 const SERVER_ENV = path.resolve(__dirname, '../../minicare-server/.env.local')
-const KB_ENV = path.resolve(__dirname, '../../minicare-kb/.env')
+const KB_ENV = path.resolve(__dirname, '../../minicare-platform/api/.env')
 const PROD_DB_NAME = 'minicare-cloud-6gqledlle0132cbe'
 
 function readEnv(file) {

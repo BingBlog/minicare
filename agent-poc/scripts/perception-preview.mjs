@@ -2,7 +2,7 @@
  * 现状感知 v1 干跑预览（TECH-014）
  *
  * 运行：cd agent-poc && NODE_OPTIONS= node scripts/perception-preview.mjs [宝宝名|baby_id] [--prod]
- * 默认宝宝名「旺仔」、默认 dev 库；`--prod` 指向生产库（minicare-kb/.env 的 DB_* + 固定库名）。
+ * 默认宝宝名「旺仔」、默认 dev 库；`--prod` 指向生产库（minicare-platform/api/.env 的 DB_* + 固定库名）。
  * 传 baby_id（UUID）时走主键查询 —— 生产库存在同名「旺仔」，按名字 LIKE 会取错人。
  *
  * 定位：**人眼核对工具**。算法全在 `src/lib/perception.js`（注入对话用的是同一份），
@@ -16,7 +16,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { loadLocalEnv } from '../src/lib/env.js'
 
-/** 目标库：默认 dev（.env.local）；--prod 指向生产库（minicare-kb/.env + 固定库名） */
+/** 目标库：默认 dev（.env.local）；--prod 指向生产库（minicare-platform/api/.env + 固定库名） */
 const ARGS = process.argv.slice(2)
 const PROD = ARGS.includes('--prod')
 const TARGET = ARGS.find((a) => !a.startsWith('--')) || '旺仔'
@@ -24,7 +24,7 @@ const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
 
 if (PROD) {
   // 必须在 loadLocalEnv() 之前写入：env.js 用 override:false，已存在的变量优先
-  const KB_ENV = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../minicare-kb/.env')
+  const KB_ENV = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../minicare-platform/api/.env')
   for (const line of readFileSync(KB_ENV, 'utf8').split('\n')) {
     const m = line.match(/^([A-Z_]+)=(.*)$/)
     if (m) process.env[m[1]] = m[2].trim()

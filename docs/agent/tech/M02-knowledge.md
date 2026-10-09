@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `knowledge_base` (
 
 ### 3.2 切块方案（自研实现，2026-08-23 定稿）
 
-> **实现说明**：架构评审时选定 LlamaIndex NodeParser 家族，实际实现后确认 **MinerU 产物的单行 HTML 表格与 LlamaIndex 的 ElementNodeParser 不兼容**（它只认标准 md 表格语法），且标题层级需先修复（MinerU 全输出 `##`）。因此采用**自研等价的轻量实现**（`minicare-kb/src/kb_pipeline/chunking/pipeline.py`，约 170 行），行为对齐 LlamaIndex 思路，测试锁定（31 个 pytest 全绿）。
+> **实现说明**：架构评审时选定 LlamaIndex NodeParser 家族，实际实现后确认 **MinerU 产物的单行 HTML 表格与 LlamaIndex 的 ElementNodeParser 不兼容**（它只认标准 md 表格语法），且标题层级需先修复（MinerU 全输出 `##`）。因此采用**自研等价的轻量实现**（`minicare-platform/api/src/kb_pipeline/chunking/pipeline.py`，约 170 行），行为对齐 LlamaIndex 思路，测试锁定（31 个 pytest 全绿）。
 
 ```
 ① 预处理：去 <sup>/LaTeX/页眉页脚 + 标题扁平化修复（## 一、→h2，## （一）→h3，## 1.→h4）
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `knowledge_base` (
 - **当前参数**：`chunk_size=600 / chunk_overlap=100` 已配置但**未接入**（切块按章节/段落边界，非 token 级）；`parent_kb_id` 恒 None（父子树未实现，靠 header_path 派生）；
 - **与 LlamaIndex 方案的差距（已记录，后续按效果决定是否补齐）**：① 无 overlap（大块边界内容可能丢）② 无父子树（命中子块时拿不到父块上下文）③ 表格无 LLM 摘要（表格块 embedding 质量打折）；
 - **依赖**：切块不依赖 llama-index-core（已装但未使用于切块），零运行时依赖，pytest 31 个测试锁定行为；
-- **评测基准**：精确 Recall@10 = 97.8%（45 题），见 `minicare-kb/docs/RECALL-REPORT.md`。
+- **评测基准**：精确 Recall@10 = 97.8%（45 题），见 `minicare-platform/api/docs/RECALL-REPORT.md`。
 
 ### 3.3 消费管线（导入脚本内顺序执行）
 
@@ -160,7 +160,7 @@ async function hybridSearch(query, topK = 5, filters = {}) {
 
 ## 7. 测试与验证
 
-- 召回评测：`minicare-kb/scripts/eval-recall-exact.py`（精确 Recall@10，gold 条目经 `var/kb_mapping.json` 映射判定）跑 `docs/knowledge/召回测试集-种子50题.md`，Recall@10 ≥ 90% 为上线闸门；基线见 `minicare-kb/docs/RECALL-REPORT.md`（97.8% 达标）。⚠️ 勿用"关键信息字面命中率"口径评估质量（指标失真，已弃用）。
+- 召回评测：`minicare-platform/api/scripts/eval-recall-exact.py`（精确 Recall@10，gold 条目经 `var/kb_mapping.json` 映射判定）跑 `docs/knowledge/召回测试集-种子50题.md`，Recall@10 ≥ 90% 为上线闸门；基线见 `minicare-platform/api/docs/RECALL-REPORT.md`（97.8% 达标）。⚠️ 勿用"关键信息字面命中率"口径评估质量（指标失真，已弃用）。
 - 空库降级：knowledge_base 空 → search_knowledge 返回未找到 → 回答"未收录建议就医"；
 - 来源完整性：回答的 sources 事件条目与检索结果一一对应。
 
@@ -173,7 +173,7 @@ async function hybridSearch(query, topK = 5, filters = {}) {
 | 环节 | 状态 | 说明 |
 |---|---|---|
 | 文档解析（PDF→md+json） | ✅ **已完成**（前置） | MinerU 云端 pipeline（`minerU解析版本/`，15 份 PDF 已解析/待重跑），RAG 管线最重环节无需重做 |
-| 文档切块（md→章节/表格块） | ✅ **自研完成** | `minicare-kb/chunking/pipeline.py`（170 行：标题层级修复→表格抽取→章节切块→超长降级），行为对齐 LlamaIndex 思路但零依赖；31 个 pytest 锁定 |
+| 文档切块（md→章节/表格块） | ✅ **自研完成** | `minicare-platform/api/chunking/pipeline.py`（170 行：标题层级修复→表格抽取→章节切块→超长降级），行为对齐 LlamaIndex 思路但零依赖；31 个 pytest 锁定 |
 | 知识条目 Schema（evidence_level/region/age/risk_level/review_status） | ✅ **已设计**（前置） | 《Agent知识库建设方案.md》，医疗 KB 区别于通用 RAG 的核心 |
 | 表结构 + FULLTEXT ngram | 自建（一个表） | 017 迁移 |
 | 向量检索 | 自建（<500 条内存余弦，<2MB） | 不引向量库 |

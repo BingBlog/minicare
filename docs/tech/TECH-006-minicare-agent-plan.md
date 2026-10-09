@@ -5,7 +5,7 @@
 > 基础：POC 已验证技术栈（oak-agent-demo 009）+ minicare-server + minicare-mp + 敏宝知识库调研成果
 > **v2.0 变更摘要**：新增每日日记（baby_diary 表 + 生成/编辑/配图）、图片问诊（视觉模型 deepseek-v4-flash-vision-exp）、语音输入（复用 TECH-001 链路）、一键周报/月报（analyze 工具）、会话保留策略（最近 20 条）、生长曲线解读（中国 2023 参考数据）；知识库迁移编号修正 014→**017**（014/015 被医疗记录占用、016 被 timeline_backfill 占用）。
 > **v2.0 增补（2026-08-22）**：知识库解析层切换 MinerU 云端 pipeline（vlm 丢数字实测结论），新增数字校验门禁与图片三层策略；详情见 docs/agent/tech/M02-knowledge.md。
-> **v2.0 增补（2026-08-23）**：切块定稿为**自研实现**（LlamaIndex ElementNodeParser 不兼容 MinerU HTML 表格），向量化接入 **TokenHub Kinfra**（混元老平台停止新购），20 份源文件全部入库，精确 Recall@10 = 97.8% 达标；详情见 minicare-kb/docs/ARCHITECTURE.md。
+> **v2.0 增补（2026-08-23）**：切块定稿为**自研实现**（LlamaIndex ElementNodeParser 不兼容 MinerU HTML 表格），向量化接入 **TokenHub Kinfra**（混元老平台停止新购），20 份源文件全部入库，精确 Recall@10 = 97.8% 达标；详情见 minicare-platform/api/docs/ARCHITECTURE.md。
 
 ---
 
@@ -157,7 +157,7 @@ minicare-agent/
 │   └── prompts/system.js            # systemPrompt 构造（角色/检索先行/引用/免责/日记/图片规则）
 ├── scripts/
 │   ├── sync-kb-articles.mjs / import-kb-guidelines.mjs / gen-embeddings.mjs
-│   └── （召回评测见 minicare-kb/scripts/eval-recall-exact.py，精确 Recall@10 口径）
+│   └── （召回评测见 minicare-platform/api/scripts/eval-recall-exact.py，精确 Recall@10 口径）
 └── test/  (knowledge.recall.test.mjs / e2e.http)
 ```
 
@@ -303,13 +303,13 @@ CREATE TABLE IF NOT EXISTS `knowledge_base` (
 **解析层（已完成前置）**：MinerU 云端精准解析 API（`file-urls/batch` 本地上传，`model_version=pipeline` + `language=ch`），产物存 `docs/knowledge/source/mineru-parsed/{国内,国际}/<文档名>/`（每份：`<文档名>.md` + `*_content_list.json`[bbox+page_idx] + `images/`）。
 - ⚠️ **引擎必须用 pipeline 而非 vlm**：实测 vlm 对双栏医学期刊剂量数字识别不稳定（严重过敏共识 9 处数字丢失）；pipeline 文字层保真（仅 1 处真缺失）。
 
-**切块层（自研，2026-08-23 定稿）**：`minicare-kb/chunking/pipeline.py`（~170 行）——标题层级修复（`## 一、`→h2 / `## （一）`→h3，含 HTML 无前缀标题推断）→ 表格抽取独立成块（`<table>` HTML 全文，占位符 `[[TABLE_n]]`）→ 章节/子节切块（header_path 继承）→ 超长章节（>1200 字符）按段落降级。行为对齐 LlamaIndex NodeParser 思路；初版曾选 LlamaIndex，实测其 ElementNodeParser 不兼容 MinerU 单行 HTML 表格故自研；31 个 pytest 锁定。差距（后续按效果补齐）：无 overlap / 无父子树 / 表格无 LLM 摘要。
+**切块层（自研，2026-08-23 定稿）**：`minicare-platform/api/chunking/pipeline.py`（~170 行）——标题层级修复（`## 一、`→h2 / `## （一）`→h3，含 HTML 无前缀标题推断）→ 表格抽取独立成块（`<table>` HTML 全文，占位符 `[[TABLE_n]]`）→ 章节/子节切块（header_path 继承）→ 超长章节（>1200 字符）按段落降级。行为对齐 LlamaIndex NodeParser 思路；初版曾选 LlamaIndex，实测其 ElementNodeParser 不兼容 MinerU 单行 HTML 表格故自研；31 个 pytest 锁定。差距（后续按效果补齐）：无 overlap / 无父子树 / 表格无 LLM 摘要。
 
 **向量化（TokenHub）**：混元老平台已停止新购 → 腾讯大模型服务统一走 **TokenHub**（OpenAI 兼容），向量模型 `kinfra-text-embedding-0.6b`（1024 维）。已全量生成 1584 条 embedding。
 
-**导入管线 `kb-pipeline`（minicare-kb 工程）**：chunk（清洗→切块→页码锚定→数字校验→chunks.jsonl）→ import-kb（016→**017** 迁移，knowledge_base 表）→ embed（TokenHub 增量向量化）。数字校验门禁：9 类缺失模式扫描，命中标 review（`[待复核]` 前缀 + risk=caution，不入检索）。
+**导入管线 `kb-pipeline`（minicare-platform/api 工程）**：chunk（清洗→切块→页码锚定→数字校验→chunks.jsonl）→ import-kb（016→**017** 迁移，knowledge_base 表）→ embed（TokenHub 增量向量化）。数字校验门禁：9 类缺失模式扫描，命中标 review（`[待复核]` 前缀 + risk=caution，不入检索）。
 
-**评测基线**：精确 Recall@10 = **97.8%（45 题）** ≥ 90% 上线门槛；报告 `minicare-kb/docs/RECALL-REPORT.md`。
+**评测基线**：精确 Recall@10 = **97.8%（45 题）** ≥ 90% 上线门槛；报告 `minicare-platform/api/docs/RECALL-REPORT.md`。
 
 **图片三层策略**：P0 图注文本化（caption 写入所在块，本期）；P1 视觉模型补描述（deepseek-v4-flash-vision-exp，二期）；P2 多模态向量（不做）。表格走 `table_body` HTML 文本通道，不走图片。
 
@@ -474,7 +474,7 @@ minicare-mp/src/pages/diary/detail.tsx  # 日记详情/编辑（配图上传）
 
 #### P1 知识库（5-6 人日，✅ 2026-08-23 完成）
 1. ✅ 迁移 017_knowledge_base.sql（dev 库已建表；生产库待部署时执行）
-2. ✅ 数据导入：1586 条入 dev 库（MinerU pipeline 解析 + 自研切块 + TokenHub embedding 1584 条），见 minicare-kb/var/chunks.jsonl
+2. ✅ 数据导入：1586 条入 dev 库（MinerU pipeline 解析 + 自研切块 + TokenHub embedding 1584 条），见 minicare-platform/api/var/chunks.jsonl
 3. ✅ search_knowledge RRF 融合 + 向量 + 检索先行规则：agent-poc `search-knowledge.js` 重写（FULLTEXT ngram + BLOB 向量余弦 + RRF k=60，topK=5；review 条目 REGEXP 过滤）
 - ✅ 验收：**精确 Recall@10 = 97.8%（44/45）通过闸门**（agent-poc/scripts/eval-recall-exact.mjs）；回答带来源（items.source）；空库降级返回"未找到"
 - ⏳ 待部署：生产库建表 + 导入 + embedding 拷贝；云端 EnvParams 补 DB_*/TOKENHUB_API_KEY；重新部署 minicare-agent

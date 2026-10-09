@@ -1,7 +1,7 @@
 /**
  * 精确 Recall@10 评测（scripts/eval-recall-exact.mjs，M02 §7 上线闸门）
  *
- * 口径与 minicare-kb/scripts/eval-recall-exact.py 一致：
+ * 口径与 minicare-platform/api/scripts/eval-recall-exact.py 一致：
  *   Recall@10 = 每题 gold KB 条目映射的知识块在 top10 中被命中的比例，≥90% 为闸门。
  * 检索用本服务（agent-poc）的 hybridSearch——验证的就是生产检索链路。
  *
@@ -11,12 +11,16 @@ import { loadLocalEnv } from '../src/lib/env.js'
 
 loadLocalEnv()
 import fs from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { initDb, closeDb } from '../src/lib/db.js'
 import { loadConfig } from '../src/config.js'
 import { hybridSearch } from '../src/lib/tools/search-knowledge.js'
 
-const TEST_SET = '/Users/bing/Documents/minicare-v1/docs/敏宝知识库/召回测试集-种子50题.md'
-const MAPPING = '/Users/bing/Documents/minicare-v1/minicare-kb/var/kb_mapping.json'
+const _dir = path.dirname(fileURLToPath(import.meta.url))
+const TEST_SET = path.resolve(_dir, '../../docs/knowledge/research/召回测试集-种子50题.md')
+// 映射表为构建期中间产物（var/ 下）；如缺失，见 minicare-platform/api/docs/KB-MAPPING.md
+const MAPPING = path.resolve(_dir, '../../minicare-platform/api/var/kb_mapping.json')
 const RRF_TOP_K = 10
 
 function parseTestset(path) {

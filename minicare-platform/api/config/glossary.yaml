@@ -1,0 +1,71 @@
+# ============================================================================
+# 翻译术语表（TECH-019 §3.5）—— CMPA / 食物过敏领域的受控译名
+# ----------------------------------------------------------------------------
+# 用法：translate 步骤按块匹配（大小写不敏感；按词边界），只把**该块命中的词条**
+#       注入 prompt；`keep_en: true` 的条目要求在译文中保留英文原词（缩写/代号类）。
+# 维护：本文件是**术语数据**（非阈值），与 pipeline.yaml 分离（git 可 diff/review）。
+#       改动经 glossary_hash 进入 translate 的缓存参数 —— 只重翻"命中受影响词条"的块，
+#       不触发上游（解析/切块/校验）重跑。
+# ============================================================================
+version: 1
+terms:
+  # ── 疾病与分型 ──────────────────────────────────────────────
+  - { en: "cow's milk protein allergy", zh: "牛奶蛋白过敏" }
+  - { en: "CMPA", zh: "牛奶蛋白过敏", keep_en: true }
+  - { en: "food allergy", zh: "食物过敏" }
+  - { en: "food protein-induced allergic proctocolitis", zh: "食物蛋白诱导性过敏性直肠结肠炎" }
+  - { en: "FPIAP", zh: "食物蛋白诱导性过敏性直肠结肠炎", keep_en: true }
+  - { en: "food protein-induced enterocolitis syndrome", zh: "食物蛋白诱导性小肠结肠炎综合征" }
+  - { en: "FPIES", zh: "食物蛋白诱导性小肠结肠炎综合征", keep_en: true }
+  - { en: "atopic dermatitis", zh: "特应性皮炎" }
+  - { en: "eczema", zh: "湿疹" }
+  - { en: "urticaria", zh: "荨麻疹" }
+  - { en: "anaphylaxis", zh: "严重过敏反应" }
+  - { en: "angioedema", zh: "血管性水肿" }
+  - { en: "allergic rhinitis", zh: "过敏性鼻炎" }
+  # ── 配方与营养 ──────────────────────────────────────────────
+  - { en: "extensively hydrolyzed formula", zh: "深度水解配方" }
+  - { en: "eHF", zh: "深度水解配方", keep_en: true }
+  - { en: "partially hydrolyzed formula", zh: "适度水解配方" }
+  - { en: "pHF", zh: "适度水解配方", keep_en: true }
+  - { en: "amino acid formula", zh: "氨基酸配方" }
+  - { en: "AAF", zh: "氨基酸配方", keep_en: true }
+  - { en: "extensively hydrolyzed casein formula", zh: "深度水解酪蛋白配方" }
+  - { en: "extensively hydrolyzed whey formula", zh: "深度水解乳清蛋白配方" }
+  - { en: "hydrolyzed formula", zh: "水解配方" }
+  - { en: "hypoallergenic formula", zh: "低敏配方" }
+  - { en: "soy formula", zh: "大豆配方" }
+  - { en: "infant formula", zh: "婴儿配方奶" }
+  - { en: "casein", zh: "酪蛋白" }
+  - { en: "whey protein", zh: "乳清蛋白" }
+  - { en: "lactose", zh: "乳糖" }
+  - { en: "lactose-free", zh: "无乳糖" }
+  # ── 诊断与检查 ──────────────────────────────────────────────
+  - { en: "oral food challenge", zh: "口服食物激发试验" }
+  - { en: "OFC", zh: "口服食物激发试验", keep_en: true }
+  - { en: "double-blind placebo-controlled food challenge", zh: "双盲安慰剂对照食物激发试验" }
+  - { en: "skin prick test", zh: "皮肤点刺试验" }
+  - { en: "SPT", zh: "皮肤点刺试验", keep_en: true }
+  - { en: "specific IgE", zh: "特异性 IgE" }
+  - { en: "sIgE", zh: "特异性 IgE", keep_en: true }
+  - { en: "IgE-mediated", zh: "IgE 介导的", keep_en: true }
+  - { en: "non-IgE-mediated", zh: "非 IgE 介导的", keep_en: true }
+  # ── 管理与治疗 ──────────────────────────────────────────────
+  - { en: "sensitization", zh: "致敏" }
+  - { en: "oral tolerance", zh: "口服耐受" }
+  - { en: "tolerance", zh: "耐受" }
+  - { en: "elimination diet", zh: "饮食回避" }
+  - { en: "exclusive breastfeeding", zh: "纯母乳喂养" }
+  - { en: "breastfeeding", zh: "母乳喂养" }
+  - { en: "complementary feeding", zh: "辅食喂养" }
+  - { en: "introduction of complementary foods", zh: "辅食添加" }
+  - { en: "adrenaline", zh: "肾上腺素" }
+  - { en: "epinephrine", zh: "肾上腺素" }
+  - { en: "antihistamine", zh: "抗组胺药" }
+  - { en: "allergen", zh: "过敏原" }
+  - { en: "cross-reactivity", zh: "交叉反应" }
+  - { en: "growth faltering", zh: "生长迟缓" }
+  # ── 研究与证据 ──────────────────────────────────────────────
+  - { en: "randomized controlled trial", zh: "随机对照试验" }
+  - { en: "systematic review", zh: "系统综述" }
+  - { en: "meta-analysis", zh: "荟萃分析" }

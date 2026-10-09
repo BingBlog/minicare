@@ -31,7 +31,7 @@ const TARGET = positional[0] || (PROD ? PROD_WANGZAI : '旺仔')
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
 if (PROD) {
-  const KB_ENV = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../minicare-kb/.env')
+  const KB_ENV = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../minicare-platform/api/.env')
   for (const line of readFileSync(KB_ENV, 'utf8').split('\n')) {
     const m = line.match(/^([A-Z_]+)=(.*)$/)
     if (m) process.env[m[1]] = m[2].trim()

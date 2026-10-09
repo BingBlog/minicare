@@ -8,7 +8,7 @@
 - `minicare-server/` NestJS 后端（CloudRun）
 - `minicare-web/` Web 端（维护模式，历史原型）
 - `agent-poc/` 养娃智能体 POC（已验证完成，见其 README）
-- `minicare-kb/` 敏宝知识库管线工程
+- `minicare-platform/api/` 敏宝知识库管线工程
 - `docs/` 全部文档（从 docs/README.md 进入）
 - `Design-Reference/` `ui-draft/` 历史原型/设计稿，仅作参考
 

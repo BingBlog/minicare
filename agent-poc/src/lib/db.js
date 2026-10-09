@@ -6,7 +6,7 @@
  * 避免容器因配置缺失崩溃进入 Back-off 重启循环（M8 tech §6）。
  *
  * 环境变量：DB_HOST / DB_PORT / DB_NAME / DB_USER / DB_PASSWORD
- *   （与 minicare-kb/.env 及迁移脚本命名一致）
+ *   （与 minicare-platform/api/.env 及迁移脚本命名一致）
  */
 import mysql from 'mysql2/promise'
 

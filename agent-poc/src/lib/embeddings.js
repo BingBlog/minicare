@@ -2,7 +2,7 @@
  * 文本向量化（lib/embeddings.js，P1 知识库）
  *
  * 运行时对 query 现算 embedding（TokenHub，OpenAI 兼容 /v1/embeddings），
- * 与 minicare-kb/embed/hunyuan.py 使用同一模型 kinfra-text-embedding-0.6b（1024 维），
+ * 与 minicare-platform/api/embed/hunyuan.py 使用同一模型 kinfra-text-embedding-0.6b（1024 维），
  * 保证离线入库向量与在线 query 向量同空间。
  *
  * 环境变量：TOKENHUB_API_KEY（sk- 开头）。缺 key 时 embed() 返回 null，
