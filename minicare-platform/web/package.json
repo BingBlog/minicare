@@ -1,0 +1,31 @@
+{
+  "name": "minicare-platform-web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "敏宝管理平台 · 维护端（React 18 + Vite 6 + Tailwind，TECH-015 §4.8 / §17.1）",
+  "scripts": {
+    "pdfjs:assets": "node scripts/copy-pdfjs.mjs",
+    "dev": "npm run pdfjs:assets && vite",
+    "build": "npm run pdfjs:assets && tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "markdown-it": "^15.0.2",
+    "pdfjs-dist": "^6.3.289",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^14.2.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.16",
+    "typescript": "~5.6.2",
+    "vite": "^6.0.5"
+  }
+}

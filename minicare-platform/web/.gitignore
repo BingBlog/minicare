@@ -1,0 +1,11 @@
+# 依赖与构建产物
+node_modules/
+dist/
+*.local
+
+# Vite / TS 缓存
+.vite/
+*.tsbuildinfo
+
+# pdf.js 运行期资源（由 scripts/copy-pdfjs.mjs 从 node_modules 再生，不必进版本库）
+public/pdfjs/
