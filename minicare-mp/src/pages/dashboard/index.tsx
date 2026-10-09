@@ -159,7 +159,8 @@ export default function DashboardPage() {
     try {
       await recordsApi.sleep.endSleep(familyId, sleepId, {
         end_time: endTime,
-        quality: 'normal',
+        // 睡眠卡无质量选择入口：默认「良好」（与计时/补录页默认值一致）
+        quality: 'good',
         sleep_period: period,
       })
       data.refresh()

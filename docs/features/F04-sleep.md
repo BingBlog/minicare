@@ -3,7 +3,7 @@
 > 功能 ID：P0-007  
 > 优先级：P0  
 > 状态：**已完成** ✅  
-> 最后更新：2026-05-21（新增：跨零点睡眠自动拆分规则）
+> 最后更新：2026-10-09（明确：睡眠质量默认「良好」；修正 quality 值域为 good/normal/poor；补建影响面清单）
 
 ## 功能描述
 
@@ -29,6 +29,21 @@
 ### 首页 SleepBanner
 
 当存在 ongoing 记录时，首页显示"宝宝正在睡觉"横幅（含实时计时），支持一键结束。
+
+### 睡眠质量默认值（2026-10-09 明确）
+
+`quality` 值域：`good`（良好）/ `normal`（一般）/ `poor`（较差），可空。
+
+**所有「无质量选择入口」的保存路径统一默认「良好」（`good`）**：
+
+| 保存路径 | 质量取值来源 |
+|----------|--------------|
+| 睡眠表单（计时结束 / 补录 / 编辑） | 表单质量选择控件，默认选中「良好」，用户可改 |
+| 首页 SleepBanner「结束睡眠」 | 无选择控件 → 固定提交 `good` |
+| Dashboard 睡眠卡「结束」 | 无选择控件 → 固定提交 `good` |
+
+> ⚠️ 反例（勿回归）：上述快捷路径**禁止**硬编码 `normal`——曾出现横幅 / 看板一键结束写死 `normal`，导致计时模式创建的记录保存后总显示「一般」。
+> 例外：scheduler 超时自动关闭（ongoing 超过 16h）提交 `poor` + 备注，属异常兜底，不适用本规则。
 
 ## 状态机
 
@@ -66,7 +81,7 @@ ongoing ──(end)──→ ended
 | `duration_min` | INT | 时长（分钟），后端 TIMESTAMPDIFF 计算 |
 | `status` | VARCHAR(10) | `ongoing` / `ended` |
 | `sleep_period` | VARCHAR(20) | 时段：night/morning_nap/afternoon_nap/other |
-| `quality` | VARCHAR(10) | 质量：good/fair/poor（可选） |
+| `quality` | VARCHAR(10) | 质量：good（良好）/normal（一般）/poor（较差），可空 |
 | `note` | TEXT | 备注 |
 
 ## DTO 字段
@@ -121,6 +136,39 @@ ongoing ──(end)──→ ended
 - [x] 首页 SleepBanner 显示 + 一键结束
 - [x] 睡眠质量选择（好/一般/差）
 - [x] 编辑和删除已有记录
+
+## 影响面清单（消费方）
+
+> **改动 F04 任何逻辑前必读**：运行 `node .agents/scripts/impact-scan.mjs sleep quality`
+> 核对以下消费点（大小写不敏感匹配，需人工确认），改动后同步更新本清单。
+> 本清单 2026-10-09 建立（起因：横幅/看板一键结束写死 `normal`，修复时需全量排查消费点）。
+
+**入口层**
+- 快捷入口 / 路由映射：`minicare-mp/src/lib/constants.ts`（`RECORD_TYPE_CFG.sleep` / `HOME_RECORD_ROUTES` / `HOME_RECORD_MP_ROUTES` / `AGE_QUICK_KEYS`）
+- FAB / 语音入口：`minicare-mp/src/components/TabBar/TabBar.tsx`（`sleep` 快捷补录走 `createComplete`、`sleep_start` / `sleep_end` 语音起止——**均不传 quality（写 null，无质量标签）**）
+- 日程预填：`minicare-mp/src/lib/schedule.ts`（类型→记录页跳转）+ `pages/records/sleep/index.tsx`（`initTime` 预填）
+
+**表单页 / 组件**
+- 表单页：`minicare-mp/src/pages/records/sleep/index.tsx`（计时 / 补录 / 编辑三态；`sleepQuality` 默认 `good`）
+- 区块组件：`TimerMode.tsx` / `ManualMode.tsx` / `QualitySection.tsx`
+
+**展示层（质量标签口径）**
+- 首页时间线：`minicare-mp/src/pages/home/homeRecords.ts`（`SLEEP_QUALITY_LABELS`）
+- 记录列表：`minicare-mp/src/pages/records/list/recordListDisplay.ts`（质量为 tag 之一）
+- Dashboard：`minicare-mp/src/pages/dashboard/SleepColumn.tsx`（`QUALITY_PILL`：good=质量好 / normal=一般 / poor=较差）+ `dashboard/index.tsx`（`handleEndSleep`：无选择入口 → `good`）
+- 首页横幅（一键结束入口）：`minicare-mp/src/pages/home/SleepBanner.tsx`（无选择入口 → `good`）
+- 首页睡眠统计：`minicare-mp/src/pages/home/index.tsx`（`sleepStat`）
+
+**API 层**
+- `minicare-mp/src/api/sleep.ts`（`SleepQuality` / `StartSleepDto` / `EndSleepDto` / `CreateCompleteSleepDto` / `UpdateSleepDto`）
+
+**后端**
+- `minicare-server/src/records/sleep/`（service：结束取值 `dto.quality ?? existing.quality ?? null`；跨零点拆分时 quality 继承原值）
+- `minicare-server/src/records/timeline/timeline.service.ts`（`loadSleepPayload` 含 `quality`，进 `record_timeline`）
+- `minicare-server/src/scheduler/tasks.service.ts`（超时 16h 自动关闭 → `poor`）
+
+**Web（维护模式，与 MP 保持 1:1 对齐）**
+- `minicare-web/src/pages/home/SleepBanner.tsx` / `pages/dashboard/index.tsx`（`handleEndSleep`）/ `pages/dashboard/RecordDrawer.tsx`（`sleepQualityTimer` 默认 `good`）/ `pages/records/sleep/index.tsx`（`editRecord?.quality ?? "good"`）
 
 ## 相关文件
 

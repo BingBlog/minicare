@@ -122,7 +122,8 @@ export default function DashboardPage() {
     const period = sleepRecord ? inferSleepPeriod(sleepRecord.time) : inferSleepPeriod(dateToLocalISO(new Date()))
     await recordsApi.sleep.endSleep(family.id, sleepId, {
       end_time: dateToLocalISO(new Date()),
-      quality: 'normal',
+      // 睡眠卡无质量选择入口：默认「良好」（与计时/补录页默认值一致）
+      quality: 'good',
       sleep_period: period as SleepPeriod,
     })
     data.refresh()

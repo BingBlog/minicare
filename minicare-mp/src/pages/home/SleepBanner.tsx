@@ -54,7 +54,8 @@ export default function SleepBanner(props: SleepBannerProps) {
     try {
       await sleepApi.endSleep(familyId, recordId, {
         end_time: nowLocalISO(),
-        quality: 'normal',
+        // 横幅无质量选择入口：默认「良好」（与计时/补录页默认值一致）
+        quality: 'good',
         sleep_period: sleepPeriod || inferSleepPeriod(startTime),
       })
       onEnded()
