@@ -5,52 +5,52 @@
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="t1" value="minicare 业务闭环 · 从「靠记忆」到「数据闭环」" style="text;html=1;fontSize=26;fontStyle=1;fontColor=#1a1a1a;align=left;verticalAlign=middle;" vertex="1" parent="1">
-          <mxGeometry x="40" y="26" width="1100" height="44" as="geometry" />
+        <mxCell id="t1" value="minicare 业务闭环 · 从「靠记忆」到「数据闭环」" style="text;html=1;fontSize=32;fontStyle=1;fontColor=#1a1a1a;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="26" width="1480" height="44" as="geometry" />
         </mxCell>
-        <mxCell id="t2" value="记录面 × 分析面 —— 数据在「录入 → 感知 → 分析 → 建议 → 再记录」中持续增值" style="text;html=1;fontSize=14;fontColor=#666666;align=left;verticalAlign=middle;" vertex="1" parent="1">
-          <mxGeometry x="40" y="72" width="1300" height="26" as="geometry" />
+        <mxCell id="t2" value="记录面 × 分析面 —— 数据在「录入 → 感知 → 分析 → 建议 → 再记录」中持续增值" style="text;html=1;fontSize=17;fontColor=#666666;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="72" width="1480" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="bandA" value="核心问题 —— 过敏管理是长期连续过程（排敏数周 · 转奶数月），却只能靠记忆与零散记录" style="swimlane;startSize=34;html=1;fillColor=#fbfbfb;strokeColor=#aaaaaa;fontSize=14;fontStyle=1;fontColor=#333333;align=left;spacingLeft=12;verticalAlign=middle;" vertex="1" parent="1">
+        <mxCell id="bandA" value="核心问题 —— 过敏管理是长期连续过程（排敏数周 · 转奶数月），却只能靠记忆与零散记录" style="swimlane;startSize=34;html=1;fillColor=#fbfbfb;strokeColor=#aaaaaa;fontSize=17;fontStyle=1;fontColor=#333333;align=center;verticalAlign=middle;" vertex="1" parent="1">
           <mxGeometry x="40" y="120" width="1480" height="150" as="geometry" />
         </mxCell>
-        <mxCell id="c1" value="排敏无规范记录" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=13;fontColor=#333333;" vertex="1" parent="bandA">
+        <mxCell id="c1" value="排敏无规范记录" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=16;fontColor=#333333;" vertex="1" parent="bandA">
           <mxGeometry x="20" y="70" width="250" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="c2" value="因果无法关联" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=13;fontColor=#333333;" vertex="1" parent="bandA">
+        <mxCell id="c2" value="因果无法关联" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=16;fontColor=#333333;" vertex="1" parent="bandA">
           <mxGeometry x="310" y="70" width="250" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="c3" value="就医沟通成本高" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=13;fontColor=#333333;" vertex="1" parent="bandA">
+        <mxCell id="c3" value="就医沟通成本高" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=16;fontColor=#333333;" vertex="1" parent="bandA">
           <mxGeometry x="600" y="70" width="250" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="c4" value="祖辈参与门槛高" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=13;fontColor=#333333;" vertex="1" parent="bandA">
+        <mxCell id="c4" value="祖辈参与门槛高" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=16;fontColor=#333333;" vertex="1" parent="bandA">
           <mxGeometry x="890" y="70" width="250" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="c5" value="综合 App 不匹配" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=13;fontColor=#333333;" vertex="1" parent="bandA">
+        <mxCell id="c5" value="综合 App 不匹配" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=16;fontColor=#333333;" vertex="1" parent="bandA">
           <mxGeometry x="1180" y="70" width="250" height="60" as="geometry" />
         </mxCell>
         <mxCell id="eIntro" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endSize=8;strokeWidth=2;strokeColor=#999999;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="bandA" target="n1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="lt" value="minicare 的解法" style="text;html=1;fontSize=12;fontColor=#999999;align=left;verticalAlign=middle;" vertex="1" parent="1">
+        <mxCell id="lt" value="minicare 的解法" style="text;html=1;fontSize=14;fontColor=#999999;align=center;verticalAlign=middle;" vertex="1" parent="1">
           <mxGeometry x="792" y="274" width="200" height="24" as="geometry" />
         </mxCell>
-        <mxCell id="n1" value="&lt;b&gt;&lt;font style='font-size:15px'&gt;① 界面录入 · 唯一写入口&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#555555'&gt;表单 / 打卡 / 语音预填 / 拍照&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#38761d'&gt;解决：祖辈门槛 → 语音 · 大字 · 快选&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontColor=#333333;" vertex="1" parent="1">
+        <mxCell id="n1" value="&lt;b&gt;&lt;font style='font-size:18px'&gt;① 界面录入 · 唯一写入口&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:14px' color='#555555'&gt;表单 / 打卡 / 语音预填 / 拍照&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:14px' color='#38761d'&gt;解决：祖辈门槛 → 语音 · 大字 · 快选&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=16;fontColor=#333333;" vertex="1" parent="1">
           <mxGeometry x="620" y="300" width="320" height="140" as="geometry" />
         </mxCell>
-        <mxCell id="n2" value="&lt;b&gt;&lt;font style='font-size:15px'&gt;② 结构化记录落库&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#555555'&gt;8 类记录 + 排敏任务 + 转奶配比&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#38761d'&gt;解决：排敏靠记忆 → 任务化 · 逐日打卡&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontColor=#333333;" vertex="1" parent="1">
+        <mxCell id="n2" value="&lt;b&gt;&lt;font style='font-size:18px'&gt;② 结构化记录落库&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:14px' color='#555555'&gt;8 类记录 + 排敏任务 + 转奶配比&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:14px' color='#38761d'&gt;解决：排敏靠记忆 → 任务化 · 逐日打卡&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=16;fontColor=#333333;" vertex="1" parent="1">
           <mxGeometry x="1070" y="500" width="320" height="140" as="geometry" />
         </mxCell>
-        <mxCell id="n3" value="&lt;b&gt;&lt;font style='font-size:15px'&gt;③ 状态感知 · 服务端派生&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#555555'&gt;从记录派生信号，随对话注入&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#38761d'&gt;解决：因果难关联 → 信号关联 · 矛盾检测&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;fontColor=#333333;" vertex="1" parent="1">
+        <mxCell id="n3" value="&lt;b&gt;&lt;font style='font-size:18px'&gt;③ 状态感知 · 服务端派生&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:14px' color='#555555'&gt;从记录派生信号，随对话注入&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:14px' color='#38761d'&gt;解决：因果难关联 → 信号关联 · 矛盾检测&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=16;fontColor=#333333;" vertex="1" parent="1">
           <mxGeometry x="900" y="830" width="320" height="140" as="geometry" />
         </mxCell>
-        <mxCell id="n4" value="&lt;b&gt;&lt;font style='font-size:15px'&gt;④ 对话分析 · 只读数据&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#555555'&gt;知识检索 + 健康数据查询&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#38761d'&gt;解决：解读门槛 → 权威问答 · 来源引用&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=13;fontColor=#333333;" vertex="1" parent="1">
+        <mxCell id="n4" value="&lt;b&gt;&lt;font style='font-size:18px'&gt;④ 对话分析 · 只读数据&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:14px' color='#555555'&gt;知识检索 + 健康数据查询&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:14px' color='#38761d'&gt;解决：解读门槛 → 权威问答 · 来源引用&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=16;fontColor=#333333;" vertex="1" parent="1">
           <mxGeometry x="340" y="830" width="320" height="140" as="geometry" />
         </mxCell>
-        <mxCell id="n5" value="&lt;b&gt;&lt;font style='font-size:15px'&gt;⑤ 产出与应用&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#555555'&gt;建议卡 / 日记草稿 / 5 维度报告&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#38761d'&gt;解决：就医说不清 → 报告 + 生长曲线&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=13;fontColor=#333333;" vertex="1" parent="1">
+        <mxCell id="n5" value="&lt;b&gt;&lt;font style='font-size:18px'&gt;⑤ 产出与应用&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:14px' color='#555555'&gt;建议卡 / 日记草稿 / 5 维度报告&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:14px' color='#38761d'&gt;解决：就医说不清 → 报告 + 生长曲线&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=16;fontColor=#333333;" vertex="1" parent="1">
           <mxGeometry x="170" y="500" width="320" height="140" as="geometry" />
         </mxCell>
-        <mxCell id="core" value="&lt;b&gt;&lt;font style='font-size:18px'&gt;数据闭环&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#555555'&gt;记录 → 感知 → 分析 → 建议&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#38761d'&gt;越记录，越懂宝宝&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;strokeWidth=2;fontSize=13;fontColor=#333333;" vertex="1" parent="1">
+        <mxCell id="core" value="&lt;b&gt;&lt;font style='font-size:22px'&gt;数据闭环&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:14px' color='#555555'&gt;记录 → 感知 → 分析 → 建议&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:14px' color='#38761d'&gt;越记录，越懂宝宝&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;strokeWidth=2;fontSize=16;fontColor=#333333;" vertex="1" parent="1">
           <mxGeometry x="640" y="580" width="280" height="160" as="geometry" />
         </mxCell>
         <mxCell id="er1" style="edgeStyle=none;html=1;endArrow=block;endFill=1;endSize=8;strokeWidth=2;strokeColor=#888888;" edge="1" parent="1" source="n1" target="n2">
@@ -68,37 +68,37 @@
         <mxCell id="er5" style="edgeStyle=none;html=1;endArrow=block;endFill=1;endSize=8;strokeWidth=2;strokeColor=#888888;" edge="1" parent="1" source="n5" target="n1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="bandD" value="记录的内容项 × 场景价值（分析 · 诊断 · 就医）" style="swimlane;startSize=34;html=1;fillColor=#fbfbfb;strokeColor=#aaaaaa;fontSize=14;fontStyle=1;fontColor=#333333;align=left;spacingLeft=12;verticalAlign=middle;" vertex="1" parent="1">
+        <mxCell id="bandD" value="记录的内容项 × 场景价值（分析 · 诊断 · 就医）" style="swimlane;startSize=34;html=1;fillColor=#fbfbfb;strokeColor=#aaaaaa;fontSize=17;fontStyle=1;fontColor=#333333;align=center;verticalAlign=middle;" vertex="1" parent="1">
           <mxGeometry x="40" y="1010" width="1480" height="260" as="geometry" />
         </mxCell>
-        <mxCell id="g1a" value="&lt;b&gt;喝奶统计&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;奶量 · 配比&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontColor=#333333;" vertex="1" parent="bandD">
+        <mxCell id="g1a" value="&lt;b&gt;喝奶统计&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:14px' color='#777777'&gt;奶量 · 配比&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=16;fontColor=#333333;" vertex="1" parent="bandD">
           <mxGeometry x="20" y="48" width="106" height="56" as="geometry" />
         </mxCell>
-        <mxCell id="g1b" value="&lt;b&gt;辅食记录&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;食物明细&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontColor=#333333;" vertex="1" parent="bandD">
+        <mxCell id="g1b" value="&lt;b&gt;辅食记录&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:14px' color='#777777'&gt;食物明细&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=16;fontColor=#333333;" vertex="1" parent="bandD">
           <mxGeometry x="138" y="48" width="106" height="56" as="geometry" />
         </mxCell>
-        <mxCell id="g1c" value="&lt;b&gt;睡眠记录&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;时长 · 质量&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontColor=#333333;" vertex="1" parent="bandD">
+        <mxCell id="g1c" value="&lt;b&gt;睡眠记录&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:14px' color='#777777'&gt;时长 · 质量&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=16;fontColor=#333333;" vertex="1" parent="bandD">
           <mxGeometry x="256" y="48" width="106" height="56" as="geometry" />
         </mxCell>
-        <mxCell id="g1d" value="&lt;b&gt;生长记录&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;身高体重头围&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontColor=#333333;" vertex="1" parent="bandD">
+        <mxCell id="g1d" value="&lt;b&gt;生长记录&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:14px' color='#777777'&gt;身高体重头围&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=16;fontColor=#333333;" vertex="1" parent="bandD">
           <mxGeometry x="374" y="48" width="106" height="56" as="geometry" />
         </mxCell>
-        <mxCell id="g2a" value="&lt;b&gt;尿布记录&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;大便 / 尿湿&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontColor=#333333;" vertex="1" parent="bandD">
+        <mxCell id="g2a" value="&lt;b&gt;尿布记录&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:14px' color='#777777'&gt;大便 / 尿湿&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=16;fontColor=#333333;" vertex="1" parent="bandD">
           <mxGeometry x="520" y="48" width="144" height="56" as="geometry" />
         </mxCell>
-        <mxCell id="g2b" value="&lt;b&gt;健康表现&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;皮疹 · 呕吐 · 腹泻&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontColor=#333333;" vertex="1" parent="bandD">
+        <mxCell id="g2b" value="&lt;b&gt;健康表现&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:14px' color='#777777'&gt;皮疹 · 呕吐 · 腹泻&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=16;fontColor=#333333;" vertex="1" parent="bandD">
           <mxGeometry x="678" y="48" width="144" height="56" as="geometry" />
         </mxCell>
-        <mxCell id="g2c" value="&lt;b&gt;转奶配比&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;阶段 · 比例&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontColor=#333333;" vertex="1" parent="bandD">
+        <mxCell id="g2c" value="&lt;b&gt;转奶配比&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:14px' color='#777777'&gt;阶段 · 比例&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=16;fontColor=#333333;" vertex="1" parent="bandD">
           <mxGeometry x="836" y="48" width="144" height="56" as="geometry" />
         </mxCell>
-        <mxCell id="g3a" value="&lt;b&gt;日程管理&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;作息计划&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontColor=#333333;" vertex="1" parent="bandD">
+        <mxCell id="g3a" value="&lt;b&gt;日程管理&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:14px' color='#777777'&gt;作息计划&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=16;fontColor=#333333;" vertex="1" parent="bandD">
           <mxGeometry x="1020" y="48" width="144" height="56" as="geometry" />
         </mxCell>
-        <mxCell id="g3b" value="&lt;b&gt;医疗档案&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;疫苗 · 儿保 · 就诊&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontColor=#333333;" vertex="1" parent="bandD">
+        <mxCell id="g3b" value="&lt;b&gt;医疗档案&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:14px' color='#777777'&gt;疫苗 · 儿保 · 就诊&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=16;fontColor=#333333;" vertex="1" parent="bandD">
           <mxGeometry x="1178" y="48" width="144" height="56" as="geometry" />
         </mxCell>
-        <mxCell id="g3c" value="&lt;b&gt;用药记录&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px' color='#777777'&gt;用药时间线&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontColor=#333333;" vertex="1" parent="bandD">
+        <mxCell id="g3c" value="&lt;b&gt;用药记录&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:14px' color='#777777'&gt;用药时间线&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=16;fontColor=#333333;" vertex="1" parent="bandD">
           <mxGeometry x="1336" y="48" width="144" height="56" as="geometry" />
         </mxCell>
         <mxCell id="da1" style="edgeStyle=none;html=1;endArrow=block;endFill=1;endSize=7;strokeWidth=1.5;strokeColor=#82b366;" edge="1" parent="bandD">
@@ -119,46 +119,46 @@
             <mxPoint x="1250" y="132" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="dc1" value="&lt;b&gt;分析 · 生长曲线与健康度&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;奶量 / 摄食趋势 · 作息规律 · 睡眠质量&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;生长分位（P3–P97）对照 → 健康度一眼看清&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;fontColor=#333333;align=left;spacingLeft=14;" vertex="1" parent="bandD">
+        <mxCell id="dc1" value="&lt;b&gt;分析 · 生长曲线与健康度&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:14px'&gt;奶量 / 摄食趋势 · 作息规律 · 睡眠质量&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:14px'&gt;生长分位（P3–P97）对照 → 健康度一眼看清&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=16;fontColor=#333333;align=center;" vertex="1" parent="bandD">
           <mxGeometry x="30" y="132" width="440" height="108" as="geometry" />
         </mxCell>
-        <mxCell id="dc2" value="&lt;b&gt;诊断辅助 · 因果关联与判定&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;食物 ↔ 症状关联 · 便血 / 腹泻识别（Bristol）&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;排敏结论与转奶决策的依据&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;fontColor=#333333;align=left;spacingLeft=14;" vertex="1" parent="bandD">
+        <mxCell id="dc2" value="&lt;b&gt;诊断辅助 · 因果关联与判定&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:14px'&gt;食物 ↔ 症状关联 · 便血 / 腹泻识别（Bristol）&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:14px'&gt;排敏结论与转奶决策的依据&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=16;fontColor=#333333;align=center;" vertex="1" parent="bandD">
           <mxGeometry x="530" y="132" width="440" height="108" as="geometry" />
         </mxCell>
-        <mxCell id="dc3" value="&lt;b&gt;就医与规划 · 材料与执行&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;日程管理 → 有条理的规划 · 喂养执行回顾&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:12px'&gt;疫苗 / 儿保 / 就诊档案 · 报告与曲线一键给医生&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;fontColor=#333333;align=left;spacingLeft=14;" vertex="1" parent="bandD">
+        <mxCell id="dc3" value="&lt;b&gt;就医与规划 · 材料与执行&lt;/b&gt;&lt;br&gt;&lt;font style='font-size:14px'&gt;日程管理 → 有条理的规划 · 喂养执行回顾&lt;/font&gt;&lt;br&gt;&lt;font style='font-size:14px'&gt;疫苗 / 儿保 / 就诊档案 · 报告与曲线一键给医生&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=16;fontColor=#333333;align=center;" vertex="1" parent="bandD">
           <mxGeometry x="1030" y="132" width="440" height="108" as="geometry" />
         </mxCell>
-        <mxCell id="bandC" value="敏宝专属业务线 —— 垂直能力（解决：综合 App 不匹配）" style="swimlane;startSize=34;html=1;fillColor=#fbfbfb;strokeColor=#aaaaaa;fontSize=14;fontStyle=1;fontColor=#333333;align=left;spacingLeft=12;verticalAlign=middle;" vertex="1" parent="1">
+        <mxCell id="bandC" value="敏宝专属业务线 —— 垂直能力（解决：综合 App 不匹配）" style="swimlane;startSize=34;html=1;fillColor=#fbfbfb;strokeColor=#aaaaaa;fontSize=17;fontStyle=1;fontColor=#333333;align=center;verticalAlign=middle;" vertex="1" parent="1">
           <mxGeometry x="40" y="1310" width="1480" height="190" as="geometry" />
         </mxCell>
-        <mxCell id="r1l" value="转奶路径" style="text;html=1;fontSize=13;fontStyle=1;fontColor=#333333;align=left;verticalAlign=middle;" vertex="1" parent="bandC">
+        <mxCell id="r1l" value="转奶路径" style="text;html=1;fontSize=16;fontStyle=1;fontColor=#333333;align=center;verticalAlign=middle;" vertex="1" parent="bandC">
           <mxGeometry x="20" y="57" width="110" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="tc1" value="氨基酸配方" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;fontColor=#333333;" vertex="1" parent="bandC">
+        <mxCell id="tc1" value="氨基酸配方" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=16;fontColor=#333333;" vertex="1" parent="bandC">
           <mxGeometry x="140" y="52" width="170" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="tc2" value="深度水解" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;fontColor=#333333;" vertex="1" parent="bandC">
+        <mxCell id="tc2" value="深度水解" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=16;fontColor=#333333;" vertex="1" parent="bandC">
           <mxGeometry x="350" y="52" width="170" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="tc3" value="适度水解" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;fontColor=#333333;" vertex="1" parent="bandC">
+        <mxCell id="tc3" value="适度水解" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=16;fontColor=#333333;" vertex="1" parent="bandC">
           <mxGeometry x="560" y="52" width="170" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="tc4" value="普通配方（耐受）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;fontColor=#333333;" vertex="1" parent="bandC">
+        <mxCell id="tc4" value="普通配方（耐受）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=16;fontColor=#333333;" vertex="1" parent="bandC">
           <mxGeometry x="770" y="52" width="170" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="r1n" value="每段稳定期 + 2–4 周混合过渡&lt;br&gt;异常按程度回退（轻 / 中 / 重）" style="text;html=1;fontSize=12;fontColor=#888888;align=left;verticalAlign=middle;" vertex="1" parent="bandC">
+        <mxCell id="r1n" value="每段稳定期 + 2–4 周混合过渡&lt;br&gt;异常按程度回退（轻 / 中 / 重）" style="text;html=1;fontSize=14;fontColor=#888888;align=center;verticalAlign=middle;" vertex="1" parent="bandC">
           <mxGeometry x="970" y="47" width="480" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="r2l" value="辅食排敏" style="text;html=1;fontSize=13;fontStyle=1;fontColor=#333333;align=left;verticalAlign=middle;" vertex="1" parent="bandC">
+        <mxCell id="r2l" value="辅食排敏" style="text;html=1;fontSize=16;fontStyle=1;fontColor=#333333;align=center;verticalAlign=middle;" vertex="1" parent="bandC">
           <mxGeometry x="20" y="127" width="110" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="sc1" value="首次引入" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;fontColor=#333333;" vertex="1" parent="bandC">
+        <mxCell id="sc1" value="首次引入" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=16;fontColor=#333333;" vertex="1" parent="bandC">
           <mxGeometry x="140" y="122" width="160" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="sc2" value="观察中（3–7 天打卡）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;fontColor=#333333;" vertex="1" parent="bandC">
+        <mxCell id="sc2" value="观察中（3–7 天打卡）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=16;fontColor=#333333;" vertex="1" parent="bandC">
           <mxGeometry x="340" y="122" width="200" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="sc3" value="判定：已耐受 ｜ 疑似过敏（暂停观察）｜ 确认过敏（建议就医）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;fontColor=#333333;" vertex="1" parent="bandC">
+        <mxCell id="sc3" value="判定：已耐受 ｜ 疑似过敏（暂停观察）｜ 确认过敏（建议就医）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=16;fontColor=#333333;" vertex="1" parent="bandC">
           <mxGeometry x="580" y="122" width="600" height="50" as="geometry" />
         </mxCell>
         <mxCell id="etc1" style="edgeStyle=none;html=1;endArrow=block;endFill=1;endSize=7;strokeWidth=1.5;strokeColor=#999999;" edge="1" parent="bandC" source="tc1" target="tc2">
@@ -179,38 +179,38 @@
         <mxCell id="lgb" value="" style="rounded=1;html=1;fillColor=#fbfbfb;strokeColor=#cccccc;" vertex="1" parent="1">
           <mxGeometry x="80" y="1540" width="1400" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="lgtt" value="图例" style="text;html=1;fontSize=12;fontColor=#888888;align=left;verticalAlign=middle;" vertex="1" parent="lgb">
+        <mxCell id="lgtt" value="图例" style="text;html=1;fontSize=14;fontColor=#888888;align=center;verticalAlign=middle;" vertex="1" parent="lgb">
           <mxGeometry x="20" y="16" width="50" height="28" as="geometry" />
         </mxCell>
         <mxCell id="sw1" value="" style="rounded=0;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="lgb">
           <mxGeometry x="80" y="22" width="30" height="16" as="geometry" />
         </mxCell>
-        <mxCell id="lb1" value="核心问题" style="text;html=1;fontSize=12;fontColor=#444444;align=left;verticalAlign=middle;" vertex="1" parent="lgb">
-          <mxGeometry x="118" y="16" width="140" height="28" as="geometry" />
+        <mxCell id="lb1" value="核心问题" style="text;html=1;fontSize=14;fontColor=#444444;align=center;verticalAlign=middle;" vertex="1" parent="lgb">
+          <mxGeometry x="118" y="16" width="70" height="28" as="geometry" />
         </mxCell>
         <mxCell id="sw2" value="" style="rounded=0;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="lgb">
           <mxGeometry x="340" y="22" width="30" height="16" as="geometry" />
         </mxCell>
-        <mxCell id="lb2" value="记录面" style="text;html=1;fontSize=12;fontColor=#444444;align=left;verticalAlign=middle;" vertex="1" parent="lgb">
-          <mxGeometry x="378" y="16" width="140" height="28" as="geometry" />
+        <mxCell id="lb2" value="记录面" style="text;html=1;fontSize=14;fontColor=#444444;align=center;verticalAlign=middle;" vertex="1" parent="lgb">
+          <mxGeometry x="378" y="16" width="60" height="28" as="geometry" />
         </mxCell>
         <mxCell id="sw3" value="" style="rounded=0;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="lgb">
           <mxGeometry x="600" y="22" width="30" height="16" as="geometry" />
         </mxCell>
-        <mxCell id="lb3" value="数据 · 感知 · 价值" style="text;html=1;fontSize=12;fontColor=#444444;align=left;verticalAlign=middle;" vertex="1" parent="lgb">
-          <mxGeometry x="638" y="16" width="160" height="28" as="geometry" />
+        <mxCell id="lb3" value="数据 · 感知 · 价值" style="text;html=1;fontSize=14;fontColor=#444444;align=center;verticalAlign=middle;" vertex="1" parent="lgb">
+          <mxGeometry x="638" y="16" width="120" height="28" as="geometry" />
         </mxCell>
         <mxCell id="sw4" value="" style="rounded=0;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="lgb">
           <mxGeometry x="860" y="22" width="30" height="16" as="geometry" />
         </mxCell>
-        <mxCell id="lb4" value="分析面" style="text;html=1;fontSize=12;fontColor=#444444;align=left;verticalAlign=middle;" vertex="1" parent="lgb">
-          <mxGeometry x="898" y="16" width="140" height="28" as="geometry" />
+        <mxCell id="lb4" value="分析面" style="text;html=1;fontSize=14;fontColor=#444444;align=center;verticalAlign=middle;" vertex="1" parent="lgb">
+          <mxGeometry x="898" y="16" width="60" height="28" as="geometry" />
         </mxCell>
         <mxCell id="sw5" value="" style="rounded=0;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="lgb">
           <mxGeometry x="1120" y="22" width="30" height="16" as="geometry" />
         </mxCell>
-        <mxCell id="lb5" value="敏宝专线" style="text;html=1;fontSize=12;fontColor=#444444;align=left;verticalAlign=middle;" vertex="1" parent="lgb">
-          <mxGeometry x="1158" y="16" width="140" height="28" as="geometry" />
+        <mxCell id="lb5" value="敏宝专线" style="text;html=1;fontSize=14;fontColor=#444444;align=center;verticalAlign=middle;" vertex="1" parent="lgb">
+          <mxGeometry x="1158" y="16" width="70" height="28" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
