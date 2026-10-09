@@ -723,6 +723,36 @@
   color: #f87098;
 }
 
+/* 合并卡片内的单行提醒（喂奶 / 辅食），各行为独立热区 */
+.home-feed-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+/* 两行同时存在时，第二行上方加分隔线 */
+.home-feed-row--divided {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #f5eaee;
+}
+
+.home-feed-row__body {
+  flex: 1;
+  min-width: 0;
+}
+
+/* 圆点对齐标题首行（多行内容时不再垂直居中） */
+.home-feed-row .home-inline-banner__dot {
+  margin-top: 4px;
+}
+
+/* 右侧操作胶囊在两行之间保持垂直居中 */
+.home-feed-row .home-inline-banner__action--feeding,
+.home-feed-row .home-inline-banner__action--food {
+  align-self: center;
+}
+
 .home-inline-banner--allergy {
   border-left: 3px solid #ddb870;
   box-shadow: 0 4px 16px rgba(221, 184, 112, 0.18);
@@ -747,6 +777,10 @@
 
 .home-inline-banner__dot--feeding {
   background: #f8a070;
+}
+
+.home-inline-banner__dot--food {
+  background: #d4780a;
 }
 
 .home-inline-banner__dot--allergy {
@@ -798,6 +832,17 @@
   font-weight: 600;
   color: #F8A070;
   border: 1.5px solid rgba(248, 160, 112, 0.5);
+  border-radius: 8px;
+  padding: 6px 12px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.home-inline-banner__action--food {
+  font-size: 12px;
+  font-weight: 600;
+  color: #D4780A;
+  border: 1.5px solid rgba(212, 120, 10, 0.5);
   border-radius: 8px;
   padding: 6px 12px;
   flex-shrink: 0;

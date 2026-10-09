@@ -496,20 +496,35 @@ export default function HomePage() {
   }, [records])
 
 
-  // 喂奶间隔仅受母乳和奶粉影响，辅食/营养素不计入
+  // 喂奶间隔仅受母乳和奶粉影响，营养素（feeding_supplement_record）不计入
   const feedingFilter = (r: HomeRecord) => {
     if (r.type !== 'feeding') return false
     const feedType = r.detail?.feed_type as string | undefined
     return feedType === 'formula' || feedType === 'breast'
   }
 
-  const lastFeedingRecord = (() => {
-    const todayFeedings = [...records].filter(feedingFilter).sort((a, b) => compareTime(b.time, a.time))
-    if (todayFeedings.length > 0) return { record: todayFeedings[0], isYesterday: false }
-    const yesterdayFeedings = [...yesterdayRecords].filter(feedingFilter).sort((a, b) => compareTime(b.time, a.time))
-    if (yesterdayFeedings.length > 0) return { record: yesterdayFeedings[0], isYesterday: true }
+  // 辅食间隔只看「辅食」：营养素不计入
+  // —— 读取侧（family.service.getTodayRecords / timeline.loadFeedingPayload）把营养素出口为
+  //    feed_type='supplement'，另有历史数据用 complementary_food='营养素' 标记，两种都要排除
+  const foodFilter = (r: HomeRecord) => {
+    if (r.type !== 'feeding') return false
+    const feedType = r.detail?.feed_type as string | undefined
+    const foodName = r.detail?.complementary_food as string | undefined
+    if (feedType !== 'complementary') return false
+    return foodName !== '营养素'
+  }
+
+  /** 今日优先，无今日记录时回落到昨日（与喂奶提醒口径一致） */
+  const pickLatest = (filter: (r: HomeRecord) => boolean) => {
+    const today = [...records].filter(filter).sort((a, b) => compareTime(b.time, a.time))
+    if (today.length > 0) return { record: today[0], isYesterday: false }
+    const yesterday = [...yesterdayRecords].filter(filter).sort((a, b) => compareTime(b.time, a.time))
+    if (yesterday.length > 0) return { record: yesterday[0], isYesterday: true }
     return null
-  })()
+  }
+
+  const lastFeedingRecord = pickLatest(feedingFilter)
+  const lastFoodRecord = pickLatest(foodFilter)
 
   const handleEndSleep = () => {
     setOngoingSleep(null)
@@ -726,12 +741,17 @@ export default function HomePage() {
                 onBannerClick={() => navigateToRecord('/records/form/sleep')}
               />
             ) : null}
-            {lastFeedingRecord ? (
+            {lastFeedingRecord || lastFoodRecord ? (
               <FeedingBanner
-                lastFeedingTime={lastFeedingRecord.record.time}
-                isYesterday={lastFeedingRecord.isYesterday}
-                onRecordClick={() => {
+                lastFeedingTime={lastFeedingRecord?.record.time}
+                feedingIsYesterday={lastFeedingRecord?.isYesterday}
+                lastFoodTime={lastFoodRecord?.record.time}
+                foodIsYesterday={lastFoodRecord?.isYesterday}
+                onFeedingClick={() => {
                   navigateToRecord(HOME_RECORD_ROUTES.formula ?? '/records/form/feeding')
+                }}
+                onFoodClick={() => {
+                  navigateToRecord(HOME_RECORD_ROUTES.food ?? '/records/form/feeding')
                 }}
               />
             ) : null}
