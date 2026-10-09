@@ -36,7 +36,7 @@ docs/
 │   ├── xiaozhi-esp32-reuse-analysis.md
 │   ├── xiaomi-camera-integration-research.md
 │   └── ha-camera-integration-plan.md
-├── knowledge/                ← 敏宝知识库资料（源文件 PDF + 调研；管线工程在 minicare-kb/）
+├── knowledge/                ← 敏宝知识库资料（源文件 PDF + 调研；管线工程在 minicare-platform/api/）
 │   ├── source/               ← 原始资料（国内/国际文献）
 │   └── research/             ← 知识库建设调研（KAG / MinerU / 图谱工具 / 召回评测）
 ├── reviews/                  ← 审查与复盘（过程性文档）
@@ -112,6 +112,12 @@ docs/
 | [tech/TECH-007-timeline-unification.md](tech/TECH-007-timeline-unification.md) | 时间线统一 | 已完成 |
 | [tech/TECH-008-speaker-channel.md](tech/TECH-008-speaker-channel.md) | 音箱渠道技术方案 | 进行中 |
 | [tech/TECH-009-wechat-devtools-protocol.md](tech/TECH-009-wechat-devtools-protocol.md) | 微信开发者工具调试协议调研 | 已完成 |
+| [tech/TECH-017-kb-desktop-client.md](tech/TECH-017-kb-desktop-client.md) | 知识库平台桌面客户端（Electron + Python sidecar）执行方案 | **规划中（待评审）** |
+| [tech/TECH-018-kb-multilingual-research.md](tech/TECH-018-kb-multilingual-research.md) | 多语言语料翻译策略调研（英文语料 × 中文场景） | **调研完成（方案见 TECH-019）** |
+| [tech/TECH-019-kb-translate-step.md](tech/TECH-019-kb-translate-step.md) | 知识库「翻译」步骤（块级双语对）实现方案 · 阶段 A | **已实施（2026-10-09）** |
+| [tech/TECH-020-agent-eval-platform-research.md](tech/TECH-020-agent-eval-platform-research.md) | Agent 测评平台能力升级 · 行业实践调研（用例/任务/裁判/维度 四对象） | **调研完成（2026-10-09）** |
+| [tech/TECH-021-agent-eval-console-v2.md](tech/TECH-021-agent-eval-console-v2.md) | Agent 测评台 2.0 设计（四管理面 + 配置物化执行） | **设计稿 v0.1（待评审）** |
+| [tech/TECH-023-kb-retrieval-test-research.md](tech/TECH-023-kb-retrieval-test-research.md) | 知识库「检索测试」功能 · 行业实践调研（Dify/FastGPT/RAGFlow/Coze 召回测试 + 批量评测口径） | **调研完成（2026-10-09），已落地独立页** |
 
 ## 养娃智能体模块索引（docs/agent/，PRD-003 展开）
 
