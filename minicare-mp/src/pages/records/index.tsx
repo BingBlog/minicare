@@ -1,6 +1,7 @@
 import { View, Text } from '@tarojs/components'
 import Taro, { useLoad } from '@tarojs/taro'
 import { getStatusBarHeight } from '@/lib/safeArea'
+import { decodeParam } from '@/lib/utils'
 
 import './index.scss'
 
@@ -26,15 +27,6 @@ const TAB_BAR_PAGES = new Set([
   '/pages/profile/index',
 ])
 
-function safeDecode(value?: string): string {
-  if (!value) return ''
-  try {
-    return decodeURIComponent(value)
-  } catch {
-    return value
-  }
-}
-
 function normalizeTarget(rawTarget: string): string {
   const target = rawTarget.trim()
   if (!target) return '/records'
@@ -48,9 +40,10 @@ function splitTarget(target: string): { path: string; query: string } {
 
 export default function RecordsPage() {
   const params = Taro.getCurrentInstance().router?.params ?? {}
-  const decodedTarget = safeDecode(params.target as string | undefined)
+  const decodedTarget = decodeParam(params.target as string | undefined)
   const target = normalizeTarget(decodedTarget || '/records')
-  const recordId = (params.recordId as string | undefined) ?? ''
+  // ⚠️ 本页会把 recordId 重新 encode 后转发，接收侧必须先解码，否则会二次编码
+  const recordId = decodeParam(params.recordId as string | undefined)
   const from = (params.from as string | undefined) ?? ''
   const { path: targetPath, query: targetQuery } = splitTarget(target)
   const isTargetValid = targetPath.startsWith('/records') || targetPath === '/home' || targetPath === '/profile'

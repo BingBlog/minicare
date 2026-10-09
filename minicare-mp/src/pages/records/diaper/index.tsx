@@ -55,6 +55,8 @@ export default function DiaperFormPage() {
       if (rec.stool_colors) setColorSelected(new Set(rec.stool_colors))
       if (rec.note) setNote(rec.note)
     },
+    // PRD-009 US-04：今日日程「换尿布 → 去记录」→ 预填记录时间
+    onInitTime: (hm) => setRecordTime(hm),
     parseOptions: (opts) => {
       const voiceFields: Record<string, string> = {}
       for (const [key, value] of Object.entries(opts)) {

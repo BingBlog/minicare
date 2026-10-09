@@ -1,10 +1,10 @@
 import { View, Text, Canvas } from '@tarojs/components'
 import Taro, { useDidShow, getCurrentInstance } from '@tarojs/taro'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { authApi, babyApi, familyApi, fetchAppConfig, foodObservationApi, recordsApi, sleepApi } from '@/api'
+import { authApi, babyApi, familyApi, fetchAppConfig, foodObservationApi, recordsApi, scheduleApi, sleepApi } from '@/api'
 import type { PendingInvite } from '@/api/family'
 import type { OngoingSleepRecord } from '@/api/sleep'
-import type { FoodObservation } from '@/api'
+import type { FoodObservation, ScheduleTodayResponse } from '@/api'
 import { agentDiaryApi, type DiaryDetail } from '@/api/agent'
 import { getStoredFamilyId, setCurrentFamilyId, getToken } from '@/api/http'
 import { HOME_RECORD_ROUTES } from '@/lib/constants'
@@ -20,6 +20,7 @@ import TodayTimeline from './TodayTimeline'
 import DailyComparison from './DailyComparison'
 import SleepBanner from './SleepBanner'
 import FeedingBanner from './FeedingBanner'
+import ScheduleBanner from './ScheduleBanner'
 import NextFollowUpBanner from './NextFollowUpBanner'
 import AllergyProgressBar from './AllergyProgressBar'
 import HomeDiaryCard from './HomeDiaryCard'
@@ -76,6 +77,9 @@ export default function HomePage() {
   const [babyGrowth, setBabyGrowth] = useState<{ weightKg?: string; heightCm?: string; headCm?: string } | null>(null)
   const [foodObservations, setFoodObservations] = useState<FoodObservation[]>([])
   const [nextFollowUp, setNextFollowUp] = useState<NextFollowUp | null>(null)
+  // 今日日程派生结果（PRD-009 US-03）；null = 未拉到 / 接口失败 → 不渲染 Bar（静默降级）
+  const [scheduleToday, setScheduleToday] = useState<ScheduleTodayResponse | null>(null)
+  const [scheduleLoaded, setScheduleLoaded] = useState(false)
   const [yesterdayDiary, setYesterdayDiary] = useState<DiaryDetail | null>(null)
   // 初值 true：首帧即渲染等高骨架，避免「空态卡闪现 → 卡片消失 → 内容卡出现」的三重跳变
   const [diaryLoading, setDiaryLoading] = useState(true)
@@ -176,6 +180,17 @@ export default function HomePage() {
         setNextFollowUp(nf)
       } catch {
         setNextFollowUp(null)
+      }
+
+      // 今日日程派生（PRD-009 US-03）：搭在首页同一条刷新路径上（useDidShow / home:refresh），
+      // 避免与今日记录各拉一遍当日全量记录（派工 §7 I2）。失败静默降级，不影响首页其它内容。
+      try {
+        const schedule = await scheduleApi.getToday(fid, baby.id)
+        setScheduleToday(schedule)
+      } catch {
+        setScheduleToday(null)
+      } finally {
+        setScheduleLoaded(true)
       }
     } catch {
       // 静默失败，保留已有数据
@@ -676,6 +691,31 @@ export default function HomePage() {
         onStatsClick={() => Taro.switchTab({ url: '/pages/records/list/index' })}
         banners={
           <View className='home-banners'>
+            {/* PRD-009 US-03：日程 Bar 排在最前（线框图 ① 的口径），只在有启用中的模板项时渲染 */}
+            {scheduleToday && scheduleToday.items.length > 0 ? (
+              <ScheduleBanner
+                items={scheduleToday.items}
+                progress={scheduleToday.progress}
+                onClick={() => Taro.navigateTo({ url: '/pages/schedule/today' })}
+              />
+            ) : scheduleLoaded && !isGuest && !needsOnboarding ? (
+              /* 无模板时不渲染 Bar（US-03 场景5），改为一条独立的「去设置」引导项 */
+              <View
+                className='home-inline-banner home-inline-banner--schedule-setup'
+                onClick={() => Taro.navigateTo({ url: '/pages/schedule/index' })}
+              >
+                <View className='home-inline-banner__dot home-inline-banner__dot--schedule-setup' />
+                <View className='home-inline-banner__content'>
+                  <Text className='home-inline-banner__title'>还没有作息计划</Text>
+                  <Text className='home-inline-banner__desc'>
+                    排一份作息，首页会提醒你几点该做什么
+                  </Text>
+                </View>
+                <View className='home-inline-banner__action--schedule'>
+                  <Text className='home-inline-banner__action-text--schedule-setup'>去设置</Text>
+                </View>
+              </View>
+            ) : null}
             {ongoingSleep ? (
               <SleepBanner
                 familyId={familyId}

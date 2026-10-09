@@ -9,6 +9,6 @@ import { AuthModule } from '../auth/auth.module';
   imports: [AuthModule],
   controllers: [FamilyController],
   providers: [FamilyService, FamilyMemberGuard, RoleGuard],
-  exports: [FamilyMemberGuard, RoleGuard],  // 导出供 records/ 模块使用
+  exports: [FamilyMemberGuard, RoleGuard, FamilyService],  // 守卫供 records/ 使用；FamilyService 供 schedule/ 复用 getTodayRecords
 })
 export class FamilyModule {}

@@ -10,6 +10,7 @@ export enum ActivityType {
   FINE_MOTOR  = 'fine_motor',  // 精细运动练习
   EDU_PLAY    = 'edu_play',    // 亲子早教互动
   OUTDOOR     = 'outdoor',     // 户外活动
+  BATH        = 'bath',        // 洗澡（PRD-009 US-06 新增，历史上曾并入 daily_care）
   DAILY_CARE  = 'daily_care',  // 日常护理
   OTHER       = 'other',       // 其他活动
 }
@@ -27,7 +28,7 @@ export enum ActivityIntensity {
 export class CreateActivityDto {
   @ApiProperty() @IsUUID() baby_id: string;
 
-  @ApiProperty({ enum: ActivityType, description: 'gross_motor=大运动练习 fine_motor=精细运动练习 edu_play=亲子早教互动 outdoor=户外活动 daily_care=日常护理 other=其他活动' })
+  @ApiProperty({ enum: ActivityType, description: 'gross_motor=大运动练习 fine_motor=精细运动练习 edu_play=亲子早教互动 outdoor=户外活动 bath=洗澡 daily_care=日常护理 other=其他活动' })
   @IsEnum(ActivityType)
   activity_type: ActivityType;
 

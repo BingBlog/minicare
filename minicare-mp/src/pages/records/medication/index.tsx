@@ -69,6 +69,8 @@ export default function MedicationPage() {
       setDose(r.dose ?? '')
       setMedNote(r.note ?? '')
     },
+    // PRD-009 US-04：今日日程「用药 → 去记录」→ 预填记录时间
+    onInitTime: (hm) => setRecordTime(hm),
   })
 
   // ── 通用提交/删除 ──

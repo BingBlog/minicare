@@ -18,7 +18,7 @@ import { babyApi, recordsApi, foodObservationApi } from '@/api'
 import { getStoredFamilyId, getStoredBabyId } from '@/api/http'
 import type { FeedingRecord, CreateFeedingDto, UpdateFeedingDto } from '@/api/feeding'
 import { getStatusBarHeight } from '@/lib/safeArea'
-import { nowTime, nowDate, toLocalISO, isoToLocalDate, isoToLocalTime, addMinutes, timeDiffMinutes } from '@/lib/utils'
+import { nowTime, nowDate, toLocalISO, isoToLocalDate, isoToLocalTime, addMinutes, timeDiffMinutes, decodeParams } from '@/lib/utils'
 import type { FeedTab, MilkType } from './types'
 import type { FedFoodInfo } from './FoodSection'
 import { milkTypeOptions, suppItems } from './types'
@@ -118,20 +118,25 @@ export default function FeedingFormPage() {
   useLoad((options) => {
     if (initDoneRef.current) return
     initDoneRef.current = true
-    const initTab = (options?.tab as FeedTab | undefined) ?? 'formula'
-    const initRecordId = (options?.recordId as string | undefined) ?? ''
+    // ⚠️ Taro 不对查询串解码，发送端（今日日程 / 记录列表）是 encodeURIComponent →
+    // 这里必须统一解码，否则 initTime 会带 `%3A` 直接进表单（渲染成 NaN:NaN）。
+    const params = decodeParams(options as Record<string, string | undefined>)
+    const initTab = (params.tab as FeedTab | undefined) ?? 'formula'
+    const initRecordId = params.recordId ?? ''
+    // PRD-009 US-04：从今日日程点"去记录"进入时预填执行时间
+    const initTime = params.initTime ?? ''
 
     const voiceFields: Record<string, string> = {}
-    for (const [key, value] of Object.entries(options ?? {})) {
+    for (const [key, value] of Object.entries(params)) {
       if (key.startsWith('voice_') && value) {
         voiceFields[key.replace('voice_', '')] = value
       }
     }
 
-    init(initTab, initRecordId, voiceFields)
+    init(initTab, initRecordId, voiceFields, initTime)
   })
 
-  const init = async (initTab: FeedTab, initRecordId: string, voiceFields?: Record<string, string>) => {
+  const init = async (initTab: FeedTab, initRecordId: string, voiceFields?: Record<string, string>, initTime?: string) => {
     setTab(initTab)
     setEditRecordId(initRecordId)
     try {
@@ -146,6 +151,7 @@ export default function FeedingFormPage() {
       setBabyId(baby.id)
 
       if (!initRecordId) {
+        if (initTime) setRecordTime(initTime)
         if (voiceFields && Object.keys(voiceFields).length > 0) {
           applyVoiceFields(initTab, voiceFields)
         } else {

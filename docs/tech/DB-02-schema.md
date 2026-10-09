@@ -1,10 +1,13 @@
 # DB-02 · 数据库 Schema 说明
 
-> **权威来源（唯一）**：`minicare-server/migrations/001_init_schema.sql`（初始表结构）  
->                         `minicare-server/migrations/002_baby_allergy_fields.sql`（baby_profile 过敏/出生数据字段）
+> **权威来源（唯一）**：`minicare-server/migrations/*.sql`
 >
-> 本文档**不再维护独立 DDL 副本**。所有字段定义、类型约束、索引以上述 migration 文件为准。  
+> 本文档**不再维护独立 DDL 副本**。所有字段定义、类型约束、索引以 migration 文件为准。
 > 如需查看完整建表语句，直接阅读 migration 文件。
+>
+> ⚠️ **本文档的"表清单"是历史遗留的局部清单，不等于全库表数。**
+> 截至 migration `024`，实际业务表共 **30 张**（`grep -h "CREATE TABLE" migrations/*.sql`）。
+> 修复该清单属于独立的文档债，见 `TODO.md`；本次仅补记 PRD-009 新增的 `schedule_template_item`（023 `sort_order` 只加列、不建表）。
 
 ---
 
@@ -21,7 +24,8 @@
 
 ## 表清单
 
-共 **13 张业务表** + `schema_migrations` 追踪表：
+> ⚠️ 下表为**历史局部清单**（仅覆盖 `001` / `002` 及后续按 PRD 逐个补记的表），**不是全量索引**。
+> 全量清单以 migration 目录为准。
 
 | # | 表名 | 说明 | 来自 |
 |---|------|------|------|
@@ -38,6 +42,35 @@
 | 11 | `growth_record` | 生长数据 | `001_init_schema.sql` |
 | 12 | `medical_record` | 病历记录 | `001_init_schema.sql` |
 | 13 | `food_observation` | 辅食新食物观察期 | `001_init_schema.sql` |
+| 14 | `schedule_template_item` | 宝宝作息计划模板项（PRD-009） | `022_schedule_template.sql` + `023_schedule_sort_order.sql` |
+
+### `schedule_template_item`（migration 022，`sort_order` 由 023 追加，PRD-009）
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `id` | CHAR(36) | 主键，UUID 由应用层生成 |
+| `baby_id` | CHAR(36) | 关联 `baby_profile.id`，按宝宝隔离（多孩子各自一份作息） |
+| `item_type` | VARCHAR(24) | 日程项类型字符串枚举，**共 14 个取值**（6 喂养/3 作息/6 活动/1 其他）。权威清单见 `minicare-server/src/schedule/schedule-item-type.meta.ts`，判定函数见 `schedule-item-type.registry.ts`；新增类型**无需数据迁移** |
+| `title` | VARCHAR(50) | 展示名（可自定义，为空时按 `item_type` 推导） |
+| `execute_time` | TIME | 执行时间，`HH:mm` |
+| `prepare_time` | TIME NULL | 准备时间（可空）；必须严格早于 `execute_time`，不支持跨零点 |
+| `prepare_offset_min` | SMALLINT UNSIGNED NULL | 提前准备分钟数（仅 UI 联动推导用；**判定不依赖此列**） |
+| `enabled` | TINYINT | `1` 启用 / `0` 停用。停用项不参与 Bar、判定与进度分母 |
+| `sort_order` | INT | **展示顺序**（拖拽调整，`0..n-1`；migration 023）。查询为 `ORDER BY sort_order, execute_time, created_at`，故历史行（默认 0）自动退化为"按时间升序" |
+| `note` | VARCHAR(200) NULL | 备注 |
+| `created_at` / `updated_at` | DATETIME | 时间戳 |
+| `deleted_at` | DATETIME NULL | 软删除（migration 012 约定） |
+
+索引：`PRIMARY KEY(id)`、`KEY idx_sched_baby_time(baby_id, execute_time)`、`KEY idx_sched_baby_sort(baby_id, sort_order)`。
+
+> 🔑 **今日状态不落库**：`schedule_template_item` 只存"计划"，当日完成与否由
+> `ScheduleService.getToday()` 实时派生（PRD-009 决策 D3）——**两遍配对**：
+> ① 判定窗口 `[执行−60, 执行+90]` 内命中；② 同类「未配对且执行时间已到」的项与
+> 「未消费记录」各按时间升序**一一顺序配对**（不设偏差上限，口径见 PRD-009 §1.4.2）。
+> 判定窗口 60/90 与"同类项间隔 ≥150 分钟"是同一整体，常量唯一定义在
+> `minicare-server/src/schedule/schedule.constants.ts`。
+>
+> ⚠️ `sort_order` 与判定**无关**：顿次判定基准是 `execute_time` 升序，用户怎么拖都不影响"第 N 顿"。保存时按提交数组下标**整体重写** `sort_order`（不做增量 diff，故不建唯一索引）。
 
 ---
 
@@ -65,7 +98,7 @@
 | `sleep_record` | `status` | `1=ongoing 2=ended` |
 | `diaper_record` | `diaper_type` | `1=wet 2=dirty 3=mixed 4=dry` |
 | `health_record` | `mood` | `1=happy 2=neutral 3=fussy 4=crying` |
-| `activity_record` | `activity_type` | `1=bath 2=outdoor 3=play 4=tummy_time 5=other` |
+| `activity_record` | `activity_type` | ⚠️ **已废弃此口径** —— `006_activity_type_varchar.sql` 已把它改为 `VARCHAR(20)` 字符串枚举，取值 `gross_motor` / `fine_motor` / `edu_play` / `outdoor` / `bath` / `daily_care` / `other`（`bath` 由 PRD-009 US-06 新增）。新增类型只需扩展枚举，**无需数据迁移** |
 | `food_observation` | `status` | `1=observing 2=safe 3=allergic` |
 
 ### _openid 字段

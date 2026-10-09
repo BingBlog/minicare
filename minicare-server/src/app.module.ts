@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ScheduleModule } from '@nestjs/schedule';
+import { ScheduleModule as CronScheduleModule } from '@nestjs/schedule';
 import { DatabaseModule } from './common/database/database.module';
 import { CloudbaseModule } from './common/cloudbase/cloudbase.module';
 import { AuthModule } from './auth/auth.module';
@@ -15,11 +15,12 @@ import { AppConfigModule } from './app-config/app-config.module'
 import { VoiceModule } from './voice/voice.module'
 import { AgentModule } from './agent/agent.module'
 import { DeviceModule } from './device/device.module'
+import { ScheduleModule } from './schedule/schedule.module'
 
 @Module({
   imports: [
-    // 定时任务全局启用
-    ScheduleModule.forRoot(),
+    // 定时任务全局启用（@nestjs/schedule，与业务模块 ScheduleModule「作息计划」区分）
+    CronScheduleModule.forRoot(),
 
     // 公共基础设施模块（全局单例）
     DatabaseModule,
@@ -39,6 +40,7 @@ import { DeviceModule } from './device/device.module'
     VoiceModule,
     AgentModule,
     DeviceModule,
+    ScheduleModule,
   ],
 })
 export class AppModule {}

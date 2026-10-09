@@ -133,12 +133,23 @@ export const POOP_TYPE_LABELS: Record<string, string> = {
   constipated: '偏硬便',
 }
 
+/**
+ * 活动类型展示文案。
+ * ⚠️ 键集必须与后端 `ActivityType`（records/activity/dto）保持一致，
+ * 否则对应类型在首页时间轴 / 记录列表会退化为兜底文案「活动」。
+ * （play / tummy_time 为历史遗留键，历史记录仍在用，勿删）
+ */
 export const ACTIVITY_TYPE_LABELS: Record<string, string> = {
-  bath: '洗澡',
+  gross_motor: '大运动练习',
+  fine_motor: '精细运动练习',
+  edu_play: '亲子早教互动',
   outdoor: '户外活动',
+  bath: '洗澡',
+  daily_care: '日常护理',
+  other: '其他',
+  // ── 历史遗留键 ──
   play: '玩耍',
   tummy_time: '俯趴练习',
-  other: '其他',
 }
 
 export const MOOD_LABELS: Record<string, string> = {

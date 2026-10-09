@@ -76,6 +76,10 @@ export default {
       pages: ['index', 'detail'],
     },
     {
+      root: 'pages/schedule',
+      pages: ['index', 'today'],
+    },
+    {
       root: 'pagesReport',
       pages: ['index'],
     },

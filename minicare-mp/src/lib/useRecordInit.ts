@@ -2,15 +2,17 @@
  * useRecordInit — 记录表单页面通用初始化 Hook
  *
  * 封装所有记录表单页面共同的初始化流程：
- * 1. useLoad 解析 recordId（防重复）
+ * 1. useLoad 解析 recordId（防重复）+ **统一 URL 解码**
  * 2. 获取 familyId + babyId
  * 3. 编辑模式下加载已有记录
+ * 4. 新建模式下，若带 `initTime`（今日日程点"去记录"）→ 预填记录时间
  *
  * 使用方式：
  * ```ts
  * const { loading, familyId, babyId, editRecordId, isEditMode } = useRecordInit({
  *   loadRecord: (fid, rid) => recordsApi.diaper.getOne(fid, rid),
  *   onRecord: (rec) => { // 回填表单 },
+ *   onInitTime: (hm) => setRecordTime(hm), // 可选：日程预填时间
  *   parseOptions: (options) => ({ tab: options.tab }), // 可选：解析额外参数
  *   onExtraOptions: (extra) => { setTab(extra.tab) }, // 可选：处理额外参数
  * })
@@ -20,12 +22,18 @@ import Taro, { useLoad } from '@tarojs/taro'
 import { useState, useRef, useCallback } from 'react'
 import { babyApi } from '@/api'
 import { getStoredFamilyId } from '@/api/http'
+import { decodeParams } from '@/lib/utils'
 
 export interface UseRecordInitOptions<TRecord = Record<string, unknown>, TExtra = void> {
   /** 加载单条记录的 API 函数（编辑模式） */
   loadRecord?: (familyId: string, recordId: string) => Promise<TRecord>
   /** 记录加载成功后的回填回调 */
   onRecord?: (record: TRecord) => void
+  /**
+   * 日程「去记录」预填回调（PRD-009 US-04）。
+   * 当 URL 带 `initTime`（HH:mm）且非编辑态时调用，用于把记录时间预填为计划执行时间。
+   */
+  onInitTime?: (hhmm: string) => void
   /** 从 useLoad options 中解析额外参数 */
   parseOptions?: (options: Record<string, string | undefined>) => TExtra
   /** 处理额外参数的回调（在 init 之前调用） */
@@ -45,7 +53,7 @@ export interface UseRecordInitResult {
 export function useRecordInit<TRecord = Record<string, unknown>, TExtra = void>(
   options: UseRecordInitOptions<TRecord, TExtra>,
 ): UseRecordInitResult {
-  const { loadRecord, onRecord, parseOptions, onExtraOptions, onNewRecord } = options
+  const { loadRecord, onRecord, parseOptions, onExtraOptions, onNewRecord, onInitTime } = options
 
   const [loading, setLoading] = useState(true)
   const [familyId, setFamilyId] = useState('')
@@ -90,8 +98,14 @@ export function useRecordInit<TRecord = Record<string, unknown>, TExtra = void>(
     if (initDoneRef.current) return
     initDoneRef.current = true
 
-    const opts = (loadOptions ?? {}) as Record<string, string | undefined>
+    // ⚠️ Taro 不会对查询串解码，且发送端是 encodeURIComponent 编码的 →
+    // 必须在 Hook 里**统一解码一次**（放在这一层，所有用本 Hook 的表单页全覆盖）。
+    const opts = decodeParams(loadOptions as Record<string, string | undefined>)
     const rid = opts.recordId ?? ''
+
+    // 日程「去记录」预填时间：仅新建态生效，编辑态以记录自身时间为准
+    const initTime = opts.initTime ?? ''
+    if (!rid && initTime && onInitTime) onInitTime(initTime)
 
     if (parseOptions && onExtraOptions) {
       const extra = parseOptions(opts)

@@ -1,6 +1,8 @@
 /**
- * 记录类型图标静态资源（与 minicare-web RecordTypeIcon / icons.tsx 对齐）。
- * 小程序端通过 Image 的 src 引用，颜色已写入各 SVG。
+ * 记录类型图标静态资源（统一圆润描边风格，颜色已写入各 SVG）。
+ * 小程序端通过 Image 的 src 引用。
+ * 注：activity 已回归 ui-draft 设计稿版（Lucide activity 活力折线），非早期手绘爬行小人；
+ *     与 minicare-web IconBabyCrawl 不再同构（web 为维护模式，未同步）。
  */
 import activity from './activity.svg'
 import allergy from './allergy.svg'

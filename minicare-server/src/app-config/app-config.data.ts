@@ -4,7 +4,12 @@
  * 后端各 DTO 的 enum 和整数映射常量均从此处导入，保证单点定义
  */
 
-export const CONFIG_VERSION = '2026-05-10.1'; // 修改配置时同步更新
+import {
+  SCHEDULE_ITEM_GROUPS,
+  SCHEDULE_ITEM_TYPE_META,
+} from '../schedule/schedule-item-type.meta';
+
+export const CONFIG_VERSION = '2026-10-09.1'; // 修改配置时同步更新
 
 // ============================================================
 // 喂养
@@ -89,6 +94,7 @@ export const ACTIVITY_TYPE_OPTIONS = [
   { value: 'fine_motor',  label: '精细运动练习' },
   { value: 'edu_play',    label: '亲子早教互动' },
   { value: 'outdoor',     label: '户外活动' },
+  { value: 'bath',        label: '洗澡' },
   { value: 'daily_care',  label: '日常护理' },
   { value: 'other',       label: '其他活动' },
 ] as const;
@@ -182,6 +188,22 @@ export const SUPPLEMENT_ITEMS = [
   { key: 'prebiotic', label: '益生元',    unit: 'g',  hint: '按产品说明',         group: '其他',   aliases: ['低聚果糖', 'FOS', 'GOS', '水苏糖'] },
   { key: 'folicAcid', label: '叶酸',      unit: 'μg', hint: '按医嘱',             group: '维生素', aliases: ['维B9', '维生素B9'] },
 ] as const;
+
+// ============================================================
+// 日程项类型（PRD-009）
+// ============================================================
+
+/**
+ * 日程项类型的可下发子集。
+ *
+ * ⚠️ 数据源是 `src/schedule/schedule-item-type.meta.ts`（纯数据，无函数，可安全下发），
+ *    此处**不再手写第二份**。判定函数（match / summary）留在服务端 registry，不下发。
+ * 小程序「作息计划 → 添加一项日程 → 类型」直接消费本字段，因此新增类型只需改服务端 meta。
+ */
+export const SCHEDULE_ITEM_TYPES = {
+  groups: SCHEDULE_ITEM_GROUPS,
+  items: SCHEDULE_ITEM_TYPE_META,
+};
 
 // ============================================================
 // 语音 NLU 配置
@@ -371,6 +393,7 @@ export const AppConfigData = {
       },
       limits:              LIMITS,
       supplements:         SUPPLEMENT_ITEMS,
+      scheduleItemTypes:   SCHEDULE_ITEM_TYPES,
       voiceNlu:            VOICE_NLU_CONFIG,
       quickActionDefaults: QUICK_ACTION_DEFAULTS,
     };

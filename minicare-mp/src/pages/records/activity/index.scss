@@ -168,6 +168,14 @@
   /* border-color & background set via inline style */
 }
 
+/* 第 7 项「其他活动」独占整行，避免末行只剩单个格子 */
+.activity-type-card__item--wide {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  justify-content: center;
+  gap: 8px;
+}
+
 .activity-type-card__item-icon {
   width: 36px;
   height: 36px;

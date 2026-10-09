@@ -634,6 +634,95 @@
   box-shadow: 0 4px 16px rgba(248, 144, 80, 0.18);
 }
 
+/* ── 日程提醒 Bar（PRD-009 US-03）：五态各自配色，左描边 + 同色投影 ── */
+.home-inline-banner--schedule {
+  border-left: 3px solid #6b7bd4;
+  box-shadow: 0 4px 16px rgba(107, 123, 212, 0.18);
+}
+
+.home-inline-banner--schedule-doing {
+  border-left-color: #2e7bd4;
+  box-shadow: 0 4px 16px rgba(46, 123, 212, 0.2);
+}
+
+.home-inline-banner--schedule-preparing {
+  border-left-color: #d4870a;
+  box-shadow: 0 4px 16px rgba(212, 135, 10, 0.18);
+}
+
+.home-inline-banner--schedule-missed {
+  border-left-color: #d4483a;
+  box-shadow: 0 4px 16px rgba(212, 72, 58, 0.18);
+}
+
+.home-inline-banner--schedule-upcoming {
+  border-left-color: #6b7bd4;
+  box-shadow: 0 4px 16px rgba(107, 123, 212, 0.16);
+}
+
+.home-inline-banner--schedule-done {
+  border-left-color: #2a9e70;
+  box-shadow: 0 4px 16px rgba(42, 158, 112, 0.18);
+}
+
+.home-inline-banner__dot--schedule-doing {
+  background: #2e7bd4;
+}
+
+.home-inline-banner__dot--schedule-preparing {
+  background: #d4870a;
+}
+
+.home-inline-banner__dot--schedule-missed {
+  background: #d4483a;
+}
+
+.home-inline-banner__dot--schedule-upcoming {
+  background: #6b7bd4;
+}
+
+.home-inline-banner__dot--schedule-done {
+  background: #2a9e70;
+}
+
+.home-inline-banner__action--schedule {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.home-inline-banner__action-text--schedule {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7bd4;
+  font-variant-numeric: tabular-nums;
+}
+
+.home-inline-banner__chevron {
+  font-size: 14px;
+  font-weight: 700;
+  color: #b3a0a5;
+  line-height: 1;
+}
+
+/* 无模板时的「去设置作息计划」入口（Bar 本身按 US-03 不渲染，此为独立引导项） */
+.home-inline-banner--schedule-setup {
+  border-left: 3px solid #d8cfd3;
+  box-shadow: 0 4px 16px rgba(180, 160, 168, 0.14);
+}
+
+.home-inline-banner__dot--schedule-setup {
+  background: #d8cfd3;
+}
+
+.home-inline-banner__action-text--schedule-setup {
+  font-size: 12px;
+  font-weight: 600;
+  color: #f87098;
+}
+
 .home-inline-banner--allergy {
   border-left: 3px solid #ddb870;
   box-shadow: 0 4px 16px rgba(221, 184, 112, 0.18);

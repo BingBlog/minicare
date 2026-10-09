@@ -30,7 +30,7 @@ import dayjs from 'dayjs'
 import { babyApi, recordsApi } from '@/api'
 import { getStoredFamilyId } from '@/api/http'
 import { getStatusBarHeight } from '@/lib/safeArea'
-import { nowTime, nowDate, isoToLocalDate, isoToLocalTime, dateToLocalISO, nowLocalISO, buildLocalISOPair, calcDurationMinFromRange, inferSleepPeriod } from '@/lib/utils'
+import { nowTime, nowDate, isoToLocalDate, isoToLocalTime, dateToLocalISO, nowLocalISO, buildLocalISOPair, calcDurationMinFromRange, inferSleepPeriod, decodeParams } from '@/lib/utils'
 import type { SleepRecord, SleepQuality } from '@/api/sleep'
 import TimerMode from './TimerMode'
 import ManualMode from './ManualMode'
@@ -54,6 +54,9 @@ function formatShortDuration(seconds: number): string {
 const SHORT_SLEEP_THRESHOLD_SECONDS = 3 * 60 // 3 分钟
 
 type SleepMode = 'timer' | 'manual'
+
+/** 从日程「睡觉」项跳转进入时，end_time 的默认预填时长（分钟），用户可改 */
+const SLEEP_INIT_DEFAULT_MINUTES = 60
 
 // ---------------------------------------------------------------------------
 // 页面入口
@@ -121,19 +124,23 @@ export default function SleepFormPage() {
 
   // ── 初始化 ───────────────────────────────────────────────────────
   useLoad((options) => {
-    const initRecordId = (options?.recordId as string | undefined) ?? ''
+    // ⚠️ Taro 不解码查询串，发送端是 encodeURIComponent → 此处统一解码
+    const params = decodeParams(options as Record<string, string | undefined>)
+    const initRecordId = params.recordId ?? ''
+    // PRD-009 US-04：今日日程「睡觉」项 → 预填 start_time = 计划执行时间
+    const initTime = params.initTime ?? ''
 
     const voiceFields: Record<string, string> = {}
-    for (const [key, value] of Object.entries(options ?? {})) {
+    for (const [key, value] of Object.entries(params)) {
       if (key.startsWith('voice_') && value) {
         voiceFields[key.replace('voice_', '')] = value
       }
     }
 
-    init(initRecordId, voiceFields)
+    init(initRecordId, voiceFields, initTime)
   })
 
-  const init = async (initRecordId: string, voiceFields?: Record<string, string>) => {
+  const init = async (initRecordId: string, voiceFields?: Record<string, string>, initTime?: string) => {
     setEditRecordId(initRecordId)
     isEditModeRef.current = initRecordId !== ''
 
@@ -169,7 +176,17 @@ export default function SleepFormPage() {
           Taro.showToast({ title: '加载记录失败', icon: 'none' })
         }
       } else {
-        if (voiceFields?.duration_min) {
+        // ① 日程预填优先：start_time = 日程执行时间，end 先给一个默认时长（用户可改）
+        const hm = /^(\d{1,2}):(\d{2})$/.exec(initTime ?? '')
+        if (hm) {
+          setMode('manual')
+          const start = dayjs().hour(Number(hm[1])).minute(Number(hm[2])).second(0)
+          const end = start.add(SLEEP_INIT_DEFAULT_MINUTES, 'minute')
+          setStartDate(start.format('YYYY-MM-DD'))
+          setStartTime(start.format('HH:mm'))
+          setEndDate(end.format('YYYY-MM-DD'))
+          setEndTime(end.format('HH:mm'))
+        } else if (voiceFields?.duration_min) {
           const min = parseInt(voiceFields.duration_min, 10)
           if (min > 0) {
             setMode('manual')

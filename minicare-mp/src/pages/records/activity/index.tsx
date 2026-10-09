@@ -20,7 +20,7 @@ import { useIsIPad } from '@/lib/useIsIPad'
 import './index.scss'
 
 // ── 类型定义 ──
-type ActivityType = 'gross_motor' | 'fine_motor' | 'edu_play' | 'outdoor' | 'daily_care' | 'other'
+type ActivityType = 'gross_motor' | 'fine_motor' | 'edu_play' | 'outdoor' | 'bath' | 'daily_care' | 'other'
 type ActivityIntensity = 'easy' | 'medium' | 'active'
 
 // ── SVG 图标 ──
@@ -38,7 +38,11 @@ export default function ActivityFormPage() {
   const [note, setNote] = useState('')
 
   // ── 通用初始化 ──
-  const { loading, familyId, babyId, editRecordId, isEditMode } = useRecordInit<ActivityRecord>({
+  // PRD-009 US-04：从今日日程点"去记录"进入时，预选类型（initType）并预填时间（initTime）
+  const { loading, familyId, babyId, editRecordId, isEditMode } = useRecordInit<
+    ActivityRecord,
+    { initType: string }
+  >({
     loadRecord: (fid, rid) => recordsApi.activity.getOne(fid, rid),
     onRecord: (r) => {
       if (r.record_time) {
@@ -49,6 +53,14 @@ export default function ActivityFormPage() {
       if (r.intensity) setIntensity(r.intensity)
       if (r.duration_min != null) setDurationMin(r.duration_min)
       setNote(r.note ?? '')
+    },
+    /** 时间预填由 Hook 统一下发（URL 已解码），避免各页重复处理编码问题 */
+    onInitTime: (hm) => setRecordTime(hm),
+    parseOptions: (o) => ({
+      initType: o.initType ?? '',
+    }),
+    onExtraOptions: (extra) => {
+      if (extra.initType) setActivityType(extra.initType as ActivityType)
     },
   })
 

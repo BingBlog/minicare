@@ -13,6 +13,7 @@ const ACTIVITY_TYPE_LABEL: Record<string, string> = {
   fine_motor: '精细运动',
   edu_play: '亲子早教',
   outdoor: '户外',
+  bath: '洗澡',
   daily_care: '日常护理',
   other: '其他',
 }

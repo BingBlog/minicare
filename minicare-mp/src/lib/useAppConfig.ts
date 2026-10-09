@@ -1,6 +1,7 @@
 import Taro from '@tarojs/taro'
 import { useState, useEffect } from 'react'
 import { fetchAppConfig } from '@/api'
+import type { ScheduleItemTypeConfig } from '@/lib/schedule'
 
 interface EnumOption {
   value: string
@@ -12,6 +13,8 @@ interface AppConfig {
   enums: Record<string, EnumOption[]>
   limits?: Record<string, unknown>
   supplements?: Array<{ key: string; label: string; unit: string; hint: string; group: string }>
+  /** 日程项类型清单（PRD-009） */
+  scheduleItemTypes?: ScheduleItemTypeConfig
 }
 
 const CACHE_KEY = 'minicare_app_config'

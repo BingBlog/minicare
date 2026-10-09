@@ -1,0 +1,389 @@
+/* 作息计划页（PRD-009 US-01 / US-02） */
+
+.sched-page {
+  min-height: 100vh;
+  background: #fdf7f5;
+  font-family: -apple-system, 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+}
+
+/* ── 导航栏 ── */
+.sched-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  background: #fdf7f5;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.sched-nav__back {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.sched-nav__back-arrow {
+  color: #3d2b2e;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.sched-nav__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #3d2b2e;
+}
+
+.sched-nav__save {
+  font-size: 14px;
+  font-weight: 700;
+  color: #f87098;
+  flex-shrink: 0;
+  padding: 6px 4px;
+}
+
+.sched-nav__save--disabled {
+  color: #d8bfc7;
+}
+
+/* ── 主体 ── */
+.sched-body {
+  padding: 8px 16px 48px;
+}
+
+.sched-loading {
+  padding: 60px 0;
+  text-align: center;
+}
+
+.sched-loading__text {
+  font-size: 14px;
+  color: #9a7e82;
+}
+
+.sched-hint {
+  background: #fff7e6;
+  border-left: 3px solid #e8a93a;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+}
+
+.sched-hint__text {
+  font-size: 12px;
+  line-height: 1.6;
+  color: #8a6420;
+}
+
+.sched-summary {
+  padding: 4px 2px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.sched-summary__text {
+  font-size: 12px;
+  color: #9a7e82;
+}
+
+/* 拖拽排序提示（右侧） */
+.sched-summary__hint {
+  font-size: 11px;
+  color: #c48a9c;
+  flex-shrink: 0;
+}
+
+/* ── 列表 ── */
+.sched-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sched-item {
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #f1e5e8;
+  overflow: hidden;
+}
+
+.sched-item--off {
+  opacity: 0.6;
+}
+
+.sched-item--error {
+  border-color: #e8305a;
+  box-shadow: 0 0 0 2px rgba(232, 48, 90, 0.12);
+}
+
+/*
+ * ⚠️ 拖拽态样式**不得改变行高**（padding / border / font-size / line-height 都不能动）：
+ *    槽位几何是拖拽开始时量一次并缓存的，行高一变落点就错位。
+ *    只用 transform / box-shadow / 颜色这类不影响布局的属性。
+ */
+.sched-item--dragging {
+  border-color: #f87098;
+  box-shadow: 0 10px 24px rgba(248, 112, 152, 0.28);
+  transform: scale(1.02);
+}
+
+.sched-item--dim {
+  opacity: 0.55;
+}
+
+.sched-item__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+}
+
+.sched-item__time {
+  font-size: 15px;
+  font-weight: 700;
+  color: #3d2b2e;
+  font-variant-numeric: tabular-nums;
+  min-width: 46px;
+}
+
+.sched-item__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.sched-item__main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sched-item__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #3d2b2e;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sched-item__sub {
+  font-size: 11px;
+  color: #9a7e82;
+}
+
+.sched-item__switch {
+  flex-shrink: 0;
+}
+
+.sched-item__chevron {
+  font-size: 12px;
+  color: #b8a4a8;
+  flex-shrink: 0;
+  min-width: 12px;
+  text-align: center;
+}
+
+/* ── 展开编辑器 ── */
+.sched-editor {
+  border-top: 1px dashed #f1e5e8;
+  padding: 12px;
+  background: #fffdfd;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sched-editor__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sched-editor__field--row {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sched-editor__label {
+  font-size: 13px;
+  color: #6b5559;
+}
+
+.sched-editor__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* 类型选择：14 项一屏放不下，按「喂食 / 作息 / 活动 / 其他」分组展示 */
+.sched-type-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sched-type-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sched-type-group__label {
+  font-size: 11px;
+  color: #a8949a;
+}
+
+.sched-chip {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #f6eff1;
+  border: 1px solid transparent;
+}
+
+.sched-chip--active {
+  background: #fff0f4;
+  border-color: #f87098;
+}
+
+.sched-chip__text {
+  font-size: 12px;
+  color: #6b5559;
+}
+
+.sched-chip--active .sched-chip__text {
+  color: #e8305a;
+  font-weight: 600;
+}
+
+.sched-editor__picker {
+  min-width: 86px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: #f6eff1;
+  text-align: center;
+}
+
+.sched-editor__picker-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #3d2b2e;
+  font-variant-numeric: tabular-nums;
+}
+
+.sched-editor__tip {
+  font-size: 11px;
+  color: #a8949a;
+  line-height: 1.5;
+}
+
+.sched-editor__error {
+  font-size: 12px;
+  color: #e8305a;
+}
+
+.sched-editor__input {
+  min-width: 120px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: #f6eff1;
+  font-size: 14px;
+  color: #3d2b2e;
+  text-align: right;
+}
+
+.sched-editor__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.sched-editor__btn {
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: #f6eff1;
+}
+
+.sched-editor__btn--danger {
+  background: #fdecef;
+}
+
+.sched-editor__btn-text {
+  font-size: 13px;
+  color: #6b5559;
+}
+
+.sched-editor__btn-text--danger {
+  color: #e8305a;
+  font-weight: 600;
+}
+
+/* ── 空态 / 添加 / 脚注 ── */
+.sched-empty {
+  padding: 48px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.sched-empty__title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #6b5559;
+}
+
+.sched-empty__sub {
+  font-size: 12px;
+  color: #a8949a;
+}
+
+.sched-empty__action {
+  margin-top: 8px;
+  padding: 8px 20px;
+  border-radius: 999px;
+  background: #fff0f4;
+}
+
+.sched-empty__action-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: #e8305a;
+}
+
+.sched-add {
+  margin-top: 12px;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px dashed #f0b8c8;
+  background: #fffafb;
+  text-align: center;
+}
+
+.sched-add__text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f87098;
+}
+
+.sched-foot-tip {
+  display: block;
+  margin-top: 14px;
+  font-size: 11px;
+  line-height: 1.7;
+  color: #b3a0a5;
+}

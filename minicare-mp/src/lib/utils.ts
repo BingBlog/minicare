@@ -40,6 +40,44 @@ export function toDateOnly(value: unknown): string {
 }
 
 // ===========================================================================
+// 页面参数解码
+// ===========================================================================
+
+/**
+ * 单个页面参数的**安全解码**。
+ *
+ * ⚠️ 背景（PRD-009 US-04 踩过）：Taro 的 `useLoad(options)` **不会**对查询串做
+ * URL 解码，而 `Taro.navigateTo({ url })` 也不会自动编码 —— 所以在 URL 里
+ * 手写了 `encodeURIComponent` 的发送端，接收端必须显式解码，否则
+ * `initTime=07%3A00` 会原样进入表单，`addMinutes('07:00'→'07%3A00')`
+ * 解析出 `[NaN]` 并渲染成 `NaN:NaN`。
+ *
+ * 解码失败（值里含裸 `%` 等）时原样返回，绝不抛错。
+ */
+export function decodeParam(value: string | undefined | null): string {
+  if (!value) return ''
+  try {
+    return decodeURIComponent(value)
+  } catch {
+    return value
+  }
+}
+
+/**
+ * 把 `useLoad` 的 options 整体解码（键保持原样，值逐个 `decodeParam`）。
+ * 非字符串值原样保留，避免误伤。
+ */
+export function decodeParams(
+  options: Record<string, string | undefined> | undefined | null,
+): Record<string, string | undefined> {
+  const out: Record<string, string | undefined> = {}
+  for (const [key, value] of Object.entries(options ?? {})) {
+    out[key] = typeof value === 'string' ? decodeParam(value) : value
+  }
+  return out
+}
+
+// ===========================================================================
 // 时间格式转换（全部基于 dayjs，不使用 new Date）
 // ===========================================================================
 

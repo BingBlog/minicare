@@ -1,0 +1,348 @@
+/* 今日日程详情页（PRD-009 US-04） */
+
+.today-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #fdf7f5;
+  font-family: -apple-system, 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+}
+
+/* ── 导航栏 ── */
+.today-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  background: #fdf7f5;
+  flex-shrink: 0;
+}
+
+.today-nav__back {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.today-nav__back-arrow {
+  color: #3d2b2e;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.today-nav__center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.today-nav__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #3d2b2e;
+}
+
+.today-nav__date {
+  font-size: 11px;
+  color: #9a7e82;
+}
+
+.today-nav__edit {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f87098;
+  flex-shrink: 0;
+  padding: 6px 4px;
+}
+
+.today-scroll {
+  flex: 1;
+  min-height: 0;
+}
+
+/* ── 进度 ── */
+.today-progress {
+  margin: 8px 16px 4px;
+  padding: 14px;
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid #f1e5e8;
+}
+
+.today-progress__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.today-progress__label {
+  font-size: 13px;
+  color: #6b5559;
+}
+
+.today-progress__value {
+  font-size: 16px;
+  font-weight: 700;
+  color: #3d2b2e;
+  font-variant-numeric: tabular-nums;
+}
+
+.today-progress__bar {
+  height: 8px;
+  border-radius: 999px;
+  background: #f6eff1;
+  overflow: hidden;
+}
+
+.today-progress__fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ffb6c9, #f87098);
+  transition: width 0.3s ease;
+}
+
+/* ── 时间轴 ── */
+.today-timeline {
+  padding: 12px 16px 0;
+}
+
+.tl-node {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding-bottom: 14px;
+}
+
+.tl-node__rail {
+  width: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: stretch;
+  flex-shrink: 0;
+  padding-top: 4px;
+}
+
+.tl-node__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #d8cfd3;
+  flex-shrink: 0;
+}
+
+.tl-node__dot--done {
+  background: #2a9e70;
+}
+
+.tl-node__dot--doing {
+  background: #2e7bd4;
+  box-shadow: 0 0 0 4px rgba(46, 123, 212, 0.16);
+}
+
+.tl-node__dot--preparing {
+  background: #d4870a;
+  box-shadow: 0 0 0 4px rgba(212, 135, 10, 0.14);
+}
+
+.tl-node__dot--missed {
+  background: #d4483a;
+}
+
+.tl-node__line {
+  flex: 1;
+  width: 1px;
+  background: #f1e5e8;
+  margin-top: 4px;
+}
+
+.tl-node:last-child .tl-node__line {
+  display: none;
+}
+
+.tl-node__time {
+  width: 50px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.tl-node__prep {
+  font-size: 10px;
+  color: #c4922a;
+}
+
+.tl-node__exec {
+  font-size: 14px;
+  font-weight: 700;
+  color: #3d2b2e;
+  font-variant-numeric: tabular-nums;
+}
+
+.tl-node__body {
+  flex: 1;
+  min-width: 0;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #f1e5e8;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.tl-node--done .tl-node__body {
+  background: #fbfdfc;
+}
+
+.tl-node__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.tl-node__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #3d2b2e;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tl-node__type {
+  font-size: 11px;
+  color: #a8949a;
+}
+
+.tl-node__matched {
+  font-size: 12px;
+  color: #2a9e70;
+}
+
+.tl-node__action {
+  font-size: 12px;
+  font-weight: 600;
+  color: #f87098;
+  margin-top: 2px;
+}
+
+/* ── 状态徽标 ── */
+.tl-badge {
+  padding: 3px 8px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.tl-badge__text {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.tl-badge--done {
+  background: #e4f8f0;
+}
+
+.tl-badge--done .tl-badge__text {
+  color: #2a9e70;
+}
+
+.tl-badge--doing {
+  background: #eaf3ff;
+}
+
+.tl-badge--doing .tl-badge__text {
+  color: #2e7bd4;
+}
+
+.tl-badge--preparing {
+  background: #fff7e6;
+}
+
+.tl-badge--preparing .tl-badge__text {
+  color: #d4870a;
+}
+
+.tl-badge--missed {
+  background: #fdece9;
+}
+
+.tl-badge--missed .tl-badge__text {
+  color: #d4483a;
+}
+
+.tl-badge--upcoming {
+  background: #f2f3f7;
+}
+
+.tl-badge--upcoming .tl-badge__text {
+  color: #8a8fa8;
+}
+
+/* ── 空态 / 加载 / 脚注 ── */
+.today-loading {
+  padding: 60px 0;
+  text-align: center;
+}
+
+.today-loading__text {
+  font-size: 14px;
+  color: #9a7e82;
+}
+
+.today-empty {
+  padding: 64px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.today-empty__title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #6b5559;
+}
+
+.today-empty__sub {
+  font-size: 12px;
+  color: #a8949a;
+  line-height: 1.6;
+}
+
+.today-empty__action {
+  margin-top: 10px;
+  padding: 9px 22px;
+  border-radius: 999px;
+  background: #fff0f4;
+}
+
+.today-empty__action-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: #e8305a;
+}
+
+.today-foot {
+  padding: 8px 16px 40px;
+}
+
+.today-foot__text {
+  font-size: 11px;
+  line-height: 1.7;
+  color: #b3a0a5;
+}

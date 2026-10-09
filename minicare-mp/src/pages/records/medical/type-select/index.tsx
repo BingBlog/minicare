@@ -11,17 +11,22 @@
  */
 import { View, Text, Image } from '@tarojs/components'
 import Taro, { useLoad } from '@tarojs/taro'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import RecordNavBar from '@/components/RecordNavBar'
 import { MEDICAL_TYPE_OPTIONS, MEDICAL_FORM_PAGE, VISIT_TYPE_LABELS } from '@/lib/constants'
 import { RECORD_TYPE_ICON_SRC } from '@/assets/icons/recordTypeIcons'
+import { decodeParams } from '@/lib/utils'
 import './index.scss'
 
 export default function MedicalTypeSelectPage() {
   const [voiceHint, setVoiceHint] = useState('')
+  /** 解码后的原始入参（供 goForm 透传，避免二次编码） */
+  const decodedParamsRef = useRef<Record<string, string | undefined>>({})
 
   useLoad((loadOptions) => {
-    const p = (loadOptions ?? {}) as Record<string, string | undefined>
+    // ⚠️ Taro 不解码查询串；本页透传时会重新 encodeURIComponent，故先解码再存
+    const p = decodeParams(loadOptions as Record<string, string | undefined>)
+    decodedParamsRef.current = p
     // 编辑态防御：任何入口携带 recordId 一律直达表单（防类型改写）
     if (p.recordId) {
       Taro.redirectTo({ url: `${MEDICAL_FORM_PAGE}?recordId=${encodeURIComponent(p.recordId)}` })
@@ -33,7 +38,7 @@ export default function MedicalTypeSelectPage() {
 
   /** 选型 → 分型表单；除 type 外其余参数（voice_* 等）全部透传 */
   const goForm = (typeKey: string) => {
-    const p = Taro.getCurrentInstance().router?.params ?? {}
+    const p = decodedParamsRef.current
     const passthrough = Object.entries(p)
       .filter(([k, v]) => k !== 'type' && k !== 'recordId' && v)
       .map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`)

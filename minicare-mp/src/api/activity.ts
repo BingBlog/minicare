@@ -1,6 +1,6 @@
 import { request } from './http'
 
-export type ActivityType = 'gross_motor' | 'fine_motor' | 'edu_play' | 'outdoor' | 'daily_care' | 'other'
+export type ActivityType = 'gross_motor' | 'fine_motor' | 'edu_play' | 'outdoor' | 'bath' | 'daily_care' | 'other'
 export type ActivityIntensity = 'easy' | 'medium' | 'active'
 
 export interface ActivityRecord {
