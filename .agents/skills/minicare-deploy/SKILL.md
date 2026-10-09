@@ -98,7 +98,7 @@ description: minicare 项目构建发布操作手册。包含前端静态托管�
 | 函数名     | `keepalive-ping`                                                                             |
 | 函数根目录 | `/Users/bing/Documents/minicare-v1/minicare-server/functions`                                |
 | handler    | `index.main`                                                                                 |
-| 环境变量   | `CLOUDRUN_HEALTH_URL=https://www.minicare.top/health`                                        |
+| 环境变量   | `CLOUDRUN_HEALTH_URL=https://minicare-api-production-240137-10-1253854169.sh.run.tcloudbase.com/health`（用默认域名而非 www.minicare.top，避免自定义域名证书故障时保活失效——2026-10-02 证书过期事故验证了这一点） |
 | 验证标志   | 调用后日志含 `status=200`                                                                    |
 | CLI 命令   | `tcb fn code update keepalive-ping --dir functions -e minicare-cloud-6gqledlle0132cbe`       |
 
@@ -333,7 +333,56 @@ bash scripts/migrate.sh --status
 
 ---
 
-## §7 故障速查
+## §7 SOP-F：网关自定义域名证书续期（/renew-cert）
+
+**适用场景**：`www.minicare.top` SSL 证书过期（小程序真机报 `request:fail -201`），或证书临期主动续绑。
+
+> ⚠️ **2026-10-02 事故复盘**：`www.minicare.top` 是 CloudBase HTTP 网关自定义域名（DomainType=HTTPSERVICE，AccessType=DIRECT），
+> 证书用腾讯云 SSL 免费证书（TrustAsia C1 DV Free，**3 个月有效期**，已开自动续费）。
+> **核心坑：SSL「自动续费」只负责签发新证书，不会自动部署到 CloudBase 网关**——新证书躺在 SSL 列表里，
+> 网关仍挂旧证书，到期即正式版小程序全线 `request:fail -201`（Chromium ERR_CERT_DATE_INVALID）。
+> 上次事故：旧证书 2026-10-01 08:59 过期，新证书 09-04 就已签发（`aWzNXPDQ`）但未绑定。
+
+### 步骤（CloudBase MCP 路径）
+
+```
+Step 1：查 SSL 账户里该域名的最新有效证书
+  callCloudApi(service="ssl", action="DescribeCertificates",
+    params={SearchKey:"minicare.top", Limit:20})
+  → 找 Status=1（已颁发）且 CertEndTime 未过期的证书，记下 CertificateId
+
+Step 2：增量换绑网关证书（只改 CertId，不动路由）
+  callCloudApi(service="tcb", version="2018-06-08",
+    action="ModifyHTTPServiceRoute",
+    params={EnvId:"minicare-cloud-6gqledlle0132cbe",
+            Domain:{Domain:"www.minicare.top", CertId:"<新证书ID>"}})
+  → 接口支持增量修改：不传的字段不变，路由（/→静态托管、/api→minicare-api-production、/health）保持原样
+
+Step 3：验证（约 20 秒内生效）
+  curl -vI https://www.minicare.top/health
+  → expire date 应为新证书到期日，SSL certificate verify ok，HTTP 200
+  curl -s https://www.minicare.top/api/config  → 业务路由正常返回 JSON
+```
+
+> ⚠️ 坑中坑：MCP 的 `manageGateway(bindCustomDomain)` 对**已存在**的域名不会更新 CertId
+> （底层 Create 语义，返回成功但证书不变）。必须用 `tcb ModifyHTTPServiceRoute`。
+
+> ℹ️ 已知配置漂移（不影响使用）：网关记录 DNSStatus=INVALID，因 CNAME 指向环境服务域名
+> （`minicare-cloud-6gqledlle0132cbe.service.tcloudbase.com`）而非标准
+> `www.minicare.top.tcbaccess.tencentcloudbase.com`。当前链路正常，换证书无需处理。
+
+**周期提醒**：免费证书 3 个月一换，**下次到期 2026-12-03**。自动续费会在到期前 ~1 个月签发新证书，
+但需执行上面 Step 2 换绑才生效。
+
+### 完成报告格式
+
+> ✅ 网关证书续期完成
+> 证书 ID：<旧> → <新>，有效期至 <日期>
+> /health 200 ✓ /api/config 正常 ✓ 手机端即时恢复（无需客户端操作）
+
+---
+
+## §8 故障速查
 
 | 现象                                        | 根因                                | 解决方法                                                                        |
 | ------------------------------------------- | ----------------------------------- | ------------------------------------------------------------------------------- |
@@ -348,10 +397,11 @@ bash scripts/migrate.sh --status
 | 迁移执行失败中断                            | SQL 语法错误或字段冲突              | 修复 SQL 文件，重新执行；`schema_migrations` 表中未记录失败的版本，可安全重试   |
 | `tcb` CLI 未登录                            | 认证过期                            | 执行 `tcb login` 重新授权                                                       |
 | `tcb cloudrun deploy` 交互卡住              | 灰度部署确认提示                    | 使用 `echo "n" \|` 管道输入或加 `--force` 跳过确认                              |
+| 小程序真机 `request:fail -201`              | `www.minicare.top` SSL 证书过期（自动续费只签发不部署） | 按 §7 SOP-F 换绑网关证书（2026-10-02 事故实录）                  |
 
 ---
 
-## §8 CLI 命令速查
+## §9 CLI 命令速查
 
 ```bash
 # 前置：登录

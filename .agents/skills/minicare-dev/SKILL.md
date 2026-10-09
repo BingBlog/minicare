@@ -93,11 +93,42 @@ minicare-server/src/
 ├── baby/                      # /api/family/:id/baby
 ├── baby-foods/                # GET /api/baby-foods（公开静态数据，无需鉴权）
 ├── records/                   # 8个记录模块（feeding/sleep/diaper/activity/health/symptom/growth/medical）
+├── schedule/                   # 宝宝作息计划（PRD-009）：/api/family/:familyId/schedule/{template,today}
+│                              #   📌 日程项类型的**唯一改动点 = 这 3 个文件**：
+│                              #      schedule-item-type.ts        枚举值（DDL item_type VARCHAR(24)）
+│                              #      schedule-item-type.meta.ts   默认名/分组/可判定/默认提前量（纯数据，随 /api/config 下发）
+│                              #      schedule-item-type.registry.ts  match/summary 函数（Record 强制穷举，漏写编译报错）
+│                              #   ⚠️ matchRecord / buildSummary 已改为**查表**，不要在 service 里加 case
+│                              #   ⚠️ 判定窗口 60/90 + 同类项间隔 150 的单一定义处 = schedule.constants.ts
+│                              #   ⚠️ 与 @nestjs/schedule 的 ScheduleModule 同名，app.module.ts 中已把后者重命名为 CronScheduleModule
 ├── scheduler/                 # 定时任务（睡眠超时 12h 自动标记）
 ├── storage/                   # 云存储上传（照片）
 ├── websocket/                 # WebSocket 实时推送
 ├── device/                    # 音箱设备（TECH-008）：DeviceGuard + 绑定码/绑定/解绑 + LLM Adapter
+├── app-config/                # GET /api/config（公开）：枚举/数值范围/营养素/日程项类型 的统一下发通道
+│                              #   ⚠️ app-config.data.ts 是"权威数据源"，各 DTO 的 enum 从此处导入
+│                              #   ⚠️ 改这里要同步 bump CONFIG_VERSION
 └── common/                    # 共用工具（database / cloudbase / decorators / interceptors / utils）
+```
+
+### 小程序项目结构（`minicare-mp/`，主平台）
+
+> ⚠️ 本节只记录**相对 Web 的新增/差异目录**，完整结构以 `minicare-mp/src/` 为准。
+
+```
+minicare-mp/src/
+├── pages/
+│   ├── home/                  # 首页（含 ScheduleBanner.tsx = PRD-009 日程 Bar）
+│   └── schedule/              # PRD-009 宝宝日程表
+│       ├── index.tsx           #   作息计划（US-01 / US-02：默认模板 + 增删改 + 拖拽排序 + 全量保存）
+│       └── today.tsx           #   今日日程详情（US-04：进度条 + 时间轴 + 点项预填跳记录）
+├── api/
+│   ├── schedule.ts            # scheduleApi（template / today），类型 ScheduleItem 等
+│   └── activity.ts            # ActivityType union（含 bath）
+└── lib/
+    └── schedule.ts            # 日程展示配置：六态徽标 / 150 分钟镜像常量 / 类型→记录页跳转表
+                               #   ⚠️ 类型清单**不在前端**：由 GET /api/config 的 scheduleItemTypes 下发，
+                               #      经 buildScheduleTypeIndex() 消费。新增类型只改服务端。
 ```
 
 **云函数**（`minicare-server/functions/`）：
@@ -107,10 +138,16 @@ minicare-server/src/
 
 **唯一权威来源**：`minicare-server/migrations/` 目录，按文件名顺序执行。
 
-> **当前最新迁移**：`020_medical_typed_records.sql`（001~020 共 20 个文件）
+> **当前最新迁移**：`024_password_login.sql`（001~022 + 024，**无 023**）
 > 新增迁移文件后，**必须更新本行的「当前最新迁移」字段**。
 >
-> ⚠️ **环境差异提醒**：生产库可能滞后于本目录。当前生产库停在 **019**（`medical_record` 仅 18 列，无 `vaccine_*`/`checkup_*`/`sick_*`、无 `vaccine_schedule`/`baby_vaccine_setting`），dev/staging 已到 020。写任何跨环境代码前先确认目标库的 `schema_migrations`。
+> ⚠️ **环境差异提醒**：各库进度不一致，写任何跨环境代码前先确认目标库的 `schema_migrations`
+> （`npm run migrate:status`，或 `SELECT version FROM schema_migrations ORDER BY version`）。
+> **实测 2026-10-09**：`minicare_dev` → **024**（最新）；`minicare_staging` → **019**；
+> `minicare-cloud-6gqledlle0132cbe`（正式）→ **019**。
+> 即 **020 / 021 / 022 / 023 / 024 对 staging 与正式库都还没生效**。
+> ⚠️ `022_schedule_template.sql`（PRD-009）**必须配套执行**才可用日程功能：接口无表可写会直接 500；
+> `023_schedule_sort_order.sql` 必须紧跟其后，否则保存模板时 `sort_order` 列不存在 → 500。
 
 | 文件 | 变更内容 |
 |------|----------|
@@ -134,15 +171,22 @@ minicare-server/src/
 | `018_baby_diary.sql` | 宝宝每日日记（M5 日记生成，baby_id+diary_date 唯一每天一篇） |
 | `019_speaker_device.sql` | 音箱设备绑定（TECH-008「小宝小宝」）：speaker_device（token 哈希+last_conversation_id）+ speaker_binding_code（6 位绑定码，每家庭仅 1 条 pending） |
 | `020_medical_typed_records.sql` | medical_record 类型化扩展（visit_type=vaccine/checkup/sick + vaccine_*/checkup_*/sick_* 列）+ vaccine_schedule 参考库 + baby_vaccine_setting + record_timeline.medical_visit_type（**生产库尚未应用，见上方提醒**） |
+| `021_knowledge_retrieval_status.sql` | 知识库「不可检索」由 content 前缀 hack 改为显式字段（PRD-008 D-06 / TECH-015 §6.2）。**只加列不回填**（expand-contract 第 1 步） |
+| `022_schedule_template.sql` | **`schedule_template_item`** 宝宝作息计划模板（PRD-009 期一）：**只存模板不存每日日程**，今日状态实时派生；`item_type` VARCHAR(30)、`execute_time`/`prepare_time` TIME、`enabled`、`deleted_at` 软删除、`KEY idx_sched_baby_time(baby_id, execute_time)` |
+| `023_schedule_sort_order.sql` | `schedule_template_item` 加 **`sort_order` INT NOT NULL DEFAULT 0 + `KEY idx_sched_baby_sort(baby_id, sort_order)`**（PRD-009 拖拽排序）。**只加列不改语义**：默认 0 让历史行自动退化为"按 `execute_time` 升序"，向后兼容；保存时按提交数组下标整体重写 0..n-1，故不建唯一索引 |
+| `024_password_login.sql` | 「手机号 + 密码」登录（TECH-016 §3）：`password_hash` bcrypt（cost=10，NULL 表示未设密码 → 不允许密码登录）|
 
 ---
 
 ## 数据库表字段速查
 
-> ⚠️ **唯一权威来源**：`minicare-server/migrations/` 目录下的所有 SQL 文件（当前 001~020）  
+> ⚠️ **唯一权威来源**：`minicare-server/migrations/` 目录下的所有 SQL 文件（当前 001~024，号段连续）  
 > 主键均为 `CHAR(36)` UUID，由**应用层生成传入**（MySQL 不支持 `DEFAULT UUID()`）
 
 ### TINYINT 枚举值域（双向映射必须）
+
+> ⚠️ 下列字段中，**部分已在 migration 008 被改为 VARCHAR 字符串枚举**（如 `activity_record.activity_type`），
+> 遇到"标了 TINYINT 但实际是字符串"的情况，以 migration 文件为准。
 
 | 表                | 字段             | 值域                                              |
 | ----------------- | ---------------- | ------------------------------------------------- |
@@ -154,8 +198,9 @@ minicare-server/src/
 | `sleep_record`    | `status`         | `1=ongoing 2=ended`                               |
 | `diaper_record`   | `diaper_type`    | `1=wet 2=dirty 3=mixed 4=dry`                     |
 | `health_record`   | `mood`           | `1=happy 2=neutral 3=fussy 4=crying`              |
-| `activity_record` | `activity_type`  | `1=bath 2=outdoor 3=play 4=tummy_time 5=other`    |
+| `activity_record` | `activity_type`  | ❌ **已废弃 TINYINT 口径**（`006` 改为 VARCHAR(20)）：`gross_motor`\|`fine_motor`\|`edu_play`\|`outdoor`\|`bath`\|`daily_care`\|`other` |
 | `food_observation`| `status`         | `1=observing 2=safe 3=allergic`                   |
+| `schedule_template_item` | `enabled` | `1=启用 0=停用`；同表 `item_type` 是 VARCHAR 字符串枚举，**14 个取值**，权威清单见 `schedule-item-type.meta.ts`（新增类型不改 DDL） |
 
 ### 各模块关键字段
 
@@ -171,7 +216,7 @@ minicare-server/src/
 
 **`symptom_record`**：`id`, `baby_id`, `recorded_by`, `record_time`, `symptoms(JSON)`, `photo_ids(JSON)`, `note`
 
-**`activity_record`**：`id`, `baby_id`, `recorded_by`, `record_time`, `activity_type(TINYINT)`, `duration_min`, `note`
+**`activity_record`**：`id`, `baby_id`, `recorded_by`, `record_time`, `activity_type(VARCHAR20)`, `duration_min`, `intensity(VARCHAR10)`, `note`
 
 **`growth_record`**：`id`, `baby_id`, `recorded_by`, `record_date(DATE)`, `weight_g(INT,克)`, `height_mm(INT,毫米)`, `head_mm(INT,毫米)`, `note`（每日唯一）
 
@@ -316,9 +361,12 @@ npx -y gitnexus@latest detect-changes
 
 ### 睡眠计时持久化
 
-- 点击「开始睡眠」**立即写入数据库**（`status = 1` 即 `ongoing`），不依赖内存
-- App 冷启动/唤醒时检测未结束记录（`status=1`），首页显示「进行中」横幅
-- 超过 **12 小时**由 scheduler 定时任务自动处理（`tasks.service.ts`）
+- 点击「开始睡眠」**立即写入数据库**（`status='ongoing'`，字符串枚举，Migration 008 起），不依赖内存
+- App 冷启动/唤醒时检测未结束记录（`status='ongoing'`），首页显示「进行中」横幅
+- 超过 **16 小时**由 scheduler 定时任务自动关闭（`tasks.service.ts`，写 `quality='poor'` + 备注）
+- **睡眠质量默认「良好」**：计时/补录页质量控件默认选中「良好」；首页横幅 / 看板「结束」
+  等**无质量选择入口**的快捷路径必须提交 `quality='good'`，**禁止硬编码 `normal`**
+  （2026-10-09 修复，详见 F04-sleep.md「睡眠质量默认值」）
 
 ### OCR 边界（非常重要）
 
@@ -333,6 +381,56 @@ npx -y gitnexus@latest detect-changes
 - 新增删除功能时：① 目标表加 `deleted_at`（或复用 status）② 查询过滤 ③ 勿删关联记录
 - 已落地示例：`BabyService.deleteBaby` / `FamilyService.deleteFamily`（仅标记，不物理删除）
 - 例外：测试数据清理可物理删除
+
+### 日程项类型：单一声明源（PRD-009，硬性）
+
+**新增/修改一个日程项类型，只改服务端 3 个文件**：
+`src/schedule/schedule-item-type.ts`（枚举值）→ `schedule-item-type.meta.ts`（名称/分组/可判定/默认提前量）
+→ `schedule-item-type.registry.ts`（`match` / `summary`）。
+
+其余全部自动派生，**禁止再枚举第二遍**：
+- 服务端：`SCHEDULE_ITEM_TYPE_LABELS` / `isJudgableItemType` / `defaultPrepareOffsetMin` 由 meta 派生；
+  `schedule.service.ts::matchRecord` / `buildSummary` 查表（**不要在里面加 case**）。
+- 小程序：类型选项来自 `GET /api/config` 的 `scheduleItemTypes`，用 `lib/schedule.ts::buildScheduleTypeIndex()` 消费；
+  前端只保留「类型 → 记录页跳转」(`SCHEDULE_ITEM_TYPE_RECORD`) 这一张**前端专属**表（页面路径服务端不该知道）。
+
+**两条判定硬约束**（决定哪些类型能做日程项）：
+① 能唯一定位 `getTodayRecords()` 出口的一类记录（`type + detail` 双键）；
+② 记录自带可解析时分 —— `recordHm()` 只认 `[T ]HH:mm`。
+→ `growth`（出口 time 是纯日期）、观察型（`temperature` / `allergy` / `symptom`，属事件非计划）、
+容器类（`feeding` / `health`，无独立时间语义）**一律不做日程项**。
+
+### 日程判定：两遍配对（PRD-009，硬性）
+
+`schedule.service.ts::deriveItems()` 是**唯一**的状态派生口径，顺序**不能倒**：
+
+1. **窗口匹配（高置信）**：逐项在 `[执行−60, 执行+90]` 找最早匹配记录，命中即 `done` 并标记"已消费"。
+2. **顺序兜底（低置信）**：只对第一遍**完全没命中**的项生效 —— 同类「未配对且**执行时间已到**」的项 ×
+   「未消费记录」各按时间升序**一一顺序配对**，**不设时间偏差上限**（用户决策）。
+   → 解决"一天整体偏早/偏晚 → 全部误判 `missed` 一直催补记录"。
+   → 安全闸：执行时间没到的项**不参与**（否则一顿补喂会把晚上的项提前点亮）。
+   → 配对基准是 `execute_time` 升序，**不是** `sort_order`（"第 N 顿"是时间概念，用户怎么拖都不影响）。
+
+⚠️ 常见误改：把 ② 去掉退化成"只做窗口匹配"（就是最初的 bug）；或让 ② 对已到/未到时间的项一视同仁（会误报完成）。
+改前先读 `PRD-009.md §1.4.2`，改后跑 `node scripts/e2e-schedule.mjs`（T2/T4 就是这两条的正确性护栏）。
+
+### 作息计划拖拽排序（PRD-009）
+
+- **顺序 = 提交数组顺序**：`PUT template` 的 `items` 下标即 `sort_order`（0..n-1），服务端整体重写，**客户端不传该字段**。
+- ⚠️ **禁止在保存前按 `execute_time` 排序** —— 旧实现这么干，会把用户拖出来的顺序"弹"回时间序。
+- ⚠️ 拖拽落点几何（`measureRowSlots()`）在长按开始时**只量一次**，前提是"拖拽期间行高一致"：
+  ① 拖拽前先收起展开项；② 拖拽态样式**只许用 `transform` / `box-shadow` / 颜色**，改 `padding`/`border`/字号会让落点整体错位。
+- 触摸事件挂在**页面根节点**（列表会实时重排、节点在动，挂会变的节点上容易丢事件）。
+
+### 补记录跳转：URL 参数必须解码（PRD-009 US-04，踩过）
+
+🚨 `Taro` 的 `useLoad(options)` **不解码**查询串，而发送端是 `encodeURIComponent` →
+接收端不解码就会把 `initTime=07%3A00` 原样塞进表单，`HH:mm` 解析出 `[NaN]` 并渲染成 **`NaN:NaN`**。
+
+- 统一入口：`lib/useRecordInit.ts::useLoad` 里对 `opts` 走一次 `decodeParams()`（所有用该 Hook 的表单页全覆盖），
+  日程预填时间经新增的 **`onInitTime`** 回调下发，**各页不要再自己 `parseOptions` 处理 initTime**。
+- 不用该 Hook 的页面（`records/feeding`、`records/sleep`）**各自显式 `decodeParams`**。
+- 透传型页面（`records/index`、`records/medical/type-select`）必须先解码再编码，否则**二次编码**。
 
 ### 视觉核心规范（快速记忆）
 
@@ -391,7 +489,7 @@ npx -y gitnexus@latest detect-changes
 - `minicare/docs/tech/DB-01-overview.md` — 数据架构总览（ER 图、存储策略、技术选型）
 - `minicare/docs/tech/DB-02-schema.md` — 完整建表说明（指向 migrations 权威）
 - `minicare/docs/tech/DB-03-mock-data.md` — Mock 数据示例
-- `minicare/minicare-server/migrations/` — **权威 DDL 目录（001~020）**
+- `minicare/minicare-server/migrations/` — **权威 DDL 目录（001~022 + 024）**
 - `minicare/docs/business/MVP-PRD.md` — 完整 PRD 存档（已归档，现行权威规格见 docs/features/ + docs/prd/）
 - `.catpaw/skills/minicare-deploy/SKILL.md` — 发布操作手册（含 EnvParams 等敏感参数，不提交 git）
 - `.catpaw/skills/minicare-design/SKILL.md` — 视觉风格指南（UI 页面开发时同时激活）
