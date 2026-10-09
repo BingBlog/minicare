@@ -52,10 +52,17 @@ export const FAB_GROUPS: { label: string; keys: string[] }[] = [
   { label: '健康档案', keys: ['allergy', 'growth', 'medical', 'medication'] },
 ]
 
+/**
+ * 快捷区默认配置（按月龄阶段），每套 12 项 = 宫格上限（4 列 × 3 行）。
+ * 前 4 项固定落在第一行（A 区），其余自动流入 B 区网格。
+ * ⚠️ 三个年龄段共用 13 个可选类型（见 ALL_QUICK_ACTION_KEYS），故各自需舍去 1 项：
+ *    · 0-5m  舍「辅食」（尚未添加辅食）
+ *    · 6-11m / 12m+ 舍「医疗」（季/次，频率最低，且表单最重，仍可从「更多/编辑」进入）
+ */
 export const DEFAULT_QUICKACTION_KEYS_BY_AGE: Record<string, string[]> = {
-  '0-5m': ['formula', 'breast', 'diaper', 'sleep', 'temperature', 'symptom', 'supplement', 'activity'],
-  '6-11m': ['formula', 'breast', 'food', 'diaper', 'sleep', 'temperature', 'symptom', 'medication'],
-  '12m+': ['food', 'breast', 'formula', 'sleep', 'diaper', 'temperature', 'medication', 'activity'],
+  '0-5m': ['formula', 'breast', 'diaper', 'sleep', 'temperature', 'symptom', 'supplement', 'activity', 'allergy', 'growth', 'medical', 'medication'],
+  '6-11m': ['formula', 'breast', 'food', 'diaper', 'sleep', 'temperature', 'symptom', 'medication', 'supplement', 'activity', 'allergy', 'growth'],
+  '12m+': ['food', 'breast', 'formula', 'sleep', 'diaper', 'temperature', 'medication', 'activity', 'symptom', 'supplement', 'allergy', 'growth'],
 }
 
 export const FAB_SUBTITLES: Record<string, string> = {

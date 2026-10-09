@@ -4,7 +4,13 @@ import dayjs from 'dayjs'
 import { DEFAULT_QUICKACTION_KEYS_BY_AGE } from './constants'
 
 const STORAGE_KEY = 'quickaction_keys'
-export const MAX_QUICK_KEYS = 8
+/** 存量配置的迁移版本号：缺失或小于当前值 = 按旧的 8 格上限写入，需要一次性补齐 */
+const MIGRATION_KEY = 'quickaction_keys_migrated'
+const MIGRATION_VERSION = 2
+
+/** 快捷区最大格子数：4 列 × 3 行 = 12 宫格 */
+export const MAX_QUICK_KEYS = 12
+/** A 区（第一行）固定 4 个，其余落入 B 区网格 */
 export const QUICK_A_ZONE_SIZE = 4
 
 const MAX_KEYS = MAX_QUICK_KEYS
@@ -18,6 +24,21 @@ function getAgeGroup(birthDate?: string | null): string {
   return '12m+'
 }
 
+/**
+ * 把存量快捷配置补齐到当前上限。
+ *
+ * 背景：宫格上限从 8 提升到 12 后，老用户 Storage 里仍是 8 项，
+ * 不补齐就看不到新增的第 3 行 —— 等于功能没上线。
+ *
+ * 只在「存量每一项都还在该月龄默认值里」时才补齐：用户若把自己加的入口
+ * （或默认之外的类型）放进快捷区，说明是主动定制过的，不强行动他的配置。
+ */
+function migrateKeys(stored: string[], defaults: string[]): string[] {
+  const untouched = stored.every((key) => defaults.includes(key))
+  if (!untouched) return stored
+  return [...stored, ...defaults.filter((key) => !stored.includes(key))].slice(0, MAX_KEYS)
+}
+
 export function useQuickActionKeys(birthDate?: string | null) {
   const [keys, setKeys] = useState<string[]>([])
   const [draft, setDraft] = useState<string[]>([])
@@ -25,12 +46,27 @@ export function useQuickActionKeys(birthDate?: string | null) {
   const [initialized, setInitialized] = useState(false)
 
   useEffect(() => {
+    const ageGroup = getAgeGroup(birthDate)
+    const defaults = DEFAULT_QUICKACTION_KEYS_BY_AGE[ageGroup] ?? DEFAULT_QUICKACTION_KEYS_BY_AGE['6-11m']
+
     const stored = Taro.getStorageSync(STORAGE_KEY)
-    if (typeof stored === 'string') {
+    if (typeof stored === 'string' && stored) {
       try {
         const parsed = JSON.parse(stored)
         if (Array.isArray(parsed) && parsed.length > 0) {
-          setKeys(parsed)
+          const valid = parsed.filter((key): key is string => typeof key === 'string')
+          // 月龄未知（首页首帧还没拉到宝宝档案）时先不迁移：此刻拿不准该用哪套默认值补齐，
+          // 等 birthDate 到位后本 effect 会带着正确月龄再跑一次。
+          const shouldMigrate =
+            !!birthDate &&
+            valid.length < MAX_KEYS &&
+            Taro.getStorageSync(MIGRATION_KEY) !== MIGRATION_VERSION
+          const next = shouldMigrate ? migrateKeys(valid, defaults) : valid.slice(0, MAX_KEYS)
+          setKeys(next)
+          if (shouldMigrate) {
+            Taro.setStorageSync(STORAGE_KEY, JSON.stringify(next))
+            Taro.setStorageSync(MIGRATION_KEY, MIGRATION_VERSION)
+          }
           setInitialized(true)
           return
         }
@@ -38,11 +74,14 @@ export function useQuickActionKeys(birthDate?: string | null) {
         // ignore malformed storage
       }
     }
-    const ageGroup = getAgeGroup(birthDate)
-    const defaults = DEFAULT_QUICKACTION_KEYS_BY_AGE[ageGroup] ?? DEFAULT_QUICKACTION_KEYS_BY_AGE['6-11m']
+
     setKeys(defaults)
-    Taro.setStorageSync(STORAGE_KEY, JSON.stringify(defaults))
     setInitialized(true)
+    // 月龄未知时先不落盘，避免按兜底月龄把默认值写死；等 birthDate 到位再持久化
+    if (birthDate) {
+      Taro.setStorageSync(STORAGE_KEY, JSON.stringify(defaults))
+      Taro.setStorageSync(MIGRATION_KEY, MIGRATION_VERSION)
+    }
   }, [birthDate])
 
   const startEditing = useCallback(() => {
