@@ -21,7 +21,23 @@ export type {
 } from './schedule'
 export { medicationApi } from './medication'
 export type { Medication, MedicationRecord, CreateMedicationDto, CreateMedicationRecordDto } from './medication'
-export { authApi, loginByCode, sendVerificationCode, IS_TEST_MODE } from './auth'
-export { removeToken, getToken, getUser, getCurrentFamilyId, setCurrentFamilyId, getCurrentBabyId, setCurrentBabyId, getStoredFamilyId, getStoredBabyId } from './http'
+export {
+  authApi,
+  loginByCode,
+  loginByPasswordAndPersist,
+  sendVerificationCode,
+  buildPhoneProof,
+  adoptNewToken,
+  IS_TEST_MODE,
+  NO_PASSWORD_SET,
+} from './auth'
+export type {
+  PasswordStatus,
+  PhoneProofPayload,
+  SetPasswordPayload,
+  ResetPasswordPayload,
+  PasswordMutateResult,
+} from './auth'
+export { ApiError, removeToken, getToken, getUser, getCurrentFamilyId, setCurrentFamilyId, getCurrentBabyId, setCurrentBabyId, getStoredFamilyId, getStoredBabyId } from './http'
 export type { Family, Baby, TodayRecord, RecordItem, User, FamilyMember, AllergyType, AllergyLevel } from './types'
 

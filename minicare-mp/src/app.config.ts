@@ -9,7 +9,11 @@ export default {
   subPackages: [
     {
       root: 'pages/login',
-      pages: ['index'],
+      pages: ['index', 'forgot/index'],
+    },
+    {
+      root: 'pages/account',
+      pages: ['security/index'],
     },
     {
       root: 'pages/onboarding',

@@ -12,9 +12,9 @@
  *   - MembersModal   家庭成员管理弹层
  */
 import { View, Text, Image } from '@tarojs/components'
-import Taro from '@tarojs/taro'
+import Taro, { useDidShow } from '@tarojs/taro'
 import { useState, useEffect, useCallback } from 'react'
-import { babyApi, familyApi, fetchAppConfig } from '@/api'
+import { babyApi, familyApi, fetchAppConfig, authApi } from '@/api'
 import { removeToken, getToken, getUser, setCurrentFamilyId, getCurrentBabyId, setCurrentBabyId } from '@/api/http'
 import type { AllergyLevel, AllergyType, FamilyMember, User, Baby } from '@/api'
 
@@ -69,6 +69,9 @@ export default function ProfilePage() {
   // 是否未登录（游客模式）
   const [isGuest, setIsGuest] = useState(false)
 
+  // 是否已设置密码（TECH-016）—— null 表示尚未取到，不显示副文案
+  const [hasPassword, setHasPassword] = useState<boolean | null>(null)
+
   // ── 联系我们弹层 ──────────────────────────────────────────────
   const [contactOpen, setContactOpen] = useState(false)
   const [babyPickerOpen, setBabyPickerOpen] = useState(false)
@@ -122,6 +125,18 @@ export default function ProfilePage() {
     init()
     return () => { cancelled = true }
   }, [])
+
+  // ── 密码状态（TECH-016）─────────────────────────────────────
+  // 用 useDidShow 而非 useEffect：从「账号与安全」返回本页时需要刷新
+  // （刚设置完密码 → 副文案应从「未设置密码」变为「已设置密码」）。
+  // 失败静默降级为不显示副文案，不打扰用户。
+  useDidShow(() => {
+    if (!getToken()) return
+    authApi
+      .passwordStatus()
+      .then((res) => setHasPassword(res.hasPassword))
+      .catch(() => {})
+  })
 
   // ── 同步编辑表单 initial 值（当 currentBaby 变化时）───────────
   useEffect(() => {
@@ -368,6 +383,21 @@ export default function ProfilePage() {
 
   // ── SettingsGroup 数据 ────────────────────────────────────────
   const activeCount = members.filter((m) => m.status === 'active' || m.status === undefined).length
+
+  // 账号组（TECH-016）：设置/修改密码入口
+  const accountRows: SettingsRow[] = [
+    {
+      id: 'security',
+      type: 'arrow',
+      icon: 'lock',
+      iconBg: '#FFF0F4',
+      label: '账号与安全',
+      subText:
+        hasPassword === null ? undefined : hasPassword ? '已设置密码' : '未设置密码',
+      onClick: () => Taro.navigateTo({ url: '/pages/account/security/index' }),
+    },
+  ]
+
   const familyRows: SettingsRow[] = [
     ...(allBabies.length > 1
       ? [{
@@ -521,6 +551,9 @@ export default function ProfilePage() {
         />
 
         <BabyStats currentFamilyId={currentBaby?.family_id} currentBaby={currentBaby} />
+
+        {/* 账号设置组（TECH-016） */}
+        <SettingsGroup title='账号' rows={accountRows} />
 
         {/* 家庭设置组 */}
         <SettingsGroup title='家庭' rows={familyRows} />

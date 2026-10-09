@@ -30,6 +30,10 @@
 
 .login-card {
   width: 100%;
+  /* 项目全局没有 box-sizing reset（默认 content-box），
+     `width:100%` + 水平 padding 会让卡片实际宽度 = 容器宽 + 32px → 右侧溢出、右上圆角被切。
+     见 TECH-016 §12c。新增同类卡片时必须带上这一行。 */
+  box-sizing: border-box;
   margin-top: 40px;
   background: #fff;
   border-radius: 16px;
@@ -130,4 +134,61 @@
 .login-agreement__link {
   color: #f87098;
   font-size: 12px;
+}
+
+/* ── 登录方式切换 Tab（TECH-016，对齐 ui-draft/login.html 的 .login-mode-tabs）── */
+.login-mode-tabs {
+  display: flex;
+  margin-top: 14px;
+  margin-bottom: 12px;
+  border-bottom: 1.5px solid #f0e8ea;
+}
+
+.login-mode-tab {
+  flex: 1;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #9a7e82;
+  border-bottom: 2.5px solid transparent;
+  margin-bottom: -1.5px;
+  transition: all 0.2s;
+}
+
+.login-mode-tab--active {
+  color: #f87098;
+  border-bottom-color: #f87098;
+}
+
+/* ── 密码输入行：右侧「忘记密码?」 ── */
+.login-field--pwd {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.login-field-extra {
+  font-size: 13px;
+  color: #f87098;
+  font-weight: 500;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* ── 「没有账号？立即注册」 ── */
+.login-switch {
+  text-align: center;
+  margin-top: 14px;
+}
+
+.login-switch__text {
+  font-size: 13px;
+  color: #9a7e82;
+}
+
+.login-switch__link {
+  font-size: 13px;
+  color: #f87098;
+  font-weight: 600;
 }

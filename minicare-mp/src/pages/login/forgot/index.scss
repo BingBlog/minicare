@@ -1,0 +1,114 @@
+/**
+ * 忘记密码页样式
+ *
+ * 与 `pages/login/index.scss` 共用同一套视觉 token（页面卡片 / 输入框 / 粉色主按钮）。
+ * 小程序端样式按页打包，无法像 Web 那样共享 partial，故此处为独立副本。
+ * TODO(P1)：若后续再增同类表单页，抽到 `src/styles/_auth-form.scss` 统一维护。
+ */
+.forgot-page {
+  min-height: 100vh;
+  background: #fdf7f5;
+  display: flex;
+  flex-direction: column;
+  padding: 0 24px;
+}
+
+.forgot-nav {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  flex-shrink: 0;
+}
+
+.forgot-nav__back {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(74, 48, 53, 0.08);
+  margin-left: -4px;
+
+  &:active {
+    background: rgba(74, 48, 53, 0.15);
+  }
+}
+
+.forgot-card {
+  width: 100%;
+  /* 见 pages/login/index.scss 的同名说明：全局无 box-sizing reset，必须显式 border-box */
+  box-sizing: border-box;
+  margin-top: 40px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px 16px;
+  box-shadow: 0 2px 12px rgba(200, 100, 120, 0.08);
+}
+
+.forgot-title {
+  display: block;
+  color: #4a3035;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.forgot-subtitle {
+  display: block;
+  color: #9a8090;
+  font-size: 12px;
+  margin-top: 4px;
+  margin-bottom: 12px;
+}
+
+.forgot-field {
+  margin-top: 10px;
+  border: 1px solid #f0e7ea;
+  border-radius: 12px;
+  padding: 0 12px;
+}
+
+.forgot-field--code {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.forgot-input {
+  height: 42px;
+  line-height: 42px;
+  color: #4a3035;
+  font-size: 14px;
+  flex: 1;
+}
+
+.forgot-send {
+  color: #f87098;
+  background: #fff0f4;
+  border: 0;
+  font-size: 12px;
+  white-space: nowrap;
+
+  &[disabled] {
+    color: #e85580;
+    background: #fff0f4;
+    opacity: 1;
+  }
+}
+
+.forgot-hint {
+  display: block;
+  color: #9a8090;
+  font-size: 12px;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+.forgot-btn {
+  margin-top: 16px;
+  background: linear-gradient(180deg, #f87098, #f9a8c0);
+  color: #fff;
+  border: 0;
+  border-radius: 12px;
+  font-size: 15px;
+}

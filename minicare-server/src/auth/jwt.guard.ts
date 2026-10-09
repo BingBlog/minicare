@@ -45,13 +45,18 @@ export class JwtGuard implements CanActivate {
       throw new UnauthorizedException('访问令牌无效或已过期');
     }
 
-    // 校验用户在当前环境数据库中确实存在
+    // 校验用户在当前环境数据库中确实存在，并比对 token_version
+    // （TECH-016：改密后 token_version +1，使旧 token 全部失效。此处本就查一次库，零额外成本）
     const [rows] = await this.db.execute<any[]>(
-      'SELECT id FROM user_account WHERE id = ?',
+      'SELECT id, token_version FROM user_account WHERE id = ?',
       [payload.sub],
     );
     if (!rows || rows.length === 0) {
       throw new UnauthorizedException('用户不存在，请重新登录');
+    }
+    // 存量 token 无 tv 字段 → 按 0 处理；存量行默认值亦为 0 → 向后兼容
+    if ((payload.tv ?? 0) !== Number(rows[0].token_version ?? 0)) {
+      throw new UnauthorizedException('登录状态已失效，请重新登录');
     }
 
     (request as any).user = payload;

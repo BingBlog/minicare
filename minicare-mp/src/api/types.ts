@@ -1,6 +1,8 @@
 export interface Family {
   id: string
   name: string
+  /** 当前登录用户在该家庭中的角色。后端 `GET /api/family/mine` 的 SQL 会带出 `fm.role` */
+  role?: 'owner' | 'member'
   createdAt?: string
 }
 

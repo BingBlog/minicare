@@ -67,15 +67,80 @@ export function setCurrentBabyId(babyId: string): void {
 
 let isRedirectingToLogin = false
 
+/**
+ * API 业务错误
+ *
+ * `request()` 对非 2xx 一律抛错。仅携带 message 时前端无法区分业务错误码
+ * （例如密码登录的 `NO_PASSWORD_SET` 需要自动切回验证码 Tab），故额外附带
+ * `statusCode` 与后端返回的 `code`。
+ *
+ * 向后兼容：仍是 Error 子类，`err.message` 语义不变，既有 catch 无需改动。
+ */
+export class ApiError extends Error {
+  statusCode: number
+  code?: string
+
+  constructor(message: string, statusCode: number, code?: string) {
+    super(message)
+    this.name = 'ApiError'
+    this.statusCode = statusCode
+    this.code = code
+  }
+}
+
 interface RequestOptions {
   method?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE'
   auth?: boolean
   data?: unknown
   timeoutMs?: number
+  /**
+   * 收到 401 时是否按「登录态失效」处理（清凭证 + reLaunch 登录页）。默认 `true`。
+   *
+   * 🚨 登录 / 验证码 / 改密这类接口的 401 是**可预期的业务错误**（密码错误、验证码错误、
+   *    原密码错误、验证凭证不匹配……），必须传 `false`。否则：
+   *      ① 用户输错密码会看到「登录已过期，请重新登录」，而不是真正的原因与剩余次数；
+   *      ② `reLaunch` 会把已填的手机号/密码/协议勾选全部清空；
+   *      ③ 本地 token 被无端清除，已登录用户仅因输错原密码就被登出。
+   */
+  redirectOn401?: boolean
+}
+
+/**
+ * 从响应体里提取 `{ message, code }`
+ *
+ * - 微信在 `Content-Type: application/json` 时会自动反序列化 → 得到对象
+ * - NestJS `ValidationPipe` 的报错 `message` 是**字符串数组** → 取第一条作为展示文案
+ * - 网关/异常页可能返回纯文本 → `res.data` 是 string，兜底成 message
+ */
+function extractErrorBody(data: unknown): { message?: string; code?: string } {
+  if (typeof data === 'string') {
+    return { message: data.trim() || undefined }
+  }
+  if (data && typeof data === 'object') {
+    const d = data as { message?: unknown; code?: unknown }
+    const raw = d.message
+    const message =
+      typeof raw === 'string'
+        ? raw
+        : Array.isArray(raw) && raw.length > 0
+          ? String(raw[0])
+          : undefined
+    return {
+      message,
+      code: typeof d.code === 'string' ? d.code : undefined,
+    }
+  }
+  return {}
 }
 
 export async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
-  const { method = 'GET', auth = true, data, timeoutMs = 8000 } = options
+  const {
+    method = 'GET',
+    auth = true,
+    data,
+    timeoutMs = 8000,
+    redirectOn401 = true,
+  } = options
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
   }
@@ -120,24 +185,27 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
     )
   }
 
-  // 401 token 失效 → 清除本地凭证并跳转登录页
-  if (res.statusCode === 401) {
-    removeToken()
-    removeUser()
-    if (!isRedirectingToLogin) {
-      isRedirectingToLogin = true
-      Taro.reLaunch({ url: '/pages/login/index' }).finally(() => {
-        isRedirectingToLogin = false
-      })
-    }
-    throw new Error('登录已过期，请重新登录')
-  }
-
+  // 非 2xx 统一抛 ApiError（携带 statusCode + 后端业务码 code）
   if (res.statusCode < 200 || res.statusCode >= 300) {
-    const message =
-      (res.data as { message?: string })?.message ||
-      `HTTP ${res.statusCode}`
-    throw new Error(message)
+    const body = extractErrorBody(res.data)
+
+    // 401「登录态失效」→ 清除本地凭证并跳转登录页。
+    // ⚠️ 仅当调用方声明 redirectOn401（默认 true）时才这么做：登录 / 验证码 / 改密等接口的
+    //    401 属于业务错误，必须把后端原始文案透出给用户（见 RequestOptions.redirectOn401）。
+    if (res.statusCode === 401 && redirectOn401) {
+      removeToken()
+      removeUser()
+      if (!isRedirectingToLogin) {
+        isRedirectingToLogin = true
+        Taro.reLaunch({ url: '/pages/login/index' }).finally(() => {
+          isRedirectingToLogin = false
+        })
+      }
+      // 文案保持原样：pages/home/index.tsx 依赖它区分「未登录」与「后端未连通」
+      throw new ApiError('登录已过期，请重新登录', res.statusCode, body.code)
+    }
+
+    throw new ApiError(body.message || `HTTP ${res.statusCode}`, res.statusCode, body.code)
   }
   return res.data as T
 }

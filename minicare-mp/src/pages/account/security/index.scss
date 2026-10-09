@@ -1,0 +1,138 @@
+/**
+ * 账号与安全页样式
+ *
+ * 与 `pages/login/index.scss` 共用同一套视觉 token（卡片 / 输入框 / 粉色主按钮）。
+ * TODO(P1)：同类表单页超过 3 个后抽到 `src/styles/_auth-form.scss` 统一维护。
+ */
+.security-page {
+  min-height: 100vh;
+  background: #fdf7f5;
+  display: flex;
+  flex-direction: column;
+  padding: 0 24px 32px;
+}
+
+.security-nav {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  flex-shrink: 0;
+}
+
+.security-nav__back {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(74, 48, 53, 0.08);
+  margin-left: -4px;
+
+  &:active {
+    background: rgba(74, 48, 53, 0.15);
+  }
+}
+
+.security-card {
+  width: 100%;
+  /* 见 pages/login/index.scss 的同名说明：全局无 box-sizing reset，必须显式 border-box */
+  box-sizing: border-box;
+  margin-top: 24px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px 16px;
+  box-shadow: 0 2px 12px rgba(200, 100, 120, 0.08);
+}
+
+.security-title {
+  display: block;
+  color: #4a3035;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.security-subtitle {
+  display: block;
+  color: #9a8090;
+  font-size: 12px;
+  margin-top: 4px;
+  margin-bottom: 12px;
+}
+
+/* ── 只读信息行 ── */
+.security-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #f7f0f2;
+}
+
+.security-info__label {
+  color: #7a5a60;
+  font-size: 14px;
+}
+
+.security-info__value {
+  color: #9a8090;
+  font-size: 13px;
+}
+
+/* ── 输入行 ── */
+.security-field {
+  margin-top: 12px;
+  border: 1px solid #f0e7ea;
+  border-radius: 12px;
+  padding: 0 12px;
+}
+
+.security-field--code {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.security-input {
+  height: 42px;
+  line-height: 42px;
+  color: #4a3035;
+  font-size: 14px;
+  flex: 1;
+}
+
+.security-send {
+  color: #f87098;
+  background: #fff0f4;
+  border: 0;
+  font-size: 12px;
+  white-space: nowrap;
+
+  &[disabled] {
+    color: #e85580;
+    background: #fff0f4;
+    opacity: 1;
+  }
+}
+
+.security-hint {
+  display: block;
+  color: #9a8090;
+  font-size: 12px;
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+.security-btn {
+  margin-top: 18px;
+  background: linear-gradient(180deg, #f87098, #f9a8c0);
+  color: #fff;
+  border: 0;
+  border-radius: 12px;
+  font-size: 15px;
+
+  &[disabled] {
+    color: #fff;
+    opacity: 0.55;
+  }
+}
