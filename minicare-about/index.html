@@ -174,6 +174,8 @@
   .cmp td:first-child { font-weight: 700; color: var(--text); white-space: nowrap; }
   .cmp td:last-child { color: #5C4448; background: #FFFBFD; }
   .cmp thead th:last-child, .cmp td:last-child { width: 46%; }
+  .cmp.sigtab thead th:last-child, .cmp.sigtab td:last-child { width: 78%; }
+  .usesolo { max-width: 780px; }
 
   /* ---------- 问题 → 做法 卡片 ---------- */
   .pblock { display: grid; gap: 14px; margin-bottom: 32px; }
@@ -521,22 +523,28 @@
         <div class="fnode"><b>⑤ 敏宝助手</b><span>以信号为前提 · 分析回答</span></div>
       </div>
 
-      <h3 class="subh">「现状小结」实际长什么样（旺仔真实数据）</h3>
-      <div class="consume">
-        <div class="sigpanel">
-          <h3>信号长什么样 <span>（2026-10-10 实跑节选）</span></h3>
-          <div class="sigline"><i>转奶</i>深度水解（含乳糖）100%｜下一阶 适度水解｜本阶稳定 1 天（参考 14 天）→ 判定：未满下限，观察中</div>
-          <div class="sigline"><i>排敏</i>建档 5 条（已耐受 2 / 已确认过敏 3）；南瓜泥（中度）、土豆泥（中度）、燕麦粉（轻度）</div>
-          <div class="sigline"><i>近期反应</i>近 90 天 2 次反应记录（最近 08-30 · 轻微皮疹 · 轻度）；近 14 天有反应天数 0</div>
-          <div class="sigline"><i>数据可信度</i>配方奶 今天 / 辅食 1 天前 / 生长测量 37 天前 / 症状 37 天前</div>
-          <div class="sigline warn"><i>阴性结论闸门</i>症状 37 天无记录 →「只能表述『这段时间没有相关记录』，不得推断『没有过敏反应』」</div>
-          <div class="sigline flag"><i>合理性检查</i>[中] 关键数据陈旧 · [中] 已耐受未维持 · [弱] 高致敏类尚未引入 —— 单轮最多提示 1 条，同一条 7 天内不重复</div>
-        </div>
+      <h3 class="subh">「现状小结」长什么样（旺仔真实数据）</h3>
+      <p class="smallnote" style="margin:-16px 0 16px">每次回答前，这些结论已经替它备好了——不用你从头讲一遍。</p>
+      <div class="cmpwrap">
+        <table class="cmp sigtab">
+          <thead><tr><th>它心里记着的</th><th>旺仔的例子（2026-10-10 实跑）</th></tr></thead>
+          <tbody>
+            <tr><td>转奶走到哪了</td><td>现在喝深度水解（含乳糖），下一阶是适度水解；这一级才稳定 1 天（建议稳定满 14 天再谈推进）</td></tr>
+            <tr><td>哪些能吃、哪些不能</td><td>已耐受 2 种；确认过敏 3 种——南瓜泥、土豆泥、燕麦粉</td></tr>
+            <tr><td>最近犯没犯过</td><td>近 90 天 2 次轻微皮疹，最近一次：8 月 30 日</td></tr>
+            <tr><td>哪些数据新、哪些旧了</td><td>喂养记录是今天的；生长测量、症状记录已经 37 天没更新</td></tr>
+            <tr><td>什么话不能乱说</td><td>症状 37 天没记 → 只能说「这段时间没有记录」，不能说「没有过敏」</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="smallnote">这些结论全部由服务端自动算出来——不是模型现场编的，也不用你多花一分钟整理。</p>
+
+      <h3 class="subh" style="margin-top:30px">用到对话里，长这样</h3>
+      <div class="usesolo">
         <div class="chatmini">
-          <h3>被消费的样子</h3>
           <div class="cm-u">现在能转适度水解了吗？</div>
           <div class="cm-a">从记录看：目前是深度水解（含乳糖）100%，本阶才稳定 1 天，离 14 天参考稳定期还早；近 90 天还有 2 次轻微皮疹记录。建议先维持现状、继续观察，稳定满两周且无新反应后，再与医生确认推进。</div>
-          <div class="cm-tag">依据：转奶信号 · 近期反应信号 · 数据可信度信号。回答仅供参考，不能替代专业医疗建议。</div>
+          <div class="cm-tag">依据：转奶进度 · 近期反应记录 · 数据新鲜度。回答仅供参考，不能替代专业医疗建议。</div>
         </div>
       </div>
 
