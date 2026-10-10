@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>minicare 敏宝日记 · MiniCare — 一个敏宝爸爸写给孩子的记录工具</title>
-<meta name="description" content="我儿子对牛奶过敏，于是我们做了一个记录工具：微信小程序记录 + 敏宝助手分析。旺仔 300 多条真实记录、排敏看板、转奶进度——科学排敏，安心转奶。">
+<title>minicare 敏宝日记 · MiniCare — 一个敏宝家庭亲手做的记录工具</title>
+<meta name="description" content="12年程序员，282天敏宝奶爸：我儿子牛奶蛋白过敏，于是我们亲手写了这个小程序。阶梯转奶、辅食排敏、生长曲线、复诊报告——为敏宝家庭做的记录工具。">
 <meta property="og:title" content="minicare 敏宝日记 · MiniCare">
-<meta property="og:description" content="我儿子对牛奶过敏，于是我们做了一个记录工具。科学排敏 · 安心转奶 · 就医不慌。">
+<meta property="og:description" content="12年程序员，282天敏宝奶爸：我儿子牛奶蛋白过敏，于是我们亲手写了这个小程序。">
 <meta property="og:type" content="website">
 <link rel="icon" href="/about/icon.svg" type="image/svg+xml">
 <style>
@@ -154,6 +154,7 @@
   .bcard h4 { font-size: 14.5px; font-weight: 700; margin-bottom: 6px; }
   .bcard h4::before { content: "✓ "; color: var(--green); font-weight: 800; }
   .bcard p { font-size: 12.5px; color: var(--sub); }
+  .bgrid.cols3 { grid-template-columns: repeat(3, 1fr); }
 
   /* ---------- 问题 → 做法 卡片 ---------- */
   .pblock { display: grid; gap: 14px; margin-bottom: 32px; }
@@ -260,6 +261,7 @@
   @media (max-width: 900px) {
     .pgrid { grid-template-columns: repeat(2, 1fr); }
     .bgrid { grid-template-columns: repeat(2, 1fr); }
+    .bgrid.cols3 { grid-template-columns: repeat(2, 1fr); }
     .moments { grid-template-columns: 1fr; }
     .flowline { flex-wrap: wrap; }
     .fnode { min-width: 46%; }
@@ -271,6 +273,7 @@
     .hero { padding: 64px 0 52px; }
     .sec { padding: 48px 0; }
     .pgrid, .bgrid { grid-template-columns: 1fr; }
+    .bgrid.cols3 { grid-template-columns: 1fr; }
     .fnode { min-width: 100%; }
     .pgallery { grid-template-columns: repeat(2, 1fr); gap: 10px; }
     .brand small { display: none; }
@@ -297,8 +300,9 @@
 <section class="hero" id="top">
   <div class="wrap">
     <div class="eyebrow">旺仔爸爸 &amp; 妈妈 · 亲手打造</div>
-    <h1>我儿子<em>对牛奶过敏</em>。<br>于是，我给他写了一个小程序。</h1>
-    <p class="lead">旺仔出生第 50 天，我们在他的便便里第一次看到血丝。从那天起，换奶、记录、复诊成了我们家的日常。这份小程序是这一年多「折腾」的副产品——先说好，它不治病；它只做一件事：把「好像」，变成清清楚楚、能拿给医生看的记录。</p>
+    <h1>12年程序员，<em>282天敏宝奶爸</em>。<br>我儿子牛奶蛋白过敏。<br>于是，我们亲手写了这个小程序。</h1>
+    <p class="lead">旺仔 42 天确诊牛奶蛋白过敏。从看到便便里带血丝那天起，我们就一头扎进了敏宝的世界。啃完一堆专业书籍与 CMPA 相关资料，踩遍了敏宝养育大大小小的坑：阶梯转奶、辅食排敏、反复湿疹、跑医院复诊。市面上普通育儿记录工具，根本撑不起敏宝这么精细、特殊的记录需求。</p>
+    <p class="lead">换奶、记辅食、盯症状、跑复诊，成了我们家的日常。先说好，它不治病。它只做一件事：把脑子里模糊的「好像有点不对劲」，变成清清楚楚、复诊能直接拿给医生看的完整记录。</p>
     <div class="chips">
       <span class="chip"><b>微信小程序</b> · 已上线</span>
       <span class="chip"><b>敏宝助手</b> · 会聊天的记录分析</span>
@@ -312,83 +316,66 @@
   <section class="sec" id="story">
     <div class="wrap">
       <div class="eyebrow2">01 · 我们经历过的</div>
-      <h2>「好像」，是最不靠谱的词</h2>
+      <h2>「好像」，是敏宝爸妈最无力的词</h2>
       <div class="story">
-        <p>旺仔 50 天确诊。医生建议直接换深度水解，我们没听——觉得适度水解听起来温和一点。前两天看着像在好转，我们还偷偷庆幸。第三天，便血加重了。后来老老实实换回深度水解，才算控制住。</p>
-        <p>也是从那时起我们才发现，最折磨人的不是过敏本身，是「不知道」：不知道有没有好转，不知道能不能转奶，不知道下一口辅食该不该加。每次复诊，医生问「最近怎么样」，我们只会说——好像……</p>
-        <p><b>「好像」，是最不靠谱的词。</b></p>
+        <p>好像是这个食物诱发过敏？好像湿疹今天加重了？好像最近体重涨得慢？等到复诊面对医生，回忆总是模糊零散，说不清症状、饮食的先后关联。</p>
+        <p>我们太懂这种忐忑。敏宝养育，每一口辅食、每一次奶粉进阶、每一处皮肤变化，都要小心翼翼。一步错，就可能过敏反复。</p>
+        <p><b>minicare，就是敏宝家庭自己做出来的记录工具。</b></p>
       </div>
-      <p class="lead2">后来我们才知道，这不是我们一家的困境。</p>
-      <div class="pgrid">
-        <div class="pcard"><div class="no">PAIN 01</div><h3>排敏无规范记录</h3><p>辅食添加、转奶过程全凭记忆，缺乏系统化手段。</p></div>
-        <div class="pcard"><div class="no">PAIN 02</div><h3>因果无法关联</h3><p>难以回溯「吃了什么 → 出现什么反应」，排查全靠猜。</p></div>
-        <div class="pcard"><div class="no">PAIN 03</div><h3>就医沟通成本高</h3><p>就诊时手动整理零散记录，信息不完整、说不清。</p></div>
-        <div class="pcard"><div class="no">PAIN 04</div><h3>祖辈参与门槛高</h3><p>71.8% 的婴幼儿由祖辈承担主要照料，复杂工具难上手。</p></div>
-        <div class="pcard"><div class="no">PAIN 05</div><h3>现有产品不匹配</h3><p>综合母婴 App 功能繁杂、广告多，不会专门为敏宝设计。</p></div>
+      <div class="bgrid cols3">
+        <div class="bcard"><h4>阶梯转奶追踪</h4><p>记录奶粉逐级过渡的全过程。</p></div>
+        <div class="bcard"><h4>辅食排敏台账</h4><p>标记食材耐受、过敏反应。</p></div>
+        <div class="bcard"><h4>日常随手记</h4><p>奶量、睡眠、排便、皮肤状态。</p></div>
+        <div class="bcard"><h4>营养素打卡</h4><p>AD / D3 每日补充提醒，不漏掉。</p></div>
+        <div class="bcard"><h4>生长曲线</h4><p>自动生成，跟踪宝宝发育情况。</p></div>
+        <div class="bcard"><h4>复诊日记报告</h4><p>每日汇总成完整记录，复诊直接带给医生。</p></div>
+      </div>
+      <div class="story" style="margin-top:18px; margin-bottom:0">
+        <p>不用手写厚厚的笔记，不用靠大脑硬记所有细节。陪敏宝爸妈，慢慢闯关，安心上岸。</p>
       </div>
     </div>
   </section>
 
-  <!-- 02 那就自己写一个 -->
-  <section class="sec" id="build">
+  <!-- 02 为什么我们要做 minicare -->
+  <section class="sec" id="why">
     <div class="wrap">
-      <div class="eyebrow2">02 · 那就自己写一个</div>
-      <h2>从一本手写日记本，到一个自己写的小程序</h2>
+      <div class="eyebrow2">02 · 为什么</div>
+      <h2>为什么我们要做 minicare</h2>
       <div class="story">
-        <p>我们买了那种小开本的手写日记本，塞在尿布包里，换完尿布随手写两行。记了两周就收到了回报：复诊时翻开本子——「上周便血 3 次，这周 1 次带黏液」——医生一眼就判断出：深度水解起效了，继续。<b>记录不只是备忘，它是你和医生之间的翻译器。</b></p>
-        <p>坏处也很快来了：想看这周和上周的对比？一页页翻，自己心算。我是程序员。某天哄睡完，我坐在电脑前想：「要是有一个专门给敏宝用的记录工具就好了。」</p>
-        <p><b>再后来，我就自己做了。</b></p>
+        <p>市面上的育儿软件，大多面向普通宝宝。可敏宝的喂养逻辑完全不一样：从氨基酸奶粉，到深度水解、适度水解，再到普通奶粉，是一条漫长的阶梯转奶路；辅食要逐个试、分开观察，一点点排查过敏原；湿疹、便血、胀气、睡眠不安，每一项都需要长期对照记录。</p>
+        <p>作为程序员，爸爸习惯把复杂的事情结构化；作为敏宝父母，我们亲身踩过所有的焦虑。于是决定自己动手，做一个真正懂 CMPA 家庭的记录工具。没有花哨多余的功能——全部都是我们养育旺仔时，真正每天在用、刚需的功能。</p>
       </div>
-
-      <h3 class="subh">它替我们做过的事</h3>
-      <div class="moments">
-        <div class="mcard">
-          <div class="mchip">凌晨 2 点</div>
-          <h3>便便里有一丝血</h3>
-          <p>你心里咯噔一下，先拿起手机拍照记录。它给出一条清晰的判断线——什么情况必须连夜去医院，什么情况可以先观察。</p>
-          <div class="mquote"><b>它：</b>先别慌。少量血丝、宝宝状态好——拍照记录、白天就诊；量大、反复，或伴有发热、呕吐、精神差——连夜就医。</div>
-        </div>
-        <div class="mcard">
-          <div class="mchip">排敏第 2 天</div>
-          <h3>想加第二种辅食</h3>
-          <p>南瓜泥还在观察期，距离最近一次皮疹才 3 天——这些你自己都快记不清了，它记得。</p>
-          <div class="mquote"><b>它：</b>建议再等 1 天。等南瓜泥满 3 天无反应、且最近 3 天没有皮疹，再加下一样更稳妥。</div>
-        </div>
-        <div class="mcard">
-          <div class="mchip">看完医生</div>
-          <h3>医嘱怕忘光</h3>
-          <p>复诊时间、要不要换配方、加什么药——一句话甩给它，它整理成待办，到点提醒。</p>
-          <div class="mquote"><b>你：</b>帮我记下医嘱。<br><b>它：</b>已整理 3 条——换深度水解配方、2 周后复诊、每晚保湿；复诊前 3 天提醒你带记录。</div>
-        </div>
-      </div>
-
-      <div class="notebox">
-        <h3>为什么我坚持做「记录」这件事</h3>
-        <p>模糊的版本只能让你焦虑——「好像好点了」「感觉该转奶了吧」。清晰的版本才能让你做决策——「便血从每天 3 次降到两周 1 次，稳定 4 周」。<b>焦虑来源于未知，而记录是已知的起点。</b></p>
-      </div>
-
-      <div class="shot">
-        <a href="/about/assets/product-poster.png" target="_blank" rel="noopener">
-          <img src="/about/assets/product-poster.png" alt="minicare 产品一览：小程序记录面 × 敏宝助手分析面" loading="lazy">
-        </a>
-        <div class="cap">记录是怎么变成分析的——一图看懂（点击查看大图）</div>
-      </div>
-
-      <p class="lead2" style="margin-bottom:18px">作为一个敏宝爸爸（兼程序员），我给自己定了四条规矩：</p>
-      <div class="bgrid">
-        <div class="bcard"><h4>数据不会被改乱</h4><p>所有记录只从你的手机进来，不经过任何「自动改写」。</p></div>
-        <div class="bcard"><h4>AI 只看不改</h4><p>它能分析、不能动数据；建议必须你点「采纳」才算数。</p></div>
-        <div class="bcard"><h4>建议要你点头</h4><p>每条建议都是一张卡，你确认后才回填到记录。</p></div>
-        <div class="bcard"><h4>不确定就说不确定</h4><p>资料不够时它直说「记录不够」，不硬编结论。</p></div>
-      </div>
-      <p class="smallnote">带敏宝从来不是一个人的事——妈妈记奶量、爸爸换尿布、外婆带去复查，都记在同一本账上。</p>
+      <p class="smallnote">补充提示：minicare 不替代医生诊断，仅做家庭记录工具。</p>
     </div>
   </section>
 
-  <!-- 03 真数据，真孩子 -->
+  <!-- 03 关于我们 -->
+  <section class="sec" id="about-us">
+    <div class="wrap">
+      <div class="eyebrow2">03 · 关于我们</div>
+      <h2>旺仔的爸爸妈妈</h2>
+      <div class="story">
+        <p>我们是一对普通夫妻，旺仔的爸爸妈妈。爸爸写了 12 年代码，在儿子确诊过敏之后，一边学习 CMPA 知识，一边迭代这个小程序；妈妈整理科普文章、运营公众号，把我们踩坑学到的知识，分享给更多敏宝家庭。</p>
+        <p>minicare 不是商业大项目，是养育旺仔的过程里，生长出来的工具。我们不打算赚快钱，只想把这个工具慢慢打磨好，帮更多和曾经的我们一样、在焦虑里摸索的敏宝爸妈。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 隐私承诺 -->
+  <section class="sec" id="privacy">
+    <div class="wrap">
+      <div class="eyebrow2">04 · 隐私承诺</div>
+      <h2>宝宝的数据，永远只属于你</h2>
+      <div class="notebox" style="margin-bottom:0">
+        <p>所有宝宝记录，都保存在你的账号内。数据仅你本人可见，不会对外出售，也不会与任何人分享你的育儿隐私。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 真数据，真孩子 -->
   <section class="sec" id="screens">
     <div class="wrap">
-      <div class="eyebrow2">03 · 真数据，真孩子</div>
+      <div class="eyebrow2">05 · 真数据，真孩子</div>
       <h2>这些不是演示数据，是旺仔的 300 多条记录</h2>
       <p class="lead2">下面每一张截图，都是我们每天在自己手机上用的界面——旺仔的记录、旺仔的排敏表、旺仔的日程。没有一条假数据。</p>
       <div class="pgallery">
@@ -416,10 +403,10 @@
     </div>
   </section>
 
-  <!-- 04 我们走到哪了 -->
+  <!-- 06 我们走到哪了 -->
   <section class="sec" id="status">
     <div class="wrap">
-      <div class="eyebrow2">04 · 我们走到哪了</div>
+      <div class="eyebrow2">06 · 我们走到哪了</div>
       <h2>旺仔在好转，我们也没停下来</h2>
       <p class="lead2">旺仔已经从不含乳糖的深度水解，转到了含乳糖的，消化不错。距离普通配方还有两步——每一步都不急，数据会告诉我们什么时候可以走。</p>
       <div class="slist">
@@ -433,10 +420,10 @@
     </div>
   </section>
 
-  <!-- 05 技术细节 -->
+  <!-- 07 技术细节 -->
   <section class="sec" id="tech">
     <div class="wrap">
-      <div class="eyebrow2">05 · 技术细节</div>
+      <div class="eyebrow2">07 · 技术细节</div>
       <h2>给儿子用的东西，我不想糊弄</h2>
       <p class="lead2">下面每件事，都先讲清楚「解决了什么问题」——不用懂技术也能看懂；懂技术的，能看到全部实现。</p>
 
@@ -561,10 +548,10 @@
     </div>
   </section>
 
-  <!-- 06 写给你 -->
+  <!-- 08 写给你 -->
   <section class="sec" id="letter">
     <div class="wrap">
-      <div class="eyebrow2">06 · 写给你</div>
+      <div class="eyebrow2">08 · 写给你</div>
       <h2>如果你家也有一个敏宝</h2>
       <div class="letter">
         <p>不管用不用我们的小程序，请从今天开始记录。备忘录也行，纸笔也行。</p>
