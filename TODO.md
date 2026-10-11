@@ -163,7 +163,7 @@
 - [ ] **排敏进度服务端聚合接口**（替代靠 agent 拉 205 条明细自己数）＝ F5/F6 的一部分
 - [x] **agent 生成日记落库** ＝ **F1**（已完成；落库动作在小程序侧，后端 5 个 REST 已就绪，无需改动）
 - [x] **`buildSystemPrompt` 增强**：已注入画像与当前日期（F2 的 prompt 侧 + F3 均完成）
-- [ ] **生产库迁移 020**：生产仅 18 列、无 vaccine_schedule/baby_vaccine_setting；任何引用 `vaccine_*`/`checkup_*`/`sick_*` 的 agent tool 上线前必须先上 020（dev/staging 已 020/34 列）
+- [ ] **生产库迁移 020~024**：生产库仍停在 019（无 `vaccine_schedule`/`baby_vaccine_setting` 等 020 列）；新代码（PD-P0 / 日程表 / 密码登录）上线生产前必须先迁移。**staging 库已于 2026-10-11 迁到 024**；020/024 为「新代码部署」硬依赖（缺列 = 医疗创建报错 / 全接口 500），详见 [`TECH-024`](docs/tech/TECH-024-deploy-compat-assessment.md) §0
 
 ## 七、minicare-agent（养娃智能体）
 
@@ -200,6 +200,37 @@
 - [ ] **拆分候选 ③** minicare-mp 样式体系：`_ipad-adapt-mixins.scss`（2052）+ `ipad-adapt.scss`（988）+ 各页独立大 scss（home 1337 / profile 1259 / feeding 911 / dashboard 878）；方向 = mixins 收敛 + 公共样式抽取
 - [ ] **观察名单（暂不动）**：`minicare-web/src/components/ui/icons.tsx`（1626，图标集半自动生成、优先级别看低）、platform/web `types.ts`（996）、mp `ipad-adapt.scss`（988）、server `feed.service.ts`（974）/ `report.service.ts`（970）
 - [ ] **是否启动拆分待拍板**（可先出 ① 的具体方案）
+
+---
+
+## 十一、Taro H5 替换 web 部署（10-10 已上线 · 待人工验证）
+
+> 背景：`minicare-mp` 的 Taro H5 产物已替换 `minicare-web` 在 CloudBase 静态托管的部署（web 处维护模式，PWA 废弃）。
+> 状态：**生产根 `/` 与预发 `/staging/` 双环境已上线**、PWA 遗留已清理、接口层验证通过；**待用户浏览器/真机人工验证**。
+
+- [x] **部署管线跑通（手动第一版）**：代码改造 = `h5.publicPath` 由 `TARO_APP_H5_BASE_PATH` 参数化 + `build:h5:staging` + `scripts/prepare-h5-deploy.sh`（构建+注入过渡文件+产物自检）；本次经 CloudBase MCP `manageHosting.upload` 上线（tcb CLI 未登录时的可用通道；CLI 路径见 deploy skill §10）
+- [x] **PWA 废弃**：`/sw.js` 与 `/staging/sw.js` 已替换为「自注销版」（清 CacheStorage + unregister，**需长期保留**）；已删 `manifest.webmanifest`、`workbox-*.js`、`staging/registerSW.js`；旧 web `assets/` 全量清理（根 384 项 + staging 590+ 项）
+- [x] **staging 一起换**：`/staging/` 已部署 staging 构建（资源前缀 `/staging/`、auth=test 验证码 123456）
+- [ ] **人工验证（用户）**：`https://www.minicare.top/`（真实短信）与 `https://www.minicare.top/staging/`（验证码 123456）各走一遍 登录→首页→记录表单→报告图表；⚠️ **勿用默认域名 `*.tcloudbaseapp.com` 验收**（该域名对浏览器下发 attachment 会变下载）
+- [ ] **apex `minicare.top` 恢复绑定——受阻，待拍板**：静态托管自定义域名通道已被平台关闭（须走 HTTP 访问服务=网关）；网关域名配额 = 当前套餐（个人版）**限 1 个**，已被 www 占用（预检返回 `QUOTA_EXCEEDED`）→ 选项：① 升级套餐（控制台「变配」页核对各档域名配额）；② DNSPod 显性 URL 转发 `minicare.top → www.minicare.top`（零成本替代）；③ 暂缓。已提前完成：安全域名加 `minicare.top` ✓、后端 CORS 已放行 apex ✓
+- [ ] **COS 桶跨域补配（控制台一次性）**：现仅放行 `https://www.minicare.top`；建议补 `https://minicare.top`（若启用 apex）与 `http://localhost:10086`（H5 dev 上传）
+- [ ] **CI 恢复（后续）**：`deploy-web.yml` 已失效（secrets 为空 + 指向旧 web）→ 重写为 `minicare-mp` 的 H5 构建，或长期维持手动发布（SOP §10）
+- [ ] **H5 回归清单**：日程 / 密码登录 / 12 宫格 / 日记 / 语音降级提示（POC 后新功能未 H5 覆盖）；复测 §四 的「喂养记录页 H5 布局问题」（09-07 全局修复疑似已覆盖）
+- 📄 变更文件（未提交，待用户验证后提交）：`minicare-mp/config/index.ts`、`.env.staging`、`package.json`、`.gitignore`、`scripts/prepare-h5-deploy.sh`(新)、`scripts/hosting/sw-unregister.js`(新)；SOP → `.agents/skills/minicare-deploy/SKILL.md` §10；PWA 废弃标注 → `docs/tech/PWA.md`
+- [x] **H5 输入框垂直居中修复（10-10）**：根因 = Taro H5 双层结构（`taro-input-core` + 内层 `weui-input` 固定高度顶对齐）；全局修复于 `minicare-mp/src/styles/h5-global.scss`（探针实测 offset 0→11）；修复版已重部署双环境（prod `app.e7b54985` / staging `app.afe3cc60`）+ 旧产物各 5 个已清理；证据与复核模板 → `docs/tech/assets/h5-input-fix-20261010/`
+
+### 十一·补 · 小程序前后端全量发布（2026-10-11 进行中）
+
+> 评估：旧版小程序兼容性评估已产出 → [`TECH-024`](docs/tech/TECH-024-deploy-compat-assessment.md)（结论：无破坏性变更；020/024 为部署顺序硬约束）。
+> 小程序上传走**开发者工具直传**（miniprogram-ci 密钥文件缺失，暂不恢复）；流程 = **体验版验证 → 再提审**。
+
+- [x] **staging 库迁移 020~024**（10-11 完成）
+- [x] **staging 服务配置修正**：DB_NAME 漂移指正式库 → 修回 `minicare_staging`；补 `AGENT_INTERNAL_TOKEN`（48 位）；CORS 补 www（SOP-H §11）
+- [x] **staging 后端部署（v061）+ 冒烟通过**：登录 / 密码设置与密码登录 / schedule 模板与今日 / feed / config 全通
+- [ ] **生产链**：正式库迁移 020~024 → 生产后端部署（v035 → 最新）→ 旧版小程序回归抽验（清单见 TECH-024 §4）
+- [ ] **小程序发布**：`npm run build:weapp`（production）→ 开发者工具上传（2.2.2 → 2.2.3）→ 体验版真机验证 → 提审 → 发布
+- [ ] 体验版验证要点：密码登录（登录页 Tab / 忘记密码 / 账号与安全）、日程表（作息计划默认模板 → 保存 → 首页 Bar 五态 → 今日页）、12 宫格、首页提醒合并
+- [ ] 遗留：miniprogram-ci 上传密钥文件缺失（`minicare-mp/private.*.key`），如需恢复脚本上传需从微信公众平台重新生成
 
 ---
 

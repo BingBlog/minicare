@@ -1,7 +1,13 @@
-import { View, Text } from '@tarojs/components'
+import { View, Text, Image } from '@tarojs/components'
 import type { AllergyLevel, AllergyType, Baby } from '@/api'
 import { useAppConfig } from '@/lib/useAppConfig'
 import { getBabyAge } from '@/lib/utils'
+import {
+  ICON_BABY_PLACEHOLDER,
+  ICON_EDIT_PENCIL,
+  ICON_PICKER_CHECK,
+  ICON_CAMERA,
+} from '@/assets/icons/svgDataUris'
 import dayjs from 'dayjs'
 
 interface BabyHeroProps {
@@ -13,7 +19,10 @@ interface BabyHeroProps {
   allergyLevel: AllergyLevel | null | undefined
   babies?: Baby[]
   currentBabyId?: string
+  /** 宝宝头像展示 URL（临时 URL，由页面层解析） */
+  avatarUrl?: string | null
   onEdit: () => void
+  onAvatarClick?: () => void
   onSwitchBaby?: (baby: Baby) => void
 }
 
@@ -26,7 +35,9 @@ export default function BabyHero({
   allergyLevel,
   babies,
   currentBabyId,
+  avatarUrl,
   onEdit,
+  onAvatarClick,
   onSwitchBaby,
 }: BabyHeroProps) {
   const { getLabel } = useAppConfig()
@@ -57,9 +68,7 @@ export default function BabyHero({
               <Text className='baby-picker__name'>{b.name}</Text>
               {b.id === currentBabyId && (
                 <View className='baby-picker__check'>
-                  <svg viewBox='0 0 24 24' fill='none' stroke='#f87098' strokeWidth='3' strokeLinecap='round' strokeLinejoin='round' style={{ width: 12, height: 12 }}>
-                    <polyline points='20 6 9 17 4 12' />
-                  </svg>
+                  <Image src={ICON_PICKER_CHECK} style={{ width: '12px', height: '12px' }} />
                 </View>
               )}
             </View>
@@ -68,13 +77,22 @@ export default function BabyHero({
       )}
 
       <View className='baby-hero__main'>
-        <View className='baby-hero__avatar'>
-          <svg viewBox='0 0 24 24' fill='none' stroke='#fff' strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round' style={{ width: 42, height: 42 }}>
-            <path d='M12 2a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4' />
-            <path d='M5 20a7 7 0 0 1 14 0' />
-            <circle cx='9' cy='10.5' r='1' fill='#fff' />
-            <circle cx='15' cy='10.5' r='1' fill='#fff' />
-          </svg>
+        <View
+          className='baby-hero__avatar'
+          onClick={(e) => {
+            e.stopPropagation()
+            onAvatarClick?.()
+          }}
+        >
+          {avatarUrl ? (
+            <Image className='baby-hero__avatar-img' src={avatarUrl} mode='aspectFill' />
+          ) : (
+            <Image src={ICON_BABY_PLACEHOLDER} style={{ width: '42px', height: '42px' }} />
+          )}
+          {/* 相机角标：提示头像可点击更换 */}
+          <View className='baby-hero__avatar-badge'>
+            <Image src={ICON_CAMERA} style={{ width: '12px', height: '12px' }} />
+          </View>
         </View>
 
         <View className='baby-hero__info'>
@@ -102,10 +120,7 @@ export default function BabyHero({
               onEdit()
             }}
           >
-            <svg viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round' style={{ width: 14, height: 14 }}>
-              <path d='M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7' />
-              <path d='M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z' />
-            </svg>
+            <Image src={ICON_EDIT_PENCIL} style={{ width: '14px', height: '14px' }} />
             编辑
           </View>
         </View>

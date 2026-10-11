@@ -44,6 +44,18 @@ taro-view-core {
   line-height: 1;
 }
 
+// ── 输入控件文字垂直居中（关键）──────────────────────────────
+// H5 上 <Input> 渲染为：<taro-input-core class="业务类名"><input class="weui-input"></taro-input-core>。
+// 业务样式（height / line-height / font-size，如 .login-input 的 42px）落在 taro-input-core 上，
+// 而 weui 给内层 input 写死 height:1.47059em（14px 字号 ≈ 20.6px）且默认顶部对齐 →
+// placeholder / 输入文字贴着容器顶部、不垂直居中（小程序端 input 即容器、line-height 撑满，无此问题）。
+// 修复：容器改为 flex 垂直居中，内层保持自然高度；未设高度的容器退化为自然高度，行为不变。
+// 注：应用样式表在组件样式之后加载，同权重即可生效；若后续 Taro 调整注入顺序导致失效，再升级选择器。
+taro-input-core {
+  display: flex;
+  align-items: center;
+}
+
 // ── 桌面端「手机画框」呈现 ─────────────────────────────────────
 // 宽度 ≥500px 的视口（桌面/平板横屏）：
 //   1. 内容约束在 500px 画框内居中，两侧留背景色

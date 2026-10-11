@@ -191,7 +191,7 @@
 |---|---|
 | 选微信小程序为主平台 | 零安装门槛（适配祖辈）、微信生态内分享传播（家庭协作场景）、扫码即用；Taro 保留跨端扩展能力 |
 | 选 NestJS 而非 Fastify/Express | 多层权限模型（3 层 Guard × 多表 × CRUD）需要声明式装饰器复用 |
-| ECharts Canvas 截图模式 | 规避微信小程序 Canvas 层级覆盖与滚动延迟的平台固有问题，离屏渲染后转 Image 展示 |
+| ECharts 同层渲染直显（2026-10-11 起） | canvas type="2d" 自基础库 2.9.0 起支持同层渲染（官方「除事件相关，同层渲染下已无层级/滚动限制」），直显单渲染管线、支持触摸 tooltip；原「离屏截图」方案已废弃，论证见 `docs/tech/TECH-025-mp-chart-rendering-research.md` |
 | 分包加载 | 主包仅含 4 个 TabBar 页面，登录/表单等全部放 subPackages 按需加载，优化首屏体积 |
 | 双认证模式 | 开发环境 test 模式（固定验证码），生产环境 CloudBase SMS OTP + 后端 JWT（30 天有效期） |
 | 全局配置缓存 | `/api/config` 枚举配置缓存到本地 Storage，避免重复请求 |

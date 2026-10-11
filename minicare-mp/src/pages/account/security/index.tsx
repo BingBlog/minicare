@@ -23,6 +23,7 @@ import {
 import type { PasswordStatus, SetPasswordPayload } from '@/api'
 import { PASSWORD_HINT, validatePasswordConfirm } from '@/lib/passwordPolicy'
 import { getStatusBarHeight } from '@/lib/safeArea'
+import { ICON_EYE, ICON_EYE_OFF } from '@/assets/icons/svgDataUris'
 
 import './index.scss'
 
@@ -47,6 +48,10 @@ export default function AccountSecurityPage() {
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirm, setConfirm] = useState('')
+  /** 三个密码输入框各自的明文切换（眼睛图标） */
+  const [showCurrent, setShowCurrent] = useState(false)
+  const [showNew, setShowNew] = useState(false)
+  const [showConfirm, setShowConfirm] = useState(false)
   const [code, setCode] = useState('')
   const [countdown, setCountdown] = useState(0)
   const [loadingSend, setLoadingSend] = useState(false)
@@ -191,15 +196,18 @@ export default function AccountSecurityPage() {
 
         {/* 原密码（仅修改时） */}
         {hasPassword && (
-          <View className='security-field'>
+          <View className='security-field security-field--pwd'>
             <Input
               className='security-input'
-              password
+              password={!showCurrent}
               maxlength={20}
               placeholder='请输入原密码'
               value={currentPassword}
               onInput={(e) => setCurrentPassword(e.detail.value)}
             />
+            <View className='security-eye' onClick={() => setShowCurrent((v) => !v)}>
+              <Image src={showCurrent ? ICON_EYE_OFF : ICON_EYE} style={{ width: 18, height: 18 }} />
+            </View>
           </View>
         )}
 
@@ -236,25 +244,31 @@ export default function AccountSecurityPage() {
         )}
 
         {/* 新密码 */}
-        <View className='security-field'>
+        <View className='security-field security-field--pwd'>
           <Input
             className='security-input'
-            password
+            password={!showNew}
             maxlength={20}
             placeholder='请输入新密码'
             value={newPassword}
             onInput={(e) => setNewPassword(e.detail.value)}
           />
+          <View className='security-eye' onClick={() => setShowNew((v) => !v)}>
+            <Image src={showNew ? ICON_EYE_OFF : ICON_EYE} style={{ width: 18, height: 18 }} />
+          </View>
         </View>
-        <View className='security-field'>
+        <View className='security-field security-field--pwd'>
           <Input
             className='security-input'
-            password
+            password={!showConfirm}
             maxlength={20}
             placeholder='请再次输入新密码'
             value={confirm}
             onInput={(e) => setConfirm(e.detail.value)}
           />
+          <View className='security-eye' onClick={() => setShowConfirm((v) => !v)}>
+            <Image src={showConfirm ? ICON_EYE_OFF : ICON_EYE} style={{ width: 18, height: 18 }} />
+          </View>
         </View>
 
         <Text className='security-hint'>{PASSWORD_HINT}</Text>

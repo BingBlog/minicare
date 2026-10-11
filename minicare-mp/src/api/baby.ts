@@ -23,6 +23,7 @@ export const babyApi = {
     gender: 'male' | 'female' | 'unknown'
     allergy_types: string[]
     allergy_level: string
+    avatar_url: string
   }>) =>
     request<Baby>(`/api/family/${familyId}/baby/${babyId}`, {
       method: 'PATCH',

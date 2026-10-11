@@ -4,6 +4,7 @@
 import { View, Text } from '@tarojs/components'
 import { useMemo } from 'react'
 import EcChart from '@/components/EcChart'
+import { WARM_TOOLTIP } from '@/pagesReport/chartTheme'
 import type { DailySleepData } from '@/api/report'
 import { formatDateSlash, formatDurationMinutes } from '@/lib/utils'
 
@@ -28,7 +29,19 @@ export function SleepTab({ data, loading }: SleepTabProps) {
     const totalValues = data.map(d => minToHours(Number(d.totalMin) || 0))
     const nightValues = data.map(d => minToHours(Number(d.nightSleepMin) || 0))
     return {
-      tooltip: { trigger: 'axis' as const, confine: true },
+      tooltip: {
+        ...WARM_TOOLTIP,
+        trigger: 'axis' as const,
+        formatter: (ps: Array<{ axisValue?: string; dataIndex: number }>) => {
+          if (!ps?.length) return ''
+          const day = data[ps[0].dataIndex]
+          if (!day) return ''
+          return [
+            `${ps[0].axisValue ?? ''} · 每日睡眠 ${formatDurationMinutes(Number(day.totalMin) || 0)}`,
+            `夜间睡眠 ${formatDurationMinutes(Number(day.nightSleepMin) || 0)}`,
+          ].join('\n')
+        },
+      },
       legend: { data: ['每日睡眠', '夜间睡眠'], bottom: 0, textStyle: { fontSize: 10 } },
       grid: { left: 12, right: 12, top: 8, bottom: 36, containLabel: true },
       xAxis: { type: 'category' as const, data: dates, axisLabel: { fontSize: 10, color: '#C0A8AD' }, axisLine: { lineStyle: { color: '#F5F0F2' } } },

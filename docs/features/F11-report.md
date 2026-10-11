@@ -3,14 +3,15 @@
 > 功能 ID：P1-001  
 > 优先级：P1  
 > 状态：**已完成** ✅  
-> 最后更新：2026-05-03（对齐小程序实际实现）
+> 最后更新：2026-10-11（图表渲染同层直显；健康 Tab 改「体温异常点」；排敏 Tab 改图表分析；生长 Tab 三图合并 + Tooltip 统一）
 >
-> **技术方案**：ECharts 6 + Canvas 离屏渲染 + 截图显示模式。
-> 解决微信小程序 Canvas 原生组件层级最高、滚动延迟的固有问题。
+> **技术方案**：ECharts 6 + canvas type="2d" 同层渲染直显（2026-10-11 由离屏截图模式重构）。
+> 依据：canvas 2d 自基础库 2.9.0 起支持同层渲染，官方现行口径「除事件相关，同层渲染下已无层级/滚动限制」；
+> 论证与真机验收清单见 `docs/tech/TECH-025-mp-chart-rendering-research.md`。
 
 ## 功能描述
 
-通过图表可视化宝宝的各项记录数据，帮助照护者了解趋势和规律。5 个 Tab 覆盖核心记录类型。
+通过图表可视化宝宝的各项记录数据，帮助照护者了解趋势和规律。6 个 Tab（生长 / 饮食 / 睡眠 / 尿布 / 健康 / 排敏）覆盖核心记录类型。
 
 **平台实现**：微信小程序（主平台），数据通过 REST API 获取后本地渲染图表。
 
@@ -43,21 +44,21 @@
 
 ## 图表渲染方案
 
-使用自定义组件 `EcChart`（基于 ECharts 6），采用 Canvas 离屏截图模式：
+使用自定义组件 `EcChart`（基于 ECharts 6），采用 canvas type="2d" 同层渲染直显（2026-10-11 重构，原为离屏截图模式）：
 
-1. Canvas 绝对定位在屏幕外（`left: -9999px`），用户不可见
-2. ECharts 在隐藏 Canvas 上渲染图表（`animation: false` 禁用动画）
-3. 渲染完成后通过 `Taro.canvasToTempFilePath()` 导出为临时图片
-4. 用户看到的是 `<Image>` 组件展示的截图
-5. 当 `option` prop 变化时，重新渲染 → 新截图
+1. Canvas（`type="2d"`）直接参与文档流展示：单渲染管线，无需截图落盘，按 DPR 原生清晰
+2. 初始化用「轮询等待布局」（至多 10×100ms 重试）替代固定延时；`option` 存 ref 消除时序竞态
+3. `option` prop 变化时直接 `setOption` 重绘，无临时文件
+4. 触摸事件转发 zrender 实现 tooltip；垂直滑动识别为页面滚动并自动收起提示框，不拦截滚动
+5. ~~离屏渲染 + canvasToTempFilePath 截图 + Image 展示~~（已废弃：该方案针对的旧版 canvas 限制，对 `type="2d"` 同层渲染不适用，且导致图表不可交互）
 
-> 此方案彻底规避小程序 Canvas 原生组件的 z-index 问题和滚动跟随延迟。
+> 历史方案论证与本方案真机验收清单：`docs/tech/TECH-025-mp-chart-rendering-research.md`
 
 ## 各 Tab 图表内容
 
-### GrowthTab（生长）
-- 百分位曲线图：P3/P15/P50/P85/P97 参考线 + 宝宝实际数据点
-- 支持切换：身高/体重/头围
+### GrowthTab（生长，2026-10-11 三图合并）
+- 三个曲线卡片纵向排列（体重 / 身高 / 头围），下滑依次可见，不再区分子 Tab；无数据的维度展示占位提示
+- 百分位参照线 P3/P15/P50/P85/P97 + 宝宝数据点（**平滑曲线连接**），每图右上角标注「最新值 · 百分位」
 - 数据来源：growth_record + growth-standards.ts
 
 ### FeedingTab（饮食）
@@ -76,24 +77,43 @@
 - 数据来源：diaper_record
 
 ### HealthTab（健康）
-- 体温趋势曲线
-- 过敏/用药事件标记
-- 数据来源：health_record
+- **体温异常点**（2026-10-11 调整）：仅显示 ≥37.5°C 的异常记录（37.5–38°C 橙=偏高；≥38°C 红=发热）；区间内无异常时展示「体温平稳」空态；默认时间范围 = 半年
+- 情绪散点：纵轴为情绪四档（哭闹→开心），圆点大小标记需关注状态
+- 精神状态分布：环图（活跃/正常/有点累/萎靡）
+- 数据来源：health_record（体温） + symptom_record（情绪/精神）
+
+### AllergyTab（排敏，2026-10-11 重构为图表分析）
+- 引入进度：累计引入 / 累计已耐受 双线（时间轴；已耐受完成日按观察期结束估算）
+- 排敏状态分布：五态环图（已耐受 / 观察中 / 疑似过敏 / 确认过敏 / 已停用）
+- 食物类别覆盖：按常见辅食分类的堆叠条（已耐受 / 其余状态）
+- 数据洞察：动态生成（总进度、近 30 天节奏、超期观察提醒、过敏风险）
+- 数据来源：`food-observations` 全量（不随时间范围过滤；本 Tab 隐藏范围选择器）；与「排敏进度」页（records/food-observation）不再重复
+
+## 图表 Tooltip 规范（2026-10-11）
+
+- **统一样式**：暖色卡片——白底、暖粉描边（#F5D5E0）、圆角、暖棕文字；小程序端由 richText 画布渲染（统一定义见 `minicare-mp/src/pagesReport/chartTheme.ts` 的 `WARM_TOOLTIP`）
+- **统一内容**：日期 + 数值 + 单位（生长图含月龄与百分位；堆叠图首行给合计、后续逐项换行）
+- **生长图点按触达**：tooltip 为「点按记录点触发」（item 模式）——点按刻度线 / 空白处不再弹出，避免记录点靠近刻度时的误触；配合全局粗指针判定（±12px）便于点中小标记
 
 ## 验收标准（AC）
 
-- [x] 5 个 Tab 切换正常
+- [x] 6 个 Tab 切换正常
 - [x] 默认打开 Growth Tab
 - [x] 时间范围切换实时更新图表
 - [x] Growth Tab 仅显示"从出生"选项
-- [x] 图表使用 ECharts 截图模式渲染，无层级/滚动问题
+- [x] 图表渲染无层级/滚动问题（2026-10-11 起：同层渲染直显 + 触摸 tooltip；此前期离屏截图模式）
 - [x] 无数据时显示空状态提示
 - [x] 生长曲线含百分位参考线
+- [x] 健康 Tab：体温仅展示异常点（≥37.5°C），默认时间范围半年（2026-10-11）
+- [x] 排敏 Tab：图表分析形态（进度 / 分布 / 覆盖 / 洞察），与排敏进度页不重复（2026-10-11）
+- [x] 生长 Tab：三图合并纵向展示（体重/身高/头围）、平滑曲线连接、Tooltip 含月龄与百分位（2026-10-11）
+- [x] 图表 Tooltip 统一暖色样式；所有图表均可点按查看 tooltip（2026-10-11）
+- [x] 生长图 tooltip 仅点按记录点触发，刻度线 / 空白处不误触（2026-10-11）
 
 ## 相关文件
 
-- 报告主页：`minicare-mp/src/pages/report/index.tsx`
-- 类型定义：`minicare-mp/src/pages/report/types.ts`
+- 报告主页：`minicare-mp/src/pagesReport/index.tsx`
+- 类型定义：`minicare-mp/src/pagesReport/types.ts`
 - 图表组件：`minicare-mp/src/components/EcChart/EcChart.tsx`
-- 各 Tab 组件：`minicare-mp/src/pages/report/tabs/GrowthTab.tsx` 等
+- 各 Tab 组件：`minicare-mp/src/pagesReport/tabs/GrowthTab.tsx` 等
 - 生长标准：`minicare-mp/src/lib/growth-standards.ts`

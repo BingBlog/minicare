@@ -121,7 +121,7 @@ Taro.getRecorderManager() 录音（aac，30s 上限，波形动画）
 | 语音状态机 | `src/lib/useVoiceInput.ts` | 录音/停止/取消/超时状态机，抽取复用 |
 | 语音转写 API | `src/api/voice.ts` | 后端腾讯云 ASR（TECH-001 链路） |
 | 底部确认弹窗 | `ConfirmSheet`（open/title/desc/confirmText/danger/onConfirm/onCancel） | 日记覆盖确认、反馈确认、清空会话确认 |
-| 图表（总结卡片/生长曲线） | `EcChart`（ECharts canvas 离屏渲染 + 截图，无层级问题） | 总结卡片可选折线图，生长曲线百分位图 |
+| 图表（总结卡片/生长曲线） | `EcChart`（ECharts canvas 2d 同层渲染直显，支持触摸 tooltip） | 总结卡片可选折线图，生长曲线百分位图 |
 | 导航栏 | `NavBar` / `RecordNavBar` | 对话页/日记页导航 |
 | 加载态 | `PageLoading` | 首屏加载 |
 | 登录引导 | `LoginGuide` | 游客/未登录拦截 |

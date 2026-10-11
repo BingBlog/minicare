@@ -1,5 +1,7 @@
 # minicare-web PWA 方案
 
+> ⛔ **已废弃（2026-10-10）**：web 前端已由 Taro H5 替换，PWA 方案废弃——托管根与 `/staging/` 的 `sw.js` 已替换为「自注销版」（清 CacheStorage + unregister，需长期保留），`manifest.webmanifest` / `workbox-*.js` / `registerSW.js` 均已删除。本文档仅作历史参考。
+
 > **定位变更说明（2026-05-03）**：项目已确定以**微信小程序**为主要分发平台。
 > Web PWA 作为早期原型开发的补充方案保留，目前处于**维护模式**，不再作为主要用户入口。
 > 新功能开发优先在小程序端（`minicare-mp/`）实现。

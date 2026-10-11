@@ -176,6 +176,16 @@
   white-space: nowrap;
 }
 
+/* ── 密码可见性切换（眼睛；隐藏态暖灰 / 明文态主粉） ── */
+.login-eye {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
 /* ── 「没有账号？立即注册」 ── */
 .login-switch {
   text-align: center;

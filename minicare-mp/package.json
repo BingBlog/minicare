@@ -14,7 +14,8 @@
     "check:401": "node scripts/check-401-semantics.cjs",
     "build:weapp:staging": "node scripts/check-node.js && taro build --type weapp --mode staging",
     "dev:weapp": "node scripts/check-node.js && taro build --type weapp --mode development --watch",
-    "build:h5": "node scripts/check-node.js && taro build --type h5",
+    "build:h5": "node scripts/check-node.js && taro build --type h5 --mode production",
+    "build:h5:staging": "node scripts/check-node.js && taro build --type h5 --mode staging",
     "dev:h5": "node scripts/check-node.js && taro build --type h5 --mode development --watch",
     "preview": "NODE_OPTIONS=\"--dns-result-order=ipv4first --no-network-family-autoselection\" node scripts/mp-preview.js",
     "preview:staging": "NODE_OPTIONS=\"--dns-result-order=ipv4first --no-network-family-autoselection\" node scripts/mp-preview.js --staging"

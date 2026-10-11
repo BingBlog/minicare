@@ -238,7 +238,11 @@ CREATE TABLE IF NOT EXISTS eval_case_result (
   answer         TEXT,                       -- 回答全文（D10：不截断）
   judge          TEXT,                       -- JSON：忠实/完整/护栏/风格明细
   trace_id       TEXT,
-  force_finished INTEGER NOT NULL DEFAULT 0
+  force_finished INTEGER NOT NULL DEFAULT 0,
+  attribution        TEXT,                   -- 归因（TECH-026 §2）：env/data/exec/judge/skill；通过=NULL
+  attribution_source TEXT,                   -- auto（入库自动）/ manual（人工改判）
+  attribution_note   TEXT,                   -- 人工改判备注
+  tokens_json        TEXT                    -- JSON：{input,output,cacheRead,cacheCreation,total}
 );
 CREATE INDEX IF NOT EXISTS idx_eval_case_run ON eval_case_result(run_id);
 
@@ -346,11 +350,12 @@ class PlatformDB:
 
         SQLite 没有 ``DROP COLUMN IF EXISTS``，只能先用 ``PRAGMA table_info`` 探测再删；
         补列则逐列探测后 ``ALTER TABLE ADD COLUMN``（默认值必须是常量）。
-        当前做三件事：
+        当前做四件事：
         ① 移除 `kb_doc_state` 的两个「暂停点放行」标记列（人工闸门机制已整体移除，2026-10-09）；
            ⚠️ `meta_json` **必须保留** —— 「信息确认」表单的人工取值仍在用它。
         ② Agent 测评：`eval_run.task_id`（TECH-021 §3.5）——旧库补列，新库由 SCHEMA 直接建出。
         ③ 检索质检台（PRD-011）：`kb_recall_case` 五列 + `kb_recall_gold` 三列 —— 旧库补列。
+        ④ Agent 测评报告 2.0（TECH-026 §2）：`eval_case_result` 归因与 Token 四列 —— 旧库补列。
         """
         cols = {r["name"] for r in conn.execute("PRAGMA table_info(kb_doc_state)")}
         for col in ("meta_confirmed", "chunks_approved"):
@@ -360,6 +365,14 @@ class PlatformDB:
         ev_cols = {r["name"] for r in conn.execute("PRAGMA table_info(eval_run)")}
         if ev_cols and "task_id" not in ev_cols:
             conn.execute("ALTER TABLE eval_run ADD COLUMN task_id TEXT")
+        # Agent 测评报告 2.0（TECH-026 §2）：归因体系 + Token 明细 —— 逐列探测补列
+        ecr_cols = {r["name"] for r in conn.execute("PRAGMA table_info(eval_case_result)")}
+        _add_cols(conn, "eval_case_result", ecr_cols, {
+            "attribution": "TEXT",
+            "attribution_source": "TEXT",
+            "attribution_note": "TEXT",
+            "tokens_json": "TEXT",
+        })
         # 检索质检台（PRD-011）：用例三态标注与映射分层 —— 逐列探测补列
         case_cols = {r["name"] for r in conn.execute("PRAGMA table_info(kb_recall_case)")}
         _add_cols(conn, "kb_recall_case", case_cols, {

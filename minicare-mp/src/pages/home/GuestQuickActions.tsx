@@ -61,7 +61,7 @@ export default function GuestQuickActions() {
           return (
             <View className='home-quick-grid__item home-quick-grid__item--bottom' key={key} onClick={handleGuestTap}>
               <ActionIcon actionKey={key} />
-              <Text className='home-quick-grid__text home-quick-grid__text--bottom'>{cfg.label}</Text>
+              <Text className='home-quick-grid__text'>{cfg.label}</Text>
             </View>
           )
         })}

@@ -150,6 +150,7 @@ export class BabyService {
     if (dto.allergy_level !== undefined)   { fields.push('allergy_level = ?');   values.push(dto.allergy_level); }
     if (dto.birth_weight_g !== undefined)  { fields.push('birth_weight_g = ?');  values.push(dto.birth_weight_g); }
     if (dto.birth_height_cm !== undefined) { fields.push('birth_height_cm = ?'); values.push(dto.birth_height_cm); }
+    if (dto.avatar_url !== undefined)      { fields.push('avatar_url = ?');      values.push(dto.avatar_url ?? null); }
 
     if (fields.length === 0) return this.getBabyById(babyId, familyId);
 

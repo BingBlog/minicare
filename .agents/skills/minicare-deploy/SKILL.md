@@ -24,7 +24,9 @@ description: minicare 项目构建发布操作手册。包含前端静态托管�
 | Region           | `ap-shanghai`                                                           |
 | 静态托管访问地址 | `https://minicare-cloud-6gqledlle0132cbe-1253854169.tcloudbaseapp.com/` |
 
-### 1.2 前端参数（minicare-web）
+### 1.2 前端参数（minicare-web · 旧流程，仅回滚参考）
+
+> ⚠️ 2026-10-10 起，生产/预发前端已由 **Taro H5 产物**（`minicare-mp` → `dist-h5`）替换，新流程见 **§10 SOP-G**；本表仅用于回滚旧 web。
 
 | 属性               | staging                                                                         | production                                                              |
 | ------------------ | ------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
@@ -64,6 +66,11 @@ description: minicare 项目构建发布操作手册。包含前端静态托管�
 >
 > **两者不对齐会导致登录失败**（前端用真实短信 + 后端用固定验证码 = 400 错误）。
 
+> 🛠️ **2026-10-11 配置修正记录（staging 服务 minicare-api）**：曾发现 `DB_NAME` 漂移指向正式库、
+> 缺 `AGENT_INTERNAL_TOKEN`、`CORS_ORIGINS` 缺 www 域名——已全部修回（DB_NAME=`minicare_staging`、
+> token 与生产同款 48 位、CORS 补 `http(s)://www.minicare.top`）。修改方法见 **§11**。
+> 请勿再手工把 staging 服务指向正式库（升级为体验版直连正式数据的做法一律拒绝）。
+
 ### 1.4 Agent 服务参数（minicare-agent）
 
 | 属性            | 值                                                                                     |
@@ -76,12 +83,16 @@ description: minicare 项目构建发布操作手册。包含前端静态托管�
 | 访问域名        | `https://minicare-agent-240137-10-1253854169.sh.run.tcloudbase.com`                     |
 | 健康检查        | `GET /health`（免 token）→ `{"ready":true,"db":true,"embedding":true,"tokenAuth":true}` |
 | EnvParams       | DEEPSEEK_API_KEY, TCB_*, AGENT_INTERNAL_TOKEN, DB_*(生产库), TOKENHUB_API_KEY — 控制台为准 |
+| 实例配置        | **MinNum=1 / MaxNum=5**（2026-10-11 控制台设置）；`deploy-agent.mjs` 为 diff 更新（仅 EnvParams+Port），不会触碰该配置 |
+
+> 📌 **实例保活（2026-10-11）**：此前无流量时会缩容到 0（DeployRecords 中 `ScaleStatus=zero`）导致服务偶发不可用，
+> 现控制台已设 MinNum=1，并重新部署 v016 验证（配置保留）。实测耗时：10:41:21 提交 → 10:48:51 构建 normal → 10:49:06 切流 100%，全程约 7m45s（比 09-20 的 5m44s 略长）。
 
 > ⚠️ 踩坑（2026-09-04）：
 > 1. `@cloudbase/manager-node` 5.x 的 `init()` 参数从 `env` 改名为 **`envId`**（旧写法报 `[DescribeEnvInfo] EnvId is required`）；deploy 脚本已适配。
 > 2. manager-node 是 minicare-agent 的 devDependency（部署时曾被误删），缺了先 `npm i -D @cloudbase/manager-node`。
 > 3. 直连 SDK 版镜像依赖 `@anthropic-ai/claude-agent-sdk` 的 linux-x64 CLI 二进制，云端 `npm install` 自动按平台拉取；部署后必须跑一次 `/chat` 端到端验证 CLI 可用。
-> 4. 验收时 `x-agent-token` 必须用 **CloudRun EnvParams 里的 AGENT_INTERNAL_TOKEN**。2026-09-20 实测：线上 agent 与线上 `minicare-api-production` 的值一致（48 位），而本地 `minicare-server/.env.local` 是 **18 位** —— 两者早已脱钩（拿本地值调线上会一直 401，现象像"发版失败"）。**真正的风险**：minicare-server 部署若把本地 EnvParams 整体写入，会把线上 48 位冲成 18 位，而 agent 侧仍是 48 位 → **生产聊天全线 401**。部署 minicare-server 前先核对这一项；`verify-online.mjs` 会主动比对并告警。
+> 4. 验收时 `x-agent-token` 必须用 **CloudRun EnvParams 里的 AGENT_INTERNAL_TOKEN**。现状（2026-10-11 核实）：线上 agent / `minicare-api-production` / `minicare-api` 三服务**始终同值**（48 位）；本地 `minicare-server/.env.local` 曾长期脱钩（09-20 为 18 位、10-11 晨为 43 位——拿本地值调线上一直 401，现象像"发版失败"），**10-11 已同步修复**（现取线上值写入本地，实测旧值 401 → 新值 400 鉴权通过）。**维护铁律：令牌变更必须四处同步**（agent + minicare-api + minicare-api-production + 本地 `.env.local`，模板注释见 `minicare-server/.env.example`）；本地改完需**重启 3001** 才生效。残余风险：minicare-server 部署若把本地 EnvParams 整体写入，仍可能冲掉线上值 → 部署前核对这一项；`verify-online.mjs` 会主动比对并告警。
 > 5. Dockerfile 非root用户（oak）+ `CLAUDE_CONFIG_DIR` 兜底 /tmp；`.dockerignore` 已排除 `.env.local`/`.wire-logs`。
 > 6. 实测耗时（2026-09-20，v013→v014）：提交到镜像构建完 **5m44s**（`create_build_image: creating` → `succ`），随后 `create_eks_virtual_service` 秒级 succ，全程约 6 分钟。`getDeployRecords` 比 `getProcessLog` 滞后（前者还在 `creating`、后者已 `succ`），**判断是否完成优先看 `getProcessLog`**。
 > 7. `AGENT_INTERNAL_TOKEN` 为 32 位以上随机串时，新版本首次 `/chat` 若返回 `{"error":"unauthorized"}`，先按第 4 条排查令牌，不要误判为部署失败。
@@ -398,6 +409,14 @@ Step 3：验证（约 20 秒内生效）
 | `tcb` CLI 未登录                            | 认证过期                            | 执行 `tcb login` 重新授权                                                       |
 | `tcb cloudrun deploy` 交互卡住              | 灰度部署确认提示                    | 使用 `echo "n" \|` 管道输入或加 `--force` 跳过确认                              |
 | 小程序真机 `request:fail -201`              | `www.minicare.top` SSL 证书过期（自动续费只签发不部署） | 按 §7 SOP-F 换绑网关证书（2026-10-02 事故实录）                  |
+| agent 聊天偶发无响应/超时（低频使用后）      | CloudRun 无流量缩容到 0，冷启动慢或不可达 | 已设 MinNum=1（2026-10-11）；若再出现查控制台实例配置（§1.4）    |
+
+**补充速查（2026-10-10 新增）**：
+
+| 现象 | 根因 | 解决 |
+| --- | --- | --- |
+| 前端页面变成「下载文件」 | 用默认域名 `xxx.tcloudbaseapp.com` 访问（该域名对浏览器下发 attachment） | 一律改用 `www.minicare.top` 访问/验收 |
+| `/staging/` 下 H5 资源 404 | 构建未带 `--mode staging`，或 `.env.staging` 缺 `TARO_APP_H5_BASE_PATH=/staging/` | 用 `npm run build:h5:staging` 重建后重新部署 |
 
 ---
 
@@ -434,3 +453,103 @@ tcb fn log keepalive-ping --limit 20 -e minicare-cloud-6gqledlle0132cbe
 # 静态托管文件列表
 tcb hosting list staging -e minicare-cloud-6gqledlle0132cbe
 ```
+
+---
+
+## §10 SOP-G：Taro H5 静态站发布（web 替换后，2026-10-10 起）
+
+**适用场景**：更新 `www.minicare.top`（生产根）与 `www.minicare.top/staging/`（预发）前端。
+**产物来源**：`minicare-mp` 的 Taro H5 构建（`dist-h5/`）；旧 `minicare-web` 已停用（回滚参考 §1.2）。
+
+> 🔴 验收一律走 `www.minicare.top`——默认域名 `xxx.tcloudbaseapp.com` 对浏览器下发 `content-disposition: attachment`（会变下载），www 网关路径正常。
+
+### 步骤
+
+```bash
+# Step 1 构建 + 组装（内置产物自检；staging 资源带 /staging/ 前缀）
+cd minicare-mp
+bash scripts/prepare-h5-deploy.sh prod      # → dist-h5（部署到 /）
+bash scripts/prepare-h5-deploy.sh staging   # → dist-h5（部署到 /staging/）
+
+# Step 2 上传（二选一）
+# A) tcb CLI（需 tcb login）：
+tcb hosting deploy dist-h5 . -e minicare-cloud-6gqledlle0132cbe --safe
+tcb hosting deploy dist-h5 staging -e minicare-cloud-6gqledlle0132cbe --safe
+# B) CloudBase MCP（CLI 未登录时）：manageHosting action=upload
+#    prod: localPath=<dist-h5 绝对路径> cloudPath=/ ；staging: cloudPath=/staging/
+#    ⚠️ 目录上传回执 totalFiles 恒为 1 属噪音，以远端 js/ 计数与 HTTP 探测为准
+
+# Step 3 验收（带 cache-buster；index.html 的 s-maxage=600）
+curl -s "https://www.minicare.top/index.html?t=$(date +%s)" | grep -o 'src="[^"]*"'         # 期望 /js/...
+curl -s "https://www.minicare.top/staging/index.html?t=$(date +%s)" | grep -o 'src="[^"]*"' # 期望 /staging/js/...
+```
+
+### 关键约定与坑
+
+| 项 | 说明 |
+| --- | --- |
+| 子路径参数化 | `/staging/` 前缀来自 `.env.staging` 的 `TARO_APP_H5_BASE_PATH`（`config/index.ts` h5.publicPath，构建期注入） |
+| 过渡 sw.js | `scripts/hosting/sw-unregister.js`（清缓存 + 自注销）需**长期保留**于 `/sw.js` 与 `/staging/sw.js`，勿删 |
+| version.json | 每次组装重新生成（历史 PWA 客户端据此提示更新）；非 PWA 代码不消费、保留无害 |
+| 禁止误删 | 根目录 `about/`、`cloud-admin/`、`__auth/`、`adminportal/`、`icon*`、`apple-touch-icon.png`、`staging/sounds/` 为用户/平台资产 |
+| 清理残留 | H5 构建无历史文件累积；如需彻底清理可 `--prune`（⚠️ 会连 `/staging/` 一起删，慎用） |
+| 构建环境 | Node ≥18（`.nvmrc`）；经 WorkBuddy shell 构建需清 broker 环境变量（见 mp 仓库备忘） |
+| 本地视觉验证 | Chrome headless 的 `--window-size` 不生效（布局视口恒 500×701）→ **用 iframe 定宽页截图**（模板 `docs/tech/assets/h5-input-fix-20261010/template-view-390.html`）；Chrome 进程因 GoogleUpdater 滞留，需「写文件+轮询+按 profile pkill」 |
+| CI 状态 | `deploy-web.yml` 已失效（secrets 为空）且指向旧 web；恢复自动部署前以本 SOP 手动发布为准 |
+
+---
+
+## §11 SOP-H：修改 CloudRun 环境变量（tcb api 通道，2026-10-11 实战沉淀）
+
+**适用场景**：需要修改某 CloudRun 服务的环境变量（如 `DB_NAME` / `CORS_ORIGINS` / 补 `AGENT_INTERNAL_TOKEN`），
+**且不想重新构建代码**（或作为代码部署前的独立配置修复）。
+
+> 🔴 **语义警告**：CloudRun EnvParams 修改是**全量替换**——必须读出全部现有键、合并修改后再整体写回，
+> 否则会丢键（最危险的是把 `AGENT_INTERNAL_TOKEN`/`JWT_SECRET` 弄丢，全面 401）。
+
+### 步骤
+
+```bash
+# Step 1 读现有配置（全量）
+tcb cloudrun detail -s <服务名> -e minicare-cloud-6gqledlle0132cbe --json
+# → data.ServerConfig.EnvParams（JSON 字符串）+ data.OnlineVersionInfos[0].ImageUrl（当前镜像）
+
+# Step 2 组装 payload（Items 为差分配置项；未列出的 Cpu/Mem/MinNum 等不动）
+#   ⚠️⚠️ Items 的 Key 必须写 `EnvParam`（没有 s）！manager-node 的 SUBMIT_DIFF_MAP
+#   把 EnvParams→EnvParam；直接写 EnvParams 会被 API **静默忽略**（任务成功但配置不变 —— 已踩坑）
+#   DeployInfo 必填；用「当前线上镜像」= 只换配置不动代码
+cat > payload.json << 'EOF'
+{
+  "EnvId": "minicare-cloud-6gqledlle0132cbe",
+  "ServerName": "<服务名>",
+  "Items": [{ "Key": "EnvParam", "Value": "<完整 EnvParams JSON 字符串>" }],
+  "DeployInfo": { "DeployType": "image", "ImageUrl": "<当前线上镜像 URL>", "ReleaseType": "FULL" }
+}
+EOF
+
+# Step 3 提交（注意服务名是 tcbr 不是 tcb！CloudRun API 属 tcbr/2022-02-17）
+tcb api tcbr UpdateCloudRunServer --api-version 2022-02-17 --body "$(cat payload.json)" --json
+# → 返回 TaskId
+
+# Step 4 轮询任务（约 1-2 分钟，finished 后生效；会滚动新版本号）
+tcb api tcbr DescribeServerManageTask --api-version 2022-02-17 \
+  --body '{"EnvId":"minicare-cloud-6gqledlle0132cbe","ServerName":"<服务名>","TaskId":<id>}' --json
+# → data.Task.Status: running → finished；步骤 CreateVersion + ReleaseVersion 均 finished
+
+# Step 5 验证
+tcb cloudrun detail -s <服务名> -e minicare-cloud-6gqledlle0132cbe --json   # 看 EnvParams 变化
+curl -s https://<域名>/health                                                # 看 db.name 等运行时实际值
+```
+
+### 坑位清单（2026-10-11 实测）
+
+| 坑 | 现象 | 解法 |
+| --- | --- | --- |
+| 服务名用错 | `tcb`/2018-06-08 报 `InvalidAction` | CloudRun 走 `tcbr` 服务 + `--api-version 2022-02-17` |
+| Items Key 写错 | `EnvParams`（带 s）→ 任务 finished 但配置**无变化** | 必须写 `EnvParam`（无 s） |
+| 缺 DeployInfo | 报 `MissingParameter: DeployInfo` | 补 `DeployType:image + ImageUrl:当前镜像` |
+| 忘记轮询 | 提交后立即查 detail 看不到变化 | 是异步任务，用 DescribeServerManageTask 轮询 |
+| CLI deploy 不碰 EnvParams | `tcb cloudrun deploy` 不会改环境变量（diff 语义） | 配置修改用本 SOP；两者独立 |
+
+> 本次实战：staging（minicare-api）修正 = 迁移 staging 库 020~024 → 本 SOP 改配置（DB_NAME→minicare_staging、
+> 补 AGENT_INTERNAL_TOKEN、CORS 补 www）→ `tcb cloudrun deploy` 发新代码（v061）→ 冒烟全通过。

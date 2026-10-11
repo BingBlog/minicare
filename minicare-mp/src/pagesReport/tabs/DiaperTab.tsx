@@ -4,6 +4,7 @@
 import { View, Text } from '@tarojs/components'
 import { useMemo } from 'react'
 import EcChart from '@/components/EcChart'
+import { WARM_TOOLTIP } from '@/pagesReport/chartTheme'
 import type { DailyDiaperData } from '@/api/report'
 import { formatDateSlash } from '@/lib/utils'
 
@@ -22,6 +23,14 @@ export function DiaperTab({ data, loading }: DiaperTabProps) {
     if (!data?.length) return {}
     const max = Math.max(5, ...data.map(d => d.dirtyCount))
     return {
+      tooltip: {
+        ...WARM_TOOLTIP,
+        trigger: 'axis' as const,
+        formatter: (ps: Array<{ axisValue?: string; value?: unknown }>) => {
+          if (!ps?.length) return ''
+          return `${ps[0].axisValue ?? ''} · 大便 ${Number(ps[0].value) || 0} 次`
+        },
+      },
       grid: { left: 12, right: 12, top: 8, bottom: 24, containLabel: true },
       xAxis: { type: 'category' as const, data: data.map(d => formatDateSlash(d.date)), axisLabel: { fontSize: 10, color: '#C0A8AD' }, axisLine: { lineStyle: { color: '#F5F0F2' } } },
       yAxis: { type: 'value' as const, max, axisLabel: { fontSize: 10, color: '#C0A8AD' }, splitLine: { lineStyle: { color: '#F5F0F2' } } },
@@ -36,7 +45,16 @@ export function DiaperTab({ data, loading }: DiaperTabProps) {
   const stackedOption = useMemo(() => {
     if (!data?.length) return {}
     return {
-      tooltip: { trigger: 'axis' as const, confine: true },
+      tooltip: {
+        ...WARM_TOOLTIP,
+        trigger: 'axis' as const,
+        formatter: (ps: Array<{ axisValue?: string; seriesName?: string; value?: unknown }>) => {
+          if (!ps?.length) return ''
+          const total = ps.reduce((s, p) => s + (Number(p.value) || 0), 0)
+          const lines = ps.map(p => `${p.seriesName} ${Number(p.value) || 0} 次`)
+          return [`${ps[0].axisValue ?? ''} · 共 ${total} 次`, ...lines].join('\n')
+        },
+      },
       legend: { data: stackKeys.map(k => stackLabels[k]), bottom: 0, textStyle: { fontSize: 10 } },
       grid: { left: 12, right: 12, top: 8, bottom: 36, containLabel: true },
       xAxis: { type: 'category' as const, data: data.map(d => formatDateSlash(d.date)), axisLabel: { fontSize: 10, color: '#C0A8AD' }, axisLine: { lineStyle: { color: '#F5F0F2' } } },

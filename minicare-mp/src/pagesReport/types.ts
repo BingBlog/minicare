@@ -23,7 +23,7 @@ export const DEFAULT_RANGE_MAP: Record<TabKey, string> = {
   diaper: '30',
   growth: 'birth',
   sleep: '30',
-  health: '30',
+  health: '180',
   allergy: '30',
 }
 

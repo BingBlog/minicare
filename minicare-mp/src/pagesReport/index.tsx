@@ -2,7 +2,7 @@ import { View, Text, ScrollView } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { useState, useCallback, useRef, useEffect } from 'react'
 import dayjs from 'dayjs'
-import { babyApi, familyApi, foodObservationApi } from '@/api'
+import { babyApi, foodObservationApi } from '@/api'
 import { reportApi } from '@/api/report'
 import type { DailyFeedingData, DailyDiaperData, DailySleepData, DailyHealthData, GrowthRecord } from '@/api/report'
 import { FeedingTab } from './tabs/FeedingTab'
@@ -194,29 +194,32 @@ export default function ReportPage() {
         </ScrollView>
       </View>
 
-      <View style={S.rangeWrap}>
-        <ScrollView scrollX style={{ whiteSpace: 'nowrap' }}>
-          {TIME_RANGES.map(range => {
-            if (activeTab === 'growth' && range.key !== 'birth') return null
-            const isActive = currentRange === range.key
-            return (
-              <View
-                key={range.key}
-                onClick={() => handleRangeChange(range.key)}
-                style={{
-                  display: 'inline-block',
-                  padding: '6px 12px', fontSize: 12, fontWeight: 500,
-                  borderRadius: 20, marginRight: 8, whiteSpace: 'nowrap',
-                  background: isActive ? '#FFF0F4' : '#fff',
-                  color: isActive ? '#F87098' : '#9A8090',
-                  border: isActive ? '1px solid rgba(248,112,152,0.3)' : '1px solid #E8E0E4',
-                }}
-              >{range.label}</View>
-            )
-          })}
-        </ScrollView>
-        <Text style={S.rangeText}>{getRangeText(currentRange, babyBirthDate)}</Text>
-      </View>
+      {/* 时间范围选择（排敏 Tab 为全量分析、不随时间范围过滤 → 隐藏选择器） */}
+      {activeTab !== 'allergy' && (
+        <View style={S.rangeWrap}>
+          <ScrollView scrollX style={{ whiteSpace: 'nowrap' }}>
+            {TIME_RANGES.map(range => {
+              if (activeTab === 'growth' && range.key !== 'birth') return null
+              const isActive = currentRange === range.key
+              return (
+                <View
+                  key={range.key}
+                  onClick={() => handleRangeChange(range.key)}
+                  style={{
+                    display: 'inline-block',
+                    padding: '6px 12px', fontSize: 12, fontWeight: 500,
+                    borderRadius: 20, marginRight: 8, whiteSpace: 'nowrap',
+                    background: isActive ? '#FFF0F4' : '#fff',
+                    color: isActive ? '#F87098' : '#9A8090',
+                    border: isActive ? '1px solid rgba(248,112,152,0.3)' : '1px solid #E8E0E4',
+                  }}
+                >{range.label}</View>
+              )
+            })}
+          </ScrollView>
+          <Text style={S.rangeText}>{getRangeText(currentRange, babyBirthDate)}</Text>
+        </View>
+      )}
 
       <View style={S.contentArea}>
         {activeTab === 'feeding' && <FeedingTab data={feedingData} loading={loading} />}

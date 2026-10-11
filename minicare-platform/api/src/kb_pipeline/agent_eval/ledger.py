@@ -1,16 +1,23 @@
 """Agent 测评台账（PRD-010 §3）：`eval_run` / `eval_case_result` 的读写、闸门汇总与 delta。
 
+TECH-026 增量：
+  · `insert_case_results` 落归因（入库时自动分类，source=auto）与 Token 明细；
+  · `compute_report()` 实时聚合「五指标 + 归因分布 + 性能成本 + 决策四态」（纯函数，不落库）。
+
 表定义在 `platform_db.SCHEMA`（IF NOT EXISTS，随 PlatformDB 初始化自动建）。
 JSON 列（env_snapshot / summary / tool_calls / judge）出参时解码为对象。
 """
 from __future__ import annotations
 
 import json
+import math
 import re
+import statistics
 from datetime import datetime
 from typing import Any
 
 from ..platform_db import PlatformDB
+from . import attribution
 
 
 def now_iso() -> str:
@@ -106,17 +113,51 @@ class EvalLedger:
         )
 
     def insert_case_results(self, run_id: str, cases: list[dict]) -> None:
-        """cases 为 runner 规范化后的 dict 列表（键见 eval_case_result 列）。"""
+        """cases 为 runner 规范化后的 dict 列表（键见 eval_case_result 列）。
+
+        TECH-026：`attribution` 由 runner 入库前自动分类（source=auto）；`tokens` 为
+        runtime → harness 透出的 usage 明细（可缺失，NULL）。
+        """
         for c in cases:
+            attr = c.get("attribution")
             self.db.execute(
                 "INSERT INTO eval_case_result (run_id, case_id, grp, priority, desc, pass,"
-                " stage, detail, ms, tool_calls, answer, judge, trace_id, force_finished)"
-                " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                " stage, detail, ms, tool_calls, answer, judge, trace_id, force_finished,"
+                " attribution, attribution_source, attribution_note, tokens_json)"
+                " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 (run_id, c.get("case_id"), c.get("grp"), c.get("priority"), c.get("desc"),
                  1 if c.get("pass") else 0, c.get("stage"), c.get("detail"), c.get("ms"),
                  _dumps(c.get("tool_calls")), c.get("answer"), _dumps(c.get("judge")),
-                 c.get("trace_id"), 1 if c.get("force_finished") else 0),
+                 c.get("trace_id"), 1 if c.get("force_finished") else 0,
+                 attr, ("auto" if attr else None), None,
+                 _dumps(c.get("tokens"))),
             )
+
+    def update_attribution(self, run_id: str, case_id: str, *,
+                           attribution_value: str | None, note: str | None) -> dict | None:
+        """人工改判 / 恢复自动（TECH-026 §3.2）。
+
+        - 改判：`attribution_value` 为分类值 → 存值 + source=manual + note；
+        - 恢复自动：`attribution_value=None` → 清空三列（读取时由分类器实时推导）。
+        返回更新后的用例行（不存在返回 None）。
+        """
+        row = self.db.query_one(
+            "SELECT id FROM eval_case_result WHERE run_id = ? AND case_id = ?",
+            (run_id, case_id))
+        if not row:
+            return None
+        if attribution_value:
+            self.db.execute(
+                "UPDATE eval_case_result SET attribution=?, attribution_source='manual',"
+                " attribution_note=? WHERE id=?",
+                (attribution_value, note, row["id"]))
+        else:
+            self.db.execute(
+                "UPDATE eval_case_result SET attribution=NULL, attribution_source='auto',"
+                " attribution_note=NULL WHERE id=?",
+                (row["id"],))
+        c = self.db.query_one("SELECT * FROM eval_case_result WHERE id = ?", (row["id"],))
+        return _case_out(c, full=True) if c else None
 
     # ── 读 ────────────────────────────────────────────────────────────
 
@@ -306,6 +347,189 @@ def compute_gate(cases: list[dict], dims: list[dict] | None = None) -> dict:
     }
 
 
+# ── 报告聚合（TECH-026 §4）────────────────────────────────────────────
+
+
+def _gate_state(g: dict) -> str:
+    """闸门单项三态（兼容旧轮快照：无 `state` 字段时按 text/pass 推导，镜像前端 gateState）。"""
+    s = g.get("state")
+    if s in ("pass", "fail", "na"):
+        return s
+    text = str(g.get("text") or "").strip()
+    if not text or text == "N/A":
+        return "na"
+    return "pass" if g.get("pass") else "fail"
+
+
+def _pctile(xs: list[int], p: float) -> int:
+    """最近秩分位数（xs 需已升序排序）。"""
+    k = max(0, math.ceil(p / 100 * len(xs)) - 1)
+    return xs[min(k, len(xs) - 1)]
+
+
+def _is_style_only_fail(c: dict) -> bool:
+    """仅风格类失败（stage=judge 且判 false 的裁判键 ⊆ {style}）——TECH-026 §4.1。"""
+    if c.get("pass") or (c.get("stage") or "") != "judge":
+        return False
+    j = c.get("judge") or {}
+    failing = {k for k, v in j.items()
+               if isinstance(v, dict) and (v.get("pass") is False or v.get("error"))}
+    return bool(failing) and failing <= {"style"}
+
+
+def _no_valid_actions(counts: dict) -> list[str]:
+    """「暂无法给出建议」的行动清单：按实际归因计数过滤（TECH-026 §4.4）。"""
+    acts: list[str] = []
+    if counts.get("env"):
+        acts.append("检查数据库 / 嵌入服务 / 网络连通状态")
+    if counts.get("exec"):
+        acts.append("检查评测模型可用性与密钥（DEEPSEEK_API_KEY）、调用配额")
+    if counts.get("judge"):
+        acts.append("检查裁判模型可用性与配额")
+    if counts.get("data"):
+        acts.append("检查用例配置（ctx / 期望断言）")
+    if not acts:
+        acts.append("检查评测环境后重跑")
+    acts.append("排除问题后重新发起评测")
+    return acts
+
+
+def _make_decision(run: dict, *, total: int, valid: int, passed: int,
+                   counts: dict, reviewed: int) -> dict:
+    """决策四态（判定链见 TECH-026 §4.4）。"""
+    status = run.get("status")
+    if status == "running":
+        return {"kind": "running", "title": "运行中", "reasons": [], "actions": [], "note": None}
+    if status == "failed":
+        return {"kind": "failed", "title": "运行失败",
+                "reasons": [run.get("error") or "运行时发生异常"],
+                "actions": ["查看日志尾部定位原因后重跑"], "note": None}
+    if status == "cancelled":
+        cov = f"{passed}/{total}" if total else "—"
+        return {"kind": "cancelled", "title": f"已中止 · 部分结论（覆盖 {cov}）",
+                "reasons": [], "actions": [], "note": None}
+    gate = (run.get("summary") or {}).get("gate") or {}
+    items = list(gate.values())
+    fails = [g for g in items if _gate_state(g) == "fail"]
+    nas = [g for g in items if _gate_state(g) == "na"]
+    note = f"含人工复核 {reviewed} 条归因" if reviewed else None
+    if total > 0 and valid == 0:
+        return {"kind": "no_valid", "title": "暂无法给出建议",
+                "reasons": ["全部样本在执行/评审阶段失败，未产生有效评测数据——本结论不具备参考意义"],
+                "actions": _no_valid_actions(counts), "note": note}
+    if fails:
+        first = fails[0]
+        title = f"不建议发布：{first.get('label')} {first.get('text')}（目标 {first.get('target')}）"
+        reasons = [
+            f"{g.get('label')}：{g.get('text')}（目标 {g.get('target')}）" +
+            (" · 硬门槛" if g.get("must_pass") else "")
+            for g in fails
+        ]
+        return {"kind": "fail", "title": title, "reasons": reasons,
+                "actions": ["按失败用例的归因修复（环境 / 用例 / 裁判 / 被测），修复后重跑"],
+                "note": note}
+    if nas:
+        labels = "、".join(g.get("label") or "?" for g in nas)
+        return {"kind": "partial", "title": f"结论不完整：本轮未覆盖 {labels}", "reasons": [],
+                "actions": ["补跑含裁判判分的一轮获得完整结论"], "note": note}
+    return {"kind": "pass", "title": "达标 · 可发布", "reasons": [], "actions": [], "note": note}
+
+
+def compute_report(run: dict, cases: list[dict]) -> dict:
+    """报告 2.0 聚合（TECH-026 §4）：五指标 + 归因分布 + 性能成本 + 决策四态。
+
+    纯函数、实时计算（不落库）；`run`/`cases` 取 `_run_out` / `_case_out(full=True)` 结构。
+    旧轮兼容：`attribution=NULL` 的行按分类器实时推导（计入 meta.derived_attribution）。
+    """
+    total = len(cases)
+
+    # ── 归因（存值优先；NULL → 实时推导）──
+    final_attr: dict[str, str | None] = {}
+    derived = 0
+    for c in cases:
+        if c["pass"]:
+            final_attr[c["case_id"]] = None
+            continue
+        stored = c.get("attribution")
+        if stored:
+            final_attr[c["case_id"]] = stored
+        else:
+            final_attr[c["case_id"]] = attribution.classify_case(c)
+            derived += 1
+
+    counts = {k: 0 for k in attribution.CLASSES}
+    for a in final_attr.values():
+        if a in counts:
+            counts[a] += 1
+
+    # ── 五指标（§4.1）──
+    passed = sum(1 for c in cases if c["pass"])
+    excluded = counts["env"] + counts["data"] + counts["exec"] + counts["judge"]
+    valid = total - excluded
+    style_only = sum(
+        1 for c in cases if _is_style_only_fail(c) and final_attr.get(c["case_id"]) == "skill")
+    skill_fail = sum(1 for a in final_attr.values() if a == "skill")
+    core_fail = skill_fail - style_only
+    functional_num = valid - core_fail
+
+    def rate(num: int, den: int) -> dict:
+        return {"num": num, "den": den, "value": round(num / den, 4) if den else None}
+
+    metrics = {
+        "total": total,
+        "raw": rate(passed, total),
+        "decontaminated": rate(passed, valid),
+        "functional": rate(functional_num, valid),
+        "env_blocked": rate(counts["env"] + counts["data"], total),
+    }
+
+    # ── 归因分布 ──
+    reviewed = sum(1 for c in cases if c.get("attribution_source") == "manual")
+    overridden = sum(
+        1 for c in cases
+        if c.get("attribution_source") == "manual"
+        and c.get("attribution") != attribution.classify_case(c))
+    attribution_block = {
+        "counts": counts, "total_failed": total - passed, "den": total,
+        "reviewed": reviewed, "overridden": overridden, "derived": derived,
+    }
+
+    # ── 性能与成本（§4.3）──
+    ms_list = sorted(int(c["ms"]) for c in cases if c.get("ms"))
+    if ms_list:
+        durations = {
+            "avg": round(statistics.fmean(ms_list)),
+            "p50": _pctile(ms_list, 50), "p90": _pctile(ms_list, 90),
+            "p95": _pctile(ms_list, 95), "max": ms_list[-1], "n": len(ms_list),
+        }
+    else:
+        durations = {"avg": None, "p50": None, "p90": None, "p95": None, "max": None, "n": 0}
+    tk = [c["tokens"] for c in cases if c.get("tokens")]
+    if tk:
+        tokens = {k: sum(int(t.get(k) or 0) for t in tk)
+                  for k in ("input", "output", "cacheRead", "cacheCreation", "total")}
+        tokens["n"] = len(tk)
+    else:
+        tokens = {"input": None, "output": None, "cacheRead": None,
+                  "cacheCreation": None, "total": None, "n": 0}
+    top = sorted(
+        ({"case_id": c["case_id"], "desc": c.get("desc"), "ms": c.get("ms"),
+          "tokens": (c.get("tokens") or {}).get("total")} for c in cases),
+        key=lambda r: (r["tokens"] if r["tokens"] is not None else -1, r["ms"] or -1),
+        reverse=True,
+    )[:10]
+
+    decision = _make_decision(run, total=total, valid=valid, passed=passed,
+                              counts=counts, reviewed=reviewed)
+    return {
+        "metrics": metrics,
+        "attribution": attribution_block,
+        "cost": {"durations": durations, "tokens": tokens, "top": top},
+        "decision": decision,
+        "meta": {"total": total, "derived_attribution": derived, "token_cases": tokens["n"]},
+    }
+
+
 # ── 出参映射 ──────────────────────────────────────────────────────────
 
 
@@ -331,6 +555,11 @@ def _case_out(c: dict, *, full: bool) -> dict:
         "detail": c["detail"], "ms": c["ms"],
         "tool_calls": _loads(c["tool_calls"], []),
         "trace_id": c["trace_id"], "force_finished": bool(c["force_finished"]),
+        # TECH-026：归因（存值；NULL = 旧行或已恢复自动，读取方按需实时推导）
+        "attribution": c.get("attribution"),
+        "attribution_source": c.get("attribution_source"),
+        "attribution_note": c.get("attribution_note"),
+        "tokens": _loads(c.get("tokens_json")),
     }
     if full:
         out["answer"] = c.get("answer") or ""

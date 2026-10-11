@@ -78,32 +78,32 @@ export default function FeedingBanner(props: FeedingBannerProps) {
       <View className='home-inline-banner__content'>
         {lastFeedingTime ? (
           <View
-            className='home-feed-row'
+            className='home-feed-row home-feed-row--feeding'
             onClick={onFeedingClick}
           >
             <View className='home-inline-banner__dot home-inline-banner__dot--feeding' />
             <View className='home-feed-row__body'>
               <Text className='home-inline-banner__title'>距上次喂奶</Text>
               <Text className='home-inline-banner__desc'>
-                上次 {feedingTimeLabel} · 已过去 {formatElapsed(feedingMins)}
+                上次 {feedingTimeLabel} · <Text className='home-inline-banner__desc-em'>已过去 {formatElapsed(feedingMins)}</Text>
               </Text>
             </View>
-            <Text className='home-inline-banner__action--feeding'>记录喂奶</Text>
+            <Text className='home-inline-banner__action--feeding'>记喂奶</Text>
           </View>
         ) : null}
         {lastFoodTime ? (
           <View
-            className={`home-feed-row${lastFeedingTime ? ' home-feed-row--divided' : ''}`}
+            className={`home-feed-row home-feed-row--food${lastFeedingTime ? ' home-feed-row--divided' : ''}`}
             onClick={onFoodClick}
           >
             <View className='home-inline-banner__dot home-inline-banner__dot--food' />
             <View className='home-feed-row__body'>
               <Text className='home-inline-banner__title'>距上次辅食</Text>
               <Text className='home-inline-banner__desc'>
-                上次 {foodTimeLabel} · 已过去 {formatElapsed(foodMins)}
+                上次 {foodTimeLabel} · <Text className='home-inline-banner__desc-em'>已过去 {formatElapsed(foodMins)}</Text>
               </Text>
             </View>
-            <Text className='home-inline-banner__action--food'>记录辅食</Text>
+            <Text className='home-inline-banner__action--food'>记辅食</Text>
           </View>
         ) : null}
       </View>

@@ -18,6 +18,10 @@
 > 减少每次填写的信息干扰；**保湿护理（skin_care）表单下线**（数据库列与历史数据保留，仅前端不再采集）。
 > 后端 health_record 单表、API、时间轴、报告均不变（字段可空，按维度提交）。
 > ⚠️ minicare-web 仍为维护模式，未同步此变更。
+>
+> **2026-10-11 变更（报告端）**：分析页 HealthTab 改为「体温异常点」聚焦——
+> 体温图仅显示 ≥37.5°C 的异常记录（37.5–38°C 橙=偏高、≥38°C 红=发热），
+> 区间内无异常时展示「体温平稳」空态；默认时间范围 30 天 → 半年。数据口径与 API 不变。
 
 ## 功能描述
 
@@ -149,7 +153,7 @@ JSON 数组，每项包含：
 - 首页时间线：`minicare-mp/src/pages/home/homeRecords.ts`（getTimelineRecordDisplay / getTimelineIconType 按体温/过敏分流）
 - 记录列表：`minicare-mp/src/pages/records/list/recordListDisplay.ts`（label/summary 按维度展示）、`index.tsx`（buildHealthEditUrl 编辑分流）
 - 看板聚合：`minicare-mp/src/pages/dashboard/SymptomColumn.tsx`、`useDashboardData.ts`（health 聚合、latestTemp）
-- 报告：`minicare-mp/src/pagesReport/HealthTab`（体温曲线，走 report API）
+- 报告：`minicare-mp/src/pagesReport/HealthTab`（体温异常点聚焦：仅 ≥37.5°C 异常记录，默认范围半年；走 report API）
 - 游客演示：`minicare-mp/src/pages/records/list/GuestRecordsList.tsx`（demo mock）
 
 **API 层**

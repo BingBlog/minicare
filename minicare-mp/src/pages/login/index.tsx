@@ -25,6 +25,7 @@ import {
 import { getToken } from '@/api/http'
 import { afterLogin } from '@/lib/afterLogin'
 import { getStatusBarHeight } from '@/lib/safeArea'
+import { ICON_EYE, ICON_EYE_OFF } from '@/assets/icons/svgDataUris'
 
 import './index.scss'
 
@@ -43,6 +44,8 @@ export default function LoginPage() {
   const [loadingSend, setLoadingSend] = useState(false)
   const [loadingLogin, setLoadingLogin] = useState(false)
   const [agreed, setAgreed] = useState(false)
+  /** 密码明文/密文切换（眼睛图标） */
+  const [showPwd, setShowPwd] = useState(false)
 
   // SMS 模式下保存 verifyOtp 回调，供登录时使用
   const verifyOtpRef = useRef<((params: { token: string }) => Promise<unknown>) | undefined>()
@@ -235,12 +238,15 @@ export default function LoginPage() {
           <View className='login-field login-field--pwd'>
             <Input
               className='login-input'
-              password
+              password={!showPwd}
               maxlength={20}
               placeholder='请输入密码'
               value={password}
               onInput={(e) => setPassword(e.detail.value)}
             />
+            <View className='login-eye' onClick={() => setShowPwd((v) => !v)}>
+              <Image src={showPwd ? ICON_EYE_OFF : ICON_EYE} style={{ width: 18, height: 18 }} />
+            </View>
             <Text className='login-field-extra' onClick={goForgot}>
               忘记密码?
             </Text>

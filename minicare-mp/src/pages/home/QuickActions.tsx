@@ -89,7 +89,7 @@ export default function QuickActions({ birthDate, onMoreClick, onAction, fabCoun
               return (
                 <View className='home-quick-grid__item home-quick-grid__item--bottom' key={key} onClick={() => onAction?.(key)}>
                   <ActionIcon actionKey={key} />
-                  <Text className='home-quick-grid__text home-quick-grid__text--bottom'>{cfg.label}</Text>
+                  <Text className='home-quick-grid__text'>{cfg.label}</Text>
                 </View>
               )
             })}

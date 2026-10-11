@@ -65,7 +65,9 @@ export default defineConfig<'webpack5'>(async (merge) => {
       },
     },
     h5: {
-      publicPath: '/',
+      // 子路径部署支持：staging 构建由 .env.staging 提供 TARO_APP_H5_BASE_PATH=/staging/
+      // （web 替换后 staging 产物部署在 CloudBase 静态托管 /staging/；prod/dev 不设该变量，默认 '/'）
+      publicPath: process.env.TARO_APP_H5_BASE_PATH || '/',
       staticDirectory: 'static',
       output: {
         filename: 'js/[name].[hash:8].js',

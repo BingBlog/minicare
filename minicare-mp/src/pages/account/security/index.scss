@@ -93,6 +93,22 @@
   gap: 8px;
 }
 
+/* 密码行（含可见性切换） */
+.security-field--pwd {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.security-eye {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
 .security-input {
   height: 42px;
   line-height: 42px;

@@ -24,6 +24,7 @@ import {
 import { afterLogin } from '@/lib/afterLogin'
 import { PASSWORD_HINT, validatePasswordConfirm } from '@/lib/passwordPolicy'
 import { getStatusBarHeight } from '@/lib/safeArea'
+import { ICON_EYE, ICON_EYE_OFF } from '@/assets/icons/svgDataUris'
 
 import './index.scss'
 
@@ -35,6 +36,9 @@ export default function ForgotPasswordPage() {
   const [code, setCode] = useState('')
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
+  /** 密码 / 确认密码 各自的明文切换（眼睛图标） */
+  const [showPwd, setShowPwd] = useState(false)
+  const [showConfirm, setShowConfirm] = useState(false)
   const [countdown, setCountdown] = useState(0)
   const [loadingSend, setLoadingSend] = useState(false)
   const [submitting, setSubmitting] = useState(false)
@@ -154,26 +158,32 @@ export default function ForgotPasswordPage() {
           </Button>
         </View>
 
-        <View className='forgot-field'>
+        <View className='forgot-field forgot-field--pwd'>
           <Input
             className='forgot-input'
-            password
+            password={!showPwd}
             maxlength={20}
             placeholder='请输入新密码'
             value={password}
             onInput={(e) => setPassword(e.detail.value)}
           />
+          <View className='forgot-eye' onClick={() => setShowPwd((v) => !v)}>
+            <Image src={showPwd ? ICON_EYE_OFF : ICON_EYE} style={{ width: 18, height: 18 }} />
+          </View>
         </View>
 
-        <View className='forgot-field'>
+        <View className='forgot-field forgot-field--pwd'>
           <Input
             className='forgot-input'
-            password
+            password={!showConfirm}
             maxlength={20}
             placeholder='请再次输入新密码'
             value={confirm}
             onInput={(e) => setConfirm(e.detail.value)}
           />
+          <View className='forgot-eye' onClick={() => setShowConfirm((v) => !v)}>
+            <Image src={showConfirm ? ICON_EYE_OFF : ICON_EYE} style={{ width: 18, height: 18 }} />
+          </View>
         </View>
 
         <Text className='forgot-hint'>{PASSWORD_HINT}</Text>

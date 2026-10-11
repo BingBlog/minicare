@@ -11,18 +11,19 @@ import { HOME_RECORD_ROUTES } from '@/lib/constants'
 import { navigateToRecord } from '@/lib/navigation'
 import { getStatusBarHeight } from '@/lib/safeArea'
 import { useIsIPad } from '@/lib/useIsIPad'
+import { useFileDisplayUrl } from '@/lib/useFileDisplayUrl'
 import { getBabyAge, getGreeting, getTodayDateStr, yesterdayStr, compareTime } from '@/lib/utils'
 
 import HeroSection from './HeroSection'
 import QuickActions from './QuickActions'
 import GuestQuickActions from './GuestQuickActions'
 import TodayTimeline from './TodayTimeline'
-import DailyComparison from './DailyComparison'
 import SleepBanner from './SleepBanner'
 import FeedingBanner from './FeedingBanner'
 import ScheduleBanner from './ScheduleBanner'
 import NextFollowUpBanner from './NextFollowUpBanner'
 import AllergyProgressBar from './AllergyProgressBar'
+import SupplementBar from './SupplementBar'
 import HomeDiaryCard from './HomeDiaryCard'
 import RecordActionSheet from './RecordActionSheet'
 import TabBar from '@/components/TabBar/TabBar'
@@ -70,6 +71,9 @@ export default function HomePage() {
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [babyName, setBabyName] = useState('宝宝')
   const [birthDate, setBirthDate] = useState('')
+  const [babyAvatarFileID, setBabyAvatarFileID] = useState('')
+  // 宝宝头像：fileID → 临时展示 URL
+  const babyAvatarUrl = useFileDisplayUrl(babyAvatarFileID)
   const [familyId, setFamilyId] = useState('')
   const familyIdRef = useRef('')
   const babyIdRef = useRef('')
@@ -286,6 +290,7 @@ export default function HomePage() {
           familyIdRef.current = fid
           setBabyName(baby.name || '宝宝')
           setBirthDate(baby.birth_date || '')
+          setBabyAvatarFileID(baby.avatar_url ?? '')
           setRecords(todayRecords.map(toHomeRecord))
           setOngoingSleep(ongoing)
           setBackendStatus('')
@@ -375,10 +380,12 @@ export default function HomePage() {
         setBabyName(storedBaby.name || '宝宝')
         setBirthDate(storedBaby.birth_date || '')
       }
+      setBabyAvatarFileID(storedBaby.avatar_url ?? '')
     } else {
       babyApi.get(latestFid).then((baby) => {
         setBabyName(baby.name || '宝宝')
         setBirthDate(baby.birth_date || '')
+        setBabyAvatarFileID(baby.avatar_url ?? '')
       }).catch(() => {})
     }
 
@@ -697,7 +704,7 @@ export default function HomePage() {
         babyName={babyName}
         babyAgeText={birthDate ? getBabyAge(birthDate) : '—'}
         greeting={getGreeting()}
-        dateText={getTodayDateStr()}
+        avatarUrl={babyAvatarUrl}
         stats={stats}
         onStatsClick={() => Taro.switchTab({ url: '/pages/records/list/index' })}
         banners={
@@ -760,6 +767,8 @@ export default function HomePage() {
                 onRecordClick={() => navigateToRecord('/records/form/medical', nextFollowUp.id)}
               />
             ) : null}
+            {/* 补剂&营养素：提醒 Bar 形态（排敏进度上方） */}
+            <SupplementBar todayRecords={records} yesterdayRecords={yesterdayRecords} />
             <AllergyProgressBar observations={foodObservations} />
           </View>
         }
@@ -773,10 +782,6 @@ export default function HomePage() {
             const route = HOME_RECORD_ROUTES[key] ?? '/records'
             navigateToRecord(route)
           }}
-        />
-        <DailyComparison
-          todayRecords={records}
-          yesterdayRecords={yesterdayRecords}
         />
         <TodayTimeline
           records={records}

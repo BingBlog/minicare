@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  html, body { margin: 0; padding: 0; background: #f0f0f0; }
+  iframe { display: block; width: 390px; height: 844px; border: 0; background: #fdf7f5; }
+</style>
+</head>
+<body>
+<iframe id="f" src="/#/pages/login/index"></iframe>
+<script>
+// ?u=pages/login/forgot/index 指定本应用 hash 路由（默认登录页）；?url=<完整URL> 直指任意页面（含跨域）
+const p = new URLSearchParams(location.search);
+const u = p.get('u');
+const abs = p.get('url');
+if (abs) document.getElementById('f').src = abs;
+else if (u) document.getElementById('f').src = '/#/' + u;
+if (p.get('h')) document.getElementById('f').style.height = p.get('h') + 'px';
+</script>
+</body>
+</html>

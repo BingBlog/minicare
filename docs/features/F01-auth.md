@@ -3,7 +3,7 @@
 > 功能 ID：—（基础能力，无单独 ID）  
 > 优先级：P0  
 > 状态：**已完成** ✅  
-> 最后更新：2026-10-09（新增「手机号 + 密码」登录，见 TECH-016）
+> 最后更新：2026-10-11（登录 / 忘记密码 / 账号安全 三处密码输入支持「可见性切换」）
 
 ## 功能描述
 
@@ -28,6 +28,10 @@
 
 - 账号**未设置密码** → 返回 `NO_PASSWORD_SET`，前端提示「该账号未设置密码，请使用验证码登录」并**自动切回验证码 Tab**
 - 账号不存在 → 与密码错误**同一文案**（「手机号或密码错误」），不泄露账号是否注册
+
+**密码可见性**：三处密码输入框（登录 / 忘记密码 / 账号与安全）均支持「显示 / 隐藏密码」切换——
+默认密文，点右侧「眼睛」图标切明文核对（明文态图标转主粉 `#f87098`，隐藏态暖灰 `#b09a9d`）。
+图标为 data-uri SVG + `<Image>`（项目标准做法），统一在 `src/assets/icons/svgDataUris.ts`。
 
 **密码的设置与修改**：登录后在「我的 → 账号与安全」中操作（**不在注册流程中设置**）。
 
@@ -160,6 +164,7 @@ flowchart TD
 
 ### 密码登录（TECH-016，后端 20 项已实测通过）
 - [x] 登录页两个 Tab 可切换，手机号在两个 Tab 间共用不丢失
+- [x] 密码输入框支持可见性切换（登录 / 忘记密码 / 账号与安全，眼睛图标，密文 ↔ 明文）
 - [x] 密码 Tab：手机号/密码非空校验、协议未勾选拦截、加载态、错误 toast
 - [x] 未设置密码的账号 → 提示「该账号未设置密码，请使用验证码登录」并**自动切回验证码 Tab**
 - [x] 不存在的手机号 → 与密码错误**同一文案**，不可枚举账号
@@ -192,7 +197,7 @@ flowchart TD
 | 小程序 API 层 | `src/api/auth.ts`（authApi + loginByCode / loginByPasswordAndPersist / sendVerificationCode / buildPhoneProof / adoptNewToken）、`src/api/http.ts`（🔴 **全端公共依赖**：ApiError + `redirectOn401` + token/user 存取 + 401 拦截）、`src/api/types.ts`（Family）、`src/api/index.ts` |
 | 小程序页面层 | `src/pages/login/index.tsx`（含 index.scss）、`src/pages/login/forgot/*`、`src/pages/account/security/*`、`src/pages/profile/index.tsx` |
 | 小程序组件 | `src/pages/profile/SettingsGroup.tsx`（图标表）、`src/pages/profile/types.ts`（`SettingsRowIcon`）、`src/components/LoginGuide/*` |
-| 小程序工具 | `src/lib/afterLogin.ts`、`src/lib/passwordPolicy.ts`、`src/lib/safeArea.ts` |
+| 小程序工具 | `src/lib/afterLogin.ts`、`src/lib/passwordPolicy.ts`、`src/lib/safeArea.ts`、`src/assets/icons/svgDataUris.ts`（含密码可见性 `ICON_EYE` / `ICON_EYE_OFF`） |
 | 小程序路由 | `src/app.config.ts`（`pages/login` 分包 + `pages/account` 分包） |
 | 受 JwtGuard 影响需回归 | `pages/home/index.tsx`（`authApi.checkToken()`）、`pages/records/*`、`pagesReport/*`、`pages/chat`、`pages/diary`、`pages/dashboard`、`pages/device` |
 | Web（维护模式，第 2 期） | `minicare-web/src/pages/login/useLoginLogic.ts`、`PwdPanel.tsx`（**当前仍是假逻辑**） |

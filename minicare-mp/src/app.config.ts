@@ -94,6 +94,8 @@ export default {
       packages: ['pagesReport'],
     },
   },
+  // 组件按需注入（微信「代码质量」建议项；仅注入页面实际用到的组件，利于启动性能）
+  lazyCodeLoading: 'requiredComponents',
   resizable: true,
   window: {
     backgroundTextStyle: 'light',

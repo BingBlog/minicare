@@ -82,4 +82,9 @@ export class CreateBabyDto {
   @Min(30)
   @Max(80)
   birth_height_cm?: number;
+
+  @ApiPropertyOptional({ description: '宝宝头像 fileID（COS 直传后写入，仅 update 使用）' })
+  @IsOptional()
+  @IsString()
+  avatar_url?: string;
 }

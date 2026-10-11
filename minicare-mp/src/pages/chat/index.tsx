@@ -340,16 +340,19 @@ export default function ChatPage() {
     return () => clearInterval(timer)
   }, [sending])
 
-  // 服务健康探测（非阻塞，仅提示）
+  // 服务健康探测（非阻塞，仅提示；带登录态以便真正透传到 agent /health）
   useEffect(() => {
     if (!familyId) return
     let cancelled = false
+    const token = getToken()
     Taro.request({
       url: `${API_BASE_URL}/api/agent/health`,
       method: 'GET',
       timeout: 5000,
-      success: () => {
-        if (!cancelled) setServiceDown(false)
+      header: token ? { Authorization: `Bearer ${token}` } : {},
+      success: (res) => {
+        // 200 = agent 健康（server 透传）；400（agent 不可达）/ 其它 → 视为服务异常
+        if (!cancelled) setServiceDown(res.statusCode !== 200)
       },
       fail: () => {
         if (!cancelled) setServiceDown(true)

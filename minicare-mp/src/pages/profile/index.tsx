@@ -29,6 +29,8 @@ import TabBar from '@/components/TabBar/TabBar'
 import LoginGuide from '@/components/LoginGuide/LoginGuide'
 import { getStatusBarHeight } from '@/lib/safeArea'
 import { useIsIPad } from '@/lib/useIsIPad'
+import { uploadOne } from '@/lib/uploadImage'
+import { useFileDisplayUrl } from '@/lib/useFileDisplayUrl'
 
 import './index.scss'
 
@@ -195,12 +197,50 @@ export default function ProfilePage() {
         allergy_level: editAllergyLevel,
       })
       setCurrentBaby(updated)
+      Taro.setStorageSync('minicare_baby', updated) // 同步 storage，首页 onShow 读取
       setEditOpen(false)
       showToast('档案已保存')
     } catch (e: unknown) {
       showToast(e instanceof Error ? e.message : '保存失败，请重试')
     } finally {
       setSaving(false)
+    }
+  }
+
+  // ── 宝宝头像 ─────────────────────────────────────────────────
+  // fileID → 临时 URL（avatar_url 变化即刷新展示）
+  const avatarDisplayUrl = useFileDisplayUrl(currentBaby?.avatar_url)
+
+  /** 换头像：选图 → COS 直传 → PATCH 宝宝档案 → 刷新展示 */
+  const handleChangeAvatar = async () => {
+    if (!currentBaby) {
+      showToast('数据未就绪，请稍后再试')
+      return
+    }
+    let tempPath = ''
+    try {
+      const res = await Taro.chooseImage({
+        count: 1,
+        sizeType: ['compressed'],
+        sourceType: ['album', 'camera'],
+      })
+      tempPath = res.tempFilePaths[0]
+    } catch {
+      return // 用户取消选择，静默
+    }
+    if (!tempPath) return
+
+    Taro.showLoading({ title: '上传中…', mask: true })
+    try {
+      const fileID = await uploadOne('avatar', currentBaby.id, tempPath, { width: 400 })
+      const updated = await babyApi.update(currentBaby.family_id, currentBaby.id, { avatar_url: fileID })
+      setCurrentBaby(updated)
+      Taro.setStorageSync('minicare_baby', updated) // 同步 storage，首页 onShow 读取
+      Taro.hideLoading()
+      showToast('头像已更新')
+    } catch (e: unknown) {
+      Taro.hideLoading()
+      showToast(e instanceof Error ? e.message : '换头像失败，请重试')
     }
   }
 
@@ -546,7 +586,9 @@ export default function ProfilePage() {
           allergyLevel={currentBaby?.allergy_level as AllergyLevel | undefined}
           babies={allBabies}
           currentBabyId={currentBaby?.id}
+          avatarUrl={avatarDisplayUrl}
           onEdit={openEdit}
+          onAvatarClick={handleChangeAvatar}
           onSwitchBaby={handleSwitchBaby}
         />
 

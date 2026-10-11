@@ -1,6 +1,6 @@
 # 系统技术架构文档
 
-> 最后更新：2026-05-03（MVP 已发布，小程序为主平台）
+> 最后更新：2026-10-11（图表渲染重构为同层直显；小程序为主平台）
 
 ---
 
@@ -16,7 +16,7 @@
 │  │  ┌──────────────────────────┐  ┌──────────────────────────────┐    │    │
 │  │  │  微信小程序（主平台）      │  │   Web H5（维护模式）          │    │    │
 │  │  │  Taro 4.2 + React 18     │  │   React 18 + Vite 6          │    │    │
-│  │  │  ECharts 6 (截图模式)     │  │   Tailwind + Hash Router     │    │    │
+│  │  │  ECharts 6 (同层直显)     │  │   Tailwind + Hash Router     │    │    │
 │  │  │  @cloudbase/js-sdk (auth) │  │   PWA (service worker)       │    │    │
 │  │  │  自定义 TabBar + FAB      │  │                              │    │    │
 │  │  └──────────┬───────────────┘  └──────────────┬───────────────┘    │    │
@@ -60,7 +60,7 @@
 | **语言** | TypeScript | 5.4+ | 全量类型覆盖 |
 | **构建工具** | Webpack 5 | — | Taro 内置，配合 tsconfig-paths |
 | **样式** | Sass | — | 不启用 pxtransform，直接使用 px |
-| **图表** | ECharts | 6.x | 按需引入 Line/Bar/Scatter/Pie，Canvas 截图模式 |
+| **图表** | ECharts | 6.x | 按需引入 Line/Bar/Scatter/Pie，canvas 2d 同层渲染直显 |
 | **认证 SDK** | @cloudbase/js-sdk | — | 仅引入 auth 模块，减少 ~600KB 体积 |
 | **日期处理** | dayjs | — | 轻量时间格式化 |
 
@@ -86,7 +86,7 @@ minicare-mp/
 │   ├── components/          # 全局共享组件
 │   │   ├── TabBar/          # 自定义底部导航
 │   │   ├── FabSheet/        # FAB 弹层（全类型记录入口）
-│   │   ├── EcChart/         # ECharts 图表（截图模式）
+│   │   ├── EcChart/         # ECharts 图表（同层直显）
 │   │   ├── NavBar/          # 自定义导航栏
 │   │   └── LoginGuide/      # 未登录引导
 │   ├── lib/                 # 工具库
@@ -108,7 +108,7 @@ minicare-mp/
 
 **分包加载**：主包仅含 4 个 TabBar 页面 + 一个 index 分发器。登录、引导、隐私政策、8 种记录表单全部放在 subPackages 中，首次加载体积最小化。
 
-**ECharts 截图模式**：Canvas 在屏幕外区域渲染完成后截图为 Image 组件展示。彻底解决微信小程序 Canvas 层级覆盖问题和滚动延迟问题。
+**ECharts 同层渲染直显**：canvas type="2d" 直接参与文档流展示（基础库 2.9.0+ 同层渲染，层级/滚动由框架合成器处理），支持触摸 tooltip；2026-10-11 由「离屏截图」方案重构（论证见 `docs/tech/TECH-025-mp-chart-rendering-research.md`）。
 
 **自定义 TabBar**：使用微信小程序 `custom: true` 配置 + React 组件实现。中间设有 FAB 浮动按钮，点击弹出 FabSheet 展示全类型记录快捷入口。
 
@@ -328,9 +328,9 @@ sequenceDiagram
 
 微信小程序的优势：零安装门槛（适合祖辈用户）、微信生态内分享传播（家庭协作核心场景）、扫码即用。Taro 框架提供跨端扩展能力，未来可低成本覆盖支付宝/抖音小程序。
 
-### 为什么选 ECharts 截图模式（而非 Canvas 直接渲染）
+### 图表渲染：为什么用「同层渲染直显」（2026-10-11 修订）
 
-微信小程序 Canvas 存在固有的层级问题（原生组件覆盖在所有 Web 组件之上）和滚动同步延迟。截图模式将 Canvas 渲染移至屏幕外完成后转为 Image，彻底回避这些平台限制。
+旧版 canvas（非同层渲染）存在层级覆盖与滚动同步问题，早期曾用「离屏截图 + Image」规避。但 canvas `type="2d"`（基础库 2.9.0+）已支持同层渲染，官方现行口径「除事件相关，同层渲染下已无层级/滚动限制」，截图前提已不成立。现已重构为同层直显：单渲染管线、按 DPR 原生清晰、支持触摸 tooltip、无临时文件。详细论证与真机验收清单见 `docs/tech/TECH-025-mp-chart-rendering-research.md`。
 
 ---
 

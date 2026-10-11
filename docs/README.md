@@ -119,6 +119,8 @@ docs/
 | [tech/TECH-020-agent-eval-platform-research.md](tech/TECH-020-agent-eval-platform-research.md) | Agent 测评平台能力升级 · 行业实践调研（用例/任务/裁判/维度 四对象） | **调研完成（2026-10-09）** |
 | [tech/TECH-021-agent-eval-console-v2.md](tech/TECH-021-agent-eval-console-v2.md) | Agent 测评台 2.0 设计（四管理面 + 配置物化执行） | **设计稿 v0.1（待评审）** |
 | [tech/TECH-023-kb-retrieval-test-research.md](tech/TECH-023-kb-retrieval-test-research.md) | 知识库「检索测试」功能 · 行业实践调研（Dify/FastGPT/RAGFlow/Coze 召回测试 + 批量评测口径） | **调研完成（2026-10-09），已落地独立页** |
+| [tech/TECH-026-agent-eval-report-v2.md](tech/TECH-026-agent-eval-report-v2.md) | Agent 测评 2.0 技术方案（决策化报告 × deepeval 判分引擎）· 全周期 | **v2 合稿（2026-10-11），第 1 期实施中** |
+| [tech/TECH-027-agent-eval-framework-reuse-assessment.md](tech/TECH-027-agent-eval-framework-reuse-assessment.md) | Agent 测评开源框架复用评估（deepeval / Langfuse / 相邻方案） | **评估完成（2026-10-11），deepeval 判分引擎定案** |
 
 ## 养娃智能体模块索引（docs/agent/，PRD-003 展开）
 

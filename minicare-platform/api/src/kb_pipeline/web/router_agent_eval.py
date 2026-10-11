@@ -5,6 +5,8 @@
   GET  /runs/{run_id}/progress ｜ POST /runs/{run_id}/cancel ｜ GET /overview
   GET  /runs/{run_id}/delta（TECH-022 A7：任意轮的较上轮 delta）
   GET  /estimate（TECH-022 B7：按选择估算耗时）
+  PUT  /runs/{run_id}/cases/{case_id}/attribution（TECH-026 §3.2：归因人工改判/恢复自动）
+  注：GET /runs/{run_id} 出参自 TECH-026 起附 `report`（五指标/归因分布/成本/决策四态，实时聚合）。
 配置对象（TECH-021 §5）：
   GET/POST /cases ｜ PUT/DELETE /cases/{case_id} ｜ POST /cases/import ｜ GET /cases/export
   GET/POST /judges ｜ PUT /judges/{judge_id} ｜ POST /judges/{judge_id}/try（TECH-022 B6：裁判试跑）
@@ -21,8 +23,9 @@ from pathlib import Path
 from fastapi import APIRouter, Body, HTTPException
 
 from ..agent_eval import seed as eval_seed
+from ..agent_eval.attribution import CLASSES as ATTRIBUTION_CLASSES
 from ..agent_eval.catalog import EvalCatalog, effective_ctx
-from ..agent_eval.ledger import EvalLedger
+from ..agent_eval.ledger import EvalLedger, compute_report
 from ..agent_eval.runner import RUNNER
 from ..config import get_settings
 from ..platform_db import PlatformDB
@@ -113,11 +116,38 @@ def list_runs(limit: int = 50, task_id: str | None = None) -> dict:
 
 @router.get("/runs/{run_id}")
 def run_detail(run_id: str) -> dict:
-    run = _ledger().get_run(run_id)
+    lg = _ledger()
+    run = lg.get_run(run_id)
     if not run:
         raise HTTPException(status_code=404, detail=f"运行不存在：{run_id}")
     run["case_defs"] = _case_defs_of(run_id)
+    # TECH-026 §4：报告 2.0 聚合（五指标/归因分布/成本/决策四态）——实时计算、不落库
+    run["report"] = compute_report(run, run.get("cases") or [])
     return run
+
+
+@router.put("/runs/{run_id}/cases/{case_id}/attribution")
+def update_case_attribution(run_id: str, case_id: str,
+                            payload: dict = Body(default={})) -> dict:
+    """人工改判失败样本的归因（TECH-026 §3.2）；`attribution=null` 表示恢复自动结果。
+
+    返回：更新后的用例行 + 全量重算的 `report`（改判会改变归因分布与决策，前端整体替换）。
+    """
+    p = payload or {}
+    value = p.get("attribution")
+    if value is not None and value not in ATTRIBUTION_CLASSES:
+        raise _bad_request(ValueError(
+            f"归因取值非法：{value}（可选 {' / '.join(ATTRIBUTION_CLASSES)} 或 null 恢复自动）"))
+    note = str(p.get("note")) if p.get("note") is not None else None
+    lg = _ledger()
+    if not lg.get_run(run_id, with_cases=False):
+        raise HTTPException(status_code=404, detail=f"运行不存在：{run_id}")
+    updated = lg.update_attribution(run_id, case_id, attribution_value=value, note=note)
+    if not updated:
+        raise HTTPException(status_code=404, detail=f"该轮没有用例 {case_id} 的结果")
+    full = lg.get_run(run_id)
+    assert full is not None
+    return {"case": updated, "report": compute_report(full, full.get("cases") or [])}
 
 
 @router.get("/runs/{run_id}/delta")

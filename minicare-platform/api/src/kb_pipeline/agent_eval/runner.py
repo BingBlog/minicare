@@ -26,6 +26,7 @@ from pathlib import Path
 from ..config import REPO_ROOT, get_settings
 from ..fsutil import ensure_dir
 from ..platform_db import PlatformDB
+from . import attribution
 from .catalog import EvalCatalog, case_to_harness_item, effective_ctx
 from .ledger import EvalLedger, compute_gate, group_label, priority_label
 
@@ -559,6 +560,9 @@ class EvalRunner:
                      f"日志尾部：{self._log_tail(12)}（完整日志：{log_path.name}）")
 
         if cases:
+            # TECH-026 §3：入库前对失败样本自动归因（source=auto；人工改判另行覆盖）
+            for c in cases:
+                c["attribution"] = attribution.classify_case(c)
             ledger.insert_case_results(run_id, cases)
         self._finish(run_id, ledger, status=status, summary=summary, error=error,
                      duration_ms=int(time.time() * 1000) - started_ms)
@@ -624,6 +628,8 @@ class EvalRunner:
             "tool_calls": c.get("toolCalls") or [],
             "answer": c.get("answer"), "judge": c.get("judge"),
             "trace_id": c.get("traceId"), "force_finished": bool(c.get("forceFinished")),
+            # TECH-026 §5：usage 明细（runtime → harness 透出；旧 harness 无此字段 → None）
+            "tokens": c.get("usage"),
         }
 
     @staticmethod

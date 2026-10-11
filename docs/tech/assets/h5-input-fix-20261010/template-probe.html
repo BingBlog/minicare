@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>h5-probe</title></head>
+<body style="margin:0">
+<iframe id="f" src="/#/pages/login/index" style="width:390px;height:844px;border:0"></iframe>
+<pre id="result">pending</pre>
+<script>
+const f = document.getElementById('f');
+f.addEventListener('load', () => {
+  setTimeout(() => {
+    try {
+      const w = f.contentWindow, d = f.contentDocument;
+      const out = {};
+      out.readyState = d.readyState;
+      out.viewport = { iw: w.innerWidth, ih: w.innerHeight };
+      const html = d.documentElement;
+      out.scroll = { htmlSW: html.scrollWidth, htmlCW: html.clientWidth };
+      out.htmlFontSize = w.getComputedStyle(html).fontSize;
+
+      const card = d.querySelector('.login-card');
+      if (card) {
+        const r = card.getBoundingClientRect();
+        out.card = { left: Math.round(r.left), right: Math.round(r.right), width: Math.round(r.width) };
+      }
+
+      const over = [];
+      d.querySelectorAll('*').forEach((el) => {
+        const r = el.getBoundingClientRect();
+        if (r.width > 0 && r.right > 391) {
+          const cls = (el.className && el.className.toString ? el.className.toString() : el.tagName);
+          over.push({ cls: String(cls).slice(0, 50), tag: el.tagName, right: Math.round(r.right), w: Math.round(r.width) });
+        }
+      });
+      out.overflow = over.slice(0, 14);
+
+      function pickInp(wrap) {
+        if (!wrap) return null;
+        let inp = wrap.querySelector('input');
+        if (!inp && wrap.shadowRoot) inp = wrap.shadowRoot.querySelector('input');
+        return inp;
+      }
+      const wrap = d.querySelector('.login-input');
+      const inp = pickInp(wrap);
+      if (wrap && inp) {
+        const cr = wrap.getBoundingClientRect();
+        const ir = inp.getBoundingClientRect();
+        const cs = w.getComputedStyle(inp);
+        const ws = w.getComputedStyle(wrap);
+        out.input = {
+          wrapTag: wrap.tagName, wrapCls: String(wrap.className),
+          wrapH: Math.round(cr.height), wrapTop: Math.round(cr.top),
+          inpTag: inp.tagName, inpCls: inp.className,
+          inpH: Math.round(ir.height), inpTop: Math.round(ir.top),
+          offsetInWrap: Math.round(ir.top - cr.top),
+          inpFontSize: cs.fontSize, inpLineHeight: cs.lineHeight, inpHeightCss: cs.height,
+          wrapFontSize: ws.fontSize, wrapLineHeight: ws.lineHeight, wrapHeightCss: ws.height,
+          wrapDisplay: ws.display, inpDisplay: cs.display,
+          inShadow: !!wrap.shadowRoot
+        };
+      } else {
+        out.input = 'NOT-FOUND: wrap=' + !!wrap;
+      }
+      document.getElementById('result').textContent = 'PROBE_RESULT::' + JSON.stringify(out);
+    } catch (e) {
+      document.getElementById('result').textContent = 'PROBE_ERR::' + e.message;
+    }
+  }, 6000);
+});
+</script>
+</body>
+</html>
