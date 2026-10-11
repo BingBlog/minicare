@@ -1,0 +1,27 @@
+/* ChatChartCard — 对话内图表卡（PRD-013 US-06）
+ * 视觉语言与助手气泡一致：白底、圆角、轻阴影；宽度随消息内容区（通栏）。 */
+.chat-chart {
+  margin-top: 8px;
+  padding: 12px 12px 8px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 1px 6px rgba(61, 43, 46, 0.06);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.chat-chart__title {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #4a3035;
+  margin-bottom: 8px;
+}
+
+.chat-chart__caption {
+  display: block;
+  font-size: 10px;
+  color: #c0a8ad;
+  text-align: center;
+  margin-top: 4px;
+}

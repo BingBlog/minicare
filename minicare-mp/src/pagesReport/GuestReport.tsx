@@ -85,6 +85,7 @@ export default function GuestReport() {
             loading={false}
             babyGender='male'
             babyBirthDate={DEMO_BIRTH_DATE}
+            range='birth'
           />
           <LoginGuide title='查看宝宝真实生长曲线' desc='登录后将展示宝宝的真实生长数据分析' />
         </View>
@@ -96,7 +97,7 @@ export default function GuestReport() {
           <Text style={{ fontSize: 10, color: '#C0A8AD', display: 'block', textAlign: 'center', marginBottom: 12 }}>
             示例数据，登录后将展示宝宝的真实饮食分析
           </Text>
-          <FeedingTab data={DEMO_FEEDING} loading={false} />
+          <FeedingTab data={DEMO_FEEDING} loading={false} range='30' />
           <LoginGuide title='查看宝宝真实饮食分析' desc='登录后将展示宝宝的真实饮食数据报告' />
         </View>
       )

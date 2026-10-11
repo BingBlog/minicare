@@ -10,6 +10,7 @@ import EcChart from '@/components/EcChart'
 import { WARM_TOOLTIP } from '@/pagesReport/chartTheme'
 import type { DailyFeedingData } from '@/api/report'
 import { formatDateSlash, nowDate } from '@/lib/utils'
+import { AskAssistantBar } from '../components/AskAssistantBar'
 
 // ── 奶粉类型配置（L1，与 Web milkTypeOptions 一致）─────────────────
 
@@ -36,6 +37,8 @@ function milkTypeColor(key: string): string {
 interface FeedingTabProps {
   data: DailyFeedingData[] | null
   loading: boolean
+  /** 当前时间窗（「问助手」深链携带，PRD-013 US-01/02） */
+  range: string
 }
 
 const CARD = {
@@ -43,7 +46,7 @@ const CARD = {
   boxShadow: '0 1px 4px rgba(200,100,120,0.06)',
 }
 
-export function FeedingTab({ data, loading }: FeedingTabProps) {
+export function FeedingTab({ data, loading, range }: FeedingTabProps) {
   const milkSeries = useMemo(() => {
     if (!data?.length) return null
     const totals: Record<string, number> = {}
@@ -287,6 +290,7 @@ export function FeedingTab({ data, loading }: FeedingTabProps) {
             </Text>
           )}
         </View>
+        <AskAssistantBar tab='feeding' range={range} />
       </View>
     </View>
   )

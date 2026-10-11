@@ -222,12 +222,12 @@ export default function ReportPage() {
       )}
 
       <View style={S.contentArea}>
-        {activeTab === 'feeding' && <FeedingTab data={feedingData} loading={loading} />}
-        {activeTab === 'diaper' && <DiaperTab data={diaperData} loading={loading} />}
-        {activeTab === 'growth' && <GrowthTab data={growthData} loading={loading} babyGender={babyGender} babyBirthDate={babyBirthDate} />}
-        {activeTab === 'sleep' && <SleepTab data={sleepData} loading={loading} />}
-        {activeTab === 'health' && <HealthTab data={healthData} loading={loading} />}
-      {activeTab === 'allergy' && <AllergyTab data={allergyData} loading={loading} />}
+        {activeTab === 'feeding' && <FeedingTab data={feedingData} loading={loading} range={currentRange} />}
+        {activeTab === 'diaper' && <DiaperTab data={diaperData} loading={loading} range={currentRange} />}
+        {activeTab === 'growth' && <GrowthTab data={growthData} loading={loading} babyGender={babyGender} babyBirthDate={babyBirthDate} range={currentRange} />}
+        {activeTab === 'sleep' && <SleepTab data={sleepData} loading={loading} range={currentRange} />}
+        {activeTab === 'health' && <HealthTab data={healthData} loading={loading} range={currentRange} />}
+      {activeTab === 'allergy' && <AllergyTab data={allergyData} loading={loading} range={currentRange} />}
       </View>
 
       <TabBar activeTab='report' />

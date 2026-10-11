@@ -20,12 +20,15 @@ import {
   getPercentileLabel,
 } from '@/lib/growth-standards'
 import { WARM_TOOLTIP } from '@/pagesReport/chartTheme'
+import { AskAssistantBar } from '../components/AskAssistantBar'
 
 interface GrowthTabProps {
   data: GrowthRecord[] | null
   loading: boolean
   babyGender: 'male' | 'female' | null
   babyBirthDate: string | null
+  /** 当前时间窗（生长 Tab 恒为 birth；「问助手」深链携带，PRD-013 US-01/02） */
+  range: string
 }
 
 type MeasureType = 'weight' | 'height' | 'head'
@@ -73,7 +76,7 @@ interface MeasureView {
   option: Record<string, unknown> | null
 }
 
-export function GrowthTab({ data, loading, babyGender, babyBirthDate }: GrowthTabProps) {
+export function GrowthTab({ data, loading, babyGender, babyBirthDate, range }: GrowthTabProps) {
   const views = useMemo<MeasureView[] | null>(() => {
     if (!data?.length) return null
     const gender = babyGender || 'male'
@@ -308,6 +311,7 @@ export function GrowthTab({ data, loading, babyGender, babyBirthDate }: GrowthTa
               </Text>
             ))}
           </View>
+          <AskAssistantBar tab='growth' range={range} />
         </View>
       )}
 

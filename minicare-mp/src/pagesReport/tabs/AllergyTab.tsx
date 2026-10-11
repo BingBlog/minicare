@@ -18,10 +18,13 @@ import { WARM_TOOLTIP } from '@/pagesReport/chartTheme'
 import type { FoodObservation, ObservationStatus } from '@/api'
 import { OBSERVATION_STATUS_CFG } from '@/lib/constants'
 import { COMMON_FOOD_GROUPS } from '@/pages/records/feeding/types'
+import { AskAssistantBar } from '../components/AskAssistantBar'
 
 interface AllergyTabProps {
   data: FoodObservation[] | null
   loading: boolean
+  /** 排敏为全量分析、时间窗无意义（深链仍携带但助手忽略，PRD-013 US-02） */
+  range: string
 }
 
 const CARD = { background: '#fff', borderRadius: 12, padding: 14, marginBottom: 12, boxShadow: '0 1px 4px rgba(200,100,120,0.06)' }
@@ -32,7 +35,7 @@ const STATUS_ORDER: ObservationStatus[] = ['safe', 'observing', 'suspected', 'al
 
 const CHART_TITLE = { fontSize: 13, fontWeight: 500, color: '#4A3035', marginBottom: 10, display: 'block' } as const
 
-export function AllergyTab({ data, loading }: AllergyTabProps) {
+export function AllergyTab({ data, loading, range }: AllergyTabProps) {
   // ── 1. 引入进度：累计引入 / 累计已耐受 ──
   const progressOption = useMemo(() => {
     if (!data?.length) return null
@@ -280,6 +283,7 @@ export function AllergyTab({ data, loading }: AllergyTabProps) {
               </Text>
             ))}
           </View>
+          <AskAssistantBar tab='allergy' range={range} />
         </View>
       )}
     </View>

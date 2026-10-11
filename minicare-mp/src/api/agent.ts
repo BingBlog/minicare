@@ -20,6 +20,33 @@ export interface AgentSourceItem {
   score?: number
 }
 
+// ── 图表块（PRD-013 / TECH-028：SSE block 事件承载，chat 页渲染为消息内图卡）──
+
+export interface ChartSeries {
+  name: string
+  unit: string
+  /** 图元形态（混合图 mixed / 生长图 growth 用；缺省按 chartType 推断） */
+  kind?: 'line' | 'bar' | 'scatter'
+  /** 0=左轴 1=右轴（仅 mixed 图使用） */
+  axis?: number
+  /** 参考线序列（生长图 P3/P50/P97）：静默灰色细线 */
+  ref?: boolean
+  /** [x, y]：x 为日期字符串（趋势类）或月龄数字（生长类） */
+  points: Array<[string | number, number]>
+}
+
+export interface ChartBlock {
+  id: string
+  type: 'chart'
+  chartType: 'line' | 'bar' | 'mixed' | 'growth'
+  title: string
+  series: ChartSeries[]
+  /** 图注：数据窗口与口径（用户可见） */
+  caption?: string
+  /** 来源元数据（维度 + 窗口）：US-07 跳分析页预选用 */
+  source?: { tab: string; range: string }
+}
+
 export type AgentSSEEvent =
   | { event: 'meta'; data: { conversationId: string; familyId: string | null; babyId: string | null; model: string; historyCount: number } }
   | { event: 'session'; data: { started: boolean; t_ms: number } }
@@ -27,6 +54,7 @@ export type AgentSSEEvent =
   | { event: 'tool_result'; data: { name: string; output: string } }
   | { event: 'text'; data: { delta: string } }
   | { event: 'sources'; data: { sources: AgentSourceItem[] } }
+  | { event: 'block'; data: { block: ChartBlock } }
   | { event: 'done'; data: { events: number; ms: number; model: string } }
   | { event: 'error'; data: { message: string } }
 

@@ -14,10 +14,13 @@ import { EcChart } from '@/components/EcChart'
 import { WARM_TOOLTIP } from '@/pagesReport/chartTheme'
 import type { DailyHealthData } from '@/api/report'
 import { formatDateSlash } from '@/lib/utils'
+import { AskAssistantBar } from '../components/AskAssistantBar'
 
 interface HealthTabProps {
   data: DailyHealthData[] | null
   loading: boolean
+  /** 当前时间窗（「问助手」深链携带，PRD-013 US-01/02） */
+  range: string
 }
 
 // ── 体温异常阈值（L1）──
@@ -44,7 +47,7 @@ function getSpiritColor(spirit: string): string {
 const CARD = { background: '#fff', borderRadius: 12, padding: 14, marginBottom: 12, boxShadow: '0 1px 4px rgba(200,100,120,0.06)' }
 const INS_CARD = { ...CARD, background: 'linear-gradient(135deg, #FFF0F4, #FFECF2)' }
 
-export function HealthTab({ data, loading }: HealthTabProps) {
+export function HealthTab({ data, loading, range }: HealthTabProps) {
   // 体温异常点：仅 ≥37.5°C 的记录，时间轴散点
   const tempOption = useMemo(() => {
     if (!data?.length) return null
@@ -225,6 +228,7 @@ export function HealthTab({ data, loading }: HealthTabProps) {
             </Text>
           )}
         </View>
+        <AskAssistantBar tab='health' range={range} />
       </View>
     </View>
   )

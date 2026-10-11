@@ -7,10 +7,13 @@ import EcChart from '@/components/EcChart'
 import { WARM_TOOLTIP } from '@/pagesReport/chartTheme'
 import type { DailySleepData } from '@/api/report'
 import { formatDateSlash, formatDurationMinutes } from '@/lib/utils'
+import { AskAssistantBar } from '../components/AskAssistantBar'
 
 interface SleepTabProps {
   data: DailySleepData[] | null
   loading: boolean
+  /** 当前时间窗（「问助手」深链携带，PRD-013 US-01/02） */
+  range: string
 }
 
 const CARD = {
@@ -22,7 +25,7 @@ function minToHours(min: number): number {
   return Math.round((min / 60) * 10) / 10
 }
 
-export function SleepTab({ data, loading }: SleepTabProps) {
+export function SleepTab({ data, loading, range }: SleepTabProps) {
   const lineOption = useMemo(() => {
     if (!data?.length) return {}
     const dates = data.map(d => formatDateSlash(d.date))
@@ -114,6 +117,7 @@ export function SleepTab({ data, loading }: SleepTabProps) {
             {'\u2022'} 日均睡眠 {avgSessions} 次，每次平均 {formatDurationMinutes(avgPerSessionMin)}
           </Text>
         </View>
+        <AskAssistantBar tab='sleep' range={range} />
       </View>
     </View>
   )

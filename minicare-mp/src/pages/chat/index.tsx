@@ -12,13 +12,14 @@ import NavBar from '@/components/NavBar/NavBar'
 import ConfirmSheet from '@/components/ConfirmSheet'
 import VoiceRecorder from '@/components/VoiceRecorder'
 import { babyApi } from '@/api/baby'
-import { agentDiaryApi, chatStream, type AgentSourceItem } from '@/api/agent'
+import { agentDiaryApi, chatStream, type AgentSourceItem, type ChartBlock } from '@/api/agent'
 import type { Baby } from '@/api/types'
 import { getToken, getStoredFamilyId, setCurrentBabyId, getStoredBabyId } from '@/api/http'
 import { API_BASE_URL } from '@/api/base'
-import { getBabyAge, nowDate, yesterdayStr, toDateOnly } from '@/lib/utils'
+import { getBabyAge, nowDate, yesterdayStr, toDateOnly, decodeParam } from '@/lib/utils'
 import { uploadOne, fetchTempUrls } from '@/lib/uploadImage'
 import MarkdownText from '@/components/MarkdownText/MarkdownText'
+import ChatChartCard from '@/components/ChatChartCard'
 import { useChatVoice } from './useChatVoice'
 import './index.scss'
 
@@ -31,6 +32,7 @@ interface ChatMessage {
   content: string
   images?: { fileId: string; url?: string }[]
   sources?: AgentSourceItem[]
+  charts?: ChartBlock[] // 图表块（TECH-028：随消息持久化，渲染在文字之后）
   toolNames?: string[]
   diaryRound?: boolean // 本轮触发过 generate_diary → 回答后可保存为日记
   diaryDate?: string // generate_diary 实际使用的日期（YYYY-MM-DD），保存时以此为准
@@ -147,6 +149,43 @@ function diarySaveLabel(date?: string): string {
   return `保存为 ${Number(mm)}月${Number(dd)}日 的日记`
 }
 
+// ── 分析页深链 → 起手消息组装（PRD-013 US-02/03 · TECH-028 §3.1 映射表）─────────
+//
+// 技术口径（TECH-028 D1）：agent 对深链参数无感知——chat 页把 anchor/range
+// 翻译成自然语言消息，走既有对话链路；非法参数返回 null（按无上下文正常进入）。
+
+const ANALYSIS_TAB_LABEL: Record<string, string> = {
+  feeding: '喂养',
+  sleep: '睡眠',
+  diaper: '大便',
+  health: '健康',
+  growth: '生长',
+}
+
+const ANALYSIS_RANGE_LABEL: Record<string, string> = {
+  '7': '7 天',
+  '14': '14 天',
+  '30': '30 天',
+  '90': '90 天',
+  '180': '半年',
+  '365': '一年',
+}
+
+function buildAnalysisPresetMessage(anchor?: string, range?: string): string | null {
+  const anchorDecoded = anchor ? decodeParam(anchor) : ''
+  if (!anchorDecoded || !anchorDecoded.startsWith('report:')) return null
+  const tab = anchorDecoded.slice('report:'.length)
+  // 排敏：非数值维度（助手走感知层评估进度与风险；窗口参数忽略）
+  if (tab === 'allergy') return '帮我评估一下宝宝最近的排敏进度和风险'
+  const label = ANALYSIS_TAB_LABEL[tab]
+  if (!label) return null
+  // 生长：全量记录，不带窗口文案
+  if (tab === 'growth') return '帮我看看宝宝的生长情况'
+  const rangeKey = range ? decodeParam(range) : ''
+  const win = rangeKey ? ANALYSIS_RANGE_LABEL[rangeKey] : ''
+  return win ? `帮我分析最近${win}的${label}情况` : `帮我分析宝宝的${label}情况`
+}
+
 /**
  * 判断助手回答是否「就是一篇日记」——自动落库前的最后一道校验。
  *
@@ -235,6 +274,7 @@ export default function ChatPage() {
   const isCancelingRef = useRef(false)
   const pressedRef = useRef(false)
   const presetDiarySentRef = useRef(false)
+  const analysisSentRef = useRef(false)
   const initedRef = useRef(false)
   const messagesRef = useRef<ChatMessage[]>([])
   useEffect(() => {
@@ -363,11 +403,11 @@ export default function ChatPage() {
     }
   }, [familyId])
 
-  // 预置消息（首页卡片 / 日记列表「写日记」/ 日记详情「重新生成」跳转）
+  // 预置消息（首页卡片 / 日记列表「写日记」/ 日记详情「重新生成」跳转 / 分析页「问助手」深链）
   useEffect(() => {
-    if (!baby || loading || presetDiarySentRef.current) return
+    if (!baby || loading) return
     const params = getCurrentInstance()?.router?.params ?? {}
-    if (params.preset === 'diary') {
+    if (!presetDiarySentRef.current && params.preset === 'diary') {
       presetDiarySentRef.current = true
       // 详情页「重新生成」带该篇自身日期；首页卡片与列表页带昨天日期；
       // 都没带（旧版入口）同样退化为昨天 —— 日记是回顾式总结，当天数据还不全。
@@ -375,6 +415,16 @@ export default function ChatPage() {
       const d = toDateOnly(params.date) || yesterdayStr()
       const [, mm, dd] = d.split('-')
       void sendMessage(`帮我写 ${Number(mm)}月${Number(dd)}日 的日记`, [])
+      return
+    }
+    // 分析页深链起手（PRD-013 US-02/03 · TECH-028 D1）：组装自然语言消息，agent 无感知；
+    // 续当前会话；参数非法则忽略（按无上下文处理，不阻塞进入）
+    if (!analysisSentRef.current && params.intent === 'analysis') {
+      const preset = buildAnalysisPresetMessage(params.anchor, params.range)
+      if (preset) {
+        analysisSentRef.current = true
+        void sendMessage(preset, [])
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [baby?.id, loading])
@@ -548,6 +598,14 @@ export default function ChatPage() {
             setMessages((prev) =>
               prev.map((m) =>
                 m.id === msgId ? { ...m, sources: ev.data.sources } : m,
+              ),
+            )
+          } else if (ev.event === 'block') {
+            // 图表块（TECH-028）：随消息累积，渲染在文字之后（ChatChartCard）；
+            // 旧版小程序不会进入此分支（未知事件天然忽略）
+            setMessages((prev) =>
+              prev.map((m) =>
+                m.id === msgId ? { ...m, charts: [...(m.charts ?? []), ev.data.block] } : m,
               ),
             )
           }
@@ -1020,6 +1078,9 @@ export default function ChatPage() {
                   </View>
                 ) : null}
                 {renderToolStatus(m)}
+                {m.charts?.length
+                  ? m.charts.map((c) => <ChatChartCard key={c.id} block={c} />)
+                  : null}
                 {renderSources(m)}
                 {renderAssistantFooter(m)}
                 {m.status === 'error' ? (

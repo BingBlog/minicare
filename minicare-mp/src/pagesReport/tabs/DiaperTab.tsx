@@ -7,10 +7,13 @@ import EcChart from '@/components/EcChart'
 import { WARM_TOOLTIP } from '@/pagesReport/chartTheme'
 import type { DailyDiaperData } from '@/api/report'
 import { formatDateSlash } from '@/lib/utils'
+import { AskAssistantBar } from '../components/AskAssistantBar'
 
 interface DiaperTabProps {
   data: DailyDiaperData[] | null
   loading: boolean
+  /** 当前时间窗（「问助手」深链携带，PRD-013 US-01/02） */
+  range: string
 }
 
 const CARD = {
@@ -18,7 +21,7 @@ const CARD = {
   boxShadow: '0 1px 4px rgba(200,100,120,0.06)',
 }
 
-export function DiaperTab({ data, loading }: DiaperTabProps) {
+export function DiaperTab({ data, loading, range }: DiaperTabProps) {
   const barOption = useMemo(() => {
     if (!data?.length) return {}
     const max = Math.max(5, ...data.map(d => d.dirtyCount))
@@ -126,6 +129,7 @@ export function DiaperTab({ data, loading }: DiaperTabProps) {
             </Text>
           )}
         </View>
+        <AskAssistantBar tab='diaper' range={range} />
       </View>
     </View>
   )

@@ -1,2 +1,7 @@
 /* 报告页面样式入口 */
 /* 大部分样式已通过内联 style 处理，此处仅保留全局覆盖 */
+
+/* 「问助手」入口按压反馈（AskAssistantBar，PRD-013 US-01） */
+.ask-assistant--pressed {
+  opacity: 0.6;
+}
