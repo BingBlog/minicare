@@ -12,6 +12,8 @@
  * ═══════════ 计时模式流程 ═══════════
  *  1. 页面加载时先查询 getOngoing，若有则恢复计时（断线重连）
  *  2. 点「开始计时」→ 立即调用 startSleep API → 记录 ongoingId
+ *     - 已睡时长补偿（2026-10-11）：开始前可选「已睡 X 分钟」（10/20/30 分钟、1 小时），
+ *       start_time 前移对应分钟数，计时显示从补偿后起算
  *  3. 点「结束睡眠」→
  *     - 若计时 < 3 分钟：弹二次确认弹窗
  *       - 「仍然保存」→ 调用 endSleep 正常保存
@@ -80,6 +82,9 @@ export default function SleepFormPage() {
   const [ongoingId, setOngoingId] = useState<string | null>(null)
   const [timerStopped, setTimerStopped] = useState(false)
   const [timerApiLoading, setTimerApiLoading] = useState(false)
+
+  // ── 计时补偿：宝宝睡着后才点「开始计时」时，补偿已睡时长（分钟，0=刚刚入睡） ──
+  const [compensateMin, setCompensateMin] = useState(0)
   const ongoingCheckedRef = useRef(false)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
@@ -230,6 +235,9 @@ export default function SleepFormPage() {
 
   /**
    * 点「开始计时」→ 立即调用 startSleep API
+   *
+   * 已睡时长补偿：start_time = 当前时间 − compensateMin 分钟，
+   * 使计时显示与最终时长统计均从（估算的）真实入睡时间起算。
    */
   const handleTimerStart = async () => {
     if (!familyId || !babyId) {
@@ -240,15 +248,18 @@ export default function SleepFormPage() {
     setTimerApiLoading(true)
     try {
       const startDateDate = new Date()
-      const startISO = nowLocalISO()
+      const effectiveStart = compensateMin > 0
+        ? new Date(startDateDate.getTime() - compensateMin * 60 * 1000)
+        : startDateDate
+      const startISO = dateToLocalISO(effectiveStart)
       const { id } = await recordsApi.sleep.startSleep(familyId, {
         baby_id: babyId,
         start_time: startISO,
         sleep_period: inferSleepPeriod(startISO),
       })
       setOngoingId(id)
-      setTimerStartTime(startDateDate)
-      setTimerSeconds(0)
+      setTimerStartTime(effectiveStart)
+      setTimerSeconds(compensateMin * 60)
       setTimerRunning(true)
       setTimerStopped(false)
     } catch (err: unknown) {
@@ -368,6 +379,7 @@ export default function SleepFormPage() {
       setTimerStartTime(null)
       setOngoingId(null)
       setTimerStopped(false)
+      setCompensateMin(0)
       return
     }
     setCancelDialogLoading(true)
@@ -379,6 +391,7 @@ export default function SleepFormPage() {
       setTimerStartTime(null)
       setOngoingId(null)
       setTimerStopped(false)
+      setCompensateMin(0)
       Taro.showToast({ title: '计时已取消', icon: 'success' })
     } catch {
       setCancelDialogOpen(false)
@@ -518,6 +531,8 @@ export default function SleepFormPage() {
             seconds={timerSeconds}
             startTime={timerStartTime}
             apiLoading={timerApiLoading}
+            compensateMin={compensateMin}
+            onCompensateChange={setCompensateMin}
             onStart={handleTimerStart}
             onResume={handleTimerResume}
             onStop={handleTimerStop}

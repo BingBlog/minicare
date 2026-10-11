@@ -3,7 +3,7 @@
 > 功能 ID：P0-007  
 > 优先级：P0  
 > 状态：**已完成** ✅  
-> 最后更新：2026-10-09（明确：睡眠质量默认「良好」；修正 quality 值域为 good/normal/poor；补建影响面清单）
+> 最后更新：2026-10-11（计时模式新增「已睡时长」时间补偿：开始计时时可选宝宝已睡时长，start_time 自动前移）
 
 ## 功能描述
 
@@ -21,6 +21,11 @@
 4. 点击「结束」→ 调用 `PATCH .../sleep/:id/end` 将状态改为 `ended`，后端计算 `duration_min`
 5. **3 分钟短时确认**：计时不足 3 分钟时结束，弹出确认弹窗（"仍然保存" / "继续计时"），防止误触
 6. **取消计时**：计时中可点击"取消本次计时"，调用 DELETE API 删除 ongoing 记录
+7. **已睡时长补偿（2026-10-11 新增，仅小程序实现）**：宝宝睡着后才点「开始计时」的场景，可在开始前选择「已睡时长」，修正计时偏差：
+   - **快捷项**：10 / 20 / 30 分钟、1 小时，直接展示为可点选项（chips），点击即选中（再点取消）
+   - **更多**：系统下拉框提供 5 分钟步进的灵活档位（不补偿 ~ 4 小时），非快捷值时入口处显示所选时长
+   点击开始后 `start_time` = 当前时间 − 已选时长，前端计时显示（`timerSeconds` 初始 = 已选分钟 × 60）、睡眠时段推断（`sleep_period`）与最终时长统计均从补偿后的入睡时间起算。
+   仅「未开始」状态可选（开始后 start_time 已定，不再展示）；「取消本次计时」后重置为「不补偿」
 
 ### 补录模式
 
@@ -96,6 +101,7 @@ ongoing ──(end)──→ ended
 
 - `duration_min` 由后端 MySQL `TIMESTAMPDIFF(MINUTE, start_time, end_time)` 计算，规避容器 UTC+0 时区问题
 - 前端计时器使用 `setInterval` 每秒更新显示，实际时长以服务端 `start_time` 为准
+- 计时补偿：`start_time = dateToLocalISO(new Date() − 已睡时长)` 由前端计算后传入（服务端 DTO 仅校验 ISO 格式，不校验过去时间）；恢复进行中记录（getOngoing / 409 冲突）时补偿不适用
 - 编辑模式：通过 URL 参数 `recordId` 进入，可修改已结束的睡眠记录
 
 ### 跨零点睡眠自动拆分
@@ -129,6 +135,7 @@ ongoing ──(end)──→ ended
 
 - [x] 计时模式：点击开始立即创建服务端记录
 - [x] 计时模式：结束后正确计算时长
+- [x] 计时模式：支持「已睡时长」补偿（快捷项 10/20/30 分钟、1 小时直接点选；「更多」下拉 5 分钟步进灵活档位；start_time 前移，计时从补偿后起算）
 - [x] 3 分钟短时确认弹窗，防止误触
 - [x] 计时取消功能
 - [x] 补录模式：手动选择时间段一步创建
@@ -149,8 +156,8 @@ ongoing ──(end)──→ ended
 - 日程预填：`minicare-mp/src/lib/schedule.ts`（类型→记录页跳转）+ `pages/records/sleep/index.tsx`（`initTime` 预填）
 
 **表单页 / 组件**
-- 表单页：`minicare-mp/src/pages/records/sleep/index.tsx`（计时 / 补录 / 编辑三态；`sleepQuality` 默认 `good`）
-- 区块组件：`TimerMode.tsx` / `ManualMode.tsx` / `QualitySection.tsx`
+- 表单页：`minicare-mp/src/pages/records/sleep/index.tsx`（计时 / 补录 / 编辑三态；`sleepQuality` 默认 `good`；`compensateMin` 补偿状态）
+- 区块组件：`TimerMode.tsx`（含「已睡时长」补偿下拉选择器 `COMPENSATE_MINUTES`）/ `ManualMode.tsx` / `QualitySection.tsx`
 
 **展示层（质量标签口径）**
 - 首页时间线：`minicare-mp/src/pages/home/homeRecords.ts`（`SLEEP_QUALITY_LABELS`）

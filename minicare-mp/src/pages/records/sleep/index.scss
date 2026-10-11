@@ -246,6 +246,84 @@
   color: #9a8090;
 }
 
+/* ── 已睡时长补偿（仅未开始时展示） ── */
+.sleep-timer__compensate {
+  width: 300px;
+  max-width: calc(100% - 48px);
+  padding: 12px 14px 14px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 1px 6px rgba(200, 100, 120, 0.08);
+}
+
+.sleep-timer__compensate-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.sleep-timer__compensate-label {
+  font-size: 13px;
+  color: #9a8090;
+  font-weight: 600;
+}
+
+/* 「更多」下拉入口（灵活档位） */
+.sleep-timer__compensate-more {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 4px 0 4px 12px;
+}
+
+.sleep-timer__compensate-more-text {
+  font-size: 13px;
+  color: #c0a8ad;
+  font-weight: 600;
+}
+
+.sleep-timer__compensate-more--active .sleep-timer__compensate-more-text {
+  color: #4caf82;
+}
+
+.sleep-timer__compensate-more-arrow {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+/* 快捷补偿 chips：点击即选中，再点取消 */
+.sleep-timer__compensate-chips {
+  display: flex;
+  gap: 8px;
+}
+
+.sleep-timer__chip {
+  flex: 1;
+  padding: 8px 0;
+  text-align: center;
+  border-radius: 10px;
+  border: 1px solid #e5d8da;
+  background: #fff;
+  transition: all 0.15s;
+}
+
+.sleep-timer__chip--active {
+  border-color: #4caf82;
+  background: #e8f5e9;
+}
+
+.sleep-timer__chip-text {
+  font-size: 12px;
+  color: #9a8090;
+  font-weight: 600;
+}
+
+.sleep-timer__chip--active .sleep-timer__chip-text {
+  color: #4caf82;
+}
+
 .sleep-timer__btn-group {
   display: flex;
   flex-direction: column;

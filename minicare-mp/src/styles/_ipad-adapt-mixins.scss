@@ -861,6 +861,46 @@
     }
 
 
+    // 已睡时长补偿
+    .is-ipad .sleep-timer__compensate {
+      width: 360px;
+      padding: 16px 20px 18px;
+      border-radius: 16px;
+    }
+
+
+    .is-ipad .sleep-timer__compensate-head {
+      margin-bottom: 12px;
+    }
+
+
+    .is-ipad .sleep-timer__compensate-label {
+      font-size: 15px;
+    }
+
+
+    .is-ipad .sleep-timer__compensate-more-text {
+      font-size: 15px;
+    }
+
+
+    .is-ipad .sleep-timer__compensate-more-arrow {
+      width: 16px;
+      height: 16px;
+    }
+
+
+    .is-ipad .sleep-timer__chip {
+      padding: 10px 0;
+      border-radius: 12px;
+    }
+
+
+    .is-ipad .sleep-timer__chip-text {
+      font-size: 14px;
+    }
+
+
     // 睡眠质量
     .is-ipad .sleep-quality-grid {
       gap: 14px;
