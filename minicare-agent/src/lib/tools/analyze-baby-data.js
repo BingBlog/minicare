@@ -4,10 +4,13 @@
  * 三种 scope：
  *   trend   单维趋势（up/down/flat/volatile + 异常点）
  *   summary 跨维综合总结（各维度概览 + 异常聚合）
- *   growth  生长曲线（体重/身高百分位，中国 2023 参考）
+ *   growth  生长曲线（体重/身高百分位，中国 2023 参考；**全量测量记录**，TECH-028 D6）
+ *
+ * chart 参数（TECH-028 D2/D3）：声明图表意图，供 runtime 旁路生成图表块（SSE block 事件）。
+ *   默认口径：trend→line / summary→mixed / growth→growth 自动出图；none 关闭；trend 可改选 bar。
  */
 import { z } from 'zod'
-import { queryMetric, METRICS, METRIC_LABELS } from '../query.js'
+import { queryMetric, queryGrowthAll, METRICS, METRIC_LABELS } from '../query.js'
 import { percentileOf } from '../growth.js'
 import { getDb } from '../db.js'
 // 宝宝档案与月龄统一从 lib/profile.js 取得（2026-09-19 收敛）：
@@ -18,11 +21,17 @@ import { getBabyProfile, ageInMonths } from '../profile.js'
 export const ANALYZE_BABY_DATA_TOOL = {
   name: 'analyze_baby_data',
   description:
-    '对宝宝健康记录做趋势分析、跨维度综合总结或生长曲线解读。用户要求"总结/趋势/周报/月报/生长/百分位"时调用，结果带数据依据。',
+    '对宝宝健康记录做趋势分析、跨维度综合总结或生长曲线解读。用户要求"总结/趋势/周报/月报/生长/百分位"时调用，结果带数据依据。' +
+    '本工具会随结果自动生成一张可视化图表（默认 trend→折线 / summary→奶量睡眠组合 / growth→生长曲线），' +
+    '无需在回答里描述图本身；如判断不适合出图或用户明确只要文字，可传 chart="none"；单维趋势可用 chart="line"|"bar" 选择图形。',
   parameters: z.object({
-    scope: z.enum(['trend', 'summary', 'growth']).describe('trend=单维趋势 / summary=跨维总结 / growth=生长曲线'),
-    days: z.number().int().min(1).max(90).optional().describe('时间窗天数，默认 7'),
+    scope: z.enum(['trend', 'summary', 'growth']).describe('trend=单维趋势 / summary=跨维总结 / growth=生长曲线（全量）'),
+    days: z.number().int().min(1).max(90).optional().describe('时间窗天数，默认 7；growth 为全量记录、不受此限'),
     metrics: z.array(z.enum(METRICS)).optional().describe('summary 时指定维度，默认全部'),
+    chart: z
+      .enum(['line', 'bar', 'mixed', 'growth', 'none'])
+      .optional()
+      .describe('图表意图：默认自动（trend→line / summary→mixed / growth→growth）；none 关闭出图；trend 场景可改选 bar'),
   }),
 }
 
@@ -209,12 +218,13 @@ async function summaryAnalysis(babyId, metrics, days) {
   }
 }
 
-async function growthAnalysis(babyId, days) {
-  const res = await queryMetric(babyId, 'growth', days, 'list')
-  if (!res.hasData) return { ok: true, scope: 'growth', days: res.days, hasData: false, note: '窗口内无生长测量记录' }
+async function growthAnalysis(babyId) {
+  // 全量测量记录（2026-10-11，TECH-028 D6）：生长曲线为累计型数据，不受 90 天窗口限制
+  const res = await queryGrowthAll(babyId)
+  if (!res.hasData) return { ok: true, scope: 'growth', hasData: false, note: '没有生长测量记录' }
   // getBabyProfile 返回的是画像聚合对象，档案字段在 basic 下（2026-09-19 收敛后）
   const basic = (await getBabyProfile(babyId))?.basic
-  if (!basic) return { ok: true, scope: 'growth', days: res.days, hasData: false, note: '缺少宝宝档案（性别/出生日期），无法解读生长曲线' }
+  if (!basic) return { ok: true, scope: 'growth', hasData: false, note: '缺少宝宝档案（性别/出生日期），无法解读生长曲线' }
 
   // growth_record 数值：weight_g（克→kg）、height_mm（毫米→cm）
   const sorted = [...res.rows].sort((a, b) => new Date(a.record_date) - new Date(b.record_date))
@@ -223,8 +233,22 @@ async function growthAnalysis(babyId, days) {
   const sex = basic.gender === 'female' ? 'female' : 'male'
   // 百分位按「测量当天月龄」计算（历史测量不能用当前月龄，否则百分位偏移）
   const months = ageInMonths(basic.birthDate, last.record_date)
+  const toYmd = (d) => {
+    if (!d) return null
+    if (typeof d === 'string') return d.slice(0, 10)
+    const dt = new Date(d)
+    const p = (n) => String(n).padStart(2, '0')
+    return `${dt.getFullYear()}-${p(dt.getMonth() + 1)}-${p(dt.getDate())}`
+  }
+  // 全量测量序列（2026-10-11 新增）：供图表块（生长散点）与模型细粒度解读
+  const series = sorted.map((r) => ({
+    date: toYmd(r.record_date),
+    months: Math.round(ageInMonths(basic.birthDate, r.record_date) * 10) / 10,
+    weightKg: r.weight_g != null ? Math.round(Number(r.weight_g)) / 1000 : null,
+    heightCm: r.height_mm != null ? Math.round(Number(r.height_mm)) / 10 : null,
+  }))
 
-  const out = { ok: true, scope: 'growth', days: res.days, hasData: true, months, measuredAt: last.record_date, sex, ref: '中国2023儿科生长参考' }
+  const out = { ok: true, scope: 'growth', hasData: true, months, measuredAt: toYmd(last.record_date), sex, ref: '中国2023儿科生长参考', series }
   if (last.weight_g != null) {
     const wKg = Number(last.weight_g) / 1000
     const firstKg = first.weight_g != null ? Number(first.weight_g) / 1000 : null
@@ -254,7 +278,7 @@ async function growthAnalysis(babyId, days) {
     out.height = null
   }
   if (!out.weight && !out.height) {
-    return { ok: true, scope: 'growth', days: res.days, hasData: false, note: '记录不足以解读生长曲线（缺体重/身高数值）' }
+    return { ok: true, scope: 'growth', hasData: false, note: '记录不足以解读生长曲线（缺体重/身高数值）' }
   }
   return out
 }
@@ -265,7 +289,7 @@ export async function executeAnalyzeBabyData(input, ctx) {
   try {
     if (input.scope === 'trend') return JSON.stringify(await trendAnalysis(babyId, input.metrics?.[0] || input.metric, input.days))
     if (input.scope === 'summary') return JSON.stringify(await summaryAnalysis(babyId, input.metrics, input.days))
-    if (input.scope === 'growth') return JSON.stringify(await growthAnalysis(babyId, input.days))
+    if (input.scope === 'growth') return JSON.stringify(await growthAnalysis(babyId))
     return JSON.stringify({ ok: false, error: `不支持的 scope: ${input.scope}` })
   } catch (e) {
     console.error('[analyze] ERROR:', e?.stack || e)

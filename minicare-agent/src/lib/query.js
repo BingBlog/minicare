@@ -412,6 +412,21 @@ async function queryTrend(db, babyId, metric, days) {
 }
 
 /**
+ * growth 全量测量记录（analyze growth 专用，TECH-028 D6 / PRD-013 US-03）。
+ * 生长曲线是累计型数据，天然需要全历史（不受 90 天窗口限制）；limit 仅作防护。
+ */
+export async function queryGrowthAll(babyId, limit = 100) {
+  const db = getDb()
+  if (!db) return { ok: false, hasData: false, rows: [] }
+  const [rows] = await db.query(
+    `SELECT record_date, weight_g, height_mm, head_mm FROM growth_record
+     WHERE baby_id=? ORDER BY record_date ASC LIMIT ?`,
+    [babyId, limit],
+  )
+  return { ok: true, hasData: rows.length > 0, rows }
+}
+
+/**
  * 查询宝宝某维度数据（对外唯一入口）
  * @returns {Promise<{ok:boolean, metric:string, days:number, aggregate:string, hasData:boolean, count:number, rows:Array, summary:Object, note:string}>}
  */

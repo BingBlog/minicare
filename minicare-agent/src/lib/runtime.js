@@ -16,6 +16,7 @@
  *   { type: 'text', text }                    — 助手文本（含准备语剔除策略，见下）
  *   { type: 'tool_call', name, input, allowed }     — 模型发起工具调用（allowed=循环防护判定）
  *   { type: 'tool_result', name, output, allowed, ms } — 工具执行结果
+ *   { type: 'chart', chart }                  — 图表块（TECH-028：工具数据的确定性旁路产物，单轮 ≤1）
  *   { type: 'usage', totalTokens }            — 本轮 token 总量（result 消息汇总，含 cache）
  *   { type: 'done', resultText, isError }     — 正常收尾
  *   { type: 'error', message }                — 运行时异常
@@ -43,6 +44,7 @@ import { TOOLS } from './tools/index.js'
 import { buildSystemPrompt } from '../prompts/system.js'
 import { getBabyProfile } from './profile.js'
 import { getPerception } from './perception.js'
+import { buildChartBlock } from './chart-block.js'
 
 /** 工具循环防护阈值（与 OAK 版一致） */
 export const MAX_SAME_TOOL_CALLS = 2
@@ -205,8 +207,11 @@ export function runAgentTurn(opts) {
       ? null
       : await getPerception(ctx?.babyId, { profile })
     const systemPrompt = buildSystemPrompt(ctx, history, profile, perception)
-    // tool_use_id → { name, startedAt }（assistant 块与 user tool_result 分属两条消息）
+    // tool_use_id → { name, startedAt, input }（assistant 块与 user tool_result 分属两条消息）
+    // input 一并记录：tool_result 后由图块生成器读取 chart 声明（TECH-028 D2）
     const pendingTools = new Map()
+    // 图表块单轮计数（TECH-028 D5：单轮最多 1 张）
+    let chartsEmitted = 0
 
     // 用户消息 content：文本 + 图片 blocks（与 Anthropic Messages API 同构）
     const content = [{ type: 'text', text: message }, ...images]
@@ -306,7 +311,7 @@ export function runAgentTurn(opts) {
               // 剥前缀保持 SSE 工具名与 OAK 版一致（客户端按裸名匹配）
               const name = block.name.replace(/^mcp__minicare__/, '')
               const allowed = wouldAllow(name)
-              pendingTools.set(block.id, { name, startedAt: Date.now() })
+              pendingTools.set(block.id, { name, startedAt: Date.now(), input: block.input ?? {} })
               yield { type: 'tool_call', name, input: block.input ?? {}, allowed }
             }
             // thinking 块：不产出（与 OAK 版一致，思维链不上客户端）
@@ -332,6 +337,15 @@ export function runAgentTurn(opts) {
                 output,
                 allowed,
                 ms: meta.startedAt ? Date.now() - meta.startedAt : null,
+              }
+              // 图表块旁路生成（TECH-028 D2）：数值确定性映射、模型不接触数值；
+              // 单轮 ≤1 张（D5）；循环防护拒绝的 output 非 JSON，解析失败自然不出图
+              if (allowed && chartsEmitted < 1 && (meta.name === 'analyze_baby_data' || meta.name === 'query_baby_data')) {
+                const chart = buildChartBlock({ toolName: meta.name, input: meta.input, output })
+                if (chart) {
+                  chartsEmitted += 1
+                  yield { type: 'chart', chart }
+                }
               }
             }
           }

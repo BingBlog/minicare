@@ -185,6 +185,10 @@ export function chatRoute(config) {
             statusMessage: ev.allowed ? null : '工具调用次数达上限（循环防护），未执行',
           })
           lastToolSpan = null
+        } else if (ev.type === 'chart') {
+          // 图表块（TECH-028）：结构化块事件，前端渲染为消息内通栏图卡；
+          // 旧版客户端对未知事件天然忽略，文字不受影响（向后兼容）
+          sse(res, 'block', { block: ev.chart })
         } else if (ev.type === 'usage') {
           // usage 事件可能在 gen 已收口后到达 → telemetry 内部回退挂到最早未记录的 gen
           openGeneration()
