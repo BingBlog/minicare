@@ -38,15 +38,22 @@ export function JudgeDetails({ judge, onlyKey }: {
 /** 单维度判分卡（试跑结果也直接用它） */
 export function JudgeCard({ k, v }: { k: string; v: EvalJudgeDetail }) {
   if (!v || typeof v !== 'object') return null
-  const bad = v.pass === false
+  // 三态优先（TECH-026 判分引擎）：verdict=pass/neutral/fail；旧 Node 判分回退 pass 布尔
+  const verdict = (typeof v.verdict === 'string' ? v.verdict : '')
+    || (v.pass === true ? 'pass' : v.pass === false ? 'fail' : '')
+  const bad = verdict === 'fail'
   return (
     <div className={`jdg-card${bad ? ' bad' : ''}`}>
       <div className="jdg-head">
         <span className="jdg-name">{JUDGE_KEY_LABEL[k] || k}</span>
-        {v.pass != null ? (
-          <Pill kind={v.pass ? 'ok' : 'danger'}>{v.pass ? '✓ 通过' : '✗ 未通过'}</Pill>
-        ) : (
-          <Pill kind="plain">无判定</Pill>
+        {verdict === 'pass' && <Pill kind="ok">✓ 通过</Pill>}
+        {verdict === 'neutral' && <Pill kind="warn">◐ 中性（无法确定）</Pill>}
+        {verdict === 'fail' && <Pill kind="danger">✗ 未通过</Pill>}
+        {!verdict && <Pill kind="plain">无判定</Pill>}
+        {typeof v.score === 'number' && (
+          <span className="hint" style={{ fontSize: 11, marginLeft: 6 }} title="维度分值（反向维度已取补）">
+            分值 {v.score.toFixed(2)}
+          </span>
         )}
       </div>
 
@@ -100,6 +107,12 @@ export function JudgeCard({ k, v }: { k: string; v: EvalJudgeDetail }) {
               {v.reasons.map((r, i) => <li key={i}>{String(r)}</li>)}
             </ul>
           )}
+        </div>
+      )}
+
+      {v.error && (
+        <div className="jdg-reason" style={{ color: 'var(--danger)' }}>
+          裁判执行失败：{String(v.error)}
         </div>
       )}
 

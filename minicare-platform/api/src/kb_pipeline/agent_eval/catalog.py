@@ -73,20 +73,26 @@ class EvalCatalog:
             raise ValueError("case_id 不能为空")
         if not str(p.get("message") or "").strip():
             raise ValueError("message 不能为空")
-        old = self.db.query_one("SELECT created_at FROM eval_case WHERE case_id = ?", (cid,))
+        old = self.db.query_one("SELECT created_at, source_json FROM eval_case WHERE case_id = ?", (cid,))
         ts = now_iso()
+        # 来源链（US-18）：显式传 `source` 才改写；缺省保留旧值（编辑器全量保存不会丢来源）
+        src_json = _d(p.get("source")) if "source" in p else (old or {}).get("source_json")
+        # 用户信息全局化（18:26 用户评审）：用例不携带 userId/familyId/babyId —— 服务端统一剥离，
+        # 覆盖编辑器保存 / JSON 模式 / 导入 / CLI 等所有入口（客户端剥离只是第一道闸）
+        ctx = {k: v for k, v in dict(p.get("ctx") or {}).items() if k not in USER_CTX_KEYS}
         self.db.upsert("eval_case", ["case_id"], {
             "case_id": cid,
             "grp": str(p.get("grp") or "custom").strip(),
             "priority": p.get("priority") or None,
             "desc": p.get("desc") or None,
             "message": str(p.get("message")),
-            "ctx_json": _d(p.get("ctx") or {}),
+            "ctx_json": _d(ctx),
             "history_json": _d(p.get("history") or []),
             "expect_json": _d(p.get("expect") or {}),
             "judge_json": _d(p.get("judge")) if p.get("judge") is not None else None,
             "extra_json": _d(p.get("extra")) if p.get("extra") else None,
             "tags": _tags_str(p.get("tags")),
+            "source_json": src_json,
             "enabled": 1 if p.get("enabled", True) else 0,
             "sort_order": int(p.get("sort_order") or 0),
             "created_at": (old or {}).get("created_at") or ts,
@@ -95,6 +101,46 @@ class EvalCatalog:
         out = self.get_case(cid)
         assert out is not None
         return out
+
+    def derive_case(self, case_id: str, *, from_run: str | None = None) -> dict:
+        """派生新用例（US-18 飞轮）：复制源用例，ID 在**家族根**后追加 b/c/d… 首个空闲后缀。
+
+        家族根 = 沿 `source.from_case` 链上溯到最初的非派生化用例（L1-07b 的根仍是 L1-07，
+        新用例得到 L1-07c 而不是 L1-07bc）；来源链写入 `source_json`。
+        """
+        src = self.get_case(case_id)
+        if not src:
+            raise ValueError(f"用例不存在：{case_id}")
+        root = case_id
+        seen = {case_id}
+        cur = src
+        while True:
+            s = cur.get("source") or {}
+            parent = s.get("from_case") if s.get("type") == "derive" else None
+            if not parent or parent in seen:
+                break
+            root = parent
+            seen.add(parent)
+            nxt = self.get_case(parent)
+            if not nxt:
+                break
+            cur = nxt
+        new_id = None
+        for ch in "bcdefghijklmnopqrstuvwxyz":
+            cand = f"{root}{ch}"
+            if not self.db.query_one("SELECT 1 AS x FROM eval_case WHERE case_id = ?", (cand,)):
+                new_id = cand
+                break
+        if not new_id:
+            raise ValueError(f"派生失败：{root} 的后缀序号已用尽（b~z）")
+        return self.upsert_case({
+            "case_id": new_id, "grp": src["grp"], "priority": src["priority"],
+            "desc": src["desc"], "message": src["message"],
+            "ctx": src["ctx"], "history": src["history"], "expect": src["expect"],
+            "judge": src["judge"], "extra": src["extra"], "tags": src["tags"],
+            "enabled": src["enabled"], "sort_order": src["sort_order"],
+            "source": {"type": "derive", "from_case": case_id, "from_run": from_run or None},
+        })
 
     def delete_case(self, case_id: str) -> bool:
         if not self.db.query_one("SELECT 1 AS x FROM eval_case WHERE case_id = ?", (case_id,)):
@@ -145,23 +191,71 @@ class EvalCatalog:
         jid = str(p.get("judge_id") or "").strip()
         if not jid:
             raise ValueError("judge_id 不能为空")
-        old = self.db.query_one("SELECT created_at FROM eval_judge WHERE judge_id = ?", (jid,))
+        old = self.db.query_one("SELECT created_at, description FROM eval_judge WHERE judge_id = ?", (jid,))
         ts = now_iso()
         self.db.upsert("eval_judge", ["judge_id"], {
             "judge_id": jid,
             "dim_id": str(p.get("dim_id") or "").strip(),
             "name": str(p.get("name") or jid),
+            "description": (p["description"] if "description" in p
+                            else (old or {}).get("description")),
             "type": str(p.get("type") or "llm"),
             "model": p.get("model") or "deepseek-v4-pro",
             "temperature": float(p.get("temperature") or 0),
             "prompt": p.get("prompt"),
             "code_ref": p.get("code_ref"),
+            "metric_type": str(p.get("metric_type") or "ternary"),
+            "params_json": _d(p.get("params")) if p.get("params") is not None else None,
             "enabled": 1 if p.get("enabled", True) else 0,
             "created_at": (old or {}).get("created_at") or ts,
             "updated_at": ts,
         })
         row = self.db.query_one("SELECT * FROM eval_judge WHERE judge_id = ?", (jid,))
         return _judge_out(row)  # type: ignore[arg-type]
+
+    # ══ 指标（TECH-026 §3.3：判分维度的聚合层）═════════════════════
+
+    def list_indicators(self, *, enabled: bool | None = None) -> list[dict]:
+        sql = "SELECT * FROM eval_indicator WHERE 1=1"
+        args: list[Any] = []
+        if enabled is not None:
+            sql += " AND enabled = ?"
+            args.append(1 if enabled else 0)
+        sql += " ORDER BY sort_order, indicator_id"
+        return [_indicator_out(r) for r in self.db.query(sql, tuple(args))]
+
+    def get_indicator(self, indicator_id: str) -> dict | None:
+        r = self.db.query_one("SELECT * FROM eval_indicator WHERE indicator_id = ?", (indicator_id,))
+        return _indicator_out(r) if r else None
+
+    def upsert_indicator(self, p: dict) -> dict:
+        iid = str(p.get("indicator_id") or "").strip()
+        if not iid:
+            raise ValueError("indicator_id 不能为空")
+        if not str(p.get("name") or "").strip():
+            raise ValueError("name 不能为空")
+        old = self.db.query_one("SELECT created_at FROM eval_indicator WHERE indicator_id = ?", (iid,))
+        ts = now_iso()
+        self.db.upsert("eval_indicator", ["indicator_id"], {
+            "indicator_id": iid,
+            "name": str(p.get("name")),
+            "description": p.get("description"),
+            "enabled": 1 if p.get("enabled", True) else 0,
+            "sort_order": int(p.get("sort_order") or 0),
+            "created_at": (old or {}).get("created_at") or ts,
+            "updated_at": ts,
+        })
+        out = self.get_indicator(iid)
+        assert out is not None
+        return out
+
+    def delete_indicator(self, indicator_id: str) -> bool:
+        """删除指标并解除维度挂载（维度本身保留）。"""
+        if not self.db.query_one("SELECT 1 AS x FROM eval_indicator WHERE indicator_id = ?", (indicator_id,)):
+            return False
+        self.db.execute("UPDATE eval_dimension SET indicator_id=NULL WHERE indicator_id=?", (indicator_id,))
+        self.db.execute("DELETE FROM eval_indicator WHERE indicator_id=?", (indicator_id,))
+        return True
 
     # ══ 维度 ══════════════════════════════════════════════════════════
 
@@ -182,7 +276,8 @@ class EvalCatalog:
         did = str(p.get("dim_id") or "").strip()
         if not did:
             raise ValueError("dim_id 不能为空")
-        old = self.db.query_one("SELECT created_at FROM eval_dimension WHERE dim_id = ?", (did,))
+        old = self.db.query_one(
+            "SELECT created_at, judge_id, criteria FROM eval_dimension WHERE dim_id = ?", (did,))
         ts = now_iso()
         th = p.get("threshold")
         self.db.upsert("eval_dimension", ["dim_id"], {
@@ -195,12 +290,24 @@ class EvalCatalog:
             "threshold": (float(th) if th is not None and str(th) != "" else None),
             "weight": float(p.get("weight") or 1),
             "must_pass": 1 if p.get("must_pass") else 0,
+            "indicator_id": (p.get("indicator_id") or None),
+            "reverse": 1 if p.get("reverse") else 0,
+            "metric_key": (p.get("metric_key") or None),
+            # 缺省保留旧值（旧前端包不带这两个字段时不清空）；显式传 null 才清
+            "judge_id": ((p["judge_id"] if "judge_id" in p else (old or {}).get("judge_id")) or None),
+            "criteria": ((p["criteria"] if "criteria" in p else (old or {}).get("criteria")) or None),
             "enabled": 1 if p.get("enabled", True) else 0,
             "sort_order": int(p.get("sort_order") or 0),
             "created_at": (old or {}).get("created_at") or ts,
             "updated_at": ts,
         })
         row = self.db.query_one("SELECT * FROM eval_dimension WHERE dim_id = ?", (did,))
+        # 兼容字段维护（C6）：裁判首维自动回填 judge.dim_id（仅空白时；主绑定在 dimension.judge_id）
+        jid = p.get("judge_id")
+        if jid and str(p.get("level") or "case") == "case":
+            self.db.execute(
+                "UPDATE eval_judge SET dim_id=? WHERE judge_id=? AND (dim_id IS NULL OR dim_id='')",
+                (did, str(jid)))
         return _dim_out(row)  # type: ignore[arg-type]
 
     # ══ 任务 ══════════════════════════════════════════════════════════
@@ -221,14 +328,23 @@ class EvalCatalog:
             raise ValueError("name 不能为空")
         if not p.get("scope"):
             raise ValueError("scope 不能为空")
-        old = self.db.query_one("SELECT created_at FROM eval_task WHERE task_id = ?", (tid,))
+        old = self.db.query_one("SELECT created_at, judge_id FROM eval_task WHERE task_id = ?", (tid,))
         ts = now_iso()
+        # 任务 × 裁判（C11 用户评审：裁判在任务中以下拉选择关联）：
+        # · judge_id 为唯一事实源，judge 布尔退化为派生值（非空 = 1）；
+        # · 新前端显式传 judge_id（null = 不启用判分）；
+        # · 旧包仅传 judge 布尔 → true 保持既有 judge_id（迁移已回填）、false 清空。
+        if "judge_id" in p:
+            jid = str(p.get("judge_id") or "").strip() or None
+        else:
+            jid = (old or {}).get("judge_id") if p.get("judge") else None
         self.db.upsert("eval_task", ["task_id"], {
             "task_id": tid,
             "name": str(p.get("name")),
             "scope_json": _d(p.get("scope")) or "{}",
             "dims_json": _d(p.get("dims")) if p.get("dims") else None,
-            "judge": 1 if p.get("judge", True) else 0,
+            "judge": 1 if jid else 0,
+            "judge_id": jid,
             "runs_n": max(1, min(3, int(p.get("runs_n") or 1))),
             "note": p.get("note"),
             "enabled": 1 if p.get("enabled", True) else 0,
@@ -296,7 +412,17 @@ def _case_out(r: dict) -> dict:
         "expect": _l(r["expect_json"], {}), "judge": _l(r["judge_json"]),
         "extra": _l(r["extra_json"]),
         "tags": _tags_list(r["tags"]),
+        "source": _l(r.get("source_json"), None),
         "enabled": bool(r["enabled"]), "sort_order": r["sort_order"],
+        "created_at": r["created_at"], "updated_at": r["updated_at"],
+    }
+
+
+def _indicator_out(r: dict) -> dict:
+    return {
+        "indicator_id": r["indicator_id"], "name": r["name"],
+        "description": r["description"], "enabled": bool(r["enabled"]),
+        "sort_order": r["sort_order"],
         "created_at": r["created_at"], "updated_at": r["updated_at"],
     }
 
@@ -304,8 +430,12 @@ def _case_out(r: dict) -> dict:
 def _judge_out(r: dict) -> dict:
     return {
         "judge_id": r["judge_id"], "dim_id": r["dim_id"], "name": r["name"],
+        "description": r.get("description"),
         "type": r["type"], "model": r["model"], "temperature": r["temperature"],
-        "prompt": r["prompt"], "code_ref": r["code_ref"], "enabled": bool(r["enabled"]),
+        "prompt": r["prompt"], "code_ref": r["code_ref"],
+        "metric_type": r.get("metric_type") or "ternary",
+        "params": _l(r.get("params_json")),
+        "enabled": bool(r["enabled"]),
         "created_at": r["created_at"], "updated_at": r["updated_at"],
     }
 
@@ -315,6 +445,11 @@ def _dim_out(r: dict) -> dict:
         "dim_id": r["dim_id"], "name": r["name"], "level": r["level"], "grp": r["grp"],
         "description": r["description"], "score_type": r["score_type"],
         "threshold": r["threshold"], "weight": r["weight"], "must_pass": bool(r["must_pass"]),
+        "indicator_id": r.get("indicator_id"),
+        "reverse": bool(r.get("reverse")),
+        "metric_key": r.get("metric_key"),
+        "judge_id": r.get("judge_id"),
+        "criteria": r.get("criteria"),
         "enabled": bool(r["enabled"]), "sort_order": r["sort_order"],
         "created_at": r["created_at"], "updated_at": r["updated_at"],
     }
@@ -324,7 +459,8 @@ def _task_out(r: dict) -> dict:
     return {
         "task_id": r["task_id"], "name": r["name"],
         "scope": _l(r["scope_json"], {}), "dims": _l(r["dims_json"]),
-        "judge": bool(r["judge"]), "runs_n": r["runs_n"], "note": r["note"],
+        "judge": bool(r["judge"]), "judge_id": r.get("judge_id"),
+        "runs_n": r["runs_n"], "note": r["note"],
         "enabled": bool(r["enabled"]),
         "created_at": r["created_at"], "updated_at": r["updated_at"],
     }

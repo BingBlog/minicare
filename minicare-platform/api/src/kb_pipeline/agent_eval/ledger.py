@@ -112,6 +112,43 @@ class EvalLedger:
             (status, _dumps(summary), error, duration_ms, now_iso(), run_id),
         )
 
+    # ── 判分阶段（TECH-026 B4）──────────────────────────────────────
+
+    def set_scoring(self, run_id: str, status: str, *, error: str | None = None,
+                    meta: dict | None = None) -> None:
+        """更新判分阶段状态（pending/running/done/failed/skipped）。meta 只在传入时覆盖。"""
+        if meta is not None:
+            self.db.execute(
+                "UPDATE eval_run SET scoring=?, scoring_error=?, scoring_meta=? WHERE run_id=?",
+                (status, error, _dumps(meta), run_id))
+        else:
+            self.db.execute(
+                "UPDATE eval_run SET scoring=?, scoring_error=? WHERE run_id=?",
+                (status, error, run_id))
+
+    def update_case_judge(self, run_id: str, case_id: str, *,
+                          judge: dict, pass_: bool, stage: str | None,
+                          detail: str | None) -> None:
+        """判分回写：更新单例的 judge JSON 与最终裁决（pass/stage/detail）。"""
+        self.db.execute(
+            "UPDATE eval_case_result SET judge=?, pass=?, stage=?, detail=?"
+            " WHERE run_id=? AND case_id=?",
+            (_dumps(judge), 1 if pass_ else 0, stage, detail, run_id, case_id))
+
+    def update_case_score(self, run_id: str, case_id: str, *,
+                          sample_score: float | None, indicator_scores: dict | None) -> None:
+        """第 2 期回写：指标分 / 样本分（TECH-026 §5.2）。"""
+        self.db.execute(
+            "UPDATE eval_case_result SET sample_score=?, indicator_scores=?"
+            " WHERE run_id=? AND case_id=?",
+            (sample_score, _dumps(indicator_scores) if indicator_scores else None,
+             run_id, case_id))
+
+    def update_summary(self, run_id: str, summary: dict) -> None:
+        """判分回写后重算 summary（passed + gate）。"""
+        self.db.execute("UPDATE eval_run SET summary=? WHERE run_id=?",
+                        (_dumps(summary), run_id))
+
     def insert_case_results(self, run_id: str, cases: list[dict]) -> None:
         """cases 为 runner 规范化后的 dict 列表（键见 eval_case_result 列）。
 
@@ -408,11 +445,25 @@ def _make_decision(run: dict, *, total: int, valid: int, passed: int,
         cov = f"{passed}/{total}" if total else "—"
         return {"kind": "cancelled", "title": f"已中止 · 部分结论（覆盖 {cov}）",
                 "reasons": [], "actions": [], "note": None}
+    # 判分阶段（TECH-026 B4）：进行中 → 结论待定；失败 → 并入 partial/fail 文案
+    scoring = run.get("scoring")
+    if scoring in ("pending", "running"):
+        return {"kind": "scoring", "title": "判分进行中 · 结论待定", "reasons": [],
+                "actions": [], "note": None}
+    scoring_failed = scoring == "failed"
     gate = (run.get("summary") or {}).get("gate") or {}
     items = list(gate.values())
     fails = [g for g in items if _gate_state(g) == "fail"]
     nas = [g for g in items if _gate_state(g) == "na"]
-    note = f"含人工复核 {reviewed} 条归因" if reviewed else None
+    # 脚注：人工复核 + 去污染剔除说明（gate 部分为运行时原始快照，不追溯改判——口径统一见第 2 期）
+    excluded_n = counts["env"] + counts["data"] + counts["exec"] + counts["judge"]
+    note_parts: list[str] = []
+    if reviewed:
+        note_parts.append(f"含人工复核 {reviewed} 条归因")
+    if excluded_n:
+        note_parts.append(f"已剔除 {excluded_n} 条非被测原因失败样本（去污染口径见评测概览）")
+    note = " · ".join(note_parts) if note_parts else None
+    scoring_hint = f"判分执行失败：{(run.get('scoring_error') or '')[:120]}（可重判）" if scoring_failed else None
     if total > 0 and valid == 0:
         return {"kind": "no_valid", "title": "暂无法给出建议",
                 "reasons": ["全部样本在执行/评审阶段失败，未产生有效评测数据——本结论不具备参考意义"],
@@ -425,9 +476,15 @@ def _make_decision(run: dict, *, total: int, valid: int, passed: int,
             (" · 硬门槛" if g.get("must_pass") else "")
             for g in fails
         ]
+        if scoring_hint:
+            reasons.append(scoring_hint)
         return {"kind": "fail", "title": title, "reasons": reasons,
                 "actions": ["按失败用例的归因修复（环境 / 用例 / 裁判 / 被测），修复后重跑"],
                 "note": note}
+    if scoring_failed:
+        return {"kind": "partial", "title": "判分未完成：部分维度未测",
+                "reasons": [scoring_hint or "判分执行失败"],
+                "actions": ["重判（不重跑执行）"], "note": note}
     if nas:
         labels = "、".join(g.get("label") or "?" for g in nas)
         return {"kind": "partial", "title": f"结论不完整：本轮未覆盖 {labels}", "reasons": [],
@@ -492,6 +549,8 @@ def compute_report(run: dict, cases: list[dict]) -> dict:
     attribution_block = {
         "counts": counts, "total_failed": total - passed, "den": total,
         "reviewed": reviewed, "overridden": overridden, "derived": derived,
+        # 逐用例最终归因（含人工改判与旧轮实时推导）——前端表格筛选/展示消费，避免口径双实现
+        "by_case": {cid: a for cid, a in final_attr.items() if a},
     }
 
     # ── 性能与成本（§4.3）──
@@ -526,7 +585,13 @@ def compute_report(run: dict, cases: list[dict]) -> dict:
         "attribution": attribution_block,
         "cost": {"durations": durations, "tokens": tokens, "top": top},
         "decision": decision,
-        "meta": {"total": total, "derived_attribution": derived, "token_cases": tokens["n"]},
+        "meta": {
+            "total": total, "derived_attribution": derived, "token_cases": tokens["n"],
+            # 判分阶段（TECH-026 B4）：状态 + 引擎元数据（版本/模型/耗时/失败数）
+            "scoring": run.get("scoring"),
+            "scoring_error": run.get("scoring_error"),
+            "scoring_meta": run.get("scoring_meta"),
+        },
     }
 
 
@@ -545,6 +610,10 @@ def _run_out(r: dict) -> dict:
         "env_snapshot": _loads(r["env_snapshot"], {}),
         "summary": _loads(r["summary"]),
         "error": r["error"], "created_at": r["created_at"],
+        # 判分阶段（TECH-026 B4）：pending/running/done/failed/skipped；旧轮 NULL
+        "scoring": r.get("scoring"),
+        "scoring_error": r.get("scoring_error"),
+        "scoring_meta": _loads(r.get("scoring_meta")),
     }
 
 
@@ -560,6 +629,9 @@ def _case_out(c: dict, *, full: bool) -> dict:
         "attribution_source": c.get("attribution_source"),
         "attribution_note": c.get("attribution_note"),
         "tokens": _loads(c.get("tokens_json")),
+        # 第 2 期：样本分 / 指标分拆解
+        "sample_score": c.get("sample_score"),
+        "indicator_scores": _loads(c.get("indicator_scores")),
     }
     if full:
         out["answer"] = c.get("answer") or ""

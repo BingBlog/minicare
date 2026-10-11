@@ -16,7 +16,7 @@ R1-realdata 20 条用例，数据源为旺仔 seed 快照）喂给 deepeval 标�
 
 运行：
     cd minicare-agent
-    /Users/bing/.workbuddy/binaries/python/envs/default/bin/deepeval test run evals/test_r1_realdata_deepeval.py
+    DEEPEVAL_TELEMETRY_OPT_OUT=YES ./evals/.venv/bin/deepeval test run evals/test_r1_realdata_deepeval.py
 """
 import json
 import os

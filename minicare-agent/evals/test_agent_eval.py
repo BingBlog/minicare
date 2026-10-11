@@ -1,7 +1,7 @@
 """「敏宝助手」P0 测评套件（deepeval test run 入口）。
 
 运行方式（在 minicare-agent/ 目录下）：
-    /Users/bing/.workbuddy/binaries/python/envs/default/bin/deepeval test run evals/test_agent_eval.py
+    DEEPEVAL_TELEMETRY_OPT_OUT=YES ./evals/.venv/bin/deepeval test run evals/test_agent_eval.py
 
 设计说明（2026-09-01 重构）：每个 test case 挂「所有适用指标」而非单个指标，
 报告里每个 case 能看到它在多个维度上的得分。

@@ -53,6 +53,8 @@ export async function runTurn({ config, message, history = [], ctx = {}, images,
     ms: null,
     eventCount: 0,
     traceId: null,
+    // TECH-026 §5：usage 明细（runtime 透出；旧链路为 null）
+    usage: null,
   }
 
   if (!config.deepSeekKey) {
@@ -179,6 +181,7 @@ export async function runTurn({ config, message, history = [], ctx = {}, images,
       } else if (ev.type === 'usage') {
         openGeneration()
         recorder?.recordUsage(ev.totalTokens)
+        result.usage = ev.usage || null
         closeGeneration()
       } else if (ev.type === 'done') {
         if (ev.isError) {

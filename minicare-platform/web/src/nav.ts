@@ -1,10 +1,13 @@
 /**
  * 导航定义 —— 单一数据源（顶部导航、侧栏、页面元数据、工作台页签都由它生成）。
  *
- * **顶部导航 = 领域切换**（2026-10-09 新增，用户要求「区分知识库与 Agent 测评」）：
- *   · 平台外壳统称「敏宝管理平台」，内部分两个域：`kb`（知识库）与 `eval`（Agent 测评）；
+ * **顶部导航 = 领域切换 + 平台级入口**（2026-10-09 新增；2026-10-11 补平台级）：
+ *   · 平台外壳统称「敏宝管理平台」，域为 `kb`（知识库）/ `eval`（Agent 测评）/
+ *     `signal`（信号管理）/ `obs`（观测）；
  *   · 顶条由 `DOMAINS` 渲染（品牌 + 域页签）；切域 → 落到该域 `defaultPage`；
- *   · 当前域由页面 id 反推（`domainOfPage`，不存状态）—— 深链接直接进来也对得上。
+ *   · **平台级页面**（`domain: 'platform'`，如「全局配置」）不属任何域 ——
+ *     入口挂在顶栏**右侧**平台区（`Topnav`），不做成域页签；
+ *   · 当前归属由页面 id 反推（`domainOfPage`，不存状态）—— 深链接直接进来也对得上。
  *
  * **侧栏 = 领域内的两级菜单**（2026-10-09 二次收敛，用户要求移除阶段分组标题）：
  *   · 只渲染**当前域**的一级项（`navFor(domain)`）；域归属标在一级项的 `domain` 上，
@@ -25,7 +28,16 @@
  */
 
 /** 领域（平台一级分区）：顶部导航按它切换，侧栏按它过滤。 */
-export type DomainId = 'kb' | 'eval'
+export type DomainId = 'kb' | 'eval' | 'signal' | 'obs'
+
+/**
+ * 页面的归属层：四个领域之一，或**平台级**（`platform`）。
+ *
+ * `platform` 不是域 —— 不属于任何业务分区，顶栏不设页签，入口挂在顶栏**右侧**的平台区
+ * （见 `Topnav`），侧栏只渲染平台级菜单。2026-10-11 用户要求：「全局配置」从知识库域
+ * 移出、升为平台级（它是全平台的配置，不归知识库）。
+ */
+export type PageScope = DomainId | 'platform'
 
 export interface Domain {
   id: DomainId
@@ -47,16 +59,16 @@ export const DOMAINS: Domain[] = [
   {
     id: 'eval',
     label: 'Agent 测评',
-    defaultPage: 'agenteval',
-    desc: '用例 / 任务 / 裁判 / 维度 / 历史运行',
+    defaultPage: 'agentevaltasks',
+    desc: '用例 · 任务 · 报告 · 记录 · 裁判',
   },
 ]
 
 export interface NavItem {
   id: string
   label: string
-  /** 所属领域（**仅一级项标注**；二级/隐藏项随父项继承，见 `domainOfPage`）。 */
-  domain?: DomainId
+  /** 所属层级（**仅一级项标注**；二级/隐藏项随父项继承，见 `domainOfPage`）。`platform` = 平台级。 */
+  domain?: PageScope
   impl: boolean
   phase: number
   story: string
@@ -180,50 +192,32 @@ export const NAV: NavItem[] = [
      后端 `/api/contract` 系列端点与回退页（ui.py）同删；契约校验能力保留为
      CLI（`kb-pipeline contract show/validate/observe`，KB-CONTRACT.md 引用的即它）。
      `?page=contract` 不再翻译（落默认页「文档管理」）。 */
+  /* Agent 测评域（2026-10-11 用户评审调整）：
+     · 去掉一级「Agent 测评」入口（与顶部域页签重复）；
+     · **测评任务 = 发起与执行的唯一入口**，其二级挂「测评报告」（原 Agent 测评页：只查看不发起）；
+       「测评记录」已并入测评任务页（2026-10-11 二次评审，见 `EVAL_HISTORY_ALIAS`）；
+     · 测评用例 / 测评裁判 保持一级。 */
   {
-    id: 'agenteval',
-    label: 'Agent 测评',
+    id: 'agentevalcases',
+    label: '测评用例',
     domain: 'eval',
     impl: true,
     phase: 1,
-    story: 'PRD-010',
+    story: 'TECH-021',
+    desc: '',
+  },
+  {
+    id: 'agentevaltasks',
+    label: '测评任务',
+    domain: 'eval',
+    impl: true,
+    phase: 1,
+    story: 'PRD-012',
     desc: '',
     children: [
       {
-        id: 'agentevalcases',
-        label: '测评用例',
-        impl: true,
-        phase: 1,
-        story: 'TECH-021',
-        desc: '',
-      },
-      {
-        id: 'agentevaltasks',
-        label: '测评任务',
-        impl: true,
-        phase: 1,
-        story: 'TECH-021',
-        desc: '',
-      },
-      {
-        id: 'agentevaljudges',
-        label: '测评裁判',
-        impl: true,
-        phase: 1,
-        story: 'TECH-021',
-        desc: '',
-      },
-      {
-        id: 'agentevaldims',
-        label: '测评维度',
-        impl: true,
-        phase: 1,
-        story: 'TECH-021',
-        desc: '',
-      },
-      {
-        id: 'agentevalhistory',
-        label: '历史运行',
+        id: 'agenteval',
+        label: '测评报告',
         impl: true,
         phase: 1,
         story: 'PRD-010',
@@ -232,9 +226,22 @@ export const NAV: NavItem[] = [
     ],
   },
   {
+    id: 'agentevaljudges',
+    label: '测评裁判',
+    domain: 'eval',
+    impl: true,
+    phase: 1,
+    story: 'TECH-026',
+    desc: '',
+  },
+  /* 全局配置（2026-10-11 用户要求：从知识库域移出，升为**平台级**页面）：
+     入口在顶栏**右侧**的平台区（`Topnav`，与域页签之间用分隔线隔开，不做成第五个域页签）；
+     `domain: 'platform'` ⇒ 不属于任何域 —— 顶栏域页签全部不亮，侧栏只渲染平台级菜单。
+     页面内部按 知识库 / Agent 测评 / 观测 / 平台 分类展示全部配置（见 `Config.tsx`）。 */
+  {
     id: 'config',
     label: '全局配置',
-    domain: 'kb',
+    domain: 'platform',
     impl: true,
     phase: 1,
     story: 'TECH-015 S-10',
@@ -262,22 +269,24 @@ export function pageMeta(id: string): NavItem | null {
   return walk(NAV)
 }
 
-/* ── 领域（顶部导航的两个页签）────────────────────────────────────────
-   平台外壳 =「一个平台，两个域」：知识库（kb）与 Agent 测评（eval）。
-   域归属只标在一级项上；二级/隐藏项沿树继承 —— 消费点两处：
-   · `Topnav`：由当前页反推域 → 高亮页签；
-   · `Sidebar`：只渲染当前域的一级项与其二级视图。 */
+/* ── 归属层解析（顶部导航 + 侧栏的唯一口径）────────────────────────────
+   平台外壳 =「敏宝管理平台」，内含域与平台级两种归属：
+   · 域（`DOMAINS`）：知识库 / Agent 测评 / 信号管理 / 观测 —— 顶栏页签切换；
+   · 平台级（`platform`）：不属任何域（当前仅「全局配置」）—— 顶栏右侧入口。
+   域/层级归属只标在一级项上；二级/隐藏项沿树继承 —— 消费点两处：
+   · `Topnav`：由当前页反推归属 → 高亮域页签或右侧平台入口；
+   · `Sidebar`：只渲染当前归属的一级项与其二级视图。 */
 
 /** 兜底领域：未知 id 与默认落地页（`DEFAULT_PAGE`）同域 */
 export const DEFAULT_DOMAIN: DomainId = 'kb'
 
 /**
- * 页面 id → 所属领域。**递归沿树解析**：二级/隐藏项继承其一级父项的 `domain`
+ * 页面 id → 所属层（领域或 `platform`）。**递归沿树解析**：二级/隐藏项继承其一级父项的 `domain`
  * （如 `indexresult` → `source` → `corpus` → kb）。
- * 未知 id 回退 `DEFAULT_DOMAIN`，保证顶部导航永远有高亮项。
+ * 未知 id 回退 `DEFAULT_DOMAIN`，保证顶部导航永远有高亮项（域页签或平台入口）。
  */
-export function domainOfPage(pageId: string): DomainId {
-  const walk = (items: NavItem[], inherited: DomainId): DomainId | null => {
+export function domainOfPage(pageId: string): PageScope {
+  const walk = (items: NavItem[], inherited: PageScope): PageScope | null => {
     for (const it of items) {
       const dom = it.domain ?? inherited
       if (it.id === pageId) return dom
@@ -291,9 +300,9 @@ export function domainOfPage(pageId: string): DomainId {
   return walk(NAV, DEFAULT_DOMAIN) ?? DEFAULT_DOMAIN
 }
 
-/** 当前域的一级导航项（侧栏渲染它；域切换在顶部导航，不在侧栏）。 */
-export function navFor(domain: DomainId): NavItem[] {
-  return NAV.filter((it) => (it.domain ?? DEFAULT_DOMAIN) === domain)
+/** 当前归属层的一级导航项（侧栏渲染它；域切换在顶部导航，不在侧栏）。 */
+export function navFor(scope: PageScope): NavItem[] {
+  return NAV.filter((it) => (it.domain ?? DEFAULT_DOMAIN) === scope)
 }
 
 /* ── 文档工作台（`source`）的内页签 ──────────────────────────────────────
@@ -397,6 +406,13 @@ export const PROCESSING_ALIASES: ReadonlySet<string> = new Set(['detail', 'recor
  */
 export const PUBLISH_LOG_ALIAS = 'publishlog'
 
+/**
+ * 「测评记录」页已并入「测评任务」（2026-10-11 二次评审：两页合并 + UI 优化）：
+ * 记录表作为任务页的第二张卡片；旧深链接 `?page=agentevalhistory` 翻译回 `agentevaltasks`。
+ */
+export const EVAL_HISTORY_ALIAS = 'agentevalhistory'
+export const EVAL_HISTORY_TARGET = 'agentevaltasks'
+
 /* （2026-10-09 删除）旧侧栏页 `metadata`（元信息总览）曾并入工作台页签的全库视图；
    该视图及后端 `/api/metadata` 已按用户要求整体删除，`?page=metadata` 不再翻译（落默认页「文档管理」）。 */
 
@@ -433,6 +449,4 @@ export const RELOADABLE_PAGES = new Set([
   'agentevalcases',
   'agentevaltasks',
   'agentevaljudges',
-  'agentevaldims',
-  'agentevalhistory',
 ])

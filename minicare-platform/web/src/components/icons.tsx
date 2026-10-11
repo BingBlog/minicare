@@ -139,21 +139,6 @@ export const NAV_ICONS: Record<string, ReactNode> = {
       <path d="M17.2 7l2.6 5.4a3 3 0 0 1-5.2 0z" />
     </>
   ),
-  /** 测评维度 —— 靶心（要测什么、判定口径） */
-  agentevaldims: (
-    <>
-      <circle cx="12" cy="12" r="8.5" />
-      <circle cx="12" cy="12" r="4.5" />
-      <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none" />
-    </>
-  ),
-  /** 历史运行 —— 表盘（历次运行台账） */
-  agentevalhistory: (
-    <>
-      <circle cx="12" cy="12" r="8.5" />
-      <path d="M12 7.5V12l3.2 1.9" />
-    </>
-  ),
 }
 
 /** 侧栏导航图标。未知 id 回退为一个中性圆点，避免"新增页面忘了配图标"时整项空掉。 */

@@ -26,7 +26,7 @@ from pathlib import Path
 from ..config import REPO_ROOT, get_settings
 from ..fsutil import ensure_dir
 from ..platform_db import PlatformDB
-from . import attribution
+from . import attribution, scoring
 from .catalog import EvalCatalog, case_to_harness_item, effective_ctx
 from .ledger import EvalLedger, compute_gate, group_label, priority_label
 
@@ -157,6 +157,7 @@ class EvalRunner:
             except OSError:
                 env_ok = False
         harness_ok = (AGENT_DIR / HARNESS_REL).is_file()
+        scoring_ready = (AGENT_DIR / "evals" / ".venv" / "bin" / "python").is_file()
         cases_row = self._catalog().db.query_one("SELECT COUNT(*) AS n FROM eval_case WHERE enabled = 1")
         cases_ready = bool(cases_row and cases_row["n"] > 0)
         running = self._active is not None
@@ -179,6 +180,7 @@ class EvalRunner:
             "agent_dir": str(AGENT_DIR),
             "env_local": env_ok,
             "harness": harness_ok,
+            "scoring_ready": scoring_ready,
             "cases_ready": cases_ready,
             "running": running,
             "active_run_id": (self._active or {}).get("run_id"),
@@ -237,7 +239,8 @@ class EvalRunner:
     # ── 发起运行（US-01）─────────────────────────────────────────────
 
     def start(self, *, scope: str | None = None, task_id: str | None = None,
-              judge: bool | None = None, runs_n: int | None = None) -> dict:
+              judge: bool | None = None, runs_n: int | None = None,
+              retry_of: str | None = None) -> dict:
         if runs_n is not None and (runs_n < 1 or runs_n > 3):
             raise ValueError("runs 需在 1..3 之间")
         with self._lock:
@@ -252,18 +255,47 @@ class EvalRunner:
                 raise RuntimeError("环境检查未通过：" + "；".join(chk["issues"]))
 
             cat = self._catalog()
+            lg = self._ledger()
+
+            # US-19 失败重跑（飞轮）：由源轮的失败用例集合派生新运行（judge/轮次默认复用源轮；
+            # 任务归属沿用，重跑记录落回同一任务；无失败用例 → 拒绝）
+            retry_of = (retry_of or "").strip() or None
+            retry_failed: list[str] = []
+            if retry_of:
+                src = lg.get_run(retry_of)
+                if not src:
+                    raise ValueError(f"源运行不存在：{retry_of}")
+                retry_failed = [c["case_id"] for c in (src.get("cases") or []) if not c.get("pass")]
+                if not retry_failed:
+                    raise ValueError("源运行没有失败用例，无需重跑")
+                scope = "ids:" + ",".join(retry_failed)
+                if judge is None:
+                    judge = bool(src.get("judge"))
+                if runs_n is None:
+                    runs_n = int(src.get("runs_n") or 1)
+                task_id = src.get("task_id") or None
+
             task = None
             if task_id:
                 task = cat.get_task(task_id)
                 if not task:
                     raise ValueError(f"任务不存在：{task_id}")
-                if not task["enabled"]:
+                if not task["enabled"] and not retry_of:
                     raise ValueError(f"任务已停用：{task_id}")
 
-            if task:
+            if retry_of:
+                # 重跑：范围 = 源轮失败用例；维度沿用任务（若有）；口径已在上面解析
+                scope_dict = parse_scope_str(scope or "all")
+                dim_ids = task.get("dims") if task else None
+                eff_judge = judge if judge is not None else True
+                eff_runs = runs_n if runs_n is not None else 1
+                scope_ledger = f"retry:{retry_of}"
+                scope_label = f"重跑失败 {len(retry_failed)} 条（自 {retry_of[-6:]}）"
+            elif task:
                 scope_dict = task["scope"] or {"all": True}
                 dim_ids = task.get("dims")
-                eff_judge = judge if judge is not None else bool(task["judge"])
+                # C11：任务的判分口径以 judge_id（下拉选择的裁判）为准；judge 布尔为其派生值（兼容旧数据）
+                eff_judge = judge if judge is not None else bool(task.get("judge_id") or task["judge"])
                 eff_runs = runs_n if runs_n is not None else (task["runs_n"] or 1)
                 scope_ledger = f"task:{task['task_id']}"
                 scope_label = task["name"]
@@ -275,6 +307,12 @@ class EvalRunner:
                 scope_ledger = scope or "all"
                 scope_label = scope_label_of(scope_dict)
 
+            # TECH-026 B4：judge=on 的运行需要判分引擎环境（evals/.venv）
+            if eff_judge and not chk.get("scoring_ready"):
+                raise RuntimeError(
+                    "判分引擎环境缺失：minicare-agent/evals/.venv 不存在——"
+                    "按 evals/README.md §三 重建，或关闭「裁判判分」仅执行")
+
             base = datetime.now().strftime("%Y%m%d-%H%M%S")
             run_id = base
             n = 1
@@ -283,7 +321,7 @@ class EvalRunner:
                 run_id = f"{base}-{n}"
 
             mz = self._materialize(run_id, scope_dict, dim_ids)
-            env_snapshot = self._env_snapshot(eff_judge, task_id=task_id, mz=mz)
+            env_snapshot = self._env_snapshot(eff_judge, task_id=task_id, mz=mz, retry_of=retry_of)
             self._ledger().create_run(
                 run_id=run_id, scope=scope_ledger, scope_label=scope_label,
                 judge=eff_judge, runs_n=eff_runs, env_snapshot=env_snapshot, task_id=task_id)
@@ -291,10 +329,11 @@ class EvalRunner:
             self._active = {
                 "run_id": run_id, "task_id": task_id, "scope": scope_ledger,
                 "scope_label": scope_label, "judge": eff_judge, "runs_n": eff_runs,
-                "status": "running", "done": 0, "total": mz["case_count"], "passed": 0,
+                "status": "running", "mode": "run", "phase": "executing",
+                "done": 0, "total": mz["case_count"], "passed": 0,
                 "current": None, "current_desc": None, "started_ms": int(time.time() * 1000),
                 "recent": [], "cases": {}, "log_tail": [], "cancel_requested": False,
-                "dims": mz["dims"],
+                "dims": mz["dims"], "scoring_done": 0, "scoring_total": 0,
             }
             self._thread = threading.Thread(
                 target=self._worker, args=(run_id, mz, eff_judge, eff_runs), daemon=True)
@@ -319,8 +358,10 @@ class EvalRunner:
             return None
         return {
             "run_id": run_id, "status": a["status"], "live": True,
+            "phase": a.get("phase", "executing"),
             "done": a["done"], "total": a["total"], "passed": a["passed"],
             "current": a["current"], "current_desc": a.get("current_desc"),
+            "scoring_done": a.get("scoring_done", 0), "scoring_total": a.get("scoring_total", 0),
             "elapsed_ms": int(time.time() * 1000) - a["started_ms"],
             "recent": a["recent"][-8:],
         }
@@ -335,6 +376,70 @@ class EvalRunner:
         if proc is not None and proc.poll() is None:
             proc.terminate()
         return True
+
+    # ── 重判（TECH-026 B4）：对已完成运行的存量结果重新判分（不重跑执行）──
+
+    def score(self, run_id: str) -> dict:
+        """触发整轮重判；复用单任务锁（与运行互斥）。"""
+        with self._lock:
+            if self._active is not None:
+                a = self._active
+                raise RuntimeError(f"已有任务进行中（{a['run_id']}）——等待其完成后再重判")
+            run = self._ledger().get_run(run_id, with_cases=False)
+            if not run:
+                raise ValueError(f"运行不存在：{run_id}")
+            if run["status"] != "completed":
+                raise ValueError("仅已完成（completed）的运行可以重判")
+            self._active = {
+                "run_id": run_id, "task_id": None, "scope": run["scope"],
+                "scope_label": run["scope_label"], "judge": True, "runs_n": 1,
+                "status": "running", "mode": "scoring", "phase": "scoring",
+                "done": 0, "total": 0, "passed": 0,
+                "current": None, "current_desc": None,
+                "started_ms": int(time.time() * 1000),
+                "recent": [], "cases": {}, "log_tail": [], "cancel_requested": False,
+                "dims": [], "scoring_done": 0, "scoring_total": 0,
+            }
+        self._thread = threading.Thread(target=self._scoring_worker, args=(run_id,), daemon=True)
+        self._thread.start()
+        return {"ok": True, "run_id": run_id, "scoring": "running"}
+
+    def _scoring_worker(self, run_id: str) -> None:
+        try:
+            meta = scoring.execute_scoring(
+                run_id, on_progress=self._on_scoring_progress, on_proc=self._set_proc)
+            self._append_log(f"[scoring] 完成：{json.dumps(meta, ensure_ascii=False)[:200]}")
+        except Exception as e:  # noqa: BLE001
+            self._append_log(f"[scoring] 失败：{e}")
+        finally:
+            with self._lock:
+                if self._active and self._active["run_id"] == run_id:
+                    self._active = None
+                    self._proc = None
+
+    # ── 判分阶段（TECH-026 B4：运行内联执行）────────────────────────
+
+    def _scoring_phase(self, ledger: EvalLedger, run_id: str) -> None:
+        """阶段二：调用 deepeval 判分引擎（失败不改变运行完成态——报告展示"判分失败"+ 重判入口）。"""
+        a = self._active
+        if a is not None:
+            a["phase"] = "scoring"
+        try:
+            meta = scoring.execute_scoring(
+                run_id, on_progress=self._on_scoring_progress, on_proc=self._set_proc)
+            self._append_log(f"[scoring] 完成：{json.dumps(meta, ensure_ascii=False)[:200]}")
+        except Exception as e:  # noqa: BLE001
+            self._append_log(f"[scoring] 失败：{e}")
+
+    def _on_scoring_progress(self, done: int, total: int) -> None:
+        a = self._active
+        if a is not None:
+            a["scoring_done"] = done
+            a["scoring_total"] = total
+
+    def _set_proc(self, proc: subprocess.Popen) -> None:
+        with self._lock:
+            self._proc = proc
 
     # ── ETA 估算（TECH-022 B7）──────────────────────────────────────
 
@@ -351,7 +456,7 @@ class EvalRunner:
             if not task:
                 raise ValueError(f"任务不存在：{task_id}")
             scope_dict = task["scope"] or {"all": True}
-            eff_judge = bool(judge) if judge is not None else bool(task["judge"])
+            eff_judge = bool(judge) if judge is not None else bool(task.get("judge_id") or task["judge"])
             eff_runs = runs_n if runs_n is not None else (task["runs_n"] or 1)
         else:
             scope_dict = parse_scope_str(scope or "all")
@@ -389,10 +494,12 @@ class EvalRunner:
 
     # ── 裁判试跑（TECH-022 B6）──────────────────────────────────────
 
-    def rejudge(self, *, judge_id: str, case_id: str, run_id: str | None = None) -> dict:
+    def rejudge(self, *, judge_id: str, case_id: str, run_id: str | None = None,
+                dim_id: str | None = None) -> dict:
         """用当前裁判配置对「历史回答」重新判分——不跑被测 agent、不写台账。
 
-        校准闭环的最小入口：改完裁判 prompt → 对既有回答立即验证判分行为变化。
+        C4（TECH-026 §3.5）：判分由 deepeval 引擎执行（与正式判分同链路、同 criteria 优先级）。
+        C6（裁判中心化）：一个裁判可挂多个维度，`dim_id` 指定要重判的维度（缺省取首个启用 case 维度）。
         来源回答取指定运行；未指定时取最近一轮含该用例且有回答的 completed 运行。
         """
         settings = get_settings()
@@ -401,15 +508,30 @@ class EvalRunner:
         judge = next((j for j in cat.list_judges() if j["judge_id"] == judge_id), None)
         if not judge:
             raise ValueError(f"裁判不存在：{judge_id}")
-        key = judge["dim_id"].split("-", 1)[1] if "-" in judge["dim_id"] else judge["dim_id"]
-        if key not in ("faithfulness", "completeness", "guardrail", "style"):
-            raise ValueError(f"该裁判类型暂不支持试跑：{key}")
+        if (judge.get("type") or "llm") != "llm":
+            raise ValueError("仅 LLM 裁判支持试跑（代码断言请直接发起一次运行）")
+
+        # 维度选择（C6）：该裁判名下的 case 级维度；指定优先，否则首个启用维度
+        my_dims = [d for d in cat.list_dimensions()
+                   if scoring.judge_of_dim(d, {judge_id: judge})]
+        case_dims = [d for d in my_dims if (d.get("level") or "case") == "case"]
+        if dim_id:
+            dim = next((d for d in case_dims if d["dim_id"] == dim_id), None)
+            if not dim:
+                raise ValueError(f"维度 {dim_id} 不存在或不属于裁判 {judge_id}")
+        else:
+            enabled_dims = [d for d in case_dims if d.get("enabled", True)]
+            dim = enabled_dims[0] if enabled_dims else (case_dims[0] if case_dims else None)
+        if not dim:
+            raise ValueError(f"裁判 {judge_id} 尚未挂判分维度——到「测评裁判」编辑页添加维度")
+        key = dim.get("metric_key") or (
+            dim["dim_id"].split("-", 1)[1] if "-" in dim["dim_id"] else dim["dim_id"])
 
         case = cat.get_case(case_id)
         if not case:
             raise ValueError(f"用例不存在：{case_id}")
         cfg = case.get("judge") or {}
-        if not cfg.get(key):
+        if not (isinstance(cfg, dict) and cfg.get(key)):
             raise ValueError(f"用例 {case_id} 未配置「{key}」判分，试跑无从判起")
 
         # 来源回答：指定运行优先；否则最近一轮含该用例且有回答的 completed 运行
@@ -441,47 +563,30 @@ class EvalRunner:
                     return default
             return v if v is not None else default
 
-        fixture = {
-            "answer": row.get("answer") or "",
-            "toolCalls": _load(row.get("tool_calls"), []),
-        }
+        tool_calls = _load(row.get("tool_calls"), [])
         prev_all = _load(row.get("judge"), None) or {}
 
         base = datetime.now().strftime("%Y%m%d-%H%M%S")
         rj_dir = ensure_dir(
             settings.platform_cfg.data_root / "eval" / "rejudge" / f"{base}-{case_id}").resolve()
-        case_path = rj_dir / "case.json"
-        fixture_path = rj_dir / "fixture.json"
-        judges_path = rj_dir / "judges.json"
-        out_path = rj_dir / "out.json"
-        case_path.write_text(
-            json.dumps(case_to_harness_item(case), ensure_ascii=False, indent=1), encoding="utf-8")
-        fixture_path.write_text(json.dumps(fixture, ensure_ascii=False), encoding="utf-8")
-        judges_path.write_text(
-            json.dumps(self._judges_map(), ensure_ascii=False, indent=1), encoding="utf-8")
-
-        node = find_node()
-        cmd = [node or "node", "scripts/eval/rejudge.mjs",
-               f"--case-file={case_path}", f"--fixture-file={fixture_path}",
-               f"--judges-file={judges_path}", f"--out={out_path}"]
         try:
-            proc = subprocess.run(
-                cmd, cwd=str(AGENT_DIR), capture_output=True, text=True,
-                env=clean_child_env(), timeout=240)
+            rec, meta = scoring.run_rejudge_engine(
+                judge=judge, dim=dim, case=case,
+                answer=str(row.get("answer") or ""),
+                tool_calls=tool_calls if isinstance(tool_calls, list) else [],
+                rj_dir=rj_dir)
         except subprocess.TimeoutExpired as e:
-            raise TimeoutError("试跑超时（240s）——判分模型无响应，请重试") from e
-        if not out_path.is_file():
-            tail = ((proc.stderr or "") + (proc.stdout or ""))[-500:]
-            raise RuntimeError(f"试跑执行失败（exit={proc.returncode}）：{tail}")
-        verdict_all = json.loads(out_path.read_text(encoding="utf-8"))
+            raise TimeoutError("试跑超时（300s）——判分模型无响应，请重试") from e
         return {
-            "judge_id": judge_id, "dim_key": key, "case_id": case_id,
+            "judge_id": judge_id, "dim_id": dim["dim_id"], "dim_key": key, "case_id": case_id,
             "source_run_id": src_run_id,
-            "judge": verdict_all.get(key),
-            "all": verdict_all,
+            "judge": rec,
+            "all": {key: rec},
             "prev": prev_all.get(key),
             "prev_run_id": src_run_id if prev_all.get(key) is not None else None,
             "dir": str(rj_dir),
+            "engine": "deepeval",
+            "elapsed_ms": int(meta.get("elapsed_ms") or 0),
         }
 
     # ── 工作线程 ────────────────────────────────────────────────────
@@ -497,8 +602,8 @@ class EvalRunner:
                f"--cases-file={mz['cases_path']}",
                f"--judges-file={mz['judges_path']}",
                "--emit-progress", f"--json={report_path}"]
-        if not judge:
-            cmd.append("--no-judge")
+        # TECH-026 B4：平台链路只执行不判分（主观判分由 deepeval 引擎在阶段二承接）
+        cmd.append("--no-judge")
         if runs_n > 1:
             cmd.append(f"--runs={runs_n}")
 
@@ -564,6 +669,17 @@ class EvalRunner:
             for c in cases:
                 c["attribution"] = attribution.classify_case(c)
             ledger.insert_case_results(run_id, cases)
+
+        # ── 阶段二：判分（TECH-026 B4）——执行完成后由 deepeval 引擎承接主观判分 ──
+        if status == "completed" and cases:
+            if judge:
+                self._scoring_phase(ledger, run_id)
+                # 判分回写会重算 summary（passed/gate）——从台账重读，避免被 _finish 覆盖
+                fresh = ledger.get_run(run_id, with_cases=False)
+                summary = (fresh or {}).get("summary") or summary
+            else:
+                ledger.set_scoring(run_id, "skipped")
+
         self._finish(run_id, ledger, status=status, summary=summary, error=error,
                      duration_ms=int(time.time() * 1000) - started_ms)
 
@@ -645,16 +761,19 @@ class EvalRunner:
 
     @staticmethod
     def _env_snapshot(judge: bool, *, task_id: str | None = None,
-                      mz: dict | None = None) -> dict:
+                      mz: dict | None = None, retry_of: str | None = None) -> dict:
         snap: dict = {
             "agent_model": os.environ.get("MODEL_DEFAULT") or "deepseek-v4-flash",
             "judge_model": "deepseek-v4-pro" if judge else None,
+            "judge_engine": "deepeval" if judge else None,  # TECH-026 B4：判分引擎标识
             "db": _read_env_local("DB_NAME"),
             "git": _git_rev(),
             "harness": HARNESS_REL,
         }
         if task_id:
             snap["task_id"] = task_id
+        if retry_of:
+            snap["retry_of"] = retry_of  # US-19 失败重跑：来源轮（报告页据此显示「重跑自 xxx」）
         if mz:
             snap["cases"] = {
                 "count": mz["case_count"],

@@ -82,7 +82,7 @@ DB_NAME=minicare-cloud-6gqledlle0132cbe node scripts/eval/eval-agent.mjs \
   --group=r1 --all --no-judge --json=.deepeval/r1-raw-run.json
 
 # 2) 判分：deepeval 标准指标层（20 条用例 → D2/D3/D4/D5，judge=v4-flash）
-/Users/bing/.workbuddy/binaries/python/envs/default/bin/deepeval test run evals/test_r1_realdata_deepeval.py
+./evals/.venv/bin/deepeval test run evals/test_r1_realdata_deepeval.py
 
 # 3) 报告：node scripts/eval/report-html.mjs → evals/report.html
 ```
@@ -91,12 +91,14 @@ DB_NAME=minicare-cloud-6gqledlle0132cbe node scripts/eval/eval-agent.mjs \
 - 指标编排：知识类 → Faithfulness；无记录数据类 → G-Eval(data_honesty)；高危 → medical_safety（0.8 一票否决）；工具类 → ToolCorrectness(1.0，expected_tools 来自 r1-realdata.json)；非日记回答挂 style_adherence。
 - 局限：ToolCorrectness 只比对工具名不比 metric 参数（如 R1-13 模型错选 growth 而非 medical 需靠 harness 断言抓）；R1-04 双路径/组合工具场景不挂工具指标避免误伤。
 
-## 三、本地部署要点（已实测）
+## 三、本地部署要点（已实测；2026-10-11 环境重建后为准）
 
-- 安装：`pip install -U deepeval openai`（本机装在托管 venv `/Users/bing/.workbuddy/binaries/python/envs/default/`，**PyPI 直连会卡死，必须走 Clash 代理 `HTTPS_PROXY=http://127.0.0.1:7890`**；deepeval 4.2.0 依赖树大，装一次约 15 分钟）
-- **不需要注册 Confident AI**：不执行 `deepeval login`，全部纯本地；结果 JSON 存 `minicare-agent/.deepeval/`（`.latest_test_run.json`，已加入 .gitignore）
+- 安装：**项目自有 venv `evals/.venv`**（TECH-026 §3.2——不再使用托管环境，其曾被重建导致依赖丢失）：
+  `python3 -m venv evals/.venv` → `HTTPS_PROXY=http://127.0.0.1:7897 HTTP_PROXY=http://127.0.0.1:7897 evals/.venv/bin/pip install -r evals/requirements.txt`
+  （**PyPI 直连会卡死，必须走 Clash 代理；端口以本机当前为准，2026-10-11 实测为 7897，旧的 7890 已失效**；依赖树大，装一次约 3-15 分钟）
+- **不需要注册 Confident AI**：不执行 `deepeval login`，全部纯本地；跑测试时设 `DEEPEVAL_TELEMETRY_OPT_OUT=YES` 禁遥测；结果 JSON 存 `minicare-agent/.deepeval/`（`.latest_test_run.json`，已加入 .gitignore）
 - Judge 模型：**DeepSeek OpenAI 兼容端点**（`https://api.deepseek.com`），模型 **`deepseek-v4-flash`**（与被测 agent 同档，2026-09-01 用户决策；注意 `deepseek-chat` 在该端点也解析为 v4-flash；若后续发现 judge 偏袒/漏判可换 `deepseek-v4-pro`）。继承 `DeepEvalBaseLLM` 自定义（见 `judges/deepseek_judge.py`），key 复用 minicare-agent 的 `.env.local`
-- 运行：`/Users/bing/.workbuddy/binaries/python/envs/default/bin/deepeval test run evals/test_agent_eval.py`（不能用裸 pytest，deepeval 需要接管报告；实测 5 用例 8 指标约 30s，费用 ~0）
+- 运行：`DEEPEVAL_TELEMETRY_OPT_OUT=YES ./evals/.venv/bin/deepeval test run evals/test_agent_eval.py`（不能用裸 pytest，deepeval 需要接管报告；实测 5 用例 8 指标约 70s，费用 ~0）
 - **本地看报告**：`node scripts/eval/report-html.mjs` 渲染 `evals/report.html`——每个指标块带维度 tag（D2-D5）、分数/阈值、judge 模型（LLM 指标）或"确定性比对"（工具指标），头部汇总 judge 模型
 
 ### deepeval 4.2.0 API 注意点（踩坑记录）
@@ -107,13 +109,40 @@ DB_NAME=minicare-cloud-6gqledlle0132cbe node scripts/eval/eval-agent.mjs \
 - `GEval` 已移除 `include_reason` 参数；`FaithfulnessMetric` 仍保留
 - 参数枚举用 `SingleTurnParams`（旧版是 `LLMTestCaseParams`，代码里有兼容 fallback）
 
-## 四、目录
+## 四、判分引擎（TECH-026 §3 / 第 1.5 期）
+
+平台测评链路的**主观判分由本目录的 deepeval 引擎承接**（Node harness 只做执行 + 确定性断言）：
+
+- `score_run.py`：判分入口——读平台导出的 `scoring-input.json`（用例材料 + 维度定义）→ 逐用例逐维度判分 → 写 `scores.json`（verdict/score/reason + 附加字段；单点失败不中断）
+- `metrics/ternary.py`：`TernaryJudgeMetric`——三态判定原语（通过 1.0 / 中性 0.5 / 失败 0.0；中性 = 无法确定，不冒充通过）
+- `metrics/criteria.py`：四个维度的默认 criteria（从 `scripts/eval/lib/judge.mjs` 原有 prompt 移植，语义不变）
+- `tools/compare_scores.py`：双跑对照（Node judge 存量 vs 引擎）——迁移期方向一致率验收
+
+```bash
+# 导出（平台侧）：一轮运行 → 判分输入
+cd minicare-platform/api && PYTHONPATH=src .venv/bin/python -m kb_pipeline.agent_eval.scoring --run <run_id> --out /tmp/scoring-input.json
+# 判分（引擎侧）
+cd minicare-agent && DEEPEVAL_TELEMETRY_OPT_OUT=YES ./evals/.venv/bin/python evals/score_run.py --input /tmp/scoring-input.json --out /tmp/scores.json
+# 双跑对照
+./evals/.venv/bin/python evals/tools/compare_scores.py --db ../minicare-platform/api/data/platform.db --run <run_id> --scores /tmp/scores.json
+```
+
+> 迁移策略（TECH-027/TECH-026）：**口径缓换、引擎必换**——四维度判定标准逐条保留，先双跑对照（目标方向一致率 ≥ 90%），通过后再切换平台默认引擎。
+
+## 五、目录
 
 ```
 minicare-agent/evals/
-├── README.md              # 本文档：维度/指标设计
+├── README.md              # 本文档：维度/指标设计 + 判分引擎
+├── requirements.txt       # 判分引擎依赖（deepeval==4.2.2 等；venv=./.venv）
 ├── judges/
 │   └── deepseek_judge.py  # DeepSeek 自定义 judge（DeepEvalBaseLLM）
+├── metrics/
+│   ├── ternary.py         # 三态判定 metric（TECH-026 判分引擎默认原语）
+│   └── criteria.py        # 四维度默认 criteria（judge.mjs 移植）
+├── score_run.py           # 判分引擎入口：scoring-input.json → scores.json
+├── tools/
+│   └── compare_scores.py  # 双跑对照（Node judge vs 引擎）
 ├── golden_cases.py        # P0 golden 数据（录制自 agent 真实行为）
 └── test_agent_eval.py     # pytest 测试套件（deepeval test run 入口）
 ```

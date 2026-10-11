@@ -210,7 +210,7 @@ CREATE TABLE IF NOT EXISTS eval_run (
   task_id       TEXT,                        -- 来源任务（TECH-021 §3.5；手工发起为 NULL）
   scope         TEXT NOT NULL,               -- all / group:l1 / ids:L1-01,R1-03
   scope_label   TEXT NOT NULL,               -- 展示用：全部（46 条）/ 分组 L1 / 指定 2 条
-  judge         INTEGER NOT NULL DEFAULT 1,  -- 是否启用 LLM judge
+  judge         INTEGER NOT NULL DEFAULT 1,  -- 是否启用判分（TECH-026 B4 起 = 是否执行 deepeval 判分阶段）
   runs_n        INTEGER NOT NULL DEFAULT 1,  -- 消抖轮次
   status        TEXT NOT NULL,               -- running/completed/failed/cancelled
   started_at    TEXT,
@@ -219,6 +219,9 @@ CREATE TABLE IF NOT EXISTS eval_run (
   env_snapshot  TEXT,                        -- JSON：模型/judge/db/用例集 hash/git
   summary       TEXT,                        -- JSON：通过数 + 闸门六项
   error         TEXT,
+  scoring       TEXT,                        -- 判分阶段（TECH-026 §4.2）：pending/running/done/failed/skipped
+  scoring_error TEXT,
+  scoring_meta  TEXT,                        -- JSON：引擎版本/模型/耗时/失败数
   created_at    TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_eval_run_created ON eval_run(created_at DESC);
@@ -242,12 +245,24 @@ CREATE TABLE IF NOT EXISTS eval_case_result (
   attribution        TEXT,                   -- 归因（TECH-026 §2）：env/data/exec/judge/skill；通过=NULL
   attribution_source TEXT,                   -- auto（入库自动）/ manual（人工改判）
   attribution_note   TEXT,                   -- 人工改判备注
-  tokens_json        TEXT                    -- JSON：{input,output,cacheRead,cacheCreation,total}
+  tokens_json        TEXT,                   -- JSON：{input,output,cacheRead,cacheCreation,total}
+  sample_score       REAL,                   -- 样本分（TECH-026 §5.2：指标分算术平均；第 2 期）
+  indicator_scores   TEXT                    -- JSON：{indicator_id: 指标分}（第 2 期）
 );
 CREATE INDEX IF NOT EXISTS idx_eval_case_run ON eval_case_result(run_id);
 
--- ── Agent 测评配置对象（TECH-021 §3）：维度 / 裁判 / 用例 / 任务 ──────────
--- DB 为运行时唯一源；运行时由平台「物化」为 harness 可读的 JSON 注入子进程（评测语义零重写）。
+-- ── Agent 测评配置对象（TECH-021 §3 / TECH-026 §4.3）：指标 / 维度 / 裁判 / 用例 / 任务 ──
+-- DB 为运行时唯一源；运行时由平台「物化」为 harness / 判分引擎可读的 JSON（评测语义零重写）。
+CREATE TABLE IF NOT EXISTS eval_indicator (
+  indicator_id TEXT PRIMARY KEY,             -- 如 ind-outcome（指标＝判分维度的聚合层，TECH-026 §3.3）
+  name         TEXT NOT NULL,                -- 结果符合预期 / 安全合规 / 回答质量
+  description  TEXT,
+  enabled      INTEGER NOT NULL DEFAULT 1,
+  sort_order   INTEGER NOT NULL DEFAULT 0,
+  created_at   TEXT NOT NULL,
+  updated_at   TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS eval_dimension (
   dim_id       TEXT PRIMARY KEY,            -- 如 dim-faithfulness（稳定 id）
   name         TEXT NOT NULL,
@@ -256,8 +271,13 @@ CREATE TABLE IF NOT EXISTS eval_dimension (
   description  TEXT,
   score_type   TEXT NOT NULL DEFAULT 'boolean',  -- boolean / numeric / categorical
   threshold    REAL,                        -- numeric 通过阈值；boolean 留空
-  weight       REAL NOT NULL DEFAULT 1,     -- 综合分加权（二期启用聚合）
+  weight       REAL NOT NULL DEFAULT 1,     -- 综合分加权（第 2 期起参与指标分聚合）
   must_pass    INTEGER NOT NULL DEFAULT 0,  -- 一票否决（安全类默认开）
+  indicator_id TEXT,                        -- 归属指标（TECH-026 §4.3）
+  reverse      INTEGER NOT NULL DEFAULT 0,  -- 反向维度（分值取 1-x）
+  metric_key   TEXT,                        -- 判分输出键（默认由 dim_id 推导）
+  judge_id     TEXT,                        -- 归属裁判（裁判中心化：维度是裁判内部配置；run 级为 NULL）
+  criteria     TEXT,                        -- 判定要点（判分引擎优先读取；缺省回退裁判 params.criteria → 内置模板）
   enabled      INTEGER NOT NULL DEFAULT 1,
   sort_order   INTEGER NOT NULL DEFAULT 0,
   created_at   TEXT NOT NULL,
@@ -266,13 +286,16 @@ CREATE TABLE IF NOT EXISTS eval_dimension (
 
 CREATE TABLE IF NOT EXISTS eval_judge (
   judge_id     TEXT PRIMARY KEY,            -- 如 jdg-faithfulness
-  dim_id       TEXT NOT NULL,               -- 绑定维度（首期 1:1）
-  name         TEXT NOT NULL,
+  dim_id       TEXT NOT NULL,               -- 兼容字段：首维绑定（裁判→维度 1:N 后仅记录首维；主绑定在 dimension.judge_id）
+  name         TEXT NOT NULL,               -- 裁判名（= 业务场景名，如「医疗安全审查」）
+  description  TEXT,                        -- 业务场景说明（裁判中心化改版新增）
   type         TEXT NOT NULL,               -- llm / code
   model        TEXT,                        -- llm 裁判模型（默认 deepseek-v4-pro）
   temperature  REAL NOT NULL DEFAULT 0,
   prompt       TEXT,                        -- 评分器 system prompt（判定标准与输出格式约束）
   code_ref     TEXT,                        -- code 型：内置断言器引用（首期仅记录）
+  metric_type  TEXT NOT NULL DEFAULT 'ternary',  -- 判分引擎类型（TECH-026 §3.3）：ternary/geval/builtin:xxx
+  params_json  TEXT,                        -- JSON：引擎参数（criteria 覆盖、变量引用等）
   enabled      INTEGER NOT NULL DEFAULT 1,
   created_at   TEXT NOT NULL,
   updated_at   TEXT NOT NULL
@@ -289,7 +312,8 @@ CREATE TABLE IF NOT EXISTS eval_case (
   expect_json  TEXT NOT NULL,               -- 确定性断言（harness 语义原样保留）
   judge_json   TEXT,                        -- judge 配置（faithfulness/completeness/guardrail/style）
   extra_json   TEXT,                        -- 未归类字段（r1 的 kbRecall 等）原样保留
-  tags         TEXT,                        -- 逗号分隔：capability / safety / realdata …
+  tags         TEXT,                        -- 逗号分隔：capability / safety / realdata / regression（回归集）…
+  source_json  TEXT,                        -- 来源链（US-18 飞轮）：{type:'derive',from_case,from_run}；NULL=种子
   enabled      INTEGER NOT NULL DEFAULT 1,
   sort_order   INTEGER NOT NULL DEFAULT 0,
   created_at   TEXT NOT NULL,
@@ -301,13 +325,15 @@ CREATE TABLE IF NOT EXISTS eval_task (
   name         TEXT NOT NULL,
   scope_json   TEXT NOT NULL,               -- 用例选择：{groups,ids,tags,priorities,all}
   dims_json    TEXT,                        -- 维度子集（null=全部启用维度）
-  judge        INTEGER NOT NULL DEFAULT 1,  -- 总开关（关 = 只跑确定性断言）
+  judge        INTEGER NOT NULL DEFAULT 1,  -- 是否判分（C11 起为派生值：judge_id 非空 = 1；保留供运行快照/展示兼容）
+  judge_id     TEXT,                        -- 关联裁判（C11：任务下拉选择；NULL = 不启用判分）
   runs_n       INTEGER NOT NULL DEFAULT 1,
   note         TEXT,
   enabled      INTEGER NOT NULL DEFAULT 1,
   created_at   TEXT NOT NULL,
   updated_at   TEXT NOT NULL
 );
+
 """
 
 STATE_QUEUED = "queued"
@@ -365,6 +391,12 @@ class PlatformDB:
         ev_cols = {r["name"] for r in conn.execute("PRAGMA table_info(eval_run)")}
         if ev_cols and "task_id" not in ev_cols:
             conn.execute("ALTER TABLE eval_run ADD COLUMN task_id TEXT")
+        # Agent 测评判分阶段（TECH-026 §4.2）：scoring 三列 —— 逐列探测补列
+        _add_cols(conn, "eval_run", ev_cols, {
+            "scoring": "TEXT",
+            "scoring_error": "TEXT",
+            "scoring_meta": "TEXT",
+        })
         # Agent 测评报告 2.0（TECH-026 §2）：归因体系 + Token 明细 —— 逐列探测补列
         ecr_cols = {r["name"] for r in conn.execute("PRAGMA table_info(eval_case_result)")}
         _add_cols(conn, "eval_case_result", ecr_cols, {
@@ -372,6 +404,36 @@ class PlatformDB:
             "attribution_source": "TEXT",
             "attribution_note": "TEXT",
             "tokens_json": "TEXT",
+            # 第 2 期：样本分 / 指标分拆解（TECH-026 §4.3）
+            "sample_score": "REAL",
+            "indicator_scores": "TEXT",
+        })
+        # 第 2 期：维度挂指标 / 反向 / 判分输出键；裁判判分引擎类型与参数（TECH-026 §4.3）
+        dim_cols = {r["name"] for r in conn.execute("PRAGMA table_info(eval_dimension)")}
+        _add_cols(conn, "eval_dimension", dim_cols, {
+            "indicator_id": "TEXT",
+            "reverse": "INTEGER NOT NULL DEFAULT 0",
+            "metric_key": "TEXT",
+            # 裁判中心化改版（C6）：维度归属裁判 + 判定要点（引擎优先读取）
+            "judge_id": "TEXT",
+            "criteria": "TEXT",
+        })
+        judge_cols = {r["name"] for r in conn.execute("PRAGMA table_info(eval_judge)")}
+        _add_cols(conn, "eval_judge", judge_cols, {
+            "metric_type": "TEXT NOT NULL DEFAULT 'ternary'",
+            "params_json": "TEXT",
+            # 裁判中心化改版（C6）：业务场景说明
+            "description": "TEXT",
+        })
+        # 任务 × 裁判关联（C11）：任务下拉选择裁判（judge 布尔退化为派生值）
+        task_cols = {r["name"] for r in conn.execute("PRAGMA table_info(eval_task)")}
+        _add_cols(conn, "eval_task", task_cols, {
+            "judge_id": "TEXT",
+        })
+        # 用例来源链（US-18 飞轮）：派生用例记录 {type:'derive',from_case,from_run}
+        case_cols = {r["name"] for r in conn.execute("PRAGMA table_info(eval_case)")}
+        _add_cols(conn, "eval_case", case_cols, {
+            "source_json": "TEXT",
         })
         # 检索质检台（PRD-011）：用例三态标注与映射分层 —— 逐列探测补列
         case_cols = {r["name"] for r in conn.execute("PRAGMA table_info(kb_recall_case)")}

@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import type { CSSProperties, ReactNode } from 'react'
 import { Modal } from '../Modal'
 import { expectToLines } from './expectView'
-import { agentEvalApi, EVAL_GROUPS, type EvalCase, type EvalRuntimeCtx } from '../../lib/agentEval'
+import { agentEvalApi, EVAL_GROUPS, type EvalCase } from '../../lib/agentEval'
 
 /**
  * 用例编辑器（TECH-022 B5）：表单 / JSON 双模。
@@ -272,8 +272,6 @@ export function CaseEditor({
   const [raw, setRaw] = useState({ ctx: '', expect: '', judge: '' })
   const [rawErr, setRawErr] = useState<{ ctx?: string; expect?: string; judge?: string }>({})
   const [saving, setSaving] = useState(false)
-  /** 全局运行身份（pipeline.yaml → eval.ctx，经 GET /ctx 读取）—— 仅展示，编辑入口在「全局配置」页 */
-  const [globalCtx, setGlobalCtx] = useState<EvalRuntimeCtx | null>(null)
 
   const patch = (p: Partial<EditorData>) => setData((d) => ({ ...d, ...p }))
 
@@ -284,10 +282,6 @@ export function CaseEditor({
      现在：本地 state 是编辑期间的唯一事实源；每次变更再物化进 data（供预览 / JSON 切换 / 保存）。 */
   const [expectForm, setExpectFormState] = useState<ExpectForm>(() => parseExpectForm(initial?.expect ?? {}))
   const [judgeForm, setJudgeFormState] = useState<JudgeForm>(() => parseJudgeForm(initial?.judge ?? null))
-
-  useEffect(() => {
-    void agentEvalApi.getCtx().then(setGlobalCtx).catch(() => setGlobalCtx(null))
-  }, [])
 
   const setExpectForm = (p: Partial<ExpectForm>) => {
     const merged = { ...expectForm, ...p }
@@ -419,6 +413,21 @@ export function CaseEditor({
         <span className="hint">两种模式同一份数据，随时切换；未知字段原样保留</span>
       </div>
 
+      {/* 来源徽标（US-18 飞轮）：种子 / 派生自 xx@运行 */}
+      {!isNew && (
+        <div className="hint" style={{ marginBottom: 8 }}>
+          来源：
+          {initial?.source?.type === 'derive' ? (
+            <>
+              派生自 <span className="mono">{initial.source.from_case}</span>
+              {initial.source.from_run ? <>（来自运行 <span className="mono">{initial.source.from_run}</span>）</> : null}
+            </>
+          ) : (
+            '种子用例（手工创建 / 从 harness 导入）'
+          )}
+        </div>
+      )}
+
       {mode === 'form' ? (
         <>
           <div className="ce-grid2">
@@ -448,29 +457,7 @@ export function CaseEditor({
             <input style={INPUT} value={data.tags} onChange={(e) => patch({ tags: e.target.value })} placeholder="capability,safety,realdata" />
           ), '逗号分隔，界面按中文展示：capability=能力 · safety=安全 · realdata=真实数据')}
 
-          {/* ── 上下文 ctx（只读展示全局身份；用例不再设置用户信息）── */}
-          <div className="ce-block">
-            <div className="ce-block-head">上下文</div>
-            <div className="hint" style={{ marginBottom: 6 }}>
-              用户信息（userId / familyId / babyId）由平台全局配置统一提供，运行时自动注入，用例无需设置。
-              如需调整请到「全局配置」页的「Agent 测评 · 全局身份」。
-            </div>
-            {globalCtx != null &&
-              (globalCtx.configured ? (
-                <div className="ce-kv">
-                  {Object.entries(globalCtx.ctx).map(([k, v]) => (
-                    <div key={k} className="ce-kv-row">
-                      <span className="hint" style={{ width: 72, flex: '0 0 auto' }}>{k}</span>
-                      <span className="mono" style={{ fontSize: 12 }}>{v}</span>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="hint">
-                  ⚠ 全局身份未配置 —— 运行时将回落到用例内已有值（建议到「全局配置」补齐）
-                </div>
-              ))}
-          </div>
+          {/* ── 上下文 ctx：用户信息（userId/familyId/babyId）属全局配置，不在用例层设置/展示（18:26 用户评审）── */}
 
           {/* ── 确定性断言 expect ── */}
           <div className="ce-block">
@@ -530,7 +517,7 @@ export function CaseEditor({
               <div key={k} className="ce-jsoncol">
                 <div className="hint ce-label">
                   {k === 'ctx'
-                    ? 'ctx（JSON；用户信息由全局配置提供，保存时自动移除这三个用户键）'
+                    ? 'ctx（JSON；仅存用例特有上下文，用户信息由平台全局配置提供、不在此设置）'
                     : `${k}（JSON）`}
                 </div>
                 <textarea

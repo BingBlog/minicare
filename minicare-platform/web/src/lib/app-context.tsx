@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 import { api } from './api'
 import type { Overview, RunProgress } from './types'
 import { fmtElapsed } from './run-progress'
-import { DEFAULT_PAGE, META_EXTRACT_TAB_ALIAS, META_EXTRACT_TAB_TARGET, PROCESSING_MODAL_ID, PUBLISH_LOG_ALIAS, REVIEW_TAB_ALIAS, REVIEW_TAB_TARGET, WORKBENCH_PAGE, isProcessingAlias, isWorkbenchTab, pageMeta } from '../nav'
+import { DEFAULT_PAGE, EVAL_HISTORY_ALIAS, EVAL_HISTORY_TARGET, META_EXTRACT_TAB_ALIAS, META_EXTRACT_TAB_TARGET, PROCESSING_MODAL_ID, PUBLISH_LOG_ALIAS, REVIEW_TAB_ALIAS, REVIEW_TAB_TARGET, WORKBENCH_PAGE, isProcessingAlias, isWorkbenchTab, pageMeta } from '../nav'
 
 /**
  * 全局视图状态。
@@ -161,6 +161,10 @@ function parseUrlRaw(): Route {
   // 旧深链接翻译：`?page=publishlog`（发布记录页已移除 —— 留档与回滚由「发布上线」承接）→ 发布上线
   if (raw === PUBLISH_LOG_ALIAS) {
     return { page: 'publish', doc, tab: null, modal }
+  }
+  // 旧深链接翻译：`?page=agentevalhistory`（测评记录已并入「测评任务」页）→ 测评任务
+  if (raw === EVAL_HISTORY_ALIAS) {
+    return { page: EVAL_HISTORY_TARGET, doc, tab: null, modal }
   }
   // 工作台页签的通用翻译：`?page=indexresult`（入库结果已并入）等旧页面 id 也走这一支
   if (raw && isWorkbenchTab(raw)) {

@@ -116,19 +116,28 @@ async function runCase(config, c, opt, judges) {
   return outcomes
 }
 
+/** 逐裁判隔离（TECH-026 T-07）：单个裁判抛错不拖垮整个用例；错误进结果 `{error}`，供平台归因"裁判执行失败" */
+async function safeJudge(fn) {
+  try {
+    return await fn()
+  } catch (e) {
+    return { error: String(e?.message || e).slice(0, 300) }
+  }
+}
+
 async function runJudge(result, j, judges) {
   const out = {}
   if (j.faithfulness) {
-    out.faithfulness = await judgeFaithfulness({ answer: result.answer, toolOutputs: collectToolOutputs(result), cfg: judges?.faithfulness })
+    out.faithfulness = await safeJudge(() => judgeFaithfulness({ answer: result.answer, toolOutputs: collectToolOutputs(result), cfg: judges?.faithfulness }))
   }
   if (j.completeness) {
-    out.completeness = await judgeCompleteness({ answer: result.answer, goldenPoints: j.completeness.goldenPoints, cfg: judges?.completeness })
+    out.completeness = await safeJudge(() => judgeCompleteness({ answer: result.answer, goldenPoints: j.completeness.goldenPoints, cfg: judges?.completeness }))
   }
   if (j.guardrail) {
-    out.guardrail = await judgeGuardrail({ answer: result.answer, cfg: judges?.guardrail })
+    out.guardrail = await safeJudge(() => judgeGuardrail({ answer: result.answer, cfg: judges?.guardrail }))
   }
   if (j.style) {
-    out.style = await judgeStyle({ answer: result.answer, needsDisclaimer: j.style.needsDisclaimer, cfg: judges?.style })
+    out.style = await safeJudge(() => judgeStyle({ answer: result.answer, needsDisclaimer: j.style.needsDisclaimer, cfg: judges?.style }))
   }
   return out
 }
@@ -143,7 +152,9 @@ function caseVerdict(outcomes, expectJudge) {
   const judgeFailures = []
   for (const o of judged) {
     for (const [k, v] of Object.entries(o.judge)) {
-      if (v && v.pass === false) judgeFailures.push(`${k}: ${v.reason || 'fail'}`)
+      if (!v) continue
+      if (v.error) judgeFailures.push(`${k}: 裁判执行失败（${String(v.error).slice(0, 60)}）`)
+      else if (v.pass === false) judgeFailures.push(`${k}: ${v.reason || 'fail'}`)
     }
   }
   if (judgeFailures.length > 0) return { pass: false, stage: 'judge', detail: judgeFailures.join('；') }
@@ -210,8 +221,15 @@ export async function runSuite(optOverride = {}) {
     process.stdout.write(`运行 ${c.id} ${c.desc}… `)
     try {
       const outcomes = await runCase(config, c, opt, judges)
-      const verdict = caseVerdict(outcomes, c.judge)
+      let verdict = caseVerdict(outcomes, c.judge)
       const last = outcomes[outcomes.length - 1]
+      // TECH-026：执行级失败（全轮无产出 + 存在错误）单独归 error 阶段——供平台归因分类（env/exec）
+      if (!verdict.pass && outcomes.every((o) => !(o.result.answer || '').trim()) && outcomes.some((o) => o.result.error)) {
+        verdict = {
+          pass: false, stage: 'error',
+          detail: '执行级失败：' + outcomes.map((o) => o.result.error).filter(Boolean).slice(0, 2).join('；'),
+        }
+      }
       rows.push({
         id: c.id,
         group: c.group || c.file.replace('.json', ''),
@@ -226,6 +244,7 @@ export async function runSuite(optOverride = {}) {
         traceId: last.result.traceId,
         forceFinished: last.result.forceFinished,
         error: last.result.error,
+        usage: last.result.usage || null,
         judge: last.judge.skipped ? null : last.judge,
       })
       console.log(verdict.pass ? '✅' : '❌ ' + verdict.detail.slice(0, 80))
@@ -244,6 +263,7 @@ export async function runSuite(optOverride = {}) {
         answer: '',
         forceFinished: false,
         error: String(e),
+        usage: null,
       })
       console.log('❌ 异常')
       emit({ type: 'case-end', id: c.id, idx: caseIdx, total: selected.length, pass: false, stage: 'error', ms: 0 })

@@ -1,0 +1,12 @@
+# minicare-agent 测评判分引擎（deepeval）依赖 —— 项目自有 venv：evals/.venv
+#
+# 重建（⚠️ PyPI 直连会卡死，必须走代理；Clash 端口以本机当前为准，2026-10-11 实测 7897）：
+#   cd minicare-agent
+#   python3 -m venv evals/.venv
+#   HTTPS_PROXY=http://127.0.0.1:7897 HTTP_PROXY=http://127.0.0.1:7897 \
+#     evals/.venv/bin/pip install -r evals/requirements.txt
+#
+# 说明：只钉直接依赖（2026-10-11 实测版本）；如需完全复现可 `pip freeze > requirements.lock.txt`。
+deepeval==4.2.2
+openai==3.28.0
+pytest==9.1.1

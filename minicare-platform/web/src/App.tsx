@@ -13,11 +13,9 @@ import { RetrievalTestPage } from './pages/RetrievalTest'
 import { GapsPage } from './pages/Gaps'
 import { ConfigPage } from './pages/Config'
 import { AgentEvalPage } from './pages/AgentEval'
-import { AgentEvalHistoryPage } from './pages/AgentEvalHistory'
 import { AgentEvalCasesPage } from './pages/AgentEvalCases'
 import { AgentEvalTasksPage } from './pages/AgentEvalTasks'
 import { AgentEvalJudgesPage } from './pages/AgentEvalJudges'
-import { AgentEvalDimsPage } from './pages/AgentEvalDims'
 import { PlaceholderPage } from './pages/Placeholder'
 
 /**
@@ -40,11 +38,11 @@ const PAGES: Record<string, ComponentType> = {
   gaps: GapsPage,
   config: ConfigPage,
   agenteval: AgentEvalPage,
-  agentevalhistory: AgentEvalHistoryPage,
   agentevalcases: AgentEvalCasesPage,
   agentevaltasks: AgentEvalTasksPage,
   agentevaljudges: AgentEvalJudgesPage,
-  agentevaldims: AgentEvalDimsPage,
+  /** 旧 URL 兼容（C6 合并页）：指标与维度页已并入测评裁判 */
+  agentevaldims: AgentEvalJudgesPage,
 }
 
 function PageSwitch() {

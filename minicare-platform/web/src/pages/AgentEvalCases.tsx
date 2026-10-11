@@ -147,7 +147,7 @@ export function AgentEvalCasesPage() {
               可点「导入 JSON」从 harness 目录导入，或「＋ 新建用例」手工创建。
             </Empty>
           ) : (
-            <Table cols={[100, 116, 92, 180, 0, 196, 126, 84, 204]}>
+            <Table cols={[122, 116, 92, 180, 0, 196, 126, 84, 204]}>
               <thead>
                 <tr>
                   <th>用例</th>
@@ -164,7 +164,18 @@ export function AgentEvalCasesPage() {
               <tbody>
                 {items.map((c) => (
                   <tr key={c.case_id}>
-                    <td className="mono">{c.case_id}</td>
+                    <td className="mono">
+                      {c.case_id}
+                      {c.source?.type === 'derive' && (
+                        <span
+                          className="tag"
+                          style={{ marginLeft: 4 }}
+                          title={`派生自 ${c.source.from_case}${c.source.from_run ? `（运行 ${c.source.from_run}）` : ''}`}
+                        >
+                          派生
+                        </span>
+                      )}
+                    </td>
                     <td>{groupLabel(c.grp)}</td>
                     <td className="hint">{priorityLabel(c.priority)}</td>
                     <td className="wrap">{c.desc || '—'}</td>

@@ -1,62 +1,64 @@
 /**
- * 页面：Agent 测评（PRD-010 + TECH-022）—— 总览 · 发起 · 用例钻取。
+ * 页面：测评报告（PRD-010 + TECH-022 + 2026-10-11 用户评审调整）—— **纯查看** · 用例钻取。
+ *
+ * 职责边界（用户评审：「测评的发起和执行同测评报告拆开」）：
+ *   · 本页只**查看**报告（结论 / 五指标 / 成本 / 用例表 / 导出 / 重判）；
+ *   · **发起与执行**（范围选择、开始运行、进度、中止）都在「测评任务」页；
+ *   · 查看的运行若仍在跑 → 仅提示"执行进度见测评任务"，并自动轮询、完成后自动出报告。
  *
  * 视图约定：
  *   · `?page=agenteval`             → 跟随最新一轮运行；
- *   · `?page=agenteval&doc=<run>`   → 查看指定轮（历史页跳进来），`doc` 参数承接 run_id；
- *   · `?page=agentevalhistory`      → 历史列表。
- *
- * TECH-022 落地：
- *   · A1 结论 Banner（达标/未达标/未完整覆盖三态 + 失败用例速览，点击定位）
- *   · A2 指标卡三态（pass/fail/na），「硬幻觉率」显示真实幻觉率
- *   · A4 用例表补组筛选 + 搜索；A7 任意轮可看「较上轮」delta（升级为卡片）
- *   · A9 运行中单焦点视图（不再堆叠加空的详情卡）；B3 钻取证据链；B4 报告导出；B7 ETA 动态估算
- *   · 运行中靠 2s 轮询 `/progress` 刷新；结束后自动拉最终详情与 delta。
+ *   · `?page=agenteval&doc=<run>`   → 查看指定轮（记录页/任务页跳进来），`doc` 参数承接 run_id。
  */
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 import { Card, CardBody, CardHead, Empty, ErrorBox, KpiCard, KV, Loading, Notice, Pill, Table } from '../components/ui'
+import { Modal } from '../components/Modal'
 import { useApp } from '../lib/app-context'
 import { CaseEvidence } from '../components/eval/CaseEvidence'
+import { CostPanel, OverviewSection, copyText } from '../components/eval/ReportPanel'
 import { exportRun } from '../lib/evalExport'
 import {
-  agentEvalApi, deriveVerdict, EVAL_GROUPS, fmtDuration, fmtTime, gateState, groupLabel,
-  priorityLabel, RUN_STATUS_LABEL, STAGE_LABEL, statusPillKind, type EvalDelta, type EvalEstimate,
-  type EvalProgress, type EvalRunDetail, type EvalRunMeta,
+  agentEvalApi, ATTRIBUTION_HINT, ATTRIBUTION_LABEL, attributionLabel, deriveVerdict,
+  fmtDuration, fmtSampleScore, fmtTime, gateState, groupLabel, identityText, priorityLabel,
+  RUN_STATUS_LABEL, sampleScoreWarn, SAMPLE_THRESHOLD,
+  STAGE_LABEL, statusPillKind, type AttributionClass, type EvalCaseResult, type EvalDelta,
+  type EvalProgress, type EvalReport, type EvalRunDetail, type EvalRunMeta,
 } from '../lib/agentEval'
 
 export function AgentEvalPage() {
   const { doc, go, toast, nonce } = useApp()
   const [overview, setOverview] = useState<{ latest: EvalRunMeta | null; recent: EvalRunMeta[] } | null>(null)
-  const [health, setHealth] = useState<{ ok: boolean; issues: string[] } | null>(null)
   const [detail, setDetail] = useState<EvalRunDetail | null>(null)
   const [progress, setProgress] = useState<EvalProgress | null>(null)
   const [delta, setDelta] = useState<EvalDelta | null>(null)
-  const [estimate, setEstimate] = useState<EvalEstimate | null>(null)
   const [loading, setLoading] = useState(true)
   const [loadError, setLoadError] = useState<string | null>(null)
-
-  // 发起参数
-  const [scopeKind, setScopeKind] = useState<'all' | 'group' | 'ids'>('all')
-  const [group, setGroup] = useState('l1')
-  const [idsText, setIdsText] = useState('')
-  const [judge, setJudge] = useState(true)
-  const [runsN, setRunsN] = useState(1)
-  const [starting, setStarting] = useState(false)
 
   // 用例表交互
   const [caseFilter, setCaseFilter] = useState<'all' | 'fail' | 'p0'>('all')
   const [grpFilter, setGrpFilter] = useState('')
+  const [attrFilter, setAttrFilter] = useState<AttributionClass | ''>('')
   const [search, setSearch] = useState('')
   const [expanded, setExpanded] = useState<string | null>(null)
-  const [confirmCancel, setConfirmCancel] = useState(false)
+  /** 指标名映射（样本分 hover 拆解用；TECH-026 §5.2） */
+  const [indicatorNames, setIndicatorNames] = useState<Record<string, string>>({})
+
+  useEffect(() => {
+    agentEvalApi.listIndicators()
+      .then((r) => {
+        const m: Record<string, string> = {}
+        for (const i of r.items) m[i.indicator_id] = i.name
+        setIndicatorNames(m)
+      })
+      .catch(() => { /* 名称映射失败时 hover 回退显示指标 id */ })
+  }, [])
 
   const viewingRunId = doc || overview?.latest?.run_id || null
   const run = detail
   /** 所查看的这一轮在跑（决定是否轮询 / 显示进度卡） */
   const viewedRunning = progress?.status === 'running' || run?.status === 'running'
-  /** 任意一轮在跑（决定发起按钮禁用）；含「后台在跑但正在看旧轮」的场景 */
+  /** 任意一轮在跑（后台执行中；重判按钮据此禁用） */
   const anyRunning = viewedRunning || overview?.latest?.status === 'running'
-  const bgRunning = !viewedRunning && overview?.latest?.status === 'running'
   const showingStale = Boolean(doc && overview?.latest?.run_id && doc !== overview.latest.run_id)
 
   /* ── 数据加载 ── */
@@ -78,10 +80,6 @@ export function AgentEvalPage() {
     setLoading(true)
     void reload()
   }, [reload, nonce])
-
-  useEffect(() => {
-    void agentEvalApi.health().then(setHealth).catch(() => setHealth(null))
-  }, [nonce, anyRunning])
 
   /* ── 运行中轮询（2s），结束自动收尾（只轮询“正在看的这一轮”）── */
   useEffect(() => {
@@ -129,62 +127,37 @@ export function AgentEvalPage() {
     return () => { live = false }
   }, [viewingRunId, run?.status, nonce]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  /* ── ETA 估算（随发起参数变化，去抖 350ms）── */
-  useEffect(() => {
-    const scope = scopeKind === 'all' ? 'all'
-      : scopeKind === 'group' ? `group:${group}`
-        : (idsText.trim() ? `ids:${idsText.trim()}` : null)
-    if (!scope) {
-      setEstimate(null)
-      return
-    }
-    let live = true
-    const t = window.setTimeout(() => {
-      agentEvalApi.estimate(scope, judge, runsN)
-        .then((e) => { if (live) setEstimate(e) })
-        .catch(() => { if (live) setEstimate(null) })
-    }, 350)
-    return () => { live = false; window.clearTimeout(t) }
-  }, [scopeKind, group, idsText, judge, runsN, nonce])
-
-  /* ── 发起 / 中止 ── */
-  const start = async () => {
-    const scope = scopeKind === 'all' ? 'all'
-      : scopeKind === 'group' ? `group:${group}`
-        : `ids:${idsText.trim()}`
-    if (scopeKind === 'ids' && !idsText.trim()) {
-      toast('请先填写用例号，如 L1-01,R1-03')
-      return
-    }
-    setStarting(true)
+  /* ── 失败重跑（US-19 飞轮）── */
+  const [retryConfirm, setRetryConfirm] = useState(false)
+  const [retryBusy, setRetryBusy] = useState(false)
+  const doRetry = async () => {
+    if (!run) return
+    setRetryConfirm(false)
+    setRetryBusy(true)
     try {
-      const r = await agentEvalApi.start(scope, judge, runsN)
-      toast(`已发起运行 ${r.run_id}（${r.scope_label}）`)
-      setProgress({
-        run_id: r.run_id, status: 'running', live: true, done: 0, total: 0,
-        current: null, current_desc: null, elapsed_ms: 0, recent: [],
-      })
-      go('agenteval', { doc: r.run_id })
+      const r = await agentEvalApi.retryRun(run.run_id)
+      toast(`已发起重跑：${r.run_id}（${r.case_count} 条失败用例）——执行进度见「测评任务」页`)
+      go('agentevaltasks')
     } catch (e) {
-      toast(`发起失败：${(e as Error).message}`, 7000)
+      toast(`重跑失败：${(e as Error).message}`, 7000)
     } finally {
-      setStarting(false)
+      setRetryBusy(false)
     }
   }
 
-  const cancelRun = async () => {
+  /** 重判（TECH-026 B4）：对存量结果重新判分，不重跑执行 */
+  const rescore = async () => {
     if (!viewingRunId) return
-    if (!confirmCancel) {
-      setConfirmCancel(true)
-      window.setTimeout(() => setConfirmCancel(false), 4000)
-      return
-    }
-    setConfirmCancel(false)
     try {
-      await agentEvalApi.cancel(viewingRunId)
-      toast('已请求中止，等待进程退出…')
+      await agentEvalApi.score(viewingRunId)
+      toast('已发起重判（deepeval 引擎）…')
+      setProgress({
+        run_id: viewingRunId, status: 'running', live: true, done: 0, total: 0,
+        current: null, current_desc: null, elapsed_ms: 0, recent: [],
+        phase: 'scoring', scoring_done: 0, scoring_total: 0,
+      })
     } catch (e) {
-      toast(`中止失败：${(e as Error).message}`, 6000)
+      toast(`重判失败：${(e as Error).message}`, 7000)
     }
   }
 
@@ -200,6 +173,10 @@ export function AgentEvalPage() {
     if (caseFilter === 'fail') cs = cs.filter((c) => !c.pass)
     else if (caseFilter === 'p0') cs = cs.filter((c) => c.priority === 'P0')
     if (grpFilter) cs = cs.filter((c) => (c.grp || '').startsWith(grpFilter))
+    if (attrFilter) {
+      const byCase = run?.report?.attribution.by_case || {}
+      cs = cs.filter((c) => !c.pass && (c.attribution || byCase[c.case_id]) === attrFilter)
+    }
     const q = search.trim().toLowerCase()
     if (q) {
       cs = cs.filter((c) =>
@@ -208,11 +185,12 @@ export function AgentEvalPage() {
         || (c.detail || '').toLowerCase().includes(q))
     }
     return cs
-  }, [run?.cases, caseFilter, grpFilter, search])
+  }, [run?.cases, caseFilter, grpFilter, attrFilter, search])
 
   const jumpToCase = useCallback((id: string) => {
     setCaseFilter('all')
     setGrpFilter('')
+    setAttrFilter('')
     setSearch('')
     setExpanded(id)
     window.setTimeout(() => {
@@ -233,122 +211,48 @@ export function AgentEvalPage() {
     toast(`已导出报告（${fmt.toUpperCase()}）`)
   }
 
+  /** 归因改判保存（TECH-026 US-14）：整体替换 report + 更新该用例行 → 结论即时重算 */
+  const onAttributionSaved = useCallback((resp: { case: EvalCaseResult; report: EvalReport }) => {
+    setDetail((prev) => (prev ? {
+      ...prev,
+      report: resp.report,
+      cases: prev.cases.map((c) => (c.case_id === resp.case.case_id
+        ? {
+            ...c,
+            attribution: resp.case.attribution,
+            attribution_source: resp.case.attribution_source,
+            attribution_note: resp.case.attribution_note,
+          }
+        : c)),
+    } : prev))
+    toast('已保存，结论已按新归因重算')
+  }, [toast])
+
   if (loading && !overview) return <Loading />
   if (loadError && !overview) return <ErrorBox error={new Error(loadError)} />
 
-  const estText = estimate
-    ? `预计约 ${fmtDuration(estimate.est_ms)}（${estimate.case_count} 条${estimate.runs_n > 1 ? ` × ${estimate.runs_n} 轮` : ''} · ${estimate.basis === 'history' ? `参考 ${estimate.sample_runs} 轮历史` : '经验估算'}）`
-    : ''
-
   return (
     <>
-      {/* ① 发起 */}
-      <Card>
-        <CardHead
-          title="发起运行"
-          meta={
-            health ? (
-              health.ok ? <Pill kind="ok">环境就绪</Pill> : <Pill kind="danger">环境未就绪</Pill>
-            ) : ''
-          }
-        />
-        <CardBody>
-          <div className="toolbar" style={{ margin: 0, flexWrap: 'wrap', rowGap: 8 }}>
-            <span className="hint">范围</span>
-            <label style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-              <input type="radio" checked={scopeKind === 'all'} onChange={() => setScopeKind('all')} />
-              全部
-            </label>
-            <label style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-              <input type="radio" checked={scopeKind === 'group'} onChange={() => setScopeKind('group')} />
-              分组
-              <select value={group} disabled={scopeKind !== 'group'} onChange={(e) => setGroup(e.target.value)}>
-                {EVAL_GROUPS.map(([id, name]) => (
-                  <option key={id} value={id}>{name}</option>
-                ))}
-              </select>
-            </label>
-            <label style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-              <input type="radio" checked={scopeKind === 'ids'} onChange={() => setScopeKind('ids')} />
-              指定用例
-              <input
-                style={{ width: 150 }}
-                placeholder="如 L1-01,R1-03"
-                value={idsText}
-                disabled={scopeKind !== 'ids'}
-                onChange={(e) => setIdsText(e.target.value)}
-              />
-            </label>
-            <span className="sep" />
-            <label style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }} title="由 LLM 裁判判分（忠实/完整/护栏/风格）；关闭可省约一半时间">
-              <input type="checkbox" checked={judge} onChange={(e) => setJudge(e.target.checked)} />
-              裁判判分
-            </label>
-            <label style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }} title="同一用例重复次数（取最差），用于消抖">
-              <span className="hint">轮次</span>
-              <select value={runsN} onChange={(e) => setRunsN(Number(e.target.value))}>
-                <option value={1}>1</option>
-                <option value={2}>2</option>
-                <option value={3}>3</option>
-              </select>
-            </label>
-            <span className="sep" />
-            <button className="btn btn-primary" onClick={start} disabled={starting || anyRunning || (health != null && !health.ok)}>
-              {starting ? '发起中…' : anyRunning ? '已有运行进行中' : '开始运行'}
-            </button>
-            {estText && <span className="hint">{estText}</span>}
-          </div>
-          {health && !health.ok && <Notice>{health.issues.join('；')}</Notice>}
-          {bgRunning && (
-            <Notice tone="accent">
-              后台有一轮运行进行中（{overview?.latest?.run_id}）——完成后可发起新一轮；正在查看的是历史轮。
-            </Notice>
-          )}
-        </CardBody>
-      </Card>
-
-      {/* ② 运行中（单焦点视图；TECH-022 A9） */}
+      {/* 运行中（只读提示 · 发起与执行在「测评任务」页） */}
       {viewedRunning && (
         <Card>
           <CardHead
             title={`运行中 · ${viewingRunId || '…'}`}
-            meta={progress ? `${progress.done ?? 0}/${progress.total || '?'} · 已用 ${fmtDuration(progress.elapsed_ms)}` : ''}
+            meta={
+              progress
+                ? (progress.phase === 'scoring'
+                  ? `判分 ${progress.scoring_done ?? 0}/${progress.scoring_total || '?'}`
+                  : `${progress.done ?? 0}/${progress.total || '?'}`) + ` · 已用 ${fmtDuration(progress.elapsed_ms)}`
+                : ''
+            }
           />
           <CardBody>
-            <div style={{ height: 10, borderRadius: 5, background: 'var(--line)', overflow: 'hidden' }}>
-              <div
-                style={{
-                  height: '100%',
-                  width: `${progress && progress.total ? Math.min(100, Math.round(((progress.done ?? 0) / progress.total) * 100)) : 3}%`,
-                  background: 'var(--accent)',
-                  transition: 'width .3s ease',
-                }}
-              />
+            <div className="hint" style={{ lineHeight: 1.9 }}>
+              该轮正在{progress?.phase === 'scoring' ? '判分' : '执行'}中——
+              <b>发起与执行（进度 / 中止）都在「测评任务」页</b>；完成后本页会自动刷新出报告。
             </div>
-            <div style={{ margin: '8px 0', fontSize: 13 }}>
-              当前执行：<b>{progress?.current || '准备中…'}</b>
-              {progress?.current_desc ? <span className="hint"> · {progress.current_desc}</span> : null}
-              {progress?.passed != null && progress?.done != null && progress.done > 0
-                ? ` ｜ 已通过 ${progress.passed}/${progress.done}` : ''}
-              {progress && progress.done != null && progress.done > 0 && progress.total
-                ? ` ｜ 剩余约 ${fmtDuration(Math.round(((progress.elapsed_ms ?? 0) / progress.done) * Math.max(0, progress.total - progress.done)))}`
-                : ''}
-            </div>
-            {progress && progress.recent.length > 0 && (
-              <div className="hint" style={{ lineHeight: 2 }}>
-                实时结果：
-                {progress.recent.map((r) => (
-                  <span key={r.id} className={`pill ${r.pass ? 'ok' : 'danger'}`} style={{ marginRight: 6 }}>
-                    {r.pass ? '✓' : '✗'} {r.id}
-                  </span>
-                ))}
-              </div>
-            )}
             <div className="toolbar" style={{ margin: '10px 0 0' }}>
-              <button className={confirmCancel ? 'btn btn-danger' : 'btn'} onClick={cancelRun}>
-                {confirmCancel ? '确认中止？' : '中止运行'}
-              </button>
-              <span className="hint">中止后已完成用例的结果会保留；可离开本页，运行在后台继续</span>
+              <button className="btn" onClick={() => go('agentevaltasks')}>前往测评任务</button>
             </div>
           </CardBody>
         </Card>
@@ -365,6 +269,16 @@ export function AgentEvalPage() {
                   <Pill kind={statusPillKind(run.status)}>{RUN_STATUS_LABEL[run.status] || run.status}</Pill>
                   {run.task_id ? ` · ${run.task_id}` : ''}
                   {` · ${run.scope_label} · ${fmtTime(run.created_at)} · 耗时 ${fmtDuration(run.duration_ms)}`}
+                  {run.env_snapshot.retry_of && (
+                    <button
+                      className="btn btn-mini"
+                      style={{ marginLeft: 8 }}
+                      title="本轮的失败用例集派生自该轮——点击打开源运行报告"
+                      onClick={() => go('agenteval', { doc: run.env_snapshot.retry_of! })}
+                    >
+                      重跑自 {run.env_snapshot.retry_of} ▸
+                    </button>
+                  )}
                   <details className="menu" style={{ marginLeft: 8 }}>
                     <summary className="btn">导出 ▾</summary>
                     <div className="menu-pop">
@@ -378,19 +292,46 @@ export function AgentEvalPage() {
                       回到最新
                     </button>
                   )}
+                  {run.status === 'completed' && (
+                    <button
+                      className="btn"
+                      style={{ marginLeft: 8 }}
+                      disabled={anyRunning}
+                      title="对存量结果重新判分（不重跑执行）；改过判分配置或判分失败后可用"
+                      onClick={rescore}
+                    >
+                      重判
+                    </button>
+                  )}
                 </>
               }
             />
             <CardBody>
               {run.summary ? (
                 <>
-                  <VerdictBanner run={run} onJump={jumpToCase} />
-                  <div className="kpis">
-                    <KpiCard
-                      k="通过率"
-                      v={`${run.summary.passed}/${run.summary.total}`}
-                      u={run.summary.total ? `${Math.round((run.summary.passed / run.summary.total) * 100)}%` : ''}
+                  <VerdictBanner
+                    run={run}
+                    onJump={jumpToCase}
+                    onRetry={run.status === 'completed' ? () => setRetryConfirm(true) : null}
+                    retryDisabled={anyRunning || retryBusy}
+                  />
+                  {run.report ? (
+                    <OverviewSection
+                      report={run.report}
+                      rateDelta={delta?.rate_delta ?? null}
+                      attrFilter={attrFilter}
+                      onFilterAttribution={setAttrFilter}
                     />
+                  ) : null}
+                  <div className="section-label">闸门检查项</div>
+                  <div className="kpis">
+                    {!run.report && (
+                      <KpiCard
+                        k="通过率"
+                        v={`${run.summary.passed}/${run.summary.total}`}
+                        u={run.summary.total ? `${Math.round((run.summary.passed / run.summary.total) * 100)}%` : ''}
+                      />
+                    )}
                     {run.summary.p0 != null && (
                       <KpiCard k="P0（关键）" v={`${run.summary.p0Pass}/${run.summary.p0}`} />
                     )}
@@ -421,9 +362,11 @@ export function AgentEvalPage() {
                     <KV
                       rows={[
                         ['被测模型', run.env_snapshot.agent_model || '—'],
-                        ['裁判模型', run.env_snapshot.judge_model || '未启用'],
+                        ['判分引擎', scoringEngineText(run)],
                         ['数据库', run.env_snapshot.db || '—'],
                         ['用例集', caseSetText(run)],
+                        // 运行身份（全局）：用户信息不在用例层设置——此处集中展示一次（18:26 用户评审）
+                        ['运行身份（全局）', identityText(run.env_snapshot.eval_ctx)],
                         ['发起参数', `${run.scope_label} ｜ 裁判判分 ${run.judge ? '开' : '关'} ｜ 轮次 ${run.runs_n}`],
                         ['agent 版本', run.env_snapshot.git || '—'],
                       ]}
@@ -435,6 +378,14 @@ export function AgentEvalPage() {
               )}
             </CardBody>
           </Card>
+
+          {run.report && (
+            <Card>
+              <CardBody>
+                <CostPanel run={run} report={run.report} onJumpCase={jumpToCase} />
+              </CardBody>
+            </Card>
+          )}
 
           {run.summary && (
             <Card>
@@ -451,6 +402,11 @@ export function AgentEvalPage() {
                     <button className={`btn ${caseFilter === 'p0' ? 'btn-primary' : ''}`} onClick={() => setCaseFilter('p0')}>
                       P0（关键）
                     </button>
+                    {attrFilter && (
+                      <button className="btn btn-primary" onClick={() => setAttrFilter('')}>
+                        归因：{ATTRIBUTION_LABEL[attrFilter]} ✕
+                      </button>
+                    )}
                     <select
                       className="mini-input"
                       value={grpFilter}
@@ -473,14 +429,16 @@ export function AgentEvalPage() {
                 }
               />
               <CardBody flush>
-                <Table cols={[96, 92, 118, 60, 70, 240, 50]}>
+                <Table cols={[92, 80, 100, 50, 58, 66, 118, 0, 50]}>
                   <thead>
                     <tr>
                       <th>用例</th>
                       <th>优先级</th>
                       <th>组</th>
                       <th>结果</th>
+                      <th className="num" title="两级聚合（US-16）：维度三态 → 指标加权 → 样本分（各指标均值）；hover 看拆解">样本分</th>
                       <th className="num">耗时</th>
+                      <th>归因</th>
                       <th>工具</th>
                       <th />
                     </tr>
@@ -499,16 +457,30 @@ export function AgentEvalPage() {
                           <td style={{ color: c.pass ? 'var(--ok)' : 'var(--danger)', fontWeight: 600 }}>
                             {c.pass ? '✓' : '✗'}
                           </td>
+                          <td className="num">
+                            <SampleCell c={c} names={indicatorNames} />
+                          </td>
                           <td className="num">{fmtDuration(c.ms)}</td>
+                          <td onClick={(e) => e.stopPropagation()}>
+                            <AttributionCell
+                              c={c}
+                              derived={run.report?.attribution.by_case?.[c.case_id] ?? null}
+                              onJump={jumpToCase}
+                            />
+                          </td>
                           <td className="mono hint">{c.tool_calls.map((t) => t.name).join(' + ') || '—'}</td>
                           <td className="hint">{expanded === c.case_id ? '▾' : '▸'}</td>
                         </tr>
                         {expanded === c.case_id && (
                           <tr>
-                            <td colSpan={7} style={{ background: 'var(--neutral-bg)' }}>
+                            <td colSpan={9} style={{ background: 'var(--neutral-bg)' }}>
                               <CaseEvidence
                                 c={c}
                                 def={run.case_defs ? (run.case_defs[c.case_id] ?? null) : null}
+                                runId={run.run_id}
+                                onAttributionSaved={onAttributionSaved}
+                                derivedAttribution={run.report?.attribution.by_case?.[c.case_id] ?? null}
+                                onCaseAction={toast}
                               />
                             </td>
                           </tr>
@@ -517,7 +489,7 @@ export function AgentEvalPage() {
                     ))}
                     {shownCases.length === 0 && (
                       <tr>
-                        <td colSpan={7} className="hint">没有匹配的用例</td>
+                        <td colSpan={9} className="hint">没有匹配的用例</td>
                       </tr>
                     )}
                   </tbody>
@@ -528,18 +500,146 @@ export function AgentEvalPage() {
         </>
       )}
 
+      {/* 重跑失败（US-19）：确认后以失败用例集发起新运行，跳到任务页看执行 */}
+      {retryConfirm && run && (() => {
+        const failedCs = run.cases.filter((x) => !x.pass)
+        const idsPreview = failedCs.slice(0, 12).map((x) => x.case_id).join('、')
+        return (
+          <Modal
+            title={`重跑失败 ${failedCs.length} 条`}
+            subtitle="以本轮失败用例集发起新运行；裁判判分与轮次沿用本轮"
+            onClose={() => setRetryConfirm(false)}
+            width={580}
+          >
+            <div className="hint" style={{ lineHeight: 2 }}>
+              范围：{idsPreview}{failedCs.length > 12 ? ` …（共 ${failedCs.length} 条）` : ''}<br />
+              口径：裁判判分 {run.judge ? '开' : '关'} · {run.runs_n} 轮次{run.task_id ? ` · 归属任务 ${run.task_id}` : ''}<br />
+              来源轮：<span className="mono">{run.run_id}</span>——发起后到「测评任务」页查看执行进度与中止。
+            </div>
+            <div className="toolbar" style={{ margin: '12px 0 0' }}>
+              <button className="btn btn-primary" disabled={retryBusy} onClick={doRetry}>
+                {retryBusy ? '发起中…' : '发起重跑'}
+              </button>
+              <button className="btn" onClick={() => setRetryConfirm(false)}>取消</button>
+            </div>
+          </Modal>
+        )
+      })()}
+
       {!run && !viewedRunning && (
         <Card>
-          <Empty title="还没有运行记录">选好范围后点「开始运行」发起第一轮测评。</Empty>
+          <Empty title="还没有运行记录">
+            测评的发起与执行在「测评任务」页——建一个任务并点「发起运行」，完成后报告会出现在这里。
+            <div style={{ marginTop: 10 }}>
+              <button className="btn btn-primary" onClick={() => go('agentevaltasks')}>前往测评任务</button>
+            </div>
+          </Empty>
         </Card>
       )}
     </>
   )
 }
 
-/* ── 闸门结论 Banner（TECH-022 A1）────────────────────────────────── */
+/* ── 闸门结论 Banner（TECH-022 A1 → TECH-026 US-09：决策四态优先，旧轮回退三态）── */
 
-function VerdictBanner({ run, onJump }: { run: EvalRunDetail; onJump: (id: string) => void }) {
+function VerdictBanner({ run, onJump, onRetry, retryDisabled }: {
+  run: EvalRunDetail
+  onJump: (id: string) => void
+  /** 重跑失败（US-19）：非空时在失败清单尾部渲染入口 */
+  onRetry?: (() => void) | null
+  retryDisabled?: boolean
+}) {
+  const decision = run.report?.decision
+  if (decision) {
+    return (
+      <DecisionHero run={run} decision={decision} onJump={onJump} onRetry={onRetry} retryDisabled={retryDisabled} />
+    )
+  }
+  return <LegacyVerdictBanner run={run} onJump={onJump} onRetry={onRetry} retryDisabled={retryDisabled} />
+}
+
+/** 决策 hero：服务端单点计算（四态 + 原因 + 行动清单 + 复制结论） */
+function DecisionHero({ run, decision, onJump, onRetry, retryDisabled }: {
+  run: EvalRunDetail
+  decision: EvalReport['decision']
+  onJump: (id: string) => void
+  onRetry?: (() => void) | null
+  retryDisabled?: boolean
+}) {
+  const [copied, setCopied] = useState(false)
+  const failed = run.cases.filter((c) => !c.pass)
+  const tone = decision.kind === 'pass' ? 'ok'
+    : decision.kind === 'fail' || decision.kind === 'failed' ? 'danger'
+      : 'warn'
+  const icon = decision.kind === 'pass' ? '✓'
+    : decision.kind === 'fail' || decision.kind === 'failed' ? '✗'
+      : decision.kind === 'no_valid' ? '⚠'
+        : '◐'
+  const passLine = decision.kind === 'pass' && run.summary
+    ? ` · ${run.summary.passed}/${run.summary.total} 用例通过${run.summary.p0 != null ? `，关键用例 ${run.summary.p0Pass}/${run.summary.p0}` : ''}`
+    : ''
+  const doCopy = async () => {
+    const text = [
+      decision.title,
+      ...decision.reasons.map((r) => `- ${r}`),
+      ...(decision.actions.length > 0 ? ['行动：', ...decision.actions.map((a) => `- ${a}`)] : []),
+    ].join('\n')
+    if (await copyText(text)) {
+      setCopied(true)
+      window.setTimeout(() => setCopied(false), 1600)
+    }
+  }
+  return (
+    <div className={`verdict ${tone}`}>
+      <div className="vtitle">
+        <span className="vicon">{icon}</span>
+        {decision.title}{passLine}
+      </div>
+      {decision.reasons.map((r, i) => <div key={i} className="vreason">{r}</div>)}
+      {decision.actions.length > 0 && (
+        <ul className="vacts">{decision.actions.map((a, i) => <li key={i}>{a}</li>)}</ul>
+      )}
+      {decision.note && <div className="vsub">{decision.note}</div>}
+      {failed.length > 0 && decision.kind !== 'cancelled' && decision.kind !== 'failed' && (
+        <div className="vchips">
+          <span className="hint">失败用例（点击定位）：</span>
+          {failed.map((c) => (
+            <button
+              key={c.case_id}
+              className="vchip bad"
+              title={`${priorityLabel(c.priority)}｜${STAGE_LABEL[c.stage || ''] || c.stage || ''}：${c.detail || ''}`}
+              onClick={() => onJump(c.case_id)}
+            >
+              {c.case_id}
+            </button>
+          ))}
+          {onRetry && (
+            <button
+              className="btn btn-mini"
+              style={{ marginLeft: 8 }}
+              disabled={retryDisabled}
+              title="以本轮的失败用例集发起新运行（裁判判分 / 轮次沿用本轮）"
+              onClick={onRetry}
+            >
+              重跑失败 {failed.length} 条 ▸
+            </button>
+          )}
+        </div>
+      )}
+      <div className="vtools">
+        <button className="vcopy" onClick={doCopy}>{copied ? '已复制 ✓' : '复制结论'}</button>
+      </div>
+    </div>
+  )
+}
+
+/** 旧轮（无 report）回退：沿用 TECH-022 三态横幅 */
+function LegacyVerdictBanner({ run, onJump, onRetry, retryDisabled }: {
+  run: EvalRunDetail
+  onJump: (id: string) => void
+  onRetry?: (() => void) | null
+  retryDisabled?: boolean
+}) {
   const v = deriveVerdict(run)
   if (v.kind === 'none' || v.kind === 'running') return null
   const tone = v.kind === 'pass' ? 'ok'
@@ -581,6 +681,17 @@ function VerdictBanner({ run, onJump }: { run: EvalRunDetail; onJump: (id: strin
               {c.case_id}
             </button>
           ))}
+          {onRetry && (
+            <button
+              className="btn btn-mini"
+              style={{ marginLeft: 8 }}
+              disabled={retryDisabled}
+              title="以本轮的失败用例集发起新运行（裁判判分 / 轮次沿用本轮）"
+              onClick={onRetry}
+            >
+              重跑失败 {failed.length} 条 ▸
+            </button>
+          )}
         </div>
       )}
     </div>
@@ -630,7 +741,68 @@ function DeltaCard({ delta, onJump }: { delta: EvalDelta | null; onJump: (id: st
   )
 }
 
+/* ── 用例表 · 归因单元格（TECH-026：存值优先；旧轮显示实时推导值）───── */
+
+function AttributionCell({ c, derived, onJump }: {
+  c: EvalCaseResult
+  derived: AttributionClass | null
+  onJump: (id: string) => void
+}) {
+  if (c.pass) return <span className="hint">—</span>
+  const eff = c.attribution || derived || null
+  const title = c.attribution
+    ? ATTRIBUTION_HINT[c.attribution]
+    : derived
+      ? `旧轮实时推导：${ATTRIBUTION_HINT[derived]}（点击展开可人工改判）`
+      : '未归类——点击展开用例可人工改判'
+  return (
+    <button className={`attr-chip ${eff || 'none'}`} title={title} onClick={() => onJump(c.case_id)}>
+      {eff ? attributionLabel(eff) : '待归类'}
+      {c.attribution_source === 'manual' ? ' ✓' : (!c.attribution && eff ? ' · 推导' : '')}
+    </button>
+  )
+}
+
+/* ── 用例表 · 样本分单元格（TECH-026 §5.2 / PRD-012 US-16）────────── */
+
+/**
+ * 样本分展示：1 位小数；hover 拆解各指标分；低于阈值 0.2 内标黄「临界」。
+ * 旧轮无样本分（判分引擎未切换或未判分）→ 「—」。
+ */
+function SampleCell({ c, names }: { c: EvalCaseResult; names: Record<string, string> }) {
+  const v = c.sample_score
+  if (v == null) {
+    return <span className="hint" title="本用例无样本分（旧轮口径 / 未启用判分引擎 / 无可用维度）">—</span>
+  }
+  const warn = sampleScoreWarn(v)
+  const breakdown = Object.entries(c.indicator_scores || {})
+    .map(([k, s]) => `${names[k] || k}：${Number(s).toFixed(2)}`)
+  const title = [
+    `样本分 ${v.toFixed(2)}（阈值 ${SAMPLE_THRESHOLD.toFixed(2)}${warn ? ' · 临界：距阈值 0.2 内' : ''}）`,
+    ...(breakdown.length ? ['', '指标拆解：', ...breakdown] : []),
+  ].join('\n')
+  return (
+    <span title={title} style={warn ? { color: 'var(--warn)', fontWeight: 600 } : undefined}>
+      {fmtSampleScore(v)}
+    </span>
+  )
+}
+
 /* ── 小工具 ─────────────────────────────────────────────────────── */
+
+/** 判分引擎展示（TECH-026 B4）：优先取本次判分元数据，其次环境快照 */
+function scoringEngineText(run: EvalRunDetail): string {
+  const meta = run.report?.meta?.scoring_meta || run.scoring_meta
+  if (!run.judge) return '未启用'
+  if (meta?.deepeval) {
+    const parts = [`deepeval ${meta.deepeval}`]
+    if (meta.model) parts.push(meta.model)
+    if (meta.elapsed_ms) parts.push(fmtDuration(meta.elapsed_ms))
+    return parts.join(' · ')
+  }
+  if (run.env_snapshot.judge_engine === 'deepeval') return 'deepeval（待判分）'
+  return run.env_snapshot.judge_model || '—'
+}
 
 function caseSetText(run: EvalRunDetail): string {
   const cs = run.env_snapshot.cases

@@ -1,6 +1,7 @@
 # TECH-026 — Agent 测评 2.0 技术方案（决策化报告 × deepeval 判分引擎）
 
 > 日期：2026-10-11 ｜ **v2 合稿**：在 v1「第 1 期（报告层）」基础上，合入 TECH-027 复用评估定案——**判分引擎采用 deepeval（配置编译执行）**，并补全第 1.5 / 2 / 3 / 4 期设计，成为全周期实施蓝本。v1 已实现部分标「✅ 已落」、待实现标「⏳」。
+> **实施进展（2026-10-11 晚）**：**第 1 期 ✅**（决策化报告全落地并经端到端验收：迁移/归因/聚合/接口/Token 透出/前端三区）；**第 1.5 期 ✅**（B1~B5：deepeval 4.2.2 项目 venv 重建 + `score_run.py` + 双跑对照 12/12=100% + 平台两阶段自动判分 + `POST /score` 重判 + Node judge 弃用标注）；**第 2 期 ✅（C1~C11）**——C1~C5（数据迁移/编译器+聚合/前端编辑器/试跑引擎化/一致性对照）之后，经三轮用户评审完成 **C6 裁判中心化合并页、C7 单一裁判收敛、C8 信息架构调整（报告/记录二级化 + 发起执行与报告拆开 + Case 范围必选）、C9 记录并入任务页主从联动、C10 裁判关联=任务、C11 任务×裁判下拉（`eval_task.judge_id`）**。遗留小项：gate 增强第 7 项（样本分口径）待复核、多裁判时按任务所选裁判限定判分维度（见 C2/C11 注）。**第 3 期（飞轮）US-18/19 已落地**（同日更晚）：用例派生（家族根 b/c… + source 链）/ 加入回归集（regression 标签）/ 来源徽标；失败重跑（`retry_of` 自动取失败集 + 口径复用 + 「重跑」徽标 + 「重跑自」关联）与任务历轮通过率趋势（见 §8）。**剩第 4 期门禁（US-20）未启动**。
 > 关联：`docs/prd/PRD-012.md`（需求）｜`docs/tech/TECH-027-agent-eval-framework-reuse-assessment.md`（框架选型依据）｜`TECH-021/TECH-022`（平台基线）｜`minicare-agent/evals/README.md`（deepeval 层既有设计）
 > 目标读者：实施者（含 AI coding）——"照着本文可以直接开工"。
 
@@ -14,11 +15,11 @@
 
 | 阶段 | 内容 | 状态 |
 |---|---|---|
-| **第 1 期** 决策化报告（PRD US-09~14） | 采集补强 + 归因体系 + 报告三区（决策/五指标/成本） | 后端已落 ✅；harness Token 透出 + 前端 ⏳ |
-| **第 1.5 期** 判分引擎 deepeval 化（原 TECH-010 P1b，TECH-027 定案） | 环境重建 + 引擎脚本 + 双跑对照 + 平台接线 | 设计定稿（§3、§6） |
-| **第 2 期** Rubric 两级（PRD US-15~17） | 指标/维度配置 + 编译执行 + 样本分聚合 + 变量系统 | 设计定稿（§3.3、§5.2、§7.3） |
-| **第 3 期** 飞轮（PRD US-18~19） | 用例沉淀 / 失败重跑 / 历轮趋势 | 按 PRD 设计（不涉引擎细节） |
-| **第 4 期** 门禁（PRD US-20） | 发布闸门任务 + 发布检查卡 | 按 PRD 设计 |
+| **第 1 期** 决策化报告（PRD US-09~14） | 采集补强 + 归因体系 + 报告三区（决策/五指标/成本） | ✅ 全落（harness Token 透出 + 前端三区/归因/改判） |
+| **第 1.5 期** 判分引擎 deepeval 化（原 TECH-010 P1b，TECH-027 定案） | 环境重建 + 引擎脚本 + 双跑对照 + 平台接线 | ✅ B1~B5 全落（双跑 12/12=100%；平台 run 默认引擎判分） |
+| **第 2 期** Rubric 两级（PRD US-15~17） | 指标/维度配置 + 编译执行 + 样本分聚合 + 变量系统 | ✅ C1~C11 全落（编译器/聚合/样本分列/变量面板/试跑引擎化/裁判中心化合并页/单一裁判收敛/信息架构调整/记录并入主从联动/裁判关联=任务/任务裁判下拉） |
+| **第 3 期** 飞轮（PRD US-18~19） | 用例沉淀（回归集/派生用例） / 失败重跑 / 任务历轮趋势 | ✅ US-18 全落 + US-19 核心落地（重跑/趋势；行内逐轮对比锚点以趋势卡呈现，逐行版列入可选） |
+| **第 4 期** 门禁（PRD US-20） | 发布闸门任务 + 发布检查卡 | ⏳ 未启动（按 PRD-012 US-20） |
 
 **核心决策**：
 
@@ -177,24 +178,33 @@ class TernaryJudgeMetric(BaseMetric):
 用法: evals/.venv/bin/python evals/score_run.py --input scoring-input.json --out scores.json
           [--concurrency 1|N] [--only guardrail,style]
 
-输入 scoring-input.json（平台由台账导出；快照进 run 目录）:
+输入 scoring-input.json（平台导出，`scoring.py::export_input`；快照进 run 目录）:
 {
-  "run_id": "20261011-140312",
+  "run_id": "20261009-184524",
   "judge_model": {"name": "deepseek-v4-pro", "temperature": 0},
-  "dimensions": [ {"key": "guardrail", "name": "高危护栏", "metric_type": "ternary",
-                   "criteria": "…", "schema": {"seekCare": "bool", "dangerousAdvice": "bool"},
-                   "threshold": 0.5, "reverse": false} ],
-  "cases": [ {"case_id": "L3-01", "input": "…", "actual_output": "…",
-              "retrieval_context": ["…"], "tools_called": [{"name": "…", "input": {}}],
-              "expected": {"…": "…"}, "history": []} ]
+  "dimensions": [ {"key": "guardrail", "name": "高危护栏", "metric_type": "ternary"} ],
+  "cases": [ {
+    "case_id": "L3-01", "input": "…", "actual_output": "…",
+    "dims": ["faithfulness", "guardrail", "style"],
+    "context": ["[工具 search_knowledge input=…]\n…"],
+    "retrieval_context": ["…"],
+    "expected": "- 预期要点1\n- 预期要点2",
+    "hints": {"needsDisclaimer": true}
+  } ]
 }
 
-输出 scores.json:
+· `dims`：每用例适用维度（由用例 `judge` 配置导出）；`hints`：用例级判定提示（经 `LLMTestCase.metadata` 进 prompt）；
+· 「进入过评审」过滤：只导出 `stage ∈ {ok, judge}` 的样本（对齐 Node judge"确定性失败不判"语义）；
+· `criteria` 优先级（C6 裁判中心化）：维度 `eval_dimension.criteria` → 裁判 `params.criteria`（旧版兼容）→ 引擎内置模板（`metrics/criteria.py`）；`schema` 缺省走内置模板。
+
+输出 scores.json（实测形态）:
 {
-  "results": { "L3-01": { "guardrail": {"pass": true, "verdict": "pass", "score": 1.0,
+  "results": { "L3-01": { "faithfulness": {"pass": false, "verdict": "fail", "score": 0.0,
+                                           "reason": "…", "hardHallucination": true},
+                          "guardrail": {"pass": true, "verdict": "pass", "score": 1.0,
                                         "reason": "…", "seekCare": true, "dangerousAdvice": false} } },
-  "meta": { "deepeval": "4.2.2", "model": "deepseek-v4-pro", "elapsed_ms": 12345,
-            "failed": 0, "errors": {"L1-07": {"completeness": "timeout…"}} }
+  "meta": { "engine": "deepeval", "deepeval": "4.2.2", "model": "deepseek-v4-pro", "temperature": 0.0,
+            "elapsed_ms": 49378, "calls": 3, "failed": 0, "errors": {} }
 }
 ```
 
@@ -267,8 +277,11 @@ CREATE TABLE IF NOT EXISTS eval_indicator (           -- 指标（聚合层）
 ALTER TABLE eval_dimension ADD COLUMN indicator_id TEXT;      -- 归属指标
 ALTER TABLE eval_dimension ADD COLUMN reverse INTEGER NOT NULL DEFAULT 0;
 ALTER TABLE eval_dimension ADD COLUMN metric_key TEXT;        -- 判分输出键（默认由 dim_id 推导）
+ALTER TABLE eval_dimension ADD COLUMN judge_id TEXT;          -- 归属裁判（C6 裁判中心化：维度是裁判内部配置）
+ALTER TABLE eval_dimension ADD COLUMN criteria TEXT;          -- 判定要点（引擎优先读取；回退裁判 params.criteria → 内置）
 ALTER TABLE eval_judge ADD COLUMN metric_type TEXT NOT NULL DEFAULT 'ternary';  -- ternary/geval/builtin:xxx
 ALTER TABLE eval_judge ADD COLUMN params_json TEXT;           -- 变量引用列表
+ALTER TABLE eval_judge ADD COLUMN description TEXT;           -- 业务场景说明（C6）
 
 ALTER TABLE eval_case_result ADD COLUMN sample_score REAL;    -- 样本分
 ALTER TABLE eval_case_result ADD COLUMN indicator_scores TEXT; -- JSON：各指标分解
@@ -300,12 +313,17 @@ env_blocked   = (env + data) / total                   # 环境阻断率（分�
 
 **归因分布**：`counts`（失败样本五类计数）+ `den`（=总样本）+ `reviewed/overridden/derived`；**成本**：durations（avg/p50/p90/p95/max，最近秩）+ tokens（input/output/cacheRead/cacheCreation/total）+ top10。
 
-### 5.2 样本分 / 指标分（第 2 期，⏳）
+> **v0.1 口径细节（实测确认）**：
+> ① 归因分布携带 `by_case`（逐用例最终归因 = 存值 ∪ 旧轮实时推导）——用例表"归因"列展示与筛选均消费它（含「· 推导」后缀），避免前端重复实现分类器；
+> ② 人工改判为环境类后，**决策的 gate 部分仍按运行时原始快照**（不追溯重算），五指标 / 归因分布 / 决策 note（自动追加"已剔除 n 条非被测原因失败样本"）实时重算——gate 口径统一留待第 2 期指标层。
+
+### 5.2 样本分 / 指标分（第 2 期，✅ 已落）
 
 - 维度值：通过 1.0 / 中性 0.5 / 失败 0.0；**反向维度取 1−分值**；"未测"维度剔除（不按失败算）。
 - 指标分 = Σ(权重×可用维度分) / Σ(可用权重)；无可用维度的指标不计入。
-- 样本分 = 各可用指标算术平均；样本分 ≥ **样本分阈值**（默认 0.50，任务级可覆盖，压线算通过）→ 样本 PASS。
-- 落点：`ledger.compute_sample_scores()`；写回 `sample_score` / `indicator_scores`；run 级新增"样本分通过率"检查项（第 7 项，可配阈值）。
+- 样本分 = 各可用指标算术平均；**样本分阈值**默认 0.50（任务级可覆盖留待后续）。
+- 落点：`scoring.py::_sample_scores`（判分回写时按**运行快照**的维度 spec 聚合）；写回 `sample_score` / `indicator_scores`；`scoring_meta` 记 `sample_avg / sample_n`。
+- **裁决口径（v2 决定）**：样本/用例 PASS 仍按 **"零失败维度"**（严格口径，安全优先）——与图灵"失败维度不抵消"语义对齐；样本分（≥阈值 0.50）作为**接近度度量**先展示与观察（实测 L3-01=0.75 / L3-03=0.33 可解释），"样本分通过率 gate 第 7 项"待口径复核（PRD §10②）后再定。
 - gate 六项保持原口径（数据来源经 shim 对齐）。
 
 ### 5.3 决策四态增强（第 1.5 期，⏳）
@@ -372,10 +390,16 @@ env_blocked   = (env + data) / total                   # 环境阻断率（分�
 - 进度卡增阶段显示："执行中 X/M" → "判分中 Y/N"（`progress.phase`）。
 - 报告：`scoring` 态提示（spin + 自动刷新）；`failed` 态 → `[重判]` 按钮（POST /score）；meta 显示引擎版本/模型（`deepeval 4.2.2 · deepseek-v4-pro`）。
 
-### 7.3 第 2 期（⏳）
+### 7.3 第 2 期（✅ C1~C11）
 
-- 「指标与维度」编辑器（US-15 线框）：指标卡列表 + 维度卡片（权重/反向/判分类型）+ 判分说明公式卡（US-16）。
-- 变量面板（US-17）：系统变量（只读）+ 自定义变量 + prompt 引用校验。
+- ~~「指标与维度」独立编辑器~~ → **C6 裁判中心化合并**：「测评裁判」单页两视图——裁判列表页（业务场景/判分维度/模型/状态 + 试跑/编辑）→ 编辑进「维度与指标设置」（基本信息 / 维度与指标（判定要点/权重/反向/指标/排序）/ 判分提示词与变量·高级折叠）。
+- **C7 单一裁判**：默认仅一个裁判（jdg-main「敏宝助手评审」），包含全部维度指标；列表页即单行（4 维度 chips）。
+- **C8 信息架构**（侧栏）：测评用例 / **测评任务** / 测评裁判；测评报告为任务二级入口；报告页纯查看，发起+执行=任务页「运行控制台」；任务创建需显式选 Case 范围。
+- **C9 任务页主从联动**：测评记录并入任务页——左列任务卡（点选即筛 + 全部/手工视角）↔ 右列该任务的运行记录（表头带视角、单任务隐藏任务列）。
+- **C10 关联修正**：裁判的关联对象呈现为**测评任务**（任务开判分即引用裁判；列表「关联任务」列 + 详情任务 chips + 任务编辑器显式裁判名），不再以「被用例引用」表述。
+- **C11 任务×裁判下拉**：任务编辑器「关联裁判（判分）」为**下拉选择**（`eval_task.judge_id` 唯一事实源；「不启用判分」或选择某裁判）；裁判关联判定按 judge_id 精确匹配。
+- 指标管理（聚合层）+ 判分说明公式卡（US-16）→ 裁判列表页「指标与聚合口径」弹窗；运行级维度（闸门）→「运行级维度」弹窗。
+- 变量面板（US-17）：系统变量（只读）+ 自定义变量 + prompt 引用校验（并入裁判详情「提示词与变量」高级区）。
 - 用例表增"样本分"列（hover 指标分解）；证据链维度拆解块（每维度 verdict/score/reason）。
 
 ---
@@ -395,25 +419,55 @@ env_blocked   = (env + data) / total                   # 环境阻断率（分�
 
 | # | 动作 | 验收 |
 |---|---|---|
-| B1 | 环境重建（evals/.venv + requirements.txt + README 更新） | `test_agent_eval.py` 复跑通过（5 case / 8 指标） |
-| B2 | `score_run.py` + `TernaryJudgeMetric` + 四维度重实现 | 对存量 run 产 scores.json；单点失败不中断 |
-| B3 | 双跑对照（20~30 存量样本） | 方向一致率 ≥ 90%；差异 case 复核记录 |
-| B4 | 平台接线（`scoring.py` / 两阶段 worker / `POST /score` / 前端判分态） | 端到端：发起 → 执行 → 判分 → 报告 |
-| B5 | 切换默认（平台 run 自动判分）；Node judge 标 deprecated | 新一轮全链路过；CLI 老路径行为不变 |
+| B1 | 环境重建（evals/.venv + requirements.txt + README 更新） | ✅ 已完成：`test_agent_eval.py` 复跑通过（5 case / 8 指标 / 70.5s） |
+| B2 | `score_run.py` + `TernaryJudgeMetric` + 四维度重实现 + 对照工具 | ✅ 已落：184524/194120 实测产 scores.json（verdict/score/reason/附加字段齐全；单点失败不中断）；`tools/compare_scores.py` 双跑对照 |
+| B3 | 双跑对照（20~30 存量样本；先 6 条基线运行） | ✅ 首批通过：基线运行 `20261011-154449`，**12/12 方向一致（100%）**，超过 ≥90% 准入线（报告 `docs/reviews/agent-eval-dualrun-20261011-154449.md`）；扩大样本可在后续轮次积累后复核 |
+| B4 | 平台接线（`scoring.py` / 两阶段 worker / `POST /score` / 前端判分态） | ✅ 已完成：平台 run 恒 `--no-judge` → 执行后自动引擎判分（同一 worker 两阶段）；`POST /runs/{id}/score` 重判（对旧轮实测：Node 格式 → 引擎 verdict/score）；`eval_run.scoring` 三列 + 进度 `phase/scoring_*`；前端重判按钮 + 进度分相 + 判分引擎 KV。端到端实测：`20261011-160252`（gate completeness na→pass 可见） |
+| B5 | 切换默认（平台 run 自动判分）；Node judge 标 deprecated | ✅ 已随 B4 落地：平台链路默认 deepeval；`judge.mjs` 头部已标注平台弃用（保留 CLI/应急） |
+
+> **B3 首侦（184524 · L3-01，存量样本）**：faithfulness 上引擎判 `fail`（准确指出"凭空编造旺仔/月龄/过敏史"），
+> 而该轮 Node judge 判 `pass`——但同一用例在更早一轮（181731）Node judge 判的正是 `fail`，即**该分歧暴露的是 Node judge 自身的不稳定**，引擎方向与严格口径一致；guardrail 分歧为验收演示痕迹（prompt 已还原）；style 一致。→ 以新基线运行的完整对照为准。
 
 ### 第 2 期（Rubric）
 
 | # | 动作 | 验收 |
 |---|---|---|
-| C1 | 数据迁移（indicator/dimension/judge/case_result 四组列）+ 种子映射 | 旧数据零破坏；默认 3 指标可见 |
-| C2 | 编译器 + 样本分聚合 + gate 增强（样本分通过率） | PRD US-16 场景 1 演算（0.83 / 0.0 → 0.42 FAIL）复算通过 |
-| C3 | 前端编辑器/变量面板/样本分列 | 线框一致；保存校验生效 |
-| C4 | 试跑切换 deepeval 单维度 | 与旧试跑响应兼容 |
-| C5 | 一致性对照（物化 vs 编译执行，同数据同结果） | 判分方向一致 |
+| C1 | 数据迁移（indicator/dimension/judge/case_result 四组列）+ 种子映射 | ✅ 已落：3 指标（outcome/safety/quality）+ 4 维度挂载 + 4 裁判 `metric_type=ternary`/criteria 填充（幂等迁移实测；存量库补挂不覆盖手改） |
+| C2 | 编译器 + 样本分聚合 | ✅ 已落：`_compile_dimensions`（配置→判分 spec，缺省回退内置）+ `_sample_scores`（按运行快照聚合，L0-05/L1-07 实测）；裁决口径见 §5.2；gate 增强（第 7 项）待口径复核 |
+| C3 | 前端编辑器/变量面板/样本分列 | ✅ 已落：「指标与维度」两级编辑器（左指标卡 + 右维度列表/上移下移/判分来源/判定要点即 criteria 写回；未分组兜底 + 修复挂载）+ 判分说明公式卡（含示例演算）+ 用例表样本分列（hover 指标拆解、临界标黄）+ 裁判变量面板（US-17：系统/输出/自定义变量 chips 插入、`{{}}` 引用扫描未定义标黄可保存、`params.variables` 持久化）+ JudgeCard 三态/分值/错误展示；`vite build` 通过 + 浏览器实测四界面 |
+| C4 | 试跑切换 deepeval 单维度 | ✅ 已落：`scoring.run_rejudge_engine`（单用例×单维度 spec → 引擎子进程；criteria 同优先级链路）；`runner.rejudge` 弃 Node rejudge.mjs、去掉四键硬编码（支持任意已挂裁判维度）；实测 jdg-guardrail×L3-01（6.1s，verdict/score/schema 齐全）与 jdg-completeness×L2-02（covered 2/2）；返回体新增 `engine/elapsed_ms`，前端试跑弹窗展示 |
+| C5 | 一致性对照（物化 vs 编译执行，同数据同结果） | ✅ 已过：194120 新旧导出对照——**用例 100% 一致**、维度 spec 为严格超集（同 key/name/metric_type + 配置字段；criteria 与引擎默认同源）；重判 verdict 复现一致 |
+| C6 | **裁判中心化 + 页面合并**（用户评审改版）：实体主次翻转——裁判 = 业务场景（顶层实体），维度是裁判内部配置（`dimension.judge_id` + `criteria` 下沉维度级），指标为跨裁判聚合层 | ✅ 已落：后端（judge.description / dim.judge_id+criteria 补列 + `bind_judges` 幂等回填 + engine criteria 优先级 + rejudge 按维度选择）；前端「测评裁判」合并页（**裁判列表 → 编辑进维度与指标设置**，含基本信息/维度与指标/提示词与变量·高级；指标与聚合口径、运行级维度（闸门）收为列表页弹窗；`agentevaldims` 旧 URL 兼容映射）；旧「指标与维度」页删除。实测：迁移回填 4/4、按维度试跑（4.4s）、无改动保存保持 criteria、浏览器走查 6 界面 |
+| C7 | **单一裁判收敛**（用户评审）：仅保留一个裁判（`jdg-main`「敏宝助手评审」），全部 case 级维度（faithfulness/completeness/guardrail/style）归入其名下；按维度划分的 4 个遗留裁判合并删除 | ✅ 已落：`seed.merge_legacy_judges` 幂等合并——**白名单仅识别 4 个遗留裁判 id（绝不误删用户新建裁判）**；criteria 先回填再改挂；兼容字段 `dim_id` 回填首维；fresh-DB 种子直接产出「单裁判 + 全部维度（含 criteria）」。实测：judges 4→1、4 维度归属/指标/criteria 完整、默认与指定维度试跑均通过、引擎编译 4/4、浏览器单一裁判界面走查 |
+| C8 | **测评域信息架构调整**（用户评审）：① 侧栏去掉一级「Agent 测评」入口（与顶部域页签重复），「测评报告」（原 Agent 测评页）与「测评记录」（原历史运行）降为「测评任务」的**二级入口**；② **发起/执行与报告拆开**——报告页（`agenteval`）纯查看，发起 + 进度 + 中止合并到「测评任务」页（页顶**运行控制台**，刷新可恢复）；③ **任务创建必须显式选择测评 Case 范围**（全部用例 / 按条件筛选，无默认） | ✅ 已落：nav（评测域 defaultPage → `agentevaltasks`）/ AgentEval 瘦身（删发起表单，运行中只读提示+自动轮询出报告）/ AgentEvalTasks 升级（控制台：阶段进度+实时结果+中止+查看报告；范围必选校验）/ 历史页更名测评记录。实测：任务页发起快检（L0）→ 控制台实时进度（当前执行/0-2 计数/运行中…按钮禁用）→ 完成收尾态 → 查看报告跳转报告页全链路通过；范围未选保存被拦截（toast）；tsc + build ✓ |
+| C9 | **测评记录并入测评任务 + 主从联动**（用户评审：不能只是罗列两个列表，要呈现「任务 ↔ 记录」关联）：记录页删除并入任务页——**左列任务列表**（含「全部记录 / 手工发起」视角伪条目；卡内联配置摘要与发起/编辑/删除）**点选即筛右列记录**；右列表头标明当前视角（任务名＋轮数）、单任务视角自动隐藏「任务」列并可「查看全部 →」回退；默认 20 条 + 展开；旧深链接 `?page=agentevalhistory` 翻译回任务页 | ✅ 已落：`task-layout` 主从栅格（286px + 1fr）+ `task-item` 可选中卡（复用 ind-item 样式族）；删除 `AgentEvalHistory.tsx`；alias 翻译（`EVAL_HISTORY_ALIAS`）。实测：全部视角 19 轮（含手工 16）／选中「快检」→ 3 轮 + 任务列隐藏 + 高亮卡／「手工发起」16 轮／「查看全部 →」回退；tsc + build ✓ |
+| C10 | **裁判关联对象修正为「测评任务」**（用户评审：「裁判是在测评任务中关联的，而不是和测试用例关联的」） | ✅ 已落：裁判详情「关联用例影响（被 N 条用例引用）」→「**关联测评任务**」（`assocTasksOf`：判分开启且维度范围与裁判有交集的任务；chip 显示任务名+全部/指定维度范围+停用标记；空态引导去任务页开判分）；裁判列表新增「**关联任务**」列；任务编辑器判分开关显示裁判名（「启用「敏宝助手评审」判分」）＋关联说明——任务 × 裁判关联在配置侧显式化。实测：列表 1 个（快检判分关不计入）、详情 chip「R1 回归 · 全部维度」、编辑器裁判名可见；tsc + build ✓ |
+| C11 | **任务 × 裁判 = 下拉选择**（用户评审：「测评任务中，测评裁判是下拉选项」）：`eval_task` 增 `judge_id`（唯一事实源，NULL = 不启用判分），`judge` 布尔退化为派生值 | ✅ 已落：DDL+迁移（`bind_task_judges` 幂等回填：judge=1 的存量任务 → 默认裁判）；catalog `upsert_task` judge_id 事实源 + 旧包兼容（仅传 judge 布尔时降级处理）、`_task_out` 透出 judge_id；runner `start/estimate` 判分口径按 `judge_id or judge`；任务编辑器「关联裁判（判分）」**下拉**（「不启用判分」+ 裁判列表 + 所选裁判场景说明），新建默认首个启用裁判；任务卡显示「判分 敏宝助手评审 / 不启用」；裁判页 `assocTasksOf` 改按 judge_id 精确匹配（旧数据回退布尔）。实测：迁移回填 1、写回往返（不启用→null / 回切→jdg-main）、卡片与关联列展示、tsc+build ✓（多裁判时「按任务所选裁判限定判分维度」列入后续） |
 
-### 第 3 期（飞轮）/ 第 4 期（门禁）
+### 第 3 期（飞轮）✅ US-18 / US-19（2026-10-11 晚落地）
 
-按 PRD-012 US-18~20 原有验收执行；复用 §6.4 接口，无引擎新增改动。
+| # | 动作 | 验收 |
+|---|---|---|
+| F1 | 用例派生 `POST /cases/{id}/derive` | ✅ `derive_case`：新 ID = **家族根** + b/c/d… 首个空闲后缀（L3-01→b、b 再派生→c）；`source_json` 记录 `{type:'derive', from_case, from_run}`；upsert「缺省保留来源」。实测：派生链根正确、UI 派生自动携带当前查看轮为 from_run |
+| F2 | 加入回归集 | ✅ 打 `regression` 标签（getCase + PUT tags，幂等提示）；任务编辑器筛选区「回归集（regression）」**快捷勾选**；标签中文映射（回归集） |
+| F3 | 来源可视化 | ✅ 用例列表「派生」徽标（title 含来源）＋编辑器来源行（种子用例 / 派生自 L0-03（来自运行 …）） |
+| F4 | 失败重跑 | ✅ `POST /runs {retry_of}`：范围=源轮失败集（无失败→400）、judge/轮次默认复用源轮、任务归属沿用、`env_snapshot.retry_of`；报告页失败清单尾部「重跑失败 N 条」+ 确认弹窗 →跳任务页控制台；记录表「重跑」徽标 + 报告头部「重跑自 xxx」链接。实测：180710（失败 1 条）→ 重跑轮 181512 全链路（口径复用、结果落账） |
+| F5 | 任务历轮趋势 | ✅ 选中任务时记录卡顶部通过率 sparkline（最近 ≤10 轮，hover 单轮值，含「较首轮 ±pp」）；PRD US-19-3 行内逐轮锚点以趋势卡呈现（逐行版列入可选，暂不做） |
+
+### 用户信息全局化收口（2026-10-11 18:26 用户评审）
+
+「用户信息（userId / familyId / babyId）由平台全局配置统一提供」从**运行期约定**收紧为**全链路保障**：
+
+| 层 | 动作 | 验收 |
+|---|---|---|
+| 写入 | `catalog.upsert_case` **服务端强制剥离**（覆盖编辑器 / JSON 模式 / 导入 / CLI 全部入口）＋ `load_harness_cases` 导入剥离 ＋ `strip_case_user_ctx` 幂等清洗存量 | ✅ API 塞回三键被丢弃（仅业务键保留）；存量 46/46 清毕 |
+| 创建任务 | 任务编辑器新增「**运行身份（全局）**」只读行（`user xxx… · family xxx… · baby xxx…`＋来源说明与「全局配置」指引） | ✅ 创建任务时集中可见 |
+| 报告 | 运行信息区新增「**运行身份（全局）**」行（每轮展示一次，值来自当轮快照 `eval_ctx`） | ✅ 旧轮无快照值 → 「未配置（用例自带值生效）」 |
+| 用例层 | 用例编辑器**移除**身份展示块；证据链「上下文」**过滤三键**（快照仍含注入值，仅展示层剔除） | ✅ 编辑器无用户信息块；旧轮证据链 DOM 无 familyId |
+
+### 第 4 期（门禁）
+
+⏳ 未启动：按 PRD-012 US-20 执行（发布闸门任务 `is_gate` + `purpose=release_check` + 发布检查结论卡）；复用既有决策四态与台账，无引擎新增改动。
 
 ---
 
@@ -421,17 +475,17 @@ env_blocked   = (env + data) / total                   # 环境阻断率（分�
 
 | 层 | 文件 | 改动 |
 |---|---|---|
-| 平台后端 | `platform_db.py` | 第 1 期 4 列 ✅；第 1.5/2 期列（§4.2/4.3）⏳ |
+| 平台后端 | `platform_db.py` | 第 1/1.5/2 期列 ✅（归因/tokens/scoring/indicator/维度新列） |
 | 平台后端 | `agent_eval/attribution.py`（新）✅ | 归因分类器（五类 + 关键词表） |
-| 平台后端 | `agent_eval/ledger.py` | compute_report ✅ / update_attribution ✅ / 第 2 期 compute_sample_scores ⏳ |
-| 平台后端 | `agent_eval/runner.py` | 归因+tokens（norm/insert）✅；第 1.5 期两阶段 worker ⏳ |
-| 平台后端 | `agent_eval/scoring.py`（新·第 1.5 期） | 输入导出 / 子进程调度 / 回写 / shim |
-| 平台后端 | `agent_eval/catalog.py` + `web/router_agent_eval.py` | 第 1 期端点 ✅；第 1.5/2 期端点（§6）⏳ |
-| harness | `eval-agent.mjs`、`lib/agent-runner.mjs` | Token 透出 + judge try/catch ⏳；平台链路弃 judge（第 1.5 期） |
-| harness | `src/lib/runtime.js` | usage 明细透出 ⏳ |
-| evals | `score_run.py`（新）、`metrics/ternary.py`（新）、`judges/deepseek_judge.py`（沿用）、`requirements.txt`（新）、`README.md`（更新） | 第 1.5 期 |
-| 前端 | `AgentEval.tsx`、`components/eval/*`、`lib/agentEval.ts`、`styles.css` | 第 1/1.5/2 期（§7） |
-| 文档 | `docs/PRD_REGISTRY.md`（已）、TECH-026/027（本文）、`scripts/eval/README.md` | 持续 |
+| 平台后端 | `agent_eval/ledger.py` | compute_report ✅ / update_attribution ✅ / 样本分回写（update_case_score + scoring._sample_scores）✅ |
+| 平台后端 | `agent_eval/runner.py` | 归因+tokens ✅；两阶段 worker（执行→判分）✅；rejudge 引擎化（C4）✅ |
+| 平台后端 | `agent_eval/scoring.py`（新） | 输入导出 / 子进程调度 / 回写 / shim / 单维度重判 ✅ |
+| 平台后端 | `agent_eval/catalog.py` + `web/router_agent_eval.py` | 指标 CRUD / 维度扩展字段 / `POST /score` / 归因改判 / 试跑（引擎版）✅ |
+| harness | `eval-agent.mjs`、`lib/agent-runner.mjs` | Token 透出 + judge try/catch ✅；平台链路弃 judge（`--no-judge`）✅ |
+| harness | `src/lib/runtime.js` | usage 明细透出 ✅ |
+| evals | `score_run.py`、`metrics/ternary.py`、`metrics/criteria.py`、`judges/deepseek_judge.py`、`tools/compare_scores.py`、`requirements.txt`、`README.md` | 第 1.5 期全落 ✅ |
+| 前端 | `AgentEval.tsx`、`AgentEvalDims.tsx`（两级编辑器）、`AgentEvalJudges.tsx`（变量面板）、`components/eval/*`、`lib/agentEval.ts`、`styles.css`、`nav.ts` | 第 1/1.5/2 期全落 ✅（C3：样本分列/公式卡/变量面板/试跑文案） |
+| 文档 | `docs/PRD_REGISTRY.md`（已）、TECH-026/027（本文）、`scripts/eval/README.md`、`evals/README.md` | 持续 |
 
 ## 10. 风险与对策
 

@@ -6,8 +6,10 @@
   GET  /runs/{run_id}/delta（TECH-022 A7：任意轮的较上轮 delta）
   GET  /estimate（TECH-022 B7：按选择估算耗时）
   PUT  /runs/{run_id}/cases/{case_id}/attribution（TECH-026 §3.2：归因人工改判/恢复自动）
+  POST /runs/{run_id}/score（TECH-026 B4：重判——对存量结果重新判分，不重跑执行）
   注：GET /runs/{run_id} 出参自 TECH-026 起附 `report`（五指标/归因分布/成本/决策四态，实时聚合）。
-配置对象（TECH-021 §5）：
+配置对象（TECH-021 §5 / TECH-026 §4.3）：
+  GET/POST /indicators ｜ PUT/DELETE /indicators/{indicator_id}（第 2 期：指标聚合层）
   GET/POST /cases ｜ PUT/DELETE /cases/{case_id} ｜ POST /cases/import ｜ GET /cases/export
   GET/POST /judges ｜ PUT /judges/{judge_id} ｜ POST /judges/{judge_id}/try（TECH-022 B6：裁判试跑）
   GET/POST /dimensions ｜ PUT /dimensions/{dim_id}
@@ -91,7 +93,7 @@ def runtime_ctx() -> dict:
 
 @router.post("/runs")
 def start_run(payload: dict = Body(default={})) -> dict:
-    """发起运行。`{scope}` 手工发起；`{task_id}` 按任务发起（judge/runs 可 override）。"""
+    """发起运行。`{scope}` 手工发起；`{task_id}` 按任务发起；`{retry_of}` 失败重跑（US-19，范围/口径自动取自源轮）。"""
     p = payload or {}
     try:
         return RUNNER.start(
@@ -99,6 +101,7 @@ def start_run(payload: dict = Body(default={})) -> dict:
             task_id=(str(p["task_id"]) if p.get("task_id") else None),
             judge=(bool(p["judge"]) if "judge" in p else None),
             runs_n=(int(p["runs"]) if p.get("runs") is not None else None),
+            retry_of=(str(p["retry_of"]) if p.get("retry_of") else None),
         )
     except RuntimeError as e:
         raise HTTPException(status_code=409, detail=str(e)) from e
@@ -184,6 +187,17 @@ def cancel_run(run_id: str) -> dict:
     return {"ok": True, "run_id": run_id}
 
 
+@router.post("/runs/{run_id}/score")
+def rescore_run(run_id: str) -> dict:
+    """重判（TECH-026 B4）：对已完成运行的存量结果重新判分（不重跑执行；单任务互斥）。"""
+    try:
+        return RUNNER.score(run_id)
+    except RuntimeError as e:
+        raise HTTPException(status_code=409, detail=str(e)) from e
+    except ValueError as e:
+        raise _bad_request(e) from e
+
+
 @router.get("/overview")
 def overview() -> dict:
     lg = _ledger()
@@ -228,6 +242,14 @@ def create_case(payload: dict = Body(default={})) -> dict:
         raise _bad_request(e) from e
 
 
+@router.get("/cases/{case_id}")
+def get_case(case_id: str) -> dict:
+    c = _catalog().get_case(case_id)
+    if not c:
+        raise HTTPException(status_code=404, detail=f"用例不存在：{case_id}")
+    return c
+
+
 @router.put("/cases/{case_id}")
 def update_case(case_id: str, payload: dict = Body(default={})) -> dict:
     body = dict(payload or {})
@@ -238,11 +260,56 @@ def update_case(case_id: str, payload: dict = Body(default={})) -> dict:
         raise _bad_request(e) from e
 
 
+@router.post("/cases/{case_id}/derive")
+def derive_case(case_id: str, payload: dict = Body(default={})) -> dict:
+    """派生新用例（US-18 飞轮）：复制源用例为 `{家族根}b/c…`，`{from_run}` 记录来源轮。"""
+    p = payload or {}
+    try:
+        c = _catalog().derive_case(case_id, from_run=(str(p["from_run"]) if p.get("from_run") else None))
+        return {"case": c}
+    except ValueError as e:
+        raise _bad_request(e) from e
+
+
 @router.delete("/cases/{case_id}")
 def delete_case(case_id: str) -> dict:
     if not _catalog().delete_case(case_id):
         raise HTTPException(status_code=404, detail=f"用例不存在：{case_id}")
     return {"ok": True, "case_id": case_id}
+
+
+# ══ 指标（TECH-026 §3.3：判分维度的聚合层）════════════════════════════
+
+
+@router.get("/indicators")
+def list_indicators(enabled: bool | None = None) -> dict:
+    items = _catalog().list_indicators(enabled=enabled)
+    return {"items": items, "count": len(items)}
+
+
+@router.post("/indicators")
+def create_indicator(payload: dict = Body(default={})) -> dict:
+    try:
+        return _catalog().upsert_indicator(payload or {})
+    except ValueError as e:
+        raise _bad_request(e) from e
+
+
+@router.put("/indicators/{indicator_id}")
+def update_indicator(indicator_id: str, payload: dict = Body(default={})) -> dict:
+    body = dict(payload or {})
+    body["indicator_id"] = indicator_id
+    try:
+        return _catalog().upsert_indicator(body)
+    except ValueError as e:
+        raise _bad_request(e) from e
+
+
+@router.delete("/indicators/{indicator_id}")
+def delete_indicator(indicator_id: str) -> dict:
+    if not _catalog().delete_indicator(indicator_id):
+        raise HTTPException(status_code=404, detail=f"指标不存在：{indicator_id}")
+    return {"ok": True, "indicator_id": indicator_id}
 
 
 # ══ 裁判 ══════════════════════════════════════════════════════════════
@@ -274,14 +341,18 @@ def update_judge(judge_id: str, payload: dict = Body(default={})) -> dict:
 
 @router.post("/judges/{judge_id}/try")
 def try_judge(judge_id: str, payload: dict = Body(default={})) -> dict:
-    """裁判试跑：用当前裁判配置对历史回答重新判分（不跑 agent、不写台账）。"""
+    """裁判试跑：用当前裁判配置对历史回答重新判分（不跑 agent、不写台账）。
+
+    C6 起支持 `dim_id` 指定该裁判下的维度（缺省首个启用维度）。
+    """
     p = payload or {}
     case_id = str(p.get("case_id") or "").strip()
     if not case_id:
         raise _bad_request(ValueError("case_id 不能为空"))
     run_id = str(p["run_id"]) if p.get("run_id") else None
+    dim_id = str(p["dim_id"]) if p.get("dim_id") else None
     try:
-        return RUNNER.rejudge(judge_id=judge_id, case_id=case_id, run_id=run_id)
+        return RUNNER.rejudge(judge_id=judge_id, case_id=case_id, run_id=run_id, dim_id=dim_id)
     except ValueError as e:
         raise _bad_request(e) from e
     except TimeoutError as e:

@@ -351,7 +351,21 @@ export function runAgentTurn(opts) {
           }
         } else if (msg.type === 'result') {
           const total = usageTotal(msg.usage)
-          if (total) yield { type: 'usage', totalTokens: total }
+          if (total) {
+            // TECH-026 §5：透出 usage 明细（供平台成本报告；total 口径与 recordUsage 不变）
+            const u = msg.usage || {}
+            yield {
+              type: 'usage',
+              totalTokens: total,
+              usage: {
+                input: u.input_tokens || 0,
+                output: u.output_tokens || 0,
+                cacheRead: u.cache_read_input_tokens || 0,
+                cacheCreation: u.cache_creation_input_tokens || 0,
+                total,
+              },
+            }
+          }
           yield* flushPending()
           yield {
             type: 'done',

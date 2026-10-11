@@ -1,6 +1,10 @@
 /**
  * LLM-as-judge（eval/lib/judge.mjs）
  *
+ * ⚠️ 平台链路已弃用（TECH-026 B4/B5，2026-10-11）：minicare 平台的判分由 `minicare-agent/evals`
+ * 的 deepeval 引擎承接（`evals/score_run.py` + `evals/metrics/ternary.py`；双跑对照 12/12 一致后切换）。
+ * 本模块仅保留给 CLI 直跑 / 应急排查（`eval-agent.mjs` 未传 `--no-judge` 时的路径）；新维度/新口径一律以引擎侧为准。
+ *
  * 用强于被测的 deepseek-v4-pro 对主观指标判分：
  *   - faithfulness：回答事实能否在工具结果/知识库溯源（幻觉检测）
  *   - completeness：golden 关键点覆盖
