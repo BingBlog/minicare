@@ -25,5 +25,17 @@ let loaded = false
 export function loadLocalEnv() {
   if (loaded || NODE_ENV === 'production') return
   loaded = true
+  // ⚠️ dotenv override:false —— shell 环境已有的变量不会被 .env.local 覆盖。
+  // 若启动终端残留 DB_* 导出（如曾导出线上配置），进程会连错库；检测到冲突即告警。
+  // 实际生效的库名见 server.js 启动日志「KB-DB enabled (<库名>)」。
+  const dbConflicts = ['DB_HOST', 'DB_PORT', 'DB_NAME', 'DB_USER', 'DB_PASSWORD'].filter(
+    (k) => process.env[k],
+  )
+  if (dbConflicts.length) {
+    console.warn(
+      `[env] ⚠️ 检测到 shell 环境已存在 ${dbConflicts.join(' / ')} —— 它们优先于 .env.local（override:false），数据库可能连错库！` +
+        '若非有意覆盖，请在新终端重启，或先 unset 这些变量。',
+    )
+  }
   dotenv({ path: path.join(AGENT_ROOT, '.env.local'), override: false })
 }

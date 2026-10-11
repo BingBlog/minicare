@@ -54,7 +54,7 @@ if (config.deepSeekKey) {
 console.log(`[server] NODE_ENV=${NODE_ENV}`)
 console.log(
   `[server] FlexDB ${config.tcbCredentials ? 'enabled' : 'in-memory (no TCB credentials)'}, ` +
-    `KB-DB ${config.db ? 'enabled' : 'DISABLED (no DB config)'}, ` +
+    `KB-DB ${config.db ? `enabled (${config.db.name})` : 'DISABLED (no DB config)'}, ` +
     `embedding ${config.tokenHubKey ? 'enabled' : 'DISABLED (no TOKENHUB_API_KEY)'}, ` +
     `token ${config.internalToken ? 'enabled' : 'DISABLED (dev mode)'}`,
 )
