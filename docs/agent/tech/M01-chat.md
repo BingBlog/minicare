@@ -7,6 +7,13 @@
 > **2026-08-23 markdown 渲染落地**：`components/MarkdownText`（零依赖自研，支持 ##标题/**加粗**/*斜体*/`行内代码`/-·有序列表/>引用/|表格|/---分隔线，暖色主题对齐 minicare 视觉），assistant 气泡接入，用户消息保持纯文本；流式期间按内容 memo 避免重复解析。
 >
 > **2026-08-23 工具循环修复**：DeepSeek 偶发"回答完成后再次调用工具"导致流不结束 → `routes/chat.js` 增加工具循环防护（同工具 ≤2 次、总调用 ≤3 次，超限 respondToolUse 返回"已达上限，直接基于已有信息回答"）+ `prompts/system.js` 工具纪律约束；curl 实测三类场景（知识问答/日记生成/数据查询）tool_call 均收敛 1 次、done 正常；前端配套工具名去重 + 停止按钮耗时显示。
+>
+> **2026-10-11 更新（PRD-013 / TECH-028）**：① **分析页深链**——chat 页新增 `intent=analysis` 入参解析
+> （`anchor=report:<tab>` + `range=<窗口>` → 组装自然语言起手消息；**前端组装、agent 无感知**；续当前会话；防重 ref）；
+> ② **对话图表**——SSE 新增 `event: block`（chart 块），agent 侧 runtime 旁路生成（`lib/chart-block.js`：
+> 工具数据确定性映射、单轮 ≤1 张、growth 全量 series），chat 页收到后追加消息 `charts[]` 并渲染通栏图卡
+> `ChatChartCard`（文字之后；`lib/chartBlockToOption.ts` 转 EChartsOption；随消息持久化）。
+> 技术方案全文见 `docs/tech/TECH-028-report-assistant-integration.md`。
 
 ## 1. 技术设计概览
 
@@ -66,13 +73,14 @@ event: tool_call   data: { name, input }
 event: tool_result data: { name, output }
 event: text        data: { delta }                    // 流式增量（可能多个）
 event: sources     data: { sources: [{ type:'knowledge'|'record', title, source, id }] }
+event: block       data: { block: ChartBlock }        // 图表块（2026-10-11，PRD-013；block.type='chart'）
 event: diary       data: { draft, date }              // 日记草稿（M5）
 event: done        data: { events, ms, model }
 event: error       data: { message }
 ```
 
 - 小程序消费：`wx.request({ enableChunked: true })` + `onChunkReceived` 手写 SSE 解析（模拟器降级为完整响应，同一解析器）；
-- 客户端事件处理：text→append 气泡；tool_call→显示"正在查询宝宝数据..."；sources→渲染来源卡片；done→结束；error→提示重试。
+- 客户端事件处理：text→append 气泡；tool_call→显示"正在查询宝宝数据..."；sources→渲染来源卡片；**block→追加消息 charts[] 并渲染 ChartChartCard（旧版客户端对未知事件天然忽略，向后兼容）**；done→结束；error→提示重试。
 
 ## 4. 语音输入链路（复用 TECH-001，不引入新服务）
 
@@ -139,6 +147,7 @@ Taro.getRecorderManager() 录音（aac，30s 上限，波形动画）
 | `GuardrailCard` | 就医引导卡片 | emergency 时置顶高亮（红系），不走普通气泡 |
 | `DiaryDraftCard` | 日记草稿卡片（M5） | 展示 diary 事件草稿 + [编辑][保存] |
 | `ToolStatusTip` | 工具调用加载态 | "正在查询宝宝数据..."等，tool_call/tool_result 事件驱动 |
+| `ChatChartCard` | 对话内图表卡（2026-10-11，PRD-013 / TECH-028） | 实际落地于 `src/components/ChatChartCard/`（页面级复用组件）；通栏白卡 = 图标题 + EcChart + 图注；渲染异常仅隐藏本卡、文字不受影响 |
 
 ### 7.4 交互能力选型
 

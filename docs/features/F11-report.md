@@ -3,7 +3,7 @@
 > 功能 ID：P1-001  
 > 优先级：P1  
 > 状态：**已完成** ✅  
-> 最后更新：2026-10-11（图表渲染同层直显；健康 Tab 改「体温异常点」；排敏 Tab 改图表分析；生长 Tab 三图合并 + Tooltip 统一）
+> 最后更新：2026-10-11（图表渲染同层直显；健康 Tab 改「体温异常点」；排敏 Tab 改图表分析；生长 Tab 三图合并 + Tooltip 统一；**新增「问助手」入口 → PRD-013**）
 >
 > **技术方案**：ECharts 6 + canvas type="2d" 同层渲染直显（2026-10-11 由离屏截图模式重构）。
 > 依据：canvas 2d 自基础库 2.9.0 起支持同层渲染，官方现行口径「除事件相关，同层渲染下已无层级/滚动限制」；
@@ -12,6 +12,15 @@
 ## 功能描述
 
 通过图表可视化宝宝的各项记录数据，帮助照护者了解趋势和规律。6 个 Tab（生长 / 饮食 / 睡眠 / 尿布 / 健康 / 排敏）覆盖核心记录类型。
+
+## 「问助手」入口（2026-10-11 新增，PRD-013 US-01）
+
+各 Tab 的「数据洞察」卡底部有一行入口「**让助手深入分析 →**」（排敏 Tab 为「让助手评估排敏风险 →」）：
+点击跳转对话页并携带分析上下文（`intent=analysis & anchor=report:<tab> & range=<窗口>`；
+chat 页组装起手消息、续当前会话，agent 对深链参数无感知）——详见 `docs/prd/PRD-013.md` 与
+`docs/tech/TECH-028-report-assistant-integration.md`（D1 前端组装、§3.1 映射表）。
+
+**显示条件**：已登录且当前 Tab 有数据（洞察卡渲染则入口渲染；空态/游客态不出现）。
 
 **平台实现**：微信小程序（主平台），数据通过 REST API 获取后本地渲染图表。
 
@@ -109,6 +118,7 @@
 - [x] 生长 Tab：三图合并纵向展示（体重/身高/头围）、平滑曲线连接、Tooltip 含月龄与百分位（2026-10-11）
 - [x] 图表 Tooltip 统一暖色样式；所有图表均可点按查看 tooltip（2026-10-11）
 - [x] 生长图 tooltip 仅点按记录点触发，刻度线 / 空白处不误触（2026-10-11）
+- [x] 「问助手」入口：各 Tab 洞察卡底部展示、点击深链进对话（携维度 + 时间窗）、游客态不显示（2026-10-11，PRD-013 US-01；真机走查与 TECH-025 §5 清单一并执行）
 
 ## 相关文件
 
@@ -116,4 +126,5 @@
 - 类型定义：`minicare-mp/src/pagesReport/types.ts`
 - 图表组件：`minicare-mp/src/components/EcChart/EcChart.tsx`
 - 各 Tab 组件：`minicare-mp/src/pagesReport/tabs/GrowthTab.tsx` 等
+- 问助手入口：`minicare-mp/src/pagesReport/components/AskAssistantBar.tsx`（PRD-013）
 - 生长标准：`minicare-mp/src/lib/growth-standards.ts`
