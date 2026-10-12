@@ -28,6 +28,7 @@ import ContactModal from './ContactModal'
 import TabBar from '@/components/TabBar/TabBar'
 import LoginGuide from '@/components/LoginGuide/LoginGuide'
 import { getStatusBarHeight } from '@/lib/safeArea'
+import { toDateInput } from '@/lib/utils'
 import { useIsIPad } from '@/lib/useIsIPad'
 import { uploadOne } from '@/lib/uploadImage'
 import { useFileDisplayUrl } from '@/lib/useFileDisplayUrl'
@@ -147,7 +148,8 @@ export default function ProfilePage() {
   // ── 同步编辑表单 initial 值（当 currentBaby 变化时）───────────
   useEffect(() => {
     setEditName(currentBaby?.name ?? '')
-    setEditBirthDate(currentBaby?.birth_date ?? '')
+    // 出生日期回填：接口出口为 'YYYY-MM-DDTHH:mm:ss+08:00'，Picker 与展示需归一化为 YYYY-MM-DD
+    setEditBirthDate(toDateInput(currentBaby?.birth_date ?? ''))
     setEditGender(
       (currentBaby?.gender as 'male' | 'female' | 'unknown') ?? 'unknown',
     )
@@ -163,7 +165,8 @@ export default function ProfilePage() {
   // ── 编辑弹层操作 ──────────────────────────────────────────────
   const openEdit = useCallback(() => {
     setEditName(currentBaby?.name ?? '')
-    setEditBirthDate(currentBaby?.birth_date ?? '')
+    // 出生日期回填：接口出口为 'YYYY-MM-DDTHH:mm:ss+08:00'，Picker 与展示需归一化为 YYYY-MM-DD
+    setEditBirthDate(toDateInput(currentBaby?.birth_date ?? ''))
     setEditGender(
       (currentBaby?.gender as 'male' | 'female' | 'unknown') ?? 'unknown',
     )

@@ -16,7 +16,7 @@ import { agentDiaryApi, chatStream, type AgentSourceItem, type ChartBlock } from
 import type { Baby } from '@/api/types'
 import { getToken, getStoredFamilyId, setCurrentBabyId, getStoredBabyId } from '@/api/http'
 import { API_BASE_URL } from '@/api/base'
-import { getBabyAge, nowDate, yesterdayStr, toDateOnly, decodeParam } from '@/lib/utils'
+import { getBabyAge, nowDate, yesterdayStr, toDateOnly, toFriendlyDate, decodeParam } from '@/lib/utils'
 import { uploadOne, fetchTempUrls } from '@/lib/uploadImage'
 import MarkdownText from '@/components/MarkdownText/MarkdownText'
 import ChatChartCard from '@/components/ChatChartCard'
@@ -959,7 +959,7 @@ export default function ChatPage() {
             {baby.birth_date ? ` · ${getBabyAge(baby.birth_date)}` : ''}
           </Text>
           <Text className='chat-baby__sub'>
-            {allergySummary(baby) || `出生 ${baby.birth_date || '—'}`}
+            {allergySummary(baby) || `出生 ${baby.birth_date ? toFriendlyDate(baby.birth_date) : '—'}`}
           </Text>
         </View>
         {babies.length > 1 ? (

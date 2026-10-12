@@ -197,3 +197,23 @@ const handleConfirm = async () => {
 if (window.confirm('确定要删除吗？')) {
   await deleteItem(id)
 }
+```
+
+---
+
+## 规则四：API 日期/时间字段必须先归一化再消费（Picker / 展示）
+
+后端所有 Date 经全局 `DateTransformInterceptor` 统一输出为 **`YYYY-MM-DDTHH:mm:ss+08:00`**（北京时间）。
+前端**禁止把 API 返回的日期原值直接绑给 Picker 的 `value` 或直接渲染到界面**，按场景选工具函数（`@/lib/utils`）：
+
+| 场景 | 函数 | 示例 |
+|---|---|---|
+| 日期 Picker 的 `value` | `toDateInput(v)`（截断前 10 位） | `value={toDateInput(birthDate)}` |
+| 日期展示（友好格式） | `toFriendlyDate(v)` | `{toFriendlyDate(visitDate)}` → `2025年12月28日` |
+| 表单回填（日期） | `isoToLocalDate(v)` / `toDateInput(v)` | `setRecordDate(isoToLocalDate(rec.record_date))` |
+| 时间展示（HH:mm） | `isoToLocalTime(v)` / `formatTime(v)` | `{formatTime(rec.record_time)}` |
+| 日期比较/月龄计算 | `dayjs(v)` 直接解析（兼容长格式） | `dayjs(birthDate).diff(dayjs(), 'month')` |
+
+> 🚨 背景（2026-10-12 实测）：编辑宝宝档案弹窗把 `baby.birth_date` 原值直接绑给 Picker 并渲染，
+> 日期显示成 `2025-12-28T00:00:00+08:00`。排查同类问题时，重点搜：
+> ① `mode='date'` Picker 的 `value=`；② 模板里 `{xxx_date}` / `` `出生 ${xxx_date}` `` 之类的直出点。
