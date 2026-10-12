@@ -133,6 +133,12 @@ GROUP_META: dict[str, dict[str, str]] = {
         "label": "Agent 测评 · 全局身份",
         "note": "用例运行时的 ctx 用户信息（userId / familyId / babyId）统一在此设置；运行物化时注入每条用例，覆盖用例内同名键。",
     },
+    "analytics": {
+        "domain": "analytics",
+        "label": "用户分析 · 口径与缓存",
+        "note": "口径 v1 = 记录活跃（按 created_at 判定）；缓存 TTL、默认窗口、小样本阈值与疑似测试账号的昵称模式。"
+        "改后经「全局配置」保存即热重载（无需重启）。",
+    },
 }
 
 
@@ -386,6 +392,34 @@ ENV_ITEMS: list[dict[str, Any]] = [
     {
         "key": "LANGFUSE_SECRET_KEY", "field": "langfuse_secret_key", "secret": True, "domain": "obs",
         "label": "Langfuse Secret Key", "desc": "同上（sk-lf-…）",
+    },
+    # ── 用户分析（PRD-016 / TECH-033）──
+    # 🔴 与上面「知识库」域的 DB_* 是**两套独立连接**：那个必须停在 minicare_dev
+    #    （发布回滚会对它全表清空重建），本组**故意指向生产库且全程只读**。
+    #    分析域只有一个出口（analytics/reader.py，SQL 白名单强制 SELECT），不参与任何写路径。
+    {
+        "key": "ANALYTICS_DB_HOST", "field": "analytics_db_host", "secret": False, "domain": "analytics",
+        "label": "分析库地址（只读）",
+        "desc": "用户分析专用连接；CynosDB 生产库地址（与知识库域 DB_HOST 不同实例也无妨）",
+    },
+    {
+        "key": "ANALYTICS_DB_PORT", "field": "analytics_db_port", "secret": False, "domain": "analytics",
+        "default": "21002",
+        "label": "分析库端口", "desc": "CynosDB 生产库端口（本机实测 21002，必须为 1~5 位数字）",
+    },
+    {
+        "key": "ANALYTICS_DB_NAME", "field": "analytics_db_name", "secret": False, "domain": "analytics",
+        "label": "分析库名",
+        "desc": "默认 minicare-cloud-6gqledlle0132cbe（生产库）。**这里故意允许生产库** —— 分析域全程只读，不参与发布回滚",
+        "warn": "与「知识库」域的 DB_NAME 语义相反：那个必须停在 minicare_dev（发布回滚会全表清空），本项只读且独立",
+    },
+    {
+        "key": "ANALYTICS_DB_USER", "field": "analytics_db_user", "secret": False, "domain": "analytics",
+        "label": "分析库用户", "desc": "建议使用只读账号（仅 SELECT 权限），把「只读」落到账号层而非仅代码层",
+    },
+    {
+        "key": "ANALYTICS_DB_PASSWORD", "field": "analytics_db_password", "secret": True, "domain": "analytics",
+        "label": "分析库密码", "desc": "只读账号密码",
     },
 ]
 
@@ -674,6 +708,9 @@ def _validate_env_updates(updates: list[dict]) -> dict[str, str]:
         if field == "obs_langfuse_port":
             if not re.fullmatch(r"\d{1,5}", val):
                 raise ConfigError("OBS_LANGFUSE_PORT 需为 1~5 位数字（如 3100）；不支持清空")
+        if field == "analytics_db_port":
+            if not re.fullmatch(r"\d{1,5}", val):
+                raise ConfigError("ANALYTICS_DB_PORT 需为 1~5 位数字（如 21002）；不支持清空")
         if field == "obs_unit_dir" and val and not val.startswith("/"):
             raise ConfigError("OBS_UNIT_DIR 需为绝对路径（compose 与脚本的定位锚）")
         # Langfuse 密钥格式守卫（2026-10-11 实测踩坑：说明文字/Public Key 被误粘进字段，
@@ -691,6 +728,8 @@ def _validate_env_updates(updates: list[dict]) -> dict[str, str]:
         if field in ("source_dir", "out_dir"):
             if not val:
                 raise ConfigError(f"{key} 不能清空 —— 上传与解析扫描都依赖该目录")
+        # ⚠️ 必须**按字段名精确判定**（`==`），不可改成 `"db_name" in field`：
+        #    分析域的 `analytics_db_name` **故意指向生产库**且全程只读，改成子串匹配会把它彻底拦死（TECH-033 C-5/R7）。
         if field == "db_name" and "minicare-cloud" in val:
             raise ConfigError(
                 "拒绝写入正式库名（minicare-cloud-…）：发布回滚会对正式库全表清空重建。"

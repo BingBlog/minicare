@@ -28,7 +28,7 @@
  */
 
 /** 领域（平台一级分区）：顶部导航按它切换，侧栏按它过滤。 */
-export type DomainId = 'kb' | 'eval' | 'signal' | 'obs'
+export type DomainId = 'kb' | 'eval' | 'signal' | 'obs' | 'analytics'
 
 /**
  * 页面的归属层：四个领域之一，或**平台级**（`platform`）。
@@ -73,6 +73,17 @@ export const DOMAINS: Domain[] = [
     label: '观测',
     defaultPage: 'observability',
     desc: '服务状态 · 数据同步 · 同步历史',
+  },
+  /* 用户分析域（PRD-016 / TECH-033，2026-10-12）：
+     · 平台管理者看"家长端用户是怎么用的"—— 与前四域正交（那些管的是知识库/测评/信号/观测自身）；
+     · 数据源是**生产库**（只读），与知识库域可写的 `DB_*`（dev 库）物理隔离；
+     · 顶栏第五个页签，`Topnav` 遍历 DOMAINS 自动渲染 → 无需改组件；
+     · 「全局配置」页的域列同样由 DOMAINS 派生 → 自动新增「用户分析」列（承载 5 个 ANALYTICS_DB_* 项）。 */
+  {
+    id: 'analytics',
+    label: '用户分析',
+    defaultPage: 'analytics',
+    desc: '规模 · 活跃 · 功能 · 用户',
   },
 ]
 
@@ -327,6 +338,36 @@ export const NAV: NavItem[] = [
     story: 'TECH-029 S7',
     desc: '',
   },
+  /* 用户分析域（PRD-016 / TECH-033）：一级 = 活跃总览，二级 = 功能分析 / 用户清单。
+     三页共用「窗口」这一页面私有参数（写 URL 的 `?window=`，同「检索测试」的 `q` 惯例），
+     因此无需改 `app-context`（新页不消费 `doc`，也不属任何 `DOC_FAMILY`）。 */
+  {
+    id: 'analytics',
+    label: '活跃总览',
+    domain: 'analytics',
+    impl: true,
+    phase: 1,
+    story: 'PRD-016',
+    desc: '',
+    children: [
+      {
+        id: 'analyticsfeatures',
+        label: '功能分析',
+        impl: true,
+        phase: 2,
+        story: 'PRD-016',
+        desc: '',
+      },
+      {
+        id: 'analyticsusers',
+        label: '用户清单',
+        impl: true,
+        phase: 3,
+        story: 'PRD-016',
+        desc: '',
+      },
+    ],
+  },
 ]
 
 /**
@@ -536,4 +577,7 @@ export const RELOADABLE_PAGES = new Set([
   'signalswords',
   'signalspublish',
   'signalshistory',
+  'analytics',
+  'analyticsfeatures',
+  'analyticsusers',
 ])

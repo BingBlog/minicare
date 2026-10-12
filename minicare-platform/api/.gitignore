@@ -7,3 +7,7 @@ data/
 .pytest_cache/
 .ruff_cache/
 *.egg-info/
+
+# 用户分析域：排除名单写回前的自动备份（运行时产物，不进仓库）
+src/kb_pipeline/analytics/exclusions.yaml.bak-*
+src/kb_pipeline/analytics/*.yaml.tmp

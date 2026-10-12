@@ -238,6 +238,21 @@ class EvalConfig(BaseModel):
     ctx: dict[str, str] = Field(default_factory=dict)
 
 
+class AnalyticsConfig(BaseModel):
+    """用户分析域（PRD-016 / TECH-033）：只读分析口径与缓存
+
+    值真源 = `pipeline.yaml` 的 `analytics:` 段（改后经「全局配置」保存即热重载）。
+    与 `obs_*` 的分工：obs 管"平台自己的服务状态"，本组管"家长端用户的使用情况"。
+    """
+
+    cache_ttl_s: int = 300            # 指标缓存 TTL（同一查询在 TTL 内不重复打生产库）
+    default_window: str = "30d"       # 页面默认时间窗（7d / 30d / 90d）
+    small_sample_users: int = 20      # 用户数 < 此值时，比值类指标不出百分比（29 用户的现实约束）
+    query_timeout_ms: int = 8000      # 单条查询超时（超过则该指标标记"计算超时"，页面显示 —）
+    # 疑似测试账号的昵称模式（仅用于「候选识别」；是否排除由人工确认，不自动生效）
+    test_nickname_pattern: str = r"^用户_\d{4}$"
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=str(PROJECT_ROOT / ".env"), env_file_encoding="utf-8", extra="ignore"
@@ -250,6 +265,20 @@ class Settings(BaseSettings):
     db_user: str = ""
     db_password: str = ""
     db_name: str = "minicare_dev"
+    # ── 用户分析只读库（PRD-016 / TECH-033 §5）──
+    #
+    # 🔴 与上面 DB_* 是**两套独立连接**，来源不同：
+    #    DB_*        = 平台自己的开发库（minicare_dev），`/api/publish/rollback` 会对它做无闸门删写，
+    #                  因此**绝不许**指向正式库（config_center 有 db_name 守卫）。
+    #    ANALYTICS_* = 家长端用户真实数据的正式库（minicare-cloud-...），本域**只读**。
+    # 分离的意义：分析域只开一个只读出口（analytics/reader.py，SQL 白名单强制 SELECT），
+    # 即便分析代码出错也不可能写坏正式库；同时平台自己的 dev 库不参与统计（含旺仔镜像与测试账号）。
+    # 缺省留空 → /api/analytics/* 一律 503「未配置分析库」，不静默回落 dev 库。
+    analytics_db_host: str = ""
+    analytics_db_port: int = 21002
+    analytics_db_user: str = ""
+    analytics_db_password: str = ""
+    analytics_db_name: str = ""
     hunyuan_api_key: str = ""
     # TokenHub API Key（sk- 开头，OpenAI 兼容接口；混元老平台已停止新购）
     tokenhub_api_key: str = ""
@@ -291,6 +320,7 @@ class Settings(BaseSettings):
     llm_cfg: LlmConfig = LlmConfig()
     translate_cfg: TranslateConfig = TranslateConfig()
     eval_cfg: EvalConfig = EvalConfig()
+    analytics_cfg: AnalyticsConfig = AnalyticsConfig()
 
     # ── 观测（Langfuse，TECH-030）──
     # 口径（2026-10-11 用户拍板）：**平台 = 观测服务的控制面** —— 负责 Langfuse 栈的
@@ -345,6 +375,7 @@ SECTION_MAP: dict[str, str] = {
     "llm": "llm_cfg",
     "translate": "translate_cfg",
     "eval": "eval_cfg",
+    "analytics": "analytics_cfg",
 }
 
 
@@ -424,6 +455,8 @@ def effective_thresholds(s: Settings | None = None) -> list[dict[str, str]]:
         ("metadata", s.metadata_cfg),
         # Agent 测评全局身份（pipeline.yaml 的 `eval:` 段；「全局配置」页可改）
         ("eval", s.eval_cfg),
+        # 用户分析域（TECH-033 §5；「全局配置」页可改，含疑似测试账号昵称模式）
+        ("analytics", s.analytics_cfg),
     ]
     for group, cfg in groups:
         src = s.source_of(group)

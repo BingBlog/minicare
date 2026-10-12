@@ -193,6 +193,30 @@ export const NAV_ICONS: Record<string, ReactNode> = {
       <path d="M6 12h2.4l1.7-3.4 2.7 6.8 1.7-3.4H18" />
     </>
   ),
+  /** 活跃总览 —— 折线上升（活跃趋势） */
+  analytics: (
+    <>
+      <path d="M3.5 19.5h17" />
+      <path d="M4.5 16.2 9.4 10.6l3.0 2.6 5.0-5.6" />
+      <path d="M13.8 7.6h3.8v3.8" />
+    </>
+  ),
+  /** 功能分析 —— 排行横条 */
+  analyticsfeatures: (
+    <>
+      <path d="M4.5 7h10M4.5 12h14M4.5 17h7" />
+      <circle cx="19.5" cy="7" r="1.6" fill="currentColor" stroke="none" />
+    </>
+  ),
+  /** 用户清单 —— 人群轮廓 */
+  analyticsusers: (
+    <>
+      <circle cx="9" cy="8" r="3.1" />
+      <path d="M3.6 19.2a5.6 5.6 0 0 1 10.8 0" />
+      <path d="M16.4 5.4a3.1 3.1 0 0 1 0 5.6" />
+      <path d="M17.6 14.2a5.6 5.6 0 0 1 2.8 5" />
+    </>
+  ),
 }
 
 /** 侧栏导航图标。未知 id 回退为一个中性圆点，避免"新增页面忘了配图标"时整项空掉。 */
@@ -236,6 +260,15 @@ export const DOMAIN_ICONS: Record<string, ReactNode> = {
       <path d="M12 3.5v2.4M20.5 12h-2.4" />
       <path d="M12 12l5.6-3.9" />
       <circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none" />
+    </>
+  ),
+  /** 用户分析 = 柱状图 + 上升箭头（规模与增长） */
+  analytics: (
+    <>
+      <path d="M4 20h16" />
+      <path d="M6.5 20v-5M11 20v-8.5M15.5 20v-4.5" />
+      <path d="M5.5 10.5 10 6.5l3 2.6 5.5-4.6" />
+      <path d="M14.5 4.5h4.2v4.2" />
     </>
   ),
 }

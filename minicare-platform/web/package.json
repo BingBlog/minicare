@@ -12,6 +12,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "echarts": "^6.1.0",
     "markdown-it": "^15.0.2",
     "pdfjs-dist": "^6.3.289",
     "react": "^18.3.1",

@@ -1,0 +1,13 @@
+# 用户分析 · 排除名单（PRD-016 / TECH-033）
+#
+# 用途：把测试账号 / 内部家庭排除出统计，使"真实用户"口径可信。
+#   · users            —— 显式排除的用户 id（user_account.id）
+#   · families         —— 显式排除的家庭 id（family_group.id）
+#   · nickname_patterns —— 昵称正则；加载时解析成 uid 集合后生效
+#
+# ⚠️ 本文件由「用户分析 → 用户清单」页写回（写前自动备份为 exclusions.yaml.bak-<时间戳>）。
+#    手工编辑同样有效，但需保证 YAML 语法正确。
+
+users: []
+families: []
+nickname_patterns: []

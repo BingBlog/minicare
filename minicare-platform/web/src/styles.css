@@ -3622,3 +3622,259 @@ details.menu .menu-pop button:hover { background: var(--surface-2); }
   color: var(--text);
 }
 
+/* ══════════════════════════════════════════════════════════════════════════
+   用户分析域（PRD-016 / TECH-033）—— 第五个能力域的页面样式
+   · 全部以 `an-` 前缀，避免与既有页面撞名；
+   · 只取既有设计令牌（--accent / --line / --text-* / --r-* ），不引入新色值，
+     保证与知识库/测评/信号/观测四域视觉连续；
+   · 图表本身的配色在 `lib/analyticsChart.ts`（Canvas 里不能用 CSS 变量）。
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* 工具条 / 筛选条：按钮成组、可换行 */
+.an-actions,
+.an-filters {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.an-filters {
+  padding: 2px 0 12px;
+}
+.an-sep {
+  width: 1px;
+  height: 18px;
+  margin: 0 4px;
+  background: var(--line);
+}
+.btn-sm {
+  font-size: 11.5px;
+  padding: 3px 9px;
+}
+.an-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: var(--text);
+  cursor: pointer;
+}
+
+/* 指标卡：等宽网格，自动换行 */
+.an-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.an-kpis-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.an-kpis-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.an-kpis-5 {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+@media (max-width: 1400px) {
+  .an-kpis-5 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.an-card {
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--surface-2);
+  padding: 10px 12px;
+  min-width: 0;
+}
+.an-card .k {
+  font-size: 12px;
+  color: var(--text-2);
+}
+.an-card .v {
+  font-size: 24px;
+  line-height: 1.3;
+  font-weight: 600;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.an-card .v.an-v-sm {
+  font-size: 13px;
+  font-weight: 500;
+}
+.an-card .n {
+  font-size: 11.5px;
+  color: var(--text-2);
+}
+.an-delta {
+  margin-left: 6px;
+  font-size: 11.5px;
+}
+.an-delta.up {
+  color: var(--ok);
+}
+.an-delta.down {
+  color: var(--danger);
+}
+.an-delta.flat {
+  color: var(--text-3);
+}
+
+/* 图表容器：给足上下留白，别贴着卡片边 */
+.an-chart {
+  margin-top: 10px;
+}
+.an-grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.an-subtitle {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-2);
+  margin: 12px 0 6px;
+}
+.an-subtitle:first-child {
+  margin-top: 0;
+}
+
+/* 页脚：数据源标识常驻（防"看着 dev 数据做生产决策"） */
+.an-footer {
+  font-size: 11.5px;
+  color: var(--text-3);
+  padding: 4px 2px 14px;
+}
+
+/* 表格内的"链接"按钮（用按钮而不是 <a>，避免 href 污染） */
+.an-link {
+  font: inherit;
+  font-size: inherit;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  cursor: pointer;
+  text-align: left;
+}
+.an-link:hover {
+  text-decoration: underline;
+}
+.an-row-muted td {
+  opacity: 0.6;
+}
+.an-row-open td {
+  background: var(--accent-bg);
+}
+
+/* 占比横条：条长按最大值归一化，数值始终以文字给出（长尾里条长会骗人） */
+.an-share {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.an-share-track {
+  flex: 1;
+  height: 6px;
+  min-width: 40px;
+  border-radius: 3px;
+  background: var(--neutral-bg);
+  overflow: hidden;
+}
+.an-share-track i {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+}
+.an-share-text {
+  font-size: 11.5px;
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* 留存小表：`Table` 自带 `table-layout: fixed`，窄列下这里允许横向滚动 */
+.an-cohort {
+  overflow-x: auto;
+}
+
+/* 胶囊列表（排除名单 / 盲区项） */
+.an-chips {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.an-x {
+  margin-left: 6px;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.6;
+  font-size: 13px;
+  line-height: 1;
+}
+.an-x:hover {
+  opacity: 1;
+}
+
+.an-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.an-list li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 5px 0;
+  border-bottom: 1px dashed var(--line);
+  font-size: 12.5px;
+}
+.an-list li:last-child {
+  border-bottom: 0;
+}
+
+/* 单用户抽屉（右侧滑出；遮罩点击关闭） */
+.an-drawer-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(0, 0, 0, 0.22);
+  display: flex;
+  justify-content: flex-end;
+}
+.an-drawer {
+  width: min(560px, 92vw);
+  height: 100%;
+  background: var(--surface);
+  border-left: 1px solid var(--line);
+  box-shadow: var(--sh-md);
+  display: flex;
+  flex-direction: column;
+}
+.an-drawer-h {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+}
+.an-drawer-h h3 {
+  margin: 0 0 2px;
+  font-size: 15px;
+  color: var(--text);
+}
+.an-drawer-h .hint {
+  font-size: 11px;
+  word-break: break-all;
+}
+.an-drawer-b {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px 16px 24px;
+}

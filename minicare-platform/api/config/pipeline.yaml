@@ -197,3 +197,19 @@ eval:
     userId: b42b4c6f-5a57-413d-815a-af16e790f4a1
     familyId: 5143aa2e-5d18-4a04-af9f-d783e24a528d
     babyId: 8535bda2-7cdf-45c3-ba37-34a580822e5f
+
+# ── 用户分析（PRD-016 / TECH-033）：只读口径与缓存 ──────────────────────
+# 口径 v1 = **记录活跃**：以业务表 `created_at`（录入时刻）判定，不是 event_time。
+# 连接（ANALYTICS_DB_*）在 .env，指向生产库且只读；本段只管"怎么算"。
+# 改这里经「全局配置 → 用户分析」保存即热重载，无需重启。
+analytics:
+  # 指标进程内缓存 TTL（秒）。同一查询在 TTL 内不重复打生产库；页面「刷新」按钮用 force=1 穿透。
+  cache_ttl_s: 300
+  # 页面默认时间窗：7d / 30d / 90d
+  default_window: 30d
+  # 用户数 < 此值时，比值类指标（黏性等）不出百分比 —— 29 用户的现实约束。
+  small_sample_users: 20
+  # 单条查询读超时（毫秒）。超时则该指标为 null（页面显示 —），**绝不回落到 0**。
+  query_timeout_ms: 8000
+  # 疑似测试账号的昵称模式（仅用于「候选识别」；是否排除一律人工确认，不自动生效）。
+  test_nickname_pattern: "^用户_\\d{4}$"

@@ -301,6 +301,11 @@ def create_app():
 
     app.include_router(obs_router)
 
+    # 用户分析域（PRD-016 / TECH-033）：/api/analytics/*（**只读**生产库；独立 ANALYTICS_DB_* 连接）
+    from .router_analytics import router as analytics_router
+
+    app.include_router(analytics_router)
+
     def _guard_write(payload: dict | None) -> dict:
         payload = payload or {}
         if payload.get("write"):

@@ -23,6 +23,9 @@ import { SignalsWordsPage } from './pages/SignalsWords'
 import { SignalsPublishPage } from './pages/SignalsPublish'
 import { SignalsHistoryPage } from './pages/SignalsHistory'
 import { ObservabilityPage } from './pages/Observability'
+import { AnalyticsPage } from './pages/Analytics'
+import { AnalyticsFeaturesPage } from './pages/AnalyticsFeatures'
+import { AnalyticsUsersPage } from './pages/AnalyticsUsers'
 import { PlaceholderPage } from './pages/Placeholder'
 
 /**
@@ -57,6 +60,9 @@ const PAGES: Record<string, ComponentType> = {
   signalspublish: SignalsPublishPage,
   signalshistory: SignalsHistoryPage,
   observability: ObservabilityPage,
+  analytics: AnalyticsPage,
+  analyticsfeatures: AnalyticsFeaturesPage,
+  analyticsusers: AnalyticsUsersPage,
 }
 
 function PageSwitch() {
