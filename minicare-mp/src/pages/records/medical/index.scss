@@ -731,5 +731,75 @@
   color: #b3a0a5;
 }
 
+/* ── AI 识图入口（PRD-017 识图建档）── */
+.medical-parse-entry {
+  padding: 14px 16px;
+}
+
+.medical-parse-entry__title {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #3A2428;
+}
+
+.medical-parse-entry__sub {
+  display: block;
+  font-size: 11.5px;
+  color: #9A8090;
+  margin-top: 4px;
+  line-height: 1.5;
+}
+
+/* ── 识别中遮罩（防误操作，可取消）── */
+.medical-parse-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 400;
+  background: rgba(58, 36, 40, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.medical-parse-mask__card {
+  width: 240px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 22px 20px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 8px 30px rgba(80, 40, 50, 0.18);
+}
+
+.medical-parse-mask__title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #3A2428;
+}
+
+.medical-parse-mask__sub {
+  font-size: 12px;
+  color: #9A8090;
+  margin-top: 6px;
+}
+
+.medical-parse-mask__btn {
+  margin-top: 14px;
+  height: 36px;
+  padding: 0 28px;
+  border-radius: 18px;
+  background: #F5F0F2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13.5px;
+  color: #7A5A60;
+}
+
 
 @include ipad.medical;

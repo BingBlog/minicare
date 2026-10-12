@@ -16,8 +16,8 @@ export const EMPTY_SICK: SickFormState = {
   symptomFlags: [],
 }
 
-/** 常见症状标签池（自由标签补充不在此期） */
-const SICK_SYMPTOM_POOL = ['发热', '咳嗽', '流涕', '腹泻', '呕吐', '皮疹', '哭闹', '食欲差', '精神差', '便秘']
+/** 常见症状标签池（自由标签补充不在此期；PRD-017 识图回填的"文中有据才勾选"取此池交集） */
+export const SICK_SYMPTOM_POOL = ['发热', '咳嗽', '流涕', '腹泻', '呕吐', '皮疹', '哭闹', '食欲差', '精神差', '便秘']
 
 interface Props {
   value: SickFormState

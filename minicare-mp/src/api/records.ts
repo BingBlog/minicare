@@ -209,6 +209,8 @@ export const recordsApi = {
       medicalApi.getVaccineBook(familyId, babyId),
     patchVaccineSetting: (familyId: string, data: VaccineSettingPayload) =>
       medicalApi.patchVaccineSetting(familyId, data),
+    /** 识图解析（PRD-017）：解析不落库，结果确认后随保存提交（documents） */
+    parseImages: medicalApi.parseImages,
   },
   symptom: {
     list: (familyId: string, babyId: string, params?: DateListParams) =>

@@ -1,16 +1,20 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
+  ArrayMaxSize,
   IsArray,
   IsBoolean,
   IsDateString,
   IsEnum,
   IsIn,
   IsInt,
+  IsNotEmpty,
+  IsObject,
   IsOptional,
   IsString,
   IsUUID,
   Matches,
   Max,
+  MaxLength,
   Min,
   ValidateNested,
 } from 'class-validator';
@@ -87,11 +91,17 @@ export enum CheckupGrowthSync {
   SKIPPED = 'skipped',
 }
 
-/** 单条用药记录（medications JSON item；P1 就诊开药扩展 days） */
+/** 单条用药记录（medications JSON item；P1 就诊开药扩展 days；PRD-017 识图扩展 spec/quantity/frequency/route/note） */
 export class MedicationItemDto {
   @ApiProperty({ description: '药品名称' }) @IsString() name: string;
-  @ApiPropertyOptional({ description: '剂量描述，如 5ml 每次' }) @IsOptional() @IsString() dose?: string;
+  @ApiPropertyOptional({ description: '单次用量，如 1.25ml / 0.8袋（AI 识图复用此字段）' }) @IsOptional() @IsString() dose?: string;
   @ApiPropertyOptional({ description: '服药天数（选填）' }) @IsOptional() @IsInt() @Min(1) @Max(365) days?: number;
+  // ── PRD-017 识图建档扩展（全可选，向后兼容）──
+  @ApiPropertyOptional({ description: '规格，如 0.6g 15ml/瓶' }) @IsOptional() @IsString() spec?: string;
+  @ApiPropertyOptional({ description: '数量，如 1瓶 / 1盒' }) @IsOptional() @IsString() quantity?: string;
+  @ApiPropertyOptional({ description: '频次，如 每日3次 / 必要时' }) @IsOptional() @IsString() frequency?: string;
+  @ApiPropertyOptional({ description: '给药途径，如 口服' }) @IsOptional() @IsString() route?: string;
+  @ApiPropertyOptional({ description: '备注，如 必要时' }) @IsOptional() @IsString() note?: string;
 }
 
 /** 儿保里程碑单条 */
@@ -111,6 +121,32 @@ export class MilestoneItemDto {
 export class QaItemDto {
   @ApiProperty({ description: '我的问题' }) @IsString() question: string;
   @ApiPropertyOptional({ description: '医生答复（空 = 待补答复）' }) @IsOptional() @IsString() answer?: string;
+}
+
+/** 单据类型枚举（PRD-017 §3.1；与 agent 解析契约 / mp DOC_TYPE_LABELS 同源） */
+export const MEDICAL_DOC_TYPES = ['outpatient_record', 'prescription', 'lab_report', 'imaging_report', 'other'] as const;
+
+/** 单据解析档案输入（PRD-017 / TECH-035：随记录保存一并提交；行=图片） */
+export class MedicalDocumentInputDto {
+  @ApiProperty({ description: '图片 fileID（须在 photo_ids 内，否则服务端过滤）' })
+  @IsString() @IsNotEmpty() @MaxLength(512) file_id: string;
+
+  @ApiProperty({ enum: MEDICAL_DOC_TYPES, description: '单据类型' })
+  @IsIn(MEDICAL_DOC_TYPES as unknown as string[])
+  doc_type: string;
+
+  @ApiProperty({ description: '识别状态 success|failed' })
+  @IsIn(['success', 'failed'])
+  status: string;
+
+  @ApiPropertyOptional({ description: '整体置信 high|low（failed 不传）' })
+  @IsOptional() @IsIn(['high', 'low']) confidence?: string;
+
+  @ApiPropertyOptional({ description: '解析产出 {docType,confidence,lowConfidenceFields,data:{…}}' })
+  @IsOptional() @IsObject() parsed_json?: Record<string, unknown>;
+
+  @ApiPropertyOptional({ description: '失败原因（用户可读短句）' })
+  @IsOptional() @IsString() @MaxLength(255) error_note?: string;
 }
 
 /** 各类型专属字段组（service 校验/白名单用，避免跨类型写入错列） */
@@ -209,6 +245,10 @@ export class CreateMedicalDto {
   @IsOptional() @IsArray() @IsString({ each: true })
   sick_symptom_flags?: string[];
 
+  @ApiPropertyOptional({ description: '单据解析档案（PRD-017 识图；行=图片）', type: [MedicalDocumentInputDto] })
+  @IsOptional() @IsArray() @ArrayMaxSize(6) @ValidateNested({ each: true }) @Type(() => MedicalDocumentInputDto)
+  documents?: MedicalDocumentInputDto[];
+
   @ApiPropertyOptional({ description: '就诊开药是否同步加入药箱（P1；true 时按 medications 逐条去重写入药箱）' })
   @IsOptional() @IsBoolean()
   sync_meds_to_stock?: boolean;
@@ -288,6 +328,10 @@ export class UpdateMedicalDto {
   @ApiPropertyOptional({ type: [String] })
   @IsOptional() @IsArray() @IsString({ each: true })
   sick_symptom_flags?: string[];
+
+  @ApiPropertyOptional({ description: '单据解析档案（PRD-017 识图；全量提交，服务端 upsert+按 photo_ids 清理）', type: [MedicalDocumentInputDto] })
+  @IsOptional() @IsArray() @ArrayMaxSize(6) @ValidateNested({ each: true }) @Type(() => MedicalDocumentInputDto)
+  documents?: MedicalDocumentInputDto[];
 
   @ApiPropertyOptional() @IsOptional() @IsBoolean()
   sync_meds_to_stock?: boolean;

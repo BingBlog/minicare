@@ -1,5 +1,5 @@
 import { BadRequestException, Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { Pool } from 'mysql2/promise';
+import { Pool, PoolConnection } from 'mysql2/promise';
 import { v4 as uuidv4 } from 'uuid';
 import { DATABASE_POOL } from '../../common/database/database.module';
 import {
@@ -7,10 +7,13 @@ import {
   UpdateMedicalDto,
   LEGACY_VISIT_TYPES,
   CheckupGrowthSync,
+  MedicalDocumentInputDto,
 } from './dto/create-medical.dto';
+import { ParseImagesDto } from './dto/parse-images.dto';
 import { toMysqlDate, getBeijingToday, addDays, formatSqlDate } from '../../common/utils/date.util';
 import { TimelineService } from '../timeline/timeline.service';
 import { GrowthService } from '../growth/growth.service';
+import { AgentService } from '../../agent/agent.service';
 
 /**
  * MedicalService —— 医疗记录（020 类型化：vaccine/checkup/sick/other）
@@ -42,6 +45,7 @@ export class MedicalService {
     @Inject(DATABASE_POOL) private readonly db: Pool,
     private readonly timelineService: TimelineService,
     private readonly growthService: GrowthService,
+    private readonly agentService: AgentService,
   ) {}
 
   private jsonOrNull(v: unknown): string | null {
@@ -68,6 +72,107 @@ export class MedicalService {
 
   private hasMeasurement(dto: { checkup_height_mm?: number; checkup_weight_g?: number; checkup_head_mm?: number }): boolean {
     return dto.checkup_height_mm != null || dto.checkup_weight_g != null || dto.checkup_head_mm != null;
+  }
+
+  // ── 单据档案（PRD-017 / TECH-035：行=图片，随记录同事务写入；仅 findOne 带出）──
+
+  /** photo_ids 归一（DB 行可能是 JSON 字符串或数组） */
+  private parsePhotoIds(v: any): string[] {
+    if (v == null) return [];
+    if (Array.isArray(v)) return v;
+    try {
+      const p = JSON.parse(v);
+      return Array.isArray(p) ? p : [];
+    } catch {
+      return [];
+    }
+  }
+
+  /** 单据输入 → 绑定的 db 值（与 INSERT 列序一致） */
+  private docBindValues(recordId: string, d: MedicalDocumentInputDto): any[] {
+    return [
+      uuidv4(), recordId, d.file_id, d.doc_type, d.status,
+      d.confidence ?? null,
+      d.parsed_json != null ? JSON.stringify(d.parsed_json) : null,
+      d.error_note ?? null,
+    ];
+  }
+
+  /** 有效单据过滤：file_id 必须 ∈ photo_ids（防越权/防脏数据），file_id 去重（后者覆盖） */
+  private filterDocs(docs: MedicalDocumentInputDto[], photoIds: string[]): MedicalDocumentInputDto[] {
+    const allowed = new Set(photoIds);
+    const byFile = new Map<string, MedicalDocumentInputDto>();
+    for (const d of docs) {
+      if (allowed.has(d.file_id)) byFile.set(d.file_id, d);
+    }
+    return [...byFile.values()];
+  }
+
+  /** 多值插入档案（create 事务内） */
+  private async insertDocuments(conn: PoolConnection, recordId: string, docs: MedicalDocumentInputDto[]) {
+    if (docs.length === 0) return;
+    const placeholders = docs.map(() => '(?, ?, ?, ?, ?, ?, ?, ?)').join(', ');
+    const values = docs.flatMap((d) => this.docBindValues(recordId, d));
+    await conn.query(
+      `INSERT INTO medical_document
+         (id, medical_record_id, file_id, doc_type, status, confidence, parsed_json, error_note)
+       VALUES ${placeholders}`,
+      values,
+    );
+  }
+
+  /** 更新时同步档案：upsert 提交项 + 按 photo_ids 清理孤儿（update 事务内） */
+  private async syncDocuments(
+    conn: PoolConnection,
+    recordId: string,
+    docs: MedicalDocumentInputDto[] | undefined,
+    photoIds: string[],
+  ) {
+    if (docs !== undefined) {
+      for (const d of this.filterDocs(docs, photoIds)) {
+        await conn.execute(
+          `INSERT INTO medical_document
+             (id, medical_record_id, file_id, doc_type, status, confidence, parsed_json, error_note)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+           ON DUPLICATE KEY UPDATE
+             doc_type = VALUES(doc_type), status = VALUES(status), confidence = VALUES(confidence),
+             parsed_json = VALUES(parsed_json), error_note = VALUES(error_note), updated_at = NOW()`,
+          this.docBindValues(recordId, d),
+        );
+      }
+    }
+    // 清理:档案行必须对应现存图片（photo_ids 空 → 全部清理）
+    if (photoIds.length > 0) {
+      await conn.query(
+        'DELETE FROM medical_document WHERE medical_record_id = ? AND file_id NOT IN (?)',
+        [recordId, photoIds],
+      );
+    } else {
+      await conn.execute('DELETE FROM medical_document WHERE medical_record_id = ?', [recordId]);
+    }
+  }
+
+  /** 读取档案（按 photo_ids 顺序；仅 findOne 调用，列表接口不携带） */
+  private async loadDocuments(recordId: string, photoIds: string[]) {
+    const [docs] = await this.db.execute<any[]>(
+      'SELECT * FROM medical_document WHERE medical_record_id = ?',
+      [recordId],
+    );
+    if (docs.length === 0) return [];
+    const order = new Map(photoIds.map((fid, i) => [fid, i]));
+    return docs
+      .map((d) => ({
+        file_id: d.file_id,
+        doc_type: d.doc_type,
+        status: d.status,
+        confidence: d.confidence,
+        parsed_json: d.parsed_json != null
+          ? (typeof d.parsed_json === 'string' ? JSON.parse(d.parsed_json) : d.parsed_json)
+          : null,
+        error_note: d.error_note,
+        updated_at: d.updated_at,
+      }))
+      .sort((a, b) => (order.get(a.file_id) ?? 99) - (order.get(b.file_id) ?? 99));
   }
 
   /**
@@ -128,42 +233,58 @@ export class MedicalService {
     // 初值：无测量 → null；skip → skipped；有测量待同步 → null（成功后回填）
     const syncInit = !measured ? null : (willSkip ? CheckupGrowthSync.SKIPPED : null);
 
-    await this.db.execute(
-      `INSERT INTO medical_record
-         (id, baby_id, recorded_by, ${ALL_COLUMNS.join(', ')})
-       VALUES (?, ?, ?, ${ALL_COLUMNS.map(() => '?').join(', ')})`,
-      [
-        id, dto.baby_id, userId,
-        toMysqlDate(dto.visit_date),
-        dto.visit_time            ?? null,
-        dto.visit_type            ?? null,
-        dto.hospital              ?? null,
-        dto.doctor                ?? null,
-        dto.diagnosis             ?? null,
-        dto.result_summary        ?? null,
-        this.jsonOrNull(dto.medications),
-        this.jsonOrNull(dto.photo_ids),
-        dto.follow_up_date ? toMysqlDate(dto.follow_up_date) : null,
-        dto.follow_up_time        ?? null,
-        dto.note                  ?? null,
-        dto.vaccine_name          ?? null,
-        dto.vaccine_schedule_key  ?? null,
-        dto.vaccine_dose_seq      ?? null,
-        dto.vaccine_site          ?? null,
-        dto.vaccine_batch         ?? null,
-        this.jsonOrNull(dto.vaccine_reactions),
-        dto.vaccine_reaction_note ?? null,
-        dto.checkup_height_mm     ?? null,
-        dto.checkup_weight_g      ?? null,
-        dto.checkup_head_mm       ?? null,
-        this.jsonOrNull(dto.checkup_milestones),
-        dto.checkup_assessment    ?? null,
-        this.jsonOrNull(dto.checkup_qa),
-        syncInit,
-        dto.sick_complaint        ?? null,
-        this.jsonOrNull(dto.sick_symptom_flags),
-      ],
-    );
+    // 主记录 + 单据档案同事务（PRD-017：档案写失败整体回滚，不产生"记录存了档案丢了"半成品）
+    const conn = await this.db.getConnection();
+    try {
+      await conn.beginTransaction();
+      await conn.execute(
+        `INSERT INTO medical_record
+           (id, baby_id, recorded_by, ${ALL_COLUMNS.join(', ')})
+         VALUES (?, ?, ?, ${ALL_COLUMNS.map(() => '?').join(', ')})`,
+        [
+          id, dto.baby_id, userId,
+          toMysqlDate(dto.visit_date),
+          dto.visit_time            ?? null,
+          dto.visit_type            ?? null,
+          dto.hospital              ?? null,
+          dto.doctor                ?? null,
+          dto.diagnosis             ?? null,
+          dto.result_summary        ?? null,
+          this.jsonOrNull(dto.medications),
+          this.jsonOrNull(dto.photo_ids),
+          dto.follow_up_date ? toMysqlDate(dto.follow_up_date) : null,
+          dto.follow_up_time        ?? null,
+          dto.note                  ?? null,
+          dto.vaccine_name          ?? null,
+          dto.vaccine_schedule_key  ?? null,
+          dto.vaccine_dose_seq      ?? null,
+          dto.vaccine_site          ?? null,
+          dto.vaccine_batch         ?? null,
+          this.jsonOrNull(dto.vaccine_reactions),
+          dto.vaccine_reaction_note ?? null,
+          dto.checkup_height_mm     ?? null,
+          dto.checkup_weight_g      ?? null,
+          dto.checkup_head_mm       ?? null,
+          this.jsonOrNull(dto.checkup_milestones),
+          dto.checkup_assessment    ?? null,
+          this.jsonOrNull(dto.checkup_qa),
+          syncInit,
+          dto.sick_complaint        ?? null,
+          this.jsonOrNull(dto.sick_symptom_flags),
+        ],
+      );
+      // 单据档案同事务写入（仅保留 file_id ∈ photo_ids 的项）
+      if (dto.documents?.length) {
+        await this.insertDocuments(conn, id, this.filterDocs(dto.documents, dto.photo_ids ?? []));
+      }
+      await conn.commit();
+    } catch (e) {
+      await conn.rollback();
+      throw e;
+    } finally {
+      conn.release();
+    }
+
     await this.timelineService.upsertFromSource('medical', id);
 
     if (measured && !willSkip) {
@@ -246,13 +367,35 @@ export class MedicalService {
     };
   }
 
+  /**
+   * 识图解析编排（PRD-017 / TECH-035 §3.1）
+   * 校验 baby 归属 + fileId 前缀（/medical/{babyId}/）→ 转发 agent（并发 3 在 agent 内）。
+   * 解析不落库：结果由前端确认，随"保存"动作经 create/update 的 documents 落库。
+   */
+  async parseImages(familyId: string, dto: ParseImagesDto) {
+    const [rows] = await this.db.execute<any[]>(
+      'SELECT id FROM baby_profile WHERE id = ? AND family_id = ? AND deleted_at IS NULL',
+      [dto.baby_id, familyId],
+    );
+    if (rows.length === 0) throw new NotFoundException('宝宝不属于该家庭');
+
+    const prefix = `/medical/${dto.baby_id}/`;
+    if (!dto.file_ids.every((fid) => fid.includes(prefix))) {
+      throw new BadRequestException('图片不属于该宝宝');
+    }
+    return this.agentService.postParseImages(dto.file_ids);
+  }
+
   async findOne(id: string) {
     const [rows] = await this.db.execute<any[]>(
       'SELECT * FROM medical_record WHERE id = ?',
       [id],
     );
     if (!rows[0]) return null;
-    return this.mapRow(rows[0]);
+    const out = this.mapRow(rows[0]);
+    // 单据档案仅详情带出（列表/档案接口不携带，PRD-017 §9.2-R8）
+    out.documents = await this.loadDocuments(id, out.photo_ids ?? []);
+    return out;
   }
 
   /** update 类型锁定：仅 deprecated(blood/allergy)→other 归一放行（TECH-011 §3.5 纵深防御） */
@@ -313,10 +456,32 @@ export class MedicalService {
       push('checkup_growth_sync', dto.checkup_growth_sync ?? null);
     }
 
-    if (setClauses.length > 0) {
-      values.push(id);
-      await this.db.execute(`UPDATE medical_record SET ${setClauses.join(', ')} WHERE id = ?`, values);
-      await this.timelineService.upsertFromSource('medical', id);
+    // 主记录更新 + 档案同步同事务（PRD-017）
+    const needDocSync = dto.documents !== undefined || dto.photo_ids !== undefined;
+    if (setClauses.length > 0 || needDocSync) {
+      const conn = await this.db.getConnection();
+      try {
+        await conn.beginTransaction();
+        if (setClauses.length > 0) {
+          values.push(id);
+          await conn.execute(`UPDATE medical_record SET ${setClauses.join(', ')} WHERE id = ?`, values);
+        }
+        if (needDocSync) {
+          const targetPhotoIds = dto.photo_ids !== undefined
+            ? dto.photo_ids
+            : this.parsePhotoIds(existing.photo_ids);
+          await this.syncDocuments(conn, id, dto.documents, targetPhotoIds);
+        }
+        await conn.commit();
+      } catch (e) {
+        await conn.rollback();
+        throw e;
+      } finally {
+        conn.release();
+      }
+      if (setClauses.length > 0) {
+        await this.timelineService.upsertFromSource('medical', id);
+      }
     }
 
     if (measured && !willSkip) {
@@ -342,6 +507,8 @@ export class MedicalService {
   }
 
   async remove(id: string) {
+    // 先子后主（PRD-017：档案随记录删除；与既有物理删除口径一致）
+    await this.db.execute('DELETE FROM medical_document WHERE medical_record_id = ?', [id]);
     await this.db.execute('DELETE FROM medical_record WHERE id = ?', [id]);
     await this.timelineService.removeBySource('medical', id);
     return { id };

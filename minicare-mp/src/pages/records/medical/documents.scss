@@ -1,0 +1,379 @@
+/* 单据档案共用样式（PRD-017）：DocumentParseSheet 确认层 + DocumentArchiveCard 详情卡 */
+
+/* ── 识别结果确认层（全屏浮层）── */
+.doc-sheet {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 300;
+  background: #FAF5F6;
+  display: flex;
+  flex-direction: column;
+}
+
+.doc-sheet__header {
+  display: flex;
+  align-items: center;
+  padding: 12px 18px 10px;
+  background: #fff;
+  border-bottom: 0.5px solid #F5EEF0;
+}
+
+.doc-sheet__title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #3A2428;
+}
+
+.doc-sheet__close {
+  margin-left: auto;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: #7A5A60;
+  font-weight: 300;
+}
+
+.doc-sheet__tip {
+  margin: 12px 16px 0;
+  padding: 8px 12px;
+  background: #FFF8EC;
+  border-radius: 10px;
+  font-size: 11.5px;
+  color: #B08A4A;
+  line-height: 1.55;
+}
+
+.doc-sheet__body {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 16px;
+}
+
+.doc-sheet__footer {
+  display: flex;
+  gap: 10px;
+  padding: 10px 16px;
+  padding-bottom: calc(10px + constant(safe-area-inset-bottom));
+  padding-bottom: calc(10px + env(safe-area-inset-bottom));
+  background: #fff;
+  border-top: 0.5px solid #F5EEF0;
+}
+
+.doc-sheet__btn {
+  flex: 1;
+  height: 44px;
+  border-radius: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.doc-sheet__btn--ghost {
+  background: #F5F0F2;
+  color: #7A5A60;
+}
+
+.doc-sheet__btn--primary {
+  background: #F87098;
+  color: #fff;
+}
+
+.doc-sheet__btn--disabled {
+  opacity: 0.5;
+}
+
+/* ── 单据卡片（Sheet 与 ArchiveCard 共用）── */
+.doc-card {
+  margin: 12px 16px 0;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(200, 100, 120, 0.08);
+}
+
+.doc-archive .doc-card {
+  margin: 0 0 10px;
+}
+
+.doc-card__head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 14px 6px;
+}
+
+.doc-card__type {
+  font-size: 14px;
+  font-weight: 600;
+  color: #3A2428;
+}
+
+.doc-card__pages {
+  font-size: 11px;
+  color: #9A8090;
+}
+
+.doc-badge {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 9px;
+  line-height: 1.5;
+}
+
+.doc-badge--low {
+  background: #FFF8EC;
+  color: #B08A4A;
+}
+
+.doc-badge--ok {
+  background: #E4F8F0;
+  color: #2A9E70;
+}
+
+.doc-card__ops {
+  margin-left: auto;
+  display: flex;
+  gap: 2px;
+}
+
+.doc-op {
+  font-size: 11.5px;
+  color: #9A8090;
+  padding: 4px 7px;
+}
+
+.doc-op--danger {
+  color: #C86A78;
+}
+
+.doc-card__fields {
+  padding: 0 14px 12px;
+}
+
+.doc-card__empty {
+  padding: 0 14px 12px;
+  font-size: 12px;
+  color: #B9A0A6;
+}
+
+/* 字段行 */
+.doc-row {
+  display: flex;
+  padding: 4px 0;
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+.doc-row__label {
+  flex: 0 0 64px;
+  color: #9A8090;
+}
+
+.doc-lowmark {
+  display: inline-block;
+  font-size: 9.5px;
+  color: #B08A4A;
+  background: #FFF8EC;
+  border-radius: 7px;
+  padding: 0 5px;
+  margin-left: 4px;
+  line-height: 1.6;
+  transform: translateY(-1px);
+}
+
+.doc-row__value {
+  flex: 1;
+  color: #3A2428;
+  word-break: break-all;
+}
+
+.doc-row__value--low {
+  color: #B08A4A;
+}
+
+/* 长文本（折叠） */
+.doc-long {
+  padding: 4px 0;
+  font-size: 12.5px;
+}
+
+.doc-long__label {
+  color: #9A8090;
+  margin-bottom: 2px;
+}
+
+.doc-long__text {
+  color: #3A2428;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.doc-long__text--clamp {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.doc-long__toggle {
+  font-size: 11.5px;
+  color: #F87098;
+  margin-top: 2px;
+}
+
+/* 诊断 chips */
+.doc-diag {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 4px 0 2px;
+}
+
+.doc-diag__chip {
+  font-size: 11.5px;
+  color: #2E60C8;
+  background: #E6EEFF;
+  border-radius: 8px;
+  padding: 2px 8px;
+}
+
+/* 药品行 */
+.doc-med {
+  padding: 6px 0;
+  border-top: 0.5px dashed #F5EEF0;
+}
+
+.doc-med:first-child {
+  border-top: none;
+}
+
+.doc-med__name {
+  font-size: 12.5px;
+  color: #3A2428;
+  font-weight: 500;
+}
+
+.doc-med__meta {
+  font-size: 11.5px;
+  color: #9A8090;
+  margin-top: 1px;
+}
+
+/* 化验指标表 */
+.doc-lab {
+  margin-top: 2px;
+}
+
+.doc-lab__head,
+.doc-lab__row {
+  display: flex;
+  font-size: 11.5px;
+  padding: 4px 0;
+}
+
+.doc-lab__head {
+  color: #9A8090;
+  border-bottom: 0.5px solid #F5EEF0;
+}
+
+.doc-lab__row {
+  border-bottom: 0.5px dashed #F8F2F3;
+}
+
+.doc-lab__row--abn {
+  color: #E8507A;
+  font-weight: 600;
+}
+
+.doc-lab__c1 {
+  flex: 1.3;
+  word-break: break-all;
+}
+
+.doc-lab__c2 {
+  flex: 1;
+  text-align: right;
+}
+
+.doc-lab__c3 {
+  flex: 1.2;
+  text-align: right;
+}
+
+.doc-lab__toggle {
+  font-size: 11.5px;
+  color: #F87098;
+  padding: 6px 0 2px;
+}
+
+/* 未识别成功区块 */
+.doc-failed {
+  margin: 12px 16px 0;
+  background: #fff;
+  border-radius: 16px;
+  padding: 12px 14px;
+  box-shadow: 0 1px 6px rgba(200, 100, 120, 0.08);
+}
+
+.doc-failed__title {
+  font-size: 13px;
+  color: #3A2428;
+  font-weight: 500;
+}
+
+.doc-failed__item {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  border-top: 0.5px dashed #F5EEF0;
+}
+
+.doc-failed__item:first-of-type {
+  border-top: none;
+  margin-top: 4px;
+}
+
+.doc-failed__msg {
+  flex: 1;
+  font-size: 12px;
+  color: #9A8090;
+  line-height: 1.5;
+}
+
+.doc-failed__ops {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+/* ── 详情档案卡（页内区块，非浮层）── */
+.doc-archive {
+  margin: 0 16px 12px;
+}
+
+.doc-archive .doc-failed {
+  margin: 0 0 10px;
+}
+
+.doc-archive__caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #B9A0A6;
+  padding: 6px 2px 8px;
+}
+
+.doc-archive__retry-all {
+  color: #F87098;
+  font-size: 11.5px;
+}

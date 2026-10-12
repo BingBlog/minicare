@@ -6,6 +6,7 @@ import { JwtGuard } from '../../auth/jwt.guard';
 import { FamilyMemberGuard } from '../../family/family-member.guard';
 import { RoleGuard } from '../../family/role.guard';
 import { CreateMedicalDto, UpdateMedicalDto } from './dto/create-medical.dto';
+import { ParseImagesDto } from './dto/parse-images.dto';
 import { VaccineSettingDto } from './dto/vaccine-setting.dto';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { MinRole, FamilyRole } from '../../common/decorators/min-role.decorator';
@@ -64,6 +65,12 @@ export class MedicalController {
   @Patch('vaccine/settings') @MinRole(FamilyRole.MEMBER)
   vaccineSettings(@CurrentUser() userId: string, @Body() dto: VaccineSettingDto) {
     return this.vaccineBookService.upsertSetting(userId, dto);
+  }
+
+  /** 识图解析（PRD-017/TECH-035）：解析不落库，结果由前端确认后随保存提交（documents） */
+  @Post('parse-images') @MinRole(FamilyRole.MEMBER)
+  parseImages(@Param('familyId') familyId: string, @Body() dto: ParseImagesDto) {
+    return this.medicalService.parseImages(familyId, dto);
   }
 
   @Get(':id')

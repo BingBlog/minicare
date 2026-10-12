@@ -103,6 +103,11 @@ interface RequestOptions {
    *      ③ 本地 token 被无端清除，已登录用户仅因输错原密码就被登出。
    */
   redirectOn401?: boolean
+  /**
+   * 可选：暴露底层 RequestTask（用于主动 abort，如长耗时解析请求的「取消」）。
+   * 调用方保存 task 引用，取消时 `task.abort()`；框架级 abort 已被下方 catch 静默处理。
+   */
+  onTask?: (task: Taro.RequestTask<any>) => void
 }
 
 /**
@@ -140,6 +145,7 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
     data,
     timeoutMs = 8000,
     redirectOn401 = true,
+    onTask,
   } = options
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
@@ -151,13 +157,15 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
 
   let res: Taro.request.SuccessCallbackResult
   try {
-    res = await Taro.request({
+    const task = Taro.request({
       url: `${API_BASE_URL}${path}`,
       method,
       data,
       header: headers,
       timeout: timeoutMs,
     })
+    onTask?.(task)
+    res = await task
   } catch (err) {
     const errMsg = (err as { errMsg?: string })?.errMsg ?? ''
     // 请求被主动中止（开发者工具终止会话 / 页面销毁 / 小程序切后台时，

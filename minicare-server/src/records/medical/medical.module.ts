@@ -6,9 +6,10 @@ import { AuthModule } from '../../auth/auth.module';
 import { FamilyModule } from '../../family/family.module';
 import { TimelineModule } from '../timeline/timeline.module';
 import { GrowthModule } from '../growth/growth.module';
+import { AgentModule } from '../../agent/agent.module';
 
 @Module({
-  imports: [AuthModule, FamilyModule, TimelineModule, GrowthModule],
+  imports: [AuthModule, FamilyModule, TimelineModule, GrowthModule, AgentModule],
   controllers: [MedicalController],
   providers: [MedicalService, VaccineBookService],
 })

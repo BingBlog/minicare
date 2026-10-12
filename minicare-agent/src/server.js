@@ -5,6 +5,7 @@
  *   GET  /health    探活（无需 token）
  *   GET  /diag      容器诊断（无需 token）
  *   POST /chat      对话（SSE，需要 x-agent-token；ctx 可选）
+ *   POST /vision/parse-medical  就医单据解析（需要 x-agent-token；PRD-017/TECH-035）
  *   （日记 REST 路由 P2 追加）
  *
  * ⚠️ 2026-09-04 直连 SDK 改造：agent 循环在 lib/runtime.js，按请求构建（历史注入
@@ -23,6 +24,7 @@ import { internalToken } from './middleware/internal-token.js'
 import { chatRoute } from './routes/chat.js'
 import { healthRoute } from './routes/health.js'
 import { diagRoute } from './routes/diag.js'
+import { parseMedicalRoute } from './routes/parse-medical.js'
 import { initAgentRuntime } from './lib/runtime.js'
 import { preheatVectors } from './lib/tools/search-knowledge.js'
 
@@ -62,6 +64,8 @@ console.log(
 app.get('/health', healthRoute(config))
 app.get('/diag', diagRoute(config))
 app.post('/chat', chatRoute(config))
+// 就医单据解析（PRD-017/TECH-035）：工具型一次性调用，不占对话链路
+app.post('/vision/parse-medical', parseMedicalRoute(config))
 
 app.listen(config.port, () => {
   console.log(`[server] listening on :${config.port}`)

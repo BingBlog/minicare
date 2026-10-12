@@ -4,7 +4,7 @@
  * 职责：SSE 帧级透传 /chat、REST JSON 透传、baby 归属校验、ctx 注入。
  * 不解析不缓存上游业务内容；所有鉴权在 controller 层（JwtGuard + FamilyMemberGuard）。
  */
-import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, Logger, NotFoundException, ServiceUnavailableException } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
 import { Pool } from 'mysql2/promise';
 import { DATABASE_POOL } from '../common/database/database.module';
@@ -158,6 +158,35 @@ export class AgentService {
       throw new Error(`agent /health 返回 ${resp.status}`);
     }
     return resp.json();
+  }
+
+  /**
+   * 就医单据识图解析透传（PRD-017 / TECH-035）
+   * - 非流式 JSON；不传 x-agent-ctx（解析非对话，无用户上下文需求）
+   * - 90s 超时：6 图 × 并发 3 的最坏预算余量（实测 5 图端到端 ~7s）
+   */
+  async postParseImages(fileIds: string[]): Promise<{ results: any[] }> {
+    let resp: Response;
+    try {
+      resp = await fetch(`${this.baseUrl}/vision/parse-medical`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-agent-token': this.internalToken,
+        },
+        body: JSON.stringify({ fileIds }),
+        signal: AbortSignal.timeout(90_000),
+      });
+    } catch (e: any) {
+      this.logger.warn(`parse-medical 上游不可达: ${e?.message || e}`);
+      throw new ServiceUnavailableException('识别服务暂时不可用');
+    }
+    if (!resp.ok) {
+      const text = await resp.text().catch(() => '');
+      this.logger.warn(`parse-medical 上游 ${resp.status}: ${text.slice(0, 120)}`);
+      throw new ServiceUnavailableException('识别服务暂时不可用');
+    }
+    return (await resp.json()) as { results: any[] };
   }
 
   // ── 日记 REST（M5 §4，直接查 baby_diary 表，JWT 已鉴权）──────────────────

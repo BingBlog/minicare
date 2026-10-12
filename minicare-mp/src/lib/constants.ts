@@ -247,6 +247,50 @@ export const CHECKUP_GROWTH_SYNC_LABELS: Record<string, string> = {
   skipped: '跳过同步',
 }
 
+// ── PRD-017 识图建档（键与后端 MEDICAL_DOC_TYPES / agent 解析契约同源，单一文案源禁双写）──
+
+/** 单据类型中文标签（5 类；页面不暴露代码值） */
+export const DOC_TYPE_LABELS: Record<string, string> = {
+  outpatient_record: '门诊病历',
+  prescription: '处方笺',
+  lab_report: '检验报告',
+  imaging_report: '影像检查报告',
+  other: '其他单据',
+}
+
+/** 单据档案合并展示顺序（PRD-017 §3.4：病历→处方→检验→影像→其他） */
+export const DOC_TYPE_ORDER = ['outpatient_record', 'prescription', 'lab_report', 'imaging_report', 'other']
+
+/** 识图失败文案（agent error.code → 用户可读；未知 code 由调用方兜底） */
+export const DOC_ERROR_LABELS: Record<string, string> = {
+  fetch_failed: '该图片无法读取，请重新上传',
+  vision_timeout: '识别超时，请检查网络后重试',
+  vision_error: '识别服务暂时不可用，稍后再试',
+  json_parse_failed: '识别结果异常，请重试',
+}
+
+/** 单据档案字段行中文标签（结果卡片/档案卡共用；长文与数组字段另行渲染） */
+export const DOC_FIELD_LABELS: Record<string, string> = {
+  hospital: '医院',
+  visitDate: '就诊日期',
+  visitTime: '就诊时间',
+  doctor: '医师',
+  department: '科室',
+  chiefComplaint: '主诉',
+  presentIllness: '现病史',
+  pastHistory: '既往史',
+  physicalExam: '体格检查',
+  diagnosis: '诊断',
+  advice: '处理意见',
+  medications: '药品',
+  sampleType: '样本类型',
+  reportedAt: '报告时间',
+  items: '检验项目',
+  examName: '检查名称',
+  findings: '检查所见',
+  conclusion: '诊断意见',
+}
+
 /** 过敏程度选项配置（含激活颜色） */
 export const ALLERGY_LEVEL_OPTIONS: { value: string; label: string; activeColor: string }[] = [
   { value: 'mild',     label: '轻度', activeColor: '#4CAF82' },
