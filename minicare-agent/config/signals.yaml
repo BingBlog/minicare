@@ -1,0 +1,97 @@
+# 感知信号配置 · 值真源（当前生效值）
+#
+# - 结构定义（分组/字段含义/范围/证据）见同目录 registry.yaml；本文件只承载「值」。
+# - 平台「信号管理」域负责编辑与治理；发布时平台对本文件整体原子写回。
+# - 手工修改本文件可行，但请同步更新 updated_at；与最近快照不一致时平台会显示「外部修改」警告。
+# - schema_version 必须与 registry.yaml 一致。
+schema_version: 1
+updated_at: '2026-10-11'
+source: minicare-platform / 2026-10-11.5
+
+values:
+  # ══ 参考值（原 perception.js REF）═════════════════════════════
+  stageStableDays: 14      # 转奶阶稳定参考天数（本阶推进条件 + stalled 判定）
+  stageMinDays: 7          # 阶内硬下限（NHS：即使提前吃完也须满 7 天）
+  observeDays: 3           # 排敏观察窗口默认天数
+  dailyKinds: 4            # 每日辅食种类下限
+  dailyCategories: 4       # 每日类别数下限（七大类中至少 N 类）
+  maintainPerWeek: 2       # 已耐受食物每周维持暴露下限（次）
+  maintainPerWeekMax: 3    # 已耐受食物每周维持暴露上限（次）
+  symptomUsableDays: 14    # 症状数据有效期（超过视为陈旧，不得下阴性结论）
+  windowVarietyDays: 14    # 摄入多样性 / 维持暴露判定窗口（天）
+  windowEatenDays: 30      # 实际食用统计窗口（天）
+  allergyEventDays: 90     # 过敏事件回看窗口（天）
+  stoolWindowDays: 14      # 大便性状统计窗口（天）
+  coverageMin: 0.5         # 覆盖率下限（低于此值不得下阴性结论）
+  growthDropLevels: 1      # 生长分位连续下降多少档算"下降趋势"
+  adherenceDays: 30        # 补充剂依从性窗口（天）
+
+  # ══ 新鲜度与派生阈值（原 profile.js）══════════════════════════
+  staleFormulaDays: 3      # 配方奶陈旧阈值（天）
+  staleFoodDays: 3         # 辅食陈旧阈值
+  staleSupplementDays: 3   # 营养补充陈旧阈值
+  staleMedicationDays: 3   # 服药陈旧阈值
+  staleGrowthDays: 45      # 生长测量陈旧阈值
+  staleSymptomDays: 14     # 症状陈旧阈值
+  staleMedicalDays: 45     # 就医记录陈旧阈值
+  staleDiaryDays: 3        # 日记陈旧阈值
+  weanedDays: 14           # 停母乳判定阈值（最近一次母乳距今 ≥ 此值）
+
+  # ══ flag 频控（原 perception.js）══════════════════════════════
+  dedupDays: 7             # 同一 flag 去重窗口（天）
+  maxPerTurn: 1            # 单轮非强项 flag 上限（条）
+  strongBypass: true       # 强项豁免频控（不受去重与条数限制）
+
+  # ══ 食物词表（原 perception.js）═══════════════════════════════
+  highRiskGroups:
+  - group: 蛋类
+    keys: [蛋]
+  - group: 小麦
+    keys: [小麦, 面粉, 面条, 馒头, 面包]
+  - group: 大豆
+    keys: [大豆, 黄豆, 豆腐, 豆浆, 豆奶, 豆制品]
+  - group: 花生
+    keys: [花生]
+  - group: 鱼虾
+    keys: [鱼, 虾, 鳕鱼, 三文鱼, 鲈鱼, 龙利鱼, 贝]
+  - group: 坚果
+    keys: [坚果, 核桃, 芝麻, 杏仁, 腰果, 榛子]
+  - group: 乳制品
+    keys: [酸奶, 奶酪, 芝士, 黄油]
+  categoryRules:
+  - category: 谷薯
+    keys: [米粉, 米, 小米, 粥, 面, 馒头, 土豆, 红薯, 紫薯, 山药, 玉米, 燕麦, 南瓜]
+  - category: 蔬菜
+    keys: [青菜, 西兰花, 菠菜, 胡萝卜, 生菜, 芹菜, 白菜, 油菜, 番茄, 西红柿, 黄瓜, 冬瓜, 茄子, 豌豆, 西葫芦]
+  - category: 水果
+    keys: [苹果, 香蕉, 梨, 火龙果, 蓝莓, 草莓, 桃, 牛油果, 橙, 葡萄, 西梅]
+  - category: 肉禽鱼
+    keys: [鸡, 猪, 牛, 羊, 里脊, 鱼, 虾, 鳕鱼, 三文鱼, 肝]
+  - category: 蛋
+    keys: [蛋]
+  - category: 豆类坚果
+    keys: [豆腐, 豆, 花生, 芝麻, 核桃, 坚果]
+  - category: 奶类
+    keys: [奶, 酸奶, 奶酪]
+  prefix: [纯, 熟, 自制, 新鲜, 有机, 进口]
+  suffix: [米糊, 泥糊, 泥, 糊, 粥, 水, 汁, 条, 块, 片, 粉, 沫, 羹, 汤]
+  alias: {}                # 别名映射（key → value）；刻意留空，见 registry 中该参数的 note
+
+  # ══ 注入开关（运行时 env 可紧急覆盖）═══════════════════════════
+  injectPerception: true   # 现状块注入总开关（env PERCEPTION_INJECT=off 覆盖）
+  injectFlagThrottle: true # 频控总开关（env FLAG_THROTTLE=off 覆盖）
+
+  # ══ flag 开关与强度（原 buildFlags 内硬编码）═══════════════════
+  flags:
+    eating_marked: {enabled: true, strength: strong}
+    stage_stalled_symptomatic: {enabled: true, strength: strong}
+    stage_ready_but_symptomatic: {enabled: true, strength: strong}
+    observing_overlap: {enabled: true, strength: intercept}
+    observe_stalled: {enabled: true, strength: medium}
+    stage_stalled: {enabled: true, strength: medium}
+    growth_falling: {enabled: true, strength: medium}
+    data_stale: {enabled: true, strength: medium}
+    safe_not_maintained: {enabled: true, strength: medium}
+    variety_insufficient: {enabled: true, strength: medium}
+    ladder_escalated: {enabled: true, strength: weak}
+    transition_ready: {enabled: true, strength: weak}

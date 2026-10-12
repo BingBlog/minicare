@@ -8,6 +8,10 @@
  */
 import { loadLocalEnv } from '../src/lib/env.js'
 
+// 干跑/发布校验支持：--config-file=<path> 指向草稿配置（必须在任何动态 import 之前设置 env，见 TECH-029 §4.4）
+const CONFIG_FILE = (process.argv.slice(2).find((a) => a.startsWith('--config-file=')) || '').split('=')[1]
+if (CONFIG_FILE) process.env.SIGNALS_CONFIG = CONFIG_FILE
+
 loadLocalEnv()
 const { loadConfig } = await import('../src/config.js')
 const { initDb } = await import('../src/lib/db.js')

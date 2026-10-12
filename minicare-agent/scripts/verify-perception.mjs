@@ -10,6 +10,11 @@
  */
 import { loadLocalEnv } from '../src/lib/env.js'
 
+// 干跑/发布校验支持：--config-file=<path> 指向草稿配置（必须在任何动态 import 之前设置 env，
+// loader 在模块加载时读取；见 TECH-029 §4.4）
+const CONFIG_FILE = (process.argv.slice(2).find((a) => a.startsWith('--config-file=')) || '').split('=')[1]
+if (CONFIG_FILE) process.env.SIGNALS_CONFIG = CONFIG_FILE
+
 loadLocalEnv()
 const { loadConfig } = await import('../src/config.js')
 const { initDb, closeDb, getDb } = await import('../src/lib/db.js')
@@ -203,7 +208,9 @@ check('症状对象结构完整', ['eventTotal', 'symptomTotal', 'events', 'acti
 check('大便对象结构完整', ['total', 'filled', 'fillRate', 'coverageOk', 'byType'].every((kk) => kk in q.stool))
 check(
   '覆盖率 rate = filled / total（自洽）',
-  Object.values(q.coverage).every((c) => (c.total === 0 ? c.rate === 0 : Math.abs(c.rate - c.filled / c.total) < 1e-6)),
+  // rate 由 round4 产出（最大误差 5e-5），阈值必须大于该精度（1e-4）；
+  // 原 1e-6 会对 16/19 这类不整除样本误报（2026-10-11 修复）
+  Object.values(q.coverage).every((c) => (c.total === 0 ? c.rate === 0 : Math.abs(c.rate - c.filled / c.total) < 1e-4)),
   JSON.stringify(q.coverage),
 )
 check(

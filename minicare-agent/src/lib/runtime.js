@@ -43,7 +43,7 @@ import { createSdkMcpServer, tool as sdkTool, query } from '@anthropic-ai/claude
 import { TOOLS } from './tools/index.js'
 import { buildSystemPrompt } from '../prompts/system.js'
 import { getBabyProfile } from './profile.js'
-import { getPerception } from './perception.js'
+import { getPerception, perceptionInjectionEnabled } from './perception.js'
 import { buildChartBlock } from './chart-block.js'
 
 /** 工具循环防护阈值（与 OAK 版一致） */
@@ -203,9 +203,10 @@ export function runAgentTurn(opts) {
     ])
     // 现状感知（TECH-014）串在画像之后：它复用 profile.formula / freshness，
     // 并行取会各算一遍（缓存要写入后才命中，不是预占）。代价是 3 条只读 SQL。
-    const perception = process.env.PERCEPTION_INJECT === 'off'
-      ? null
-      : await getPerception(ctx?.babyId, { profile })
+    // 开关：配置 injectPerception ⊕ env PERCEPTION_INJECT（TECH-029 配置化；双通道任一关闭即关）
+    const perception = perceptionInjectionEnabled()
+      ? await getPerception(ctx?.babyId, { profile })
+      : null
     const systemPrompt = buildSystemPrompt(ctx, history, profile, perception)
     // tool_use_id → { name, startedAt, input }（assistant 块与 user tool_result 分属两条消息）
     // input 一并记录：tool_result 后由图块生成器读取 chart 声明（TECH-028 D2）

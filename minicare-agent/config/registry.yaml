@@ -1,0 +1,876 @@
+# 感知信号注册表 · 结构真源
+#
+# 定位：声明「有哪些信号 / flag / 可配置参数、怎么算、默认值多少、证据在哪」。
+# - 随代码评审（git）；平台「信号管理」域读取本文件渲染台账，不在平台上编辑本文件。
+# - params[].default 是配置兜底链的第二层（signals.yaml 缺失/损坏时生效）；
+#   与代码内置 FACTORY_DEFAULTS 的一致性由 scripts/verify-signals.mjs 断言守护 —— 改默认值必须两处同步。
+# - 字段语义见 docs/tech/TECH-029-signal-config-management.md §3.1。
+schema_version: 1
+updated_at: 2026-10-11
+
+groups:
+  # ══ A 过敏基本情况 ══════════════════════════════════════════
+  - id: A
+    name: 过敏基本情况
+    scope: 过敏类型与程度 / 诊断确定性 / 出生体重 / 家族过敏史
+    signals:
+      - id: allergyTypes
+        name: 过敏类型
+        layer: fact
+        caliber: baby_profile.allergy_types（JSON），13 种枚举，渲染为"轻度牛奶蛋白过敏（过敏原：牛奶）"式
+        source: baby_profile.allergy_types
+        params: []
+        evidence: SIGNALS-20260921 §5.1
+        status: active
+      - id: allergyLevel
+        name: 过敏程度
+        layer: fact
+        caliber: mild / moderate / severe → 轻度 / 中度 / 重度
+        source: baby_profile.allergy_level
+        params: []
+        evidence: SIGNALS-20260921 §5.1
+        status: active
+      - id: diagnosed
+        name: 诊断确定性
+        layer: fact
+        caliber: 是否已确诊——决定"未确诊不下断言"的强度档
+        source: baby_profile（字段待建）
+        params: []
+        evidence: PRD-006 §4.3.6
+        status: gap
+        status_note: 依赖 migration 022（allergy_diagnosed 字段未落地）
+      - id: birthWeightG
+        name: 出生体重
+        layer: fact
+        caliber: 出生体重（克），渲染进画像首行
+        source: baby_profile.birth_weight_g
+        params: []
+        evidence: SIGNALS-20260921 §5.1
+        status: active
+      - id: familyAtopyHistory
+        name: 家族过敏史
+        layer: fact
+        caliber: 家族特应性病史（JSON），用于风险背景判断
+        source: baby_profile（字段待建）
+        params: []
+        evidence: PRD-006 §4.3.6
+        status: gap
+        status_note: 依赖 migration 022（family_atopy_history 字段未落地）
+
+  # ══ B 配方与转奶进度 ════════════════════════════════════════
+  - id: B
+    name: 配方与转奶
+    scope: 阶梯位 / 转奶状态 / 停滞天数 / 乳糖型 / 方向
+    signals:
+      - id: formula.current
+        name: 构成占比
+        layer: inference
+        caliber: 近 7 天勺数口径的构成占比，降序 [[奶型, 占比], ...]；窗口空档退回最近 7 个有记录日并标注截至日期
+        source: feeding_formula_record × feeding_formula_mix
+        params: []
+        evidence: SIGNALS-20260921 §5.2
+        status: active
+      - id: formula.ladder
+        name: 阶梯位
+        layer: inference
+        caliber: 主导奶型阶梯位 1-4（aa=4 / eh=3 / ph=2 / std=1）；NEXT_STAGE 定义推进路径
+        source: 派生（profile.formula.dominant）
+        params: []
+        evidence: SIGNALS-20260921 §5.2
+        status: active
+      - id: formula.status
+        name: 转奶状态
+        layer: inference
+        caliber: 单一奶型 → stable；混合且构成停滞 < 参考天数 → transitioning；≥ 参考天数 → stalled
+        source: 派生（构成签名连续段）
+        params: [stageStableDays]
+        evidence: SIGNALS-20260921 §5.2
+        status: active
+      - id: formula.direction
+        name: 阶梯方向
+        layer: inference
+        caliber: 近 30 天首日 vs 当日主导类型阶梯位对比 → escalated / deescalated / same
+        source: 派生
+        params: []
+        evidence: SIGNALS-20260921 §5.2
+        status: active
+      - id: formula.stalledDays
+        name: 构成停滞天数
+        layer: inference
+        caliber: 从今天往前找连续同一构成签名（占比口径，非绝对勺数）的最早一天，算其到今天的间隔
+        source: 派生
+        params: []
+        evidence: SIGNALS-20260921 §5.2
+        status: active
+      - id: formula.lactose
+        name: 乳糖型
+        layer: inference
+        caliber: eh_lactose → 含乳糖；eh_no_lactose / aa → 无乳糖；其余 null
+        source: 派生
+        params: []
+        evidence: SIGNALS-20260921 §5.2
+        status: active
+      - id: formula.lastChangedAt
+        name: 配方记录新鲜度
+        layer: meta
+        caliber: 窗口内最后一条配方记录日期；staleDays = 今天 - lastRecordAt
+        source: feeding_formula_record.record_time
+        params: []
+        evidence: SIGNALS-20260921 §5.2
+        status: active
+
+  # ══ C 喂养方式 ══════════════════════════════════════════════
+  - id: C
+    name: 喂养方式
+    scope: 喂养模式 / 停母乳判定 / 日均奶量 / 辅食种数 / 餐次节奏
+    signals:
+      - id: feeding.mode
+        name: 喂养模式
+        layer: inference
+        caliber: 按"最近一次母乳距今"判：≥ 停母乳阈值 → formula_only（有效结论）；< 阈值且有配方奶 → mixed；否则 breast_only；禁止用 30 天累计条数判定
+        source: feeding_breast_record × feeding_formula_record
+        params: [weanedDays]
+        evidence: SIGNALS-20260921 §5.3
+        status: active
+      - id: feeding.lastBreastAt
+        name: 最后一次母乳
+        layer: fact
+        caliber: 最后一次母乳记录日期 + 距今天数
+        source: feeding_breast_record.record_time
+        params: []
+        evidence: SIGNALS-20260921 §5.3
+        status: active
+      - id: feeding.dailyMilkMl
+        name: 日均奶量
+        layer: fact
+        caliber: 近 7 天配方奶日均毫升（先按日 SUM，再对"有记录的天"取 AVG）
+        source: feeding_formula_record
+        params: []
+        evidence: SIGNALS-20260921 §5.3
+        status: active
+      - id: feeding.solidKinds
+        name: 辅食种数
+        layer: fact
+        caliber: 近 30 天辅食涉及的不同食材名数（COUNT DISTINCT，未归一化）
+        source: feeding_food_item
+        params: []
+        evidence: SIGNALS-20260921 §5.3
+        status: active
+      - id: feeding.mealRhythm
+        name: 餐次节奏
+        layer: inference
+        caliber: 近 7 天"有记录日"的平均每天进食次数（奶顿 + 辅食顿）；不给达标结论
+        source: 派生（feeding 各表）
+        params: []
+        evidence: GAP-20260922 §6.1
+        status: active
+
+  # ══ D 辅食与排敏进度 ════════════════════════════════════════
+  - id: D
+    name: 辅食与排敏
+    scope: 五态清单 / 观察任务 / 合规性 / 高致敏引入 / 归一化
+    signals:
+      - id: food.safeList
+        name: 已耐受清单
+        layer: inference
+        caliber: status='safe' 的条数 + 归一化去重后的种数（西兰花 / 西兰花泥算 1 种）
+        source: food_observation
+        params: [prefix, suffix, alias]
+        evidence: SIGNALS-20260921 §6.2
+        status: active
+      - id: food.suspectedList
+        name: 疑似清单
+        layer: inference
+        caliber: status='suspected' 的食材 + severity
+        source: food_observation
+        params: []
+        evidence: SIGNALS-20260921 §6.2
+        status: active
+      - id: food.allergicList
+        name: 已确认过敏清单
+        layer: inference
+        caliber: status='allergic' 的食材 + severity
+        source: food_observation
+        params: []
+        evidence: SIGNALS-20260921 §6.2
+        status: active
+      - id: food.observingTask
+        name: 观察中任务
+        layer: inference
+        caliber: 每项含 day（current_day）/ days（observation_days，缺省参考值）/ idle（今天 - updated_at）/ stalled（idle > days）
+        source: food_observation
+        params: [observeDays]
+        evidence: SIGNALS-20260921 §6.2
+        status: active
+      - id: food.conflictFlags
+        name: 排敏合规性
+        layer: inference
+        caliber: 四项检查——任务停滞 / 观察窗口交集 / 重复建档组 / 过敏食材仍在食用（对应下方提醒）
+        source: 派生（food_observation × feeding_food_item）
+        params: [observeDays, windowVarietyDays]
+        evidence: SIGNALS-20260921 §6.2
+        status: active
+      - id: food.highRiskIntroduced
+        name: 高致敏引入状态
+        layer: inference
+        caliber: 高致敏 7 组（词表驱动）各自的"已引入 / 未见引入"状态；只描述不催引入（是否引入由医生决定）
+        source: 派生（food_observation × feeding_food_item）
+        params: [allergyEventDays, highRiskGroups]
+        evidence: GAP-20260922 §6.1
+        status: active
+      - id: food.observationLog
+        name: 逐日打卡（双源合并）
+        layer: fact
+        caliber: food_observation_log 与状态机双源合并——状态机管"结论"，日志管"过程证据"（打卡天数 / 最近打卡 / 最重反应）
+        source: food_observation_log
+        params: []
+        evidence: PRD-006 §4.3.3
+        status: active
+      - id: food.normalization
+        name: 名称归一化
+        layer: fact
+        caliber: 三步归一化——复合名拆分（+、/）→ 剥修饰前后缀（循环、长度保护）→ 别名兜底；重复建档经 dupGroups 显式暴露不静默合并
+        source: 派生（normalizeFoods）
+        params: [prefix, suffix, alias]
+        evidence: SIGNALS-20260921 §6.3
+        status: active
+
+  # ══ E 生长与营养 ════════════════════════════════════════════
+  - id: E
+    name: 生长与营养
+    scope: 分位数 / 分位趋势 / 增速 / 补充依从性
+    signals:
+      - id: growth.weightP
+        name: 体重分位
+        layer: inference
+        caliber: 按性别 + 测量当天月龄算百分位（中国 2023 参考；复用 lib/growth.js 单一实现）
+        source: growth_record.weight_g
+        params: []
+        evidence: SIGNALS-20260921 §5.4
+        status: active
+      - id: growth.heightP
+        name: 身长分位
+        layer: inference
+        caliber: 同上（height_mm）
+        source: growth_record.height_mm
+        params: []
+        evidence: SIGNALS-20260921 §5.4
+        status: active
+      - id: growth.headP
+        name: 头围分位
+        layer: inference
+        caliber: 同上（head_mm）；各指标分别回溯上次有效测量，不要求同行齐全
+        source: growth_record.head_mm
+        params: []
+        evidence: GAP-20260922 §6.1
+        status: active
+      - id: growth.trend
+        name: 分位趋势
+        layer: inference
+        caliber: 最近两次分位档对比 → rising / falling / stable（档序列与 growth.js::bucket 逐字一致）
+        source: 派生（最近两次测量）
+        params: [growthDropLevels]
+        evidence: SIGNALS-20260921 §5.4
+        status: active
+      - id: growth.velocity
+        name: 实测增速
+        layer: inference
+        caliber: 只给实测值（g/天、cm/月），不给"是否达标"结论——缺月龄增速参考表，不编造
+        source: 派生（最近两次测量）
+        params: []
+        evidence: GAP-20260922 §6.2
+        status: active
+      - id: growth.wfh
+        name: 体重-身长比
+        layer: inference
+        caliber: 体重-身长比（WHO weight-for-length 参考）
+        source: 缺参考表
+        params: []
+        evidence: GAP-20260922 §6.3
+        status: gap
+        status_note: 缺 WHO weight-for-length 参考表，按"宁可返回 null 不给错值"跳过
+      - id: nutrition.supplementAdherence
+        name: 补充剂依从性
+        layer: inference
+        caliber: 解析 supplement_items JSON 算维 D 等补充剂的近 N 天覆盖率
+        source: feeding_supplement_record.supplement_items
+        params: [adherenceDays]
+        evidence: GAP-20260922 §6.1
+        status: active
+
+  # ══ F 症状与反应 ════════════════════════════════════════════
+  - id: F
+    name: 症状与反应
+    scope: 症状谱 / 过敏事件 / 大便性状 / 活跃度 / 食材关联
+    signals:
+      - id: symptom.recent
+        name: 近期症状谱
+        layer: fact
+        caliber: symptom_record 近窗口的症状类型 / 严重度 / 精神情绪（spiritLow：low、tired、crying）
+        source: symptom_record
+        params: [allergyEventDays]
+        evidence: GAP-20260922 §6.1
+        status: active
+      - id: allergyEvents
+        name: 过敏事件
+        layer: fact
+        caliber: health_record.allergy_symptoms（**第二入口**——排敏流程记下的反应只存在这里）；含严重度 / 关联食材 / 是否关联观察任务
+        source: health_record.allergy_symptoms
+        params: [allergyEventDays]
+        evidence: GAP-20260922 §0（"F 组整组缺失"的根因）
+        status: active
+      - id: stoolFlag
+        name: 大便性状
+        layer: fact
+        caliber: diaper_record.poop_type 分布 + **填写率**（低于覆盖率下限不得下"没有腹泻/便血"结论）
+        source: diaper_record.poop_type
+        params: [stoolWindowDays, coverageMin]
+        evidence: PRD-006 §4.6.2
+        status: active
+      - id: symptom.activeDays
+        name: 反应活跃度
+        layer: inference
+        caliber: 近 14 天有反应（症状或过敏事件）的天数
+        source: 派生
+        params: []
+        evidence: PRD-006 §4.3.6
+        status: active
+      - id: symptom.foodLink
+        name: 症状↔食材关联
+        layer: inference
+        caliber: 过敏事件与具体食材的关联情况（linked / unlinked 计数）
+        source: 派生（health_record × food_observation）
+        params: []
+        evidence: PRD-006 §4.3.6
+        status: active
+
+  # ══ G 医疗与随访 ════════════════════════════════════════════
+  - id: G
+    name: 医疗与随访
+    scope: 就医分型统计 / 最近就诊 / 复查计划 / 疫苗进度
+    signals:
+      - id: medical.byType
+        name: 就医分型统计
+        layer: fact
+        caliber: medical_record 按 visit_type 计数 + 最近一次
+        source: medical_record
+        params: []
+        evidence: GAP-20260922 §6.1
+        status: active
+      - id: medical.lastCheckup
+        name: 最近就诊 / 儿保
+        layer: fact
+        caliber: 最近一次 checkup / sick 记录摘要
+        source: medical_record
+        params: []
+        evidence: GAP-20260922 §6.1
+        status: active
+      - id: medical.followUp
+        name: 复查计划
+        layer: inference
+        caliber: 医疗记录中的复查计划字段（如 reserved_until）
+        source: medical_record
+        params: [staleMedicalDays]
+        evidence: GAP-20260922 §6.1
+        status: active
+      - id: medical.vaccineProgress
+        name: 疫苗进度
+        layer: fact
+        caliber: 疫苗接种进度明细（剂次 / 名称 / 批次）
+        source: vaccine_record（待上生产）
+        params: []
+        evidence: GAP-20260922 §6.3
+        status: degraded
+        status_note: 依赖 migration 020 上生产；当前降级为"计数 + degraded_partial"标记
+
+  # ══ H 日记与家长侧 ══════════════════════════════════════════
+  - id: H
+    name: 日记与家长侧
+    scope: 日记新鲜度 / 近期关注点
+    signals:
+      - id: diary.lastAt
+        name: 日记新鲜度
+        layer: meta
+        caliber: baby_diary 最后日期 + 陈旧天数（8 源之一）
+        source: baby_diary.diary_date
+        params: [staleDiaryDays]
+        evidence: SIGNALS-20260921 §5.5
+        status: active
+      - id: diary.themes
+        name: 近期关注点
+        layer: inference
+        caliber: 从日记抽取家长近期关注主题
+        source: baby_diary
+        params: []
+        evidence: PRD-006 §4.3.6
+        status: gap
+        status_note: PRD 自身标注"本版暂缓"
+
+  # ══ I 数据新鲜度（元信号）════════════════════════════════════
+  - id: I
+    name: 数据可信度
+    scope: 各源陈旧天数 / 覆盖率 / 阴性结论门
+    signals:
+      - id: freshness.staleDays
+        name: 各源陈旧天数
+        layer: meta
+        caliber: 8 路 UNION ALL 取各源 MAX(时间)；渲染 无记录 / 今天 / 昨天 / N天前（较旧）
+        source: 各表 MAX(时间列)
+        params: [staleFormulaDays, staleFoodDays, staleSupplementDays, staleMedicationDays, staleGrowthDays, staleSymptomDays, staleMedicalDays, staleDiaryDays]
+        evidence: SIGNALS-20260921 §5.5
+        status: active
+      - id: coverage.rate
+        name: 覆盖率
+        layer: meta
+        caliber: 按维度算填写率——大便性状填写率 / 头围填写率 / 辅食记录天数（近窗口）
+        source: 派生（diaper_record / growth_record / feeding_food_record）
+        params: [coverageMin, windowVarietyDays]
+        evidence: PRD-006 §4.6.2
+        status: active
+      - id: coverage.negativeGate
+        name: 阴性结论门
+        layer: meta
+        caliber: 覆盖率低于下限时，系统会明确约束助手"不得据此下没有腹泻/便血这类结论"
+        source: 派生（对助手的约束声明）
+        params: [coverageMin]
+        evidence: PRD-006 §4.6.2
+        status: active
+
+  # ══ J 提醒规则（flag 区）═══════════════════════════════════
+  - id: J
+    name: 提醒规则
+    scope: 12 条提醒规则（开关与强度可调）
+    signals: []
+    note: 本组为跨表推断的提醒规则；点开下方各条可查看定义与实测
+
+# ══ flag 定义（12 条）═══════════════════════════════════════════
+# 开关与强度（可编辑）在 signals.yaml values.flags；本区是定义（只读）。
+flags:
+  - key: eating_marked
+    name: 过敏食材仍在食用
+    trigger_desc: 已判疑似/确认过敏的食材出现在近判定窗口的实际食用记录里（安全底线）
+    default_strength: strong
+    params: [windowVarietyDays]
+    origin: PRD-006 §4.5 #1
+    evidence: GAP-20260922 §4（批 1）
+  - key: stage_stalled_symptomatic
+    name: 转奶停滞期有过敏反应
+    trigger_desc: 配方构成已停滞（status=stalled）同期有过敏事件记录
+    default_strength: strong
+    params: [stageStableDays, allergyEventDays]
+    origin: PRD-006 §4.5 #5
+    evidence: GAP-20260922 §4（批 1，"今天核对发现的洞"）
+  - key: stage_ready_but_symptomatic
+    name: 转奶前提被违反
+    trigger_desc: 判定达"具备推进条件"（stableDays ≥ 参考）但近窗口仍有反应记录——前提被违反的另一种形态
+    default_strength: strong
+    params: [stageStableDays, allergyEventDays]
+    origin: 实现新增（2026-09-22 生产核对暴露）
+    evidence: GAP-20260922 §2（组 J）
+  - key: observing_overlap
+    name: 排敏观察窗口重叠
+    trigger_desc: 两个观察任务的观察窗口有交集（并行的观察无法归因反应）
+    default_strength: intercept
+    params: [observeDays]
+    origin: PRD-006 §4.5 #3
+    evidence: GAP-20260922 §2（语义修正：交集而非计数）
+  - key: observe_stalled
+    name: 排敏任务停滞
+    trigger_desc: observing 且该条目最后一次被推进距今 > 观察窗口天数
+    default_strength: medium
+    params: [observeDays]
+    origin: PRD-006 §4.5 #2
+    evidence: SIGNALS-20260921 §6.2
+  - key: stage_stalled
+    name: 转奶停滞（混合配比未推进）
+    trigger_desc: formula.status = stalled（混合构成停滞 ≥ 参考天数）
+    default_strength: medium
+    params: [stageStableDays]
+    origin: PRD-006 §4.5 #4
+    evidence: GAP-20260922 §2（此前只写进画像，未作为提醒单独输出）
+  - key: growth_falling
+    name: 生长分位下降
+    trigger_desc: 体重/身长分位档较上次测量下降 ≥ 阈值档数
+    default_strength: medium
+    params: [growthDropLevels]
+    origin: PRD-006 §4.5 #7
+    evidence: GAP-20260922 §4（批 1）
+  - key: data_stale
+    name: 关键数据陈旧
+    trigger_desc: 症状超有效期 或 生长测量超陈旧阈值未更新（相关阴性结论不可下）
+    default_strength: medium
+    params: [symptomUsableDays, staleGrowthDays]
+    origin: PRD-006 §4.5 #8
+    evidence: GAP-20260922 §4
+  - key: safe_not_maintained
+    name: 已耐受未维持
+    trigger_desc: 已判耐受的食材近判定窗口未再食用（耐受可能回退，最需要提示的状态）
+    default_strength: medium
+    params: [windowVarietyDays]
+    origin: 实现新增
+    evidence: SIGNALS-20260921 §6.5
+  - key: variety_insufficient
+    name: 日常种类不足
+    trigger_desc: 近窗口达标天数 < 有记录天数的一半（排敏期单一种属正常，需人工排除）
+    default_strength: medium
+    params: [windowVarietyDays, dailyKinds]
+    origin: 实现新增
+    evidence: SIGNALS-20260921 §6.4
+  - key: ladder_escalated
+    name: 配方阶梯上移
+    trigger_desc: 近 30 天主导配方向高阶梯调整（只写入画像，不主动提醒 → 强度低）
+    default_strength: weak
+    params: []
+    origin: PRD-006 §4.5 #6
+    evidence: GAP-20260922 §2
+  - key: transition_ready
+    name: 转奶可推进
+    trigger_desc: 本阶已 ≥ 参考天数（提示型，非风险；有近期反应时 detail 标注前提未满足）
+    default_strength: weak
+    params: [stageStableDays]
+    origin: 实现新增
+    evidence: SIGNALS-20260921 §6.7（含 stage 守卫教训）
+
+# ══ 参数（34 项）═══════════════════════════════════════════════
+# 顺序即平台"配置清单"页的展示顺序；group ∈ ref | threshold | throttle | wordlist | inject。
+# medical=true 的参数纳入复审管理（默认周期 180 天）。
+params:
+  # ── ref 参考值（15）──────────────────────────────────────────
+  - key: stageStableDays
+    name: 转奶阶稳定参考天数
+    group: ref
+    type: int
+    unit: 天
+    range: [7, 60]
+    presets: [7, 14, 30]
+    default: 14
+    medical: true
+    evidence: RESEARCH-20260920 §0
+    note: NHS 7 天 + FPIAP 1-2 周 → 取 14 天
+  - key: stageMinDays
+    name: 阶内硬下限
+    group: ref
+    type: int
+    unit: 天
+    range: [1, 30]
+    default: 7
+    medical: true
+    evidence: RESEARCH-20260920 §0
+    note: NHS 硬下限——即使提前吃完规定量也须满 7 天
+  - key: observeDays
+    name: 排敏观察窗口默认天数
+    group: ref
+    type: int
+    unit: 天
+    range: [1, 14]
+    presets: [3, 5, 7]
+    default: 3
+    medical: true
+    evidence: RESEARCH-20260920 §0
+    note: 国家卫健委「2-3 日」+ 中国营养学会「2-3 天」→ 取 3 天
+  - key: dailyKinds
+    name: 每日辅食种类下限
+    group: ref
+    type: int
+    unit: 种
+    range: [1, 10]
+    default: 4
+    medical: true
+    evidence: 膳食指南（含 1 动物性 + 1 蔬菜 + 1 谷薯）
+    note: ""
+  - key: dailyCategories
+    name: 每日类别数下限
+    group: ref
+    type: int
+    unit: 类
+    range: [1, 7]
+    default: 4
+    medical: true
+    evidence: 膳食指南（七大类中至少 4 类）
+    note: ""
+  - key: maintainPerWeek
+    name: 维持暴露下限
+    group: ref
+    type: int
+    unit: 次/周
+    range: [0, 14]
+    default: 2
+    medical: true
+    evidence: RESEARCH-20260920 §0
+    note: 已耐受食物每周维持摄入下限
+  - key: maintainPerWeekMax
+    name: 维持暴露上限
+    group: ref
+    type: int
+    unit: 次/周
+    range: [1, 14]
+    default: 3
+    medical: true
+    evidence: RESEARCH-20260920 §0
+    note: 与下限构成区间；跨项规则：下限 ≤ 上限
+  - key: symptomUsableDays
+    name: 症状数据有效期
+    group: ref
+    type: int
+    unit: 天
+    range: [3, 90]
+    default: 14
+    medical: true
+    evidence: SIGNALS-20260921 §9.1
+    note: 超过视为陈旧，不得下"没有过敏反应"结论
+  - key: windowVarietyDays
+    name: 多样性/维持判定窗口
+    group: ref
+    type: int
+    unit: 天
+    range: [7, 60]
+    default: 14
+    medical: true
+    evidence: SIGNALS-20260921 §8.1
+    note: 影响：日常种类 / 维持暴露 / 食用违纪判定
+  - key: windowEatenDays
+    name: 实际食用统计窗口
+    group: ref
+    type: int
+    unit: 天
+    range: [7, 180]
+    default: 30
+    medical: true
+    evidence: SIGNALS-20260921 §8.1
+    note: ""
+  - key: allergyEventDays
+    name: 过敏事件回看窗口
+    group: ref
+    type: int
+    unit: 天
+    range: [30, 365]
+    default: 90
+    medical: true
+    evidence: SIGNALS-20260921 §8.1
+    note: 一次反应会定义后续数周的喂养策略，需长窗
+  - key: stoolWindowDays
+    name: 大便性状统计窗口
+    group: ref
+    type: int
+    unit: 天
+    range: [3, 60]
+    default: 14
+    medical: true
+    evidence: PRD-006 §4.6.2
+    note: ""
+  - key: coverageMin
+    name: 覆盖率下限
+    group: ref
+    type: float
+    unit: ""
+    range: [0.1, 1]
+    default: 0.5
+    medical: true
+    evidence: PRD-006 §4.6.2
+    note: 低于此值不得下阴性结论（硬约束）
+  - key: growthDropLevels
+    name: 分位下降告警档数
+    group: ref
+    type: int
+    unit: 档
+    range: [1, 4]
+    default: 1
+    medical: true
+    evidence: SIGNALS-20260921 §8.1
+    note: 「生长分位下降」提醒的触发阈值
+  - key: adherenceDays
+    name: 补充剂依从性窗口
+    group: ref
+    type: int
+    unit: 天
+    range: [7, 90]
+    default: 30
+    medical: true
+    evidence: SIGNALS-20260921 §8.1
+    note: ""
+
+  # ── threshold 新鲜度与派生阈值（9）────────────────────────────
+  - key: staleFormulaDays
+    name: 配方奶陈旧阈值
+    group: threshold
+    type: int
+    unit: 天
+    range: [1, 30]
+    default: 3
+    medical: true
+    evidence: SIGNALS-20260921 §5.5
+    note: ""
+  - key: staleFoodDays
+    name: 辅食陈旧阈值
+    group: threshold
+    type: int
+    unit: 天
+    range: [1, 30]
+    default: 3
+    medical: true
+    evidence: SIGNALS-20260921 §5.5
+    note: ""
+  - key: staleSupplementDays
+    name: 营养补充陈旧阈值
+    group: threshold
+    type: int
+    unit: 天
+    range: [1, 30]
+    default: 3
+    medical: true
+    evidence: SIGNALS-20260921 §5.5
+    note: ""
+  - key: staleMedicationDays
+    name: 服药陈旧阈值
+    group: threshold
+    type: int
+    unit: 天
+    range: [1, 30]
+    default: 3
+    medical: true
+    evidence: SIGNALS-20260921 §5.5
+    note: ""
+  - key: staleGrowthDays
+    name: 生长测量陈旧阈值
+    group: threshold
+    type: int
+    unit: 天
+    range: [7, 120]
+    default: 45
+    medical: true
+    evidence: SIGNALS-20260921 §5.5
+    note: 与「关键数据陈旧」提醒共用
+  - key: staleSymptomDays
+    name: 症状陈旧阈值
+    group: threshold
+    type: int
+    unit: 天
+    range: [3, 90]
+    default: 14
+    medical: true
+    evidence: SIGNALS-20260921 §5.5
+    note: 与 REF.symptomUsableDays 同尺度（独立可调，注意保持一致）
+  - key: staleMedicalDays
+    name: 就医记录陈旧阈值
+    group: threshold
+    type: int
+    unit: 天
+    range: [7, 180]
+    default: 45
+    medical: true
+    evidence: SIGNALS-20260921 §5.5
+    note: ""
+  - key: staleDiaryDays
+    name: 日记陈旧阈值
+    group: threshold
+    type: int
+    unit: 天
+    range: [1, 30]
+    default: 3
+    medical: true
+    evidence: SIGNALS-20260921 §5.5
+    note: ""
+  - key: weanedDays
+    name: 停母乳判定阈值
+    group: threshold
+    type: int
+    unit: 天
+    range: [7, 60]
+    default: 14
+    medical: true
+    evidence: SIGNALS-20260921 §5.3
+    note: 最近一次母乳距今 ≥ 此值 → 判"已停母乳"（有效结论）
+
+  # ── throttle 频控（3）────────────────────────────────────────
+  - key: dedupDays
+    name: 同一提醒的去重窗口
+    group: throttle
+    type: int
+    unit: 天
+    range: [0, 90]
+    default: 7
+    medical: true
+    evidence: PRD-006 §4.5（频控规则）
+    note: 同一条提醒在此窗口内不重复出现；0 = 关闭去重（不建议）
+  - key: maxPerTurn
+    name: 每轮最多提醒条数
+    group: throttle
+    type: int
+    unit: 条
+    range: [0, 5]
+    default: 1
+    medical: true
+    evidence: PRD-006 §4.5
+    note: 防止一次给家长太多提醒；会主动打断的提醒不受此限制
+  - key: strongBypass
+    name: 主动提醒豁免限制
+    group: throttle
+    type: bool
+    range: []
+    default: true
+    medical: true
+    evidence: PRD-006 §4.5
+    note: 开启后，会主动打断的提醒不受去重与条数限制
+
+  # ── wordlist 词表（5 类）─────────────────────────────────────
+  - key: highRiskGroups
+    name: 高致敏食物分组
+    group: wordlist
+    type: list
+    default: null
+    medical: true
+    evidence: PRD-006 §4.3.3
+    note: 7 组（蛋/小麦/大豆/花生/鱼虾/坚果/乳制品）；出厂值以系统内置为准；单字关键词有误匹配风险，改动可在"识别试跑"里验证
+  - key: categoryRules
+    name: 食物分类关键词
+    group: wordlist
+    type: list
+    default: null
+    medical: false
+    evidence: SIGNALS-20260921 §6.3
+    note: 首个命中即归类；未命中计「未归类」；出厂值以系统内置为准
+  - key: prefix
+    name: 可忽略前缀
+    group: wordlist
+    type: list
+    default: null
+    medical: false
+    evidence: SIGNALS-20260921 §6.3
+    note: 识别食物名时会剥掉的前缀词（如"纯/自制"）；出厂值以系统内置为准
+  - key: suffix
+    name: 可忽略后缀
+    group: wordlist
+    type: list
+    default: null
+    medical: false
+    evidence: SIGNALS-20260921 §6.3
+    note: 识别食物名时会剥掉的后缀词（如"米糊/泥"）；出厂值以系统内置为准
+  - key: alias
+    name: 别名映射
+    group: wordlist
+    type: object
+    default: null
+    medical: false
+    evidence: SIGNALS-20260921 §6.3
+    note: 刻意留空——别名能覆盖形态差异，盖不住品牌命名（如"强化铁米"与"高铁米粉"）；未定论前不猜，疑似同一食材会在"重复建档"里列出
+
+  # ── inject 注入开关（2）──────────────────────────────────────
+  - key: injectPerception
+    name: 宝宝现状信息开关
+    group: inject
+    type: bool
+    range: []
+    default: true
+    medical: false
+    evidence: TECH-013 §8.1
+    note: 紧急回滚用（环境变量 PERCEPTION_INJECT=off 可强制关闭）
+  - key: injectFlagThrottle
+    name: 提醒频控开关
+    group: inject
+    type: bool
+    range: []
+    default: true
+    medical: false
+    evidence: perception.js FLAG_THROTTLE
+    note: 紧急回滚用（环境变量 FLAG_THROTTLE=off 可强制关闭）
+

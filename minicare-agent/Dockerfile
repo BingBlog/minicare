@@ -11,6 +11,9 @@ RUN npm install --no-audit --no-fund
 # 复制源码（.dockerignore 已排除 node_modules/.env.local）
 COPY src ./src
 
+# 信号配置（TECH-029 S7）：随镜像携带，实例重建即加载新配置（"随部署生效"的定义）
+COPY config ./config
+
 # 创建非 root 运行用户（Claude CLI 安全限制）
 RUN useradd -m -u 1001 oak && \
     mkdir -p /tmp/oak-claude /app && \

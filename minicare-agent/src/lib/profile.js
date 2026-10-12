@@ -20,9 +20,13 @@
  */
 import { getDb } from './db.js'
 import { percentileOf } from './growth.js'
+import { getSignalConfig } from '../config-loader.js'
 
 const CACHE_TTL_MS = 5 * 60 * 1000
 const cache = new Map() // babyId -> { at, profile }
+
+/** 信号配置（2026-10-11 起新鲜度阈值 / 停母乳阈值 / 转奶参考天数由配置派生，TECH-029） */
+const CFG = getSignalConfig()
 
 /** CMPA 配方阶梯（高 → 低）；向上=升级（症状加重），向下=降级（耐受改善） */
 export const LADDER_LEVEL = { aa: 4, eh_no_lactose: 3, eh_lactose: 3, ph: 2, std: 1 }
@@ -61,8 +65,8 @@ export const FRESHNESS_LABEL = {
   medical: '就医记录',
   diary: '日记',
 }
-/** 超过这些天数视为"陈旧"（月龄尺度不同，阈值分档） */
-const STALE_DAYS = { formula: 3, food: 3, supplement: 3, medication: 3, growth: 45, symptom: 14, medical: 45, diary: 3 }
+/** 超过这些天数视为"陈旧"（月龄尺度不同，阈值分档）——由配置派生（signals.yaml staleXxxDays） */
+const STALE_DAYS = CFG.thresholds.staleDays
 /**
  * 分位档序列（从低到高）——**必须与 `growth.js::bucket()` 的返回值集合逐字一致**。
  * bucket 只返回区间档（'低于P3' / 'P3-P15' / 'P15-P50' / 'P50-P85' / 'P85-P97' / '高于P97'），
@@ -76,7 +80,7 @@ export const P_BANDS = ['低于P3', 'P3-P15', 'P15-P50', 'P50-P85', 'P85-P97', '
  * 注意必须用「最近一次母乳距今」判定，**不能**用 30 天累计条数——后者是滞后指标：
  * 09-03 停母乳的宝宝，到 09-19 仍有 5 条落在 30 天窗口内，按条数会误判成"仍在混合喂养"。
  */
-const WEANED_DAYS = 14
+const WEANED_DAYS = CFG.thresholds.weanedDays
 
 // ── 日期工具（一律以北京时间 UTC+8 为准）──────────────────────────────
 
@@ -257,7 +261,7 @@ async function queryFormula(db, babyId) {
     !dominant
       ? null
       : typeCount > 1
-        ? stalledDays >= 14
+        ? stalledDays >= CFG.ref.stageStableDays
           ? 'stalled'
           : 'transitioning'
         : 'stable'

@@ -28,6 +28,7 @@
  * 后重来 —— 属已知折中，跨进程去重需 migration 022 落库（TECH-013 §7.6）。
  */
 import { getDb } from './db.js'
+import { getSignalConfig } from '../config-loader.js'
 import {
   getBabyProfile,
   cstToday,
@@ -42,36 +43,27 @@ import {
 const CACHE_TTL_MS = 5 * 60 * 1000
 const cache = new Map() // babyId -> { at, perception }
 
+/** 信号配置（config/registry.yaml 结构真源 ⊕ config/signals.yaml 值真源；三层兜底见 config-loader.js）。
+ *  2026-10-11 起参考值 / 词表 / 频控 / flag 开关与强度一律由配置派生（TECH-029）。 */
+const CFG = getSignalConfig()
+
 /**
- * 参考值 —— 全产品唯一出处。
- * 来源：docs/agent/tech/RESEARCH-20260920-转奶与排敏行业参考值.md
+ * 参考值 —— 唯一出处已外置（原硬编码于此，2026-10-11 迁移，值不变）。
+ * 值：minicare-agent/config/signals.yaml ｜ 字段语义与证据：config/registry.yaml
+ * 出处文档：docs/agent/tech/RESEARCH-20260920-转奶与排敏行业参考值.md
  *   stageStableDays  NHS 标准阶梯 7 天 + FPIAP 1-2 周 → 取 14 天
  *   stageMinDays     硬下限：即使提前吃完规定量也须满 7 天（NHS）
  *   observeDays      国家卫健委「2-3 日」+ 中国营养学会「2-3 天」→ 取 3 天
  *   dailyKinds       每日辅食种类下限（含 1 动物性 + 1 蔬菜 + 1 谷薯）
  *   symptomUsableDays 症状数据超过此天数视为陈旧，不得下阴性结论（与 profile STALE_DAYS 同值）
+ * 形态保持扁平 15 键（REF.xxx 消费点零改动）；冻结由 loader deepFreeze 保证。
  */
-export const REF = Object.freeze({
-  stageStableDays: 14,
-  stageMinDays: 7,
-  observeDays: 3,
-  dailyKinds: 4,
-  dailyCategories: 4,
-  maintainPerWeek: 2,
-  maintainPerWeekMax: 3,
-  symptomUsableDays: 14,
-  windowVarietyDays: 14,
-  windowEatenDays: 30,
-  /** 过敏事件回看窗口：过敏史比"近期症状"更需要长窗（一次反应会定义后续数周的喂养策略） */
-  allergyEventDays: 90,
-  /** 大便性状窗口与最低填写率（低于此值任何"没有便血/腹泻"都不得当阴性结论，§4.6.2） */
-  stoolWindowDays: 14,
-  coverageMin: 0.5,
-  /** 生长分位连续下降多少档算"下降趋势"（flag #7） */
-  growthDropLevels: 1,
-  /** 补充剂依从性窗口 */
-  adherenceDays: 30,
-})
+export const REF = CFG.ref
+
+/** 现状块注入是否启用（配置 injectPerception 与运行时 env PERCEPTION_INJECT 双通道，任一关闭即关；紧急回滚用） */
+export function perceptionInjectionEnabled() {
+  return process.env.PERCEPTION_INJECT !== 'off' && CFG.inject.perception !== false
+}
 
 /** 阶梯推进路径（高 → 低）。eh 两态同阶，故都指向 ph。 */
 const NEXT_STAGE = { aa: 'eh_lactose', eh_no_lactose: 'ph', eh_lactose: 'ph', ph: 'std' }
@@ -121,39 +113,24 @@ const SEVERITY_RANK = { none: 0, mild: 1, moderate: 2, severe: 3 }
 /**
  * 高致敏食物清单（PRD §4.3.3 的"蛋/小麦/大豆/花生/鱼虾/坚果"）。
  * 只用于回答"高致敏类引入到哪一步了"，**不用于劝阻引入**（是否引入是医生的判断）。
+ * 2026-10-11 起由 config/signals.yaml 的 highRiskGroups 派生；单字关键词有误匹配风险
+ * （如「豆」误伤「土豆/豆角」），改动经平台「试跑器」验证——见 registry 中该参数 note。
  */
-const HIGH_RISK_GROUPS = [
-  ['蛋类', ['蛋']],
-  ['小麦', ['小麦', '面粉', '面条', '馒头', '面包']],
-  // 注意：不能放单字「豆」—— 会把「土豆」「豆角」误归到大豆
-  ['大豆', ['大豆', '黄豆', '豆腐', '豆浆', '豆奶', '豆制品']],
-  ['花生', ['花生']],
-  ['鱼虾', ['鱼', '虾', '鳕鱼', '三文鱼', '鲈鱼', '龙利鱼', '贝']],
-  ['坚果', ['坚果', '核桃', '芝麻', '杏仁', '腰果', '榛子']],
-  ['乳制品', ['酸奶', '奶酪', '芝士', '黄油']],
-]
+const HIGH_RISK_GROUPS = CFG.wordlists.highRiskGroups
 
 // ── 食材归一化（同一食材重复建档 / 形态差异）─────────────────────────
-/** 七大类食物（膳食指南口径）关键词表 */
-const CATEGORY_RULES = [
-  ['谷薯', ['米粉', '米', '小米', '粥', '面', '馒头', '土豆', '红薯', '紫薯', '山药', '玉米', '燕麦', '南瓜']],
-  ['蔬菜', ['青菜', '西兰花', '菠菜', '胡萝卜', '生菜', '芹菜', '白菜', '油菜', '番茄', '西红柿', '黄瓜', '冬瓜', '茄子', '豌豆', '西葫芦']],
-  ['水果', ['苹果', '香蕉', '梨', '火龙果', '蓝莓', '草莓', '桃', '牛油果', '橙', '葡萄', '西梅']],
-  ['肉禽鱼', ['鸡', '猪', '牛', '羊', '里脊', '鱼', '虾', '鳕鱼', '三文鱼', '肝']],
-  ['蛋', ['蛋']],
-  ['豆类坚果', ['豆腐', '豆', '花生', '芝麻', '核桃', '坚果']],
-  ['奶类', ['奶', '酸奶', '奶酪']],
-]
-/** 形态后缀 / 修饰前缀：剥离后比对，是「同一食材重复建档」的主因 */
-const SUFFIX = ['米糊', '泥糊', '泥', '糊', '粥', '水', '汁', '条', '块', '片', '粉', '沫', '羹', '汤']
-const PREFIX = ['纯', '熟', '自制', '新鲜', '有机', '进口']
+/** 七大类食物（膳食指南口径）关键词表（由配置派生） */
+const CATEGORY_RULES = CFG.wordlists.categoryRules
+/** 形态后缀 / 修饰前缀：剥离后比对，是「同一食材重复建档」的主因（由配置派生） */
+const SUFFIX = CFG.wordlists.suffix
+const PREFIX = CFG.wordlists.prefix
 /**
  * 别名表：品牌 / 描述性命名差异，规则剥不出来只能显式枚举。
- * 刻意留空 —— dev 库曾出现「强化铁米」与「高铁米粉」指同一产品，
+ * 当前为空（config/signals.yaml 的 alias）—— dev 库曾出现「强化铁米」与「高铁米粉」指同一产品，
  * 但是否归并同一食材（如"纯米粉 vs 小米粉"）属待确认项（TECH-014 §12-Q1），
  * 未拍板前不猜；重复建档会通过 `dupGroups` 显式暴露而不是被静默合并。
  */
-const ALIAS = new Map()
+const ALIAS = CFG.wordlists.alias
 
 /** 归一化：① 复合名拆分 ② 剥修饰前后缀 ③ 别名兜底 → 食材数组 */
 export function normalizeFoods(rawName) {
@@ -536,7 +513,14 @@ const FLAG_STRENGTH_RANK = { strong: 0, medium: 1, weak: 2, intercept: 3 }
  */
 export function buildFlags({ stage, allergy, variety, maintain, trust, symptoms, stool, growth, highRisk }, ref) {
   const flags = []
-  const push = (key, label, strength, detail) => flags.push({ key, label, strength, detail })
+  const flagCfg = CFG.flags || {}
+  // 开关与强度统一在此切面生效（config/signals.yaml values.flags）；
+  // 调用处传入的 strength 仅作出厂兜底（配置缺失该条目时使用）
+  const push = (key, label, strength, detail) => {
+    const fc = flagCfg[key]
+    if (fc && fc.enabled === false) return
+    flags.push({ key, label, strength: (fc && fc.strength) || strength, detail })
+  }
 
   // ── 强项（不受频控，可直接打断）──────────────────────────────────
   // #1 过敏食材仍在食用：安全底线。已判疑似/确认过敏的食材出现在近 14 天实际食用里。
@@ -673,17 +657,18 @@ export function buildFlags({ stage, allergy, variety, maintain, trust, symptoms,
   return flags
 }
 
-/** 生长陈旧阈值（与 profile.STALE_DAYS.growth 同尺度：45 天） */
-const STALE_GROWTH_DAYS = 45
+/** 生长陈旧阈值（由配置派生；与 profile.STALE_DAYS.growth 同源同值） */
+const STALE_GROWTH_DAYS = CFG.thresholds.staleDays.growth
 
 // ── flag 频控（PRD §4.5「频控规则」）──────────────────────────────────
 /**
- * 单轮最多 1 条非强项；同一 flag 7 天内不重复；强度「强」不受限制。
+ * 单轮最多 maxPerTurn 条非强项（默认 1）；同一 flag dedupDays 天内不重复（默认 7 天）；
+ * 强度「强」是否豁免由 strongBypass 控制（默认 true）——三项均可配（config/signals.yaml values）。
  * 状态是**进程内**的：CloudRun 缩容到 0 会重置 —— 跨进程去重需 migration 022 落库，
  * 当前折中方案已足够（防止同一会话里反复念同一条，这是 PRD 的真实意图）。
  */
 const flagGate = new Map() // babyId -> Map(flagKey -> lastShownTs)
-export const FLAG_COOLDOWN_MS = 7 * 24 * 3600 * 1000
+export const FLAG_COOLDOWN_MS = CFG.throttle.dedupDays * 24 * 3600 * 1000
 
 /** 供测试与线上排障用：清空频控状态 */
 export function resetFlagGate(babyId) {
@@ -697,7 +682,13 @@ export function resetFlagGate(babyId) {
  */
 export function pickFlagsForTurn(flags, babyId, opts = {}) {
   const now = opts.now || Date.now()
-  const enabled = opts.enabled != null ? opts.enabled : process.env.FLAG_THROTTLE !== 'off'
+  // 频控总开关：运行时 env（紧急回滚）与配置（injectFlagThrottle）双通道，任一关闭即关
+  const enabled =
+    opts.enabled != null
+      ? opts.enabled
+      : process.env.FLAG_THROTTLE !== 'off' && CFG.inject.flagThrottle !== false
+  const maxPerTurn = Math.max(0, Number(CFG.throttle.maxPerTurn ?? 1))
+  const strongBypass = CFG.throttle.strongBypass !== false
   const all = flags || []
   if (!enabled || !babyId) return { shown: all, suppressed: [] }
 
@@ -706,8 +697,8 @@ export function pickFlagsForTurn(flags, babyId, opts = {}) {
   const suppressed = []
   const candidates = []
   for (const f of all) {
-    if (f.strength === 'strong') {
-      shown.push(f) // 强项直接给，不受第 2、3 条限制
+    if (f.strength === 'strong' && strongBypass) {
+      shown.push(f) // 强项直接给，不受条数与去重限制（strongBypass 开启时）
       continue
     }
     if (f.strength === 'intercept') {
@@ -722,14 +713,12 @@ export function pickFlagsForTurn(flags, babyId, opts = {}) {
     }
     candidates.push(f)
   }
-  // 非强项里只取 1 条：先看强度，再看 PRD 原文顺序（buildFlags 的 push 顺序即优先级）
+  // 非强项取前 maxPerTurn 条：先看强度，再看 PRD 原文顺序（buildFlags 的 push 顺序即优先级）
   candidates.sort((a, b) => (FLAG_STRENGTH_RANK[a.strength] ?? 9) - (FLAG_STRENGTH_RANK[b.strength] ?? 9))
-  if (candidates.length) {
-    const top = candidates[0]
-    shown.push(top)
-    for (const f of candidates.slice(1)) suppressed.push({ ...f, reason: 'single_per_turn' })
-  }
-  for (const f of shown) if (f.strength !== 'strong') gate.set(f.key, now)
+  const tops = candidates.slice(0, maxPerTurn)
+  for (const t of tops) shown.push(t)
+  for (const f of candidates.slice(maxPerTurn)) suppressed.push({ ...f, reason: 'single_per_turn' })
+  for (const f of shown) if (!(f.strength === 'strong' && strongBypass)) gate.set(f.key, now)
   flagGate.set(babyId, gate)
   return { shown, suppressed }
 }
