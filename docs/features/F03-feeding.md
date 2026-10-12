@@ -3,7 +3,7 @@
 > 功能 ID：P0-004 ~ P0-006  
 > 优先级：P0  
 > 状态：**已完成** ✅  
-> 最后更新：2026-10-08（新增：首页提醒区「距离上一次辅食」bar；补建影响面清单）
+> 最后更新：2026-10-12（补剂&营养素 Bar 状态化：「今天已吃 / 今天还没吃」文案；补登 SupplementBar 至影响面清单）
 >
 > **数据库架构**（Migration 008）：feeding_record 已拆分为 4 张独立表：
 > `breast_feeding` / `formula_feeding`（含 `formula_mix` 配比子表）/ `food_feeding`（含 `food_item` 明细子表）/ `supplement_feeding`
@@ -97,6 +97,19 @@
 
 每种营养素记录：名称 + 剂量 + 单位
 
+### 首页「补剂&营养素」Bar 状态显示（2026-10-12）
+
+首页提醒区（`pages/home/SupplementBar.tsx`）以「今天是否已吃」为状态行口径，不再仅罗列已吃条目：
+
+| 今昨记录情况 | 状态行展示 |
+|---|---|
+| 今日有补剂记录 | `今天已吃：维生素 D 400IU、维生素 AD`（最多 2 项，多则追加 `，另有 n 项`） |
+| 今日无记录、昨日有 | `今天还没吃 · 昨日：维生素 AD`（提醒态） |
+| 今昨两天都无记录 | 整条不渲染 |
+
+- 补剂项口径：`feed_type='supplement'`（兼容旧数据 `complementary_food='营养素'`），按 `key` 去重；
+- 剂量为空时仅展示名称；点击整条 → 补剂记录表单（`feeding?tab=supplement`）。
+
 ## 后端 API
 
 | 端点 | 方法 | 说明 |
@@ -125,6 +138,7 @@
 
 **首页提醒区（banners 插槽，`pages/home/index.tsx`）**
 - `minicare-mp/src/pages/home/FeedingBanner.tsx`（**一张卡片两行**：距上次喂奶 + 距离上一次辅食；行级热区分别进喂奶/辅食表单）
+- `minicare-mp/src/pages/home/SupplementBar.tsx`（补剂&营养素 Bar：状态行「今天已吃：xxx / 今天还没吃 · 昨日：xxx」；今昨均无记录时整条不渲染）
 - `minicare-mp/src/pages/home/SleepBanner.tsx` / `NextFollowUpBanner.tsx` / `AllergyProgressBar.tsx`
 - 样式：`minicare-mp/src/pages/home/index.scss`（`.home-inline-banner*` + `.home-feed-row*`）、`minicare-mp/src/styles/_ipad-adapt-mixins.scss`（title/desc 字号）
 

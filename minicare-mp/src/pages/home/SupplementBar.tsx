@@ -38,12 +38,17 @@ function extractSupplements(records: HomeRecord[]): SupplementItem[] {
   return items
 }
 
+/** 补剂项展示文案：`维生素 D 400IU`（无剂量时仅名称） */
+function formatSupplement(item: SupplementItem): string {
+  return item.dose ? `${item.label} ${item.dose}${item.unit ?? ''}` : item.label
+}
+
 /**
- * 补剂&营养素提醒 Bar（首页 banners 区，紧随排敏进度 Bar 下方）
+ * 补剂&营养素提醒 Bar（首页 banners 区，排敏进度 Bar 上方）
  *
- * 形态与「排敏进度」Bar 一致：圆点 + 标题 +（今日补剂 tags | 未记录提醒）+ chevron。
- * - 今日有记录：展示今日补剂 tags（最多 2 项，多则「另有 n 项」）
- * - 今日未记录（昨日有）：提示「今日暂未记录 · 昨日：xxx」，起提醒作用
+ * 形态与「排敏进度」Bar 一致：圆点 + 标题 + 状态行 + 动作按钮。
+ * - 今天已吃：显示「今天已吃：xxx」确认状态（最多 2 项，多则「，另有 n 项」）
+ * - 今天还没吃（昨日有）：提示「今天还没吃 · 昨日：xxx」，起提醒作用
  * - 今昨两天都无记录：不渲染（与卡片版行为一致）
  *
  * 点击整条 → 补剂记录表单（feeding?tab=supplement）。
@@ -56,6 +61,7 @@ export default function SupplementBar({ todayRecords, yesterdayRecords }: Supple
     return null
   }
 
+  const eatenToday = todaySupplements.length > 0
   const displayItems = todaySupplements.slice(0, 2)
   const extraCount = todaySupplements.length - 2
 
@@ -67,22 +73,15 @@ export default function SupplementBar({ todayRecords, yesterdayRecords }: Supple
       <View className='home-inline-banner__dot home-inline-banner__dot--supplement' />
       <View className='home-inline-banner__content'>
         <Text className='home-inline-banner__title'>补剂&营养素</Text>
-        {todaySupplements.length > 0 ? (
-          <View className='home-inline-banner__content-inner'>
-            {displayItems.map((s) => (
-              <Text key={s.key} className='home-inline-banner__tag'>
-                {s.label}{s.dose ? ` ${s.dose}${s.unit ?? ''}` : ''}
-              </Text>
-            ))}
-            {extraCount > 0 && (
-              <Text className='home-inline-banner__tag home-inline-banner__tag--more'>
-                另有{extraCount}项
-              </Text>
-            )}
-          </View>
+        {eatenToday ? (
+          <Text className='home-inline-banner__desc'>
+            <Text className='home-inline-banner__desc-em'>今天已吃</Text>
+            {`：${displayItems.map(formatSupplement).join('、')}`}
+            {extraCount > 0 ? `，另有${extraCount}项` : ''}
+          </Text>
         ) : (
           <Text className='home-inline-banner__desc'>
-            <Text className='home-inline-banner__desc-em'>今日暂未记录</Text>
+            <Text className='home-inline-banner__desc-em'>今天还没吃</Text>
             {yesterdaySupplements.length > 0
               ? ` · 昨日：${yesterdaySupplements.map((s) => s.label).join('、')}`
               : ''}
