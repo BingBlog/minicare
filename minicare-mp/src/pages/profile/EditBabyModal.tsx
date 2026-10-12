@@ -13,6 +13,13 @@ interface EditBabyModalProps {
   onBirthDateChange: (v: string) => void
   gender: 'male' | 'female' | 'unknown'
   onGenderChange: (v: 'male' | 'female' | 'unknown') => void
+  /** 出生数据（选填，字符串态；空串 = 未填写/待清空） */
+  birthWeight: string
+  onBirthWeightChange: (v: string) => void
+  birthHeight: string
+  onBirthHeightChange: (v: string) => void
+  birthHead: string
+  onBirthHeadChange: (v: string) => void
   allergyTypes: AllergyType[]
   onToggleAllergyType: (type: AllergyType) => void
   allergyLevel: AllergyLevel
@@ -35,6 +42,12 @@ export default function EditBabyModal({
   onBirthDateChange,
   gender,
   onGenderChange,
+  birthWeight,
+  onBirthWeightChange,
+  birthHeight,
+  onBirthHeightChange,
+  birthHead,
+  onBirthHeadChange,
   allergyTypes,
   onToggleAllergyType,
   allergyLevel,
@@ -47,6 +60,9 @@ export default function EditBabyModal({
 }: EditBabyModalProps) {
   const { getLabel, getOptions } = useAppConfig()
   const allergyTypeValues = getOptions('allergyType').map((o) => o.value as AllergyType)
+
+  /** 出生数据输入：仅保留数字（出生体重/身高/头围均为整数，单位 克/cm） */
+  const digitsOnly = (v: string) => v.replace(/[^0-9]/g, '')
 
   if (!open) return null
 
@@ -111,6 +127,49 @@ export default function EditBabyModal({
                 </View>
               ))}
             </View>
+          </View>
+        </View>
+
+        {/* 出生数据（选填） */}
+        <Text className='edit-baby-section-label'>出生数据（选填）</Text>
+        <View className='edit-baby-card'>
+          {/* 出生体重 */}
+          <View className='edit-baby-field'>
+            <Text className='edit-baby-field__label'>出生体重（克）</Text>
+            <Input
+              className='edit-baby-field__input'
+              type='number'
+              value={birthWeight}
+              onInput={(e) => onBirthWeightChange(digitsOnly(e.detail.value))}
+              placeholder='如 3250'
+              maxlength={4}
+            />
+          </View>
+
+          {/* 出生身高 */}
+          <View className='edit-baby-field'>
+            <Text className='edit-baby-field__label'>出生身高（厘米）</Text>
+            <Input
+              className='edit-baby-field__input'
+              type='number'
+              value={birthHeight}
+              onInput={(e) => onBirthHeightChange(digitsOnly(e.detail.value))}
+              placeholder='如 50'
+              maxlength={3}
+            />
+          </View>
+
+          {/* 出生头围 */}
+          <View className='edit-baby-field edit-baby-field--last'>
+            <Text className='edit-baby-field__label'>出生头围（厘米）</Text>
+            <Input
+              className='edit-baby-field__input'
+              type='number'
+              value={birthHead}
+              onInput={(e) => onBirthHeadChange(digitsOnly(e.detail.value))}
+              placeholder='如 34'
+              maxlength={3}
+            />
           </View>
         </View>
 

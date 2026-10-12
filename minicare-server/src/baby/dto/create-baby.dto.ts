@@ -83,6 +83,13 @@ export class CreateBabyDto {
   @Max(80)
   birth_height_cm?: number;
 
+  @ApiPropertyOptional({ example: 34, description: '出生头围（厘米）' })
+  @IsOptional()
+  @IsNumber()
+  @Min(20)
+  @Max(50)
+  birth_head_cm?: number;
+
   @ApiPropertyOptional({ description: '宝宝头像 fileID（COS 直传后写入，仅 update 使用）' })
   @IsOptional()
   @IsString()

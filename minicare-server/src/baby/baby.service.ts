@@ -8,6 +8,7 @@ import { Pool } from 'mysql2/promise';
 import { v4 as uuidv4 } from 'uuid';
 import { DATABASE_POOL } from '../common/database/database.module';
 import { CreateBabyDto } from './dto/create-baby.dto';
+import { UpdateBabyDto } from './dto/update-baby.dto';
 
 @Injectable()
 export class BabyService {
@@ -23,8 +24,8 @@ export class BabyService {
       `INSERT INTO baby_profile
          (id, family_id, name, birth_date, gender,
           allergy_types, allergy_level,
-          birth_weight_g, birth_height_cm, created_by)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          birth_weight_g, birth_height_cm, birth_head_cm, created_by)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         babyId,
         familyId,
@@ -35,6 +36,7 @@ export class BabyService {
         dto.allergy_level ?? null,
         dto.birth_weight_g ?? null,
         dto.birth_height_cm ?? null,
+        dto.birth_head_cm ?? null,
         createdBy,
       ],
     );
@@ -46,7 +48,7 @@ export class BabyService {
     const [rows] = await this.db.execute<any[]>(
       `SELECT id, family_id, name, birth_date, gender,
               allergy_types, allergy_level,
-              birth_weight_g, birth_height_cm,
+              birth_weight_g, birth_height_cm, birth_head_cm,
               avatar_url, created_at
        FROM baby_profile WHERE family_id = ? AND deleted_at IS NULL ORDER BY created_at ASC`,
       [familyId],
@@ -66,7 +68,7 @@ export class BabyService {
     const [rows] = await this.db.execute<any[]>(
       `SELECT id, family_id, name, birth_date, gender,
               allergy_types, allergy_level,
-              birth_weight_g, birth_height_cm,
+              birth_weight_g, birth_height_cm, birth_head_cm,
               avatar_url, created_at
        FROM baby_profile WHERE family_id = ? AND deleted_at IS NULL LIMIT 1`,
       [familyId],
@@ -92,7 +94,7 @@ export class BabyService {
     const [rows] = await this.db.execute<any[]>(
       `SELECT id, family_id, name, birth_date, gender,
               allergy_types, allergy_level,
-              birth_weight_g, birth_height_cm,
+              birth_weight_g, birth_height_cm, birth_head_cm,
               avatar_url, created_at
        FROM baby_profile WHERE id = ? AND family_id = ? AND deleted_at IS NULL`,
       [babyId, familyId],
@@ -116,7 +118,7 @@ export class BabyService {
     const [rows] = await this.db.execute<any[]>(
       `SELECT bp.id, bp.family_id, bp.name, bp.birth_date, bp.gender,
               bp.allergy_types, bp.allergy_level,
-              bp.birth_weight_g, bp.birth_height_cm,
+              bp.birth_weight_g, bp.birth_height_cm, bp.birth_head_cm,
               bp.avatar_url, bp.created_at,
               fg.name AS family_name,
               fm.role AS family_role
@@ -139,7 +141,7 @@ export class BabyService {
     });
   }
 
-  async updateBaby(babyId: string, familyId: string, dto: Partial<CreateBabyDto>) {
+  async updateBaby(babyId: string, familyId: string, dto: UpdateBabyDto) {
     const fields: string[] = [];
     const values: (string | number | null)[] = [];
 
@@ -150,6 +152,7 @@ export class BabyService {
     if (dto.allergy_level !== undefined)   { fields.push('allergy_level = ?');   values.push(dto.allergy_level); }
     if (dto.birth_weight_g !== undefined)  { fields.push('birth_weight_g = ?');  values.push(dto.birth_weight_g); }
     if (dto.birth_height_cm !== undefined) { fields.push('birth_height_cm = ?'); values.push(dto.birth_height_cm); }
+    if (dto.birth_head_cm !== undefined)   { fields.push('birth_head_cm = ?');   values.push(dto.birth_head_cm); }
     if (dto.avatar_url !== undefined)      { fields.push('avatar_url = ?');      values.push(dto.avatar_url ?? null); }
 
     if (fields.length === 0) return this.getBabyById(babyId, familyId);

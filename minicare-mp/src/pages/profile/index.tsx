@@ -59,6 +59,10 @@ export default function ProfilePage() {
   const [editGender, setEditGender] = useState<'male' | 'female' | 'unknown'>('unknown')
   const [editAllergyTypes, setEditAllergyTypes] = useState<AllergyType[]>([])
   const [editAllergyLevel, setEditAllergyLevel] = useState<AllergyLevel>('unknown')
+  // 出生数据（选填）：字符串态，空串 = 未填写/清空
+  const [editBirthWeight, setEditBirthWeight] = useState('')
+  const [editBirthHeight, setEditBirthHeight] = useState('')
+  const [editBirthHead, setEditBirthHead] = useState('')
 
   // ── 退出登录确认 ──────────────────────────────────────────────
 
@@ -151,6 +155,9 @@ export default function ProfilePage() {
     setEditAllergyLevel(
       (currentBaby?.allergy_level as AllergyLevel) ?? 'unknown',
     )
+    setEditBirthWeight(currentBaby?.birth_weight_g != null ? String(currentBaby.birth_weight_g) : '')
+    setEditBirthHeight(currentBaby?.birth_height_cm != null ? String(currentBaby.birth_height_cm) : '')
+    setEditBirthHead(currentBaby?.birth_head_cm != null ? String(currentBaby.birth_head_cm) : '')
   }, [currentBaby])
 
   // ── 编辑弹层操作 ──────────────────────────────────────────────
@@ -164,6 +171,9 @@ export default function ProfilePage() {
     setEditAllergyLevel(
       (currentBaby?.allergy_level as AllergyLevel) ?? 'unknown',
     )
+    setEditBirthWeight(currentBaby?.birth_weight_g != null ? String(currentBaby.birth_weight_g) : '')
+    setEditBirthHeight(currentBaby?.birth_height_cm != null ? String(currentBaby.birth_height_cm) : '')
+    setEditBirthHead(currentBaby?.birth_head_cm != null ? String(currentBaby.birth_head_cm) : '')
     setEditOpen(true)
   }, [currentBaby])
 
@@ -187,6 +197,25 @@ export default function ProfilePage() {
       return
     }
 
+    // 出生数据（选填）校验：填了才校验，范围与后端 DTO 一致；空串 = 清空（传 null）
+    const parseBirthValue = (raw: string): number | null =>
+      raw.trim() ? Number(raw) : null
+    const birthWeightG = parseBirthValue(editBirthWeight)
+    const birthHeightCm = parseBirthValue(editBirthHeight)
+    const birthHeadCm = parseBirthValue(editBirthHead)
+    if (birthWeightG != null && (birthWeightG < 500 || birthWeightG > 7000)) {
+      showToast('出生体重需在 500~7000 克之间')
+      return
+    }
+    if (birthHeightCm != null && (birthHeightCm < 30 || birthHeightCm > 80)) {
+      showToast('出生身高需在 30~80 厘米之间')
+      return
+    }
+    if (birthHeadCm != null && (birthHeadCm < 20 || birthHeadCm > 50)) {
+      showToast('出生头围需在 20~50 厘米之间')
+      return
+    }
+
     setSaving(true)
     try {
       const updated = await babyApi.update(currentBaby.family_id, currentBaby.id, {
@@ -195,6 +224,9 @@ export default function ProfilePage() {
         gender: editGender,
         allergy_types: editAllergyTypes,
         allergy_level: editAllergyLevel,
+        birth_weight_g: birthWeightG,
+        birth_height_cm: birthHeightCm,
+        birth_head_cm: birthHeadCm,
       })
       setCurrentBaby(updated)
       Taro.setStorageSync('minicare_baby', updated) // 同步 storage，首页 onShow 读取
@@ -627,6 +659,12 @@ export default function ProfilePage() {
         onBirthDateChange={setEditBirthDate}
         gender={editGender}
         onGenderChange={setEditGender}
+        birthWeight={editBirthWeight}
+        onBirthWeightChange={setEditBirthWeight}
+        birthHeight={editBirthHeight}
+        onBirthHeightChange={setEditBirthHeight}
+        birthHead={editBirthHead}
+        onBirthHeadChange={setEditBirthHead}
         allergyTypes={editAllergyTypes}
         onToggleAllergyType={toggleAllergyType}
         allergyLevel={editAllergyLevel}

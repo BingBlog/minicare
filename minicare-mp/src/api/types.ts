@@ -29,6 +29,7 @@ export interface Baby {
   allergy_level?: AllergyLevel | null
   birth_weight_g?: number | null
   birth_height_cm?: number | null
+  birth_head_cm?: number | null
   avatar_url?: string | null
   family_name?: string
   family_role?: 'owner' | 'member'

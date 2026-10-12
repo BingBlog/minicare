@@ -138,14 +138,14 @@ minicare-mp/src/
 
 **唯一权威来源**：`minicare-server/migrations/` 目录，按文件名顺序执行。
 
-> **当前最新迁移**：`024_password_login.sql`（001~022 + 024，**无 023**）
+> **当前最新迁移**：`026_baby_birth_head.sql`（001~022 + 024 + 025 + 026，**无 023**）
 > 新增迁移文件后，**必须更新本行的「当前最新迁移」字段**。
 >
 > ⚠️ **环境差异提醒**：各库进度不一致，写任何跨环境代码前先确认目标库的 `schema_migrations`
 > （`npm run migrate:status`，或 `SELECT version FROM schema_migrations ORDER BY version`）。
-> **实测 2026-10-09**：`minicare_dev` → **024**（最新）；`minicare_staging` → **019**；
+> **实测 2026-10-12**：`minicare_dev` → **026**（最新）；`minicare_staging` → **019**；
 > `minicare-cloud-6gqledlle0132cbe`（正式）→ **019**。
-> 即 **020 / 021 / 022 / 023 / 024 对 staging 与正式库都还没生效**。
+> 即 **020 / 021 / 022 / 023 / 024 / 025 / 026 对 staging 与正式库都还没生效**。
 > ⚠️ `022_schedule_template.sql`（PRD-009）**必须配套执行**才可用日程功能：接口无表可写会直接 500；
 > `023_schedule_sort_order.sql` 必须紧跟其后，否则保存模板时 `sort_order` 列不存在 → 500。
 
@@ -175,12 +175,14 @@ minicare-mp/src/
 | `022_schedule_template.sql` | **`schedule_template_item`** 宝宝作息计划模板（PRD-009 期一）：**只存模板不存每日日程**，今日状态实时派生；`item_type` VARCHAR(30)、`execute_time`/`prepare_time` TIME、`enabled`、`deleted_at` 软删除、`KEY idx_sched_baby_time(baby_id, execute_time)` |
 | `023_schedule_sort_order.sql` | `schedule_template_item` 加 **`sort_order` INT NOT NULL DEFAULT 0 + `KEY idx_sched_baby_sort(baby_id, sort_order)`**（PRD-009 拖拽排序）。**只加列不改语义**：默认 0 让历史行自动退化为"按 `execute_time` 升序"，向后兼容；保存时按提交数组下标整体重写 0..n-1，故不建唯一索引 |
 | `024_password_login.sql` | 「手机号 + 密码」登录（TECH-016 §3）：`password_hash` bcrypt（cost=10，NULL 表示未设密码 → 不允许密码登录）|
+| `025_medication_enhance.sql` | **用药增强（F14）**：① `medication_record.batch_id CHAR(36) NULL` + `idx_medrec_batch`——多药同服批次，同批共享 UUID，NULL=历史单药记录（前端按批聚合为一条服药事件；删除批内任一条=删整批）；② `medication.photo_id VARCHAR(512) NULL`——药品照片 fileID（拍药盒，老人靠图区分）。**纯加列+索引，无回填** |
+| `026_baby_birth_head.sql` | **宝宝档案出生数据补录（F02）**：`baby_profile.birth_head_cm TINYINT NULL`——出生头围（厘米），编辑弹窗补录出生体重/身高/头围。**纯加列无回填**；刻意**不联动生长记录**（出生数据=档案一次性属性，生长曲线 0 月龄起点仍走 growth_record） |
 
 ---
 
 ## 数据库表字段速查
 
-> ⚠️ **唯一权威来源**：`minicare-server/migrations/` 目录下的所有 SQL 文件（当前 001~024，号段连续）  
+> ⚠️ **唯一权威来源**：`minicare-server/migrations/` 目录下的所有 SQL 文件（当前 001~026，号段连续）  
 > 主键均为 `CHAR(36)` UUID，由**应用层生成传入**（MySQL 不支持 `DEFAULT UUID()`）
 
 ### TINYINT 枚举值域（双向映射必须）
@@ -204,7 +206,7 @@ minicare-mp/src/
 
 ### 各模块关键字段
 
-**`baby_profile`**（`001` + `002`）：`id`, `family_id`, `name`, `gender(TINYINT)`, `birth_date`, `avatar_url`, `allergy_types(JSON)`, `allergy_level(VARCHAR)`, `birth_weight_g`, `birth_height_cm`
+**`baby_profile`**（`001` + `002` + `026`）：`id`, `family_id`, `name`, `gender(VARCHAR, 008 起)`, `birth_date`, `avatar_url`, `allergy_types(JSON)`, `allergy_level(VARCHAR)`, `birth_weight_g`, `birth_height_cm`, `birth_head_cm`
 
 **`feeding_record`**：`id`, `baby_id`, `recorded_by`, `record_time`, `feed_type(TINYINT)`, `breast_side(TINYINT)`, `duration_min`, `formula_ml`, `complementary_food`, `amount_g`, `note`
 
@@ -489,7 +491,7 @@ npx -y gitnexus@latest detect-changes
 - `minicare/docs/tech/DB-01-overview.md` — 数据架构总览（ER 图、存储策略、技术选型）
 - `minicare/docs/tech/DB-02-schema.md` — 完整建表说明（指向 migrations 权威）
 - `minicare/docs/tech/DB-03-mock-data.md` — Mock 数据示例
-- `minicare/minicare-server/migrations/` — **权威 DDL 目录（001~022 + 024）**
+- `minicare/minicare-server/migrations/` — **权威 DDL 目录（001~026）**
 - `minicare/docs/business/MVP-PRD.md` — 完整 PRD 存档（已归档，现行权威规格见 docs/features/ + docs/prd/）
 - `.catpaw/skills/minicare-deploy/SKILL.md` — 发布操作手册（含 EnvParams 等敏感参数，不提交 git）
 - `.catpaw/skills/minicare-design/SKILL.md` — 视觉风格指南（UI 页面开发时同时激活）

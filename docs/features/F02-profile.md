@@ -3,12 +3,12 @@
 > 功能 ID：P0-001  
 > 优先级：P0  
 > 状态：**已完成** ✅  
-> 最后更新：2026-08-20（删除宝宝改为**软删除**：标记 deleted_at，保留历史数据，Migration 012）
+> 最后更新：2026-10-12（编辑弹窗支持**出生数据补录**：出生体重/身高/头围，选填可清空；新增字段 `baby_profile.birth_head_cm`，Migration 026）  
 >
 > **来源**：docs/business/MVP-PRD.md §3.1  
 > 功能 ID：P0-001  
 > 优先级：P0  
-> 最后同步：2026-08-20（更新：删除宝宝改为软删除）
+> 最后同步：2026-10-12（更新：编辑弹窗出生数据补录 + birth_head_cm）
 
 ## 功能描述
 
@@ -45,6 +45,13 @@
 
 **可编辑字段**：昵称、出生日期、性别、过敏程度、过敏类型（编辑时支持多选：milk/egg/wheat/peanut/tree_nut/soy/fish/shellfish/other）
 
+**出生数据（选填，2026-10-12 新增）**：出生体重（克，500~7000）、出生身高（厘米，30~80）、出生头围（厘米，20~50）
+
+- 三项均为选填，输入仅接受数字（整数），空串 = 清空该字段（提交 `null`）
+- 前端校验范围与后端 DTO 一致，超范围 Toast 拦截
+- **不联动生长记录**：出生数据是档案的一次性属性；生长曲线 0 月龄起点仍走「生长记录」（`growth_record`）
+- 消费方：`minicare-agent` 画像注入读取 `birth_weight_g` 渲染"出生体重 X 千克"（其余字段暂无消费方，预留）
+
 ## 删除宝宝档案
 
 在"我的"页面 → 编辑宝宝档案弹窗（`EditBabyModal`）底部提供「删除宝宝档案」入口，**仅家庭创建者（owner）可见**：
@@ -71,7 +78,7 @@
 
 ## 数据库表
 
-**baby_profile**（Migration 008）：
+**baby_profile**（Migration 008 + 026）：
 
 | 字段 | 类型 | 说明 |
 |------|------|------|
@@ -80,8 +87,9 @@
 | `name` | VARCHAR(50) | 宝宝昵称 |
 | `gender` | VARCHAR(10) | 性别：male/female/unknown |
 | `birth_date` | DATE | 出生日期 |
-| `birth_weight_g` | INT | 出生体重（克），可选 |
-| `birth_height_cm` | DECIMAL(5,1) | 出生身高（cm），可选 |
+| `birth_weight_g` | SMALLINT | 出生体重（克），可选（Migration 002） |
+| `birth_height_cm` | TINYINT | 出生身高（厘米），可选（Migration 002） |
+| `birth_head_cm` | TINYINT | 出生头围（厘米），可选（Migration 026，2026-10-12） |
 | `allergy_types` | JSON | 过敏原类型数组 |
 | `allergy_level` | VARCHAR(20) | 过敏程度 |
 
@@ -93,10 +101,43 @@
 - [x] 创建成功后进入首页并展示宝宝信息
 - [x] "我的"页面可编辑宝宝档案
 - [x] 编辑模式支持多种过敏原类型选择
+- [x] 编辑弹窗支持出生数据补录（体重/身高/头围，选填，可清空；Migration 026）
 - [x] 性别选择器：男宝/女宝/未知
 - [x] 家庭创建者可删除宝宝档案（二次确认 + 软删除标记，数据归档保留）
 - [x] 非创建者（member）调用删除接口返回 403
 - [x] 软删后同家庭可继续创建新宝宝
+
+## 影响面清单（消费方）
+
+> **改动 F02 任何逻辑前必读**：运行 `node .agents/scripts/impact-scan.mjs profile birth baby` 
+> 核对以下消费点（大小写不敏感匹配，需人工确认），改动后同步更新本清单。
+> 本清单 2026-10-12 建立（参照 F03-feeding.md 样板）。
+
+**入口层**
+- "我的"页面：`minicare-mp/src/pages/profile/index.tsx`（档案状态、编辑弹层编排、保存 payload、头像上传、删除宝宝）
+- 引导建档：`minicare-mp/src/pages/onboarding/`（`index.tsx` / `BabyInfoForm` / `AllergySection`；创建时仅昵称/生日/性别/过敏，**不含出生数据**）
+- 登录后路由：`minicare-mp/src/lib/afterLogin.ts`（无宝宝档案且无待处理邀请 → 引导建档页）
+
+**弹层 / 组件**
+- `minicare-mp/src/pages/profile/EditBabyModal.tsx`（编辑弹窗：昵称/出生日期/性别/**出生数据（体重/身高/头围）**/过敏类型/过敏程度/删除入口）
+- `minicare-mp/src/pages/profile/BabyHero.tsx`（档案头部：名字/月龄/过敏徽标；**不展示出生数据**）
+- `minicare-mp/src/pages/profile/BabyStats.tsx`（身高/体重/头围三格 = **growth_record 各自最近非空值**，与出生数据无关）
+- 样式：`minicare-mp/src/pages/profile/index.scss`（`edit-baby-*`）
+
+**API 层**
+- `minicare-mp/src/api/baby.ts`（`babyApi`：getMine / get / list / create / update / remove；`CreateBabyDto` 与 `update` 类型含出生数据字段）
+- `minicare-mp/src/api/types.ts`（`Baby` 类型：`birth_weight_g` / `birth_height_cm` / `birth_head_cm`）
+
+**后端**
+- `minicare-server/src/baby/`（controller / `baby.service.ts` 6 处 SQL：INSERT + 4 处 SELECT + updateBaby 动态更新 / `dto/create-baby.dto.ts`）
+- `minicare-server/src/family/family.service.ts`（解散家庭级联软删宝宝）
+
+**消费方（读出生数据）**
+- `minicare-agent/src/lib/profile.js`（画像注入读 `birth_weight_g` → "出生体重 X 千克"；**身高/头围暂无消费方**）
+- 生长曲线（`minicare-mp/src/pagesReport/tabs/GrowthTab.tsx` + `minicare-server/src/report/report.service.ts`）数据源 = `growth_record`（**与档案出生数据互不联动**，0 月龄起点走生长记录）
+
+**跨端**
+- `minicare-web/`（维护模式）：onboarding `OptionalFields` 采集出生体重/身高（历史入口）；编辑弹窗**未同步**出生数据字段
 
 ## 相关文件
 

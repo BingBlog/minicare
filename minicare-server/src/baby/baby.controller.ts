@@ -14,6 +14,7 @@ import { JwtGuard } from '../auth/jwt.guard';
 import { FamilyMemberGuard } from '../family/family-member.guard';
 import { RoleGuard } from '../family/role.guard';
 import { CreateBabyDto } from './dto/create-baby.dto';
+import { UpdateBabyDto } from './dto/update-baby.dto';
 import { MinRole, FamilyRole } from '../common/decorators/min-role.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 
@@ -53,7 +54,7 @@ export class BabyController {
   update(
     @Param('familyId') familyId: string,
     @Param('babyId') babyId: string,
-    @Body() dto: Partial<CreateBabyDto>,
+    @Body() dto: UpdateBabyDto,
   ) {
     return this.babyService.updateBaby(babyId, familyId, dto);
   }

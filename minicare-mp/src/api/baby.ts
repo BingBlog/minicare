@@ -9,6 +9,7 @@ export interface CreateBabyDto {
   allergy_level?: string
   birth_weight_g?: number
   birth_height_cm?: number
+  birth_head_cm?: number
 }
 
 export const babyApi = {
@@ -24,6 +25,10 @@ export const babyApi = {
     allergy_types: string[]
     allergy_level: string
     avatar_url: string
+    /** 出生数据（可传 null 清空） */
+    birth_weight_g: number | null
+    birth_height_cm: number | null
+    birth_head_cm: number | null
   }>) =>
     request<Baby>(`/api/family/${familyId}/baby/${babyId}`, {
       method: 'PATCH',

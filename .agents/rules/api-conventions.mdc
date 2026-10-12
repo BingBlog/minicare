@@ -252,6 +252,23 @@ export class UpdateFeedingDto {
 }
 ```
 
+### 🚨 Update DTO 必须是 class，禁止用 TS 类型（如 `Partial<T>`）
+
+```ts
+// ❌ 零校验：Partial<CreateXxxDto> 是 TS 类型，编译后是 Object，
+//    全局 ValidationPipe（whitelist + forbidNonWhitelisted）只对带装饰器的 class 生效
+@Body() dto: Partial<CreateBabyDto>
+
+// ✅ 手写 UpdateXxxDto class（全字段 @IsOptional + 复用 Create 的校验规则）
+@Body() dto: UpdateBabyDto
+```
+
+> 背景（2026-10-12 实测）：`baby.controller.ts` 的 PATCH 曾用 `Partial<CreateBabyDto>`，
+> 导致整个请求体**零校验**——越界数值（如头围 55cm）可直接写入数据库，
+> 未知字段不会被拦截。改成 class 后范围校验/非法枚举/未知字段全部生效。
+> 新增任何 Update 接口时，照抄 `minicare-server/src/baby/dto/update-baby.dto.ts` 的写法。
+> 如需「传 null 清空」语义：字段类型写 `T | null`（`@IsOptional()` 对 null 会跳过校验，service 判 `!== undefined` 写 null）。
+
 ---
 
 ## 六、时间字段约定
