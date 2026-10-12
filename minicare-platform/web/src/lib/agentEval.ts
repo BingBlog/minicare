@@ -330,16 +330,11 @@ export interface EvalRejudgeResult {
 
 /* ── 配置对象（TECH-021）────────────────────────────────────────── */
 
-/** 用例来源链（US-18 飞轮 / PRD-015 线上沉淀）：种子 = null；派生 = {type:'derive',…}；线上沉淀 = {type:'trace',…} */
+/** 用例来源链（US-18 飞轮）：种子 = null；派生 = {type:'derive', from_case, from_run} */
 export interface EvalCaseSource {
   type: string
   from_case?: string
   from_run?: string | null
-  /** type='trace'（线上沉淀，PRD-015）：来源 trace 与对照链接 */
-  trace_id?: string
-  started_at?: string | null
-  langfuse_url?: string | null
-  messageEdited?: boolean
 }
 
 export interface EvalCase {
@@ -360,101 +355,6 @@ export interface EvalCase {
   sort_order: number
   created_at: string
   updated_at: string
-}
-
-/* ── 线上沉淀（PRD-015 / TECH-032）：trace → 测评用例 ────────────────── */
-
-export type TraceTriageState = 'untreated' | 'converted' | 'ignored'
-
-export interface TraceTriage {
-  state: TraceTriageState
-  case_id: string | null
-  reason: string | null
-  note: string | null
-  updated_at: string | null
-}
-
-export interface EvalTraceListItem {
-  traceId: string
-  /** 绝对 epoch 毫秒 */
-  startedAt: number
-  status: string
-  sessionId: string | null
-  message: string
-  outputBrief: string | null
-  eventCount: number
-  toolCallCount: number
-  forceFinished: boolean
-  /** 是否已同步到 Langfuse（决定深链接可用性） */
-  imported: boolean
-  state: TraceTriageState
-  case_id: string | null
-  reason: string | null
-}
-
-export interface EvalTraceListResponse {
-  items: EvalTraceListItem[]
-  counts: { total: number; untreated: number; converted: number; ignored: number }
-  filtered: number
-  window: { days?: number; limit?: number; offset?: number }
-}
-
-export interface EvalObservationBrief {
-  type: string
-  name: string
-  level: string
-  statusMessage: string | null
-  startTime: number | null
-  endTime: number | null
-  ms: number | null
-  inputBrief: string | null
-  outputBrief: string | null
-}
-
-export interface EvalTraceRaw {
-  traceId: string
-  sessionId: string | null
-  userId: string | null
-  name: string
-  input: { message?: string; images?: number }
-  output: string | null
-  metadata: {
-    model?: string
-    totalMs?: number | null
-    eventCount?: number
-    forceFinished?: boolean
-    toolCalls?: { name: string; count: number }[]
-    error?: string | null
-  }
-  tags: string[]
-  status: string
-  startedAt: number
-  endedAt: number | null
-  imported: boolean
-}
-
-export interface EvalTraceDetail {
-  trace: EvalTraceRaw
-  observationsBrief: EvalObservationBrief[]
-  sessionContext: { traceId: string; startedAt: number; messageBrief: string | null }[]
-  langfuseUrl: string
-  triage: TraceTriage
-}
-
-export interface EvalTraceConvertBody {
-  title: string
-  grp: string
-  priority: string
-  expectedPoints: string
-  messageOverride?: string
-  tags?: string[]
-  joinRegression?: boolean
-}
-
-export interface EvalTraceDupCheck {
-  exact: string[]
-  contains: string[]
-  samples: { case_id: string; message: string }[]
 }
 
 export interface EvalJudge {
@@ -599,26 +499,6 @@ export const agentEvalApi = {
   importCases: (force = false) =>
     post<{ imported: number; skipped: boolean; existing?: number }>('/api/agent-eval/cases/import', { force }),
   exportCases: () => req<{ cases: unknown[]; count: number }>('/api/agent-eval/cases/export'),
-
-  /* ── 线上沉淀（PRD-015 / TECH-032）：trace → 测评用例 ─────────────── */
-  /** 候选队列：脚本读取 FlexDB → 台账合并 → 筛选分页（FlexDB 不可达时抛 502 文案） */
-  listTraces: (params = '') => req<EvalTraceListResponse>(`/api/agent-eval/traces${params}`),
-  /** 单条 trace 详情（问题/回答/工具轨迹摘要/会话上下文 + 台账 + Langfuse 深链接） */
-  getTrace: (traceId: string) => req<EvalTraceDetail>(`/api/agent-eval/traces/${encodeURIComponent(traceId)}`),
-  /** 沉淀为用例：生成 T- 系列标准 eval_case（来源链挂 trace；期望行为要点 → 判分要点） */
-  convertTrace: (traceId: string, body: EvalTraceConvertBody) =>
-    post<{ ok: boolean; case_id: string; case: EvalCase; triage: TraceTriage }>(
-      `/api/agent-eval/traces/${encodeURIComponent(traceId)}/convert`, body),
-  /** 标记忽略（原因枚举；「其他」备注必填）；已沉淀的不可忽略（409） */
-  ignoreTrace: (traceId: string, body: { reason: string; note?: string }) =>
-    post<{ ok: boolean; triage: TraceTriage }>(
-      `/api/agent-eval/traces/${encodeURIComponent(traceId)}/ignore`, body),
-  /** 恢复为未处理 */
-  reopenTrace: (traceId: string) =>
-    post<{ ok: boolean; triage: TraceTriage }>(`/api/agent-eval/traces/${encodeURIComponent(traceId)}/reopen`),
-  /** 查重（P1 精确级，纯提示不阻塞） */
-  traceDupCheck: (message: string) =>
-    req<EvalTraceDupCheck>(`/api/agent-eval/traces/duplicate-check?message=${encodeURIComponent(message)}`),
 
   listJudges: () => req<{ items: EvalJudge[]; count: number }>('/api/agent-eval/judges'),
   createJudge: (body: Record<string, unknown>) => post<EvalJudge>('/api/agent-eval/judges', body),
@@ -980,49 +860,4 @@ export function fmtTime(iso: string | null): string {
   if (Number.isNaN(d.getTime())) return iso
   const p = (n: number) => String(n).padStart(2, '0')
   return `${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`
-}
-
-/* ── 线上沉淀（PRD-015 / TECH-032）：展示映射与工具 ─────────────────── */
-
-/** trace 运行状态展示名（telemetry `status`） */
-export const TRACE_STATUS_LABEL: Record<string, string> = {
-  completed: '正常完成',
-  error: '异常',
-  timeout: '超时',
-  running: '进行中',
-}
-
-export function traceStatusLabel(s: string): string {
-  return TRACE_STATUS_LABEL[s] || s || '未知'
-}
-
-/** 忽略原因展示名（数据侧存英文稳定键，界面统一中文） */
-export const IGNORE_REASON_LABEL: Record<string, string> = {
-  duplicate: '重复问题',
-  unrepresentative: '不具代表性',
-  anomaly: '数据异常',
-  sensitive: '数据敏感',
-  other: '其他',
-}
-
-/** epoch 毫秒 → `MM-DD HH:mm`（列表 / 详情时间列） */
-export function fmtTsMs(ms: number | null | undefined): string {
-  if (!ms) return '—'
-  const d = new Date(ms)
-  if (Number.isNaN(d.getTime())) return '—'
-  const p = (n: number) => String(n).padStart(2, '0')
-  return `${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`
-}
-
-/** 观测服务地址（TECH-032 §3.8）：取 `/health` 的 obs_url，失败回落 localhost:3100；模块级缓存一次 */
-let obsUrlCache: string | null = null
-export async function getObsUrl(): Promise<string> {
-  if (obsUrlCache) return obsUrlCache
-  try {
-    const h = await req<{ obs_url?: string }>('/health')
-    obsUrlCache = (h.obs_url || '').replace(/\/$/, '') || 'http://localhost:3100'
-  } catch {
-    obsUrlCache = 'http://localhost:3100'
-  }
-  return obsUrlCache
 }

@@ -1,7 +1,6 @@
 """CLI 入口：kb-pipeline parse / chunk / import / embed / pipeline"""
 from __future__ import annotations
 
-import os
 from pathlib import Path
 
 import click
@@ -383,9 +382,6 @@ def serve(ctx, host, port, reload) -> None:
 
     if reload:
         # --reload 需要 import 字符串，走工厂函数
-        # 开发模式标记（TECH-030）：观测栈的「退出停容器」在热重载下跳过 ——
-        # 否则每次存盘 worker 重启都会把 Langfuse 容器停掉再来回拉，纯抖动。
-        os.environ["KB_SERVE_RELOAD"] = "1"
         uvicorn.run("kb_pipeline.web.api:get_asgi_app", host=host, port=port, reload=True, factory=True)
     else:
         from .web.api import create_app

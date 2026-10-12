@@ -1,23 +1,15 @@
 /**
- * 页面：全局配置（原「生效阈值」，2026-10-09 用户升级；2026-10-11 升为平台级 + 按域分类）
+ * 页面：全局配置（原「生效阈值」，2026-10-09 用户升级）
  *
  * 三件事：
  *   ① **查看明细** —— 全平台生效配置一页看全：
- *      · 管线条数（pipeline.yaml 13 组 × 60+ 项）：中文名 / 生效值 / 代码默认值 / 来源 / 说明；
+ *      · 管线条数（pipeline.yaml 12 组 × 60+ 项）：中文名 / 生效值 / 代码默认值 / 来源 / 说明；
  *      · 密钥与环境变量（.env）：已配置状态、掩码值、生效来源（`environment` 覆盖时明示）。
  *   ② **在线修改** —— 按类型渲染控件（开关 / 数字 / 文本 / 每行一项 / JSON 文本），
  *      改动先本地暂存（「待保存」徽标 + 导航角标），点「保存修改」批量提交。
  *   ③ **安全写回** —— 后端先全量校验、再备份、后写回原文件并**热重载**（无需重启服务）；
  *      保存前弹确认框列出每项 from → to；带警示的字段（如 platform.version 会让缓存整体失效）
  *      在确认框里单列醒目提示。
- *
- * 2026-10-11（用户要求「按 知识库 / Agent 测评 / 观测 等分类展示」）：
- *   · 页面**不再挂在知识库域**——已升为平台级页面，入口在顶栏右侧（见 `nav.ts` / `Topnav`）；
- *   · 左导航按**平台域**分列（知识库 / Agent 测评 / 观测 / 平台，顺序与域口径同 `nav.ts`）：
- *     每个域下 = 它的管线条数分组 + 它的「密钥与环境变量」（`.env` 项按 `domain` 归属拆分，
- *     观测的 9 项由此从知识库凭证里分出去）；分类归属由后端下发（`config_center.py`），
- *     前端只做分列与中文名映射，缺省落「知识库」；
- *   · 「原始文件」仍为页尾的独立视图（pipeline.yaml 整体，不属于任何单个域）。
  *
  * 交互约定：
  *   · 「撤销」= 放弃该字段的未保存草稿；「恢复默认」= 把草稿设为代码默认值（仍需保存才写回）；
@@ -26,7 +18,6 @@
  */
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { CSSProperties } from 'react'
-import { DOMAINS } from '../nav'
 import { Modal } from '../components/Modal'
 import { Card, CardBody, CardHead, Empty, ErrorBox, Loading, Notice, Pill } from '../components/ui'
 import { api } from '../lib/api'
@@ -49,47 +40,9 @@ const INPUT: CSSProperties = {
   boxSizing: 'border-box',
 }
 
-/** 左导航特殊项 id：各域「密钥与环境变量」视图 = `__env__:<scope>`；原始文件 = `__raw__` */
-const ENV_PREFIX = '__env__:'
+/** 两个非分组导航项：密钥与环境变量 / 原始文件 */
+const ENV_ID = '__env__'
 const RAW_ID = '__raw__'
-const envIdOf = (scope: string) => `${ENV_PREFIX}${scope}`
-
-/* ── 平台域分类（左导航的一级列）─────────────────────────────────────────
-   中文名与顺序取 `nav.ts` 的 `DOMAINS`（与顶栏域页签同口径），platform 殿后补位；
-   每个域一列 = 它的分组 + 它的 `.env` 项（空列不渲染 —— 如信号管理暂无配置项）。 */
-
-const SCOPE_LABEL: Record<string, string> = {
-  ...Object.fromEntries(DOMAINS.map((dd) => [dd.id, dd.label])),
-  platform: '平台',
-}
-const SCOPE_ORDER: string[] = [...DOMAINS.map((dd) => dd.id), 'platform']
-
-interface ScopeColumn {
-  id: string
-  label: string
-  groups: ConfigGroupDetail[]
-  envItems: ConfigEnvItem[]
-}
-
-/** 把分组合 `.env` 项按域拆列（后端下发顺序即组内顺序；未知域兜底排最后） */
-function scopeColumns(d: ConfigDetail): ScopeColumn[] {
-  const cols = new Map<string, ScopeColumn>()
-  const ensure = (id: string): ScopeColumn => {
-    let c = cols.get(id)
-    if (!c) {
-      c = { id, label: SCOPE_LABEL[id] ?? id, groups: [], envItems: [] }
-      cols.set(id, c)
-    }
-    return c
-  }
-  for (const g of d.groups) ensure(g.domain ?? 'kb').groups.push(g)
-  for (const it of d.env.items) ensure(it.domain ?? 'kb').envItems.push(it)
-  const rank = (id: string) => {
-    const i = SCOPE_ORDER.indexOf(id)
-    return i === -1 ? SCOPE_ORDER.length : i
-  }
-  return [...cols.values()].sort((a, b) => rank(a.id) - rank(b.id))
-}
 
 const dkey = (groupId: string, key: string) => `${groupId}.${key}`
 
@@ -234,13 +187,7 @@ export function ConfigPage() {
   const d = data
   const query = q.trim().toLowerCase()
   const searching = query.length > 0
-  const cols = scopeColumns(d)
-  /** 当前导航项 id：未显式选择时落第一组（首屏即有内容 + 有高亮；原始文件/环境变量需显式点击） */
-  const activeId = active || (d.groups[0]?.id ?? '')
-  const activeGroup = d.groups.find((g) => g.id === activeId) ?? d.groups[0]
-  /** 各域「密钥与环境变量」视图的当前域（非该视图时为空串） */
-  const envScope = activeId.startsWith(ENV_PREFIX) ? activeId.slice(ENV_PREFIX.length) : ''
-  const envScopeItems = envScope ? d.env.items.filter((it) => (it.domain ?? 'kb') === envScope) : []
+  const activeGroup = d.groups.find((g) => g.id === active) ?? d.groups[0]
 
   const matchField = (g: ConfigGroupDetail, f: ConfigField) =>
     `${g.label} ${g.id} ${f.label} ${f.key} ${f.desc} ${f.warn ?? ''}`.toLowerCase().includes(query)
@@ -427,45 +374,35 @@ export function ConfigPage() {
 
       <div className="cfg-wrap">
         <nav className="cfg-nav">
-          {cols.map((c) => {
-            const envDirty = c.envItems.filter((it) => it.key in envDrafts).length
-            return (
-              <div className="cfg-catnode" key={c.id}>
-                <div className="cfg-cat">{c.label}</div>
-                {c.groups.map((g) => (
-                  <button
-                    key={g.id}
-                    type="button"
-                    className={`cfg-tab${!searching && activeId === g.id ? ' on' : ''}`}
-                    onClick={() => {
-                      setQ('')
-                      setActive(g.id)
-                    }}
-                  >
-                    <span className="t">{g.label}</span>
-                    <span className="n">{groupDirty(g) > 0 ? <em>{groupDirty(g)}</em> : g.fields.length}</span>
-                  </button>
-                ))}
-                {c.envItems.length > 0 ? (
-                  <button
-                    type="button"
-                    className={`cfg-tab${!searching && activeId === envIdOf(c.id) ? ' on' : ''}`}
-                    onClick={() => {
-                      setQ('')
-                      setActive(envIdOf(c.id))
-                    }}
-                  >
-                    <span className="t">密钥与环境变量</span>
-                    <span className="n">{envDirty > 0 ? <em>{envDirty}</em> : c.envItems.length}</span>
-                  </button>
-                ) : null}
-              </div>
-            )
-          })}
+          {d.groups.map((g) => (
+            <button
+              key={g.id}
+              type="button"
+              className={`cfg-tab${!searching && activeGroup.id === g.id ? ' on' : ''}`}
+              onClick={() => {
+                setQ('')
+                setActive(g.id)
+              }}
+            >
+              <span className="t">{g.label}</span>
+              <span className="n">{groupDirty(g) > 0 ? <em>{groupDirty(g)}</em> : g.fields.length}</span>
+            </button>
+          ))}
           <div className="cfg-sep" />
           <button
             type="button"
-            className={`cfg-tab${!searching && activeId === RAW_ID ? ' on' : ''}`}
+            className={`cfg-tab${!searching && active === ENV_ID ? ' on' : ''}`}
+            onClick={() => {
+              setQ('')
+              setActive(ENV_ID)
+            }}
+          >
+            <span className="t">密钥与环境变量</span>
+            <span className="n">{Object.keys(envDrafts).length > 0 ? <em>{Object.keys(envDrafts).length}</em> : d.env.total}</span>
+          </button>
+          <button
+            type="button"
+            className={`cfg-tab${!searching && active === RAW_ID ? ' on' : ''}`}
             onClick={() => {
               setQ('')
               setActive(RAW_ID)
@@ -494,14 +431,13 @@ export function ConfigPage() {
                 )}
               </CardBody>
             </Card>
-          ) : envScope ? (
+          ) : active === ENV_ID ? (
             <Card>
               <CardHead
                 title="密钥与环境变量"
                 meta={
                   <span className="hint">
-                    {SCOPE_LABEL[envScope] ?? envScope} · {envScopeItems.filter((it) => it.configured).length}/
-                    {envScopeItems.length} 已配置 · 写入 <code>{d.env.path}</code>
+                    {d.env.configured}/{d.env.total} 已配置 · 写入 <code>{d.env.path}</code>
                   </span>
                 }
               />
@@ -510,10 +446,10 @@ export function ConfigPage() {
                   密钥仅显示掩码，不提供明文查看；点「修改」填写新值，随底部「保存修改」一起写入 .env。
                   留空 = 清空该键（环境变量优先于 .env：标记「系统环境变量」的键，写 .env 不会覆盖当前进程的值）。
                 </div>
-                {envScopeItems.map((it) => renderEnvRow(it))}
+                {d.env.items.map((it) => renderEnvRow(it))}
               </CardBody>
             </Card>
-          ) : activeId === RAW_ID ? (
+          ) : active === RAW_ID ? (
             <Card>
               <CardHead
                 title="原始文件（只读）"

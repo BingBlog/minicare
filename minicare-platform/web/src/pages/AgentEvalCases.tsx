@@ -175,15 +175,6 @@ export function AgentEvalCasesPage() {
                           派生
                         </span>
                       )}
-                      {c.source?.type === 'trace' && (
-                        <span
-                          className="tag"
-                          style={{ marginLeft: 4 }}
-                          title={`沉淀自线上问题${c.source.started_at ? `（${c.source.started_at.slice(5, 16).replace('T', ' ')}）` : ''}`}
-                        >
-                          沉淀
-                        </span>
-                      )}
                     </td>
                     <td>{groupLabel(c.grp)}</td>
                     <td className="hint">{priorityLabel(c.priority)}</td>

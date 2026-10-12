@@ -422,21 +422,6 @@ export function CaseEditor({
               派生自 <span className="mono">{initial.source.from_case}</span>
               {initial.source.from_run ? <>（来自运行 <span className="mono">{initial.source.from_run}</span>）</> : null}
             </>
-          ) : initial?.source?.type === 'trace' ? (
-            <>
-              沉淀自线上问题
-              {initial.source.started_at ? (
-                <>（<span className="mono">{initial.source.started_at.slice(5, 16).replace('T', ' ')}</span>）</>
-              ) : null}
-              {initial.source.langfuse_url ? (
-                <>
-                  {' '}·{' '}
-                  <a href={initial.source.langfuse_url} target="_blank" rel="noreferrer">
-                    在 Langfuse 打开 ↗
-                  </a>
-                </>
-              ) : null}
-            </>
           ) : (
             '种子用例（手工创建 / 从 harness 导入）'
           )}

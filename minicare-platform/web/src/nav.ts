@@ -62,18 +62,6 @@ export const DOMAINS: Domain[] = [
     defaultPage: 'agentevaltasks',
     desc: '用例 · 任务 · 报告 · 记录 · 裁判',
   },
-  {
-    id: 'signal',
-    label: '信号管理',
-    defaultPage: 'signals',
-    desc: '信号台账 · 配置治理 · 发布审计',
-  },
-  {
-    id: 'obs',
-    label: '观测',
-    defaultPage: 'observability',
-    desc: '服务状态 · 数据同步 · 同步历史',
-  },
 ]
 
 export interface NavItem {
@@ -217,16 +205,6 @@ export const NAV: NavItem[] = [
     phase: 1,
     story: 'TECH-021',
     desc: '',
-    children: [
-      {
-        id: 'agentevaltraces',
-        label: '线上沉淀',
-        impl: true,
-        phase: 1,
-        story: 'PRD-015',
-        desc: '',
-      },
-    ],
   },
   {
     id: 'agentevaltasks',
@@ -256,19 +234,6 @@ export const NAV: NavItem[] = [
     story: 'TECH-026',
     desc: '',
   },
-  /* 观测域（TECH-030，2026-10-11 用户拍板独立成域）：
-     · 平台 = 观测服务控制面 —— 随平台启动自动拉起 Langfuse 栈，退出默认停容器（留数据卷）；
-     · 单页三卡：服务状态（启停 + 打开 Langfuse）/ 数据同步（FlexDB → 本地）/ 同步历史；
-     · 不做 trace 原生重渲染、不做 iframe 内嵌（PRD-010 D5「Langfuse 保持旁路」口径延续）。 */
-  {
-    id: 'observability',
-    label: '观测总览',
-    domain: 'obs',
-    impl: true,
-    phase: 1,
-    story: 'TECH-030',
-    desc: '',
-  },
   /* 全局配置（2026-10-11 用户要求：从知识库域移出，升为**平台级**页面）：
      入口在顶栏**右侧**的平台区（`Topnav`，与域页签之间用分隔线隔开，不做成第五个域页签）；
      `domain: 'platform'` ⇒ 不属于任何域 —— 顶栏域页签全部不亮，侧栏只渲染平台级菜单。
@@ -280,51 +245,6 @@ export const NAV: NavItem[] = [
     impl: true,
     phase: 1,
     story: 'TECH-015 S-10',
-    desc: '',
-  },
-  {
-    id: 'signals',
-    label: '信号总览',
-    domain: 'signal',
-    impl: true,
-    phase: 1,
-    story: 'TECH-029 S4',
-    desc: '',
-  },
-  {
-    id: 'signalsconfig',
-    label: '配置清单',
-    domain: 'signal',
-    impl: true,
-    phase: 1,
-    story: 'TECH-029 S4',
-    desc: '',
-  },
-  {
-    id: 'signalswords',
-    label: '词表维护',
-    domain: 'signal',
-    impl: true,
-    phase: 1,
-    story: 'TECH-029 S5',
-    desc: '',
-  },
-  {
-    id: 'signalspublish',
-    label: '变更发布',
-    domain: 'signal',
-    impl: true,
-    phase: 1,
-    story: 'TECH-029 S6',
-    desc: '',
-  },
-  {
-    id: 'signalshistory',
-    label: '版本与审计',
-    domain: 'signal',
-    impl: true,
-    phase: 1,
-    story: 'TECH-029 S7',
     desc: '',
   },
 ]
@@ -527,13 +447,6 @@ export const RELOADABLE_PAGES = new Set([
   'config',
   'agenteval',
   'agentevalcases',
-  'agentevaltraces',
   'agentevaltasks',
   'agentevaljudges',
-  'observability',
-  'signals',
-  'signalsconfig',
-  'signalswords',
-  'signalspublish',
-  'signalshistory',
 ])

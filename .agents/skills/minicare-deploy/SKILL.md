@@ -45,7 +45,7 @@ description: minicare 项目构建发布操作手册。包含前端静态托管�
 
 | 属性            | staging                                                                           | production                                                                                  |
 | --------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| 项目目录        | `/Users/bing/Documents/minicare-v1/minicare-server`                               | 同左                                                                                        |
+| 项目目录        | `/Users/bing/Study/minicare/minicare-server`                               | 同左                                                                                        |
 | 构建命令        | `npm run build`（= `nest build`）                                                 | 同左                                                                                        |
 | 预检命令        | `bash scripts/deploy.sh`                                                          | 同左                                                                                        |
 | CloudRun 服务名 | `minicare-api`                                                                    | `minicare-api-production`                                                                   |
@@ -107,7 +107,7 @@ description: minicare 项目构建发布操作手册。包含前端静态托管�
 | 属性       | 值                                                                                           |
 | ---------- | -------------------------------------------------------------------------------------------- |
 | 函数名     | `keepalive-ping`                                                                             |
-| 函数根目录 | `/Users/bing/Documents/minicare-v1/minicare-server/functions`                                |
+| 函数根目录 | `/Users/bing/Study/minicare/minicare-server/functions`                                |
 | handler    | `index.main`                                                                                 |
 | 环境变量   | `CLOUDRUN_HEALTH_URL=https://minicare-api-production-240137-10-1253854169.sh.run.tcloudbase.com/health`（用默认域名而非 www.minicare.top，避免自定义域名证书故障时保活失效——2026-10-02 证书过期事故验证了这一点） |
 | 验证标志   | 调用后日志含 `status=200`                                                                    |
@@ -117,7 +117,7 @@ description: minicare 项目构建发布操作手册。包含前端静态托管�
 
 | 属性         | 值                                                    |
 | ------------ | ----------------------------------------------------- |
-| 迁移脚本路径 | `/Users/bing/Documents/minicare-v1/minicare-server`   |
+| 迁移脚本路径 | `/Users/bing/Study/minicare/minicare-server`   |
 | 迁移文件目录 | `minicare-server/migrations/`                         |
 | 开发库       | `minicare_dev`                                        |
 | Staging 库   | `minicare_staging`                                    |
@@ -135,7 +135,7 @@ description: minicare 项目构建发布操作手册。包含前端静态托管�
 
 ```bash
 # Step 1：构建 staging 版本
-cd /Users/bing/Documents/minicare-v1/minicare-web
+cd /Users/bing/Study/minicare/minicare-web
 npm run build:staging
 ```
 
@@ -154,7 +154,7 @@ tcb hosting deploy dist staging -e minicare-cloud-6gqledlle0132cbe
 
 ```bash
 # Step 1：构建 production 版本
-cd /Users/bing/Documents/minicare-v1/minicare-web
+cd /Users/bing/Study/minicare/minicare-web
 npm run build:prod
 ```
 
@@ -186,7 +186,7 @@ tcb hosting deploy dist . -e minicare-cloud-6gqledlle0132cbe
 
 ```bash
 # Step 1：编译 TypeScript
-cd /Users/bing/Documents/minicare-v1/minicare-server
+cd /Users/bing/Study/minicare/minicare-server
 npm run build
 ```
 
@@ -201,13 +201,13 @@ bash scripts/deploy.sh
 
 ```bash
 # Step 3：CloudRun 部署（staging）
-cd /Users/bing/Documents/minicare-v1/minicare-server
+cd /Users/bing/Study/minicare/minicare-server
 echo "n" | tcb cloudrun deploy -s minicare-api --port 3000 --force -e minicare-cloud-6gqledlle0132cbe
 ```
 
 ```bash
 # Step 3：CloudRun 部署（production）
-cd /Users/bing/Documents/minicare-v1/minicare-server
+cd /Users/bing/Study/minicare/minicare-server
 echo "n" | tcb cloudrun deploy -s minicare-api-production --port 3000 --force -e minicare-cloud-6gqledlle0132cbe
 ```
 
@@ -247,7 +247,7 @@ curl https://www.minicare.top/health
 
 ```bash
 # Step 1：上传函数代码
-cd /Users/bing/Documents/minicare-v1/minicare-server
+cd /Users/bing/Study/minicare/minicare-server
 tcb fn code update keepalive-ping --dir functions -e minicare-cloud-6gqledlle0132cbe
 ```
 
@@ -283,7 +283,7 @@ tcb fn log keepalive-ping --limit 5 -e minicare-cloud-6gqledlle0132cbe
 
 ```bash
 # Step 1：预览待执行迁移（dry-run，不实际执行）
-cd /Users/bing/Documents/minicare-v1/minicare-server
+cd /Users/bing/Study/minicare/minicare-server
 bash scripts/migrate.sh --dry-run --all-envs
 ```
 

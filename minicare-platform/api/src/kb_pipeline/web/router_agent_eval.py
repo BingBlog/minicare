@@ -25,7 +25,6 @@ from pathlib import Path
 from fastapi import APIRouter, Body, HTTPException
 
 from ..agent_eval import seed as eval_seed
-from ..agent_eval import trace_triage
 from ..agent_eval.attribution import CLASSES as ATTRIBUTION_CLASSES
 from ..agent_eval.catalog import EvalCatalog, effective_ctx
 from ..agent_eval.ledger import EvalLedger, compute_report
@@ -442,67 +441,5 @@ def run_task(task_id: str, payload: dict = Body(default={})) -> dict:
         )
     except RuntimeError as e:
         raise HTTPException(status_code=409, detail=str(e)) from e
-    except ValueError as e:
-        raise _bad_request(e) from e
-
-
-# ══ 线上沉淀（PRD-015 / TECH-032）：trace → 测评用例 ═══════════════════
-# ⚠️ `/traces/duplicate-check` 必须先于 `/traces/{trace_id}` 注册（FastAPI 按注册序匹配路径）
-
-
-@router.get("/traces/duplicate-check")
-def trace_duplicate_check(message: str = "") -> dict:
-    """查重（P1 精确级）：与启用中的存量用例比对，纯提示不阻塞。"""
-    return trace_triage.duplicate_check(message)
-
-
-@router.get("/traces")
-def trace_list(days: int = 7, state: str = "untreated", q: str | None = None,
-               limit: int = 20, offset: int = 0) -> dict:
-    """候选队列（脚本读取 → 台账合并 → 筛选分页）；FlexDB 不可达转 502。"""
-    try:
-        return trace_triage.list_traces(days=days, state=state, q=q, limit=limit, offset=offset)
-    except trace_triage.TraceSourceError as e:
-        raise HTTPException(status_code=502, detail=str(e)) from e
-
-
-@router.get("/traces/{trace_id}")
-def trace_detail(trace_id: str) -> dict:
-    """单条详情（问题/回答/工具轨迹摘要/会话上下文 + 台账 + Langfuse 深链接）。"""
-    try:
-        return trace_triage.get_trace(trace_id)
-    except trace_triage.TraceSourceError as e:
-        raise HTTPException(status_code=(404 if e.not_found else 502), detail=str(e)) from e
-
-
-@router.post("/traces/{trace_id}/convert")
-def trace_convert(trace_id: str, payload: dict = Body(default={})) -> dict:
-    """沉淀为用例：生成 `T-` 系列标准 eval_case（来源链挂 trace；期望行为要点 → 判分要点）。"""
-    try:
-        return trace_triage.convert(trace_id, payload or {})
-    except trace_triage.TraceConflict as e:
-        raise HTTPException(status_code=409, detail=str(e)) from e
-    except trace_triage.TraceSourceError as e:
-        raise HTTPException(status_code=(404 if e.not_found else 502), detail=str(e)) from e
-    except ValueError as e:
-        raise _bad_request(e) from e
-
-
-@router.post("/traces/{trace_id}/ignore")
-def trace_ignore(trace_id: str, payload: dict = Body(default={})) -> dict:
-    """标记忽略（原因枚举 + 「其他」备注必填）；已沉淀的不可忽略。"""
-    try:
-        return trace_triage.ignore(trace_id, payload or {})
-    except trace_triage.TraceConflict as e:
-        raise HTTPException(status_code=409, detail=str(e)) from e
-    except ValueError as e:
-        raise _bad_request(e) from e
-
-
-@router.post("/traces/{trace_id}/reopen")
-def trace_reopen(trace_id: str) -> dict:
-    """恢复为未处理（删台账记录）。"""
-    try:
-        return trace_triage.reopen(trace_id)
     except ValueError as e:
         raise _bad_request(e) from e

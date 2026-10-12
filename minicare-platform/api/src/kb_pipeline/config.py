@@ -292,25 +292,6 @@ class Settings(BaseSettings):
     translate_cfg: TranslateConfig = TranslateConfig()
     eval_cfg: EvalConfig = EvalConfig()
 
-    # ── 观测（Langfuse，TECH-030）──
-    # 口径（2026-10-11 用户拍板）：**平台 = 观测服务的控制面** —— 负责 Langfuse 栈的
-    # 启停编排（本机 Docker / colima）与 FlexDB → Langfuse 数据同步；pk/sk 密钥在平台 .env。
-    # `obs_unit_dir` 指向「观测运行单元」（compose + 同步脚本）所在目录：默认 minicare-agent/，
-    # 为 Electron 打包留注入点（打包后指向随包分发的内置副本，见 TECH-030 §3.1）。
-    obs_enabled: bool = True
-    obs_autostart: bool = True          # 平台启动时自动拉起观测栈（异步，不阻塞平台）
-    obs_stop_on_exit: bool = True       # 平台退出时停止观测栈容器（保留数据卷；--reload 开发模式跳过）
-    obs_unit_dir: Path = REPO_ROOT / "minicare-agent"
-    obs_compose_file: str = ""          # 空 = {obs_unit_dir}/langfuse/docker-compose.yml
-    obs_langfuse_port: int = 3100       # Langfuse Web 宿主端口（compose 端口映射）
-    obs_langfuse_public_url: str = "http://localhost:3100"  # 打开 UI / trace 深链接的地址
-    obs_pg_port: int = 5433             # Langfuse Postgres 宿主端口
-    obs_docker_cli: str = ""            # 空 = 自动探测（PATH / Homebrew / Docker Desktop 常见路径）
-    # Langfuse 凭据（同步子进程注入；D-5：平台为单一控制面，缺省时回落 agent .env.local）
-    langfuse_host: str = "http://localhost:3100"
-    langfuse_public_key: str = ""
-    langfuse_secret_key: str = ""
-
     # 每个配置分组的来源（yaml / code-default），不做校验、不进序列化
     _sources: dict[str, str] = PrivateAttr(default_factory=dict)
     _config_file: str = PrivateAttr(default="")

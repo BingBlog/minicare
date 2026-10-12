@@ -334,89 +334,6 @@ CREATE TABLE IF NOT EXISTS eval_task (
   updated_at   TEXT NOT NULL
 );
 
--- ── 信号管理域（TECH-029 / PRD-014）───────────────────────────────
-CREATE TABLE IF NOT EXISTS signal_draft (
-  id           INTEGER PRIMARY KEY CHECK (id = 1),  -- 单草稿设计
-  content      TEXT NOT NULL,                       -- JSON {items:[{key,newValue,reason,evidence}], baseFingerprint, updatedAt}
-  updated_at   TEXT NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS signal_snapshot (
-  version          TEXT PRIMARY KEY,                -- 'YYYY-MM-DD.N'
-  created_at       TEXT NOT NULL,
-  reason           TEXT,
-  diff             TEXT,                            -- JSON 值级 diff [{key,before,after}]
-  file_fingerprint TEXT,                            -- sha256(signals.yaml) 前 16 位
-  status           TEXT NOT NULL DEFAULT 'current', -- current | superseded | rolled_back
-  forced           INTEGER NOT NULL DEFAULT 0       -- 强制发布标记
-);
-
-CREATE TABLE IF NOT EXISTS signal_audit (
-  id         INTEGER PRIMARY KEY AUTOINCREMENT,
-  ts         TEXT NOT NULL,
-  action     TEXT NOT NULL,   -- draft_save|draft_discard|publish|force_publish|rollback|review|review_config|deploy_confirm|external_register
-  object_key TEXT,
-  before     TEXT,
-  after      TEXT,
-  reason     TEXT
-);
-
-CREATE TABLE IF NOT EXISTS signal_param_state (
-  key              TEXT PRIMARY KEY,
-  last_reviewed_at TEXT,
-  review_note      TEXT
-);
-
--- 信号域通用小配置（S7）：reviewCycleDays=医学参数复审周期（天）
-CREATE TABLE IF NOT EXISTS signal_setting (
-  key        TEXT PRIMARY KEY,
-  value      TEXT,
-  updated_at TEXT
-);
-
-CREATE TABLE IF NOT EXISTS signal_run (
-  id             INTEGER PRIMARY KEY AUTOINCREMENT,
-  ts             TEXT NOT NULL,
-  kind           TEXT NOT NULL,   -- value | diff | assert
-  datasource     TEXT NOT NULL,
-  baby           TEXT,
-  draft_hash     TEXT,
-  result_summary TEXT             -- JSON（截断存储）
-);
-
--- ── 观测域（TECH-030）：Langfuse 数据同步台账 ──────────────────────────
--- 一次同步（FlexDB agent_traces → 本地 Langfuse 导入）一行；运行态在进程内存
--- （observability/sync.py），结束后落账。注意：同步的**幂等事实源**仍是 FlexDB 的
--- importedAt 回填（脚本既有逻辑），本表只记录"平台侧的操控历史"，两者互不依赖。
-CREATE TABLE IF NOT EXISTS obs_sync_run (
-  id          INTEGER PRIMARY KEY AUTOINCREMENT,
-  kind        TEXT NOT NULL,             -- import（正式导入）/ preview（试跑，dry-run）
-  scope       TEXT NOT NULL,             -- 范围标签：全部未导入 / 时间范围 / 单条 trace
-  args_json   TEXT,                      -- 透传脚本的完整参数（可复现）
-  candidates  INTEGER,                   -- 候选条数（脚本报数；NULL=未知）
-  ok          INTEGER NOT NULL DEFAULT 0,
-  fail        INTEGER NOT NULL DEFAULT 0,
-  status      TEXT NOT NULL,             -- ok / partial / failed / error / cancelled
-  started_at  TEXT NOT NULL,
-  finished_at TEXT,
-  duration_ms INTEGER,
-  log_tail    TEXT,                      -- 尾部日志（截断，界面展开用）
-  trigger     TEXT NOT NULL DEFAULT 'ui' -- ui / auto / cli
-);
-CREATE INDEX IF NOT EXISTS idx_obs_sync_started ON obs_sync_run(started_at DESC);
-
--- ── 测评域（PRD-015 / TECH-032）：线上 trace 处置台账 ──────────────────
--- 「线上沉淀」页的一次处置一行；「未处理」= 无记录（恢复 = 删行）。
--- trace 原始数据实时只读 FlexDB（不落本库），本表只记处置结果，防重复处理。
-CREATE TABLE IF NOT EXISTS eval_trace_triage (
-  trace_id   TEXT PRIMARY KEY,          -- FlexDB agent_traces.traceId（天然去重键）
-  state      TEXT NOT NULL,             -- converted / ignored
-  case_id    TEXT,                      -- 已沉淀 → 用例号（T-01）
-  reason     TEXT,                      -- 已忽略原因键（duplicate/unrepresentative/anomaly/sensitive/other）
-  note       TEXT,
-  created_at TEXT NOT NULL,
-  updated_at TEXT NOT NULL
-);
 """
 
 STATE_QUEUED = "queued"
@@ -459,13 +376,12 @@ class PlatformDB:
 
         SQLite 没有 ``DROP COLUMN IF EXISTS``，只能先用 ``PRAGMA table_info`` 探测再删；
         补列则逐列探测后 ``ALTER TABLE ADD COLUMN``（默认值必须是常量）。
-        当前做五件事：
+        当前做四件事：
         ① 移除 `kb_doc_state` 的两个「暂停点放行」标记列（人工闸门机制已整体移除，2026-10-09）；
            ⚠️ `meta_json` **必须保留** —— 「信息确认」表单的人工取值仍在用它。
         ② Agent 测评：`eval_run.task_id`（TECH-021 §3.5）——旧库补列，新库由 SCHEMA 直接建出。
         ③ 检索质检台（PRD-011）：`kb_recall_case` 五列 + `kb_recall_gold` 三列 —— 旧库补列。
         ④ Agent 测评报告 2.0（TECH-026 §2）：`eval_case_result` 归因与 Token 四列 —— 旧库补列。
-        ⑤ 信号治理（TECH-029 S7）：`signal_param_state` 复审两列 —— 旧库若在建表时尚无这两列则补齐。
         """
         cols = {r["name"] for r in conn.execute("PRAGMA table_info(kb_doc_state)")}
         for col in ("meta_confirmed", "chunks_approved"):
@@ -533,12 +449,6 @@ class PlatformDB:
             "tier": "TEXT NOT NULL DEFAULT 'gold'",
             "entry_code": "TEXT",
             "chunk_title": "TEXT",
-        })
-        # 信号治理（TECH-029 S7）：复审两列 —— 旧库补列（新库由 SCHEMA 直接建出）
-        sps_cols = {r["name"] for r in conn.execute("PRAGMA table_info(signal_param_state)")}
-        _add_cols(conn, "signal_param_state", sps_cols, {
-            "last_reviewed_at": "TEXT",
-            "review_note": "TEXT",
         })
 
     @contextmanager

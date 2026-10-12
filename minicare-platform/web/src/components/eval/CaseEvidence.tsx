@@ -1,10 +1,10 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { JudgeDetails } from './JudgeDetails'
 import { RichText } from './RichText'
 import { AttributionEditor } from './AttributionEditor'
 import { expectToLines, judgeSummary } from './expectView'
 import {
-  agentEvalApi, getObsUrl, STAGE_LABEL, type AttributionClass, type EvalCaseDef, type EvalCaseResult, type EvalReport,
+  agentEvalApi, STAGE_LABEL, type AttributionClass, type EvalCaseDef, type EvalCaseResult, type EvalReport,
 } from '../../lib/agentEval'
 
 /**
@@ -56,17 +56,6 @@ export function CaseEvidence({ c, def, runId, onAttributionSaved, derivedAttribu
   const [answerOpen, setAnswerOpen] = useState(false)
   const [copied, setCopied] = useState(false)
   const [busy, setBusy] = useState<'' | 'reg' | 'derive'>('')
-  /** 观测服务地址（TECH-032 §3.8：/health 下发，失败回落 localhost:3100；模块级缓存） */
-  const [obsUrl, setObsUrl] = useState('http://localhost:3100')
-  useEffect(() => {
-    let alive = true
-    getObsUrl().then((u) => {
-      if (alive) setObsUrl(u)
-    })
-    return () => {
-      alive = false
-    }
-  }, [])
 
   /** 加入回归集（US-18）：打 `regression` 标签（幂等）——任务范围可按标签一键圈选 */
   const addToRegression = async () => {
@@ -280,7 +269,7 @@ export function CaseEvidence({ c, def, runId, onAttributionSaved, derivedAttribu
         {c.trace_id ? (
           <>
             trace：<span className="mono">{c.trace_id.slice(0, 8)}…</span>{' '}
-            <a href={`${obsUrl}/trace/${c.trace_id}`} target="_blank" rel="noreferrer">
+            <a href={`http://localhost:3100/trace/${c.trace_id}`} target="_blank" rel="noreferrer">
               在 Langfuse 打开 ↗
             </a>
           </>
