@@ -419,6 +419,10 @@
   background: #F5F0F2;
   color: #9A8090;
   white-space: nowrap;
+  /* 防超长文本硬裁：约束在容器宽度内，超出以省略号截断（与 .record-item__summary-value 同策略） */
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* summary 列：固定宽度保持纵向对齐 */

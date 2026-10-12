@@ -50,6 +50,28 @@ function formatScoop(value: number): string {
   return Number(value.toFixed(2)).toString()
 }
 
+/**
+ * 诊断展示标签收敛（记录列表 pill 单行可读，防超长硬裁）：
+ * - 顿号/逗号分隔且 > 2 项 →「前 2 项 + 等N项」（与 health 症状同策略）；
+ *   超 16 字时保留「等N项」结尾、中间省略（如「要吃辅食、且后续在排…等12项」）
+ * - 单句/双句 > 30 字 → 截断 29 字 + …（宽松上限防超长；宽窄适配由列表 CSS 截断承担）
+ * ⚠️ 规则须与服务端 timeline.service.ts（buildDiagnosisTag）保持一致，改动需同步回填脚本
+ */
+function buildDiagnosisTag(raw?: string | null): string {
+  const s = String(raw ?? '').trim()
+  if (!s) return ''
+  const items = s.split(/[、,，;；]+/).map((x) => x.trim()).filter(Boolean)
+  if (items.length > 2) {
+    const head = items.slice(0, 2).join('、')
+    const suffix = `等${items.length}项`
+    const label = head + suffix
+    if (label.length <= 16) return label
+    const avail = Math.max(16 - suffix.length - 1, 4)
+    return `${head.slice(0, avail)}…${suffix}`
+  }
+  return s.length > 30 ? `${s.slice(0, 29)}…` : s
+}
+
 // ── 返回类型定义 ──
 
 export interface RecordListParts {
@@ -241,7 +263,7 @@ export function getRecordListParts(
       const hospital = d.hospital as string | undefined
       const diagnosis = d.diagnosis as string | undefined
       const typeLabel = visitType ? (VISIT_TYPE_LABELS[visitType] ?? '就诊') : '就诊'
-      const tags = [typeLabel, hospital, diagnosis].filter(Boolean) as string[]
+      const tags = [typeLabel, hospital, buildDiagnosisTag(diagnosis)].filter(Boolean) as string[]
       return { label: '医疗', tags }
     }
 

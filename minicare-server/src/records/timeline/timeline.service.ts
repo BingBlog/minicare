@@ -416,11 +416,13 @@ export class TimelineService {
 
     const typeLabel = this.visitTypeLabel(r.visit_type);
     // 子类型名作标题（020 类型徽标）；tags 按类型差异化：疫苗=疫苗名(+机构)，其余=机构+诊断
+    // 诊断先做展示收敛（长文本不整段进列表 pill，防溢出硬裁 — 规则与前端 buildDiagnosisTag 一致）
+    const diagnosisTag = this.buildDiagnosisTag(r.diagnosis);
     let tags: string[] = [];
     if (r.visit_type === 'vaccine') {
-      tags = [r.vaccine_name ?? r.hospital ?? '', r.diagnosis ?? ''].filter(Boolean);
+      tags = [r.vaccine_name ?? r.hospital ?? '', diagnosisTag].filter(Boolean);
     } else {
-      tags = [r.hospital ?? '', r.diagnosis ?? ''].filter(Boolean);
+      tags = [r.hospital ?? '', diagnosisTag].filter(Boolean);
     }
     const detail: Record<string, any> = {
       visit_date: visitDate,
@@ -461,6 +463,32 @@ export class TimelineService {
       blood: '血液检查',
     };
     return labels[type] ?? type;
+  }
+
+  /**
+   * 诊断展示标签收敛（记录列表 pill 单行可读，防超长硬裁）：
+   * - 顿号/逗号分隔且 > 2 项 →「前 2 项 + 等N项」（与前端 health 症状同策略）；
+   *   超 16 字时保留「等N项」结尾、中间省略（如「要吃辅食、且后续在排…等12项」）
+   * - 单句/双句 > 30 字 → 截断 29 字 + …（宽松上限防超长；宽窄适配由列表 CSS 截断承担）
+   * ⚠️ 修改此规则须同步：minicare-mp/src/pages/records/list/recordListDisplay.ts（buildDiagnosisTag）
+   *    及回填脚本 scripts/backfill-medical-summary-format.mjs
+   */
+  private buildDiagnosisTag(diagnosis: string | null | undefined): string {
+    const raw = String(diagnosis ?? '').trim();
+    if (!raw) return '';
+    const items = raw
+      .split(/[、,，;；]+/)
+      .map((s) => s.trim())
+      .filter(Boolean);
+    if (items.length > 2) {
+      const head = items.slice(0, 2).join('、');
+      const suffix = `等${items.length}项`;
+      const label = head + suffix;
+      if (label.length <= 16) return label;
+      const avail = Math.max(16 - suffix.length - 1, 4);
+      return `${head.slice(0, avail)}…${suffix}`;
+    }
+    return raw.length > 30 ? `${raw.slice(0, 29)}…` : raw;
   }
 
   private async loadMedicationPayload(sourceId: string) {
