@@ -20,6 +20,47 @@ const STROKE = {
 
 /** 侧栏导航图标：key = `nav.ts` 里的页面 id。新增页面时要同步补一条。 */
 export const NAV_ICONS: Record<string, ReactNode> = {
+  /** 信号图谱 —— 节点连线（信号间的关系图） */
+  signals: (
+    <>
+      <circle cx="6" cy="6" r="2.2" />
+      <circle cx="18" cy="6" r="2.2" />
+      <circle cx="12" cy="18" r="2.2" />
+      <path d="M7.6 7.6 10.7 16.2M16.4 7.6 13.3 16.2M8.2 6h7.6" />
+    </>
+  ),
+  /** 配置清单 —— 滑杆（参数调节） */
+  signalsconfig: (
+    <>
+      <path d="M4.5 7h15M4.5 12h15M4.5 17h15" />
+      <circle cx="9" cy="7" r="2" fill="currentColor" stroke="none" />
+      <circle cx="15" cy="12" r="2" fill="currentColor" stroke="none" />
+      <circle cx="7.5" cy="17" r="2" fill="currentColor" stroke="none" />
+    </>
+  ),
+  /** 词表维护 —— 标签（食物名归类） */
+  signalswords: (
+    <>
+      <path d="M12.6 3.5H19a1.5 1.5 0 0 1 1.5 1.5v6.4a2 2 0 0 1-.6 1.4l-7.5 7.5a2 2 0 0 1-2.8 0L4.2 14a2 2 0 0 1 0-2.8l7.5-7.5a2 2 0 0 1 .9-.2z" />
+      <circle cx="16" cy="8" r="1.3" fill="currentColor" stroke="none" />
+    </>
+  ),
+  /** 变更发布 —— 向上发布（写回随部署） */
+  signalspublish: (
+    <>
+      <path d="M12 16V4" />
+      <path d="m6.5 9.5 5.5-5.5 5.5 5.5" />
+      <path d="M4.5 20h15" />
+    </>
+  ),
+  /** 版本与审计 —— 时钟回转（历史与回滚） */
+  signalshistory: (
+    <>
+      <path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1" />
+      <path d="M3.5 4.6v4.2h4.2" />
+      <path d="M12 8v4l2.8 1.9" />
+    </>
+  ),
   /** 文档管理 —— 带文字行的文档 */
   corpus: (
     <>
@@ -167,6 +208,12 @@ export const DOMAIN_ICONS: Record<string, ReactNode> = {
       <rect x="8" y="2" width="8" height="4" rx="1" />
       <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
       <path d="m9 14 2 2 4-4" />
+    </>
+  ),
+  /** 信号管理 = 脉冲波形（信号语义） */
+  signal: (
+    <>
+      <path d="M3 12h4l2.5-6 4 12 2.5-6H21" />
     </>
   ),
 }

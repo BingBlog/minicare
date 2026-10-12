@@ -260,6 +260,11 @@ def create_app():
 
     app.include_router(config_router)
 
+    # 信号管理域（TECH-029 / PRD-014）：/api/signals/*（注册表/配置清单/健康/干跑/断言）
+    from .router_signals import router as signals_router
+
+    app.include_router(signals_router)
+
     def _guard_write(payload: dict | None) -> dict:
         payload = payload or {}
         if payload.get("write"):

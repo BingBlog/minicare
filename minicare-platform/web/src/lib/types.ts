@@ -994,3 +994,273 @@ export interface CorpusUploadResult {
 export const UPLOAD_MAX_BYTES = 100 * 1024 * 1024
 /** 支持的源文件格式（与后端 `routers.UPLOAD_SUFFIXES` 对齐） */
 export const UPLOAD_ACCEPT = '.pdf,.html,.htm'
+
+/* ── 信号管理域（TECH-029 / PRD-014）────────────────────────────────── */
+
+export interface SignalDetail {
+  id: string
+  name: string
+  /** fact | inference | meta */
+  layer: string
+  caliber: string
+  source: string
+  params: string[]
+  evidence: string
+  /** active | degraded | gap */
+  status: string
+  statusNote: string
+}
+
+export interface SignalGroup {
+  id: string
+  name: string
+  scope: string
+  signalCount: number
+  activeCount: number
+  note: string | null
+  signals: SignalDetail[]
+}
+
+export interface SignalFlag {
+  key: string
+  name: string
+  triggerDesc: string
+  strength: string
+  strengthLabel: string
+  enabled: boolean
+  origin: string
+  evidence: string
+}
+
+export interface SignalParam {
+  key: string
+  name: string
+  group: string
+  type: string
+  unit: string
+  range: number[]
+  presets: (number | string)[]
+  default: unknown
+  medical: boolean
+  evidence: string
+  note: string
+}
+
+export interface SignalRegistryData {
+  stats: {
+    groups: number
+    signals: number
+    flags: number
+    params: number
+    configRows: number
+    degradedGroups: number
+    changedParams: number
+  }
+  groups: SignalGroup[]
+  flags: SignalFlag[]
+  params: SignalParam[]
+  reverseIndex: Record<
+    string,
+    {
+      signals: { id: string; name: string; group: string }[]
+      flags: { key: string; name: string }[]
+    }
+  >
+  groupLabels: Record<string, string>
+  errors: string[]
+}
+
+export interface SignalConfigItem {
+  key: string
+  name: string
+  group: string
+  type: string
+  unit: string
+  range: number[]
+  presets: (number | string)[]
+  current: unknown
+  default: unknown
+  /** null 默认值 = 以代码内置为准（词表类） */
+  status: 'default' | 'changed'
+  medical: boolean
+  evidence: string
+  note: string
+  isFlag: boolean
+  flagKey?: string
+  /** 复审状态（S7 / US-09；仅医学参数有意义） */
+  lastReviewedAt: string | null
+  reviewNote: string
+  pendingReview: boolean
+  reviewState: 'reviewed' | 'never' | 'na'
+}
+
+export interface SignalConfigData {
+  items: SignalConfigItem[]
+  count: number
+  groupLabels: Record<string, string>
+  errors: string[]
+  reviewSummary?: { cycleDays: number; pendingCount: number; neverReviewedCount: number }
+  reviewConfig?: { cycleDays: number }
+}
+
+export interface SignalHealth {
+  ok: boolean
+  files: { path: string; exists: boolean; fingerprint: string | null; error: string | null }[]
+  schema: { registry: number | null; signals: number | null; compatible: boolean }
+}
+
+export interface SignalValueResult {
+  ok: boolean
+  baby?: { id: string; name: string }
+  datasource?: string
+  key?: string
+  name?: string
+  group?: string
+  value?: unknown
+  note?: string | null
+  generatedAt?: string
+  error?: string
+  hint?: string
+}
+
+/** 全量信号实测（总览表格「实测值」列）：46 信号 + 12 flag 触发状态 */
+export interface SignalValueAllResult {
+  ok: boolean
+  baby?: { id: string; name: string }
+  datasource?: string
+  values?: Record<string, { value: unknown; note?: string | null; error?: string }>
+  flags?: Record<string, { triggered: boolean; strength: string | null; detail: string | null }>
+  generatedAt?: string
+  error?: string
+}
+
+/* ── 草稿与词表试跑（S5）────────────────────────────────────────── */
+
+export interface SignalDraftItem {
+  key: string
+  newValue: unknown
+  reason: string
+  evidence?: string
+}
+
+export interface SignalDraft {
+  items: SignalDraftItem[]
+  baseFingerprint: string | null
+  updatedAt: string
+}
+
+export interface SignalDraftGet {
+  draft: SignalDraft | null
+  baseline: { fingerprint: string | null; drift: boolean }
+}
+
+export interface SignalDraftSaveResult {
+  ok: boolean
+  draft: SignalDraft
+  warnings: string[]
+}
+
+export interface SignalWordlists {
+  highRiskGroups: { group: string; keys: string[] }[]
+  categoryRules: { category: string; keys: string[] }[]
+  prefix: string[]
+  suffix: string[]
+  alias: Record<string, string>
+}
+
+export interface SignalWordlistTryResult {
+  ok: boolean
+  foods: {
+    input: string
+    normalized: string[]
+    categories: string[]
+    highRisk: { group: string; matched: { food: string; by: string }[] }[]
+  }[]
+  configSource: string
+  error?: string
+}
+
+/* ── 变更发布（S6）──────────────────────────────────────────────── */
+
+export interface SignalDryRunResult {
+  ok: boolean
+  mode: 'baseline' | 'diff'
+  meta?: { at?: string; datasource?: string; baby?: { id: string; name: string } }
+  diff?: {
+    blockLines: { type: 'same' | 'add' | 'del'; text: string }[]
+    flagsAdded: { key: string; label: string; strength: string; detail: string }[]
+    flagsRemoved: { key: string; label: string; strength: string; detail: string }[]
+    flagsChanged: { key: string; before: { label: string; strength: string }; after: { label: string; strength: string } }[]
+    routeChanged: { before: string; after: string } | null
+    signalsChanged: { key: string; before: unknown; after: unknown }[]
+    configChanged: { key: string; before: unknown; after: unknown }[]
+  }
+  error?: string
+}
+
+export interface SignalPublishResult {
+  ok: boolean
+  version: string
+  diff: { key: string; before: unknown; after: unknown }[]
+  forced: boolean
+  assert: { totalPasses: number | null; totalFails: number | null }
+  gitHint: string
+  checklist: string[]
+}
+
+/* ── 版本与审计（S7 / US-08 / US-09）────────────────────────────── */
+
+export interface SignalVersion {
+  version: string
+  createdAt: string
+  reason: string
+  status: 'current' | 'superseded' | 'rolled_back'
+  forced: boolean
+  isCurrent: boolean
+  diffCount: number
+  summary: string
+}
+
+export interface SignalVersionsData {
+  versions: SignalVersion[]
+  deploy: { currentVersion: string | null; confirmed: boolean; confirmedAt: string | null }
+  drift: {
+    hasDrift: boolean
+    currentFingerprint: string | null
+    latestFingerprint: string | null
+    latestVersion: string | null
+  }
+  backupDir: string
+}
+
+export interface SignalVersionDetail {
+  version: string
+  createdAt: string
+  reason: string
+  diff: { key: string; before: unknown; after: unknown }[]
+  fingerprint: string | null
+  status: 'current' | 'superseded' | 'rolled_back'
+  forced: boolean
+}
+
+export interface SignalAuditItem {
+  id: number
+  ts: string
+  action: string
+  object_key: string | null
+  before: string | null
+  after: string | null
+  reason: string | null
+}
+
+export interface SignalAuditData {
+  items: SignalAuditItem[]
+  total: number
+}
+
+export interface SignalReviewConfig {
+  cycleDays: number
+  defaultDays: number
+  updatedAt: string | null
+}
+

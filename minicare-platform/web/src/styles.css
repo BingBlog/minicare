@@ -2866,6 +2866,250 @@ details.menu .menu-pop button:hover { background: var(--surface-2); }
   margin-bottom: 4px;
 }
 
+/* ── 信号管理域（TECH-029 / PRD-014）──────────────────
+   总览表格（.sig-group-tr / .sig-reading / .sig-toolbar）与配置清单（.sig-tag / .sig-med）共用；
+   详情抽屉（.sig-drawer）为右侧固定面板 + 遮罩。 */
+.sig-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+.sig-toolbar select,
+.sig-toolbar input {
+  height: 28px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-xs);
+  background: var(--surface);
+  color: var(--text);
+  padding: 0 6px;
+  font-size: 12px;
+}
+.sig-section-block {
+  border-bottom: 1px dashed var(--line);
+}
+.sig-section-block:last-child {
+  border-bottom: none;
+}
+.sig-section-head {
+  padding: 10px 14px 6px;
+  font-size: 13px;
+}
+.sig-section-body {
+  padding: 0 14px 10px;
+}
+.sig-reading {
+  font-size: 12px;
+  color: var(--text);
+  word-break: break-all;
+}
+.sig-diff {
+  border: 1px solid var(--line);
+  border-radius: var(--r-xs);
+  overflow: hidden;
+  margin-top: 4px;
+}
+.sig-diff-line {
+  padding: 2px 10px;
+  font-size: 12px;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.sig-diff-line.del {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+.sig-diff-line.add {
+  background: var(--ok-bg);
+  color: var(--ok);
+}
+.sig-diff-line.same {
+  color: var(--text-3);
+}
+.sig-tag {
+  display: inline-block;
+  padding: 0 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  line-height: 18px;
+  background: var(--neutral-bg);
+  color: var(--text-2);
+  white-space: nowrap;
+}
+.sig-tag.ok {
+  background: var(--ok-bg);
+  color: var(--ok);
+}
+.sig-tag.warn {
+  background: var(--warn-bg);
+  color: var(--warn);
+}
+.sig-med {
+  display: inline-block;
+  margin-left: 4px;
+  padding: 0 4px;
+  border-radius: 3px;
+  font-size: 10px;
+  line-height: 15px;
+  background: var(--accent-bg);
+  color: var(--accent);
+  vertical-align: 1px;
+}
+.sig-chip {
+  display: inline-block;
+  margin: 0 4px 4px 0;
+  padding: 1px 7px;
+  border-radius: 10px;
+  font-size: 11px;
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+.sig-drawer-mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(30, 28, 26, 0.3);
+  z-index: 70;
+}
+.sig-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(540px, 94vw);
+  background: var(--surface);
+  z-index: 71;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.14);
+  padding: 14px 16px;
+  overflow: auto;
+}
+.sig-drawer-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+.sig-drawer-title {
+  font-size: 15px;
+  font-weight: 600;
+}
+.sig-section {
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--line);
+}
+.sig-label {
+  font-size: 12px;
+  color: var(--text-3);
+  margin: 6px 0 2px;
+}
+.sig-run {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+.sig-run select,
+.sig-run input {
+  height: 28px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-xs);
+  background: var(--surface);
+  color: var(--text);
+  padding: 0 6px;
+  font-size: 12px;
+}
+.sig-json {
+  margin: 8px 0 4px;
+  padding: 8px 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xs);
+  font-size: 12px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-height: 320px;
+  overflow: auto;
+}
+.sig-err {
+  margin-top: 8px;
+  color: var(--danger);
+  font-size: 12px;
+}
+.sig-draft-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+}
+.sig-edit-cell {
+  background: var(--surface-2);
+  padding: 10px 14px !important;
+}
+.sig-edit {
+  font-size: 13px;
+}
+.sig-edit-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 6px 0;
+}
+.sig-edit select,
+.sig-edit input {
+  height: 28px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-xs);
+  background: var(--surface);
+  color: var(--text);
+  padding: 0 6px;
+  font-size: 12px;
+}
+.sig-wl-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 10px 0 2px;
+}
+.sig-wl-group {
+  margin: 8px 0;
+}
+.sig-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  margin-top: 4px;
+}
+.sig-chip-x {
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  margin-left: 3px;
+  padding: 0 2px;
+  font-size: 11px;
+  opacity: 0.65;
+}
+.sig-chip-x:hover {
+  opacity: 1;
+  color: var(--danger);
+}
+.sig-chip-input {
+  height: 22px;
+  width: 110px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text);
+  padding: 0 8px;
+  font-size: 11px;
+}
+
 /* ── 指标与维度（PRD-012 US-15/16：两级结构 + 判分说明）──────────────── */
 
 .ind-layout,

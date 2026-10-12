@@ -16,6 +16,11 @@ import { AgentEvalPage } from './pages/AgentEval'
 import { AgentEvalCasesPage } from './pages/AgentEvalCases'
 import { AgentEvalTasksPage } from './pages/AgentEvalTasks'
 import { AgentEvalJudgesPage } from './pages/AgentEvalJudges'
+import { SignalsPage } from './pages/Signals'
+import { SignalsConfigPage } from './pages/SignalsConfig'
+import { SignalsWordsPage } from './pages/SignalsWords'
+import { SignalsPublishPage } from './pages/SignalsPublish'
+import { SignalsHistoryPage } from './pages/SignalsHistory'
 import { PlaceholderPage } from './pages/Placeholder'
 
 /**
@@ -43,6 +48,11 @@ const PAGES: Record<string, ComponentType> = {
   agentevaljudges: AgentEvalJudgesPage,
   /** 旧 URL 兼容（C6 合并页）：指标与维度页已并入测评裁判 */
   agentevaldims: AgentEvalJudgesPage,
+  signals: SignalsPage,
+  signalsconfig: SignalsConfigPage,
+  signalswords: SignalsWordsPage,
+  signalspublish: SignalsPublishPage,
+  signalshistory: SignalsHistoryPage,
 }
 
 function PageSwitch() {
