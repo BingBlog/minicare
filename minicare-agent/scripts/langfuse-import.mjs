@@ -13,6 +13,11 @@
  *   node scripts/langfuse-import.mjs --from 2026-08-30 --to 2026-08-31
  *   node scripts/langfuse-import.mjs --trace <traceId>
  *   node scripts/langfuse-import.mjs --dry-run      # 只打印，不导入不回填
+ *   node scripts/langfuse-import.mjs --force        # 忽略 importedAt 重新导入已同步过的
+ *                                                   #   （换代/重建 Langfuse 实例后回灌历史用）
+ *   node scripts/langfuse-import.mjs --progress-json # 逐条输出 `@@SYNC@@ {json}` 进度行
+ *                                                    # （平台观测页同步控制台消费，TECH-030；
+ *                                                    #   与测评 harness 的 @@EVAL@@ 同款协议）
  *
  * 依赖 .env.local（或环境变量）：
  *   LANGFUSE_HOST / LANGFUSE_PUBLIC_KEY / LANGFUSE_SECRET_KEY  本地 Langfuse
@@ -37,14 +42,23 @@ const LIMIT = Number(argOf('--limit') || 50)
 const FROM = argOf('--from') ? Date.parse(argOf('--from')) : null
 const TO = argOf('--to') ? Date.parse(argOf('--to')) : null
 const TRACE_ID = argOf('--trace')
+const FORCE = hasFlag('--force')
+const PROGRESS_JSON = hasFlag('--progress-json')
+
+/** 结构化进度行（平台观测页消费，TECH-030）：`@@SYNC@@ {"event":...}` */
+const emit = (event, data = {}) => {
+  if (!PROGRESS_JSON) return
+  console.log(`@@SYNC@@ ${JSON.stringify({ event, ...data })}`)
+}
 
 const LANGFUSE_HOST = (process.env.LANGFUSE_HOST || 'http://localhost:3100').replace(/\/$/, '')
 const PK = process.env.LANGFUSE_PUBLIC_KEY
 const SK = process.env.LANGFUSE_SECRET_KEY
 const ENV_ID = process.env.TCB_ENV_ID || 'minicare-cloud-6gqledlle0132cbe'
 
-if (!PK || !SK) {
-  console.error('缺少 LANGFUSE_PUBLIC_KEY / LANGFUSE_SECRET_KEY（检查 .env.local 或环境变量）')
+// dry-run 只读 FlexDB、不触碰 Langfuse —— 不要求密钥（平台「试跑预览」在密钥补齐前也可用）
+if (!DRY_RUN && (!PK || !SK)) {
+  console.error('缺少 LANGFUSE_PUBLIC_KEY / LANGFUSE_SECRET_KEY（检查平台「全局配置 → 观测」、.env.local 或环境变量）')
   process.exit(1)
 }
 
@@ -178,36 +192,49 @@ async function main() {
   const col = app.database().collection('agent_traces')
 
   // 按 startedAt 倒序拉取候选，再在本地过滤（importedAt 为空 / 时间范围 / 指定 trace）
+  // --force：忽略 importedAt（重建实例后回灌历史；事件 id 稳定，重复导入为幂等 upsert）
   const { data } = await col.orderBy('startedAt', 'desc').limit(500).get()
-  let candidates = (data || []).filter((d) => !d.importedAt)
+  let candidates = (data || []).filter((d) => !d.importedAt || FORCE)
   if (TRACE_ID) candidates = candidates.filter((d) => d.traceId === TRACE_ID)
   if (FROM) candidates = candidates.filter((d) => (d.startedAt || 0) >= FROM)
   if (TO) candidates = candidates.filter((d) => (d.startedAt || 0) <= TO)
   candidates = candidates.slice(0, LIMIT)
 
   console.log(`待导入 ${candidates.length} 条（host=${LANGFUSE_HOST}${DRY_RUN ? '，dry-run' : ''}）`)
+  emit('start', { candidates: candidates.length, dryRun: DRY_RUN })
   if (!candidates.length) {
     console.log('没有需要导入的 trace。')
+    emit('done', { ok: 0, fail: 0, dryRun: DRY_RUN })
     return
   }
 
   let ok = 0
   let fail = 0
+  let index = 0
   for (const doc of candidates) {
+    index++
     const label = `${doc.traceId.slice(0, 8)}  ${doc.status?.padEnd(9)}  ${new Date(doc.startedAt).toLocaleString()}  "${String(doc.input?.message || '').slice(0, 30)}"`
+    // dry-run：只预览候选清单，不导入、不回填（历史版本在这里会误发 ingestion POST，已修）
+    if (DRY_RUN) {
+      ok++
+      console.log(`  · ${label}`)
+      emit('trace', { index, total: candidates.length, traceId: doc.traceId, ok: true })
+      continue
+    }
     try {
       const n = await importTrace(doc)
-      if (!DRY_RUN) {
-        await col.doc(doc._id).update({ importedAt: Date.now() })
-      }
+      await col.doc(doc._id).update({ importedAt: Date.now() })
       ok++
       console.log(`  ✓ ${label}  (${n} events)`)
+      emit('trace', { index, total: candidates.length, traceId: doc.traceId, ok: true, events: n })
     } catch (e) {
       fail++
       console.error(`  ✗ ${label}  → ${e.message}`)
+      emit('trace', { index, total: candidates.length, traceId: doc.traceId, ok: false, error: String(e.message || '').slice(0, 200) })
     }
   }
-  console.log(`\n完成：成功 ${ok}，失败 ${fail}${DRY_RUN ? '（dry-run 未回填 importedAt）' : ''}`)
+  console.log(`\n完成：成功 ${ok}，失败 ${fail}${DRY_RUN ? '（dry-run 预览，未导入未回填）' : ''}`)
+  emit('done', { ok, fail, dryRun: DRY_RUN })
 }
 
 main().catch((e) => {

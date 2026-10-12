@@ -1,28 +1,39 @@
-# 本地 Langfuse v3（TECH-007，本地评估用途，非生产部署）
+# 本地 Langfuse v3（TECH-007 链路 + TECH-030 平台托管）
 #
-# 启动：docker compose up -d        （首次需先启动 Docker Desktop）
-# 访问：http://localhost:3100
+# 两种起法（同一份文件、同一个 compose 项目）：
+#   ① 平台托管（推荐）：minicare-platform 启动时自动 `docker compose up -d`；
+#      观测页可查状态 / 启停 / 发起数据同步（TECH-030）。
+#   ② 手动：docker compose up -d    （先确保 Docker 运行时在跑：colima / Docker Desktop）
+#
+# 访问：http://localhost:3100（OBS_LANGFUSE_PUBLIC_URL 可改）
 #   首次打开注册账号 → 建 Organization / Project →
-#   Project Settings → API Keys 创建 pk/sk → 写入 minicare-agent/.env.local：
-#     LANGFUSE_HOST=http://localhost:3100
-#     LANGFUSE_PUBLIC_KEY=pk-lf-...
-#     LANGFUSE_SECRET_KEY=sk-lf-...
-# 导入：node ../scripts/langfuse-import.mjs
+#   Project Settings → API Keys 创建 pk/sk →
+#   填入平台「全局配置 → 观测」（LANGFUSE_PUBLIC_KEY / LANGFUSE_SECRET_KEY）。
+#   （旧做法写 minicare-agent/.env.local，仍兼容为回落后备。）
+# 导入：平台观测页「数据同步」，或 CLI：node ../scripts/langfuse-import.mjs
 #
-# 注意：web 映射到宿主 3100，避开 minicare-agent 本地服务的 3000。
+# ⚠️ 项目名固定为 `langfuse`（下方 name:）：数据卷按项目名隔离（langfuse_langfuse_pg…），
+#    改名 = 旧数据（账号/项目/trace）全部“失联”，请勿修改。
+# ⚠️ 端口 / 访问地址均可变量化（平台注入；手跑时用默认值）：
+#    OBS_LANGFUSE_PORT（默认 3100）、OBS_LANGFUSE_PUBLIC_URL（默认 http://localhost:3100）、
+#    OBS_PG_PORT（默认 5433）。
+# 注意：web 映射到宿主 3100，避开 minicare-agent 本地服务的 3000；
+#       仅绑本机回环（2026-10-11 用户拍板：无需手机/局域网访问）。
+
+name: langfuse
 
 services:
   langfuse-web:
     image: langfuse/langfuse:3
     ports:
-      - "3100:3000"
+      - "127.0.0.1:${OBS_LANGFUSE_PORT:-3100}:3000"
     environment:
       DATABASE_URL: postgresql://postgres:postgres@langfuse-db:5432/postgres
       NEXTAUTH_SECRET: lf-local-7f3a9c1e2b84d05a6e9f3c7b1d8a4e2f9c0b5d7a3e6f1c8b4d9a2e7f5c0b3d6a
       SALT: lf-local-2c9e4f7a1b3d5e8c0a2f4b6d8e0a3c5b7d9f1a3c5e7b9d0f2a4c6e8b0d3f5a7c
       ENCRYPTION_KEY: bf4d8a2c6e0b9d3f5a7c1e8b4d0a6c2e9f5b3d7a1c8e4f0b6d2a8e5c9f1b3d7a
-      # 局域网访问（手机）——Mac IP 变化时需同步修改并重建容器
-      NEXTAUTH_URL: http://192.168.1.16:3100
+      # 登录回调地址：与访问入口一致（改端口/改地址后需重建容器）
+      NEXTAUTH_URL: ${OBS_LANGFUSE_PUBLIC_URL:-http://localhost:3100}
       TELEMETRY_ENABLED: "false"
       CLICKHOUSE_URL: http://langfuse-clickhouse:8123
       CLICKHOUSE_MIGRATION_URL: clickhouse://langfuse-clickhouse:9000/default
@@ -60,7 +71,7 @@ services:
       NEXTAUTH_SECRET: lf-local-7f3a9c1e2b84d05a6e9f3c7b1d8a4e2f9c0b5d7a3e6f1c8b4d9a2e7f5c0b3d6a
       SALT: lf-local-2c9e4f7a1b3d5e8c0a2f4b6d8e0a3c5b7d9f1a3c5e7b9d0f2a4c6e8b0d3f5a7c
       ENCRYPTION_KEY: bf4d8a2c6e0b9d3f5a7c1e8b4d0a6c2e9f5b3d7a1c8e4f0b6d2a8e5c9f1b3d7a
-      NEXTAUTH_URL: http://localhost:3100
+      NEXTAUTH_URL: ${OBS_LANGFUSE_PUBLIC_URL:-http://localhost:3100}
       TELEMETRY_ENABLED: "false"
       CLICKHOUSE_URL: http://langfuse-clickhouse:8123
       CLICKHOUSE_MIGRATION_URL: clickhouse://langfuse-clickhouse:9000/default
@@ -98,7 +109,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
     ports:
-      - "127.0.0.1:5433:5432"
+      - "127.0.0.1:${OBS_PG_PORT:-5433}:5432"
     volumes:
       - langfuse_pg:/var/lib/postgresql/data
     healthcheck:
