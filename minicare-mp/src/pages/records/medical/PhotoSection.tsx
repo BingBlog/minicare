@@ -73,8 +73,12 @@ export default function PhotoSection({ babyId, value, onChange, showToast }: Pro
    */
 
   /**
-   * 上传前压缩：统一走共享 compressImage（多端文件，默认 1280px 宽 + 80 质量，
-   * 与原本地实现参数一致；H5 端为 canvas 压缩实现）。
+   * 上传前压缩：统一走共享 compressImage（多端文件，H5 端为 canvas 压缩实现）。
+   *
+   * ⚠️ 就医报告（检查单/诊断书）以「文字可读」为第一优先级：
+   *   - 选图用 sizeType=['original']，避开微信端预处理压缩（compressed 会先压一轮，文字必糊）；
+   *   - 压缩参数用高画质 2560px 宽 + quality 92（2026-10-12 修复双重压缩致糊，
+   *     原参数 1280px + 80 叠加微信端压缩后文字细节严重损失）。
    * 压缩失败（个别格式/低版本基础库）则回退用原图。
    */
 
@@ -82,7 +86,7 @@ export default function PhotoSection({ babyId, value, onChange, showToast }: Pro
     const tmpId = `tmp-${Date.now()}-${Math.random().toString(36).slice(2)}`
     setItems((prev) => [...prev, { fileID: tmpId, url: tempPath, tempPath, status: 'uploading' }])
     try {
-      const uploadPath = await compressImage(tempPath)
+      const uploadPath = await compressImage(tempPath, 92, 2560)
       const cloudPath = `medical/${babyId || 'pending'}/${Date.now()}-${Math.random().toString(36).slice(2)}.jpg`
       const meta = await storageApi.getUploadUrl(cloudPath)
       await uploadToCos(meta.uploadUrl, uploadPath, meta, cloudPath)
@@ -102,7 +106,8 @@ export default function PhotoSection({ babyId, value, onChange, showToast }: Pro
     }
     Taro.chooseImage({
       count: remain,
-      sizeType: ['compressed'],
+      // 报告文字优先：不选 compressed（微信预处理压缩会先压一轮，叠加压缩致糊）
+      sizeType: ['original'],
       sourceType: ['album', 'camera'],
       success: (res) => {
         res.tempFilePaths.forEach((path) => uploadOne(path))
