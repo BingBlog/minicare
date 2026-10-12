@@ -26,6 +26,10 @@ import type {
   MetaGet,
   MetaSchema,
   NormalizeDiffGet,
+  ObsStackSnapshot,
+  ObsStatus,
+  ObsSyncRun,
+  ObsSyncSnapshot,
   Overview,
   ParsedDoc,
   PreflightGet,
@@ -39,6 +43,22 @@ import type {
   RunProgress,
   RunResult,
   SegmentsGet,
+  SignalConfigData,
+  SignalAuditData,
+  SignalDraftGet,
+  SignalDraftItem,
+  SignalDraftSaveResult,
+  SignalDryRunResult,
+  SignalHealth,
+  SignalPublishResult,
+  SignalRegistryData,
+  SignalReviewConfig,
+  SignalValueAllResult,
+  SignalValueResult,
+  SignalVersionDetail,
+  SignalVersionsData,
+  SignalWordlistTryResult,
+  SignalWordlists,
   StepRunResultDto,
   TranslationGet,
   TranslationItem,
@@ -51,8 +71,17 @@ export async function req<T>(path: string, opts?: RequestInit): Promise<T> {
   })
   const body = await r.json().catch(() => ({}) as Record<string, unknown>)
   if (!r.ok) {
-    const b = body as { detail?: string; error?: { message?: string } }
-    throw new Error(b.error?.message || b.detail || `HTTP ${r.status}`)
+    const b = body as {
+      detail?: string | { message?: string; errors?: unknown[] }
+      error?: { message?: string }
+    }
+    // detail 为对象（如 /api/signals/draft 的校验明细）→ 提取 message 并保留结构化 detail（调用方可读 e.detail.errors）
+    if (b.detail && typeof b.detail === 'object' && b.detail.message) {
+      const err = new Error(b.detail.message) as Error & { detail?: unknown }
+      err.detail = b.detail
+      throw err
+    }
+    throw new Error(b.error?.message || (b.detail as string) || `HTTP ${r.status}`)
   }
   return body as T
 }
@@ -280,4 +309,96 @@ export const api = {
    * 命中判重时必须给出 `onConflict`，否则后端按 `skip` 处理（不产生任何新记录）。
    */
   corpusUpload: uploadCorpus,
+
+  /* ── 信号管理（TECH-029 / PRD-014）── */
+  /** 信号图谱：组/信号/flag/参数 + 反向索引 + 统计 */
+  signalRegistry: () => req<SignalRegistryData>('/api/signals/registry'),
+  /** 配置清单：58 行视图（34 参数 + 12 flag × 开关/强度） */
+  signalConfig: () => req<SignalConfigData>('/api/signals/config'),
+  /** 文件健康：存在性 / 指纹 / schema 兼容 */
+  signalHealth: () => req<SignalHealth>('/api/signals/health'),
+  /** 单信号实测（「跑一遍」）；prod 为只读数据源 */
+  signalValue: (baby: string, key: string, datasource = 'dev', configFile?: string) => {
+    const q = new URLSearchParams({ baby, key, datasource })
+    if (configFile) q.set('configFile', configFile)
+    return req<SignalValueResult>(`/api/signals/value?${q.toString()}`)
+  },
+  /** 全量信号实测（总览表格「实测值」列）：46 信号 + 12 flag 触发状态 */
+  signalValueAll: (baby: string, datasource = 'dev') => {
+    const q = new URLSearchParams({ baby, datasource })
+    return req<SignalValueAllResult>(`/api/signals/value-all?${q.toString()}`)
+  },
+  /** 改前/改后对比（干跑；服务端自动物化当前草稿为临时配置） */
+  signalDryRun: (body: { baby: string; datasource?: string }) =>
+    post<SignalDryRunResult>('/api/signals/dry-run', body),
+  /** 断言集（发布步骤②） */
+  signalAssert: (configFile?: string) =>
+    post<Record<string, unknown>>('/api/signals/assert', configFile ? { configFile } : {}),
+  /** 发布（S6）：断言失败默认阻断（error.detail.errors 为明细）；force + 理由可放行 */
+  signalPublish: (force = false, forceReason = '') =>
+    post<SignalPublishResult>('/api/signals/publish', force ? { force, forceReason } : {}),
+  /** 读取草稿 + 基线指纹（drift = signals.yaml 被平台外改动） */
+  signalDraft: () => req<SignalDraftGet>('/api/signals/draft'),
+  /** 保存草稿（全量替换）；校验不过抛错，`error.detail.errors` 为逐项明细 [{key,error}] */
+  signalDraftSave: (items: SignalDraftItem[]) =>
+    put<SignalDraftSaveResult>('/api/signals/draft', { items }),
+  /** 丢弃草稿 */
+  signalDraftDiscard: () =>
+    req<{ ok: boolean }>('/api/signals/draft', { method: 'DELETE' }),
+  /** 词表试跑器；wordlists 传了 = 用「当前值 ⊕ 编辑中词表」临时覆盖试跑（不落盘） */
+  signalWordlistTry: (foods: string[], wordlists?: SignalWordlists) =>
+    post<SignalWordlistTryResult>('/api/signals/wordlist-try', wordlists ? { foods, wordlists } : { foods }),
+
+  /* ── S7：版本 / 回滚 / 审计 / 复审 ─────────────────────────── */
+
+  /** 版本列表 + 部署状态 + 外部变更检测 */
+  signalVersions: () => req<SignalVersionsData>('/api/signals/versions'),
+  signalVersionDetail: (version: string) =>
+    req<SignalVersionDetail>(`/api/signals/versions/${encodeURIComponent(version)}`),
+  signalRollback: (version: string, reason = '', force = false, forceReason = '') =>
+    post<SignalPublishResult>(
+      '/api/signals/rollback',
+      force ? { version, reason, force, forceReason } : { version, reason },
+    ),
+  signalExternalRegister: () =>
+    post<{ ok: boolean; version: string; diff: { key: string; before: unknown; after: unknown }[] }>(
+      '/api/signals/external-register',
+      {},
+    ),
+  signalDeployConfirm: () =>
+    post<{ ok: boolean; already: boolean; version: string; confirmedAt: string }>(
+      '/api/signals/deploy-confirm',
+      {},
+    ),
+  signalAudit: (limit = 100, offset = 0) =>
+    req<SignalAuditData>(`/api/signals/audit?limit=${limit}&offset=${offset}`),
+  signalReview: (key: string, note = '') =>
+    post<{ ok: boolean; key: string; lastReviewedAt: string }>('/api/signals/review', { key, note }),
+  signalReviewConfig: () => req<SignalReviewConfig>('/api/signals/review-config'),
+  signalReviewConfigSet: (cycleDays: number) =>
+    put<SignalReviewConfig & { ok: boolean }>('/api/signals/review-config', { cycleDays }),
+
+  /* ── 观测（TECH-030）：Langfuse 服务编排 + 数据同步 ─────────────── */
+
+  /** 观测域全量状态（栈状态机 / 密钥配置 / 同步快照；页面 4s 轮询，后端自带节流） */
+  obsStatus: () => req<ObsStatus>('/api/obs/status'),
+  /** 启动观测栈（异步：docker/colima 探测拉起 + compose up；返回当时快照，靠轮询收敛） */
+  obsStackStart: () => post<ObsStackSnapshot>('/api/obs/stack/start'),
+  /** 停止观测栈（compose stop；保留数据卷） */
+  obsStackStop: () => post<ObsStackSnapshot>('/api/obs/stack/stop'),
+  /** 发起数据同步（FlexDB → 本地 Langfuse）；dry_run=true 为试跑预览（不导入不回填） */
+  obsSyncStart: (body: {
+    mode: 'all' | 'range' | 'trace'
+    limit?: number
+    from?: string
+    to?: string
+    trace_id?: string
+    dry_run?: boolean
+  }) => post<ObsSyncSnapshot>('/api/obs/sync/start', body),
+  /** 同步运行态 + 实时日志行（运行中 1.2s 轮询） */
+  obsSyncStatus: () => req<ObsSyncSnapshot>('/api/obs/sync/status'),
+  /** 取消进行中的同步（终止子进程；已完成的回填不丢） */
+  obsSyncCancel: () => post<ObsSyncSnapshot>('/api/obs/sync/cancel'),
+  /** 同步历史（obs_sync_run 台账，倒序） */
+  obsSyncRuns: (limit = 50) => req<{ items: ObsSyncRun[] }>(`/api/obs/sync/runs?limit=${limit}`),
 }

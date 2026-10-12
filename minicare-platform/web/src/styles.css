@@ -2595,6 +2595,25 @@ details.menu .menu-pop button:hover { background: var(--surface-2); }
   gap: 2px;
   position: sticky;
   top: calc(var(--topnav-h) + var(--topbar-h) + 60px);
+  /* 2026-10-11 按域分类后条目变多：限高 + 自滚，避免"钉住后底部项永远看不到" */
+  max-height: calc(100vh - var(--topnav-h) - var(--topbar-h) - 88px);
+  overflow-y: auto;
+}
+/* 分类节点（2026-10-11：左导航按平台域分组 —— 知识库 / Agent 测评 / 观测 / 平台） */
+.cfg-catnode {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.cfg-catnode + .cfg-catnode {
+  margin-top: 8px;
+}
+.cfg-cat {
+  padding: 2px 10px 5px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  color: var(--text-3);
 }
 .cfg-tab {
   display: flex;
@@ -2866,6 +2885,250 @@ details.menu .menu-pop button:hover { background: var(--surface-2); }
   margin-bottom: 4px;
 }
 
+/* ── 信号管理域（TECH-029 / PRD-014）──────────────────
+   总览表格（.sig-group-tr / .sig-reading / .sig-toolbar）与配置清单（.sig-tag / .sig-med）共用；
+   详情抽屉（.sig-drawer）为右侧固定面板 + 遮罩。 */
+.sig-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+.sig-toolbar select,
+.sig-toolbar input {
+  height: 28px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-xs);
+  background: var(--surface);
+  color: var(--text);
+  padding: 0 6px;
+  font-size: 12px;
+}
+.sig-section-block {
+  border-bottom: 1px dashed var(--line);
+}
+.sig-section-block:last-child {
+  border-bottom: none;
+}
+.sig-section-head {
+  padding: 10px 14px 6px;
+  font-size: 13px;
+}
+.sig-section-body {
+  padding: 0 14px 10px;
+}
+.sig-reading {
+  font-size: 12px;
+  color: var(--text);
+  word-break: break-all;
+}
+.sig-diff {
+  border: 1px solid var(--line);
+  border-radius: var(--r-xs);
+  overflow: hidden;
+  margin-top: 4px;
+}
+.sig-diff-line {
+  padding: 2px 10px;
+  font-size: 12px;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.sig-diff-line.del {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+.sig-diff-line.add {
+  background: var(--ok-bg);
+  color: var(--ok);
+}
+.sig-diff-line.same {
+  color: var(--text-3);
+}
+.sig-tag {
+  display: inline-block;
+  padding: 0 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  line-height: 18px;
+  background: var(--neutral-bg);
+  color: var(--text-2);
+  white-space: nowrap;
+}
+.sig-tag.ok {
+  background: var(--ok-bg);
+  color: var(--ok);
+}
+.sig-tag.warn {
+  background: var(--warn-bg);
+  color: var(--warn);
+}
+.sig-med {
+  display: inline-block;
+  margin-left: 4px;
+  padding: 0 4px;
+  border-radius: 3px;
+  font-size: 10px;
+  line-height: 15px;
+  background: var(--accent-bg);
+  color: var(--accent);
+  vertical-align: 1px;
+}
+.sig-chip {
+  display: inline-block;
+  margin: 0 4px 4px 0;
+  padding: 1px 7px;
+  border-radius: 10px;
+  font-size: 11px;
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+.sig-drawer-mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(30, 28, 26, 0.3);
+  z-index: 70;
+}
+.sig-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(540px, 94vw);
+  background: var(--surface);
+  z-index: 71;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.14);
+  padding: 14px 16px;
+  overflow: auto;
+}
+.sig-drawer-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+.sig-drawer-title {
+  font-size: 15px;
+  font-weight: 600;
+}
+.sig-section {
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--line);
+}
+.sig-label {
+  font-size: 12px;
+  color: var(--text-3);
+  margin: 6px 0 2px;
+}
+.sig-run {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+.sig-run select,
+.sig-run input {
+  height: 28px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-xs);
+  background: var(--surface);
+  color: var(--text);
+  padding: 0 6px;
+  font-size: 12px;
+}
+.sig-json {
+  margin: 8px 0 4px;
+  padding: 8px 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xs);
+  font-size: 12px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-height: 320px;
+  overflow: auto;
+}
+.sig-err {
+  margin-top: 8px;
+  color: var(--danger);
+  font-size: 12px;
+}
+.sig-draft-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+}
+.sig-edit-cell {
+  background: var(--surface-2);
+  padding: 10px 14px !important;
+}
+.sig-edit {
+  font-size: 13px;
+}
+.sig-edit-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 6px 0;
+}
+.sig-edit select,
+.sig-edit input {
+  height: 28px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-xs);
+  background: var(--surface);
+  color: var(--text);
+  padding: 0 6px;
+  font-size: 12px;
+}
+.sig-wl-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 10px 0 2px;
+}
+.sig-wl-group {
+  margin: 8px 0;
+}
+.sig-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  margin-top: 4px;
+}
+.sig-chip-x {
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  margin-left: 3px;
+  padding: 0 2px;
+  font-size: 11px;
+  opacity: 0.65;
+}
+.sig-chip-x:hover {
+  opacity: 1;
+  color: var(--danger);
+}
+.sig-chip-input {
+  height: 22px;
+  width: 110px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text);
+  padding: 0 8px;
+  font-size: 11px;
+}
+
 /* ── 指标与维度（PRD-012 US-15/16：两级结构 + 判分说明）──────────────── */
 
 .ind-layout,
@@ -3053,3 +3316,309 @@ details.menu .menu-pop button:hover { background: var(--surface-2); }
 .var-warn {
   color: var(--warn);
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   观测域（TECH-030）：服务状态 / 数据同步 / 同步历史 三卡页面。
+   色板全部走既有令牌（--surface-2 / --line / --accent…），不引入新颜色。
+   ══════════════════════════════════════════════════════════════════════════ */
+.obs-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.obs-actions .hint {
+  color: var(--text-3);
+}
+.obs-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 8px 0 2px;
+}
+.obs-form label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-2);
+  font-size: 12px;
+}
+.obs-form input[type='radio'] {
+  accent-color: var(--accent);
+}
+.obs-form input[type='date'],
+.obs-form input[type='text'],
+.obs-form input[type='number'] {
+  font: inherit;
+  font-size: 12px;
+  padding: 4px 8px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  color: var(--text);
+}
+.obs-form input[type='number'] {
+  width: 76px;
+}
+.obs-log {
+  margin: 8px 0 0;
+  padding: 8px 10px;
+  max-height: 210px;
+  overflow: auto;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  font-size: 11.5px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-all;
+  color: var(--text-2);
+}
+.obs-progress {
+  margin-top: 10px;
+}
+.obs-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--neutral-bg);
+  overflow: hidden;
+  margin: 0 0 6px;
+}
+.obs-bar > i {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+.obs-bar.is-running > i {
+  width: 30%;
+  animation: obs-indeterminate 1.2s ease-in-out infinite;
+}
+@keyframes obs-indeterminate {
+  0% {
+    margin-left: -30%;
+  }
+  100% {
+    margin-left: 100%;
+  }
+}
+.obs-progress-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.obs-err {
+  margin-top: 4px;
+  color: var(--danger);
+}
+.obs-details {
+  margin-top: 10px;
+}
+.obs-details summary {
+  cursor: pointer;
+  color: var(--text-2);
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+.obs-run-row {
+  cursor: pointer;
+}
+.obs-run-row:hover {
+  background: var(--surface-2);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   线上沉淀（PRD-015 / TECH-032）：候选队列 + 审阅抽屉（三视图）。
+   色板走既有令牌；抽屉形态镜像 .sig-drawer（不抽公共组件，避免动 Signals 页）。
+   ══════════════════════════════════════════════════════════════════════════ */
+.trace-filters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 10px 0 4px;
+}
+.trace-filters select,
+.trace-filters input[type='text'] {
+  font: inherit;
+  font-size: 12px;
+  padding: 4px 8px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  color: var(--text);
+}
+.trace-more {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0 2px;
+}
+
+/* 抽屉（右侧固定面板 + 遮罩，镜像 sig-drawer） */
+.trace-drawer-mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(30, 28, 26, 0.3);
+  z-index: 70;
+}
+.trace-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(560px, 94vw);
+  background: var(--surface);
+  z-index: 71;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.14);
+  padding: 14px 16px;
+  overflow: auto;
+}
+.trace-drawer-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+.trace-drawer-title {
+  font-size: 15px;
+  font-weight: 600;
+}
+.trace-body {
+  padding-top: 4px;
+}
+.trace-status-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--line);
+}
+.trace-meta {
+  padding: 8px 0;
+  line-height: 1.9;
+}
+.trace-block {
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--line);
+}
+.trace-block-h {
+  font-size: 12px;
+  color: var(--text-3);
+  margin: 6px 0 4px;
+}
+.trace-text {
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 13px;
+  line-height: 1.75;
+}
+.trace-scroll {
+  max-height: 320px;
+  overflow: auto;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: 8px 10px;
+}
+.trace-obs {
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: 6px 10px;
+  margin: 6px 0;
+  background: var(--surface-2);
+}
+.trace-obs summary {
+  cursor: pointer;
+  font-size: 12.5px;
+}
+.trace-warn {
+  color: var(--warn);
+}
+.trace-pre {
+  margin: 4px 0 6px;
+  padding: 6px 8px;
+  max-height: 200px;
+  overflow: auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xs);
+  font-size: 11.5px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-all;
+  color: var(--text-2);
+}
+.trace-sibling {
+  padding: 5px 8px;
+  border-radius: var(--r-xs);
+  cursor: pointer;
+  font-size: 12.5px;
+}
+.trace-sibling:hover {
+  background: var(--surface-2);
+}
+.trace-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 14px 0 6px;
+}
+
+/* 标注 / 忽略表单 */
+.trace-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 0 4px;
+}
+.trace-form label {
+  font-size: 12px;
+  color: var(--text-2);
+  margin-top: 6px;
+}
+.trace-form input[type='text'],
+.trace-form select,
+.trace-form textarea {
+  font: inherit;
+  font-size: 12.5px;
+  padding: 6px 8px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  color: var(--text);
+  width: 100%;
+}
+.trace-form textarea {
+  resize: vertical;
+  line-height: 1.7;
+}
+.trace-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.trace-form-row > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.trace-label-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.trace-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: var(--text);
+}
+

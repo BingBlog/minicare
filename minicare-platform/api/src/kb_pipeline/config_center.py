@@ -10,6 +10,11 @@
     - 写前备份（`data/config_backups/`，同名保留最近 20 份）+ 整体校验（任何一项非法 → 全量拒绝）；
     - 写后 `reload_settings()` 热重载 —— `get_settings` 是 lru_cache，清缓存即生效，无需重启。
 
+2026-10-11（用户要求：配置页「按 知识库 / Agent 测评 / 观测 等分类展示」）：
+  · 每个分组（`GROUP_META.domain`）与每个 .env 项（`ENV_ITEMS[i].domain`）声明**平台域归属**，
+    `build_detail` 原样下发 —— 前端 `Config.tsx` 按域分列左导航（含各域的「密钥与环境变量」）；
+  · 域取值与前端 `web/src/nav.ts` 的层级 id 对齐（kb/eval/signal/obs/platform），缺省落 kb。
+
 ⚠️ 两条安全护栏（写 yaml 时强制）：
   1. **注释行数不允许减少** —— 出过真实事故：用普通 dict 整体替换 `patterns` 节时，
      紧随其后的注释块被挤掉。发现即中止写入；
@@ -55,58 +60,76 @@ class ConfigError(ValueError):
     """配置中心的用户可见错误（路由层转 422；文案直接展示给用户）"""
 
 
-# ── 分组元信息（中文名 + 一句话说明）─────────────────────────────────────
+# ── 分组元信息（中文名 + 一句话说明 + 平台域归属）─────────────────────────
+#
+# `domain` = 配置页左导航的**分类依据**（2026-10-11 用户要求「按 知识库 / Agent 测评 /
+# 观测 等分类展示」）：取值与前端 `web/src/nav.ts` 的层级 id 对齐 ——
+#   kb 知识库 · eval Agent 测评 · signal 信号管理 · obs 观测 · platform 平台级
+# 前端按此分列并映射中文名（顺序 = 顶栏域顺序，platform 殿后）；缺省落 kb。
 
 GROUP_META: dict[str, dict[str, str]] = {
     "mineru": {
+        "domain": "kb",
         "label": "解析（MinerU 云端）",
         "note": "PDF / HTML → Markdown/JSON 的云端解析；引擎选择直接决定数字保真度，改动后需重跑 parse。",
     },
     "chunk": {
+        "domain": "kb",
         "label": "切块",
         "note": "切片粒度与降级策略；参数进 segment 缓存键 —— 改动只影响切块及其下游（翻译/索引）。",
     },
     "validate": {
+        "domain": "kb",
         "label": "内容复核（医疗安全门禁）",
         "note": "数字缺失模式库 + 风险分级关键词；命中 → 进人工复核，不进检索。",
     },
     "metadata": {
+        "domain": "kb",
         "label": "元信息抽取",
         "note": "LLM 抽取的预算与样本；doc_mapping 属业务数据（只读，将迁入台账）。",
     },
     "store": {
+        "domain": "kb",
         "label": "存储路径",
         "note": "CLI 落盘位置（切片 JSONL / 复核报告），相对路径基于 api/ 目录。",
     },
     "platform": {
+        "domain": "platform",
         "label": "平台运行态",
         "note": "版本号参与全部步骤的缓存键；解析并发与产物保留轮数。",
     },
     "preflight": {
+        "domain": "kb",
         "label": "预检",
         "note": "逐页文字层判定：扫描页识别与 OCR 档位推荐。",
     },
     "noise": {
+        "domain": "kb",
         "label": "噪声块规则",
         "note": "参考文献 / 页眉页脚 / 空表的自动屏蔽规则；人工恢复优先于规则。",
     },
     "regression": {
+        "domain": "kb",
         "label": "检索质检门槛",
         "note": "质检台达标判定口径；emergency 高危项默认纳入发布闸门。",
     },
     "publish": {
+        "domain": "kb",
         "label": "发布检查",
         "note": "发布前四项检查开关与快照保留轮数。",
     },
     "llm": {
+        "domain": "kb",
         "label": "LLM 预算（关键词）",
         "note": "关键词生成的开销上限；超限自动降级为规则抽取并告警。",
     },
     "translate": {
+        "domain": "kb",
         "label": "翻译",
         "note": "第 7 步块级双语；术语表为独立数据文件（config/glossary.yaml）。",
     },
     "eval": {
+        "domain": "eval",
         "label": "Agent 测评 · 全局身份",
         "note": "用例运行时的 ctx 用户信息（userId / familyId / babyId）统一在此设置；运行物化时注入每条用例，覆盖用例内同名键。",
     },
@@ -242,86 +265,127 @@ READONLY_FIELDS: set[tuple[str, str]] = {("metadata", "doc_mapping")}
 
 
 # ── 环境变量（.env）元信息 ──────────────────────────────────────────────
-# `field` = Settings 的字段名（唯一消费口径）；`secret` = 界面掩码显示。
+# `field` = Settings 的字段名（唯一消费口径）；`secret` = 界面掩码显示；
+# `domain` = 配置页左导航的分类（与 GROUP_META 同口径：kb / eval / obs / platform）。
 # 顺序即界面展示顺序：凭证在前、连接与路径在后。
 
 ENV_ITEMS: list[dict[str, Any]] = [
     {
-        "key": "MINERU_API_TOKEN", "field": "mineru_api_token", "secret": True,
+        "key": "MINERU_API_TOKEN", "field": "mineru_api_token", "secret": True, "domain": "kb",
         "label": "MinerU 解析 Token",
         "desc": "配置后「解析」步骤可用；未配置时上传的文档无法跑 parse（本机已有产物不受影响）",
     },
     {
-        "key": "DEEPSEEK_API_KEY", "field": "deepseek_api_key", "secret": True,
+        "key": "DEEPSEEK_API_KEY", "field": "deepseek_api_key", "secret": True, "domain": "kb",
         "label": "LLM 密钥（DeepSeek）",
         "desc": "关键词抽取 / 元信息抽取 / 翻译等 LLM 调用（OpenAI 兼容）",
     },
     {
-        "key": "TOKENHUB_API_KEY", "field": "tokenhub_api_key", "secret": True,
+        "key": "TOKENHUB_API_KEY", "field": "tokenhub_api_key", "secret": True, "domain": "kb",
         "label": "向量化密钥（TokenHub）",
         "desc": "检索 query / 入库 content 的 embedding；未配置时检索与质检的向量路降级",
     },
     {
-        "key": "HUNYUAN_API_KEY", "field": "hunyuan_api_key", "secret": True,
+        "key": "HUNYUAN_API_KEY", "field": "hunyuan_api_key", "secret": True, "domain": "kb",
         "label": "混元 API Key（旧平台）",
         "desc": "兼容旧配置保留；新购请用 TokenHub（混元老平台已停止新购）",
     },
     {
-        "key": "HUNYUAN_SECRET_ID", "field": "hunyuan_secret_id", "secret": True,
+        "key": "HUNYUAN_SECRET_ID", "field": "hunyuan_secret_id", "secret": True, "domain": "kb",
         "label": "混元 SecretId（TC3 签名）", "desc": "混元 embedding 的 TC3 签名凭证（ID 侧）",
     },
     {
-        "key": "HUNYUAN_SECRET_KEY", "field": "hunyuan_secret_key", "secret": True,
+        "key": "HUNYUAN_SECRET_KEY", "field": "hunyuan_secret_key", "secret": True, "domain": "kb",
         "label": "混元 SecretKey（TC3 签名）", "desc": "混元 embedding 的 TC3 签名凭证（Key 侧）",
     },
     {
-        "key": "TCB_SECRET_ID", "field": "tcb_secret_id", "secret": True,
+        "key": "TCB_SECRET_ID", "field": "tcb_secret_id", "secret": True, "domain": "kb",
         "label": "腾讯云 SecretId", "desc": "embedding TC3 签名的缺省回落凭证",
     },
     {
-        "key": "TCB_SECRET_KEY", "field": "tcb_secret_key", "secret": True,
+        "key": "TCB_SECRET_KEY", "field": "tcb_secret_key", "secret": True, "domain": "kb",
         "label": "腾讯云 SecretKey", "desc": "同上（Key 侧）",
     },
     {
-        "key": "TCB_AI_SECRET_ID", "field": "tcb_ai_secret_id", "secret": True,
+        "key": "TCB_AI_SECRET_ID", "field": "tcb_ai_secret_id", "secret": True, "domain": "kb",
         "label": "腾讯云 AI SecretId", "desc": "AI 能力专用凭证（缺省回落 TCB_SECRET_ID）",
     },
     {
-        "key": "TCB_AI_SECRET_KEY", "field": "tcb_ai_secret_key", "secret": True,
+        "key": "TCB_AI_SECRET_KEY", "field": "tcb_ai_secret_key", "secret": True, "domain": "kb",
         "label": "腾讯云 AI SecretKey", "desc": "同上（Key 侧）",
     },
     {
-        "key": "KB_LLM_BASE_URL", "field": "kb_llm_base_url", "secret": False,
+        "key": "KB_LLM_BASE_URL", "field": "kb_llm_base_url", "secret": False, "domain": "kb",
         "label": "LLM 接口地址", "desc": "OpenAI 兼容接口；默认 https://api.deepseek.com",
     },
     {
-        "key": "KB_LLM_MODEL", "field": "kb_llm_model", "secret": False,
+        "key": "KB_LLM_MODEL", "field": "kb_llm_model", "secret": False, "domain": "kb",
         "label": "LLM 模型名", "desc": "默认 deepseek-v4-flash",
     },
     {
-        "key": "TOKENHUB_EMBEDDING_MODEL", "field": "tokenhub_embedding_model", "secret": False,
+        "key": "TOKENHUB_EMBEDDING_MODEL", "field": "tokenhub_embedding_model", "secret": False, "domain": "kb",
         "label": "嵌入模型", "desc": "kinfra-text-embedding-0.6b（1024 维，默认）/ kinfra-text-embedding-4b（2560 维）",
     },
     {
-        "key": "DB_HOST", "field": "db_host", "secret": False,
+        "key": "DB_HOST", "field": "db_host", "secret": False, "domain": "kb",
         "label": "知识库数据库地址", "desc": "CynosDB（腾讯云 MySQL）；质检 / 契约 / 发布前检查读它",
     },
-    {"key": "DB_PORT", "field": "db_port", "secret": False, "label": "数据库端口", "desc": "默认 3306（必须为数字）"},
+    {"key": "DB_PORT", "field": "db_port", "secret": False, "domain": "kb", "label": "数据库端口", "desc": "默认 3306（必须为数字）"},
     {
-        "key": "DB_NAME", "field": "db_name", "secret": False,
+        "key": "DB_NAME", "field": "db_name", "secret": False, "domain": "kb",
         "label": "数据库名",
         "desc": "当前目标库；dev = minicare_dev",
         "warn": "必须保持 minicare_dev —— 指向正式库会让「发布回滚」变成对正式库的全表清空重建（本页已硬拦 minicare-cloud-* 库名）",
     },
-    {"key": "DB_USER", "field": "db_user", "secret": False, "label": "数据库用户", "desc": ""},
-    {"key": "DB_PASSWORD", "field": "db_password", "secret": True, "label": "数据库密码", "desc": ""},
+    {"key": "DB_USER", "field": "db_user", "secret": False, "domain": "kb", "label": "数据库用户", "desc": ""},
+    {"key": "DB_PASSWORD", "field": "db_password", "secret": True, "domain": "kb", "label": "数据库密码", "desc": ""},
     {
-        "key": "SOURCE_DIR", "field": "source_dir", "secret": False, "default": str(DEFAULT_SOURCE_DIR),
+        "key": "SOURCE_DIR", "field": "source_dir", "secret": False, "domain": "kb", "default": str(DEFAULT_SOURCE_DIR),
         "label": "源文件目录", "desc": "上传入口目录（喂给 MinerU 的源 PDF / HTML 所在）",
     },
     {
-        "key": "OUT_DIR", "field": "out_dir", "secret": False, "default": str(DEFAULT_OUT_DIR),
+        "key": "OUT_DIR", "field": "out_dir", "secret": False, "domain": "kb", "default": str(DEFAULT_OUT_DIR),
         "label": "解析产物目录", "desc": "MinerU 解析产物的扫描目录（文档列表从这里读）",
+    },
+    # ── 观测（Langfuse，TECH-030）──
+    # 平台 = 观测服务控制面：启停编排 + 数据同步；密钥（pk/sk）也在这里维护。
+    {
+        "key": "OBS_ENABLED", "field": "obs_enabled", "secret": False, "domain": "obs", "default": "True",
+        "label": "观测域开关", "desc": "关闭后平台不再编排观测栈（观测页提示已关闭）",
+    },
+    {
+        "key": "OBS_AUTOSTART", "field": "obs_autostart", "secret": False, "domain": "obs", "default": "True",
+        "label": "随平台自动启动", "desc": "平台启动时自动拉起 Langfuse 观测栈（需要本机 Docker / colima）",
+    },
+    {
+        "key": "OBS_STOP_ON_EXIT", "field": "obs_stop_on_exit", "secret": False, "domain": "obs", "default": "True",
+        "label": "随平台退出停止", "desc": "平台退出时停止观测栈容器（保留数据卷，下次启动直接复用；开发 --reload 模式自动跳过）",
+    },
+    {
+        "key": "OBS_LANGFUSE_PORT", "field": "obs_langfuse_port", "secret": False, "domain": "obs", "default": "3100",
+        "label": "Langfuse 端口", "desc": "Langfuse Web 的宿主端口（默认 3100，须为 1~5 位数字）",
+    },
+    {
+        "key": "OBS_LANGFUSE_PUBLIC_URL", "field": "obs_langfuse_public_url", "secret": False, "domain": "obs",
+        "default": "http://localhost:3100",
+        "label": "Langfuse 访问地址", "desc": "打开观测 UI 与 trace 深链接使用的地址（默认本机）",
+    },
+    {
+        "key": "OBS_UNIT_DIR", "field": "obs_unit_dir", "secret": False, "domain": "obs",
+        "label": "观测运行单元目录", "desc": "Langfuse compose 与同步脚本所在目录（默认 minicare-agent/；桌面版打包后指向内置副本）",
+    },
+    {
+        "key": "LANGFUSE_HOST", "field": "langfuse_host", "secret": False, "domain": "obs", "default": "http://localhost:3100",
+        "label": "Langfuse 服务地址（同步用）", "desc": "数据同步导入的目标实例地址",
+    },
+    {
+        "key": "LANGFUSE_PUBLIC_KEY", "field": "langfuse_public_key", "secret": True, "domain": "obs",
+        "label": "Langfuse Public Key",
+        "desc": "Langfuse 项目设置 → API Keys 创建（pk-lf-…）；数据同步必需，未配置时同步页给出引导",
+    },
+    {
+        "key": "LANGFUSE_SECRET_KEY", "field": "langfuse_secret_key", "secret": True, "domain": "obs",
+        "label": "Langfuse Secret Key", "desc": "同上（sk-lf-…）",
     },
 ]
 
@@ -465,6 +529,8 @@ def build_detail(s: Settings | None = None) -> dict[str, Any]:
         groups.append({
             "id": section,
             "label": gmeta.get("label") or section,
+            # 平台域归属：配置页左导航按它分列（kb/eval/obs/platform…）；缺省落 kb
+            "domain": gmeta.get("domain") or "kb",
             "note": gmeta.get("note") or "",
             "fields": fields,
         })
@@ -482,6 +548,8 @@ def build_detail(s: Settings | None = None) -> dict[str, Any]:
         item: dict[str, Any] = {
             "key": it["key"],
             "label": it["label"],
+            # 平台域归属（同 GROUP_META.domain）：观测的 9 项由此与知识库密钥分列展示
+            "domain": it.get("domain") or "kb",
             "desc": it.get("desc") or "",
             "warn": it.get("warn"),
             "secret": bool(it.get("secret")),
@@ -603,6 +671,23 @@ def _validate_env_updates(updates: list[dict]) -> dict[str, str]:
         if field == "db_port":
             if not re.fullmatch(r"\d{1,5}", val):
                 raise ConfigError("DB_PORT 需为 1~5 位数字（如 3306）；不支持清空")
+        if field == "obs_langfuse_port":
+            if not re.fullmatch(r"\d{1,5}", val):
+                raise ConfigError("OBS_LANGFUSE_PORT 需为 1~5 位数字（如 3100）；不支持清空")
+        if field == "obs_unit_dir" and val and not val.startswith("/"):
+            raise ConfigError("OBS_UNIT_DIR 需为绝对路径（compose 与脚本的定位锚）")
+        # Langfuse 密钥格式守卫（2026-10-11 实测踩坑：说明文字/Public Key 被误粘进字段，
+        # 静默入库后直到同步 401 才暴露 —— 宁可在保存时拒绝，清空（留空）仍允许）
+        if field == "langfuse_public_key" and val and not val.startswith("pk-lf-"):
+            raise ConfigError(
+                "LANGFUSE_PUBLIC_KEY 应以 pk-lf- 开头，当前值不是有效的 Public Key。"
+                "请到 Langfuse「项目设置 → API Keys」复制（Public Key 填这一格）"
+            )
+        if field == "langfuse_secret_key" and val and not val.startswith("sk-lf-"):
+            raise ConfigError(
+                "LANGFUSE_SECRET_KEY 应以 sk-lf- 开头 —— 注意别把 Public Key（pk-lf-…）"
+                "填到 Secret Key 这一格（两者是创建时成对给的两个值）"
+            )
         if field in ("source_dir", "out_dir"):
             if not val:
                 raise ConfigError(f"{key} 不能清空 —— 上传与解析扫描都依赖该目录")
@@ -621,18 +706,30 @@ KEEP_BACKUPS = 20
 
 
 def _backup_file(path: Path) -> str | None:
-    """写前备份到 data/config_backups/（同名保留最近 KEEP_BACKUPS 份）"""
+    """写前备份到 data/config_backups/（同名保留最近 KEEP_BACKUPS 份）
+
+    ⚠️ 备份失败必须**中止保存**（宁可写不进去，也不能无备份覆写配置文件）；
+    失败以 ConfigError 上抛（路由层转 422 展示原文案），不给用户裸 500。
+    已知触发场景（2026-10-11）：平台进程由带文件中介的受限环境启动时，
+    文件拷贝会被策略拦截（PermissionError）——换普通终端启动即恢复。
+    """
     if not path.exists():
         return None
     bdir = PROJECT_ROOT / "data" / "config_backups"
-    bdir.mkdir(parents=True, exist_ok=True)
-    ts = time.strftime("%Y%m%d-%H%M%S")
-    dst = bdir / f"{path.name}.{ts}.bak"
-    n = 1
-    while dst.exists():
-        dst = bdir / f"{path.name}.{ts}-{n}.bak"
-        n += 1
-    shutil.copy2(path, dst)
+    try:
+        bdir.mkdir(parents=True, exist_ok=True)
+        ts = time.strftime("%Y%m%d-%H%M%S")
+        dst = bdir / f"{path.name}.{ts}.bak"
+        n = 1
+        while dst.exists():
+            dst = bdir / f"{path.name}.{ts}-{n}.bak"
+            n += 1
+        shutil.copy2(path, dst)
+    except OSError as e:
+        raise ConfigError(
+            f"写前备份失败，已中止保存（原文件未改动）：{e}。"
+            "请检查 data/config_backups/ 是否可写；若平台进程由受限环境启动，请改用普通终端启动后重试。"
+        ) from e
     olds = sorted(bdir.glob(f"{path.name}.*.bak"))
     for old in olds[:-KEEP_BACKUPS]:
         try:
