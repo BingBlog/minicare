@@ -83,9 +83,8 @@
 
 .medication-pick-chip {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 7px;
   padding: 8px 14px;
   border-radius: 12px;
   border: 1.5px solid #ece3e6;
@@ -94,7 +93,28 @@
 
 .medication-pick-chip--active {
   border-color: #6c5ce7;
-  background: #f0efff;
+  background: #e9e3ff;
+}
+
+// 选中态名字同步变紫（对比白底 chip 更醒目，老人易辨认）
+.medication-pick-chip--active .medication-pick-chip__name {
+  color: #6c5ce7;
+}
+
+// 药品照片（有照片时 chip 显示缩略图，老人靠图识别）
+.medication-pick-chip__photo {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  background: #f5f0f2;
+}
+
+.medication-pick-chip__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
 }
 
 .medication-pick-chip__name {
@@ -236,6 +256,22 @@
   color: #f05060;
 }
 
+// 正在编辑的药品行高亮（点击列表行进入编辑表单后，一眼可见编辑对象）
+.medication-manage-row--editing {
+  background: #f6f3ff;
+  border-radius: 12px;
+}
+
+.medication-manage-row__editing-tag {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 600;
+  color: #6c5ce7;
+  background: #e9e3ff;
+  border-radius: 8px;
+  padding: 2px 8px;
+}
+
 // 常用药库（紧凑列表行）
 .medication-preset-row {
   display: flex;
@@ -350,4 +386,130 @@
 
 .medication-sheet__btn--disabled {
   opacity: 0.6;
+}
+
+// ── 已选药品行（多药同服，每种药独立剂量） ──
+.medication-picked-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 0;
+}
+
+.medication-picked-row--bordered {
+  border-top: 0.5px solid #f5eeef;
+}
+
+.medication-picked-row__thumb {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  flex-shrink: 0;
+  background: #f5f0f2;
+}
+
+.medication-picked-row__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: #f0efff;
+  flex-shrink: 0;
+}
+
+.medication-picked-row__name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #3d2b2e;
+  flex-shrink: 0;
+  max-width: 42%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.medication-picked-row__dose {
+  flex: 1;
+  min-width: 0;
+  text-align: right;
+  font-size: 14px;
+  color: #6c5ce7;
+  padding: 7px 10px;
+  background: #faf8ff;
+  border-radius: 9px;
+}
+
+.medication-picked-row__remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff0f0;
+  flex-shrink: 0;
+}
+
+// ── 药品照片（管理弹层表单） ──
+.medication-photo-field {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px 0;
+}
+
+.medication-photo-field__preview {
+  position: relative;
+  width: 64px;
+  height: 64px;
+}
+
+.medication-photo-field__img {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  background: #f5f0f2;
+}
+
+.medication-photo-field__remove {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid #f0d8dd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.medication-photo-field__add {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 1.5px dashed #d9cdf7;
+  background: #faf8ff;
+}
+
+.medication-photo-field__add--busy {
+  opacity: 0.6;
+}
+
+.medication-photo-field__add-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: #6c5ce7;
+}
+
+// ── 管理列表缩略图 ──
+.medication-manage-row__thumb {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
 }

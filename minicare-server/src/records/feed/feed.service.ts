@@ -603,7 +603,8 @@ export class FeedService {
         note,
         JSON_OBJECT(
           'medication_name', medication_name,
-          'dose', dose
+          'dose', dose,
+          'batch_id', batch_id
         ) AS detail_json
       FROM medication_record
       WHERE baby_id = ? AND deleted_at IS NULL

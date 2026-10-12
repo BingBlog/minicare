@@ -181,6 +181,15 @@ export function getTimelineRecordDisplay(record: HomeRecord): TimelineRecordDisp
   }
 
   if (record.type === 'medication') {
+    // 多药批次（025）：同批聚合为一条服药事件 → 多枚药名 tag + 剂量并列摘要
+    const merged = d.merged_items as Array<{ medication_name?: string; dose?: string }> | undefined
+    if (Array.isArray(merged) && merged.length > 1) {
+      return {
+        label: '用药',
+        tags: merged.map((i) => i.medication_name ?? '').filter(Boolean),
+        summary: merged.map((i) => i.dose ?? '').filter(Boolean).join(' · '),
+      }
+    }
     const name = (d.medication_name as string | undefined) ?? ''
     const dose = (d.dose as string | undefined) ?? ''
     return { label: '用药', tags: name ? [name] : [], summary: dose }

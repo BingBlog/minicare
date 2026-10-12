@@ -2,8 +2,8 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsOptional, IsString, IsUUID, Length, MaxLength } from 'class-validator';
 
 /**
- * DDL: medication（迁移 013）
- *   id, baby_id, name, default_dose, note, created_by,
+ * DDL: medication（迁移 013 + 025）
+ *   id, baby_id, name, default_dose, photo_id, note, created_by,
  *   created_at, updated_at, deleted_at（软删除）
  */
 
@@ -23,6 +23,12 @@ export class CreateMedicationDto {
   @IsString()
   @MaxLength(50)
   default_dose?: string;
+
+  @ApiPropertyOptional({ description: '药品照片 fileID（拍药盒；≤512 字符，迁移 025）' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(512)
+  photo_id?: string;
 
   @ApiPropertyOptional({ description: '备注（≤200 字）' })
   @IsOptional()
@@ -44,6 +50,12 @@ export class UpdateMedicationDto {
   @IsString()
   @MaxLength(50)
   default_dose?: string;
+
+  @ApiPropertyOptional({ description: '药品照片 fileID（传空字符串/null 清除照片；≤512 字符）' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(512)
+  photo_id?: string;
 
   @ApiPropertyOptional({ description: '备注（≤200 字）' })
   @IsOptional()

@@ -38,6 +38,7 @@ import RecordGroup from './RecordGroup'
 import RecordActionSheet from './RecordActionSheet'
 import GuestRecordsList from './GuestRecordsList'
 import RecordsDateSelector from './RecordsDateSelector'
+import { mergeMedicationBatches } from '@/lib/mergeBatches'
 import type { Family, Baby, RecordItem } from '@/api/types'
 import type { FeedItem, FeedType } from '@/api/records'
 import './index.scss'
@@ -272,8 +273,10 @@ export default function RecordsListPage() {
         allRecs.sort(
           (a, b) => compareTime(getRecordTime(b), getRecordTime(a)),
         )
+        // 多药批次（025）：同批服药记录聚合为一条「服药事件」
+        const mergedRecs = mergeMedicationBatches(allRecs as RecordItem[])
 
-        if (!cancelled) setRecords(allRecs as RecordItem[])
+        if (!cancelled) setRecords(mergedRecs)
       } catch {
         if (!cancelled) {
           setRecords([])
@@ -327,7 +330,8 @@ export default function RecordsListPage() {
           const uniqueNew = newRecs.filter(r => !existingIds.has(r.id))
           const merged = [...prev, ...uniqueNew]
           merged.sort((a, b) => compareTime(getRecordTime(b), getRecordTime(a)))
-          return merged
+          // 多药批次（025）：分页拼接后再次聚合（已有锚点可继续吸收新页的批成员）
+          return mergeMedicationBatches(merged)
         })
       }
     } catch {

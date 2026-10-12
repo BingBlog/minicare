@@ -519,7 +519,8 @@ export class FamilyService {
       SELECT 'medication' AS type, id, record_time AS time, note,
         JSON_OBJECT(
           'medication_name', medication_name,
-          'dose', dose
+          'dose', dose,
+          'batch_id', batch_id
         ) AS detail
       FROM medication_record WHERE baby_id = ? AND deleted_at IS NULL AND DATE(record_time) = ?
       ORDER BY time DESC

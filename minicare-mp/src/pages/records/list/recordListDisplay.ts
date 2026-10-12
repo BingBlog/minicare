@@ -246,6 +246,14 @@ export function getRecordListParts(
     }
 
     case 'medication': {
+      // 多药批次（025）：同批聚合为一条服药事件 → 药名多枚 tag
+      const merged = d.merged_items as Array<{ medication_name?: string; dose?: string }> | undefined
+      if (Array.isArray(merged) && merged.length > 1) {
+        const tags = merged.map((i) => i.medication_name ?? '').filter(Boolean)
+        const note = d.note as string | undefined
+        if (note) tags.push(note)
+        return { label: '用药', tags }
+      }
       const name = d.medication_name as string | undefined
       const note = d.note as string | undefined
       const tags = [name, note].filter(Boolean) as string[]
@@ -329,6 +337,13 @@ export function getRecordSummary(
       return null
 
     case 'medication': {
+      // 多药批次（025）：剂量并列摘要（'5ml · 1袋'）
+      const merged = d.merged_items as Array<{ medication_name?: string; dose?: string }> | undefined
+      if (Array.isArray(merged) && merged.length > 1) {
+        const joined = merged.map((i) => i.dose ?? '').filter(Boolean).join(' · ')
+        if (joined) return { value: joined, theme: 'purple' }
+        return null
+      }
       const dose = d.dose as string | undefined
       if (dose) return { value: dose, theme: 'purple' }
       return null

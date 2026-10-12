@@ -13,6 +13,7 @@ import { getStatusBarHeight } from '@/lib/safeArea'
 import { useIsIPad } from '@/lib/useIsIPad'
 import { useFileDisplayUrl } from '@/lib/useFileDisplayUrl'
 import { getBabyAge, getGreeting, getTodayDateStr, yesterdayStr, compareTime } from '@/lib/utils'
+import { mergeMedicationBatches } from '@/lib/mergeBatches'
 
 import HeroSection from './HeroSection'
 import QuickActions from './QuickActions'
@@ -144,7 +145,8 @@ export default function HomePage() {
       }
       setBabyName(baby.name || '宝宝')
       setBirthDate(baby.birth_date || '')
-      setRecords(todayRecords.map(toHomeRecord))
+      // 多药批次（025）：同批服药记录聚合为一条「服药事件」再渲染
+      setRecords(mergeMedicationBatches(todayRecords).map(toHomeRecord))
       setOngoingSleep(ongoing)
 
       try {
@@ -291,7 +293,8 @@ export default function HomePage() {
           setBabyName(baby.name || '宝宝')
           setBirthDate(baby.birth_date || '')
           setBabyAvatarFileID(baby.avatar_url ?? '')
-          setRecords(todayRecords.map(toHomeRecord))
+          // 多药批次（025）：同批服药记录聚合为一条「服药事件」再渲染
+          setRecords(mergeMedicationBatches(todayRecords).map(toHomeRecord))
           setOngoingSleep(ongoing)
           setBackendStatus('')
 

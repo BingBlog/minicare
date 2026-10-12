@@ -465,7 +465,7 @@ export class TimelineService {
 
   private async loadMedicationPayload(sourceId: string) {
     const [rows] = await this.db.query<any[]>(
-      `SELECT id, baby_id, medication_name, dose, record_time, note
+      `SELECT id, baby_id, medication_name, dose, record_time, note, batch_id
        FROM medication_record WHERE id = ? AND deleted_at IS NULL LIMIT 1`,
       [sourceId],
     );
@@ -484,6 +484,8 @@ export class TimelineService {
       detailJson: JSON.stringify({
         medication_name: r.medication_name,
         dose: r.dose,
+        // 025：多药批次 id —— 前端按批把同日多次「同批记录」聚合为一条服药事件
+        batch_id: r.batch_id ?? null,
       }),
     };
   }
