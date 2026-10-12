@@ -326,6 +326,8 @@ def create_app():
             "yaml_loaded": s.yaml_loaded,
             "config_file": s.config_file,
             "allow_write": ALLOW_WRITE,
+            # 观测服务对外地址（TECH-032 §3.8）：前端 trace 深链接统一取这里（默认 localhost:3100）
+            "obs_url": s.obs_langfuse_public_url,
             "frontend": "react" if dist is not None else "embedded-v0",
             "frontend_dist": str(dist) if dist is not None else None,
         }

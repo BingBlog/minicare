@@ -16,6 +16,7 @@ import { AgentEvalPage } from './pages/AgentEval'
 import { AgentEvalCasesPage } from './pages/AgentEvalCases'
 import { AgentEvalTasksPage } from './pages/AgentEvalTasks'
 import { AgentEvalJudgesPage } from './pages/AgentEvalJudges'
+import { AgentEvalTracesPage } from './pages/AgentEvalTraces'
 import { SignalsPage } from './pages/Signals'
 import { SignalsConfigPage } from './pages/SignalsConfig'
 import { SignalsWordsPage } from './pages/SignalsWords'
@@ -45,6 +46,7 @@ const PAGES: Record<string, ComponentType> = {
   config: ConfigPage,
   agenteval: AgentEvalPage,
   agentevalcases: AgentEvalCasesPage,
+  agentevaltraces: AgentEvalTracesPage,
   agentevaltasks: AgentEvalTasksPage,
   agentevaljudges: AgentEvalJudgesPage,
   /** 旧 URL 兼容（C6 合并页）：指标与维度页已并入测评裁判 */

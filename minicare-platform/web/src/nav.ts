@@ -217,6 +217,16 @@ export const NAV: NavItem[] = [
     phase: 1,
     story: 'TECH-021',
     desc: '',
+    children: [
+      {
+        id: 'agentevaltraces',
+        label: '线上沉淀',
+        impl: true,
+        phase: 1,
+        story: 'PRD-015',
+        desc: '',
+      },
+    ],
   },
   {
     id: 'agentevaltasks',
@@ -517,6 +527,7 @@ export const RELOADABLE_PAGES = new Set([
   'config',
   'agenteval',
   'agentevalcases',
+  'agentevaltraces',
   'agentevaltasks',
   'agentevaljudges',
   'observability',

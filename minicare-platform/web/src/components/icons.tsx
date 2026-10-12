@@ -180,6 +180,12 @@ export const NAV_ICONS: Record<string, ReactNode> = {
       <path d="M17.2 7l2.6 5.4a3 3 0 0 1-5.2 0z" />
     </>
   ),
+  /** 线上沉淀 —— 漏斗（从线上对话里淘出用例） */
+  agentevaltraces: (
+    <>
+      <path d="M3.5 4.5h17l-6.5 7v6.3l-4 2.7v-9z" />
+    </>
+  ),
   /** 观测总览 —— 监控屏上的脉冲（执行过程可视） */
   observability: (
     <>

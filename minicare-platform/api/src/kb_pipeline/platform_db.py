@@ -405,6 +405,18 @@ CREATE TABLE IF NOT EXISTS obs_sync_run (
 );
 CREATE INDEX IF NOT EXISTS idx_obs_sync_started ON obs_sync_run(started_at DESC);
 
+-- ── 测评域（PRD-015 / TECH-032）：线上 trace 处置台账 ──────────────────
+-- 「线上沉淀」页的一次处置一行；「未处理」= 无记录（恢复 = 删行）。
+-- trace 原始数据实时只读 FlexDB（不落本库），本表只记处置结果，防重复处理。
+CREATE TABLE IF NOT EXISTS eval_trace_triage (
+  trace_id   TEXT PRIMARY KEY,          -- FlexDB agent_traces.traceId（天然去重键）
+  state      TEXT NOT NULL,             -- converted / ignored
+  case_id    TEXT,                      -- 已沉淀 → 用例号（T-01）
+  reason     TEXT,                      -- 已忽略原因键（duplicate/unrepresentative/anomaly/sensitive/other）
+  note       TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
 """
 
 STATE_QUEUED = "queued"

@@ -3430,3 +3430,195 @@ details.menu .menu-pop button:hover { background: var(--surface-2); }
   background: var(--surface-2);
 }
 
+/* ══════════════════════════════════════════════════════════════════════════
+   线上沉淀（PRD-015 / TECH-032）：候选队列 + 审阅抽屉（三视图）。
+   色板走既有令牌；抽屉形态镜像 .sig-drawer（不抽公共组件，避免动 Signals 页）。
+   ══════════════════════════════════════════════════════════════════════════ */
+.trace-filters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 10px 0 4px;
+}
+.trace-filters select,
+.trace-filters input[type='text'] {
+  font: inherit;
+  font-size: 12px;
+  padding: 4px 8px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  color: var(--text);
+}
+.trace-more {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0 2px;
+}
+
+/* 抽屉（右侧固定面板 + 遮罩，镜像 sig-drawer） */
+.trace-drawer-mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(30, 28, 26, 0.3);
+  z-index: 70;
+}
+.trace-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(560px, 94vw);
+  background: var(--surface);
+  z-index: 71;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.14);
+  padding: 14px 16px;
+  overflow: auto;
+}
+.trace-drawer-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+.trace-drawer-title {
+  font-size: 15px;
+  font-weight: 600;
+}
+.trace-body {
+  padding-top: 4px;
+}
+.trace-status-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--line);
+}
+.trace-meta {
+  padding: 8px 0;
+  line-height: 1.9;
+}
+.trace-block {
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--line);
+}
+.trace-block-h {
+  font-size: 12px;
+  color: var(--text-3);
+  margin: 6px 0 4px;
+}
+.trace-text {
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 13px;
+  line-height: 1.75;
+}
+.trace-scroll {
+  max-height: 320px;
+  overflow: auto;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: 8px 10px;
+}
+.trace-obs {
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: 6px 10px;
+  margin: 6px 0;
+  background: var(--surface-2);
+}
+.trace-obs summary {
+  cursor: pointer;
+  font-size: 12.5px;
+}
+.trace-warn {
+  color: var(--warn);
+}
+.trace-pre {
+  margin: 4px 0 6px;
+  padding: 6px 8px;
+  max-height: 200px;
+  overflow: auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xs);
+  font-size: 11.5px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-all;
+  color: var(--text-2);
+}
+.trace-sibling {
+  padding: 5px 8px;
+  border-radius: var(--r-xs);
+  cursor: pointer;
+  font-size: 12.5px;
+}
+.trace-sibling:hover {
+  background: var(--surface-2);
+}
+.trace-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 14px 0 6px;
+}
+
+/* 标注 / 忽略表单 */
+.trace-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 0 4px;
+}
+.trace-form label {
+  font-size: 12px;
+  color: var(--text-2);
+  margin-top: 6px;
+}
+.trace-form input[type='text'],
+.trace-form select,
+.trace-form textarea {
+  font: inherit;
+  font-size: 12.5px;
+  padding: 6px 8px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  color: var(--text);
+  width: 100%;
+}
+.trace-form textarea {
+  resize: vertical;
+  line-height: 1.7;
+}
+.trace-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.trace-form-row > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.trace-label-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.trace-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: var(--text);
+}
+
