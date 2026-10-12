@@ -1,0 +1,139 @@
+/**
+ * 首页提醒设置页样式（自包含：小程序页面样式隔离，视觉对齐 profile 的 SettingsGroup）
+ */
+
+.rs-page {
+  min-height: 100vh;
+  background: #fdf7f5;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── 导航栏（与 privacy 页同规格） ── */
+
+.rs-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #fff;
+  border-bottom: 1px solid #f0e7ea;
+}
+
+.rs-nav__back {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(74, 48, 53, 0.08);
+
+  &:active {
+    background: rgba(74, 48, 53, 0.15);
+  }
+}
+
+.rs-nav__title {
+  color: #4a3035;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* ── 内容区 ── */
+
+.rs-body {
+  flex: 1;
+  padding-top: 14px;
+}
+
+.rs-hint {
+  display: block;
+  padding: 0 20px 8px;
+  font-size: 12px;
+  color: #9a8090;
+  line-height: 1.5;
+}
+
+.rs-card {
+  margin: 0 16px;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(200, 100, 120, 0.07);
+}
+
+.rs-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 16px;
+
+  &:active {
+    background: #f9f9f9;
+  }
+}
+
+.rs-row--bordered {
+  border-top: 0.5px solid #f5f0f2;
+}
+
+.rs-row__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  background: #fff0f4;
+  flex-shrink: 0;
+}
+
+.rs-row__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.rs-row__label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4a3035;
+}
+
+.rs-row__desc {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  color: #9a8090;
+}
+
+/* ── 开关（与 profile SettingsGroup 同规格） ── */
+
+.rs-toggle {
+  width: 44px;
+  height: 26px;
+  border-radius: 13px;
+  position: relative;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.rs-toggle__knob {
+  position: absolute;
+  top: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  transition: left 0.2s;
+}
+
+.rs-footnote {
+  display: block;
+  padding: 12px 20px 0;
+  font-size: 12px;
+  color: rgba(154, 128, 144, 0.75);
+  line-height: 1.5;
+}

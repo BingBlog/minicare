@@ -32,6 +32,7 @@ import { toDateInput } from '@/lib/utils'
 import { useIsIPad } from '@/lib/useIsIPad'
 import { uploadOne } from '@/lib/uploadImage'
 import { useFileDisplayUrl } from '@/lib/useFileDisplayUrl'
+import { countDisabled, getReminderSettings } from '@/lib/reminderSettings'
 
 import './index.scss'
 
@@ -78,6 +79,9 @@ export default function ProfilePage() {
 
   // 是否已设置密码（TECH-016）—— null 表示尚未取到，不显示副文案
   const [hasPassword, setHasPassword] = useState<boolean | null>(null)
+
+  // 首页提醒开关状态副文案（本地存储；从提醒设置页返回时刷新）
+  const [reminderSubText, setReminderSubText] = useState('全部开启')
 
   // ── 联系我们弹层 ──────────────────────────────────────────────
   const [contactOpen, setContactOpen] = useState(false)
@@ -143,6 +147,9 @@ export default function ProfilePage() {
       .passwordStatus()
       .then((res) => setHasPassword(res.hasPassword))
       .catch(() => {})
+    // 首页提醒开关数（从提醒设置页返回时刷新）
+    const off = countDisabled(getReminderSettings())
+    setReminderSubText(off > 0 ? `已关闭 ${off} 项` : '全部开启')
   })
 
   // ── 同步编辑表单 initial 值（当 currentBaby 变化时）───────────
@@ -506,6 +513,15 @@ export default function ProfilePage() {
   ]
 
   const toolRows: SettingsRow[] = [
+    {
+      id: 'reminder',
+      type: 'arrow',
+      icon: 'bell',
+      iconBg: '#FFF0F4',
+      label: '首页提醒',
+      subText: reminderSubText,
+      onClick: () => Taro.navigateTo({ url: '/pages/settings/reminder/index' }),
+    },
     {
       id: 'dashboard',
       type: 'arrow',

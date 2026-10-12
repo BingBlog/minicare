@@ -16,6 +16,10 @@ export default {
       pages: ['security/index'],
     },
     {
+      root: 'pages/settings',
+      pages: ['reminder/index'],
+    },
+    {
       root: 'pages/onboarding',
       pages: ['index'],
     },

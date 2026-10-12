@@ -38,16 +38,12 @@ function extractSupplements(records: HomeRecord[]): SupplementItem[] {
   return items
 }
 
-/** 补剂项展示文案：`维生素 D 400IU`（无剂量时仅名称） */
-function formatSupplement(item: SupplementItem): string {
-  return item.dose ? `${item.label} ${item.dose}${item.unit ?? ''}` : item.label
-}
-
 /**
  * 补剂&营养素提醒 Bar（首页 banners 区，排敏进度 Bar 上方）
  *
- * 形态与「排敏进度」Bar 一致：圆点 + 标题 + 状态行 + 动作按钮。
- * - 今天已吃：显示「今天已吃：xxx」确认状态（最多 2 项，多则「，另有 n 项」）
+ * 可见性规则（2026-10-12 调整）：
+ * - 今天已吃（今日有任一补剂记录）：整条不渲染——提醒目的已达成，不再占用首页空间
+ *   （原实现为显示「今天已吃：xxx」确认状态）
  * - 今天还没吃（昨日有）：提示「今天还没吃 · 昨日：xxx」，起提醒作用
  * - 今昨两天都无记录：不渲染（与卡片版行为一致）
  *
@@ -57,13 +53,10 @@ export default function SupplementBar({ todayRecords, yesterdayRecords }: Supple
   const todaySupplements = useMemo(() => extractSupplements(todayRecords), [todayRecords])
   const yesterdaySupplements = useMemo(() => extractSupplements(yesterdayRecords), [yesterdayRecords])
 
-  if (todaySupplements.length === 0 && yesterdaySupplements.length === 0) {
-    return null
-  }
-
-  const eatenToday = todaySupplements.length > 0
-  const displayItems = todaySupplements.slice(0, 2)
-  const extraCount = todaySupplements.length - 2
+  // 今日已吃 → 不再展示
+  if (todaySupplements.length > 0) return null
+  // 今日未吃且昨日也无记录 → 无提醒基线，不渲染
+  if (yesterdaySupplements.length === 0) return null
 
   return (
     <View
@@ -73,20 +66,10 @@ export default function SupplementBar({ todayRecords, yesterdayRecords }: Supple
       <View className='home-inline-banner__dot home-inline-banner__dot--supplement' />
       <View className='home-inline-banner__content'>
         <Text className='home-inline-banner__title'>补剂&营养素</Text>
-        {eatenToday ? (
-          <Text className='home-inline-banner__desc'>
-            <Text className='home-inline-banner__desc-em'>今天已吃</Text>
-            {`：${displayItems.map(formatSupplement).join('、')}`}
-            {extraCount > 0 ? `，另有${extraCount}项` : ''}
-          </Text>
-        ) : (
-          <Text className='home-inline-banner__desc'>
-            <Text className='home-inline-banner__desc-em'>今天还没吃</Text>
-            {yesterdaySupplements.length > 0
-              ? ` · 昨日：${yesterdaySupplements.map((s) => s.label).join('、')}`
-              : ''}
-          </Text>
-        )}
+        <Text className='home-inline-banner__desc'>
+          <Text className='home-inline-banner__desc-em'>今天还没吃</Text>
+          {` · 昨日：${yesterdaySupplements.map((s) => s.label).join('、')}`}
+        </Text>
       </View>
       <Text className='home-inline-banner__action--supplement'>记补剂</Text>
     </View>

@@ -765,34 +765,13 @@
   white-space: nowrap;
 }
 
-/* 合并卡片内的单行提醒（喂奶 / 辅食），各行为独立热区 */
-.home-feed-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
+/* 喂养条（2026-10-12 单行化）：只展示最近一次进食，强调色随展示项类型（喂奶 / 辅食） */
+.home-inline-banner__desc-em--feeding {
+  color: #E8874E;
 }
 
-/* 两行同时存在时，第二行上方加分隔线 */
-.home-feed-row--divided {
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid #f5eaee;
-}
-
-.home-feed-row__body {
-  flex: 1;
-  min-width: 0;
-}
-
-/* 圆点对齐标题首行（多行内容时不再垂直居中） */
-.home-feed-row .home-inline-banner__dot {
-  margin-top: 4px;
-}
-
-/* 右侧操作胶囊在两行之间保持垂直居中 */
-.home-feed-row .home-inline-banner__action--feeding,
-.home-feed-row .home-inline-banner__action--food {
-  align-self: center;
+.home-inline-banner__desc-em--food {
+  color: #D4780A;
 }
 
 .home-inline-banner--allergy {
@@ -863,18 +842,11 @@
 }
 
 /* 提醒条内的关键动态信息（已过去时长 / 未记录状态等）：
-   与内容区同字号，仅以颜色区分；颜色 = 对应条的按钮色（见下方按条规则） */
+   与内容区同字号，仅以颜色区分；颜色 = 对应条的按钮色
+   （喂奶 / 辅食的类型色规则见上方「喂养条单行化」处） */
 .home-inline-banner__desc-em {
   font-weight: 600;
   font-variant-numeric: tabular-nums;
-}
-
-.home-feed-row--feeding .home-inline-banner__desc-em {
-  color: #E8874E;
-}
-
-.home-feed-row--food .home-inline-banner__desc-em {
-  color: #D4780A;
 }
 
 .home-inline-banner--supplement .home-inline-banner__desc-em {

@@ -14,6 +14,7 @@ import { useIsIPad } from '@/lib/useIsIPad'
 import { useFileDisplayUrl } from '@/lib/useFileDisplayUrl'
 import { getBabyAge, getGreeting, getTodayDateStr, yesterdayStr, compareTime } from '@/lib/utils'
 import { mergeMedicationBatches } from '@/lib/mergeBatches'
+import { getReminderSettings, type ReminderSettings } from '@/lib/reminderSettings'
 
 import HeroSection from './HeroSection'
 import QuickActions from './QuickActions'
@@ -85,6 +86,8 @@ export default function HomePage() {
   // 今日日程派生结果（PRD-009 US-03）；null = 未拉到 / 接口失败 → 不渲染 Bar（静默降级）
   const [scheduleToday, setScheduleToday] = useState<ScheduleTodayResponse | null>(null)
   const [scheduleLoaded, setScheduleLoaded] = useState(false)
+  // 首页提醒卡片开关（本地存储，设置页可调，默认全开）
+  const [reminderSettings, setReminderSettings] = useState<ReminderSettings>(() => getReminderSettings())
   const [yesterdayDiary, setYesterdayDiary] = useState<DiaryDetail | null>(null)
   // 初值 true：首帧即渲染等高骨架，避免「空态卡闪现 → 卡片消失 → 内容卡出现」的三重跳变
   const [diaryLoading, setDiaryLoading] = useState(true)
@@ -347,6 +350,9 @@ export default function HomePage() {
     const token = getToken()
     if (!token) return
 
+    // 提醒开关存本机：从设置页返回时重读，关闭的提醒立即消失
+    setReminderSettings(getReminderSettings())
+
     if (!inviteModalOpen) {
       checkPendingInvites()
     }
@@ -532,6 +538,21 @@ export default function HomePage() {
   const lastFeedingRecord = pickLatest(feedingFilter)
   const lastFoodRecord = pickLatest(foodFilter)
 
+  /**
+   * 喂养条合并口径（2026-10-12）：喂奶与辅食只展示最近的一项。
+   * 用绝对时间比较（time 为含日期的 ISO，今天/昨日混比时跨天比较自然正确）。
+   */
+  const lastIntake = (() => {
+    if (lastFeedingRecord && lastFoodRecord) {
+      return compareTime(lastFeedingRecord.record.time, lastFoodRecord.record.time) >= 0
+        ? { kind: 'feeding' as const, ...lastFeedingRecord }
+        : { kind: 'food' as const, ...lastFoodRecord }
+    }
+    if (lastFeedingRecord) return { kind: 'feeding' as const, ...lastFeedingRecord }
+    if (lastFoodRecord) return { kind: 'food' as const, ...lastFoodRecord }
+    return null
+  })()
+
   const handleEndSleep = () => {
     setOngoingSleep(null)
     if (familyId) {
@@ -712,15 +733,16 @@ export default function HomePage() {
         onStatsClick={() => Taro.switchTab({ url: '/pages/records/list/index' })}
         banners={
           <View className='home-banners'>
+            {/* 各提醒 Bar 受「我的-首页提醒」本地开关控制（默认全开） */}
             {/* PRD-009 US-03：日程 Bar 排在最前（线框图 ① 的口径），只在有启用中的模板项时渲染 */}
-            {scheduleToday && scheduleToday.items.length > 0 ? (
+            {reminderSettings.schedule && scheduleToday && scheduleToday.items.length > 0 ? (
               <ScheduleBanner
                 items={scheduleToday.items}
                 progress={scheduleToday.progress}
                 onClick={() => Taro.navigateTo({ url: '/pages/schedule/today' })}
               />
-            ) : scheduleLoaded && !isGuest && !needsOnboarding ? (
-              /* 无模板时不渲染 Bar（US-03 场景5），改为一条独立的「去设置」引导项 */
+            ) : reminderSettings.schedule && scheduleLoaded && !isGuest && !needsOnboarding ? (
+              /* 无模板时不渲染 Bar（US-03 场景5），改为一条独立的「去设置」引导项（随日程开关） */
               <View
                 className='home-inline-banner home-inline-banner--schedule-setup'
                 onClick={() => Taro.navigateTo({ url: '/pages/schedule/index' })}
@@ -737,7 +759,7 @@ export default function HomePage() {
                 </View>
               </View>
             ) : null}
-            {ongoingSleep ? (
+            {reminderSettings.sleep && ongoingSleep ? (
               <SleepBanner
                 familyId={familyId}
                 recordId={ongoingSleep.id}
@@ -747,21 +769,21 @@ export default function HomePage() {
                 onBannerClick={() => navigateToRecord('/records/form/sleep')}
               />
             ) : null}
-            {lastFeedingRecord || lastFoodRecord ? (
+            {reminderSettings.feed && lastIntake ? (
               <FeedingBanner
-                lastFeedingTime={lastFeedingRecord?.record.time}
-                feedingIsYesterday={lastFeedingRecord?.isYesterday}
-                lastFoodTime={lastFoodRecord?.record.time}
-                foodIsYesterday={lastFoodRecord?.isYesterday}
-                onFeedingClick={() => {
-                  navigateToRecord(HOME_RECORD_ROUTES.formula ?? '/records/form/feeding')
-                }}
-                onFoodClick={() => {
-                  navigateToRecord(HOME_RECORD_ROUTES.food ?? '/records/form/feeding')
+                kind={lastIntake.kind}
+                time={lastIntake.record.time}
+                isYesterday={lastIntake.isYesterday}
+                onClick={() => {
+                  navigateToRecord(
+                    lastIntake.kind === 'feeding'
+                      ? (HOME_RECORD_ROUTES.formula ?? '/records/form/feeding')
+                      : (HOME_RECORD_ROUTES.food ?? '/records/form/feeding'),
+                  )
                 }}
               />
             ) : null}
-            {nextFollowUp ? (
+            {reminderSettings.followup && nextFollowUp ? (
               <NextFollowUpBanner
                 followUpDate={nextFollowUp.follow_up_date}
                 followUpTime={nextFollowUp.follow_up_time}
@@ -770,14 +792,21 @@ export default function HomePage() {
                 onRecordClick={() => navigateToRecord('/records/form/medical', nextFollowUp.id)}
               />
             ) : null}
-            {/* 补剂&营养素：提醒 Bar 形态（排敏进度上方） */}
-            <SupplementBar todayRecords={records} yesterdayRecords={yesterdayRecords} />
-            <AllergyProgressBar observations={foodObservations} />
+            {/* 补剂&营养素：提醒 Bar 形态（排敏进度上方）；今日已吃不展示 */}
+            {reminderSettings.supplement ? (
+              <SupplementBar todayRecords={records} yesterdayRecords={yesterdayRecords} />
+            ) : null}
+            {reminderSettings.allergy ? (
+              <AllergyProgressBar observations={foodObservations} />
+            ) : null}
           </View>
         }
       />
       <View className='home-content'>
-        <HomeDiaryCard diary={yesterdayDiary} loading={diaryLoading} />
+        {/* 日记卡受「我的-首页提醒」的「日记提醒」开关控制（默认全开） */}
+        {reminderSettings.diary ? (
+          <HomeDiaryCard diary={yesterdayDiary} loading={diaryLoading} />
+        ) : null}
         <QuickActions
           birthDate={birthDate}
           onMoreClick={() => Taro.eventCenter.trigger('tabbar:openFab')}

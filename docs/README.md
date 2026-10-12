@@ -75,6 +75,7 @@ docs/
 | [F14-medication.md](features/F14-medication.md) | 用药记录（独立模块） | 已完成 |
 | [UX-quickactions-redesign.md](features/UX-quickactions-redesign.md) | 首页快捷操作设计 | 已落地 |
 | [UX-records-list-redesign.md](features/UX-records-list-redesign.md) | 记录列表展示规范 | 已落地 |
+| [UX-home-reminders.md](features/UX-home-reminders.md) | 首页提醒区优化 + 提醒设置 | 已实施（2026-10-12） |
 
 ## PRD 总集（docs/prd/，编号见 PRD_REGISTRY.md）
 

@@ -10,6 +10,7 @@ export type SettingsRowIcon =
   | 'monitor'
   | 'speaker'
   | 'lock'
+  | 'bell'
 
 export interface SettingsRowBase {
   id: string
