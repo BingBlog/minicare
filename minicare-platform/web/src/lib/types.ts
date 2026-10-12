@@ -147,6 +147,8 @@ export interface ConfigField {
 export interface ConfigGroupDetail {
   id: string
   label: string
+  /** 平台域归属（kb / eval / signal / obs / platform）—— 配置页左导航按它分列；旧后端可能缺省（按 kb 处理） */
+  domain?: string
   note: string
   fields: ConfigField[]
 }
@@ -155,6 +157,8 @@ export interface ConfigGroupDetail {
 export interface ConfigEnvItem {
   key: string
   label: string
+  /** 平台域归属（同 ConfigGroupDetail.domain）——观测 9 项与知识库密钥据此分列 */
+  domain?: string
   desc: string
   warn?: string | null
   /** 密钥：值掩码显示、不回传明文 */

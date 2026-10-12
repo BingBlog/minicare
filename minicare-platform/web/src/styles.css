@@ -2595,6 +2595,25 @@ details.menu .menu-pop button:hover { background: var(--surface-2); }
   gap: 2px;
   position: sticky;
   top: calc(var(--topnav-h) + var(--topbar-h) + 60px);
+  /* 2026-10-11 按域分类后条目变多：限高 + 自滚，避免"钉住后底部项永远看不到" */
+  max-height: calc(100vh - var(--topnav-h) - var(--topbar-h) - 88px);
+  overflow-y: auto;
+}
+/* 分类节点（2026-10-11：左导航按平台域分组 —— 知识库 / Agent 测评 / 观测 / 平台） */
+.cfg-catnode {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.cfg-catnode + .cfg-catnode {
+  margin-top: 8px;
+}
+.cfg-cat {
+  padding: 2px 10px 5px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  color: var(--text-3);
 }
 .cfg-tab {
   display: flex;
