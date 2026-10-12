@@ -1264,3 +1264,81 @@ export interface SignalReviewConfig {
   updatedAt: string | null
 }
 
+/* ── 观测域（TECH-030）：Langfuse 服务状态 + 数据同步 ──────────────────── */
+
+export interface ObsContainer {
+  service: string
+  name: string
+  state: string
+  status: string
+}
+
+export interface ObsStackSnapshot {
+  enabled: boolean
+  autostart: boolean
+  stop_on_exit: boolean
+  /** disabled / unknown / docker_missing / daemon_down / starting / running / degraded / stopped / error */
+  state: string
+  detail: string
+  error: string | null
+  busy: boolean
+  /** 正在执行的编排操作：start / stop（null=空闲；供按钮文案区分"启动中/停止中"） */
+  op: string | null
+  updated_at: number
+  started_by_platform: boolean
+  containers: ObsContainer[]
+  health: { reachable: boolean; ready: boolean; version: string | null; error: string | null } | null
+  compose_file: string
+  compose_exists: boolean
+  unit_dir: string
+  public_url: string
+  port: number
+}
+
+export interface ObsSyncSnapshot {
+  running: boolean
+  kind: 'import' | 'preview' | null
+  params: Record<string, unknown>
+  candidates: number | null
+  processed: number
+  ok: number
+  fail: number
+  /** idle / running / ok / partial / failed / error / cancelled */
+  status: string
+  error: string | null
+  started_at: string | null
+  finished_at: string | null
+  last_trace: string | null
+  lines: string[]
+}
+
+export interface ObsStatus {
+  enabled: boolean
+  stack: ObsStackSnapshot
+  config: {
+    langfuse_host: string
+    public_url: string
+    pk_configured: boolean
+    sk_configured: boolean
+    keys_source: string
+  }
+  flexdb: { configured: boolean; source: string }
+  sync: ObsSyncSnapshot
+}
+
+export interface ObsSyncRun {
+  id: number
+  kind: string
+  scope: string
+  args_json: string | null
+  args?: string[] | null
+  candidates: number | null
+  ok: number
+  fail: number
+  status: string
+  started_at: string
+  finished_at: string | null
+  duration_ms: number | null
+  log_tail: string | null
+  trigger: string
+}

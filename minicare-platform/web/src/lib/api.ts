@@ -26,6 +26,10 @@ import type {
   MetaGet,
   MetaSchema,
   NormalizeDiffGet,
+  ObsStackSnapshot,
+  ObsStatus,
+  ObsSyncRun,
+  ObsSyncSnapshot,
   Overview,
   ParsedDoc,
   PreflightGet,
@@ -374,4 +378,27 @@ export const api = {
   signalReviewConfigSet: (cycleDays: number) =>
     put<SignalReviewConfig & { ok: boolean }>('/api/signals/review-config', { cycleDays }),
 
+  /* ── 观测（TECH-030）：Langfuse 服务编排 + 数据同步 ─────────────── */
+
+  /** 观测域全量状态（栈状态机 / 密钥配置 / 同步快照；页面 4s 轮询，后端自带节流） */
+  obsStatus: () => req<ObsStatus>('/api/obs/status'),
+  /** 启动观测栈（异步：docker/colima 探测拉起 + compose up；返回当时快照，靠轮询收敛） */
+  obsStackStart: () => post<ObsStackSnapshot>('/api/obs/stack/start'),
+  /** 停止观测栈（compose stop；保留数据卷） */
+  obsStackStop: () => post<ObsStackSnapshot>('/api/obs/stack/stop'),
+  /** 发起数据同步（FlexDB → 本地 Langfuse）；dry_run=true 为试跑预览（不导入不回填） */
+  obsSyncStart: (body: {
+    mode: 'all' | 'range' | 'trace'
+    limit?: number
+    from?: string
+    to?: string
+    trace_id?: string
+    dry_run?: boolean
+  }) => post<ObsSyncSnapshot>('/api/obs/sync/start', body),
+  /** 同步运行态 + 实时日志行（运行中 1.2s 轮询） */
+  obsSyncStatus: () => req<ObsSyncSnapshot>('/api/obs/sync/status'),
+  /** 取消进行中的同步（终止子进程；已完成的回填不丢） */
+  obsSyncCancel: () => post<ObsSyncSnapshot>('/api/obs/sync/cancel'),
+  /** 同步历史（obs_sync_run 台账，倒序） */
+  obsSyncRuns: (limit = 50) => req<{ items: ObsSyncRun[] }>(`/api/obs/sync/runs?limit=${limit}`),
 }

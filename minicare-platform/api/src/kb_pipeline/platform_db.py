@@ -384,6 +384,27 @@ CREATE TABLE IF NOT EXISTS signal_run (
   result_summary TEXT             -- JSON（截断存储）
 );
 
+-- ── 观测域（TECH-030）：Langfuse 数据同步台账 ──────────────────────────
+-- 一次同步（FlexDB agent_traces → 本地 Langfuse 导入）一行；运行态在进程内存
+-- （observability/sync.py），结束后落账。注意：同步的**幂等事实源**仍是 FlexDB 的
+-- importedAt 回填（脚本既有逻辑），本表只记录"平台侧的操控历史"，两者互不依赖。
+CREATE TABLE IF NOT EXISTS obs_sync_run (
+  id          INTEGER PRIMARY KEY AUTOINCREMENT,
+  kind        TEXT NOT NULL,             -- import（正式导入）/ preview（试跑，dry-run）
+  scope       TEXT NOT NULL,             -- 范围标签：全部未导入 / 时间范围 / 单条 trace
+  args_json   TEXT,                      -- 透传脚本的完整参数（可复现）
+  candidates  INTEGER,                   -- 候选条数（脚本报数；NULL=未知）
+  ok          INTEGER NOT NULL DEFAULT 0,
+  fail        INTEGER NOT NULL DEFAULT 0,
+  status      TEXT NOT NULL,             -- ok / partial / failed / error / cancelled
+  started_at  TEXT NOT NULL,
+  finished_at TEXT,
+  duration_ms INTEGER,
+  log_tail    TEXT,                      -- 尾部日志（截断，界面展开用）
+  trigger     TEXT NOT NULL DEFAULT 'ui' -- ui / auto / cli
+);
+CREATE INDEX IF NOT EXISTS idx_obs_sync_started ON obs_sync_run(started_at DESC);
+
 """
 
 STATE_QUEUED = "queued"

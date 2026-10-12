@@ -180,6 +180,13 @@ export const NAV_ICONS: Record<string, ReactNode> = {
       <path d="M17.2 7l2.6 5.4a3 3 0 0 1-5.2 0z" />
     </>
   ),
+  /** 观测总览 —— 监控屏上的脉冲（执行过程可视） */
+  observability: (
+    <>
+      <rect x="2.5" y="4.5" width="19" height="15" rx="2.5" />
+      <path d="M6 12h2.4l1.7-3.4 2.7 6.8 1.7-3.4H18" />
+    </>
+  ),
 }
 
 /** 侧栏导航图标。未知 id 回退为一个中性圆点，避免"新增页面忘了配图标"时整项空掉。 */
@@ -214,6 +221,15 @@ export const DOMAIN_ICONS: Record<string, ReactNode> = {
   signal: (
     <>
       <path d="M3 12h4l2.5-6 4 12 2.5-6H21" />
+    </>
+  ),
+  /** 观测 = 雷达扫描（扫描执行轨迹） */
+  obs: (
+    <>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 3.5v2.4M20.5 12h-2.4" />
+      <path d="M12 12l5.6-3.9" />
+      <circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none" />
     </>
   ),
 }

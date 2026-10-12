@@ -3297,3 +3297,117 @@ details.menu .menu-pop button:hover { background: var(--surface-2); }
 .var-warn {
   color: var(--warn);
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   观测域（TECH-030）：服务状态 / 数据同步 / 同步历史 三卡页面。
+   色板全部走既有令牌（--surface-2 / --line / --accent…），不引入新颜色。
+   ══════════════════════════════════════════════════════════════════════════ */
+.obs-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.obs-actions .hint {
+  color: var(--text-3);
+}
+.obs-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 8px 0 2px;
+}
+.obs-form label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-2);
+  font-size: 12px;
+}
+.obs-form input[type='radio'] {
+  accent-color: var(--accent);
+}
+.obs-form input[type='date'],
+.obs-form input[type='text'],
+.obs-form input[type='number'] {
+  font: inherit;
+  font-size: 12px;
+  padding: 4px 8px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  color: var(--text);
+}
+.obs-form input[type='number'] {
+  width: 76px;
+}
+.obs-log {
+  margin: 8px 0 0;
+  padding: 8px 10px;
+  max-height: 210px;
+  overflow: auto;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  font-size: 11.5px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-all;
+  color: var(--text-2);
+}
+.obs-progress {
+  margin-top: 10px;
+}
+.obs-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--neutral-bg);
+  overflow: hidden;
+  margin: 0 0 6px;
+}
+.obs-bar > i {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+.obs-bar.is-running > i {
+  width: 30%;
+  animation: obs-indeterminate 1.2s ease-in-out infinite;
+}
+@keyframes obs-indeterminate {
+  0% {
+    margin-left: -30%;
+  }
+  100% {
+    margin-left: 100%;
+  }
+}
+.obs-progress-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.obs-err {
+  margin-top: 4px;
+  color: var(--danger);
+}
+.obs-details {
+  margin-top: 10px;
+}
+.obs-details summary {
+  cursor: pointer;
+  color: var(--text-2);
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+.obs-run-row {
+  cursor: pointer;
+}
+.obs-run-row:hover {
+  background: var(--surface-2);
+}
+

@@ -68,6 +68,12 @@ export const DOMAINS: Domain[] = [
     defaultPage: 'signals',
     desc: '信号台账 · 配置治理 · 发布审计',
   },
+  {
+    id: 'obs',
+    label: '观测',
+    defaultPage: 'observability',
+    desc: '服务状态 · 数据同步 · 同步历史',
+  },
 ]
 
 export interface NavItem {
@@ -238,6 +244,19 @@ export const NAV: NavItem[] = [
     impl: true,
     phase: 1,
     story: 'TECH-026',
+    desc: '',
+  },
+  /* 观测域（TECH-030，2026-10-11 用户拍板独立成域）：
+     · 平台 = 观测服务控制面 —— 随平台启动自动拉起 Langfuse 栈，退出默认停容器（留数据卷）；
+     · 单页三卡：服务状态（启停 + 打开 Langfuse）/ 数据同步（FlexDB → 本地）/ 同步历史；
+     · 不做 trace 原生重渲染、不做 iframe 内嵌（PRD-010 D5「Langfuse 保持旁路」口径延续）。 */
+  {
+    id: 'observability',
+    label: '观测总览',
+    domain: 'obs',
+    impl: true,
+    phase: 1,
+    story: 'TECH-030',
     desc: '',
   },
   /* 全局配置（2026-10-11 用户要求：从知识库域移出，升为**平台级**页面）：
@@ -500,6 +519,7 @@ export const RELOADABLE_PAGES = new Set([
   'agentevalcases',
   'agentevaltasks',
   'agentevaljudges',
+  'observability',
   'signals',
   'signalsconfig',
   'signalswords',

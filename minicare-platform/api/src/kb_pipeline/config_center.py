@@ -323,6 +323,46 @@ ENV_ITEMS: list[dict[str, Any]] = [
         "key": "OUT_DIR", "field": "out_dir", "secret": False, "default": str(DEFAULT_OUT_DIR),
         "label": "解析产物目录", "desc": "MinerU 解析产物的扫描目录（文档列表从这里读）",
     },
+    # ── 观测（Langfuse，TECH-030）──
+    # 平台 = 观测服务控制面：启停编排 + 数据同步；密钥（pk/sk）也在这里维护。
+    {
+        "key": "OBS_ENABLED", "field": "obs_enabled", "secret": False, "domain": "obs", "default": "True",
+        "label": "观测域开关", "desc": "关闭后平台不再编排观测栈（观测页提示已关闭）",
+    },
+    {
+        "key": "OBS_AUTOSTART", "field": "obs_autostart", "secret": False, "domain": "obs", "default": "True",
+        "label": "随平台自动启动", "desc": "平台启动时自动拉起 Langfuse 观测栈（需要本机 Docker / colima）",
+    },
+    {
+        "key": "OBS_STOP_ON_EXIT", "field": "obs_stop_on_exit", "secret": False, "domain": "obs", "default": "True",
+        "label": "随平台退出停止", "desc": "平台退出时停止观测栈容器（保留数据卷，下次启动直接复用；开发 --reload 模式自动跳过）",
+    },
+    {
+        "key": "OBS_LANGFUSE_PORT", "field": "obs_langfuse_port", "secret": False, "domain": "obs", "default": "3100",
+        "label": "Langfuse 端口", "desc": "Langfuse Web 的宿主端口（默认 3100，须为 1~5 位数字）",
+    },
+    {
+        "key": "OBS_LANGFUSE_PUBLIC_URL", "field": "obs_langfuse_public_url", "secret": False, "domain": "obs",
+        "default": "http://localhost:3100",
+        "label": "Langfuse 访问地址", "desc": "打开观测 UI 与 trace 深链接使用的地址（默认本机）",
+    },
+    {
+        "key": "OBS_UNIT_DIR", "field": "obs_unit_dir", "secret": False, "domain": "obs",
+        "label": "观测运行单元目录", "desc": "Langfuse compose 与同步脚本所在目录（默认 minicare-agent/；桌面版打包后指向内置副本）",
+    },
+    {
+        "key": "LANGFUSE_HOST", "field": "langfuse_host", "secret": False, "domain": "obs", "default": "http://localhost:3100",
+        "label": "Langfuse 服务地址（同步用）", "desc": "数据同步导入的目标实例地址",
+    },
+    {
+        "key": "LANGFUSE_PUBLIC_KEY", "field": "langfuse_public_key", "secret": True, "domain": "obs",
+        "label": "Langfuse Public Key",
+        "desc": "Langfuse 项目设置 → API Keys 创建（pk-lf-…）；数据同步必需，未配置时同步页给出引导",
+    },
+    {
+        "key": "LANGFUSE_SECRET_KEY", "field": "langfuse_secret_key", "secret": True, "domain": "obs",
+        "label": "Langfuse Secret Key", "desc": "同上（sk-lf-…）",
+    },
 ]
 
 
@@ -603,6 +643,23 @@ def _validate_env_updates(updates: list[dict]) -> dict[str, str]:
         if field == "db_port":
             if not re.fullmatch(r"\d{1,5}", val):
                 raise ConfigError("DB_PORT 需为 1~5 位数字（如 3306）；不支持清空")
+        if field == "obs_langfuse_port":
+            if not re.fullmatch(r"\d{1,5}", val):
+                raise ConfigError("OBS_LANGFUSE_PORT 需为 1~5 位数字（如 3100）；不支持清空")
+        if field == "obs_unit_dir" and val and not val.startswith("/"):
+            raise ConfigError("OBS_UNIT_DIR 需为绝对路径（compose 与脚本的定位锚）")
+        # Langfuse 密钥格式守卫（2026-10-11 实测踩坑：说明文字/Public Key 被误粘进字段，
+        # 静默入库后直到同步 401 才暴露 —— 宁可在保存时拒绝，清空（留空）仍允许）
+        if field == "langfuse_public_key" and val and not val.startswith("pk-lf-"):
+            raise ConfigError(
+                "LANGFUSE_PUBLIC_KEY 应以 pk-lf- 开头，当前值不是有效的 Public Key。"
+                "请到 Langfuse「项目设置 → API Keys」复制（Public Key 填这一格）"
+            )
+        if field == "langfuse_secret_key" and val and not val.startswith("sk-lf-"):
+            raise ConfigError(
+                "LANGFUSE_SECRET_KEY 应以 sk-lf- 开头 —— 注意别把 Public Key（pk-lf-…）"
+                "填到 Secret Key 这一格（两者是创建时成对给的两个值）"
+            )
         if field in ("source_dir", "out_dir"):
             if not val:
                 raise ConfigError(f"{key} 不能清空 —— 上传与解析扫描都依赖该目录")

@@ -21,6 +21,7 @@ import { SignalsConfigPage } from './pages/SignalsConfig'
 import { SignalsWordsPage } from './pages/SignalsWords'
 import { SignalsPublishPage } from './pages/SignalsPublish'
 import { SignalsHistoryPage } from './pages/SignalsHistory'
+import { ObservabilityPage } from './pages/Observability'
 import { PlaceholderPage } from './pages/Placeholder'
 
 /**
@@ -53,6 +54,7 @@ const PAGES: Record<string, ComponentType> = {
   signalswords: SignalsWordsPage,
   signalspublish: SignalsPublishPage,
   signalshistory: SignalsHistoryPage,
+  observability: ObservabilityPage,
 }
 
 function PageSwitch() {

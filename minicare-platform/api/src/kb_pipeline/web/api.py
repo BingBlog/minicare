@@ -21,9 +21,12 @@ from typing import Any
 from .. import __version__ as PIPELINE_VERSION
 from .. import run_registry
 from ..config import effective_thresholds, get_settings
+from ..logger import get_logger
 from ..orchestrator import Orchestrator
 from ..registry import STEP_ORDER, STEP_REGISTRY
 from .ui import render_index_html
+
+log = get_logger(__name__)
 
 ALLOW_WRITE = False
 
@@ -224,6 +227,8 @@ def _doc_status(orc: Orchestrator, doc_id: str, meta: dict[str, Any]) -> dict[st
 
 
 def create_app():
+    from contextlib import asynccontextmanager
+
     try:
         from fastapi import Body, FastAPI, HTTPException
     except ImportError as e:  # pragma: no cover
@@ -231,7 +236,33 @@ def create_app():
             "缺少 Web 依赖。安装：cd minicare-platform/api && .venv/bin/pip install -e \".[web]\""
         ) from e
 
-    app = FastAPI(title="敏宝管理平台 · 本地 v0", version=PIPELINE_VERSION)
+    @asynccontextmanager
+    async def _lifespan(_app):
+        """平台生命周期钩子（TECH-030）：观测栈随平台启动 / 退出自动编排。
+
+        启动：`OBS_STACK.startup()` 只登记后台线程（异步拉起 Langfuse 栈，不阻塞平台可用；
+        `OBS_AUTOSTART=0` 时仅做一次轻量探测刷新）；
+        退出：先拆同步子进程（如有），再按 `OBS_STOP_ON_EXIT` 停容器（保留数据卷；
+        `--reload` 开发模式跳过，见 cli.py）。任何失败都不得影响平台本身。
+        """
+        try:
+            from ..observability import OBS_STACK  # 导入即建单例
+
+            OBS_STACK.startup()
+        except Exception as exc:  # noqa: BLE001
+            log.warning("[obs] startup hook failed: %s", exc)
+        try:
+            yield
+        finally:
+            try:
+                from ..observability import OBS_STACK, OBS_SYNC
+
+                OBS_SYNC.cancel()
+                OBS_STACK.shutdown()
+            except Exception as exc:  # noqa: BLE001
+                log.warning("[obs] shutdown hook failed: %s", exc)
+
+    app = FastAPI(title="敏宝管理平台 · 本地 v0", version=PIPELINE_VERSION, lifespan=_lifespan)
 
     # 前端静态产物的缓存策略（见 `_StaticCacheHeaders` 的说明）
     app.add_middleware(_StaticCacheHeaders)
@@ -264,6 +295,11 @@ def create_app():
     from .router_signals import router as signals_router
 
     app.include_router(signals_router)
+
+    # 观测域（TECH-030）：/api/obs/*（Langfuse 栈编排 + FlexDB → Langfuse 数据同步）
+    from .router_obs import router as obs_router
+
+    app.include_router(obs_router)
 
     def _guard_write(payload: dict | None) -> dict:
         payload = payload or {}
