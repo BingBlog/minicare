@@ -26,6 +26,7 @@ import TabSelector from './TabSelector'
 import FormulaSection from './FormulaSection'
 import BreastSection from './BreastSection'
 import SupplementSection from './SupplementSection'
+import SupplementPlanSection from './SupplementPlanSection'
 import FoodSection from './FoodSection'
 import ConfirmSheet from '@/components/ConfirmSheet'
 import { useIsIPad } from '@/lib/useIsIPad'
@@ -106,6 +107,8 @@ export default function FeedingFormPage() {
   const [suppOtherName, setSuppOtherName] = useState('')
   const [suppOtherDose, setSuppOtherDose] = useState('')
   const [suppOtherUnit, setSuppOtherUnit] = useState('')
+  // 每日补充计划（PRD-018）：宝宝级配置，[] = 未配置
+  const [suppPlan, setSuppPlan] = useState<string[]>([])
 
   // 辅食
   const [foodList, setFoodList] = useState<string[]>([])
@@ -149,6 +152,8 @@ export default function FeedingFormPage() {
       const baby = await babyApi.get(fid)
       setFamilyId(fid)
       setBabyId(baby.id)
+      // 每日补充计划（PRD-018）：随 baby 详情一次性带出（零新增请求）
+      setSuppPlan(Array.isArray(baby.supplement_plan) ? baby.supplement_plan : [])
 
       if (!initRecordId) {
         if (initTime) setRecordTime(initTime)
@@ -296,6 +301,30 @@ export default function FeedingFormPage() {
     setFoodList((prev) => (prev.includes(t) ? prev : [...prev, t]))
   }
   const removeFood = (idx: number) => setFoodList((prev) => prev.filter((_, i) => i !== idx))
+
+  // -----------------------------------------------------------------------
+  // 每日补充计划（PRD-018）：保存 = PATCH baby + 同步本机 baby 缓存
+  // -----------------------------------------------------------------------
+  const handleSavePlan = async (keys: string[]): Promise<boolean> => {
+    if (!familyId || !babyId) {
+      Taro.showToast({ title: '请先完成宝宝建档', icon: 'none' })
+      return false
+    }
+    try {
+      await babyApi.update(familyId, babyId, { supplement_plan: keys })
+      setSuppPlan(keys)
+      // 同步本机缓存（首页 useDidShow 会实时拉取；此同步保证缓存与最新一致）
+      const cached = Taro.getStorageSync('minicare_baby')
+      if (cached && cached.id === babyId) {
+        Taro.setStorageSync('minicare_baby', { ...cached, supplement_plan: keys })
+      }
+      Taro.showToast({ title: '每日补充计划已保存', icon: 'success' })
+      return true
+    } catch (err) {
+      Taro.showToast({ title: err instanceof Error ? err.message : '保存失败，请重试', icon: 'none' })
+      return false
+    }
+  }
 
   // -----------------------------------------------------------------------
   // 提交
@@ -446,20 +475,25 @@ export default function FeedingFormPage() {
           <BreastSection breastSide={breastSide} onChangeSide={setBreastSide} durationMin={durationMin} onChangeDuration={setDurationMin} />
         )}
 
-        {/* 营养素 */}
+        {/* 营养素：每日补充计划配置（PRD-018，仅新建模式）+ 记录表单 */}
         {tab === 'supplement' && (
-          <SupplementSection
-            checked={suppChecked}
-            dose={suppDose}
-            onToggle={(key) => setSuppChecked((p) => ({ ...p, [key]: !p[key] }))}
-            onDoseChange={(key, val) => setSuppDose((p) => ({ ...p, [key]: val }))}
-            otherName={suppOtherName}
-            onOtherNameChange={setSuppOtherName}
-            otherDose={suppOtherDose}
-            onOtherDoseChange={setSuppOtherDose}
-            otherUnit={suppOtherUnit}
-            onOtherUnitChange={setSuppOtherUnit}
-          />
+          <>
+            {!isEditMode && (
+              <SupplementPlanSection plan={suppPlan} onSave={handleSavePlan} />
+            )}
+            <SupplementSection
+              checked={suppChecked}
+              dose={suppDose}
+              onToggle={(key) => setSuppChecked((p) => ({ ...p, [key]: !p[key] }))}
+              onDoseChange={(key, val) => setSuppDose((p) => ({ ...p, [key]: val }))}
+              otherName={suppOtherName}
+              onOtherNameChange={setSuppOtherName}
+              otherDose={suppOtherDose}
+              onOtherDoseChange={setSuppOtherDose}
+              otherUnit={suppOtherUnit}
+              onOtherUnitChange={setSuppOtherUnit}
+            />
+          </>
         )}
 
         {/* 辅食 */}

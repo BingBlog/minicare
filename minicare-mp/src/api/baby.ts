@@ -29,6 +29,8 @@ export const babyApi = {
     birth_weight_g: number | null
     birth_height_cm: number | null
     birth_head_cm: number | null
+    /** 每日补充计划：营养素 key 数组（PRD-018）；空数组 = 未配置 */
+    supplement_plan: string[]
   }>) =>
     request<Baby>(`/api/family/${familyId}/baby/${babyId}`, {
       method: 'PATCH',

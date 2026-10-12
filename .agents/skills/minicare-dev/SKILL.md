@@ -138,14 +138,14 @@ minicare-mp/src/
 
 **唯一权威来源**：`minicare-server/migrations/` 目录，按文件名顺序执行。
 
-> **当前最新迁移**：`026_baby_birth_head.sql`（001~022 + 024 + 025 + 026，**无 023**）
+> **当前最新迁移**：`028_baby_supplement_plan.sql`（001~022 + 024 + 025 + 026 + 027 + 028，**无 023**）
 > 新增迁移文件后，**必须更新本行的「当前最新迁移」字段**。
 >
 > ⚠️ **环境差异提醒**：各库进度不一致，写任何跨环境代码前先确认目标库的 `schema_migrations`
 > （`npm run migrate:status`，或 `SELECT version FROM schema_migrations ORDER BY version`）。
-> **实测 2026-10-12**：`minicare_dev` → **026**（最新）；`minicare_staging` → **019**；
+> **实测 2026-10-12（晚）**：`minicare_dev` → **028**（最新）；`minicare_staging` → **019**；
 > `minicare-cloud-6gqledlle0132cbe`（正式）→ **019**。
-> 即 **020 / 021 / 022 / 023 / 024 / 025 / 026 对 staging 与正式库都还没生效**。
+> 即 **020 ~ 028 对 staging 与正式库都还没生效**。
 > ⚠️ `022_schedule_template.sql`（PRD-009）**必须配套执行**才可用日程功能：接口无表可写会直接 500；
 > `023_schedule_sort_order.sql` 必须紧跟其后，否则保存模板时 `sort_order` 列不存在 → 500。
 
@@ -177,6 +177,8 @@ minicare-mp/src/
 | `024_password_login.sql` | 「手机号 + 密码」登录（TECH-016 §3）：`password_hash` bcrypt（cost=10，NULL 表示未设密码 → 不允许密码登录）|
 | `025_medication_enhance.sql` | **用药增强（F14）**：① `medication_record.batch_id CHAR(36) NULL` + `idx_medrec_batch`——多药同服批次，同批共享 UUID，NULL=历史单药记录（前端按批聚合为一条服药事件；删除批内任一条=删整批）；② `medication.photo_id VARCHAR(512) NULL`——药品照片 fileID（拍药盒，老人靠图区分）。**纯加列+索引，无回填** |
 | `026_baby_birth_head.sql` | **宝宝档案出生数据补录（F02）**：`baby_profile.birth_head_cm TINYINT NULL`——出生头围（厘米），编辑弹窗补录出生体重/身高/头围。**纯加列无回填**；刻意**不联动生长记录**（出生数据=档案一次性属性，生长曲线 0 月龄起点仍走 growth_record） |
+| `027_medical_document.sql` | **就医记录 AI 识图建档（PRD-017/TECH-035）**：新增 `medical_document` 表——**行=图片**，存视觉解析产出 `{docType,confidence,lowConfidenceFields,data}`（5 类单据：病历/处方/检验/影像/其他）；`UNIQUE(medical_record_id, file_id)` + `idx_md_record`；**不加 FK**（删除由 service 显式维护：随记录 remove 级联 / update 按 photo_ids 清理孤儿）。**纯新建表无回填**；解析入口 = agent `POST /vision/parse-medical`（并发 3，经 wire-proxy 直调视觉模型），server 编排端点 `POST …/medical/parse-images` |
+| `028_baby_supplement_plan.sql` | **营养素「每日补充计划」（PRD-018）**：`baby_profile` 加 `supplement_plan JSON NULL`——营养素 key 数组（如 `["vitD","iron"]`），**NULL / [] 均视为「未配置」**；首页补剂条从「昨日反推」升级为「计划对账」的数据基础。**纯加列无回填**；写入白名单 `update-baby.dto.ts::SUPPLEMENT_PLAN_KEYS`（14 项并集） |
 
 ---
 

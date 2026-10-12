@@ -1,5 +1,6 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import {
+  ArrayMaxSize,
   IsArray,
   IsDateString,
   IsEnum,
@@ -19,6 +20,23 @@ import {
   AllergyType,
   BabyGender,
 } from './create-baby.dto';
+
+/**
+ * 每日补充计划白名单（PRD-018）
+ *
+ * = 前端补剂表单清单（mp `records/feeding/types.ts::suppItems` 8 项）
+ *   ∪ 服务端下发清单（`app-config.data.ts::SUPPLEMENT_ITEMS` 13 项）的并集，共 14 项。
+ *
+ * ⚠️ 两端清单存在既存差异（前端 `vitD` vs 服务端 `vitD3`），白名单取并集兜住；
+ *    两端清单统一为既存技术债，不在 PRD-018 处理。
+ */
+export const SUPPLEMENT_PLAN_KEYS = [
+  // 前端 suppItems（8）
+  'vitD', 'vitAD', 'iron', 'calcium', 'dha', 'zinc', 'probiotic', 'vitC',
+  // 服务端 SUPPLEMENT_ITEMS 独有（6）
+  'vitD3', 'vitB', 'vitA', 'lactase', 'prebiotic', 'folicAcid',
+] as const;
+export type SupplementPlanKey = (typeof SUPPLEMENT_PLAN_KEYS)[number];
 
 /**
  * 更新宝宝档案（PATCH，全部字段可选）
@@ -89,4 +107,15 @@ export class UpdateBabyDto {
   @IsOptional()
   @IsString()
   avatar_url?: string;
+
+  @ApiPropertyOptional({
+    type: [String],
+    example: ['vitD', 'iron'],
+    description: '每日补充计划（营养素 key 数组，PRD-018）；空数组 = 未配置',
+  })
+  @IsOptional()
+  @IsArray()
+  @ArrayMaxSize(20)
+  @IsIn(SUPPLEMENT_PLAN_KEYS, { each: true })
+  supplement_plan?: string[];
 }

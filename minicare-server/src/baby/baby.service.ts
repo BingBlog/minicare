@@ -47,7 +47,7 @@ export class BabyService {
   async listBabies(familyId: string) {
     const [rows] = await this.db.execute<any[]>(
       `SELECT id, family_id, name, birth_date, gender,
-              allergy_types, allergy_level,
+              allergy_types, allergy_level, supplement_plan,
               birth_weight_g, birth_height_cm, birth_head_cm,
               avatar_url, created_at
        FROM baby_profile WHERE family_id = ? AND deleted_at IS NULL ORDER BY created_at ASC`,
@@ -57,6 +57,11 @@ export class BabyService {
       if (typeof baby.allergy_types === 'string') {
         try { baby.allergy_types = JSON.parse(baby.allergy_types); } catch { baby.allergy_types = []; }
       }
+      // 每日补充计划（PRD-018）：出口统一为数组（NULL / 非法值 → []，[] 与 NULL 均视为未配置）
+      if (typeof baby.supplement_plan === 'string') {
+        try { baby.supplement_plan = JSON.parse(baby.supplement_plan); } catch { baby.supplement_plan = []; }
+      }
+      if (!Array.isArray(baby.supplement_plan)) baby.supplement_plan = [];
       if (!['male', 'female', 'unknown'].includes(baby.gender)) {
         baby.gender = 'unknown';
       }
@@ -67,7 +72,7 @@ export class BabyService {
   async getBabyByFamily(familyId: string) {
     const [rows] = await this.db.execute<any[]>(
       `SELECT id, family_id, name, birth_date, gender,
-              allergy_types, allergy_level,
+              allergy_types, allergy_level, supplement_plan,
               birth_weight_g, birth_height_cm, birth_head_cm,
               avatar_url, created_at
        FROM baby_profile WHERE family_id = ? AND deleted_at IS NULL LIMIT 1`,
@@ -80,6 +85,11 @@ export class BabyService {
     if (typeof baby.allergy_types === 'string') {
       try { baby.allergy_types = JSON.parse(baby.allergy_types); } catch { baby.allergy_types = []; }
     }
+    // 每日补充计划（PRD-018）：出口统一为数组（NULL / 非法值 → []，[] 与 NULL 均视为未配置）
+    if (typeof baby.supplement_plan === 'string') {
+      try { baby.supplement_plan = JSON.parse(baby.supplement_plan); } catch { baby.supplement_plan = []; }
+    }
+    if (!Array.isArray(baby.supplement_plan)) baby.supplement_plan = [];
     // gender 已是 VARCHAR，直接返回（兼容旧数据：数字字符串 fallback to 'unknown'）
     if (!['male', 'female', 'unknown'].includes(baby.gender)) {
       baby.gender = 'unknown';
@@ -93,7 +103,7 @@ export class BabyService {
   async getBabyById(babyId: string, familyId: string) {
     const [rows] = await this.db.execute<any[]>(
       `SELECT id, family_id, name, birth_date, gender,
-              allergy_types, allergy_level,
+              allergy_types, allergy_level, supplement_plan,
               birth_weight_g, birth_height_cm, birth_head_cm,
               avatar_url, created_at
        FROM baby_profile WHERE id = ? AND family_id = ? AND deleted_at IS NULL`,
@@ -105,6 +115,11 @@ export class BabyService {
     if (typeof baby.allergy_types === 'string') {
       try { baby.allergy_types = JSON.parse(baby.allergy_types); } catch { baby.allergy_types = []; }
     }
+    // 每日补充计划（PRD-018）：出口统一为数组（NULL / 非法值 → []，[] 与 NULL 均视为未配置）
+    if (typeof baby.supplement_plan === 'string') {
+      try { baby.supplement_plan = JSON.parse(baby.supplement_plan); } catch { baby.supplement_plan = []; }
+    }
+    if (!Array.isArray(baby.supplement_plan)) baby.supplement_plan = [];
     if (!['male', 'female', 'unknown'].includes(baby.gender)) {
       baby.gender = 'unknown';
     }
@@ -117,7 +132,7 @@ export class BabyService {
   async getMyBabies(userId: string) {
     const [rows] = await this.db.execute<any[]>(
       `SELECT bp.id, bp.family_id, bp.name, bp.birth_date, bp.gender,
-              bp.allergy_types, bp.allergy_level,
+              bp.allergy_types, bp.allergy_level, bp.supplement_plan,
               bp.birth_weight_g, bp.birth_height_cm, bp.birth_head_cm,
               bp.avatar_url, bp.created_at,
               fg.name AS family_name,
@@ -134,6 +149,11 @@ export class BabyService {
       if (typeof baby.allergy_types === 'string') {
         try { baby.allergy_types = JSON.parse(baby.allergy_types); } catch { baby.allergy_types = []; }
       }
+      // 每日补充计划（PRD-018）：出口统一为数组（NULL / 非法值 → []，[] 与 NULL 均视为未配置）
+      if (typeof baby.supplement_plan === 'string') {
+        try { baby.supplement_plan = JSON.parse(baby.supplement_plan); } catch { baby.supplement_plan = []; }
+      }
+      if (!Array.isArray(baby.supplement_plan)) baby.supplement_plan = [];
       if (!['male', 'female', 'unknown'].includes(baby.gender)) {
         baby.gender = 'unknown';
       }
@@ -149,6 +169,7 @@ export class BabyService {
     if (dto.birth_date !== undefined)      { fields.push('birth_date = ?');      values.push(dto.birth_date); }
     if (dto.gender !== undefined)          { fields.push('gender = ?');          values.push(dto.gender); } // 直接存 VARCHAR
     if (dto.allergy_types !== undefined)   { fields.push('allergy_types = ?');   values.push(JSON.stringify(dto.allergy_types)); }
+    if (dto.supplement_plan !== undefined) { fields.push('supplement_plan = ?'); values.push(JSON.stringify(dto.supplement_plan)); }
     if (dto.allergy_level !== undefined)   { fields.push('allergy_level = ?');   values.push(dto.allergy_level); }
     if (dto.birth_weight_g !== undefined)  { fields.push('birth_weight_g = ?');  values.push(dto.birth_weight_g); }
     if (dto.birth_height_cm !== undefined) { fields.push('birth_height_cm = ?'); values.push(dto.birth_height_cm); }

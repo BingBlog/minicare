@@ -789,6 +789,24 @@
   box-shadow: 0 4px 16px rgba(232, 185, 60, 0.18);
 }
 
+/* 未配置「每日补充计划」引导条（PRD-018，与日程 setup 同款灰调） */
+.home-inline-banner--plan-setup {
+  border-left: 3px solid #d8cfd3;
+  box-shadow: 0 4px 16px rgba(180, 160, 168, 0.14);
+}
+
+.home-inline-banner__dot--plan-setup {
+  background: #d8cfd3;
+}
+
+.home-inline-banner__action-text--plan-setup {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(248, 112, 152, 0.72);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
 
 .home-inline-banner__dot {
   width: 8px;

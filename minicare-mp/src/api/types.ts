@@ -31,6 +31,8 @@ export interface Baby {
   birth_height_cm?: number | null
   birth_head_cm?: number | null
   avatar_url?: string | null
+  /** 每日补充计划：营养素 key 数组（PRD-018）；[] / 缺省 = 未配置 */
+  supplement_plan?: string[]
   family_name?: string
   family_role?: 'owner' | 'member'
 }

@@ -88,6 +88,8 @@ export default function HomePage() {
   const [scheduleLoaded, setScheduleLoaded] = useState(false)
   // 首页提醒卡片开关（本地存储，设置页可调，默认全开）
   const [reminderSettings, setReminderSettings] = useState<ReminderSettings>(() => getReminderSettings())
+  // 宝宝「每日补充计划」（PRD-018）：随 baby 详情拉取，[] = 未配置
+  const [babyPlan, setBabyPlan] = useState<string[]>([])
   const [yesterdayDiary, setYesterdayDiary] = useState<DiaryDetail | null>(null)
   // 初值 true：首帧即渲染等高骨架，避免「空态卡闪现 → 卡片消失 → 内容卡出现」的三重跳变
   const [diaryLoading, setDiaryLoading] = useState(true)
@@ -151,6 +153,7 @@ export default function HomePage() {
       // 多药批次（025）：同批服药记录聚合为一条「服药事件」再渲染
       setRecords(mergeMedicationBatches(todayRecords).map(toHomeRecord))
       setOngoingSleep(ongoing)
+      setBabyPlan(Array.isArray(baby.supplement_plan) ? baby.supplement_plan : [])
 
       try {
         const latest = await recordsApi.growth.getLatest(fid, baby.id)
@@ -296,6 +299,7 @@ export default function HomePage() {
           setBabyName(baby.name || '宝宝')
           setBirthDate(baby.birth_date || '')
           setBabyAvatarFileID(baby.avatar_url ?? '')
+          setBabyPlan(Array.isArray(baby.supplement_plan) ? baby.supplement_plan : [])
           // 多药批次（025）：同批服药记录聚合为一条「服药事件」再渲染
           setRecords(mergeMedicationBatches(todayRecords).map(toHomeRecord))
           setOngoingSleep(ongoing)
@@ -792,9 +796,9 @@ export default function HomePage() {
                 onRecordClick={() => navigateToRecord('/records/form/medical', nextFollowUp.id)}
               />
             ) : null}
-            {/* 补剂&营养素：提醒 Bar 形态（排敏进度上方）；今日已吃不展示 */}
+            {/* 补剂&营养素：计划对账 Bar（PRD-018）；未配置时渲染引导条 */}
             {reminderSettings.supplement ? (
-              <SupplementBar todayRecords={records} yesterdayRecords={yesterdayRecords} />
+              <SupplementBar planKeys={babyPlan} todayRecords={records} />
             ) : null}
             {reminderSettings.allergy ? (
               <AllergyProgressBar observations={foodObservations} />

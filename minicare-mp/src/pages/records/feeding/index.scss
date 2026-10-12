@@ -908,4 +908,152 @@
   font-weight: 700;
 }
 
+/* ── 每日补充计划配置区（PRD-018）：一体化卡片，展开时卡内延伸 ── */
+
+.supp-plan {
+  margin: 0 12px 10px;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(200, 100, 120, 0.08);
+}
+
+.supp-plan__entry {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 16px;
+
+  &:active {
+    background: #fdf7f8;
+  }
+}
+
+.supp-plan__entry-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #4a3035;
+  flex-shrink: 0;
+}
+
+.supp-plan__entry-right {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.supp-plan__entry-summary {
+  font-size: 12px;
+  color: #9a8090;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.supp-plan__arrow {
+  font-size: 14px;
+  font-weight: 700;
+  color: #b3a0a5;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+.supp-plan__arrow--open {
+  transform: rotate(90deg);
+}
+
+.supp-plan__panel {
+  padding: 10px 14px 14px;
+  border-top: 1px solid #f5eef0;
+}
+
+.supp-plan__hint {
+  display: block;
+  font-size: 11px;
+  color: #b09098;
+  padding: 0 2px 6px;
+  line-height: 1.5;
+}
+
+.supp-plan__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 2px;
+}
+
+.supp-plan__row--bordered {
+  border-bottom: 1px solid #f5eef0;
+}
+
+.supp-plan__check {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 2px solid #d0c0c4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: #fff;
+}
+
+.supp-plan__check--on {
+  background: #f87098;
+  border-color: #f87098;
+}
+
+.supp-plan__check-mark {
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.supp-plan__row-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.supp-plan__row-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #4a3035;
+  display: block;
+}
+
+.supp-plan__row-hint {
+  font-size: 11px;
+  color: #b09098;
+  display: block;
+  margin-top: 2px;
+}
+
+.supp-plan__save {
+  margin-top: 12px;
+  height: 40px;
+  border-radius: 20px;
+  background: #f87098;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:active {
+    opacity: 0.88;
+  }
+}
+
+.supp-plan__save--loading {
+  opacity: 0.6;
+}
+
+.supp-plan__save-text {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
 @include ipad.feeding;
